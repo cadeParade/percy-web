@@ -64,8 +64,8 @@ export const SnapshotViewerHeader = {
   clickDiffComparisonMode: clickable(SELECTORS.COMPARISON_MODE_SWITCHER_DIFF),
   clickHeadComparisonMode: clickable(SELECTORS.COMPARISON_MODE_SWITCHER_HEAD),
 
-  clickDropdownToggle() {
-    clickDropdownTrigger();
+  async clickDropdownToggle() {
+    await clickDropdownTrigger();
   },
   isDropdownToggleVisible: isVisible(SELECTORS.DROPDOWN_TOGGLE),
   isDropdownPaneVisible: isPresent(SELECTORS.DROPDOWN_PANE, {

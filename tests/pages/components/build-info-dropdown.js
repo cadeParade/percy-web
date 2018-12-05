@@ -10,9 +10,9 @@ const SELECTORS = {
 };
 
 export const BuildInfoDropdown = {
-  toggleBuildInfoDropdown() {
+  async toggleBuildInfoDropdown() {
     // position dropdown near left side of screen
-    clickDropdownTrigger('', {top: '120px', left: '40px'});
+    return await clickDropdownTrigger('', {top: '120px', left: '40px'});
   },
 
   isAdminDetailsPresent: isPresent(SELECTORS.ADMIN_DETAILS, {

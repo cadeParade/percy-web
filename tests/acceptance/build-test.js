@@ -414,8 +414,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
 
   it('displays the dropdown', async function() {
     await BuildPage.visitFullPageSnapshot(urlParams);
-    BuildPage.snapshotFullscreen.header.clickDropdownToggle();
-
+    await BuildPage.snapshotFullscreen.header.clickDropdownToggle();
     await percySnapshot(this.test);
   });
 
