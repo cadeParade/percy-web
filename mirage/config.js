@@ -35,7 +35,7 @@ export default function() {
 
   this.patch('/user', function(schema) {
     let user = schema.users.findBy({_currentLoginInTest: true});
-    let attrs = this.normalizedRequestAttrs();
+    let attrs = this.normalizedRequestAttrs('user');
 
     user.update({name: attrs.name, unverifiedEmail: attrs.email});
     return user;
@@ -91,7 +91,7 @@ export default function() {
   });
 
   this.patch('/organizations/:slug', function(schema, request) {
-    let attrs = this.normalizedRequestAttrs();
+    let attrs = this.normalizedRequestAttrs('organization');
     if (!attrs.slug.match(/^[a-zA-Z][a-zA-Z_]*[a-zA-Z]$/)) {
       return _error400({
         pointer: '/data/attributes/slug',
@@ -106,7 +106,7 @@ export default function() {
   });
 
   this.post('/organizations', function(schema) {
-    let attrs = this.normalizedRequestAttrs();
+    let attrs = this.normalizedRequestAttrs('organization');
     let currentUser = schema.users.findBy({_currentLoginInTest: true});
     attrs.slug = attrs.name.underscore();
     let result = schema.organizations.create(attrs);
@@ -118,14 +118,14 @@ export default function() {
   });
 
   this.post('/organizations/:id/projects', function(schema, request) {
-    let attrs = this.normalizedRequestAttrs();
+    let attrs = this.normalizedRequestAttrs('project');
     schema.organizations.findBy({slug: request.params.slug});
     let project = schema.projects.create(attrs);
     return project;
   });
 
   this.patch('/organizations/:slug/subscription', function(schema, request) {
-    let attrs = this.normalizedRequestAttrs();
+    let attrs = this.normalizedRequestAttrs('subscription');
     let organization = schema.organizations.findBy({slug: request.params.slug});
     let subscription = organization.subscription;
 
@@ -153,12 +153,12 @@ export default function() {
 
   this.post('/organizations/:org_id/version-control-integrations/', function(schema, request) {
     if (request.requestBody.match(/"integration-type":"gitlab"/)) {
-      let attrs = this.normalizedRequestAttrs();
+      let attrs = this.normalizedRequestAttrs('versionControlIntegration');
       let newAttrs = Object.assign({}, attrs, {gitlabIntegrationId: 1234});
       let versionControlIntegration = schema.versionControlIntegrations.create(newAttrs);
       return versionControlIntegration;
     } else if (request.requestBody.match(/"integration-type":"gitlab_self_hosted"/)) {
-      let attrs = this.normalizedRequestAttrs();
+      let attrs = this.normalizedRequestAttrs('versionControlIntegration');
       let versionControlIntegration = schema.versionControlIntegrations.create(attrs);
       return versionControlIntegration;
     } else {
@@ -168,7 +168,7 @@ export default function() {
 
   this.patch('/version-control-integrations/:id', function(schema, request) {
     if (request.requestBody.match(/"integration-type":"gitlab"/)) {
-      let attrs = this.normalizedRequestAttrs();
+      let attrs = this.normalizedRequestAttrs('versionControlIntegration');
       let newAttrs = Object.assign({}, attrs, {
         gitlabIntegrationId: 1234,
         isGitlabPersonalAccessTokenPresent: true,
@@ -179,7 +179,7 @@ export default function() {
       versionControlIntegration.update(newAttrs);
       return versionControlIntegration;
     } else if (request.requestBody.match(/"integration-type":"gitlab_self_hosted"/)) {
-      let attrs = this.normalizedRequestAttrs();
+      let attrs = this.normalizedRequestAttrs('versionControlIntegration');
       let newAttrs = Object.assign({}, attrs, {
         gitlabHost: attrs['gitlabHost'],
         isGitlabPersonalAccessTokenPresent: true,
@@ -227,7 +227,7 @@ export default function() {
 
   this.patch('/invites/:id', function(schema, request) {
     let invite = schema.invites.find(request.params.id);
-    let attrs = this.normalizedRequestAttrs();
+    let attrs = this.normalizedRequestAttrs('invite');
     invite.update(attrs);
 
     const currentUser = schema.users.findBy({_currentLoginInTest: true});

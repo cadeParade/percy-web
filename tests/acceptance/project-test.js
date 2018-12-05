@@ -303,7 +303,7 @@ describe('Acceptance: Project', function() {
         const stub = sinon.stub();
         server.patch('/projects/:full_slug', function(schema, request) {
           const fullSlug = decodeURIComponent(request.params.full_slug);
-          const attrs = this.normalizedRequestAttrs();
+          const attrs = this.normalizedRequestAttrs('project');
           const project = schema.projects.findBy({fullSlug: fullSlug});
           project.update(
             Object.assign(attrs, {fullSlug: 'my_organization_that_i_love_and_cherish_0/new-slug'}),
