@@ -3,6 +3,7 @@
     <ul class="list-reset mb-3">
       {{#each (sort-by "name" enabledProjects) as |project|}}
         {{project-list-item
+          data-test-project-list-item
           project=project
           toggleSidebar=(action "toggleSidebar")
         }}
@@ -45,6 +46,7 @@
   </aside>
   {{project-container
     project=project
+    selectedBranch='All branches'
     infinityBuilds=infinityBuilds
     isSidebarVisible=isSidebarVisible
     toggleSidebar=(action "toggleSidebar")

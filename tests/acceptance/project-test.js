@@ -8,6 +8,7 @@ import {beforeEach} from 'mocha';
 import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
 import {percySnapshot} from 'ember-percy';
 import {click, visit, currentRouteName} from '@ember/test-helpers';
+import {selectChoose} from 'ember-power-select/test-support/helpers';
 
 describe('Acceptance: Project', function() {
   setupAcceptance();
@@ -339,12 +340,16 @@ describe('Acceptance: Project', function() {
     freezeMoment('2018-05-22');
 
     let urlParams;
+    let project;
+    let organization;
 
     setupSession(function(server) {
-      let organization = server.create('organization', 'withUser');
-      let project = server.create('project', {
+      const repo = server.create('repo');
+      organization = server.create('organization', 'withUser');
+      project = server.create('project', {
         name: 'project with builds',
         organization,
+        repo,
       });
       server.create('project', {
         name: 'project without builds',
@@ -399,6 +404,7 @@ describe('Acceptance: Project', function() {
         project,
         createdAt: _timeAgo(5, 'minutes'),
         buildNumber: 8,
+        branch: 'branch-mc-branch-face',
       });
       server.create('build', 'approvedPreviously', {
         project,
@@ -409,6 +415,7 @@ describe('Acceptance: Project', function() {
         project,
         createdAt: _timeAgo(2, 'minutes'),
         buildNumber: 10,
+        branch: 'branch-mc-branch-face',
       });
       server.create('build', 'approvedAutoBranch', {
         project,
@@ -454,6 +461,20 @@ describe('Acceptance: Project', function() {
       expect(currentRouteName()).to.equal('organization.project.builds.build.index');
 
       await percySnapshot(this.test.fullTitle());
+    });
+
+    it('resets branch filter when navigating to another project', async function() {
+      const repo = server.create('repo');
+
+      withVariation(this.owner, 'build-branch-filter', true);
+      const project2 = server.create('project', {organization, repo: repo});
+      server.createList('build', 3, {project: project2});
+
+      await ProjectPage.visitProject(urlParams);
+      await selectChoose('', 'branch-mc-branch-face');
+      await ProjectPage.toggleProjectSidebar();
+      await ProjectPage.projectLinks.objectAt(2).click();
+      expect(ProjectPage.builds().count).to.equal(3);
     });
   });
 

@@ -34,7 +34,7 @@
 
     <div data-test-project-container-project-repo-linked>
       {{#if project.repo}}
-        <div class="flex items-center">
+        <div class="flex items-center mb-1">
           <figure class="svg-container mr-1">
             {{#if (repo-logo project.repo)}}
               {{inline-svg (repo-logo project.repo)}}
@@ -43,6 +43,20 @@
           <span class="whitespace-no-wrap font-semibold mr-1">Linked to</span>
           <a href="{{project.repo.htmlUrl}}"><code>{{project.repo.slug}}</code></a>
         </div>
+        {{#if (variation "build-branch-filter")}}
+          {{#power-select
+            selected=selectedBranch
+            placeholder="Filter by branch"
+            renderInPlace=true
+            options=projectBranches
+            searchPlaceholder="Type to filter branches"
+            noMatchesMessage="No branches found"
+            onchange=(action "chooseBranch")
+            as |branch|
+          }}
+            {{branch}}
+          {{/power-select}}
+        {{/if}}
       {{/if}}
     </div>
   </div>
@@ -60,13 +74,17 @@
 {{else}}
   {{#if builds}}
     <div class="build-list">
-      {{#each builds as |build|}}
+      {{#each branchFilteredBuilds as |build|}}
         {{build-card build=build project=project}}
       {{/each}}
-      {{#if canLoadMore}}
+      {{#if shouldLoadMore}}
         {{#infinity-loader infinityModel=infinityBuilds}}
           {{loading-build-card}}
         {{/infinity-loader}}
+      {{else if (and project.isRepoConnected (variation "build-branch-filter"))}}
+        <div class="p-4 bg-white border-b flex justify-center text-gray-400">
+            To load more builds, select "All branches" from the select menu above
+        </div>
       {{/if}}
     </div>
   {{else}}

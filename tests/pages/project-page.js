@@ -11,6 +11,7 @@ const SELECTORS = {
   FRAMEWORK_DOCS_BUTTON: '[data-test-framework-docs-button]',
   GENERIC_DOCS_BUTTON: '[data-test-generic-docs-button]',
   SDK_REQUEST_FIELD: '[data-test-sdk-request-field]',
+  SIDEBAR_PROJECT_ITEM: '[data-test-project-list-item] a',
 };
 
 const ProjectPage = {
@@ -35,6 +36,7 @@ const ProjectPage = {
 
   toggleProjectSidebar: clickable(SELECTORS.TOGGLE_PROJECT_SIDEBAR),
   toggleArchivedProjects: clickable(SELECTORS.TOGGLE_ARCHIVED_PROJECTS),
+  projectLinks: collection(SELECTORS.SIDEBAR_PROJECT_ITEM),
 
   frameworks: collection(SELECTORS.FRAMEWORK_ITEMS),
 

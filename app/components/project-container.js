@@ -2,12 +2,16 @@ import Component from '@ember/component';
 import PollingMixin from 'percy-web/mixins/polling';
 import utils from 'percy-web/lib/utils';
 import {computed} from '@ember/object';
+import {and, equal} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
 
 import {INFINITY_SCROLL_LIMIT} from 'percy-web/models/build';
 
+const allBranchesString = 'All branches';
+
 export default Component.extend(PollingMixin, {
   store: service(),
+  launchDarkly: service(),
 
   project: null,
   showQuickstart: false,
@@ -22,6 +26,9 @@ export default Component.extend(PollingMixin, {
   buildsLimit: INFINITY_SCROLL_LIMIT,
 
   canLoadMore: computed.not('infinityBuilds.reachedInfinity'),
+  shouldLoadMore: and('isAllBranchesSelected', 'canLoadMore'),
+
+  isAllBranchesSelected: equal('selectedBranch', allBranchesString),
 
   pollRefresh() {
     return this._refresh();
@@ -37,7 +44,24 @@ export default Component.extend(PollingMixin, {
     return utils.sortAndCleanBuilds(filteredBuilds);
   }),
 
+  selectedBranch: allBranchesString,
+  projectBranches: computed('builds.@each.branch', function() {
+    const allBranches = this.get('builds').mapBy('branch');
+    const uniqueBranches = Array.from(new Set(allBranches));
+    return [allBranchesString].concat(uniqueBranches);
+  }),
+
+  branchFilteredBuilds: computed('selectedBranch', 'projectBranches.[]', function() {
+    if (this.get('selectedBranch') === allBranchesString) {
+      return this.get('builds');
+    }
+    return this.get('builds').filterBy('branch', this.get('selectedBranch'));
+  }),
+
   actions: {
+    chooseBranch(newBranch) {
+      this.set('selectedBranch', newBranch);
+    },
     refresh() {
       this._refresh();
     },
