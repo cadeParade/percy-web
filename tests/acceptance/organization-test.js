@@ -37,10 +37,11 @@ describe('Acceptance: Organization', function() {
       await percySnapshot(this.test);
     });
 
-    it('can create new organization and update org switcher', async function() {
+    it('can create new organization and update org switcher when creating second org', async function() { // eslint-disable-line
       await ProjectPage.visitOrg({orgSlug: this.organization.slug});
       await click('[data-test-toggle-org-switcher]');
       await click('[data-test-new-org]');
+
       expect(currentRouteName()).to.equal('organizations.new');
 
       await click('[data-test-toggle-org-switcher]');
@@ -55,6 +56,25 @@ describe('Acceptance: Organization', function() {
       expect(findAll('[data-test-org-switcher-item]').length).to.equal(2);
 
       await percySnapshot(this.test.fullTitle() + ' | setup');
+    });
+
+    it('can create new organization and user email when creating first org', async function() {
+      // simulate the user having no organizations
+      server.db.organizationUsers.remove(1);
+      server.db.organizations.remove(1);
+      await visit('/organizations/new/');
+      // I am truly sorry
+      this.owner.__container__
+        .lookup('service:session')
+        .set('currentUser.githubIdentity', {provider: 'github'});
+
+      await fillIn('[data-test-form-input=organization-name]', 'New organization');
+      await fillIn('[data-test-form-input=user-email]', 'a@a.com');
+      await percySnapshot(this.test.fullTitle());
+
+      await click('[data-test-form-submit-button]');
+      expect(currentRouteName()).to.equal('organization.index');
+      expect(findAll('.flash-message.flash-message-success')).to.have.length(1);
     });
 
     it('shows support on settings page', async function() {
