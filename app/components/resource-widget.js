@@ -70,13 +70,27 @@ export default Component.extend({
 
     saveRequest() {
       const organization = this.get('organization');
-      const request = this.get('requestedFramework').toLowerCase();
+      const frameworkName = this.get('requestedFramework').toLowerCase();
 
-      if (!isEmpty(request)) {
-        this.get('analytics').track('New SDK Requested', organization, {request});
+      if (!isEmpty(frameworkName)) {
+        this.get('analytics').track('New SDK Requested', organization, {frameworkName});
         this.set('requestedFramework', '');
         this.set('selectedFramework', null);
       }
+    },
+
+    trackDocsVisit() {
+      const organization = this.get('organization');
+      const frameworkName = this.get('selectedFramework').toLowerCase();
+
+      this.get('analytics').track('Framework Docs Visited', organization, {frameworkName});
+    },
+
+    trackDemoVisit() {
+      const organization = this.get('organization');
+      const frameworkName = this.get('selectedFramework').toLowerCase();
+
+      this.get('analytics').track('Framework Demo Project Visited', organization, {frameworkName});
     },
   },
 });

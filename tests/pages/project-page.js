@@ -9,7 +9,7 @@ const SELECTORS = {
   FRAMEWORK_ITEMS: '[data-test-tech-card]',
   EXAMPLE_PROJECT_BUTTON: '[data-test-example-framework-project-button]',
   FRAMEWORK_DOCS_BUTTON: '[data-test-framework-docs-button]',
-  GENERIC_DOCS_BUTTON: '.data-test-generic-docs-button',
+  GENERIC_DOCS_BUTTON: '[data-test-generic-docs-button]',
   SDK_REQUEST_FIELD: '[data-test-sdk-request-field]',
 };
 

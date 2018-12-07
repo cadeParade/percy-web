@@ -55,15 +55,20 @@ export default {
   ruby: {
     name: 'Ruby',
     frameworks: {
+      rails: {
+        name: 'Rails',
+        docLink: 'https://docs.percy.io/docs/rails',
+        exampleLink: 'https://github.com/percy/example-rails',
+      },
       capybara: {
         name: 'Capybara',
         docLink: 'https://docs.percy.io/docs/rails',
         exampleLink: 'https://github.com/percy/example-rails',
       },
-      anywhere: {
-        name: 'Percy Anywhere',
-        docLink: 'https://docs.percy.io/docs/percy-anywhere',
-        exampleLink: 'https://github.com/percy/example-percy-anywhere',
+      puppeteer: {
+        name: 'Puppeteer',
+        docLink: 'https://docs.percy.io/docs/puppeteer',
+        exampleLink: 'https://github.com/percy/example-percy-puppeteer-standalone',
       },
       other: {
         name: 'Other',
