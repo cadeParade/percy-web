@@ -32,8 +32,8 @@ export default DS.Model.extend({
 
   _hasIdentityType(provider) {
     return DS.PromiseObject.create({
-      promise: this.get('identities').then(identities => {
-        return identities.findBy('provider', provider);
+      promise: this.get('identities').then(identity => {
+        return identity.findBy('provider', provider);
       }),
     });
   },

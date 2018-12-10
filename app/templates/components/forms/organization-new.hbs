@@ -1,9 +1,10 @@
 <form action="javascript:;" data-test-new-org-form>
-  <div class="pt-2 px-2 bg-gray-000 rounded border mb-3">
+  <div class="pt-2 px-2 bg-gray-000 rounded border mb-2">
     {{form-fields/input
       property="name"
-      title=(if isFirstOrganization "Company name" "Organization name")
+      title="Organization name"
       changeset=changeset
+      validateProperty=(action "validateProperty" changeset "name")
       autofocus=isInputFocused
       placeholder="Acme Co."
       testLabel="organization-name"
@@ -13,39 +14,12 @@
         {{errorMessage}}
       </div>
     {{/if}}
-
-    {{#if (and (await hasOnlyGithubIdentity) isFirstOrganization)}}
-      {{form-fields/input
-        property="email"
-        title="Confirm email address"
-        changeset=userChangeset
-        autofocus=isInputFocused
-        placeholder="daenerys@acme.co"
-        validateProperty=(action "validateProperty" userChangeset "email")
-        testLabel="user-email"
-      }}
-      {{#if errorMessage}}
-        <div class="Form-errors">
-          {{errorMessage}}
-        </div>
-      {{/if}}
-    {{/if}}
   </div>
-
-  <div class="flex items-center justify-between pb-2 mb-2">
-    <div class="leading-none">
-      <div class="mb-sm font-semibold">
-        Jump right in
-      </div>
-      <div class="text-gray-400">
-        Start a new Percy project
-      </div>
-    </div>
+  <div class="flex justify-end">
     {{form-fields/submit
-      value="Start new project"
-      classes="percy-btn percy-btn-primary"
-      submit=(action "customSave")
-      isSaving=isSaving
+      value="Create Organization"
+      classes="btn btn-primary shadow-purple-lg mb-0"
+      submit=(action "save")
       disabled=isSubmitDisabled
     }}
   </div>

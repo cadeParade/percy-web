@@ -16,24 +16,20 @@ describe('Integration: OrganizationsNewOrganization', function() {
   beforeEach(function() {
     setupFactoryGuy(this);
     NewOrganization.setContext(this);
-    const user = make('user');
+    this.set('githubMarketplacePlanId', 9);
+    this.set('organizationCreated', () => {});
 
+    const user = make('user');
+    this.set('user', user);
     const sessionServiceStub = Service.extend({
       currentUser: user,
     });
     this.owner.register('service:session', sessionServiceStub, 'sessionService');
-
-    this.set('user', user);
-    this.set('organizationCreated', () => {});
   });
 
   describe('when not a github marketplace purchase', function() {
     beforeEach(async function() {
-      const newOrganization = make('organization', 'new');
-      this.set('newOrganization', newOrganization);
-
       await this.render(hbs`{{organizations/new-organization
-        newOrganization=newOrganization
         organizationCreated=organizationCreated
       }}`);
     });
@@ -42,15 +38,21 @@ describe('Integration: OrganizationsNewOrganization', function() {
       expect(NewOrganization.hasGithubSection).to.equal(false);
       await percySnapshot(this.test);
     });
+
+    it('disables the form submission button on load', async function() {
+      expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(true);
+    });
+
+    it('enables the form submission button when a valid name is entered', async function() {
+      await NewOrganization.organizationName('my-cool-organization');
+      expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(false);
+    });
   });
 
   describe('when a github marketplace purchase without github connected', function() {
     beforeEach(async function() {
-      const newOrganization = make('organization', 'newFromGithub');
-      this.set('newOrganization', newOrganization);
-
       await this.render(hbs`{{organizations/new-organization
-        newOrganization=newOrganization
+        githubMarketplacePlanId=githubMarketplacePlanId
         organizationCreated=organizationCreated
       }}`);
     });
@@ -74,11 +76,8 @@ describe('Integration: OrganizationsNewOrganization', function() {
       const identity = make('identity', 'githubProvider', {nickname: 'myGithubAccount'});
       this.set('user.identities', [identity]);
 
-      const newOrganization = make('organization', 'newFromGithub');
-      this.set('newOrganization', newOrganization);
-
       await this.render(hbs`{{organizations/new-organization
-        newOrganization=newOrganization
+        githubMarketplacePlanId=githubMarketplacePlanId
         organizationCreated=organizationCreated
       }}`);
     });
@@ -91,6 +90,15 @@ describe('Integration: OrganizationsNewOrganization', function() {
       expect(NewOrganization.hasConnectedGithubAccount).to.equal(true);
       expect(NewOrganization.githubAccountName).to.equal('myGithubAccount');
       await percySnapshot(this.test);
+    });
+
+    it('disables the form submission button on load', async function() {
+      expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(true);
+    });
+
+    it('enables the form submission button when a valid name is entered', async function() {
+      await NewOrganization.organizationName('my-cool-organization');
+      expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(false);
     });
   });
 });
