@@ -495,6 +495,19 @@ describe('Acceptance: Project', function() {
       await click(switcherItems[1]);
       expect(ProjectPage.builds().count).to.equal(0);
     });
+
+    it('resets builds when navigating to another project in same org with no scm integration', async function() { // eslint-disable-line
+      const project1 = server.create('project', {organization});
+      server.createList('build', 3, {project: project1});
+      const project2 = server.create('project', {organization});
+      server.createList('build', 2, {project: project2});
+
+      await ProjectPage.visitProject({orgSlug: organization.slug, projectSlug: project1.slug});
+      expect(ProjectPage.builds().count).to.equal(3);
+      await ProjectPage.toggleProjectSidebar();
+      await ProjectPage.projectLinks.objectAt(3).click();
+      expect(ProjectPage.builds().count).to.equal(2);
+    });
   });
 
   describe('sidebar', function() {

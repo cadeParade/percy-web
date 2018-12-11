@@ -51,12 +51,17 @@ export default Component.extend(PollingMixin, {
     return [allBranchesString].concat(uniqueBranches);
   }),
 
-  branchFilteredBuilds: computed('selectedBranch', 'projectBranches.[]', function() {
-    if (this.get('selectedBranch') === allBranchesString) {
-      return this.get('builds');
-    }
-    return this.get('builds').filterBy('branch', this.get('selectedBranch'));
-  }),
+  branchFilteredBuilds: computed(
+    'builds.@each.branch',
+    'selectedBranch',
+    'projectBranches.[]',
+    function() {
+      if (this.get('selectedBranch') === allBranchesString) {
+        return this.get('builds');
+      }
+      return this.get('builds').filterBy('branch', this.get('selectedBranch'));
+    },
+  ),
 
   actions: {
     chooseBranch(newBranch) {
