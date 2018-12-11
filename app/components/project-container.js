@@ -34,7 +34,7 @@ export default Component.extend(PollingMixin, {
     return this._refresh();
   },
 
-  builds: computed('isRefreshing', 'infinityBuilds._loadingMore', function() {
+  builds: computed('project.id', 'isRefreshing', 'infinityBuilds._loadingMore', function() {
     const builds = this.get('store').peekAll('build');
 
     const filteredBuilds = builds.filter(item => {

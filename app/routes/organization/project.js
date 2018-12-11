@@ -36,13 +36,20 @@ export default Route.extend({
 
   _getProject: task(function*(params) {
     const projectSlug = params['organization.project'].project_id;
+    const orgSlug = params['organization'].organization_id;
+
     const preLoadedProject = this.get('store')
       .peekAll('project')
-      .findBy('slug', projectSlug);
+      .filter(project => {
+        const isProjectSlugEqual = project.get('slug') === projectSlug;
+        const isOrgSlugEqual = project.get('organization.slug') === orgSlug;
+        return isProjectSlugEqual && isOrgSlugEqual;
+      })
+      .get('firstObject');
+
     if (preLoadedProject) {
       return preLoadedProject;
     } else {
-      const orgSlug = params['organization'].organization_id;
       return yield this.get('store').findRecord('project', `${orgSlug}/${projectSlug}`);
     }
   }),

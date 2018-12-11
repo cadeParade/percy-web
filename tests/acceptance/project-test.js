@@ -7,7 +7,7 @@ import sinon from 'sinon';
 import {beforeEach} from 'mocha';
 import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
 import {percySnapshot} from 'ember-percy';
-import {click, visit, currentRouteName} from '@ember/test-helpers';
+import {click, findAll, visit, currentRouteName} from '@ember/test-helpers';
 import {selectChoose} from 'ember-power-select/test-support/helpers';
 
 describe('Acceptance: Project', function() {
@@ -475,6 +475,25 @@ describe('Acceptance: Project', function() {
       await ProjectPage.toggleProjectSidebar();
       await ProjectPage.projectLinks.objectAt(2).click();
       expect(ProjectPage.builds().count).to.equal(3);
+    });
+
+    it('resets builds when navigating to another project in another org with the same slug', async function() { // eslint-disable-line
+      const otherOrgName = 'doppleganger org';
+      const otherOrganization = server.create('organization', {name: otherOrgName});
+      server.create('organizationUser', {
+        organization: otherOrganization,
+        user: server.schema.users.first(),
+      });
+      server.create('project', {
+        name: 'project with builds',
+        organization: otherOrganization,
+      });
+
+      await ProjectPage.visitProject(urlParams);
+      await click('[data-test-toggle-org-switcher]');
+      const switcherItems = findAll('[data-test-org-switcher-link]');
+      await click(switcherItems[1]);
+      expect(ProjectPage.builds().count).to.equal(0);
     });
   });
 

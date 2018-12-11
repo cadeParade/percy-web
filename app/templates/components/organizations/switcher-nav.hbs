@@ -23,7 +23,7 @@
       <ul>
         {{#each userOrganizations as |org|}}
           <li data-test-org-switcher-item>
-            {{#link-to "organization.index" org.slug classNames="OrganizationsSwitcherNav-item"}}
+            {{#link-to data-test-org-switcher-link "organization.index" org.slug classNames="OrganizationsSwitcherNav-item"}}
               {{org.name}}
             {{/link-to}}
           </li>
