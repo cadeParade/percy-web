@@ -444,6 +444,17 @@ describe('Acceptance: Project', function() {
       expect(ProjectPage.builds().count).to.equal(12);
     });
 
+    it('shows builds with identical build numbers', async function() {
+      server.create('build', 'approvedPreviously', {
+        project,
+        createdAt: moment().subtract(3, 'minutes'),
+        buildNumber: 9,
+      });
+
+      await ProjectPage.visitProject(urlParams);
+      expect(ProjectPage.builds().count).to.equal(13);
+    });
+
     it('shows the loader when there are more than 50 builds', async function() {
       // 50 comes from INFINITY_SCROLL_LIMIT in the build model
       server.createList('build', 50, {project: this.project});

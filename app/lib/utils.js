@@ -134,6 +134,7 @@ export default {
   _isNextBuildNumberOneLess(sortedBuilds, i) {
     const currentBuildNumber = sortedBuilds[i].get('buildNumber');
     const previousBuildNumber = sortedBuilds[i - 1].get('buildNumber');
-    return previousBuildNumber - currentBuildNumber === 1;
+    // this covers the rare edge case of unique builds sharing a build number
+    return previousBuildNumber - currentBuildNumber <= 1;
   },
 };
