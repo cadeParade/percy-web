@@ -1,0 +1,130 @@
+.ember-power-select-dropdown {
+  @apply relative;
+  @apply z-top;
+}
+
+.ember-basic-dropdown {
+  @apply relative;
+}
+
+.ember-power-select-trigger {
+  @apply flex items-center;
+  @apply relative;
+  @apply h-11;
+  @apply px-1-1/2;
+  @apply font-semibold;
+  @apply border rounded;
+  @apply select-none;
+}
+
+.ember-power-select-placeholder {
+  @apply text-gray-300;
+}
+
+.ember-power-select-clear-btn {
+  @apply absolute pin-r px-2 text-xl;
+}
+
+.ember-basic-dropdown-content {
+  @apply absolute;
+  @apply z-top;
+}
+
+.ember-power-select-dropdown.ember-basic-dropdown-content {
+  @apply max-w-full;
+  @apply bg-white border rounded shadow-lg;
+  @apply overflow-scroll;
+  top: calc(100% + 8px);
+  width: 100%;
+  min-width: 360px;
+  max-height: 400px;
+}
+
+.ember-basic-dropdown-content--right {
+  @apply pin-r;
+}
+
+.ember-power-select-trigger:focus {
+  @apply outline-none;
+}
+
+.ember-power-select-status-icon {
+  @apply hidden;
+}
+
+.ember-power-select-search {
+  @apply sticky pin-t;
+  @apply p-1;
+  @apply bg-white border-b rounded-t;
+}
+
+.ember-power-select-search-input {
+  @apply w-full h-11 !important;
+  @apply m-0 px-1-1/2 !important;
+  @apply text-sm font-semibold !important;
+}
+
+.ember-power-select-search-input::placeholder {
+  @apply text-gray-300;
+}
+
+.ember-power-select-search-input:focus {
+  @apply border-purple-600 shadow-purple-600 !important;
+}
+
+.ember-power-select-group {
+  @apply pt-4 m-0;
+}
+
+.ember-power-select-group-name {
+  @apply block;
+  @apply px-2 pb-sm;
+  @apply text-gray-300 font-semibold text-sm leading-none;
+  @apply border-b;
+}
+
+.ember-power-select-options {
+  @apply m-0;
+  @apply list-reset;
+}
+
+.ember-power-select-option {
+  @apply p-2 m-0;
+  @apply font-semibold leading-none;
+  @apply border-b;
+  @apply cursor-pointer;
+  @apply truncate;
+}
+
+.ember-power-select-option:hover {
+  @apply bg-gray-000;
+}
+
+.ember-power-select-option--no-matches-message {
+  @apply text-gray-200;
+}
+
+/* component specific styles */
+.ember-power-select-branch-filter-trigger {
+  @apply h-auto !important;
+  @apply px-1;
+  @apply font-mono text-sm font-normal;
+  @apply bg-gray-100 border-none rounded;
+  @apply truncate;
+}
+
+.ProjectsRepoIntegrator .ember-basic-dropdown {
+  @apply w-1/2;
+}
+
+.BuildInfoDropdown-modal {
+  @apply absolute;
+  @apply rounded;
+}
+
+.ProjectsRepoIntegratorRefreshStatus {
+  @apply sticky pin-b;
+  @apply px-2 py-1;
+  @apply font-semibold text-sm text-gray-300 leading-none;
+  @apply bg-white border-t rounded-b;
+}

@@ -44,18 +44,22 @@
           <a href="{{project.repo.htmlUrl}}"><code>{{project.repo.slug}}</code></a>
         </div>
         {{#if (variation "build-branch-filter")}}
-          {{#power-select
-            selected=selectedBranch
-            placeholder="Filter by branch"
-            renderInPlace=true
-            options=projectBranches
-            searchPlaceholder="Type to filter branches"
-            noMatchesMessage="No branches found"
-            onchange=(action "chooseBranch")
-            as |branch|
-          }}
-            {{branch}}
-          {{/power-select}}
+          <div class="flex justify-end">
+            {{#power-select
+              triggerClass="ember-power-select-branch-filter-trigger"
+              selected=selectedBranch
+              placeholder="Filter by branch"
+              renderInPlace=true
+              horizontalPosition="right"
+              options=projectBranches
+              searchPlaceholder="Type to filter branches"
+              noMatchesMessage="No branches found"
+              onchange=(action "chooseBranch")
+              as |branch|
+            }}
+              {{branch}}
+            {{/power-select}}
+          </div>
         {{/if}}
       {{/if}}
     </div>
