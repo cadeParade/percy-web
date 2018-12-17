@@ -79,17 +79,8 @@ export default Component.extend({
             changeset.rollback();
           })
           .catch(() => {
-            // TODO: clean this up when this issue is addressed:
-            // https://github.com/DockYard/ember-changeset/issues/100
-            let errorData = {};
             this.get('model.errors').forEach(({attribute, message}) => {
-              if (!errorData[attribute]) {
-                errorData[attribute] = [];
-              }
-              errorData[attribute].push(message);
-            });
-            Object.keys(errorData).forEach(key => {
-              changeset.addError(key, errorData[key]);
+              changeset.pushErrors(attribute, message);
             });
             // Make sure the model dirty attrs are rolled back (not for new, unsaved records).
             // TODO: this causes flashing when page state is bound to a model attribute that is

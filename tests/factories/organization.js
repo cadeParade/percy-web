@@ -20,6 +20,23 @@ FactoryGuy.define('organization', {
     },
   },
   traits: {
+    new: {
+      name: null,
+      slug: null,
+      projects: null,
+      versionControlIntegrations: null,
+      repos: null,
+      lastSyncedAt: null,
+      isSyncing: null,
+    },
+
+    fromGithub: {
+      billingProvider: 'github_marketplace',
+      billingProviderData: JSON.stringify({
+        marketplace_listing_plan_id: 9,
+      }),
+    },
+
     withGithubIntegration: {
       versionControlIntegrations: () => {
         return makeList('version-control-integration', ['github']);

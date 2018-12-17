@@ -13,24 +13,31 @@ describe('Integration: OrganizationsNewOrganization', function() {
     integration: true,
   });
 
+  let user;
   beforeEach(function() {
     setupFactoryGuy(this);
     NewOrganization.setContext(this);
-    this.set('githubMarketplacePlanId', 9);
-    this.set('organizationCreated', () => {});
+    user = make('user');
 
-    const user = make('user');
-    this.set('user', user);
     const sessionServiceStub = Service.extend({
       currentUser: user,
     });
     this.owner.register('service:session', sessionServiceStub, 'sessionService');
+
+    this.set('user', user);
+    this.set('organizationCreated', () => {});
   });
 
   describe('when not a github marketplace purchase', function() {
     beforeEach(async function() {
+      const newOrganization = make('organization', 'new');
+      const githubIdentity = make('identity', 'githubProvider', {user});
+      this.setProperties({newOrganization, userIdentities: [githubIdentity]});
+
       await this.render(hbs`{{organizations/new-organization
+        newOrganization=newOrganization
         organizationCreated=organizationCreated
+        userIdentities=userIdentities
       }}`);
     });
 
@@ -38,22 +45,19 @@ describe('Integration: OrganizationsNewOrganization', function() {
       expect(NewOrganization.hasGithubSection).to.equal(false);
       await percySnapshot(this.test);
     });
-
-    it('disables the form submission button on load', async function() {
-      expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(true);
-    });
-
-    it('enables the form submission button when a valid name is entered', async function() {
-      await NewOrganization.organizationName('my-cool-organization');
-      expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(false);
-    });
   });
 
   describe('when a github marketplace purchase without github connected', function() {
     beforeEach(async function() {
+      const newOrganization = make('organization', 'new', 'fromGithub');
+      const auth0Identity = make('identity', 'auth0Provider');
+      this.setProperties({newOrganization, userIdentities: [auth0Identity]});
+      this.set('newOrganization', newOrganization);
+
       await this.render(hbs`{{organizations/new-organization
-        githubMarketplacePlanId=githubMarketplacePlanId
+        newOrganization=newOrganization
         organizationCreated=organizationCreated
+        userIdentities=userIdentities
       }}`);
     });
 
@@ -69,16 +73,26 @@ describe('Integration: OrganizationsNewOrganization', function() {
     it('disables the form submission button', async function() {
       expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(true);
     });
+
+    it('does not focus org input field', async function() {
+      expect(NewOrganization.isOrgNameFieldFocused).to.equal(false);
+    });
   });
 
   describe('when a github marketplace purchase with github connected', function() {
     beforeEach(async function() {
-      const identity = make('identity', 'githubProvider', {nickname: 'myGithubAccount'});
-      this.set('user.identities', [identity]);
+      const githubIdentity = make('identity', 'githubProvider', {
+        user,
+        nickname: 'myGithubAccount',
+      });
+      const newOrganization = make('organization', 'new', 'fromGithub');
+      this.set('newOrganization', newOrganization);
+      this.set('userIdentities', [githubIdentity]);
 
       await this.render(hbs`{{organizations/new-organization
-        githubMarketplacePlanId=githubMarketplacePlanId
+        newOrganization=newOrganization
         organizationCreated=organizationCreated
+        userIdentities=userIdentities
       }}`);
     });
 
@@ -92,13 +106,8 @@ describe('Integration: OrganizationsNewOrganization', function() {
       await percySnapshot(this.test);
     });
 
-    it('disables the form submission button on load', async function() {
-      expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(true);
-    });
-
-    it('enables the form submission button when a valid name is entered', async function() {
-      await NewOrganization.organizationName('my-cool-organization');
-      expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(false);
+    it('focuses org input field', async function() {
+      expect(NewOrganization.isOrgNameFieldFocused).to.equal(true);
     });
   });
 });

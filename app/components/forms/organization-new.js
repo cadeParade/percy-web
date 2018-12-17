@@ -1,36 +1,71 @@
 import {computed} from '@ember/object';
+import {or, alias} from '@ember/object/computed';
 import BaseFormComponent from './base';
-import OrganizationNewValidations from '../../validations/organization-new';
+import OrganizationNewValidations from 'percy-web/validations/organization-new';
+import UserEmailValidations from 'percy-web/validations/user-email';
+import Changeset from 'ember-changeset';
+import lookupValidator from 'ember-changeset-validations';
+import {inject as service} from '@ember/service';
 
 export default BaseFormComponent.extend({
+  session: service(),
+  flashMessages: service(),
+  currentUser: alias('session.currentUser'),
+
   validator: OrganizationNewValidations,
-  marketplaceListingPlanId: null,
-  needsGithubIdentity: false,
+
+  model: null,
+  isFirstOrganization: null,
+  userIdentities: null,
 
   isInputFocused: computed.not('needsGithubIdentity'),
-  isSubmitDisabled: computed.or('changeset.isInvalid', 'changeset.isPristine'),
 
-  model: computed(function() {
-    return this.get('store').createRecord('organization', {
-      billingProvider: this.get('_billingProvider'),
-      billingProviderData: this.get('_billingProviderData'),
-    });
+  isSubmitDisabled: computed(
+    'isFirstOrganization',
+    'isOrgInvalid',
+    'isEmailInvalid',
+    'hasOnlyGithubIdentity',
+    function() {
+      const hasOnlyGithubIdentity = this.get('hasOnlyGithubIdentity');
+      if (this.get('isFirstOrganization') && hasOnlyGithubIdentity) {
+        return this.get('isOrgInvalid') || this.get('isEmailInvalid');
+      } else {
+        return this.get('isOrgInvalid');
+      }
+    },
+  ),
+
+  hasOnlyGithubIdentity: computed('userIdentities.@each.provider', function() {
+    const userIdentities = this.get('userIdentities');
+    const githubIdentity = userIdentities.findBy('isGithubIdentity');
+    const auth0Identity = userIdentities.findBy('isAuth0Identity');
+    return !!(githubIdentity && !auth0Identity);
   }),
 
-  // Setup data for creating an org from different billing providers and marketplaces.
-  _billingProvider: computed('marketplaceListingPlanId', function() {
-    let marketplaceListingPlanId = this.get('marketplaceListingPlanId');
-    if (marketplaceListingPlanId) {
-      return 'github_marketplace';
-    }
+  isOrgInvalid: or('changeset.isInvalid', 'changeset.isPristine'),
+  isEmailInvalid: or('userChangeset.isInvalid', 'userChangeset.isPristine'),
+
+  userChangeset: computed('currentUser', function() {
+    const validator = UserEmailValidations;
+    this.set('currentUser.email', '');
+    return new Changeset(this.get('currentUser'), lookupValidator(validator), validator);
   }),
 
-  _billingProviderData: computed('marketplaceListingPlanId', function() {
-    let marketplaceListingPlanId = this.get('marketplaceListingPlanId');
-    if (marketplaceListingPlanId) {
-      return JSON.stringify({
-        marketplace_listing_plan_id: parseInt(marketplaceListingPlanId),
-      });
-    }
-  }),
+  actions: {
+    async customSave() {
+      // Save the organization
+      // This calls save on forms/base.js, which this component inherits from.
+      this.send('save');
+      // If there's an email field, also save that
+      if (this.get('isFirstOrganization')) {
+        try {
+          const newEmail = this.get('userChangeset.email');
+          await this.get('userChangeset').save();
+          this.get('flashMessages').success(`Check ${newEmail} to verify it!`);
+        } catch (e) {
+          this.get('flashMessages').danger(`There was a problem updating your email: ${e}`);
+        }
+      }
+    },
+  },
 });
