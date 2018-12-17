@@ -15,9 +15,9 @@
       </div>
     </div>
     <div data-test-invite-role style="min-width: 100px" class="flex-1 leading-none">
-      <LabelTag @isPrimaryTag={{eq "Administrator" invite.roleTitle}}>
+      {{#label-tag isPrimaryTag=(eq "Administrator" invite.roleTitle)}}
         {{invite.roleTitle}}
-      </LabelTag>
+      {{/label-tag}}
     </div>
     <div class="flex-1 leading-none">
       <div>Invited on <span data-test-invite-date>{{moment-format invite.createdAt 'MMM D, Y'}}</span></div>

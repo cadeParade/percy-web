@@ -10,9 +10,9 @@
           <div class="leading-none mr-1" data-test-delivery-url>
             POST {{webhookEvent.url}}
           </div>
-          <LabelTag>
+          {{#label-tag}}
             {{webhookEvent.event}}
-          </LabelTag>
+          {{/label-tag}}
         </div>
         <div class="leading-none text-gray-300" data-test-id>
           {{webhookEvent.id}}

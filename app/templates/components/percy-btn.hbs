@@ -6,9 +6,9 @@
   class="
     percy-btn
     {{class}}
-    {{if primary-btn "percy-btn-primary"}}
-    {{if no-shadow "shadow-none"}}
-    {{if no-animate "animate-none"}}
+    {{if isPrimaryButton "percy-btn-primary"}}
+    {{if isNoShadow "shadow-none"}}
+    {{if isNoAnimate "animate-none"}}
   "
   {{action "handleClick"}}>
   {{yield}}
