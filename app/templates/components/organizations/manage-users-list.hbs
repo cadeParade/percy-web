@@ -1,0 +1,26 @@
+<div data-test-manage-users-list>
+  <div data-test-manage-users-column-headers class="bg-white flex px-4 pb-sm border-b z-1 leading-none">
+    <div style="min-width: 200px" class="flex-1 text-sm text-gray-300 font-semibold pr-2">Name</div>
+    <div style="min-width: 100px" class="flex-1 text-sm text-gray-300 font-semibold">Role</div>
+    <div class="flex-1 text-sm text-gray-300 font-semibold">Joined on</div>
+    <div class="flex-1"></div>
+  </div>
+  <section class="pb-9">
+    {{#if invites}}
+      <div data-test-manage-users-invites-header class="px-4 pt-2 pb-sm text-sm text-gray-300 font-semibold border-b">{{invites.length}} Pending invitations</div>
+
+      {{#each invites as |invite|}}
+        {{organizations/invite-card
+          invite=invite
+          organization=organization
+        }}
+      {{/each}}
+
+      <div data-test-manage-users-users-header class="px-4 pt-2 pb-sm text-sm text-gray-300 font-semibold border-b">{{organizationUsers.length}} Active members</div>
+    {{/if}}
+
+    {{#each organizationUsers as |organizationUser|}}
+      {{organizations/user-card organizationUser=organizationUser}}
+    {{/each}}
+  </section>
+</div>

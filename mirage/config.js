@@ -146,6 +146,11 @@ export default function() {
     return schema.organizationUsers.where({organizationId: organization.id});
   });
 
+  this.delete('/organization-users/:id', function(schema, request) {
+    schema.organizationUsers.find(request.params.id).destroy();
+    return new Mirage.Response(204, {}, {});
+  });
+
   this.get('/organizations/:slug/projects', function(schema, request) {
     let organization = schema.organizations.findBy({slug: request.params.slug});
     return schema.projects.where({organizationId: organization.id});
@@ -234,6 +239,22 @@ export default function() {
     schema.organizationUsers.create({userId: currentUser.id, organizationId: attrs.organizationId});
 
     return invite;
+  });
+  this.delete('/invites/:id', function(schema, request) {
+    schema.invites.find(request.params.id).destroy();
+    return new Mirage.Response(204, {}, {});
+  });
+
+  this.get('/organizations/:organization_slug/invites');
+  this.post('/organizations/:organization_slug/invites', function(schema) {
+    let attrs = this.normalizedRequestAttrs();
+    // The endpoint can create multiple invites, but in the test we're only doing one
+    schema.invites.create({
+      organizationId: attrs.organizationId,
+      email: attrs.emails,
+    });
+    // The real API response is an invite with a generic invite code
+    return schema.invites.new({id: 'created'});
   });
 
   this.get('/builds/:build_id/snapshots', function(schema, request) {

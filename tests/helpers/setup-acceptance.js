@@ -75,7 +75,8 @@ export function setupSession(createData) {
     if (this.loginUser === undefined && server.schema.users.all().models.length === 1) {
       this.loginUser = server.schema.users.first();
     }
-    expect(this.loginUser).not.to.be.undefined; // eslint-disable-line no-unused-expressions
+    const errMsg = 'you must have one logged-in user';
+    expect(this.loginUser, errMsg).not.to.be.undefined; // eslint-disable-line no-unused-expressions
     if (this.loginUser) {
       this.loginUser.update({_currentLoginInTest: true});
     }

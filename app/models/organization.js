@@ -1,5 +1,5 @@
 import {computed} from '@ember/object';
-import {filterBy, alias, bool, mapBy, readOnly, uniq} from '@ember/object/computed';
+import {alias, bool, equal, filterBy, gt, mapBy, readOnly, uniq} from '@ember/object/computed';
 import DS from 'ember-data';
 import {INTEGRATION_TYPES} from 'percy-web/lib/integration-types';
 
@@ -18,6 +18,7 @@ export default DS.Model.extend({
   versionControlIntegrations: DS.hasMany('version-control-integrations', {
     async: false,
   }),
+  invites: DS.hasMany('invite'),
 
   githubIntegration: computed('versionControlIntegrations.@each.githubIntegrationId', function() {
     return this.get('versionControlIntegrations').findBy('isGithubIntegration');
@@ -51,6 +52,11 @@ export default DS.Model.extend({
   savedProjects: filterBy('projects', 'isNew', false),
 
   organizationUsers: DS.hasMany('organization-user'),
+
+  seatLimit: DS.attr(),
+  seatsUsed: DS.attr(),
+  seatsRemaining: DS.attr(),
+  hasSeatsRemaining: gt('seatsRemaining', 0),
 
   // These are GitHub repositories that the organization has access permissions to. These are not
   // useful on their own other than for listing. A repo must be linked to a project.
@@ -89,6 +95,7 @@ export default DS.Model.extend({
       filter: 'current-user-only',
     });
   }),
+  currentUserIsAdmin: equal('currentUserMembership.role', 'admin'),
 
   githubRepos: filterBy('repos', 'source', 'github'),
   githubEnterpriseRepos: filterBy('repos', 'source', 'github_enterprise'),

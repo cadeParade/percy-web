@@ -3,18 +3,22 @@
     {{form-fields/textarea
         property="emails"
         title="Email addresses"
+        id="inviteFormEmailAddresses"
         changeset=changeset
         autofocus=true
+        placeholder="Separate each email with a space or a new line. Invitations expire after one week."
         validateProperty=(action "validateProperty" changeset "emails")
+        keyUp=(action "resetSaveButton")
     }}
     {{form-fields/checkbox
         property="role"
         checkedValue="admin"
         title="Administrator"
+        id="inviteFormRole"
         changeset=changeset
         validateProperty=(action "validateProperty" changeset "role")
     }}
-    <p style="margin-top: calc(var(--spacing-1) * -1)">Allow these people to edit organization details, billing information, and invite new members. All normal members can create and manage projects.</p>
+    <p class="m-0 -mt-1">Allow these people to edit organization details, billing information, and invite new members. All normal members can create and manage projects.</p>
     {{#if errorMessage}}
       <div class="Form-errors">
         {{errorMessage}}
@@ -22,11 +26,16 @@
     {{/if}}
   </div>
 
-  {{form-fields/submit
-    value="Send Invites"
-    classes="btn btn-primary shadow-purple-lg mb-0"
-    isSaving=isSaving
-    isSaveSuccessful=isSaveSuccessful
-    submit=(action "save")
-  }}
+  <div class="flex justify-end">
+    {{#link-to data-test-cancel-button "organizations.organization.users" organization.slug class="percy-btn"}}
+      Cancel
+    {{/link-to}}
+    {{form-fields/submit
+      value="Send Invites"
+      classes="btn btn-primary shadow-purple-lg mb-0 ml-1"
+      isSaving=isSaving
+      isSaveSuccessful=isSaveSuccessful
+      submit=(action "save")
+    }}
+  </div>
 </form>

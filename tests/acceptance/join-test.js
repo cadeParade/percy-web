@@ -9,15 +9,17 @@ describe('Acceptance: Join', function() {
   setupAcceptance();
 
   setupSession(function(server) {
-    server.create('organization', 'withUser', {name: 'Test org'});
-    let anotherOrganization = server.create('organization', {
-      name: 'Other org',
-    });
+    server.create('organization', {name: 'Test org'});
+    const user = server.create('user', {name: 'Basil Cat'});
     server.create('invite', {
       id: 'valid-code',
-      organization: anotherOrganization,
+      fromUser: user,
     });
-    server.create('invite', {id: 'expired-code', isExpired: true});
+    server.create('invite', {
+      id: 'expired-code',
+      isExpired: true,
+      fromUser: user,
+    });
   });
 
   it('expired rejected', async function() {

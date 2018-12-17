@@ -1,0 +1,26 @@
+<div class="bg-white z-1" data-test-users-header>
+  <div class="flex flex-wrap justify-between items-center py-3 px-4">
+    <div>
+      <h2 class="mr-2 mb-sm text-xl md:text-2xl font-semibold leading-none"><span data-test-organization-name>{{capitalize organization.name}}</span> users</h2>
+      <p class="mb-0">
+        {{#if shouldEnforceSeatLimit}}
+          <span data-test-seat-count-text>You’ve used {{organization.seatsUsed}} of {{organization.seatLimit}} seats available.</span>
+          To add more users, upgrade your plan on your {{#link-to "organizations.organization.billing" organization.slug data-test-billing-link class="py-1 font-semibold"}}billing page{{/link-to}}.
+          <br />
+        {{/if}}
+        If you have any questions about user management, <a class="font-semibold" href="#" {{action "showSupport"}} data-test-users-show-support>let us know!</a>
+      </p>
+    </div>
+    <div data-test-no-seats-tooltip class="{{if cannotAddSeats 'hint--left hint--rounded hint--bounce'}}" aria-label="{{if hasNoSeatsRemaining 'No seats remaining'}}">
+      {{#link-to data-test-invite-button "organizations.organization.users.invite" organization.slug class="percy-btn percy-btn-primary" disabled=disableInviteButton}}
+      Invite new users
+      {{/link-to}}
+    </div>
+  </div>
+
+  {{#if showInviteForm}}
+    <div class="px-4 pb-4" data-test-invite-form-wrapper>
+      {{forms/organization-invite organization=organization}}
+    </div>
+  {{/if}}
+</div>

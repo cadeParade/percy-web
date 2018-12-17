@@ -1,30 +1,40 @@
-<div data-test-user-card class="user-card border-b cursor-pointer">
-  <div class="p-2 flex items-center" {{action "toggleExpanded"}}>
-    {{user-avatar user=organizationUser.user linked=true class="mr-1"}}
-    <div>
-      <div class="leading-none mb-sm font-semibold">
+<div data-test-user-card class="user-card bg-white border-b">
+  <div class="px-4 py-3 flex items-center">
+    <div style="min-width: 200px" class="flex flex-1 items-center pr-2">
+      {{user-avatar class="flex-none mr-2" user=organizationUser.user tagName=""}}
+      <div data-test-user-name class="font-semibold truncate leading-none">
         {{organizationUser.user.name}}
       </div>
-      <div class="leading-none text-gray-400 text-sm">
-        {{organizationUser.roleTitle}}
+    </div>
+    <div data-test-user-role style="min-width: 100px" class="flex-1 leading-none">
+      {{#label-tag isPrimaryTag=(eq "Administrator" roleTitle)}}
+        {{roleTitle}}
+      {{/label-tag}}
+    </div>
+    <div data-test-user-join-date class="flex-1 leading-none text-gray-400">
+      {{moment-format organizationUser.createdAt 'MMMM D, Y'}}
+    </div>
+    <div class="user-card-actions flex-1 opacity-0 flex justify-end">
+      <div data-test-user-button-toolbar class=" btn-toolbar">
+        {{#if isCurrentUser}}
+          {{#percy-btn handleClick=(action "removeUser")}}
+            Leave organization
+          {{/percy-btn}}
+        {{else}}
+          {{#if (eq "member" role)}}
+            {{#percy-btn isDisabled=(unless isAdmin true) handleClick=(action "setRole" "admin")}}
+              Make admin
+            {{/percy-btn}}
+          {{else}}
+            {{#percy-btn isDisabled=(unless isAdmin true) handleClick=(action "setRole" "member")}}
+              Make member
+            {{/percy-btn}}
+          {{/if}}
+          {{#percy-btn isDisabled=(unless isAdmin true) handleClick=(action "removeUser")}}
+            Remove
+          {{/percy-btn}}
+        {{/if}}
       </div>
     </div>
   </div>
-
-  {{#if isExpanded}}
-    <div class="px-2 pb-2">
-      {{!-- TODO: #billingadmins --}}
-      {{#if (eq "admin" organizationUser.organization.currentUserMembership.role)}}
-        {{!-- Allow admin to do everything. --}}
-        {{forms/organization-user-edit organizationUser=organizationUser}}
-      {{else if (eq organizationUser.user.id currentUser.id)}}
-        {{!-- Allow member to view their own record. --}}
-        {{forms/organization-user-edit organizationUser=organizationUser}}
-      {{else}}
-        <div class="Alert Alert--error">
-          <strong>Editing users requires organization admin permissions.</strong>
-        </div>
-      {{/if}}
-    </div>
-  {{/if}}
 </div>

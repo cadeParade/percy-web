@@ -65,9 +65,17 @@ describe('Acceptance: Organization', function() {
       expect(window.Intercom).to.have.been.called;
     });
 
-    it('shows support on user list page', async function() {
+    it('shows support on users page', async function() {
       window.Intercom = sinon.stub();
       await visit(`/organizations/${this.organization.slug}/users`);
+
+      await click('[data-test-users-show-support]');
+      expect(window.Intercom).to.have.been.called;
+    });
+
+    it('shows support on invites page', async function() {
+      window.Intercom = sinon.stub();
+      await visit(`/organizations/${this.organization.slug}/users/invite`);
 
       await click('[data-test-users-show-support]');
       expect(window.Intercom).to.have.been.called;
@@ -96,10 +104,6 @@ describe('Acceptance: Organization', function() {
       expect(currentRouteName()).to.equal('organizations.organization.users.index');
 
       await percySnapshot(this.test.fullTitle() + ' | Users settings');
-      await click('[data-test-user-card]');
-      expect(currentRouteName()).to.equal('organizations.organization.users.index');
-
-      await percySnapshot(this.test.fullTitle() + ' | Users settings expanded');
       await click('.data-test-sidenav-billing');
       expect(currentRouteName()).to.equal('organizations.organization.billing');
 
@@ -127,16 +131,6 @@ describe('Acceptance: Organization', function() {
         );
         return percySnapshot(this.test.fullTitle() + ' | invalid modification');
       });
-    });
-
-    it('displays users page', async function() {
-      const users = server.createList('user', 5);
-      users.map(user => {
-        return server.create('organizationUser', {user, organization: this.organization});
-      });
-
-      await visit(`/organizations/${this.organization.slug}/users`);
-      await percySnapshot(this.test.fullTitle());
     });
 
     describe('organization is on trial plan', function() {

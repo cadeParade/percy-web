@@ -1,0 +1,15 @@
+<button
+  data-test-percy-btn
+  type="{{if type type "button"}}"
+  name="button"
+  disabled={{isDisabled}}
+  class="
+    percy-btn
+    {{class}}
+    {{if primary-btn "percy-btn-primary"}}
+    {{if no-shadow "shadow-none"}}
+    {{if no-animate "animate-none"}}
+  "
+  {{action "handleClick"}}>
+  {{yield}}
+</button>

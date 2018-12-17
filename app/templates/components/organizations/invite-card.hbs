@@ -1,0 +1,43 @@
+<div data-test-invite-card class="user-card bg-white border-b">
+  <div class="px-4 py-3 flex items-center">
+    <div data-test-invite-avatar style="min-width: 200px" class="flex flex-1 items-center pr-2">
+      {{gravatar-image
+        class="rounded-full overflow-hidden flex-none mr-2"
+        defaultImage="mp"
+        email=invite.email
+        size=36
+      }}
+      <div class="truncate">
+        <div data-test-invite-email class="font-semibold leading-none truncate">
+          {{invite.email}}
+        </div>
+        <div class="text-sm text-gray-400 italic truncate">Expires <span data-test-invite-expiration>{{moment-format invite.expiresAt 'MMM D, Y'}}</span></div>
+      </div>
+    </div>
+    <div data-test-invite-role style="min-width: 100px" class="flex-1 leading-none">
+      <LabelTag @isPrimaryTag={{eq "Administrator" invite.roleTitle}}>
+        {{invite.roleTitle}}
+      </LabelTag>
+    </div>
+    <div class="flex-1 leading-none">
+      <div>Invited on <span data-test-invite-date>{{moment-format invite.createdAt 'MMM D, Y'}}</span></div>
+      <div class="text-sm text-gray-400 italic truncate">by <span data-test-invite-inviter-name>{{invite.inviterName}}</span></div>
+    </div>
+    <div class="flex-1 flex justify-end">
+      <div data-test-invite-button-toolbar class="btn-toolbar">
+        {{#copy-button
+          data-test-invite-copy-url-button
+          clipboardText=invite.inviteLink
+          success=(action "onCopyInviteUrlToClipboard")
+          class="percy-btn"
+          disabled=(unless isAdmin true)
+        }}
+          Copy invite link
+        {{/copy-button}}
+        {{#percy-btn isDisabled=(unless isAdmin true) handleClick=(action "cancelInvite")}}
+          Cancel
+        {{/percy-btn}}
+      </div>
+    </div>
+  </div>
+</div>
