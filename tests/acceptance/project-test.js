@@ -477,7 +477,6 @@ describe('Acceptance: Project', function() {
     it('resets branch filter when navigating to another project', async function() {
       const repo = server.create('repo');
 
-      withVariation(this.owner, 'build-branch-filter', true);
       const project2 = server.create('project', {organization, repo: repo});
       server.createList('build', 3, {project: project2});
 

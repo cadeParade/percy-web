@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import PollingMixin from 'percy-web/mixins/polling';
 import utils from 'percy-web/lib/utils';
 import {computed} from '@ember/object';
-import {and, equal} from '@ember/object/computed';
+import {and, equal, gt, not} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
 
 import {INFINITY_SCROLL_LIMIT} from 'percy-web/models/build';
@@ -11,7 +11,6 @@ const allBranchesString = 'All branches';
 
 export default Component.extend(PollingMixin, {
   store: service(),
-  launchDarkly: service(),
 
   project: null,
   showQuickstart: false,
@@ -28,7 +27,10 @@ export default Component.extend(PollingMixin, {
   canLoadMore: computed.not('infinityBuilds.reachedInfinity'),
   shouldLoadMore: and('isAllBranchesSelected', 'canLoadMore'),
 
+  // branches list also includes 'All branches'
+  shouldShowBranchFilter: gt('projectBranches.length', 2),
   isAllBranchesSelected: equal('selectedBranch', allBranchesString),
+  isBranchSelected: not('isAllBranchesSelected'),
 
   pollRefresh() {
     return this._refresh();

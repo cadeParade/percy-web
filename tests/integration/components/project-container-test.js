@@ -8,7 +8,6 @@ import ProjectContainer from 'percy-web/tests/pages/components/project-container
 import sinon from 'sinon';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {merge} from '@ember/polyfills';
-import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
 import {selectChoose} from 'ember-power-select/test-support/helpers';
 
 const INFINITY_MODEL_STUB = {
@@ -250,10 +249,13 @@ describe('Integration: ProjectContainer', function() {
   describe('when a project is public', function() {
     beforeEach(function() {
       const project = make('project', 'public');
+      const builds = makeList('build', 1);
+      const infinityBuilds = merge(builds, INFINITY_MODEL_STUB);
       const stub = sinon.stub();
       this.setProperties({
         project,
         stub,
+        infinityBuilds,
       });
     });
 
@@ -270,10 +272,8 @@ describe('Integration: ProjectContainer', function() {
     });
   });
 
-  describe('branch filter', function() {
+  describe('branch filter with github repo', function() {
     beforeEach(async function() {
-      withVariation(this.owner, 'build-branch-filter', true);
-
       const project = make('project', 'withGithubRepo');
       const branch1Builds = makeList('build', 4, 'finished', {branch: 'branch-1'});
       const branch2Builds = makeList('build', 5, 'finished', {branch: 'branch-2'});
@@ -308,6 +308,73 @@ describe('Integration: ProjectContainer', function() {
       await selectChoose('', 'All branches');
       expect(ProjectContainer.builds().count).to.equal(15);
       expect(ProjectContainer.infinityLoader.isPresent).to.equal(true);
+    });
+  });
+
+  describe('branch filter without github repo', function() {
+    beforeEach(async function() {
+      const project = make('project');
+      const branch1Builds = makeList('build', 4, 'finished', {branch: 'branch-1'});
+      const branch2Builds = makeList('build', 5, 'finished', {branch: 'branch-2'});
+      const branch3Builds = makeList('build', 6, 'finished', {branch: 'branch-3'});
+      const allBuilds = branch1Builds.concat(branch2Builds).concat(branch3Builds);
+      const infinityBuilds = merge(allBuilds, INFINITY_MODEL_STUB);
+      infinityBuilds.reachedInfinity = false;
+      const isSidebarVisible = false;
+      const toggleSidebar = sinon.stub();
+      const stub = sinon.stub();
+      this.setProperties({project, infinityBuilds, isSidebarVisible, toggleSidebar, stub});
+
+      await this.render(hbs`{{project-container
+        project=project
+        builds=infinityBuilds
+        infinityBuilds=infinityBuilds
+        pollRefresh=stub
+        isSidebarVisible=isSidebarVisible
+        toggleSidebar=toggleSidebar
+        isUserMember=true
+      }}`);
+    });
+
+    it('filters branches by selected branch', async function() {
+      expect(ProjectContainer.infinityLoader.isPresent).to.equal(true);
+
+      await selectChoose('', 'branch-1');
+      await percySnapshot(this.test);
+      expect(ProjectContainer.builds().count).to.equal(4);
+      expect(ProjectContainer.infinityLoader.isPresent).to.equal(false);
+
+      await selectChoose('', 'All branches');
+      expect(ProjectContainer.builds().count).to.equal(15);
+      expect(ProjectContainer.infinityLoader.isPresent).to.equal(true);
+    });
+  });
+
+  describe('branch filter on a project with only 1 branch', function() {
+    beforeEach(async function() {
+      const project = make('project');
+      const branch1Builds = makeList('build', 4, 'finished', {branch: 'branch-1'});
+      const infinityBuilds = merge(branch1Builds, INFINITY_MODEL_STUB);
+      infinityBuilds.reachedInfinity = true;
+      const isSidebarVisible = false;
+      const toggleSidebar = sinon.stub();
+      const stub = sinon.stub();
+      this.setProperties({project, infinityBuilds, isSidebarVisible, toggleSidebar, stub});
+
+      await this.render(hbs`{{project-container
+        project=project
+        builds=infinityBuilds
+        infinityBuilds=infinityBuilds
+        pollRefresh=stub
+        isSidebarVisible=isSidebarVisible
+        toggleSidebar=toggleSidebar
+        isUserMember=true
+      }}`);
+    });
+
+    it('does not show the branch filter', async function() {
+      expect(ProjectContainer.isBranchSelectorVisible).to.equal(false);
+      await percySnapshot(this.test);
     });
   });
 });

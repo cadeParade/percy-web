@@ -12,6 +12,7 @@ const SELECTORS = {
   INFINITY_LOADER: '.infinity-loader', // only one possible per page
   PUBLIC_PROJECT_ICON: '[data-test-public-project-icon]',
   PROJECT_SETTINGS_ICON: '[data-test-settings-icon]',
+  BRANCH_FILTER_DROPDOWN: '[data-test-project-container-branch-filter]',
 };
 
 export const ProjectContainer = {
@@ -53,6 +54,8 @@ export const ProjectContainer = {
 
   isPublicProjectIconVisible: isVisible(SELECTORS.PUBLIC_PROJECT_ICON),
   clickProjectSettings: clickable(SELECTORS.PROJECT_SETTINGS_ICON),
+
+  isBranchSelectorVisible: isVisible(SELECTORS.BRANCH_FILTER_DROPDOWN),
 };
 
 export default create(ProjectContainer);

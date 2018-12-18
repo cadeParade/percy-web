@@ -43,24 +43,24 @@
           <span class="whitespace-no-wrap font-semibold mr-1">Linked to</span>
           <a href="{{project.repo.htmlUrl}}"><code>{{project.repo.slug}}</code></a>
         </div>
-        {{#if (variation "build-branch-filter")}}
-          <div class="flex justify-end">
-            {{#power-select
-              triggerClass="ember-power-select-branch-filter-trigger"
-              selected=selectedBranch
-              placeholder="Filter by branch"
-              renderInPlace=true
-              horizontalPosition="right"
-              options=projectBranches
-              searchPlaceholder="Type to filter branches"
-              noMatchesMessage="No branches found"
-              onchange=(action "chooseBranch")
-              as |branch|
-            }}
-              {{branch}}
-            {{/power-select}}
-          </div>
-        {{/if}}
+      {{/if}}
+      {{#if shouldShowBranchFilter}}
+        <div class="flex justify-end" data-test-project-container-branch-filter>
+          {{#power-select
+            triggerClass="ember-power-select-branch-filter-trigger"
+            selected=selectedBranch
+            placeholder="Filter by branch"
+            renderInPlace=true
+            horizontalPosition="right"
+            options=projectBranches
+            searchPlaceholder="Type to filter branches"
+            noMatchesMessage="No branches found"
+            onchange=(action "chooseBranch")
+            as |branch|
+          }}
+            {{branch}}
+          {{/power-select}}
+        </div>
       {{/if}}
     </div>
   </div>
@@ -85,7 +85,7 @@
         {{#infinity-loader infinityModel=infinityBuilds}}
           {{loading-build-card}}
         {{/infinity-loader}}
-      {{else if (and project.isRepoConnected (variation "build-branch-filter"))}}
+      {{else if isBranchSelected}}
         <div class="p-4 bg-white border-b flex justify-center text-gray-400">
             To load more builds, select "All branches" from the select menu above
         </div>
