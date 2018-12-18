@@ -34,9 +34,10 @@ export default BaseFormComponent.extend({
       this.set('errorMessage', null);
       promise.then(
         () => {
+          this.get('store').query('invite', {organization: this.get('organization')});
           this.get('router').transitionTo(
             'organizations.organization.users',
-            this.get('organization.id'),
+            this.get('organization.slug'),
           );
         },
         errors => {
