@@ -1,4 +1,5 @@
 import {describe, it, beforeEach, afterEach} from 'mocha';
+import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
 import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
@@ -12,6 +13,8 @@ import sinon from 'sinon';
 import {percySnapshot} from 'ember-percy';
 
 describe('Integration: InviteCard', function() {
+  freezeMoment('2018-12-17');
+
   setupRenderingTest('organizations/invite-card-test', {
     integration: true,
   });

@@ -1,4 +1,5 @@
 import {it, describe, beforeEach} from 'mocha';
+import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
 import {make, makeList} from 'ember-data-factory-guy';
 import {percySnapshot} from 'ember-percy';
 import {setupRenderingTest} from 'ember-mocha';
@@ -8,6 +9,8 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import ManageUsersList from 'percy-web/tests/pages/components/organizations/manage-users-list';
 
 describe('Integration: ManageUsersList', function() {
+  freezeMoment('2018-12-17');
+
   function rendersAUserCorrectly() {
     it('renders a user correctly', async function() {
       const userCard = ManageUsersList.userCards(0);

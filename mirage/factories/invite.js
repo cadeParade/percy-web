@@ -9,7 +9,7 @@ export default Factory.extend({
     return moment();
   },
   expiresAt() {
-    return moment();
+    return moment().add(7, 'days');
   },
   organization: association(),
   fromUser: association('user'),

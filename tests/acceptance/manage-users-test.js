@@ -1,5 +1,6 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import {currentRouteName} from '@ember/test-helpers';
+import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
 import {beforeEach, afterEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import ManageUsersList from 'percy-web/tests/pages/components/organizations/manage-users-list';
@@ -9,12 +10,13 @@ import utils from 'percy-web/lib/utils';
 import sinon from 'sinon';
 
 describe('Acceptance: ManageUsers', function() {
+  freezeMoment('2018-12-17');
+
   function rendersPageCorrectly() {
     it('renders organization information', async function() {
       const text = `You’ve used ${seatsUsed} of ${seatLimit} seats available.`;
 
       await UsersPage.visitUsersPage({orgSlug: organization.slug});
-
       expect(UsersHeader.organizationName).to.equal(organizationName);
       expect(UsersHeader.seatCount.text).to.equal(text);
       expect(UsersHeader.billingLink.isVisible).to.equal(true);
