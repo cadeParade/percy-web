@@ -124,8 +124,8 @@ describe('Integration: ManageUsersList', function() {
     });
 
     it('renders section headers', function() {
-      expect(ManageUsersList.invitesHeader.text).to.equal(`${numberOfInvites} Pending invitations`);
-      expect(ManageUsersList.usersHeader.text).to.equal(`${numberOfUsers} Active members`);
+      expect(ManageUsersList.invitesHeader.text).to.equal(`${numberOfInvites} pending invitations`);
+      expect(ManageUsersList.usersHeader.text).to.equal(`${numberOfUsers} active members`);
     });
 
     it('renders all users', function() {
