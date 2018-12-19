@@ -16,7 +16,7 @@ FactoryGuy.define('plan', {
   },
   traits: {
     trial: {
-      id: 'trial',
+      id: 'v2-medium-trial',
       name: 'Test plan (trial)',
       workerLimit: 8,
       usageIncluded: 12000,
@@ -29,13 +29,12 @@ FactoryGuy.define('plan', {
     },
 
     business: {
-      id: 'v2-large',
+      id: 'v3-large',
       name: 'Business',
       monthlyPrice: 849,
       numDiffs: 200000,
       extraDiffPrice: 0.006,
       numTeamMembersTitle: '20 team members',
-      numWorkersTitle: '40 concurrent renderers',
       historyLimitTitle: '1 year history',
       isFree: false,
       type: 'self_serve',
@@ -48,7 +47,6 @@ FactoryGuy.define('plan', {
       numDiffs: 9999999,
       extraDiffPrice: 0.00001,
       numTeamMembersTitle: '1000 team members',
-      numWorkersTitle: '10000 concurrent renderers',
       historyLimitTitle: '1000 year history',
       isFree: false,
       type: 'enterprise',
@@ -61,7 +59,6 @@ FactoryGuy.define('plan', {
       numDiffs: 9999999,
       extraDiffPrice: 0.00001,
       numTeamMembersTitle: '1000 team members',
-      numWorkersTitle: '10000 concurrent renderers',
       historyLimitTitle: '1000 year history',
       isFree: false,
       type: 'sponsored',

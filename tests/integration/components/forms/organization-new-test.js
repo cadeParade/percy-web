@@ -97,9 +97,10 @@ describe('Integration: OrganizationNewForm', function() {
 
     describe('when a user has only a github identity', function() {
       let userSaveStub;
+      let currentUser;
       beforeEach(async function() {
         userSaveStub = sinon.stub();
-        const currentUser = make('user');
+        currentUser = make('user');
         currentUser.save = userSaveStub;
         const githubIdentity = make('identity', 'githubProvider', {user: currentUser});
         const identities = [githubIdentity];
@@ -120,7 +121,7 @@ describe('Integration: OrganizationNewForm', function() {
       it('displays correct fields', async function() {
         expect(NewOrganization.isOrgNameFieldVisible).to.equal(true);
         expect(NewOrganization.isUserEmailFieldVisible).to.equal(true);
-        expect(NewOrganization.userEmailValue).to.equal('');
+        expect(NewOrganization.userEmailValue).to.equal(currentUser.email);
       });
 
       it('disables submit button on load', async function() {

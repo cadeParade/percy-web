@@ -25,5 +25,9 @@ export default DS.Model.extend({
     return !isTrial && this.get('subscriptionData.PLAN_IDS').indexOf(this.get('id')) === -1;
   }),
 
+  isUpgradeable: computed('id', function() {
+    return this.get('subscriptionData.UPGRADEABLE_PLAN_IDS').indexOf(this.get('id')) !== -1;
+  }),
+
   isSponsored: equal('type', SPONSORED_TYPE),
 });

@@ -313,6 +313,24 @@ button,
   }
 }
 
+.btn-gray {
+  color: var(--white);
+  background: var(--gray-600);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.26), 0 8px 20px 0 rgba(0, 0, 0, 0.08);
+
+  &:hover {
+    color: var(--white);
+    background: var(--gray-600);
+  }
+
+  &:focus,
+  &:focus:active {
+    color: var(--white);
+    background: var(--gray-600);
+    border: 1px solid transparent;
+  }
+}
+
 .btn-danger {
   color: var(--red-500);
 

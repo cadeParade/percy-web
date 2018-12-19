@@ -1,5 +1,5 @@
 import {inject as service} from '@ember/service';
-import {or, not} from '@ember/object/computed';
+import {alias, or, not} from '@ember/object/computed';
 import {computed} from '@ember/object';
 import DS from 'ember-data';
 import moment from 'moment';
@@ -19,6 +19,8 @@ export default DS.Model.extend({
   }),
   trialStart: DS.attr('date'),
   trialEnd: DS.attr('date'),
+  isTrial: alias('plan.isTrial'),
+  isFree: alias('plan.isFree'),
   isTrialOrFree: or('plan.isTrial', 'plan.isFree'),
   isCustomer: not('isTrialOrFree'),
 

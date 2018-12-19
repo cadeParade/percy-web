@@ -66,15 +66,11 @@ describe('Acceptance: Marketing pages', function() {
         await visit('/pricing');
         cardCtas = findAll('[data-test-pricing-card-cta]');
       });
-      it('can select startup plan', async function() {
+      it('can select start for free', async function() {
         stubLockModal(this.owner);
         await click(cardCtas[0]);
-        const expectedPath = authenticated ? 'organizations.new' : 'login';
+        const expectedPath = authenticated ? 'organizations.new' : 'signup';
         expect(currentRouteName()).to.equal(expectedPath);
-      });
-      it('can select business plan', async function() {
-        await click(cardCtas[1]);
-        expect(currentRouteName()).to.equal('schedule-demo');
       });
       it('can select enterprise plan', async function() {
         await click(cardCtas[2]);

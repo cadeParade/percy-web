@@ -1,14 +1,10 @@
-{{#if organization.subscription.isTrialOrFree}}
+{{#if organization.subscription.isTrial}}
   <div class="flex items-center hide-on-laptop">
     <div class="trial-bar px-2 py-sm rounded-l {{if organization.subscription.plan.isFree 'is-expired'}} {{type}}" style="margin-right: 1px;">
-      {{#if organization.subscription.plan.isFree}}
-        <strong>Your trial has expired.</strong>
+      {{#if (eq organization.subscription.trialDaysRemaining 0)}}
+        <strong>Your trial ends today!</strong>
       {{else}}
-        {{#if (eq organization.subscription.trialDaysRemaining 0)}}
-          <strong>Your trial ends today!</strong>
-        {{else}}
-          You have <strong>{{pluralize organization.subscription.trialDaysRemaining "day"}}</strong> left in your trial.
-        {{/if}}
+        You have <strong>{{pluralize organization.subscription.trialDaysRemaining "day"}}</strong> left in your trial.
       {{/if}}
     </div>
     <div class="trial-bar px-2 py-sm rounded-r {{if organization.subscription.plan.isFree 'is-expired'}} {{type}}">

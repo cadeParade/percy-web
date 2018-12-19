@@ -25,7 +25,7 @@
               </div>
               <div class="text-sm text-gray-400 font-semibold">
                 Snapshots since {{moment-format subscription.currentPeriodStart 'MMMM D'}}
-                <sup class="hint--top hint--rounded hint--bounce" aria-label="Daily Snapshot count is perfomed in UTC and may be delayed">{{fa-icon "info-circle" class="text-gray-300"}}</sup>
+                <sup class="hint--top hint--rounded hint--bounce" aria-label="Snapshot counts are performed in UTC and may be delayed">{{fa-icon "info-circle" class="text-gray-300"}}</sup>
               </div>
             </div>
           </div>
@@ -42,7 +42,7 @@
         {{organizations/billing-usage-graph currentUsageStats=currentUsageStats}}
       </div>
 
-      {{#unless (or organization.billingLocked organization.subscription.plan.isCustom)}}
+      {{#unless (or organization.billingLocked organization.subscription.plan.isCustom organization.subscription.isTrialOrFree)}}
         <div class="bg-white rounded shadow-1 p-2 mb-2">
           <h2 class="text-xl font-semibold mb-1">Current billing period</h2>
           <div class="rounded border py-2 bg-gray-000">

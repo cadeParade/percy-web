@@ -6,27 +6,24 @@
     <div class="flex">
       <div class="flex-1 pr-2">
         <div>
-          {{planData.numTeamMembersTitle}}
-        </div>
-        <div>
-          {{planData.numWorkersTitle}}
-        </div>
-          <div>
           {{#if planData.numDiffs}}
             {{format-number planData.numDiffs}}
           {{else if planData.numDiffsTitle}}
             {{planData.numDiffsTitle}}
           {{/if}}
-          snapshots {{snapshot-explanation-tooltip}}
+          snapshots / month included {{snapshot-explanation-tooltip}}
+        </div>
+        <div>
+          {{planData.numTeamMembersTitle}}
         </div>
       </div>
-      <div style="max-width: 150px" class="flex-1 pr-2">
+      <div style="max-width: 300px" class="flex-1 pr-2">
         {{#if planData.monthlyPrice}}
-          <strong><span>$</span>{{format-number planData.monthlyPrice precision=0}}</strong> / month
+          <strong class="text-lg"><span>$</span>{{format-number planData.monthlyPrice precision=0}}</strong> / month
         {{/if}}
         <br>
         {{#if planData.extraDiffPrice}}
-          ${{planData.extraDiffPrice}} / extra snapshot
+          ${{planData.extraDiffPrice}} / additional snapshot
         {{/if}}
       </div>
       <div style="max-width: 150px" class="flex-1 pr-2 flex items-start justify-end">

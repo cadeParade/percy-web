@@ -1,7 +1,37 @@
-<section class="{{if (and cards.isFulfilled (not (is-test-env))) "animated-pricing-header"}} md:flex md:items-center container container-lg mb-8">
+<section class="animated-pricing-header-free-plan container container-lg mb-8">
+  <div class="md:mx-1 mb-2">
+    <div class="md:flex justify-between items-center bg-white-gradient-pattern h-full rounded p-2 md:px-4 shadow-purple-2">
+      <div class="pt-2 px-2 md:pl-0">
+        <h3 class="font-semibold mb-sm text-xl {{textClasses}}">Get started for free today</h3>
+        <p>Try visual testing in your application in 10 minutes</p>
+      </div>
+      <div class="px-2 md:pl-0 mb-3 md:mb-0 font-semibold text-gray-500">
+        <div>
+          {{inline-svg "check-green-icon" class="mr-sm"}}
+          5,000 snapshots / month
+        </div>
+        <div>
+          {{inline-svg "check-green-icon" class="mr-sm"}}
+          10 free users
+        </div>
+        <div>
+          {{inline-svg "check-green-icon" class="mr-sm"}}
+          Demo app and unlimited projects
+        </div>
+      </div>
+      <div class="text-right">
+        <a href="/signup" class="percy-btn percy-btn-primary percy-btn-md" data-test-pricing-card-cta>
+          Start for free
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="{{if (and cards.isFulfilled (not (is-test-env))) "animated-pricing-header"}} md:flex container container-lg mb-3">
   {{#if cards.isFulfilled}}
     {{#each cards as |card|}}
-      {{marketing/pricing-card card=card}}
+      {{marketing/pricing-card card=card class="flex-1"}}
     {{/each}}
   {{else}}
     <div class="w-full text-center">
@@ -9,3 +39,4 @@
     </div>
   {{/if}}
 </section>
+

@@ -13,7 +13,7 @@ export default Factory.extend({
   type: 'trial',
 
   trial: trait({
-    id: 'trial',
+    id: 'v2-medium-trial',
     name: 'Test plan (trial)',
     workerLimit: 8,
     usageIncluded: 12000,
@@ -26,13 +26,13 @@ export default Factory.extend({
   }),
 
   standard: trait({
-    id: 'v2-small',
-    name: 'Small plan',
-    workerLimit: 8,
-    usageIncluded: 12000,
-    historyLimitDays: 90,
+    id: 'v3-small',
+    name: 'Essential plan',
+    workerLimit: 16,
+    usageIncluded: 5000,
+    historyLimitDays: 360,
     allowOverages: true,
-    overageUnitCost: 0.01,
+    overageUnitCost: 0.006,
     isTrial: false,
     isFree: false,
     type: 'self_serve',

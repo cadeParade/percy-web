@@ -33,7 +33,7 @@ const headTags = {
   pricing: [
     metaTitle('Visual Testing Plans and Pricing | Percy'),
     metaDescription(
-      'Get started with Percy’s visual testing plans. Start testing your UI for visual changes today with our 14-day trial or learn about our enterprise pricing.',
+      'Get started with Percy’s visual testing plans. Start testing your UI for visual changes today with our free plan or learn about our enterprise pricing.',
     ),
   ],
   enterprise: [

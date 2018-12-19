@@ -16,6 +16,12 @@
   @apply trans;
 }
 
+.percy-btn-md {
+  @apply h-12;
+  @apply px-3 py-1-1/2;
+  @apply text-base;
+}
+
 .percy-btn:hover,
 .percy-btn:focus,
 .percy-btn:focus:active {
@@ -51,4 +57,17 @@
 .percy-btn-primary:focus,
 .percy-btn-primary:focus:active {
   @apply animate-scale;
+}
+
+.percy-btn-secondary {
+  @apply border-purple-300;
+  @apply text-purple-600;
+}
+
+.percy-btn-secondary:hover,
+.percy-btn-secondary:focus,
+.percy-btn-secondary:focus:active {
+  @apply text-purple-600;
+  @apply bg-purple-100;
+  @apply no-underline;
 }

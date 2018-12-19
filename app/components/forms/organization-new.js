@@ -43,11 +43,10 @@ export default BaseFormComponent.extend({
   }),
 
   isOrgInvalid: or('changeset.isInvalid', 'changeset.isPristine'),
-  isEmailInvalid: or('userChangeset.isInvalid', 'userChangeset.isPristine'),
+  isEmailInvalid: or('userChangeset.isInvalid'),
 
   userChangeset: computed('currentUser', function() {
     const validator = UserEmailValidations;
-    this.set('currentUser.email', '');
     return new Changeset(this.get('currentUser'), lookupValidator(validator), validator);
   }),
 
@@ -56,8 +55,8 @@ export default BaseFormComponent.extend({
       // Save the organization
       // This calls save on forms/base.js, which this component inherits from.
       this.send('save');
-      // If there's an email field, also save that
-      if (this.get('isFirstOrganization')) {
+      // If there's an email field, also save that.
+      if (this.get('isFirstOrganization') && !this.get('userChangeset.isPristine')) {
         try {
           const newEmail = this.get('userChangeset.email');
           await this.get('userChangeset').save();
