@@ -1,3 +1,5 @@
+{{title (concat organization.name " users | Percy") replace=true}}
+
 {{#organizations/settings-nav-wrapper organization=organization}}
   {{outlet}}
   {{organizations/manage-users-list organization=organization organizationUsers=organizationUsers}}

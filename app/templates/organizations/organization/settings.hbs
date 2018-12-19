@@ -1,4 +1,5 @@
-{{title "Settings"}}
+{{title (concat model.name " settings | Percy") replace=true}}
+
 {{#organizations/settings-nav-wrapper organization=model}}
   <section class="px-2 pt-3">
     <h1 class="text-xl font-semibold mb-sm">Configure {{capitalize model.name}}</h1>
