@@ -18,7 +18,7 @@ export default Component.extend({
     if (this.get('isCurrentUser')) {
       return 'yourself';
     } else {
-      return this.get('organizationUser').user.name;
+      return this.get('organizationUser.user.name');
     }
   }),
   isCurrentUser: computed('currentUser.id', 'organizationUser.user.id', function() {
