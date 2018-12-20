@@ -1,4 +1,5 @@
 import Service, {inject as service} from '@ember/service';
+import {get} from '@ember/object';
 
 export default Service.extend({
   store: service(),
@@ -16,12 +17,16 @@ export default Service.extend({
 
     savingPromise.then(
       () => {},
-      () => {
+      adapterErrors => {
+        const firstError = get(adapterErrors, 'errors') && get(adapterErrors, 'errors')[0];
+        const isQuotaError = get(firstError, 'status') === 'quota_exceeded';
+        const quotaError = get(firstError, 'detail');
+        const generalError =
+          'A Stripe error occurred! Your card may have been declined. Please ' +
+          'try again or contact us at support@percy.io and we will help you get set up.';
         this.get('flashMessages').createPersistentFlashMessage(
           {
-            message:
-              'A Stripe error occurred! Your card may have been declined. Please try again or ' +
-              'contact us at hello@percy.io and we will help you get set up.',
+            message: isQuotaError ? quotaError : generalError,
             type: 'danger',
           },
           {persistentReloads: 1},
