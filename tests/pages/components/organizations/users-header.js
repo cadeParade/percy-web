@@ -4,6 +4,7 @@ const SELECTORS = {
   CONTAINER: '[data-test-users-header]',
   BILLING_PAGE_LINK: '[data-test-billing-link]',
   CANCEL_BUTTON: '[data-test-cancel-button]',
+  FORM_ERROR: '[data-test-invite-permission-error]',
   INVITE_BUTTON: '[data-test-invite-button]',
   INVITE_FORM: '[data-test-invite-form-wrapper]',
   ORGANIZATION_NAME: '[data-test-organization-name]',
@@ -20,12 +21,13 @@ export const UsersHeader = {
   billingLink: {scope: SELECTORS.BILLING_PAGE_LINK, isVisible: isVisible()},
   cancelButton: {scope: SELECTORS.CANCEL_BUTTON},
   enterEmails: fillable(SELECTORS.TEXT_AREA),
+  formError: {scope: SELECTORS.FORM_ERROR},
   inviteButton: {
     scope: SELECTORS.INVITE_BUTTON,
     isDisabled: hasClass('disabled'),
   },
   inviteForm: {scope: SELECTORS.INVITE_FORM},
-  noSeatsTooltip: {
+  inviteButtonTooltip: {
     scope: SELECTORS.TOOLTIP,
     isActive: hasClass('hint--rounded'),
     label: attribute('aria-label'),

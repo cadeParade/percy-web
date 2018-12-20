@@ -54,32 +54,32 @@ describe('Acceptance: ManageUsers', function() {
   let numberOfInvites;
   let confirmationAlertStub;
 
-  setupSession(function(server) {
-    organizationName = 'Meow Mediaworks';
-    seatsUsed = 3;
-    seatLimit = 10;
-    seatsRemaining = 10;
-    numberOfInvites = 2;
-    // using 'withSponsoredSubscription' to avoid a trial expiration error in the snapshots
-    organization = server.create('organization', 'withSponsoredSubscription', {
-      seatsUsed,
-      seatLimit,
-      seatsRemaining,
-      name: organizationName,
-    });
-    adminUser = server.create('user');
-    server.create('organizationUser', {
-      organization,
-      user: adminUser,
-      role: 'admin',
-    });
-    server.createList('invite', numberOfInvites, {
-      organization,
-      fromUser: adminUser,
-    });
-  });
-
   describe('when currentUser is an Admin', function() {
+    setupSession(function(server) {
+      organizationName = 'Meow Mediaworks';
+      seatsUsed = 3;
+      seatLimit = 10;
+      seatsRemaining = 10;
+      numberOfInvites = 2;
+      // using 'withSponsoredSubscription' to avoid a trial expiration error in the snapshots
+      organization = server.create('organization', 'withSponsoredSubscription', {
+        seatsUsed,
+        seatLimit,
+        seatsRemaining,
+        name: organizationName,
+      });
+      adminUser = server.create('user');
+      server.create('organizationUser', {
+        organization,
+        user: adminUser,
+        role: 'admin',
+      });
+      server.createList('invite', numberOfInvites, {
+        organization,
+        fromUser: adminUser,
+      });
+    });
+
     beforeEach(function() {
       confirmationAlertStub = sinon.stub(utils, 'confirmMessage').returns(true);
     });
@@ -145,6 +145,45 @@ describe('Acceptance: ManageUsers', function() {
         await UsersPage.visitInvitePage({orgSlug: organization.slug});
 
         expect(UsersHeader.inviteForm.isVisible).to.equal(true);
+      });
+    });
+
+    describe('when organization has no seatLimit', async function() {
+      it('does not display seat usage text', async function() {
+        organization.seatLimit = null;
+
+        await UsersPage.visitInvitePage({orgSlug: organization.slug});
+
+        expect(UsersHeader.seatCount.isVisible).to.equal(false);
+        await percySnapshot(this.test.fullTitle());
+      });
+    });
+
+    describe('on the /invite page when seats are unavailable', function() {
+      it('invite form is hidden', async function() {
+        organization.seatsRemaining = 0;
+
+        await UsersPage.visitInvitePage({orgSlug: organization.slug});
+
+        expect(UsersHeader.inviteForm.isVisible).to.equal(false);
+        expect(UsersHeader.formError.isVisible).to.equal(true);
+        await percySnapshot(this.test.fullTitle());
+      });
+    });
+  });
+
+  describe('when currentUser is a Member', function() {
+    setupSession(function(server) {
+      organization = server.create('organization', 'withSponsoredSubscription', 'withUser');
+    });
+
+    describe('on the /invite page', function() {
+      it('invite form is hidden', async function() {
+        await UsersPage.visitInvitePage({orgSlug: organization.slug});
+
+        expect(UsersHeader.inviteForm.isVisible).to.equal(false);
+        expect(UsersHeader.formError.isVisible).to.equal(true);
+        await percySnapshot(this.test.fullTitle());
       });
     });
   });

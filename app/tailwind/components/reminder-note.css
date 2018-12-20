@@ -1,0 +1,5 @@
+.reminder-note {
+  @apply p-2;
+  @apply bg-yellow-000;
+  @apply rounded border border-yellow-100;
+}

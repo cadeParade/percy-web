@@ -28,23 +28,25 @@ describe('Integration: UsersHeader', function() {
     this.setProperties({isInviteFormAllowed: false, organization});
   });
 
-  it('displays basic information', async function() {
-    await this.render(hbs`{{organizations/users-header
-      organization=organization
-      isInviteFormAllowed=isInviteFormAllowed
-    }}`);
-
-    const text = `You’ve used ${seatsUsed} of ${seatLimit} seats available.`;
-    expect(UsersHeader.organizationName).to.equal(organizationName);
-    expect(UsersHeader.seatCount.text).to.equal(text);
-    expect(UsersHeader.billingLink.isVisible).to.equal(true);
-    expect(UsersHeader.supportLink.isVisible).to.equal(true);
-    expect(UsersHeader.inviteButton.text).to.equal('Invite new users');
-  });
-
   describe('when user is admin', function() {
     beforeEach(async function() {
       organization.set('currentUserIsAdmin', true);
+    });
+
+    it('displays basic information', async function() {
+      await this.render(hbs`{{organizations/users-header
+        organization=organization
+        isInviteFormAllowed=isInviteFormAllowed
+      }}`);
+
+      const text = `You’ve used ${seatsUsed} of ${seatLimit} seats available.`;
+      expect(UsersHeader.organizationName).to.equal(organizationName);
+      expect(UsersHeader.seatCount.text).to.equal(text);
+      expect(UsersHeader.billingLink.isVisible).to.equal(true);
+      expect(UsersHeader.supportLink.isVisible).to.equal(true);
+      expect(UsersHeader.inviteButton.text).to.equal('Invite new users');
+
+      await percySnapshot(this.test);
     });
 
     describe('when isInviteFormAllowed=false', function() {
@@ -63,7 +65,7 @@ describe('Integration: UsersHeader', function() {
 
         it('form is hidden & button is enabled', async function() {
           expect(UsersHeader.inviteButton.isDisabled).to.equal(false);
-          expect(UsersHeader.noSeatsTooltip.isActive).to.equal(false);
+          expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(false);
           expect(UsersHeader.inviteForm.isVisible).to.equal(false);
 
           await percySnapshot(this.test);
@@ -82,8 +84,8 @@ describe('Integration: UsersHeader', function() {
           }}`);
 
           expect(UsersHeader.inviteButton.isDisabled).to.equal(true);
-          expect(UsersHeader.noSeatsTooltip.isActive).to.equal(true);
-          expect(UsersHeader.noSeatsTooltip.label).to.equal('No seats remaining');
+          expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(true);
+          expect(UsersHeader.inviteButtonTooltip.label).to.equal('No seats remaining');
           expect(UsersHeader.inviteForm.isVisible).to.equal(false);
 
           await percySnapshot(this.test);
@@ -102,7 +104,7 @@ describe('Integration: UsersHeader', function() {
           expect(UsersHeader.seatCount.isVisible).to.equal(false);
           expect(UsersHeader.billingLink.isVisible).to.equal(false);
           expect(UsersHeader.inviteButton.isDisabled).to.equal(false);
-          expect(UsersHeader.noSeatsTooltip.isActive).to.equal(false);
+          expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(false);
           expect(UsersHeader.inviteForm.isVisible).to.equal(false);
 
           await percySnapshot(this.test);
@@ -126,7 +128,7 @@ describe('Integration: UsersHeader', function() {
 
         it('button is disabled & form is displayed', async function() {
           expect(UsersHeader.inviteButton.isDisabled).to.equal(true);
-          expect(UsersHeader.noSeatsTooltip.isActive).to.equal(false);
+          expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(false);
           expect(UsersHeader.inviteForm.isVisible).to.equal(true);
 
           await percySnapshot(this.test);
@@ -144,9 +146,10 @@ describe('Integration: UsersHeader', function() {
 
         it('button is disabled & form is hidden', async function() {
           expect(UsersHeader.inviteButton.isDisabled).to.equal(true);
-          expect(UsersHeader.noSeatsTooltip.isActive).to.equal(true);
-          expect(UsersHeader.noSeatsTooltip.label).to.equal('No seats remaining');
+          expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(true);
+          expect(UsersHeader.inviteButtonTooltip.label).to.equal('No seats remaining');
           expect(UsersHeader.inviteForm.isVisible).to.equal(false);
+          expect(UsersHeader.formError.isVisible).to.equal(true);
 
           await percySnapshot(this.test);
         });
@@ -162,7 +165,7 @@ describe('Integration: UsersHeader', function() {
           }}`);
 
           expect(UsersHeader.inviteButton.isDisabled).to.equal(true);
-          expect(UsersHeader.noSeatsTooltip.isActive).to.equal(false);
+          expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(false);
           expect(UsersHeader.inviteForm.isVisible).to.equal(true);
 
           await percySnapshot(this.test);
@@ -175,6 +178,7 @@ describe('Integration: UsersHeader', function() {
     beforeEach(async function() {
       organization.set('currentUserIsAdmin', false);
     });
+    const tooltipText = 'Only admins can invite new users';
 
     describe('when isInviteFormAllowed=false', function() {
       describe('when seats are available', function() {
@@ -188,7 +192,8 @@ describe('Integration: UsersHeader', function() {
 
         it('form is hidden & button is disabled', async function() {
           expect(UsersHeader.inviteButton.isDisabled).to.equal(true);
-          expect(UsersHeader.noSeatsTooltip.isActive).to.equal(false);
+          expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(true);
+          expect(UsersHeader.inviteButtonTooltip.label).to.equal(tooltipText);
           expect(UsersHeader.inviteForm.isVisible).to.equal(false);
 
           await percySnapshot(this.test);
@@ -208,8 +213,10 @@ describe('Integration: UsersHeader', function() {
 
         it('button is disabled & form is hidden', async function() {
           expect(UsersHeader.inviteButton.isDisabled).to.equal(true);
-          expect(UsersHeader.noSeatsTooltip.isActive).to.equal(false);
+          expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(true);
+          expect(UsersHeader.inviteButtonTooltip.label).to.equal(tooltipText);
           expect(UsersHeader.inviteForm.isVisible).to.equal(false);
+          expect(UsersHeader.formError.isVisible).to.equal(true);
 
           await percySnapshot(this.test);
         });

@@ -11,7 +11,7 @@
         If you have any questions about user management, <a class="font-semibold" href="#" {{action "showSupport"}} data-test-users-show-support>let us know!</a>
       </p>
     </div>
-    <div data-test-no-seats-tooltip class="{{if cannotAddSeats 'hint--left hint--rounded hint--bounce'}}" aria-label="{{if hasNoSeatsRemaining 'No seats remaining'}}">
+    <div data-test-no-seats-tooltip class="{{if canDisplayTooltip 'hint--left hint--rounded hint--bounce'}}" aria-label="{{if canDisplayTooltip tooltipText}}">
       {{#link-to data-test-invite-button "organizations.organization.users.invite" organization.slug class="percy-btn percy-btn-primary" disabled=disableInviteButton}}
       Invite new users
       {{/link-to}}
@@ -21,6 +21,18 @@
   {{#if showInviteForm}}
     <div class="px-4 pb-4" data-test-invite-form-wrapper>
       {{forms/organization-invite organization=organization}}
+    </div>
+  {{else if isInviteFormAllowed}}
+    <div data-test-invite-permission-error class="px-4 pb-3">
+      {{#if isMember}}
+        <div class="reminder-note">
+          <strong>Note:</strong> Inviting new users requires organization admin permissions.
+        </div>
+      {{else if cannotAddSeats}}
+        <div class="reminder-note">
+          <strong>Note:</strong> You have no seats remaining on your plan. To add more users, upgrade your plan on your {{#link-to "organizations.organization.billing" organization.slug data-test-billing-link class="py-1 font-semibold"}}billing page{{/link-to}}.
+        </div>
+      {{/if}}
     </div>
   {{/if}}
 </div>
