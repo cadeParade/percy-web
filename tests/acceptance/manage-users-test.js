@@ -1,5 +1,5 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
-import {currentRouteName} from '@ember/test-helpers';
+import {currentRouteName, currentURL} from '@ember/test-helpers';
 import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
 import {beforeEach, afterEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
@@ -110,6 +110,40 @@ describe('Acceptance: ManageUsers', function() {
         .click();
       expect(ManageUsersList.userCards().count).to.equal(1);
       await percySnapshot(this.test.fullTitle());
+    });
+
+    describe('leaving organization', function() {
+      it('redirects user to an organization.index page ', async function() {
+        const otherOrganization = server.create('organization', 'withSponsoredSubscription');
+        server.create('organizationUser', {
+          organization: otherOrganization,
+          user: adminUser,
+          role: 'admin',
+        });
+        await UsersPage.visitUsersPage({orgSlug: organization.slug});
+
+        expect(ManageUsersList.userCards(0).buttons(0).text).to.equal('Leave organization');
+        await ManageUsersList.userCards(0)
+          .buttons(0)
+          .click();
+
+        expect(currentRouteName()).to.equal('organization.index');
+        expect(currentURL()).not.to.include(organization.slug);
+        expect(currentURL()).to.include(otherOrganization.slug);
+        await percySnapshot(this.test.fullTitle());
+      });
+
+      it('redirects to organization.new when it is in no other organizations', async function() {
+        await UsersPage.visitUsersPage({orgSlug: organization.slug});
+
+        expect(ManageUsersList.userCards(0).buttons(0).text).to.equal('Leave organization');
+        await ManageUsersList.userCards(0)
+          .buttons(0)
+          .click();
+
+        expect(currentRouteName()).to.equal('organizations.new');
+        await percySnapshot(this.test.fullTitle());
+      });
     });
 
     describe('when seats are available', function() {

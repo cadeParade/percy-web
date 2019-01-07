@@ -198,23 +198,6 @@ describe('Integration: UserCard', function() {
         organization.set('currentUserIsAdmin', true);
       });
 
-      describe('Leave organization', function() {
-        it('requests confirmation and calls destroyRecord', async function() {
-          await this.render(
-            hbs`{{organizations/user-card organizationUser=organizationAdminUser}}`,
-          );
-          const orgUserStub = sinon.stub(organizationAdminUser, 'destroyRecord');
-
-          expect(UserCard.buttons(0).text).to.equal('Leave organization');
-          await UserCard.buttons(0).click();
-
-          expect(confirmationAlert).to.have.been.called;
-          expect(orgUserStub).to.have.been.called;
-
-          orgUserStub.restore;
-        });
-      });
-
       describe('Remove', function() {
         it('requests confirmation and calls destroyRecord', async function() {
           await this.render(
@@ -271,23 +254,6 @@ describe('Integration: UserCard', function() {
         });
         this.owner.register('service:session', sessionServiceStub, 'sessionService');
         organization.set('currentUserIsAdmin', false);
-      });
-
-      describe('Leave organization', function() {
-        it('requests confirmation and calls destroyRecord', async function() {
-          await this.render(
-            hbs`{{organizations/user-card organizationUser=organizationMemberUser}}`,
-          );
-          const orgUserStub = sinon.stub(organizationMemberUser, 'destroyRecord');
-          find('.user-card-actions').classList.add('opacity-100');
-
-          expect(UserCard.buttons(0).text).to.equal('Leave organization');
-          await UserCard.buttons(0).click();
-          expect(confirmationAlert).to.have.been.called;
-          expect(orgUserStub).to.have.been.called;
-
-          orgUserStub.restore;
-        });
       });
 
       describe('Remove', function() {

@@ -6,6 +6,7 @@ export default Service.extend({
   session: service(),
   currentUser: readOnly('session.currentUser'),
   router: service(),
+  store: service(),
 
   // This method is tested via most-recent-org-test and default-org-test
   redirectToDefaultOrganization({useMostRecentOrg = true} = {}) {
@@ -16,18 +17,21 @@ export default Service.extend({
     }
 
     let lastOrganizationSlug = localStorageProxy.get('lastOrganizationSlug');
+
     if (lastOrganizationSlug && useMostRecentOrg) {
       return router.replaceWith('organization.index', lastOrganizationSlug);
     } else {
-      currentUser.get('organizations').then(orgs => {
-        let org = orgs.get('firstObject');
-        if (org) {
-          return router.replaceWith('organization.index', org.get('slug'));
-        } else {
-          // User has no organizations.
-          return router.replaceWith('organizations.new');
-        }
-      });
+      this.get('store')
+        .query('organization', {user: currentUser})
+        .then(orgs => {
+          let org = orgs.get('firstObject');
+          if (org) {
+            return router.replaceWith('organization.index', org.get('slug'));
+          } else {
+            // User has no organizations.
+            return router.replaceWith('organizations.new');
+          }
+        });
     }
   },
 });

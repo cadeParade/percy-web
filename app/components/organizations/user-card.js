@@ -5,9 +5,11 @@ import Component from '@ember/component';
 import utils from 'percy-web/lib/utils';
 
 export default Component.extend({
-  tagName: '',
-  organizationUser: null,
+  router: service(),
   session: service(),
+
+  organizationUser: null,
+  tagName: '',
 
   currentUser: readOnly('session.currentUser'),
   role: readOnly('organizationUser.role'),
@@ -35,6 +37,9 @@ export default Component.extend({
         return;
       }
       this.get('organizationUser').destroyRecord();
+      if (this.get('isCurrentUser')) {
+        this.get('router').transitionTo('default-org');
+      }
     },
     setRole(value) {
       const organizationUser = this.get('organizationUser');
