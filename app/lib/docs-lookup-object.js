@@ -32,17 +32,17 @@ export default {
       },
       cypress: {
         name: 'Cypress',
-        docsLink: 'https://docs.percy.io/docs/cypress',
+        docLink: 'https://docs.percy.io/docs/cypress',
         exampleLink: 'https://github.com/percy/example-percy-cypress',
       },
       nightmare: {
         name: 'NightmareJS',
-        docsLink: 'https://docs.percy.io/docs/nightmare',
+        docLink: 'https://docs.percy.io/docs/nightmare',
         exampleLink: 'https://github.com/percy/example-percy-nightmare',
       },
       puppeteer: {
         name: 'Puppeteer',
-        docsLink: 'https://docs.percy.io/docs/puppeteer',
+        docLink: 'https://docs.percy.io/docs/puppeteer',
         exampleLink: 'https://github.com/percy/example-percy-puppeteer',
       },
       other: {
@@ -64,11 +64,6 @@ export default {
         name: 'Capybara',
         docLink: 'https://docs.percy.io/docs/rails',
         exampleLink: 'https://github.com/percy/example-rails',
-      },
-      puppeteer: {
-        name: 'Puppeteer',
-        docLink: 'https://docs.percy.io/docs/puppeteer',
-        exampleLink: 'https://github.com/percy/example-percy-puppeteer-standalone',
       },
       other: {
         name: 'Other',

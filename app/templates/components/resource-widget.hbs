@@ -31,7 +31,7 @@
         {{#if selectedFramework}}
           <a
             href="{{docLink}}"
-            class="percy-btn {{docLinkClasses}}"
+            class="percy-btn percy-btn-primary {{docLinkClasses}}"
             target="_blank"
             onclick={{action 'trackDocsVisit'}}
             data-test-framework-docs-button
@@ -41,7 +41,7 @@
 
           <a
             href="{{exampleLink}}"
-            class="percy-btn percy-btn-primary {{exampleLinkClasses}}"
+            class="percy-btn {{exampleLinkClasses}}"
             target="_blank"
             onclick={{action 'trackDemoVisit'}}
             data-test-example-framework-project-button

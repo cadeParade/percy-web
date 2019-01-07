@@ -26,15 +26,17 @@ export default Component.extend({
   }),
 
   docLinkClasses: computed('selectedFramework', function() {
-    if (this.get('docLink') && !this.get('exampleLink')) {
-      return 'percy-btn-primary';
-    } else if (!this.get('docLink')) {
+    if (!this.get('docLink')) {
       return 'hidden';
     }
   }),
 
   exampleLinkClasses: computed('selectedFramework', function() {
-    return this.get('exampleLink') ? '' : 'hidden';
+    if (!this.get('docLink') && this.get('exampleLink')) {
+      return 'percy-btn-primary';
+    } else if (!this.get('exampleLink')) {
+      return 'hidden';
+    }
   }),
 
   docLink: computed('selectedFramework', function() {
