@@ -4,7 +4,6 @@ import {make} from 'ember-data-factory-guy';
 import ProjectEditForm from 'percy-web/tests/pages/components/forms/project-edit';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {percySnapshot} from 'ember-percy';
-import enableLaunchDarklyFlag from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
 import {setupRenderingTest} from 'ember-mocha';
 
 describe('Integration: ProjectEditForm', function() {
@@ -20,8 +19,6 @@ describe('Integration: ProjectEditForm', function() {
   describe('publicly viewable checkbox', function() {
     let project;
     beforeEach(async function() {
-      enableLaunchDarklyFlag(this, 'public-project-switch');
-
       project = make('project');
       this.setProperties({project});
       await this.render(hbs`{{forms/project-edit

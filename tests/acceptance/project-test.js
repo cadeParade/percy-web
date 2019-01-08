@@ -5,17 +5,12 @@ import ProjectPage from 'percy-web/tests/pages/project-page';
 import ProjectSettingsPage from 'percy-web/tests/pages/project-settings-page';
 import sinon from 'sinon';
 import {beforeEach} from 'mocha';
-import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
 import {percySnapshot} from 'ember-percy';
 import {click, findAll, visit, currentRouteName} from '@ember/test-helpers';
 import {selectChoose} from 'ember-power-select/test-support/helpers';
 
 describe('Acceptance: Project', function() {
   setupAcceptance();
-
-  beforeEach(function() {
-    withVariation(this.owner, 'public-project-switch', true); // eslint-disable-line
-  });
 
   describe('organization has no projects', function() {
     setupSession(function(server) {
