@@ -6,6 +6,7 @@ import {computed} from '@ember/object';
 
 export default Route.extend(AuthenticatedRouteMixin, {
   session: service(),
+  launchDarkly: service(),
   queryParams: {
     githubMarketplacePlanId: {as: 'marketplace_listing_plan_id', replace: true},
   },
@@ -53,8 +54,15 @@ export default Route.extend(AuthenticatedRouteMixin, {
   }),
 
   actions: {
-    organizationCreated(organization) {
-      this.transitionTo('organizations.organization.index', organization.get('slug'));
+    organizationCreated(organization, options) {
+      const {isDemoRequest} = options;
+      const orgSlug = organization.get('slug');
+      const isNewDemoFeatureOn = this.get('launchDarkly').variation('new-demo-project');
+      if (isDemoRequest && isNewDemoFeatureOn) {
+        this.transitionTo('organizations.organization.projects.new-demo', orgSlug);
+      } else {
+        this.transitionTo('organizations.organization.index', orgSlug);
+      }
     },
   },
 });

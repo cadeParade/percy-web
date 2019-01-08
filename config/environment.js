@@ -138,6 +138,7 @@ module.exports = function(environment) {
     ENV.launchDarkly.localFeatureFlags = {
       webhooks: true,
       'public-project-switch': true,
+      'new-demo-project': false,
     };
   }
 

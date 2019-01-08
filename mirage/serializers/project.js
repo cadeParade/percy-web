@@ -7,7 +7,6 @@ export default JSONAPISerializer.extend({
     'browserTargets',
     'browserTargets.browserFamily',
     'projectBrowserTargets',
-    'projectBrowserTargets.project',
     'projectBrowserTargets.browserTarget',
     'webhookConfigs',
   ],

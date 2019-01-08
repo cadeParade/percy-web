@@ -12,6 +12,7 @@ import ProjectPage from 'percy-web/tests/pages/project-page';
 import ProjectSettingsPage from 'percy-web/tests/pages/project-settings-page';
 import {percySnapshot} from 'ember-percy';
 import NewOrganization from 'percy-web/tests/pages/components/new-organization';
+import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
 
 describe('Acceptance: Organization', function() {
   setupAcceptance();
@@ -23,6 +24,8 @@ describe('Acceptance: Organization', function() {
       let project = server.create('project', {organization});
       this.organization = organization;
       this.project = project;
+
+      withVariation(this.owner, 'new-demo-project');
     });
 
     it('denies billing settings', async function() {
@@ -49,8 +52,8 @@ describe('Acceptance: Organization', function() {
       expect(findAll('[data-test-org-switcher-item]').length).to.equal(1);
 
       await percySnapshot(this.test.fullTitle() + ' | new');
-      await fillIn('[data-test-form-input=organization-name]', 'New organization');
-      await click('[data-test-form-submit-button]');
+      await NewOrganization.organizationName('New organization');
+      await NewOrganization.clickSubmitNewProject();
       expect(currentRouteName()).to.equal('organization.index');
 
       await click('[data-test-toggle-org-switcher]');
@@ -65,11 +68,11 @@ describe('Acceptance: Organization', function() {
       server.db.organizations.remove(1);
       await visit('/organizations/new/');
 
-      await fillIn('[data-test-form-input=organization-name]', 'New organization');
-      await fillIn('[data-test-form-input=user-email]', 'a@a.com');
+      await NewOrganization.organizationName('New organization');
+      await NewOrganization.fillUserEmail('a@a.com');
       await percySnapshot(this.test.fullTitle());
 
-      await click('[data-test-form-submit-button]');
+      await NewOrganization.clickSubmitNewProject();
       expect(currentRouteName()).to.equal('organization.index');
       expect(findAll('.flash-message.flash-message-success')).to.have.length(1);
     });
@@ -80,9 +83,9 @@ describe('Acceptance: Organization', function() {
       server.db.organizations.remove(1);
       await visit('/organizations/new/');
 
-      await fillIn('[data-test-form-input=organization-name]', 'New organization');
-      await fillIn('[data-test-form-input=user-email]', 'a@a.com');
-      await click('[data-test-form-submit-button]');
+      await NewOrganization.organizationName('New organization');
+      await NewOrganization.fillUserEmail('a@a.com');
+      await NewOrganization.clickSubmitNewProject();
 
       await click('[data-test-toggle-org-switcher]');
       await click('[data-test-new-org]');
@@ -90,6 +93,38 @@ describe('Acceptance: Organization', function() {
       expect(currentRouteName()).to.equal('organizations.new');
       expect(NewOrganization.isOrgNameFieldVisible).to.equal(true);
       expect(NewOrganization.isUserEmailFieldVisible).to.equal(false);
+    });
+
+    describe('creating a new org with demo project', function() {
+      it('redirects to demo project when project has no builds', async function() {
+        await visit('/organizations/new/');
+        await NewOrganization.organizationName('New organization');
+        await NewOrganization.clickSubmitNewDemo();
+        expect(currentRouteName()).to.equal('organization.project.index');
+        await percySnapshot(this.test);
+      });
+
+      it('redirects to second build when project has at least three builds', async function() {
+        // Create some builds to be on the demo project.
+        // We can't make these builds ahead of time, because we don't have the new demo-project id
+        // until the new demo project request is made.
+        server.get('/projects/:organization_slug/:project_slug/builds', function(schema, request) {
+          const demoProject = schema.projects
+            .all()
+            .models.findBy('slug', request.params.project_slug);
+          [1, 2, 3].map(i => {
+            return schema.builds.create({id: i, buildNumber: i, project: demoProject});
+          });
+          return schema.builds.where(build => {
+            return build.projectId === demoProject.id;
+          });
+        });
+        await visit('/organizations/new/');
+        await NewOrganization.organizationName('New organization');
+        await NewOrganization.clickSubmitNewDemo();
+        expect(currentRouteName()).to.equal('organization.project.builds.build.index');
+        await percySnapshot(this.test);
+      });
     });
 
     it('shows support on settings page', async function() {

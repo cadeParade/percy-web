@@ -2,6 +2,7 @@ import {Factory, trait} from 'ember-cli-mirage';
 
 export default Factory.extend({
   isEnabled: true,
+  isDemo: false,
   name(i) {
     return `The Project That We All Adore And Love Working On ${i}`;
   },
@@ -17,6 +18,8 @@ export default Factory.extend({
   },
 
   isDisabled: trait({isEnabled: false}),
+
+  demo: trait({isDemo: true}),
 
   withChrome: trait({
     afterCreate(project, server) {

@@ -19,6 +19,7 @@
         property="email"
         title="Confirm email address"
         changeset=userChangeset
+        placeholder="name@acme.co"
         validateProperty=(action "validateProperty" userChangeset "email")
         testLabel="user-email"
       }}
@@ -29,6 +30,26 @@
       {{/if}}
     {{/if}}
   </div>
+
+  {{#if (variation "new-demo-project")}}
+    <div class="flex items-center justify-between pb-2 mb-2 border-b">
+      <div class="leading-none">
+        <div class="mb-sm font-semibold">
+          Percy Demo
+        </div>
+        <div class="text-gray-400">
+          Check out what Percy is capable of
+        </div>
+      </div>
+      {{form-fields/submit
+        value="Try demo project"
+        classes="percy-btn percy-btn-primary data-test-demo-submit-button"
+        submit=(action "handleSubmit" "demo")
+        isSaving=isDemoSaving
+        disabled=isDemoDisabled
+      }}
+    </div>
+  {{/if}}
 
   <div class="flex items-center justify-between pb-2 mb-2">
     <div class="leading-none">
@@ -41,10 +62,10 @@
     </div>
     {{form-fields/submit
       value="Start new project"
-      classes="percy-btn percy-btn-primary"
-      submit=(action "customSave")
-      isSaving=isSaving
-      disabled=isSubmitDisabled
+      classes=(concat "percy-btn data-test-project-submit-button" (if (not (variation "new-demo-project")) " percy-btn-primary"))
+      submit=(action "handleSubmit" "project")
+      isSaving=isCustomProjectSaving
+      disabled=isCustomProjectDisabled
     }}
   </div>
 </form>

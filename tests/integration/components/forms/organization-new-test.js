@@ -7,6 +7,8 @@ import NewOrganization from 'percy-web/tests/pages/components/new-organization';
 import sinon from 'sinon';
 import {percySnapshot} from 'ember-percy';
 import Service from '@ember/service';
+import {defer} from 'rsvp';
+import enableLaunchDarklyFlag from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
 
 describe('Integration: OrganizationNewForm', function() {
   setupRenderingTest('forms/organization-new', {
@@ -23,6 +25,8 @@ describe('Integration: OrganizationNewForm', function() {
     saveStub = sinon.stub();
     newOrganization.save = saveStub;
     const identities = [];
+
+    enableLaunchDarklyFlag(this, 'new-demo-project');
 
     this.setProperties({
       isFirstOrganization: false,
@@ -49,24 +53,49 @@ describe('Integration: OrganizationNewForm', function() {
       expect(NewOrganization.isUserEmailFieldVisible).to.equal(false);
     });
 
-    it('disables submit button on load', async function() {
+    it('disables submit buttons on load', async function() {
       expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(true);
+      expect(NewOrganization.isCreateNewDemoDisabled).to.equal(true);
     });
 
-    it('does not enable submit button when invalid org name is entered', async function() {
+    it('does not enable submit buttons when invalid org name is entered', async function() {
       await NewOrganization.organizationName('');
       expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(true);
+      expect(NewOrganization.isCreateNewDemoDisabled).to.equal(true);
       percySnapshot(this.test);
     });
 
-    it('enables submit button when a valid org name is entered', async function() {
+    it('enables submit buttons when a valid org name is entered', async function() {
       await NewOrganization.organizationName('my-cool-organization');
       expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(false);
+      expect(NewOrganization.isCreateNewDemoDisabled).to.equal(false);
     });
 
-    it('saves organization successfully when submit button is clicked', async function() {
-      await NewOrganization.organizationName('my-cool-organization').clickSubmit();
+    // TODO: why does it not like `calledWith`?
+    it('saves organization successfully when submit project button is clicked', async function() {
+      await NewOrganization.organizationName('my-cool-organization').clickSubmitNewProject();
       expect(saveStub).to.have.been.called;
+    });
+
+    it('saves organization successfully when demo submit button is clicked', async function() {
+      await NewOrganization.organizationName('my-cool-organization').clickSubmitNewDemo();
+      expect(saveStub).to.have.been.called;
+    });
+
+    it('disables demo button when project button is saving', async function() {
+      const deferred = defer();
+      saveStub.returns(deferred.promise);
+      await NewOrganization.organizationName('my-cool-organization').clickSubmitNewProject();
+      expect(NewOrganization.isCreateProjectSaving).to.equal(true);
+      expect(NewOrganization.isCreateNewDemoDisabled).to.equal(true);
+    });
+
+    it('disables project button when demo button is saving', async function() {
+      const deferred = defer();
+      saveStub.returns(deferred.promise);
+      await NewOrganization.organizationName('my-cool-organization').clickSubmitNewDemo();
+      expect(NewOrganization.isCreateDemoSaving).to.equal(true);
+      expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(true);
     });
   });
 
@@ -97,10 +126,9 @@ describe('Integration: OrganizationNewForm', function() {
 
     describe('when a user has only a github identity', function() {
       let userSaveStub;
-      let currentUser;
       beforeEach(async function() {
         userSaveStub = sinon.stub();
-        currentUser = make('user');
+        const currentUser = make('user');
         currentUser.save = userSaveStub;
         const githubIdentity = make('identity', 'githubProvider', {user: currentUser});
         const identities = [githubIdentity];
@@ -121,7 +149,7 @@ describe('Integration: OrganizationNewForm', function() {
       it('displays correct fields', async function() {
         expect(NewOrganization.isOrgNameFieldVisible).to.equal(true);
         expect(NewOrganization.isUserEmailFieldVisible).to.equal(true);
-        expect(NewOrganization.userEmailValue).to.equal(currentUser.email);
+        expect(NewOrganization.userEmailValue).to.equal('');
       });
 
       it('disables submit button on load', async function() {
@@ -132,18 +160,21 @@ describe('Integration: OrganizationNewForm', function() {
         await NewOrganization.organizationName('');
         await NewOrganization.fillUserEmail('Youarethebest@thebest.com');
         expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(true);
+        expect(NewOrganization.isCreateNewDemoDisabled).to.equal(true);
       });
 
       it('does not enable submit button when invalid email is entered', async function() {
         await NewOrganization.fillUserEmail('You are the best');
         await NewOrganization.organizationName('my-cool-organization');
         expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(true);
+        expect(NewOrganization.isCreateNewDemoDisabled).to.equal(true);
       });
 
       it('enables submit button when a valid org name and user email is entered', async function() {
         await NewOrganization.organizationName('my-cool-organization');
         await NewOrganization.fillUserEmail('Youarethebest@thebest.com');
         expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(false);
+        expect(NewOrganization.isCreateNewDemoDisabled).to.equal(false);
       });
 
       it('saves org and user successfully when submit button is clicked', async function() {
@@ -155,7 +186,7 @@ describe('Integration: OrganizationNewForm', function() {
 
         await NewOrganization.organizationName('my-cool-organization')
           .fillUserEmail(newEmail)
-          .clickSubmit();
+          .clickSubmitNewProject();
 
         expect(saveStub).to.have.been.called;
         expect(userSaveStub).to.have.been.called;

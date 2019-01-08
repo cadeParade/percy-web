@@ -1,5 +1,5 @@
 import {computed} from '@ember/object';
-import {or, alias} from '@ember/object/computed';
+import {and, equal, or, alias} from '@ember/object/computed';
 import BaseFormComponent from './base';
 import OrganizationNewValidations from 'percy-web/validations/organization-new';
 import UserEmailValidations from 'percy-web/validations/user-email';
@@ -43,28 +43,44 @@ export default BaseFormComponent.extend({
   }),
 
   isOrgInvalid: or('changeset.isInvalid', 'changeset.isPristine'),
-  isEmailInvalid: or('userChangeset.isInvalid'),
+  isEmailInvalid: or('userChangeset.isInvalid', 'userChangeset.isPristine'),
 
   userChangeset: computed('currentUser', function() {
     const validator = UserEmailValidations;
+    this.set('currentUser.email', '');
     return new Changeset(this.get('currentUser'), lookupValidator(validator), validator);
   }),
 
-  actions: {
-    async customSave() {
-      // Save the organization
-      // This calls save on forms/base.js, which this component inherits from.
-      this.send('save');
-      // If there's an email field, also save that.
-      if (this.get('isFirstOrganization') && !this.get('userChangeset.isPristine')) {
-        try {
-          const newEmail = this.get('userChangeset.email');
-          await this.get('userChangeset').save();
-          this.get('flashMessages').success(`Check ${newEmail} to verify it!`);
-        } catch (e) {
-          this.get('flashMessages').danger(`There was a problem updating your email: ${e}`);
-        }
+  _lastButtonClicked: null,
+  _clickedDemo: equal('_lastButtonClicked', 'demo'),
+  _clickedProject: equal('_lastButtonClicked', 'project'),
+
+  isDemoSaving: and('_clickedDemo', 'isSaving'),
+  isCustomProjectSaving: and('_clickedProject', 'isSaving'),
+
+  isDemoDisabled: or('isSubmitDisabled', 'isCustomProjectSaving'),
+  isCustomProjectDisabled: or('isSubmitDisabled', 'isDemoSaving'),
+
+  async customSave({isDemoRequest = false} = {}) {
+    // Save the organization
+    // This calls save on forms/base.js, which this component inherits from.
+    this.send('save', {isDemoRequest});
+    // If there's an email field, also save that.
+    if (this.get('isFirstOrganization')) {
+      try {
+        const newEmail = this.get('userChangeset.email');
+        await this.get('userChangeset').save();
+        this.get('flashMessages').success(`Check ${newEmail} to verify it!`);
+      } catch (e) {
+        this.get('flashMessages').danger(`There was a problem updating your email: ${e}`);
       }
+    }
+  },
+
+  actions: {
+    handleSubmit(buttonValue) {
+      this.set('_lastButtonClicked', buttonValue);
+      this.customSave({isDemoRequest: buttonValue === 'demo'});
     },
   },
 });

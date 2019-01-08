@@ -552,4 +552,23 @@ describe('Acceptance: Project', function() {
       await percySnapshot(this.test.fullTitle() + ' after archived toggle');
     });
   });
+
+  describe('demo project', function() {
+    let urlParams;
+    setupSession(function(server) {
+      const organization = server.create('organization', 'withUser');
+      const demoProject = server.create('project', 'demo', {organization});
+      urlParams = {
+        orgSlug: organization.slug,
+        projectSlug: demoProject.slug,
+      };
+    });
+
+    it('links user to create project page', async function() {
+      await ProjectPage.visitProject(urlParams);
+      expect(ProjectPage.projectContainer.isStartNewProjectButtonVisible).to.equal(true);
+      await ProjectPage.projectContainer.clickStartNewProject();
+      expect(currentRouteName()).to.equal('organizations.organization.projects.new');
+    });
+  });
 });

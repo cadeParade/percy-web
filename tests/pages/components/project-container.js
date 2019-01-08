@@ -13,6 +13,7 @@ const SELECTORS = {
   PUBLIC_PROJECT_ICON: '[data-test-public-project-icon]',
   PROJECT_SETTINGS_ICON: '[data-test-settings-icon]',
   BRANCH_FILTER_DROPDOWN: '[data-test-project-container-branch-filter]',
+  START_NEW_PROJECT_BUTTON: '[data-test-start-new-project] [data-test-percy-btn]',
 };
 
 export const ProjectContainer = {
@@ -56,6 +57,9 @@ export const ProjectContainer = {
   clickProjectSettings: clickable(SELECTORS.PROJECT_SETTINGS_ICON),
 
   isBranchSelectorVisible: isVisible(SELECTORS.BRANCH_FILTER_DROPDOWN),
+
+  isStartNewProjectButtonVisible: isVisible(SELECTORS.START_NEW_PROJECT_BUTTON),
+  clickStartNewProject: clickable(SELECTORS.START_NEW_PROJECT_BUTTON),
 };
 
 export default create(ProjectContainer);

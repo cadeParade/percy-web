@@ -62,7 +62,7 @@ export default Component.extend({
       return changeset.validate(property);
     },
 
-    save() {
+    save(options) {
       let model = this.get('model');
       let changeset = this.get('changeset');
 
@@ -75,7 +75,7 @@ export default Component.extend({
         savingPromise
           .then(model => {
             // Bubble the successfully saved model upward, so the route can react to it.
-            this.get('saveSuccess')(model);
+            this.get('saveSuccess')(model, options);
             changeset.rollback();
           })
           .catch(() => {

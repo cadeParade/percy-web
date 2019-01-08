@@ -83,6 +83,7 @@ Router.map(function() {
       this.route('setup');
       this.route('projects', {path: '/projects'}, function() {
         this.route('new');
+        this.route('new-demo');
       });
       this.route('settings');
       this.route('users', function() {

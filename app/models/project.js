@@ -14,6 +14,7 @@ export default DS.Model.extend({
   createdAt: DS.attr('date'),
   updatedAt: DS.attr('date'),
   publiclyReadable: DS.attr('boolean'),
+  isDemo: DS.attr('boolean'),
 
   // Repo will be set if this project is linked to a repository.
   repo: DS.belongsTo('repo', {async: false}),
