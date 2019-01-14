@@ -3,7 +3,6 @@
 .Header {
   position: relative;
   height: 60px;
-  padding: 0 15px;
   font-weight: var(--semibold);
 
   .Button {
@@ -48,39 +47,6 @@
   &.Header--light {
     background: var(--lightest-gray);
     border-bottom: 1px solid var(--lighter-gray);
-  }
-
-  &.Header--dark {
-    color: var(--white);
-    background-color: var(--dark-purple);
-
-    select {
-      color: var(--text-color);
-      border: 0;
-    }
-
-    a:not(.Button) {
-      color: var(--white);
-
-      &:hover {
-        color: var(--lightest-purple); // TODO need to class these header items to prevent the nesting specificity
-      }
-    }
-
-    .Button {
-      font-weight: bold;
-      color: var(--white);
-      background: var(--purple);
-      border: 0;
-
-      &:hover {
-        background: var(--light-purple);
-      }
-
-      &:active {
-        background-color: var(--purple);
-      }
-    }
   }
 }
 

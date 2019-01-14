@@ -22,7 +22,7 @@
   <div class="flex items-center">
     {{#if (and build.isFinished (not isSnapshotsLoading))}}
       {{#if build.hasMultipleBrowsers}}
-        <div class="mr-2">
+        <div class="mr-1">
           {{browser-switcher
             browsers=build.browsers
             activeBrowser=activeBrowser

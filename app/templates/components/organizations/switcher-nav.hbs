@@ -1,14 +1,7 @@
-<div class="OrganizationsSwitcherNav-item mr-3" {{action "toggleSwitcher"}} data-test-toggle-org-switcher>
-  {{#if currentOrganization}}
-    {{currentOrganization.name}}
-  {{else}}
-    Jump to org<span class="u-hide-on-mobile">anization</span>
-  {{/if}}
-  {{#if isTransparentHeader}}
-    {{inline-svg "dropdown-icon" class="ml-sm"}}
-  {{else}}
-    {{inline-svg "dropdown-light-icon" class="ml-sm"}}
-  {{/if}}
+<div style="height: 26px;" class="flex items-center px-1 bg-purple-300 rounded-r cursor-pointer" {{action "toggleSwitcher"}} data-test-toggle-org-switcher>
+  <figure class="svg-container">
+    {{inline-svg "dropdown-icon-purple"}}
+  </figure>
 </div>
 {{#if isExpanded}}
   <div class="PageClickOverlay" {{action "hideSwitcher"}}></div>

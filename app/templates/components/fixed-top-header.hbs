@@ -1,29 +1,43 @@
-<div class="Header flex justify-between items-center w-full {{if isTransparentHeader "" "Header--dark"}}">
+<div class="Header px-2 flex justify-between items-center w-full border-b bg-gray-000">
   <div class="flex items-center">
     {{#if session.isAuthenticated}}
       {{#link-to "index"}}
         <figure class="svg-container">
-          {{inline-svg "percy-mascot-on-dark" class="mr-3"}}
+          {{inline-svg "percy-logo-on-light" class="mr-2"}}
         </figure>
       {{/link-to}}
     {{else}}
       {{#link-to "index"}}
         <figure class="svg-container">
-          {{#if isTransparentHeader}}
-            {{inline-svg "percy-full-horizontal-on-light" class="mr-3"}}
-          {{else}}
-            {{inline-svg "percy-full-horizontal-on-dark" class="mr-3"}}
-          {{/if}}
+          {{inline-svg "percy-full-horizontal-on-light" class="mr-3"}}
         </figure>
       {{/link-to}}
     {{/if}}
 
     {{#if session.isAuthenticated}}
-      {{organizations/switcher-nav currentOrganization=currentOrganization isTransparentHeader=isTransparentHeader}}
-    {{/if}}
-    {{#if currentOrganization}}
-      {{#if (eq "admin" currentOrganization.currentUserMembership.role)}}
-        {{#link-to "organizations.organization.settings" currentOrganization.slug data-test-settings-link=true class="hide-on-mobile"}}Settings{{/link-to}}
+      <div class="flex items-center mr-3">
+        <div class="bg-purple-300 text-sm text-purple-600 rounded-l mr-px px-1 py-sm">
+          {{#if currentOrganization}}
+            {{#link-to "organization" currentOrganization.slug class="inline-block text-purple-600 truncate truncate-target font-mono"}}{{currentOrganization.name}}{{/link-to}}
+            {{#if project}}
+              <span class="font-semibold text-gray-700 text-sm mx-px">/</span>
+              {{#link-to "organization.project" currentOrganization.slug project class="inline-block font-mono text-purple-600 truncate truncate-target"}}
+                {{project.name}}
+              {{/link-to}}
+            {{/if}}
+          {{else}}
+            <div class="font-mono">
+              Jump to org<span class="u-hide-on-mobile">anization</span>
+            </div>
+          {{/if}}
+        </div>
+        {{organizations/switcher-nav currentOrganization=currentOrganization isTransparentHeader=isTransparentHeader}}
+      </div>
+
+      {{#if currentOrganization}}
+        {{#if (eq "admin" currentOrganization.currentUserMembership.role)}}
+          {{#link-to "organizations.organization.settings" currentOrganization.slug data-test-settings-link=true class="link-dark hide-on-mobile"}}Settings{{/link-to}}
+        {{/if}}
       {{/if}}
     {{/if}}
   </div>
