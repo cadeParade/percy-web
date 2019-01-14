@@ -12,7 +12,6 @@ describe('Acceptance: Error page', function() {
   it('displays 403 error', async function() {
     server.get('/organizations/not-an-org', {message: 'forbidden'}, 403);
     await visit('/organizations/not-an-org');
-    await click('[data-test-error-toggle]');
     await percySnapshot(this.test);
   });
 
