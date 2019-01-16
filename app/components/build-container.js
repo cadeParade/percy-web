@@ -90,6 +90,9 @@ export default Component.extend(PollingMixin, {
 
     this.set('snapshotsUnchanged', alreadyLoadedSnapshotsWithNoDiff);
     this.toggleProperty('isUnchangedSnapshotsVisible');
+    // Update property available from fullscreen snapshot route that there are some unchanged
+    // snapshots in the store.
+    this.get('notifyOfUnchangedSnapshots')(alreadyLoadedSnapshotsWithNoDiff);
   }),
 
   _resetUnchangedSnapshots() {

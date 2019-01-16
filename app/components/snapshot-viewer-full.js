@@ -3,6 +3,14 @@ import {alias} from '@ember/object/computed';
 import Component from '@ember/component';
 import filteredComparisons from 'percy-web/lib/filtered-comparisons';
 
+const KEYS = {
+  DOWN_ARROW: 40,
+  UP_ARROW: 38,
+  LEFT_ARROW: 37,
+  RIGHT_ARROW: 39,
+  ESC: 27,
+};
+
 export default Component.extend({
   classNames: ['SnapshotViewerFull'],
   attributeBindings: ['data-test-snapshot-viewer-full'],
@@ -50,7 +58,7 @@ export default Component.extend({
     cycleComparisonMode(keyCode) {
       let galleryMap = this.get('galleryMap');
       let galleryLength = this.get('galleryMap.length');
-      let directional = keyCode === 39 ? 1 : -1;
+      let directional = keyCode === KEYS.RIGHT_ARROW ? 1 : -1;
       let galleryIndex = this.get('galleryIndex');
       let newIndex =
         (((galleryIndex + directional) % galleryLength) + galleryLength) % galleryLength;
@@ -59,15 +67,22 @@ export default Component.extend({
   },
 
   keyDown(event) {
-    if (event.keyCode === 27) {
+    if (event.keyCode === KEYS.ESC) {
       this.get('closeSnapshotFullModal')();
     }
 
-    if (event.keyCode === 39 || event.keyCode === 37) {
+    if (event.keyCode === KEYS.RIGHT_ARROW || event.keyCode === KEYS.LEFT_ARROW) {
       if (!this.get('selectedComparison') || this.get('selectedComparison.wasAdded')) {
         return;
       }
       this.send('cycleComparisonMode', event.keyCode);
+    }
+
+    if (event.keyCode === KEYS.UP_ARROW) {
+      this.get('updateSnapshotId')({isNext: false});
+    }
+    if (event.keyCode === KEYS.DOWN_ARROW) {
+      this.get('updateSnapshotId')({isNext: true});
     }
   },
 });

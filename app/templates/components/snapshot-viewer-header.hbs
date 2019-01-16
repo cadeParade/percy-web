@@ -1,15 +1,27 @@
 <header class="SnapshotViewer-header sticky pin-t grid gap-4 z-1 px-2 py-1 bg-gray-000 border-t border-b {{if fullscreen 'SnapshotViewer-header-full fixed w-screen z-1'}}" data-test-SnapshotViewer-header {{action expandSnapshot}}>
-  <div class="flex items-center truncate">
+  <div style="min-width: 0;" class="flex items-center">
+    {{#if fullscreen}}
+      <div class="btn-group mr-2">
+        <button type="button" class="btn btn-square" {{action updateSnapshotId (hash isNext=false)}} data-test-previous-snapshot>
+          {{inline-svg "gray-arrow-up"}}
+        </button>
+        <button type="button" class="btn btn-square" {{action updateSnapshotId}} data-test-next-snapshot>
+          {{inline-svg "gray-arrow-down"}}
+        </button>
+      </div>
+    {{/if}}
 
-    <figure class="svg-container mr-1" data-test-SnapshotViewer-comparisonIcon>
-      {{#if noComparisonsHaveDiffs}}
-        {{inline-svg "no-comparison-icon"}}
-      {{else}}
-        {{inline-svg "comparison-icon"}}
-      {{/if}}
-    </figure>
+    <div class="flex items-center overflow-hidden">
+      <figure class="svg-container mr-1" data-test-SnapshotViewer-comparisonIcon>
+        {{#if noComparisonsHaveDiffs}}
+          {{inline-svg "no-comparison-icon"}}
+        {{else}}
+          {{inline-svg "comparison-icon"}}
+        {{/if}}
+      </figure>
 
-    <div class="Viewer-header-title SnapshotViewer-title cursor-default truncate font-bold" title="{{snapshot.name}}" data-test-SnapshotViewer-title>{{snapshot.name}}</div>
+      <div class="Viewer-header-title SnapshotViewer-title cursor-default font-bold truncate" title="{{snapshot.name}}" data-test-SnapshotViewer-title>{{snapshot.name}}</div>
+    </div>
   </div>
 
   {{#if fullscreen}}

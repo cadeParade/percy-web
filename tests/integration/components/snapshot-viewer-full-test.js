@@ -68,6 +68,7 @@ describe('Integration: SnapshotViewerFull', function() {
       createReview=createReview
       activeBrowser=browser
       isBuildApprovable=isBuildApprovable
+      updateSnapshotId=stub
     }}`);
   });
 

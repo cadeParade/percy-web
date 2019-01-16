@@ -54,4 +54,12 @@ export default Controller.extend({
       isSnapshotsLoading: false,
     });
   },
+
+  _unchangedSnapshots: [],
+
+  actions: {
+    notifyOfUnchangedSnapshots(unchangedSnapshots) {
+      this.set('_unchangedSnapshots', unchangedSnapshots);
+    },
+  },
 });

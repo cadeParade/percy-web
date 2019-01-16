@@ -5,6 +5,8 @@ import {alias} from 'ember-cli-page-object/macros';
 const LEFT_ARROW_KEY = 37;
 const RIGHT_ARROW_KEY = 39;
 const ESCAPE_KEY = 27;
+const DOWN_ARROW = 40;
+const UP_ARROW = 38;
 
 const SELECTORS = {
   SNAPSHOT_VIEWER_FULL: '[data-test-snapshot-viewer-full]',
@@ -17,6 +19,8 @@ const SELECTORS = {
   DIFF_IMAGE: '[data-test-comparison-viewer-full-diff-image-overlay] img',
   DIFF_IMAGE_BOX: '[data-test-comparison-viewer-diff-image-container] img',
   PUBLIC_BUILD_NOTICE: '[data-test-public-project-notice]',
+  NEXT_SNAPSHOT: '[data-test-next-snapshot]',
+  PREV_SNAPSHOT: '[data-test-previous-snapshot]',
 };
 
 export const SnapshotViewerFull = {
@@ -32,6 +36,9 @@ export const SnapshotViewerFull = {
   comparisonImageUrl: attribute('src', SELECTORS.COMPARISON_IMAGE),
   diffImageUrl: attribute('src', SELECTORS.DIFF_IMAGE),
 
+  clickNextSnapshot: clickable(SELECTORS.NEXT_SNAPSHOT),
+  clickPreviousSnapshot: clickable(SELECTORS.PREV_SNAPSHOT),
+
   typeLeftArrow: triggerable('keydown', '', {
     eventProperties: {keyCode: LEFT_ARROW_KEY},
   }),
@@ -40,6 +47,12 @@ export const SnapshotViewerFull = {
   }),
   typeEscape: triggerable('keydown', '', {
     eventProperties: {keyCode: ESCAPE_KEY},
+  }),
+  typeUpArrow: triggerable('keydown', '', {
+    eventProperties: {keyCode: UP_ARROW},
+  }),
+  typeDownArrow: triggerable('keydown', '', {
+    eventProperties: {keyCode: DOWN_ARROW},
   }),
 
   clickComparisonViewer: clickable(SELECTORS.COMPARISON_VIEWER),

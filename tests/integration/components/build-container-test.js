@@ -38,6 +38,7 @@ describe('Integration: BuildContainer', function() {
         createReview=stub
         pollRefresh=stub
         allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
+        notifyOfUnchangedSnapshots=stub
       }}`);
     });
 
@@ -85,6 +86,7 @@ describe('Integration: BuildContainer', function() {
       isSnapshotsLoading=true
       createReview=stub
       allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
+      notifyOfUnchangedSnapshots=stub
     }}`);
 
     await percySnapshot(this.test.fullTitle());
@@ -106,6 +108,7 @@ describe('Integration: BuildContainer', function() {
       build=build
       allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
       createReview=stub
+      notifyOfUnchangedSnapshots=stub
     }}`);
     await percySnapshot(this.test.fullTitle());
 
@@ -131,6 +134,7 @@ describe('Integration: BuildContainer', function() {
       build=build
       allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
       createReview=stub
+      notifyOfUnchangedSnapshots=stub
     }}`);
 
     await BuildPage.snapshotList.clickToggleNoDiffsSection();
@@ -156,6 +160,7 @@ describe('Integration: BuildContainer', function() {
       build=build
       allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
       createReview=stub
+      notifyOfUnchangedSnapshots=stub
     }}`);
 
     expect(BuildPage.snapshotList.isNoDiffsBatchVisible).to.equal(true);
@@ -225,6 +230,7 @@ describe('Integration: BuildContainer', function() {
         allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
         createReview=stub
         analytics=analyticsStub
+        notifyOfUnchangedSnapshots=stub
       }}`);
     });
 
@@ -291,6 +297,7 @@ describe('Integration: BuildContainer', function() {
         allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
         createReview=stub
         isBuildApprovable=isBuildApprovable
+        notifyOfUnchangedSnapshots=stub
       }}`);
     });
 
