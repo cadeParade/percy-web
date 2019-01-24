@@ -1,18 +1,19 @@
+import sinon from 'sinon';
+import moment from 'moment';
+import freezeMoment from '../helpers/freeze-moment';
+import {percySnapshot} from 'ember-percy';
+import {beforeEach, afterEach} from 'mocha';
+import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
+import {visit, click, currentRouteName, fillIn, find, findAll} from '@ember/test-helpers';
+import Response from 'ember-cli-mirage/response';
+import AdminMode from 'percy-web/lib/admin-mode';
+import ProjectPage from 'percy-web/tests/pages/project-page';
+import ProjectSettingsPage from 'percy-web/tests/pages/project-settings-page';
+import NewOrganization from 'percy-web/tests/pages/components/new-organization';
 import setupAcceptance, {
   setupSession,
   renderAdapterErrorsAsPage,
 } from '../helpers/setup-acceptance';
-import freezeMoment from '../helpers/freeze-moment';
-import AdminMode from 'percy-web/lib/admin-mode';
-import {beforeEach, afterEach} from 'mocha';
-import moment from 'moment';
-import sinon from 'sinon';
-import {visit, click, currentRouteName, fillIn, find, findAll} from '@ember/test-helpers';
-import ProjectPage from 'percy-web/tests/pages/project-page';
-import ProjectSettingsPage from 'percy-web/tests/pages/project-settings-page';
-import {percySnapshot} from 'ember-percy';
-import NewOrganization from 'percy-web/tests/pages/components/new-organization';
-import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
 
 describe('Acceptance: Organization', function() {
   setupAcceptance();
@@ -96,7 +97,43 @@ describe('Acceptance: Organization', function() {
     });
 
     describe('creating a new org with demo project', function() {
-      it('redirects to demo project when project has no builds', async function() {
+      it('shows a custom error screen when there is no project available', async function() {
+        server.post('/organizations/:id/projects', {errors: ['Out of demo projects']}, 500);
+
+        await visit('/organizations/new/');
+        await NewOrganization.organizationName('New Organization');
+        await NewOrganization.clickSubmitNewDemo();
+        expect(currentRouteName()).to.equal('organizations.organization.projects.new-demo');
+        await percySnapshot(this.test);
+      });
+
+      it('polls for a demo project after an initial error', async function() {
+        const url = '/organizations/:id/projects';
+
+        let hasVisited = false;
+        server.post(url, () => {
+          if (!hasVisited) {
+            hasVisited = true;
+            return new Response(500);
+          } else {
+            const org = server.schema.organizations.where({
+              name: 'New Organization',
+            }).models.firstObject;
+
+            server.create('project', 'demo', {id: 'foo', organization: org});
+
+            return server.schema.projects.findBy({id: 'foo'});
+          }
+        });
+
+        await visit('/organizations/new/');
+        await NewOrganization.organizationName('New Organization');
+        await NewOrganization.clickSubmitNewDemo();
+
+        expect(currentRouteName()).to.equal('organization.project.index');
+      });
+
+      it('redirects to demo project when project exists but has no builds', async function() {
         await visit('/organizations/new/');
         await NewOrganization.organizationName('New organization');
         await NewOrganization.clickSubmitNewDemo();

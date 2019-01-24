@@ -1,3 +1,19 @@
-<div class="container">
-  {{loading-page}}
-</div>
+{{#if hasError}}
+  <div class="container-full container-vh bg-white-pattern flex items-center justify-center">
+    {{#status-panel
+      inlineSvgName="loader-icon"
+      mainText="Spinning Up"
+    }}
+      <p class="alt-p text-gray-400">
+        We're setting up a fresh demo project for you right now!
+      </p>
+      <p class="alt-p text-gray-400">
+        If you continue to see this screen after a few minutes, even after refreshing the page, please <a href="#" {{action "showSupport"}}>contact us</a> and we will get your demo project up and running.
+      </p>
+    {{/status-panel}}
+  </div>
+{{else}}
+  <div class="container">
+    {{loading-page}}
+  </div>
+{{/if}}
