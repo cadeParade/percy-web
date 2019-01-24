@@ -1,19 +1,21 @@
 import FactoryGuy from 'ember-data-factory-guy';
 
+const BUSINESS_PLAN_ATTRIBUTES = {
+  id: 'v3-large',
+  name: 'Business',
+  monthlyPrice: 849,
+  numDiffs: 200000,
+  extraDiffPrice: 0.006,
+  numTeamMembersTitle: '20 team members',
+  historyLimitTitle: '1 year history',
+  isFree: false,
+  type: 'self_serve',
+};
+
 FactoryGuy.define('plan', {
   polymorphic: false,
-  default: {
-    id: 'free',
-    name: 'Free plan',
-    interval: 'month',
-    intervalCount: 1,
-    workerLimit: 2,
-    usageIncluded: 500,
-    historyLimitDays: 7,
-    isTrial: false,
-    isFree: true,
-    type: 'trial',
-  },
+  default: BUSINESS_PLAN_ATTRIBUTES,
+
   traits: {
     trial: {
       id: 'v2-medium-trial',
@@ -28,17 +30,7 @@ FactoryGuy.define('plan', {
       type: 'trial',
     },
 
-    business: {
-      id: 'v3-large',
-      name: 'Business',
-      monthlyPrice: 849,
-      numDiffs: 200000,
-      extraDiffPrice: 0.006,
-      numTeamMembersTitle: '20 team members',
-      historyLimitTitle: '1 year history',
-      isFree: false,
-      type: 'self_serve',
-    },
+    business: BUSINESS_PLAN_ATTRIBUTES,
 
     custom: {
       id: 'very-custom',
@@ -50,6 +42,19 @@ FactoryGuy.define('plan', {
       historyLimitTitle: '1000 year history',
       isFree: false,
       type: 'enterprise',
+    },
+
+    free: {
+      id: 'free',
+      name: 'Free plan',
+      interval: 'month',
+      intervalCount: 1,
+      workerLimit: 2,
+      usageIncluded: 500,
+      historyLimitDays: 7,
+      isTrial: false,
+      isFree: true,
+      type: 'trial',
     },
 
     sponsored: {

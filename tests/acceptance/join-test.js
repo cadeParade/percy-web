@@ -33,6 +33,7 @@ describe('Acceptance: Join', function() {
     await renderAdapterErrorsAsPage(async () => {
       await visit('/join/invalid-code');
       expect(currentRouteName()).to.equal('error');
+
       await percySnapshot(this.test);
     });
   });

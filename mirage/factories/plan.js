@@ -1,16 +1,29 @@
 import {Factory, trait} from 'ember-cli-mirage';
 
 export default Factory.extend({
-  id: 'free',
-  name: 'Free plan',
-  interval: 'month',
-  intervalCount: 1,
-  workerLimit: 2,
-  usageIncluded: 500,
-  historyLimitDays: 7,
+  id: 'v3-small',
+  name: 'Essential plan',
+  workerLimit: 16,
+  usageIncluded: 5000,
+  historyLimitDays: 360,
+  allowOverages: true,
+  overageUnitCost: 0.006,
   isTrial: false,
-  isFree: true,
-  type: 'trial',
+  isFree: false,
+  type: 'self_serve',
+
+  free: trait({
+    id: 'free',
+    name: 'Free plan',
+    interval: 'month',
+    intervalCount: 1,
+    workerLimit: 2,
+    usageIncluded: 500,
+    historyLimitDays: 7,
+    isTrial: false,
+    isFree: true,
+    type: 'trial',
+  }),
 
   trial: trait({
     id: 'v2-medium-trial',

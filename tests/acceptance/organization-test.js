@@ -41,7 +41,7 @@ describe('Acceptance: Organization', function() {
       await percySnapshot(this.test);
     });
 
-    it('can create new organization and update org switcher when creating second org', async function() { // eslint-disable-line
+    it('can create new org and update org switcher when creating second org', async function() {
       await ProjectPage.visitOrg({orgSlug: this.organization.slug});
       await click('[data-test-toggle-org-switcher]');
       await click('[data-test-new-org]');

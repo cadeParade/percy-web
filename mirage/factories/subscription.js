@@ -30,6 +30,10 @@ export default Factory.extend({
     plan: association('trial'),
   }),
 
+  withFreePlan: trait({
+    plan: association('free'),
+  }),
+
   withStandardPlan: trait({
     plan: association('standard'),
   }),

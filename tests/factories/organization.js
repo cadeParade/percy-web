@@ -129,5 +129,7 @@ FactoryGuy.define('organization', {
     withGithubEnterpriseRepos: {repos: () => makeList('repo', 3, 'githubEnterprise')},
     withProjects: {projects: () => makeList('project', 5)},
     withSponsoredSubscription: {subscription: () => make('subscription', 'withSponsoredPlan')},
+    withFreePlan: {subscription: () => make('subscription', 'withFreePlan')},
+    withTrialPlan: {subscription: () => make('subscription', 'withTrialPlan')},
   },
 });

@@ -14,9 +14,15 @@ export default Factory.extend({
     }
   },
 
-  withTrial: trait({
+  withTrialPlan: trait({
     afterCreate(organization, server) {
       server.create('subscription', 'withTrialPlan', {organization});
+    },
+  }),
+
+  withFreePlan: trait({
+    afterCreate(organization, server) {
+      server.create('subscription', 'withFreePlan', {organization});
     },
   }),
 

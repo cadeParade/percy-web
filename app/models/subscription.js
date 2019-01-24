@@ -1,5 +1,5 @@
 import {inject as service} from '@ember/service';
-import {alias, or, not} from '@ember/object/computed';
+import {alias, lt, not, or} from '@ember/object/computed';
 import {computed} from '@ember/object';
 import DS from 'ember-data';
 import moment from 'moment';
@@ -32,4 +32,10 @@ export default DS.Model.extend({
   trialDaysRemaining: computed('trialEnd', function() {
     return Math.round(moment(this.get('trialEnd')).diff(moment(), 'days', true));
   }),
+  currentUsageRatio: DS.attr(),
+  currentUsagePercentage: computed('currentUsageRatio', function() {
+    const percentage = parseFloat(this.get('currentUsageRatio')) * 100;
+    return percentage < 1 ? Math.ceil(percentage) : Math.floor(percentage);
+  }),
+  hasIncludedSnapshotsRemaining: lt('currentUsageRatio', 1),
 });
