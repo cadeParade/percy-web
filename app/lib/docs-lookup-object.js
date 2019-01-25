@@ -45,6 +45,16 @@ export default {
         docLink: 'https://docs.percy.io/docs/puppeteer',
         exampleLink: 'https://github.com/percy/example-percy-puppeteer',
       },
+      protractor: {
+        name: 'Protractor',
+        docLink: 'https://docs.percy.io/docs/protractor',
+        exampleLink: 'https://github.com/percy/example-percy-protractor',
+      },
+      nightwatch: {
+        name: 'Nightwatch',
+        docLink: 'https://docs.percy.io/docs/nightwatch',
+        exampleLink: 'https://github.com/percy/example-percy-nightwatch',
+      },
       other: {
         name: 'Other',
         docLink: '',
@@ -87,6 +97,21 @@ export default {
       },
     },
   },
+  java: {
+    name: 'Java',
+    frameworks: {
+      selenium: {
+        name: 'Selenium',
+        docLink: 'https://docs.percy.io/docs/java-selenium',
+        exampleLink: 'https://github.com/percy/example-percy-java-selenium',
+      },
+    },
+    other: {
+      name: 'Other',
+      docLink: '',
+      exampleLink: '',
+    },
+  },
   static: {
     name: 'Static Sites',
     frameworks: {
@@ -103,7 +128,6 @@ export default {
     },
   },
   // automation: {},
-  // java: {},
   // php: {},
   // aspnet: {},
 };
