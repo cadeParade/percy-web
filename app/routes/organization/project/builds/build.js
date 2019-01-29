@@ -59,16 +59,6 @@ export default Route.extend({
       this._super.apply(this, arguments);
 
       this.send('updateIsHidingBuildContainer', false);
-
-      const build = this._getBuild();
-      let organization = build.get('project.organization');
-      let eventProperties = {
-        project_id: build.get('project.id'),
-        project_slug: build.get('project.slug'),
-        build_id: build.get('id'),
-        state: build.get('state'),
-      };
-      this.analytics.track('Build Viewed', organization, eventProperties);
     },
 
     openSnapshotFullModal(snapshotId, snapshotSelectedWidth, activeBrowser) {
