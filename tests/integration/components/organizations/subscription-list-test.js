@@ -40,28 +40,23 @@ describe('Integration: SubscriptionList', function() {
       organization.set('_filteredOrganizationUsers', [organizationUser]);
     });
 
-    it('calls intercom service when clicking create subscription support', function() {
-      organization.set('subscription', make('subscription', 'withTrialPlan'));
-      testShowSupportCalled(this, organization, 'clickCreateSubscriptionSupport');
+    it('calls intercom service when clicking free plan support', async function() {
+      await organization.set('subscription', make('subscription', 'withFreePlan'));
+      await testShowSupportCalled(this, organization, 'clickFreePlanSupport');
     });
 
-    it('calls intercom service when clicking free plan support', function() {
-      organization.set('subscription', make('subscription'));
-      testShowSupportCalled(this, organization, 'clickFreePlanSupport');
+    it('calls intercom service when clicking custom plan support', async function() {
+      await organization.set('subscription', make('subscription', 'withCustomPlan'));
+      await testShowSupportCalled(this, organization, 'clickCustomPlanSupport');
     });
 
-    it('calls intercom service when clicking custom plan support', function() {
-      organization.set('subscription', make('subscription', 'withCustomPlan'));
-      testShowSupportCalled(this, organization, 'clickCustomPlanSupport');
+    it('calls intercom service when clicking more info support', async function() {
+      await testShowSupportCalled(this, organization, 'clickMoreInformationSupport');
     });
 
-    it('calls intercom service when clicking more info support', function() {
-      testShowSupportCalled(this, organization, 'clickMoreInformationSupport');
-    });
-
-    it('calls intercom service when clicking "Need More" support', function() {
-      organization.set('subscription', make('subscription', 'withBusinessPlan'));
-      testShowSupportCalled(this, organization, 'clickEnterpriseButton');
+    it('calls intercom service when clicking "Need More" support', async function() {
+      await organization.set('subscription', make('subscription', 'withBusinessPlan'));
+      await testShowSupportCalled(this, organization, 'clickEnterpriseButton');
     });
   });
 });

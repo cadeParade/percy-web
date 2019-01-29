@@ -4,7 +4,6 @@ import {SubscriptionListItem} from 'percy-web/tests/pages/components/organizatio
 const SELECTORS = {
   ENTERPRISE_ITEM: '[data-test-subscription-enterprise-item]',
   ENTERPRISE_BUTTON: '[data-test-subscription-list-choose-enterprise]',
-  CREATE_SUBSCRIPTION_SUPPORT: '[data-test-create-subscription-support]',
   FREE_PLAN_SUPPORT: '[data-test-free-plan-support]',
   CUSTOM_PLAN_SUPPORT: '[data-test-custom-plan-support]',
   MORE_INFORMATION_SUPPORT: '[data-test-more-information-support]',
