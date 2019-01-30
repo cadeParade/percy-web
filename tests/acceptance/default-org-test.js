@@ -38,7 +38,7 @@ describe('Acceptance: Default org', function() {
       it("redirects to user's first org", async function() {
         localStorageProxy.set('lastOrganizationSlug', otherOrganization.slug);
         await visit('/default-org');
-        expect(currentRouteName()).to.equal('organization.index');
+        expect(currentRouteName()).to.equal('organizations.organization.projects.new');
         expect(currentURL()).to.include(organization.slug);
       });
     });

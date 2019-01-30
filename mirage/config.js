@@ -121,17 +121,14 @@ export default function() {
     let attrs = this.normalizedRequestAttrs('project');
     // we are looking for the id in this case because the api treats the slug as the id
     const organization = schema.organizations.findBy({slug: request.params.id});
-    if (attrs.isDemo) {
-      // Creating objects from the schema does not use factories.
-      // The create-demo request from the app includes almost no information --
-      // the server provides it. So we have to make up all the information we want to
-      // be returned on the project here.
-      const demoProjects = schema.projects.all().models.filterBy('isDemo', true);
-      attrs.name = `My cool demo project ${demoProjects.length}`;
-      attrs.slug = `my-cool-demo-project-${demoProjects.length}`;
-      attrs.fullSlug = `${organization.slug}/${attrs.slug}`;
-      attrs.isEnabled = true;
-    }
+
+    const numProjects = schema.projects.all().models.length;
+    const _name = attrs.isDemo ? 'My cool demo project' : 'My cool project';
+    const projectName = attrs.name ? attrs.name : `${_name} ${numProjects}`;
+    attrs.name = projectName;
+    attrs.slug = projectName.dasherize();
+    attrs.fullSlug = `${organization.slug.dasherize()}/${attrs.slug}`;
+    attrs.isEnabled = true;
     return schema.projects.create(attrs);
   });
 

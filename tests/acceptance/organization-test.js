@@ -55,7 +55,7 @@ describe('Acceptance: Organization', function() {
       await percySnapshot(this.test.fullTitle() + ' | new');
       await NewOrganization.organizationName('New organization');
       await NewOrganization.clickSubmitNewProject();
-      expect(currentRouteName()).to.equal('organization.index');
+      expect(currentRouteName()).to.equal('organizations.organization.projects.new');
 
       await click('[data-test-toggle-org-switcher]');
       expect(findAll('[data-test-org-switcher-item]').length).to.equal(2);
@@ -74,7 +74,7 @@ describe('Acceptance: Organization', function() {
       await percySnapshot(this.test.fullTitle());
 
       await NewOrganization.clickSubmitNewProject();
-      expect(currentRouteName()).to.equal('organization.index');
+      expect(currentRouteName()).to.equal('organizations.organization.projects.new');
       expect(findAll('.flash-message.flash-message-success')).to.have.length(1);
     });
 
@@ -120,7 +120,11 @@ describe('Acceptance: Organization', function() {
               name: 'New Organization',
             }).models.firstObject;
 
-            server.create('project', 'demo', {id: 'foo', organization: org});
+            server.create('project', 'demo', {
+              id: 'foo',
+              name: 'My cool demo project ',
+              organization: org,
+            });
 
             return server.schema.projects.findBy({id: 'foo'});
           }
@@ -131,14 +135,6 @@ describe('Acceptance: Organization', function() {
         await NewOrganization.clickSubmitNewDemo();
 
         expect(currentRouteName()).to.equal('organization.project.index');
-      });
-
-      it('redirects to demo project when project exists but has no builds', async function() {
-        await visit('/organizations/new/');
-        await NewOrganization.organizationName('New organization');
-        await NewOrganization.clickSubmitNewDemo();
-        expect(currentRouteName()).to.equal('organization.project.index');
-        await percySnapshot(this.test);
       });
 
       it('redirects to second build when project has at least three builds', async function() {
@@ -196,7 +192,7 @@ describe('Acceptance: Organization', function() {
 
     it('can edit organization settings', async function() {
       await visit(`/${this.organization.slug}`);
-      expect(currentRouteName()).to.equal('organization.index');
+      expect(currentRouteName()).to.equal('organizations.organization.projects.new');
       await click('[data-test-settings-link]');
       expect(currentRouteName()).to.equal('organizations.organization.settings');
 

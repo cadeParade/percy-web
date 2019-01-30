@@ -3,12 +3,13 @@
 <form action="javascript:;">
   <div class="p-2 bg-gray-000 rounded border mb-2">
     {{form-fields/input
-        property="name"
-        title="Project name"
-        changeset=changeset
-        validateProperty=(action "validateProperty" changeset "name")
-        autofocus=true
-        placeholder="widgets-web-app"
+      property="name"
+      title="Project name"
+      changeset=changeset
+      validateProperty=(action "validateProperty" changeset "name")
+      autofocus=true
+      placeholder="widgets-web-app"
+      testLabel="project-name-input"
     }}
     {{#if organization.isVersionControlIntegrated}}
       <strong>Link a repository</strong>

@@ -44,7 +44,7 @@ describe('Acceptance: Join', function() {
 
     await percySnapshot(this.test);
     await click('[data-test-accept-invitation]');
-    expect(currentRouteName()).to.equal('organization.index');
+    expect(currentRouteName()).to.equal('organizations.organization.projects.new');
 
     await percySnapshot(this.test.fullTitle() + ' | Into organization');
   });

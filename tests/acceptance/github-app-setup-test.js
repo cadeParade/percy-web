@@ -24,7 +24,7 @@ describe('Acceptance: GitHub App Setup', function() {
 
   it('redirects to organization page when the installation_id is present', async function() {
     await visit(`/setup/github-app?installation_id=${githubInstallationId}`);
-    expect(currentRouteName()).to.equal('organization.index');
+    expect(currentRouteName()).to.equal('organizations.organization.projects.new');
   });
 
   context('with a project', function() {

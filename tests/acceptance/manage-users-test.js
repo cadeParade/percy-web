@@ -127,7 +127,7 @@ describe('Acceptance: ManageUsers', function() {
           .buttons(0)
           .click();
 
-        expect(currentRouteName()).to.equal('organization.index');
+        expect(currentRouteName()).to.equal('organizations.organization.projects.new');
         expect(currentURL()).not.to.include(organization.slug);
         expect(currentURL()).to.include(otherOrganization.slug);
         await percySnapshot(this.test.fullTitle());

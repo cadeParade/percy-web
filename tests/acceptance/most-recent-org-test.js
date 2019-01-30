@@ -38,7 +38,7 @@ describe('Acceptance: Most recent org', function() {
       it("redirects to user's most recent org", async function() {
         localStorageProxy.set('lastOrganizationSlug', otherOrganization.slug);
         await visit('/most-recent-org');
-        expect(currentRouteName()).to.equal('organization.index');
+        expect(currentRouteName()).to.equal('organizations.organization.projects.new');
         expect(currentURL()).to.include(otherOrganization.slug);
       });
     });

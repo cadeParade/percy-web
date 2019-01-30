@@ -18,12 +18,12 @@ export default Route.extend({
         let recentProjectSlug = recentProjectSlugs[organizationSlug];
         if (recentProjectSlug && projects.findBy('slug', recentProjectSlug)) {
           this.transitionTo('organization.project.index', organizationSlug, recentProjectSlug);
+        } else if (projects.get('length')) {
+          let project = projects.sortBy('isDisabled', 'name').get('firstObject');
+          let projectSlug = project.get('slug');
+          this.transitionTo('organization.project.index', organizationSlug, projectSlug);
         } else {
-          if (projects.get('length')) {
-            let project = projects.sortBy('isDisabled', 'name').get('firstObject');
-            let projectSlug = project.get('slug');
-            this.transitionTo('organization.project.index', organizationSlug, projectSlug);
-          }
+          this.transitionTo('organizations.organization.projects.new', organizationSlug);
         }
       });
   },

@@ -3,6 +3,7 @@ import freezeMoment from '../helpers/freeze-moment';
 import moment from 'moment';
 import ProjectPage from 'percy-web/tests/pages/project-page';
 import ProjectSettingsPage from 'percy-web/tests/pages/project-settings-page';
+import NewProjectPage from 'percy-web/tests/pages/new-project-page';
 import sinon from 'sinon';
 import {beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
@@ -19,13 +20,11 @@ describe('Acceptance: Project', function() {
 
     it('can create', async function() {
       await visit(`/${this.organization.slug}`);
-      expect(currentRouteName()).to.equal('organization.index');
-      await percySnapshot(this.test.fullTitle() + ' | index');
-
-      await click('.data-test-create-first-project');
       expect(currentRouteName()).to.equal('organizations.organization.projects.new');
-
       await percySnapshot(this.test.fullTitle() + ' | new project');
+      await NewProjectPage.fillInProjectName('my-new-project');
+      await NewProjectPage.clickSubmit();
+      expect(currentRouteName()).to.equal('organization.project.index');
     });
 
     it('shows public notice when org is sponsored', async function() {
@@ -41,26 +40,10 @@ describe('Acceptance: Project', function() {
       this.organization = server.create('organization', 'withAdminUser');
     });
 
-    it('shows admin specific links', async function() {
+    it('shows new project page', async function() {
       await visit(`/${this.organization.slug}`);
-      expect(currentRouteName()).to.equal('organization.index');
+      expect(currentRouteName()).to.equal('organizations.organization.projects.new');
       await percySnapshot(this.test.fullTitle() + ' | index | admin mode');
-    });
-
-    it('links to invite team members page', async function() {
-      await visit(`/${this.organization.slug}`);
-      expect(currentRouteName()).to.equal('organization.index');
-
-      await click('.data-test-invite-team-members');
-      expect(currentRouteName()).to.equal('organizations.organization.users.invite');
-    });
-
-    it('links to install github intergration page', async function() {
-      await visit(`/${this.organization.slug}`);
-      expect(currentRouteName()).to.equal('organization.index');
-
-      await click('.data-test-install-github');
-      expect(currentRouteName()).to.equal('organizations.organization.integrations.github');
     });
   });
 

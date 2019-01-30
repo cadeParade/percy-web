@@ -1,7 +1,7 @@
 <button
   class="{{classes}} relative {{if isSaving 'is-loading'}} {{if isSaveSuccessful 'is-successful'}} {{if (eq isSaveSuccessful false) 'is-failed'}}"
   disabled={{disabled}}
-  onclick={{action "perform"}}
+  {{action "perform"}}
   data-test-form-submit-button
 >
   <span class="trans trans-opacity {{if (or isSaving isSaveSuccessful (eq isSaveSuccessful false)) 'opacity-0'}}">{{value}}</span>
