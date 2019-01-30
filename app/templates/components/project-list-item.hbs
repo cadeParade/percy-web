@@ -2,7 +2,11 @@
   class="flex items-center mb-2 {{if project.isDisabled 'opacity-25'}}"
   {{action toggleSidebar}}
 >
-  <div class="status-indicator flex-no-shrink mr-2 is-{{dasherize recentBuild.state}} is-{{if recentBuild.isFinished (dasherize recentBuild.reviewState)}}"></div>
+  {{#if displayDynamicStatusDot}}
+    <div class="status-indicator flex-no-shrink mr-2 is-{{dasherize recentBuild.state}} is-{{if recentBuild.isFinished (dasherize recentBuild.reviewState)}}"></div>
+  {{else}}
+   <div class="status-indicator flex-no-shrink mr-2"></div>
+  {{/if}}
 
   {{#link-to
     "organization.project.index"

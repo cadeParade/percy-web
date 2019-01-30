@@ -5,6 +5,7 @@ import {inject as service} from '@ember/service';
 
 export default Component.extend({
   store: service(),
+  displayDynamicStatusDot: false,
 
   recentBuild: computed.or('localRecentBuild', 'serverRecentBuild'),
   serverRecentBuild: computed.readOnly('_getMostRecentBuild.lastSuccessful.value.firstObject'),
