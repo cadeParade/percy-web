@@ -1,22 +1,25 @@
 {{#if (await isUserMember)}}
   {{#if organization.subscription.isFree}}
-    <div data-test-notice-bar class="flex items-center hide-on-laptop font-normal">
-      <div data-test-message class="px-2 py-sm rounded-l bg-gray-100 text-gray-700" style="margin-right: 1px;">
-        {{#if (eq organization.subscription.hasIncludedSnapshotsRemaining true)}}
+    <div data-test-notice-bar class="flex items-center hide-on-laptop">
+      {{#if (eq organization.subscription.hasIncludedSnapshotsRemaining true)}}
+        <div data-test-message class="px-2 py-sm rounded-l border border-gray-100 text-gray-700 font-normal">
           You have used <strong data-test-percentage>{{organization.subscription.currentUsagePercentage}}%</strong> of your free snapshots this month.
-        {{else}}
-          You have used <span data-test-percentage>all</span> of your free snapshots this month.
-        {{/if}}
-      </div>
-      <div class="px-2 py-sm rounded-r bg-gray-100 font-semibold hover:underline">
-        {{#link-to data-test-link "organizations.organization.billing" organization.slug}}
-          {{#if (eq organization.subscription.hasIncludedSnapshotsRemaining true)}}
+        </div>
+        <div class="px-2 py-sm rounded-r bg-gray-100 border border-gray-100 font-semibold">
+          {{#link-to data-test-link "organizations.organization.billing" organization.slug class="hover:underline"}}
             More Info
-          {{else}}
+          {{/link-to}}
+        </div>
+      {{else}}
+        <div data-test-message class="px-2 py-sm rounded-l border border-purple-600 text-purple-600">
+          You have used <span data-test-percentage>all</span> of your free snapshots this month.
+        </div>
+        <div class="px-2 py-sm rounded-r bg-purple-600 border border-purple-600 font-semibold">
+          {{#link-to data-test-link "organizations.organization.billing" organization.slug class="hover:underline link-white"}}
             Upgrade Plan
-          {{/if}}
-        {{/link-to}}
-      </div>
+          {{/link-to}}
+        </div>
+      {{/if}}
     </div>
   {{else if organization.subscription.isTrial}}
     <div data-test-notice-bar class="flex items-center hide-on-laptop font-normal">
