@@ -10,6 +10,14 @@ import {INFINITY_SCROLL_LIMIT} from 'percy-web/models/build';
 export default Route.extend(ResetScrollMixin, {
   infinity: service(),
 
+  hasNoBuilds: null,
+
+  queryParams: {
+    noBuilds: {
+      refreshModel: false,
+    },
+  },
+
   model() {
     const project = this.modelFor('organization.project');
     const organization = this.modelFor('organization');
@@ -36,9 +44,24 @@ export default Route.extend(ResetScrollMixin, {
     });
   },
 
+  afterModel(model) {
+    if (model.infinityBuilds.length < 1) {
+      this.set('hasNoBuilds', 'true');
+    }
+  },
+
   actions: {
+    willTransition() {
+      // reset the noBuilds query param to remove from url
+      this.set('hasNoBuilds', null);
+      this.controller.set('noBuilds', null);
+    },
+
     didTransition() {
       this._super.apply(this, arguments);
+
+      // show the query param regardless of how the route was navigated to
+      this.controller.set('noBuilds', this.get('hasNoBuilds'));
 
       let project = this.modelFor(this.routeName).project;
       let organization = project.get('organization');
