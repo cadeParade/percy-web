@@ -54,7 +54,7 @@ export default function() {
   });
 
   this.post('/user/identities/:id/password-change-request', function() {
-    return new Mirage.Response(204, {}, {success: true});
+    return new Mirage.Response(204);
   });
 
   this.post('/user/identities', function(schema, request) {
@@ -156,7 +156,7 @@ export default function() {
 
   this.delete('/organization-users/:id', function(schema, request) {
     schema.organizationUsers.find(request.params.id).destroy();
-    return new Mirage.Response(204, {}, {});
+    return new Mirage.Response(204);
   });
 
   this.get('/organizations/:slug/projects', function(schema, request) {
@@ -208,7 +208,7 @@ export default function() {
   });
 
   this.delete('/version-control-integrations/:id', function() {
-    return new Mirage.Response(204, {}, {});
+    return new Mirage.Response(204);
   });
 
   this.get('/projects/:full_slug/', function(schema, request) {
@@ -250,7 +250,7 @@ export default function() {
   });
   this.delete('/invites/:id', function(schema, request) {
     schema.invites.find(request.params.id).destroy();
-    return new Mirage.Response(204, {}, {});
+    return new Mirage.Response(204);
   });
 
   this.get('/organizations/:organization_slug/invites');
