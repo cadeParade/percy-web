@@ -3,6 +3,7 @@ import ResetScrollMixin from 'percy-web/mixins/reset-scroll';
 import isUserMemberPromise from 'percy-web/lib/is-user-member-of-org';
 import ExtendedInfinityModel from 'percy-web/lib/paginated-ember-infinity-model';
 import {inject as service} from '@ember/service';
+import {next} from '@ember/runloop';
 import {hash} from 'rsvp';
 
 import {INFINITY_SCROLL_LIMIT} from 'percy-web/models/build';
@@ -62,6 +63,14 @@ export default Route.extend(ResetScrollMixin, {
 
       // show the query param regardless of how the route was navigated to
       this.controller.set('noBuilds', this.get('hasNoBuilds'));
+
+      if (window.Intercom && this.get('hasNoBuilds')) {
+        // Wait a tick for the window's location to be updated with noBuilds=true param
+        // then update Intercom with the new location so we can show pop-ups for no builds.
+        next(() => {
+          window.Intercom('update');
+        });
+      }
 
       let project = this.modelFor(this.routeName).project;
       let organization = project.get('organization');
