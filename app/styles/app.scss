@@ -46,7 +46,6 @@
 @import
   "header",
   "footer",
-  "page_click_overlay",
   "code",
   "viewer",
   "utilities";
@@ -82,7 +81,6 @@
   "components/organizations/github_settings",
   "components/organizations/github_integration",
   "components/organizations/settings_nav_wrapper",
-  "components/organizations/switcher_nav",
   "components/progress_bar",
   "components/public_project_notice",
   "components/project_list_sidebar",
@@ -90,8 +88,7 @@
   "components/saving_indicator",
   "components/sidenav",
   "components/status_indicator",
-  "components/status_pill",
-  "components/user_menu";
+  "components/status_pill";
 
 // Page specific styles.
 @import

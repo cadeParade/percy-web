@@ -7,8 +7,9 @@ import NewProjectPage from 'percy-web/tests/pages/new-project-page';
 import sinon from 'sinon';
 import {beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
-import {click, findAll, visit, currentRouteName, currentURL} from '@ember/test-helpers';
+import {visit, currentRouteName, currentURL} from '@ember/test-helpers';
 import {selectChoose} from 'ember-power-select/test-support/helpers';
+import UserMenu from 'percy-web/tests/pages/components/user-menu';
 
 describe('Acceptance: Project', function() {
   setupAcceptance();
@@ -483,9 +484,9 @@ describe('Acceptance: Project', function() {
       });
 
       await ProjectPage.visitProject(urlParams);
-      await click('[data-test-toggle-org-switcher]');
-      const switcherItems = findAll('[data-test-org-switcher-link]');
-      await click(switcherItems[1]);
+      await UserMenu.toggleUserMenu();
+      await UserMenu.orgLinks(1).clickLink();
+
       expect(ProjectPage.builds().count).to.equal(0);
     });
 

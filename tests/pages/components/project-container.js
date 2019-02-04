@@ -1,5 +1,5 @@
-import {BuildCard} from 'percy-web/tests/pages/components/build-card';
 import {collection, clickable, create, isVisible, isPresent} from 'ember-cli-page-object';
+import {BuildCard} from 'percy-web/tests/pages/components/build-card';
 
 const SELECTORS = {
   PROJECT_CONTAINER: '[data-test-project-container]',

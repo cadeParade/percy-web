@@ -1,11 +1,10 @@
 <section class="flex relative {{if isSidebarVisible 'sidebar-is-visible'}}" data-test-project-page>
-  <aside class="project-list-sidebar h-screen overflow-y-scroll flex-no-shrink p-4 sticky pin-t">
-    <ul class="list-reset mb-3">
+  <aside class="project-list-sidebar h-screen sticky pin-t z-1 overflow-y-scroll">
+    <ul class="list-reset mb-0 p-4 ">
       {{#each (sort-by "name" enabledProjects) as |enabledProject|}}
         {{project-list-item
-          data-test-project-list-item
-          displayDynamicStatusDot=(eq enabledProject.id project.id)
           project=enabledProject
+          displayDynamicStatusDot=(eq enabledProject.id project.id)
           toggleSidebar=(action "toggleSidebar")
         }}
       {{/each}}
@@ -34,16 +33,20 @@
           {{/each}}
         {{/if}}
       {{/if}}
-    </ul>
 
-    {{#if isUserMember}}
-      {{#link-to "organizations.organization.projects.new" project.organization.slug classNames="btn btn-sm btn-alt w-full mb-2 text-center"}}
-        New Project
-      {{/link-to}}
-      {{#link-to "organizations.organization.users.invite" project.organization.slug classNames="btn btn-sm btn-alt w-full mb-2 text-center"}}
-        Invite Team Members
-      {{/link-to}}
-    {{/if}}
+      {{#if isUserMember}}
+        <li>
+          {{#link-to "organizations.organization.projects.new" project.organization.slug classNames="btn btn-sm btn-alt w-full mb-2 text-center"}}
+            New Project
+          {{/link-to}}
+        </li>
+        <li>
+          {{#link-to "organizations.organization.users.invite" project.organization.slug classNames="btn btn-sm btn-alt w-full mb-2 text-center"}}
+            Invite Team Members
+          {{/link-to}}
+        </li>
+      {{/if}}
+    </ul>
   </aside>
   {{project-container
     project=project

@@ -14,23 +14,23 @@ import setupAcceptance, {
   setupSession,
   renderAdapterErrorsAsPage,
 } from '../helpers/setup-acceptance';
+import UserMenu from 'percy-web/tests/pages/components/user-menu';
 
 describe('Acceptance: Organization', function() {
   setupAcceptance();
   freezeMoment('2020-01-30');
 
+  let organization;
   describe('user is member', function() {
     setupSession(function(server) {
-      let organization = server.create('organization', 'withUser');
-      let project = server.create('project', {organization});
-      this.organization = organization;
-      this.project = project;
+      organization = server.create('organization', 'withUser');
+      server.create('project', {organization});
 
       withVariation(this.owner, 'new-demo-project');
     });
 
     it('denies billing settings', async function() {
-      await ProjectPage.visitOrg({orgSlug: this.organization.slug});
+      await ProjectPage.visitOrg({orgSlug: organization.slug});
       expect(currentRouteName()).to.equal('organization.project.index');
 
       await ProjectPage.clickProjectSettings();
@@ -42,23 +42,30 @@ describe('Acceptance: Organization', function() {
       await percySnapshot(this.test);
     });
 
+    it('can create new org via org switcher', async function() {
+      await ProjectPage.visitOrg({orgSlug: organization.slug});
+      await UserMenu.toggleUserMenu();
+      await UserMenu.createNewOrg();
+      expect(currentRouteName()).to.equal('organizations.new');
+    });
+
     it('can create new org and update org switcher when creating second org', async function() {
-      await ProjectPage.visitOrg({orgSlug: this.organization.slug});
-      await click('[data-test-toggle-org-switcher]');
-      await click('[data-test-new-org]');
+      await ProjectPage.visitOrg({orgSlug: organization.slug});
+      await UserMenu.toggleUserMenu();
+      await UserMenu.createNewOrg();
 
       expect(currentRouteName()).to.equal('organizations.new');
 
-      await click('[data-test-toggle-org-switcher]');
-      expect(findAll('[data-test-org-switcher-item]').length).to.equal(1);
+      await UserMenu.toggleUserMenu();
+      expect(UserMenu.orgLinks().count).to.equal(1);
 
       await percySnapshot(this.test.fullTitle() + ' | new');
       await NewOrganization.organizationName('New organization');
       await NewOrganization.clickSubmitNewProject();
       expect(currentRouteName()).to.equal('organizations.organization.projects.new');
 
-      await click('[data-test-toggle-org-switcher]');
-      expect(findAll('[data-test-org-switcher-item]').length).to.equal(2);
+      await UserMenu.toggleUserMenu();
+      expect(UserMenu.orgLinks().count).to.equal(2);
 
       await percySnapshot(this.test.fullTitle() + ' | setup');
     });
@@ -88,10 +95,7 @@ describe('Acceptance: Organization', function() {
       await NewOrganization.fillUserEmail('a@a.com');
       await NewOrganization.clickSubmitNewProject();
 
-      await click('[data-test-toggle-org-switcher]');
-      await click('[data-test-new-org]');
-
-      expect(currentRouteName()).to.equal('organizations.new');
+      await visit('/organizations/new/');
       expect(NewOrganization.isOrgNameFieldVisible).to.equal(true);
       expect(NewOrganization.isUserEmailFieldVisible).to.equal(false);
     });
@@ -162,7 +166,7 @@ describe('Acceptance: Organization', function() {
 
     it('shows support on settings page', async function() {
       window.Intercom = sinon.stub();
-      await visit(`/organizations/${this.organization.slug}/settings`);
+      await visit(`/organizations/${organization.slug}/settings`);
 
       await click('[data-test-org-settings-show-support]');
       expect(window.Intercom).to.have.been.called;
@@ -170,7 +174,7 @@ describe('Acceptance: Organization', function() {
 
     it('shows support on users page', async function() {
       window.Intercom = sinon.stub();
-      await visit(`/organizations/${this.organization.slug}/users`);
+      await visit(`/organizations/${organization.slug}/users`);
 
       await click('[data-test-users-show-support]');
       expect(window.Intercom).to.have.been.called;
@@ -178,7 +182,7 @@ describe('Acceptance: Organization', function() {
 
     it('shows support on invites page', async function() {
       window.Intercom = sinon.stub();
-      await visit(`/organizations/${this.organization.slug}/users/invite`);
+      await visit(`/organizations/${organization.slug}/users/invite`);
 
       await click('[data-test-users-show-support]');
       expect(window.Intercom).to.have.been.called;
@@ -187,13 +191,14 @@ describe('Acceptance: Organization', function() {
 
   describe('user is admin', function() {
     setupSession(function(server) {
-      this.organization = server.create('organization', 'withAdminUser');
+      organization = server.create('organization', 'withAdminUser');
     });
 
     it('can edit organization settings', async function() {
-      await visit(`/${this.organization.slug}`);
+      await visit(`/${organization.slug}`);
       expect(currentRouteName()).to.equal('organizations.organization.projects.new');
-      await click('[data-test-settings-link]');
+      await UserMenu.toggleUserMenu();
+      await UserMenu.orgLinks(0).clickSettings();
       expect(currentRouteName()).to.equal('organizations.organization.settings');
 
       await percySnapshot(this.test);
@@ -214,7 +219,7 @@ describe('Acceptance: Organization', function() {
     });
 
     it('can update billing email', async function() {
-      await visit(`/organizations/${this.organization.slug}/billing`);
+      await visit(`/organizations/${organization.slug}/billing`);
       expect(currentRouteName()).to.equal('organizations.organization.billing');
 
       await percySnapshot(this.test);
@@ -239,7 +244,7 @@ describe('Acceptance: Organization', function() {
     describe('organization is on trial plan', function() {
       setupSession(function(server) {
         server.create('subscription', 'withTrialPlan', {
-          organization: this.organization,
+          organization,
           trialStart: moment(),
           trialEnd: moment()
             .add(14, 'days')
@@ -248,7 +253,7 @@ describe('Acceptance: Organization', function() {
       });
 
       it('can view billing page', async function() {
-        await visit(`/organizations/${this.organization.slug}/billing`);
+        await visit(`/organizations/${organization.slug}/billing`);
         expect(currentRouteName()).to.equal('organizations.organization.billing');
         await percySnapshot(this.test);
       });
@@ -256,11 +261,11 @@ describe('Acceptance: Organization', function() {
 
     describe('organization is on trial expired plan', function() {
       setupSession(function(server) {
-        server.create('subscription', {organization: this.organization});
+        server.create('subscription', {organization});
       });
 
       it('can view billing page', async function() {
-        await visit(`/organizations/${this.organization.slug}/billing`);
+        await visit(`/organizations/${organization.slug}/billing`);
         expect(currentRouteName()).to.equal('organizations.organization.billing');
         await percySnapshot(this.test);
       });
@@ -268,11 +273,11 @@ describe('Acceptance: Organization', function() {
 
     describe('organization is on a standard plan', function() {
       setupSession(function(server) {
-        server.create('subscription', 'withStandardPlan', {organization: this.organization});
+        server.create('subscription', 'withStandardPlan', {organization});
       });
 
       it('can view billing page', async function() {
-        await visit(`/organizations/${this.organization.slug}/billing`);
+        await visit(`/organizations/${organization.slug}/billing`);
         expect(currentRouteName()).to.equal('organizations.organization.billing');
         await percySnapshot(this.test);
       });
@@ -280,11 +285,11 @@ describe('Acceptance: Organization', function() {
 
     describe('organization is on custom plan', function() {
       setupSession(function(server) {
-        server.create('subscription', 'withCustomPlan', {organization: this.organization});
+        server.create('subscription', 'withCustomPlan', {organization});
       });
 
       it('can view billing page', async function() {
-        await visit(`/organizations/${this.organization.slug}/billing`);
+        await visit(`/organizations/${organization.slug}/billing`);
         expect(currentRouteName()).to.equal('organizations.organization.billing');
         await percySnapshot(this.test);
       });

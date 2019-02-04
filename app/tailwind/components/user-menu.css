@@ -1,0 +1,8 @@
+.user-menu {
+  @apply mt-sm mr-sm;
+  @apply bg-white;
+  @apply border rounded;
+  @apply shadow-lg;
+  @apply z-top;
+  width: 260px;
+}

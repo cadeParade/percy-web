@@ -1,14 +1,14 @@
-<div class="flex items-center link-dark">
-  {{#link-to "docs.index" class="hide-on-tablet"}}Docs{{/link-to}}
-  <a class="ml-3 hide-on-tablet" href="https://docs.percy.io/docs/example-apps">Tutorials</a>
+<div class="flex items-center">
+  {{#link-to "docs.index" class="hide-on-tablet link-dark"}}Docs{{/link-to}}
+  <a href="https://docs.percy.io/docs/example-apps" class="ml-3 hide-on-tablet link-dark">Tutorials</a>
   {{#if session.isAuthenticated}}
-    {{user-menu user=user class="link-white ml-3"}}
+    {{user-menu user=user class="ml-3"}}
   {{else}}
-    <a href="https://blog.percy.io" class="ml-3">Blog</a>
-    {{#link-to "pricing" class="ml-3"}}Pricing{{/link-to}}
-    {{#link-to "enterprise" class="ml-3"}}Enterprise{{/link-to}}
+    <a href="https://blog.percy.io" class="ml-3 link-dark">Blog</a>
+    {{#link-to "pricing" class="ml-3 link-dark"}}Pricing{{/link-to}}
+    {{#link-to "enterprise" class="ml-3 link-dark"}}Enterprise{{/link-to}}
     {{sign-in-header-link
-      classNames="mx-3 hide-on-mobile"
+      classNames="mx-3 hide-on-mobile link-dark"
     }}
   {{/if}}
 </div>

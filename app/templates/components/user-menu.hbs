@@ -1,9 +1,51 @@
-{{user-avatar user=user}}
-{{#if showMenu}}
-  <div class="PageClickOverlay"></div>
-  <div class="UserMenu-arrow">{{fa-icon "caret-up"}}</div>
-  <ul>
-    <li>{{#link-to "settings.profile"}}Profile{{/link-to}}</li>
-    <li><a href="#" {{action "logout"}}>Logout</a></li>
-  </ul>
-{{/if}}
+{{#basic-dropdown
+  renderInPlace=true
+  verticalPosition="below"
+  as |dropdown|
+}}
+  {{#dropdown.trigger class="focus:outline-none"}}
+    <div {{action "loadOrgs" dropdown.isOpen}} data-test-org-switcher-toggle>
+      {{user-avatar user=user class="cursor-pointer z-top"}}
+    </div>
+  {{/dropdown.trigger}}
+
+  {{#dropdown.content}}
+    <div class="user-menu" {{action dropdown.actions.close}}>
+      <div class="px-2 pt-2 pb-1 mb-1 text-sm text-gray-400 border-b leading-none">
+        Your organizations
+      </div>
+
+      <div class="border-b mb-2 pb-1" data-test-org-switcher>
+        {{#each orgsToDisplay as |org|}}
+          <div class="org-switcher-organization flex items-center justify-between px-2" data-test-org-switcher-item>
+            {{#link-to data-test-switcher-item-link "organization.index" org.slug class="block flex-1 py-sm truncate text-gray-700 hover:text-purple-600"}}
+              {{org.name}}
+            {{/link-to}}
+            {{#link-to data-test-settings-link "organizations.organization.settings" org.slug class="org-switcher-organization-settings md:opacity-0 block ml-2"}}
+              <figure class="svg-container">
+                {{inline-svg "settings-icon"}}
+              </figure>
+            {{/link-to}}
+          </div>
+        {{/each}}
+
+        {{#link-to data-test-new-org "organizations.new" class="block px-2 py-sm link-blue"}}
+          <span class="font-bold">+</span> New organization
+        {{/link-to}}
+      </div>
+
+      <div class="px-2 pt-2 pb-1 mb-1 text-sm text-gray-400 border-b leading-none">
+        Profile
+      </div>
+
+      <div class="pb-1">
+        {{#link-to "settings.profile" class="block px-2 py-sm text-gray-700 hover:text-purple-600"}}
+          Profile settings
+        {{/link-to}}
+        <a href="#" class="block px-2 py-sm text-gray-700 hover:text-purple-600" {{action "logout"}}>
+          Logout
+        </a>
+      </div>
+    </div>
+  {{/dropdown.content}}
+{{/basic-dropdown}}

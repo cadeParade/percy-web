@@ -16,8 +16,8 @@
 
     {{#if session.isAuthenticated}}
       <div class="flex items-center mr-3">
-        <div class="bg-purple-300 text-sm text-purple-600 rounded-l mr-px px-1 py-sm">
-          {{#if currentOrganization}}
+        {{#if currentOrganization}}
+          <div class="bg-purple-300 text-sm text-purple-600 rounded px-1 py-sm">
             {{#link-to "organization" currentOrganization.slug class="inline-block text-purple-600 truncate truncate-target font-mono"}}{{currentOrganization.name}}{{/link-to}}
             {{#if project}}
               <span class="font-semibold text-gray-700 text-sm mx-px">/</span>
@@ -25,19 +25,12 @@
                 {{project.name}}
               {{/link-to}}
             {{/if}}
-          {{else}}
-            <div class="font-mono">
-              Jump to org<span class="u-hide-on-mobile">anization</span>
-            </div>
-          {{/if}}
-        </div>
-        {{organizations/switcher-nav currentOrganization=currentOrganization isTransparentHeader=isTransparentHeader}}
+          </div>
+        {{/if}}
       </div>
 
-      {{#if currentOrganization}}
-        {{#if (eq "admin" currentOrganization.currentUserMembership.role)}}
-          {{#link-to "organizations.organization.settings" currentOrganization.slug data-test-settings-link=true class="link-dark hide-on-mobile"}}Settings{{/link-to}}
-        {{/if}}
+      {{#if shouldDisplayDashboardLink}}
+        <a class="link-dark cursor-pointer" {{action "handleDashboardClick"}} data-test-dashboard-link>Dashboard</a>
       {{/if}}
     {{/if}}
   </div>
@@ -47,6 +40,6 @@
   {{#if session.isAuthenticated}}
     {{nav-menu user=session.currentUser currentOrganization=currentOrganization isTransparentHeader=isTransparentHeader}}
   {{else}}
-    {{nav-menu isTransparentHeader=isTransparentHeader}}
+    {{nav-menu}}
   {{/if}}
 </div>
