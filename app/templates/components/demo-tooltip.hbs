@@ -1,0 +1,41 @@
+<div data-test-tooltip-wrapper class="{{if shouldHideTooltip 'hidden'}}" style="position:relative;">
+  <div class="tip-anchor {{anchorPlacement}}" data-test-tooltip-anchor>
+    {{#attach-popover
+      class='tip-container'
+      showOn='click'
+      hideOn='click'
+      interactive=true
+      arrow=false
+      placement='left'
+      onChange=(action 'onShow')
+      as |attacher|
+    }}
+      <div class="text-lg font-semibold mb-1">
+        {{title}}
+      </div>
+      <p>{{message}}</p>
+
+      <div class="flex justify-between">
+
+        <button
+          type="button"
+          name="button"
+          class="percy-btn percy-btn-primary"
+          {{action "removeTooltip" attacher.hide}}
+          data-test-tooltip-dismiss-button
+        >
+          Got it
+        </button>
+        <button
+          type="button"
+          name="button"
+          class="percy-btn"
+          {{action "hideAllTooltips" attacher.hide}}
+          data-test-tooltip-dismiss-all-button
+        >
+          Hide all
+        </button>
+      </div>
+    {{/attach-popover}}
+  </div>
+</div>

@@ -1,0 +1,31 @@
+.tip-anchor {
+  @apply absolute pin-b w-2 h-2 rounded-full bg-purple-600 cursor-pointer;
+  box-shadow: 0 0 0 0 rgba(#9e66bf, 0.5);
+  transform: translate3d(4px, 4px, 0);
+  animation: tip-pulse 1.7s infinite;
+  z-index: 1;
+}
+
+.tip-anchor.left-corner {
+  bottom: unset;
+  top: -8px;
+  left: -8px;
+}
+
+@keyframes tip-pulse {
+  70% {
+    box-shadow: 0 0 0 10px rgba(#9e66bf, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(#9e66bf, 0);
+  }
+}
+
+.tip-container {
+  @apply p-2;
+  @apply mt-2 ml-2;
+  @apply shadow-y-lg-purple-600;
+  @apply bg-white rounded;
+  width: 360px;
+}

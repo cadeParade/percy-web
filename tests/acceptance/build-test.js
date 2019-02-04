@@ -10,6 +10,7 @@ import ProjectPage from 'percy-web/tests/pages/project-page';
 import {beforeEach} from 'mocha';
 import {currentRouteName, currentURL, findAll} from '@ember/test-helpers';
 import {percySnapshot} from 'ember-percy';
+import {isVisible as attacherIsVisible} from 'ember-attacher';
 
 describe('Acceptance: Build', function() {
   freezeMoment('2018-05-22');
@@ -54,6 +55,18 @@ describe('Acceptance: Build', function() {
       projectSlug: project.slug,
       buildId: build.id,
     };
+  });
+
+  it('does not display any tooltips if not a demo project', async function() {
+    await BuildPage.visitBuild(urlParams);
+
+    // check that the tooltips actually exist on the page
+    expect(BuildPage.demoTooltips().count).to.be.at.least(2);
+
+    // verify that all tooltips are not visible
+    BuildPage.demoTooltips().forEach(tooltip => {
+      expect(tooltip.isAnchorVisible).to.equal(false);
+    });
   });
 
   it('fetches only snapshots with diffs on initial load', async function() {
@@ -632,5 +645,77 @@ describe('Acceptance: Failed Build', function() {
     await percySnapshot(this.test.fullTitle() + ' on the build page with build info open');
     await BuildPage.clickShowSupportLink();
     expect(window.Intercom).to.have.been.calledWith('show');
+  });
+});
+
+describe('Acceptance: Demo Project Build', function() {
+  freezeMoment('2018-05-22');
+  setupAcceptance();
+
+  let urlParams;
+
+  setupSession(function(server) {
+    const organization = server.create('organization', 'withUser');
+
+    const project = server.create('project', 'demo', {
+      name: 'project-with-finished-build',
+      organization,
+    });
+
+    const build = server.create('build', {
+      project,
+      createdAt: moment().subtract(2, 'minutes'),
+      finishedAt: moment().subtract(5, 'seconds'),
+      totalSnapshotsUnreviewed: 1,
+      totalSnapshots: 1,
+      totalComparisons: 1,
+    });
+
+    server.create('snapshot', 'withComparison', {build});
+
+    urlParams = {
+      orgSlug: organization.slug,
+      projectSlug: project.slug,
+      buildId: build.id,
+    };
+  });
+
+  it('renders the tooltips', async function() {
+    await BuildPage.visitBuild(urlParams);
+
+    const tooltipElement = await findAll('.ember-attacher').firstObject;
+
+    expect(BuildPage.demoTooltips().count).to.be.at.least(2);
+
+    await BuildPage.demoTooltips(0).clickAnchor();
+
+    expect(attacherIsVisible(tooltipElement)).to.equal(true);
+  });
+
+  it('hides a single tooltip and anchor when it is dismissed', async function() {
+    await BuildPage.visitBuild(urlParams);
+
+    expect(BuildPage.demoTooltips().count).to.be.at.least(2);
+
+    expect(BuildPage.demoTooltips(0).isAnchorVisible).to.equal(true);
+
+    await BuildPage.demoTooltips(0).clickAnchor();
+    await BuildPage.demoTooltips(0).clickDismiss();
+
+    expect(BuildPage.demoTooltips(0).isAnchorVisible).to.equal(false);
+  });
+
+  it('hides all tooltips and all anchors when all are dismissed', async function() {
+    await BuildPage.visitBuild(urlParams);
+
+    expect(BuildPage.demoTooltips().count).to.be.at.least(2);
+
+    await BuildPage.demoTooltips(0).clickAnchor();
+    await BuildPage.demoTooltips(0).clickDismissAll();
+
+    // verify that all tooltips were dismissed
+    BuildPage.demoTooltips().forEach(demoTooltip => {
+      expect(demoTooltip.isAnchorVisible).to.equal(false, 'anchor should be hidden');
+    });
   });
 });

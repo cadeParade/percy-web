@@ -1,4 +1,4 @@
-{{#each snapshotsChanged as |snapshot|}}
+{{#each snapshotsChanged as |snapshot index|}}
   {{snapshot-viewer
     build=build
     snapshot=snapshot
@@ -11,6 +11,7 @@
     activeBrowser=activeBrowser
     updateActiveBrowser=updateActiveBrowser
     isBuildApprovable=isBuildApprovable
+    index=index
   }}
 {{/each}}
 

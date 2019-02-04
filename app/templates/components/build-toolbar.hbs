@@ -5,15 +5,23 @@
         {{inline-svg "percy-logo-on-light"}}
       </figure>
     {{/link-to}}
-    <div class="flex items-center bg-purple-300 text-sm rounded px-1 py-sm hide-on-mobile">
+    <div class="relative flex items-center bg-purple-300 text-sm rounded px-1 py-sm hide-on-mobile">
       {{#link-to "organization" organization class="font-mono text-purple-600 truncate truncate-target hide-on-tablet"}}{{organization.name}}{{/link-to}}
       <span class="font-semibold mx-sm hide-on-tablet">/</span>
+
       {{#link-to "organization.project" organization.slug project class="font-mono text-purple-600 truncate truncate-target" data-test-build-toolbar-project-link=true}}
         {{project.name}}
       {{/link-to}}
       {{#if organization.isSponsored}}
         {{fa-icon data-test-build-public-project "globe" class="text-blue-200 ml-1"}}
       {{/if}}
+
+      {{demo-tooltip
+        shouldShowTip=project.isDemo
+        key="six"
+        title="Back to Builds"
+        message="To see a listing of all Percy builds for this project click the project title."
+      }}
     </div>
   </div>
 
@@ -45,6 +53,12 @@
 
     {{#if build.isFinished}}
       <div class="{{if (not isBuildApprovable) "hint--left hint--rounded hint--bounce"}}" aria-label="{{if (not isBuildApprovable) "You can't approve this build because you are not a member of this build's organization or are not logged in"}}">
+        {{demo-tooltip
+          shouldShowTip=build.project.isDemo
+          key="Five"
+          title="Approving a Percy Build"
+          message="After all snapshots have been approved, your pull request will show the visual review has been approved"
+        }}
         {{build-approval-button
           build=build
           createReview=createReview

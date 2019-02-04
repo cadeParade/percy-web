@@ -1,4 +1,4 @@
-import {visitable, create, clickable, isVisible} from 'ember-cli-page-object';
+import {visitable, create, clickable, isVisible, collection} from 'ember-cli-page-object';
 import {SnapshotViewerFull} from 'percy-web/tests/pages/components/snapshot-viewer-full';
 import {SnapshotList} from 'percy-web/tests/pages/components/snapshot-list';
 import {alias} from 'ember-cli-page-object/macros';
@@ -6,6 +6,7 @@ import {BuildApprovalButton} from 'percy-web/tests/pages/components/build-approv
 import {BuildInfoDropdown} from 'percy-web/tests/pages/components/build-info-dropdown';
 import {BrowserSwitcher} from 'percy-web/tests/pages/components/browser-switcher';
 import {BuildToolbar} from 'percy-web/tests/pages/components/build-toolbar';
+import {DemoTooltip} from 'percy-web/tests/pages/components/demo-tooltip';
 
 const SELECTORS = {
   SHOW_SUPPORT_LINK: '[data-test-build-overview-show-support]',
@@ -71,6 +72,12 @@ const BuildPage = {
   clickShowSupportLink: clickable(SELECTORS.SHOW_SUPPORT_LINK),
 
   isPublicBuildNoticeVisible: isVisible(SELECTORS.PUBLIC_BUILD_NOTICE),
+
+  demoTooltips: collection({
+    scope: '.BuildContainer',
+    itemScope: DemoTooltip.scope,
+    item: DemoTooltip,
+  }),
 };
 
 export default create(BuildPage);

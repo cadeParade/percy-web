@@ -20,8 +20,17 @@
         {{/if}}
       </figure>
 
-      <div class="Viewer-header-title SnapshotViewer-title cursor-default font-bold truncate" title="{{snapshot.name}}" data-test-SnapshotViewer-title>{{snapshot.name}}</div>
+      <div class="Viewer-header-title SnapshotViewer-title cursor-default font-bold truncate" title="{{snapshot.name}}" data-test-SnapshotViewer-title>
+        {{snapshot.name}}
+
+      </div>
     </div>
+    {{demo-tooltip
+      shouldShowTip=(and snapshot.build.project.isDemo (eq index 0))
+      key="two"
+      title="Snapshot Comparison"
+      message="Each comparison shows a baseline screenshot on the left and the pixels that have changed on the right. The screenshots are code that has been rendered and captured in our infrastructure."
+    }}
   </div>
 
   {{#if fullscreen}}
@@ -139,6 +148,13 @@
           }}
         {{/if}}
         <div class="btn-group" data-test-snapshot-approval-button>
+          {{demo-tooltip
+            shouldShowTip=(and snapshot.build.project.isDemo (eq index 0))
+            anchorPlacement='left-corner'
+            key="four"
+            title="Approving Screenshots"
+            message="You can review and approve the changes for each snapshot one by one, or you can approve all the snapshots at once with the “Approve All” button at the top of the page."
+          }}
           {{snapshot-approval-button
             snapshot=snapshot
             hasDiffsInBrowser=hasDiffsInBrowser
