@@ -3,7 +3,7 @@
     <div>
       <h1 class="text-xl font-semibold mb-sm">Project Settings</h1>
       <p class="text-gray-400 md:w-3/4 mb-2">
-        These are the settings specific to the {{model.project.slug}} project. Update the settings for your organization {{#link-to "organizations.organization.settings" project.organization.slug}}here{{/link-to}}. Not seeing the setting you were looking for? <a href="#" {{action (route-action "showSupport")}} data-test-project-settings-show-support>Reach out</a> and let us know!
+        These are the settings specific to the {{model.project.slug}} project. Update the settings for your organization {{#link-to "organizations.organization.settings" model.project.organization.slug}}here{{/link-to}}. Not seeing the setting you were looking for? <a href="#" {{action (route-action "showSupport")}} data-test-project-settings-show-support>Reach out</a> and let us know!
       </p>
     </div>
   </div>
