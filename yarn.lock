@@ -6165,10 +6165,10 @@ ember-runtime-enumerable-includes-polyfill@^2.0.0:
     ember-cli-babel "^6.9.0"
     ember-cli-version-checker "^2.1.0"
 
-ember-simple-auth-auth0@4.2.0-beta.1:
-  version "4.2.0-beta.1"
-  resolved "https://registry.yarnpkg.com/ember-simple-auth-auth0/-/ember-simple-auth-auth0-4.2.0-beta.1.tgz#e732eb8183f85b0fe43c8e0b794b1a9da839daa1"
-  integrity sha512-5JZLRdemWLWzRX8XpBrKCuxRrG3ig16oO8oAG+hEBWt4DO/aILpu8xkvNv9JSGmaHDUoylR3H6rK19037bbp1g==
+ember-simple-auth-auth0@4.2.0-beta.4:
+  version "4.2.0-beta.4"
+  resolved "https://registry.yarnpkg.com/ember-simple-auth-auth0/-/ember-simple-auth-auth0-4.2.0-beta.4.tgz#d1b1833067727130705f0609bce1bb50ec131cfe"
+  integrity sha512-CazMS3Fvg8fwcLcZcddJL8ibhzdHK7SkSl/Njwfwa+/DvgfyucvtkVRDu5LIwcRWku/XCxGQaLmEAExalWyuvw==
   dependencies:
     auth0-js "^9.3.3"
     auth0-lock "^11.4.0"
