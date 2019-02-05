@@ -50,7 +50,7 @@ describe('Integration: ProjectContainer', function() {
     it('shows no logo', async function() {
       await percySnapshot(this.test.fullTitle());
       const project = this.get('project');
-      expect(ProjectContainer.builds().count).to.equal(1);
+      expect(ProjectContainer.builds.length).to.equal(1);
       expect(project.get('isRepoConnected')).to.equal(false);
       expect(ProjectContainer.repoLinked.githubLogo.isVisible, 'github logo is visible').to.equal(
         false,
@@ -90,7 +90,7 @@ describe('Integration: ProjectContainer', function() {
       expect(project.get('isGithubEnterpriseRepo')).to.equal(false);
       expect(project.get('isGithubRepoFamily')).to.equal(false);
       expect(project.get('isGitlabRepo')).to.equal(false);
-      expect(ProjectContainer.builds().count).to.equal(1);
+      expect(ProjectContainer.builds.length).to.equal(1);
       expect(ProjectContainer.repoLinked.githubLogo.isVisible, 'github logo is visible').to.equal(
         false,
       );
@@ -129,7 +129,7 @@ describe('Integration: ProjectContainer', function() {
       expect(project.get('isGithubEnterpriseRepo')).to.equal(false);
       expect(project.get('isGithubRepoFamily')).to.equal(true);
       expect(project.get('isGitlabRepo')).to.equal(false);
-      expect(ProjectContainer.builds().count).to.equal(1);
+      expect(ProjectContainer.builds.length).to.equal(1);
       expect(ProjectContainer.repoLinked.githubLogo.isVisible, 'github logo is visible').to.equal(
         true,
       );
@@ -171,7 +171,7 @@ describe('Integration: ProjectContainer', function() {
       expect(project.get('isGithubEnterpriseRepo')).to.equal(true);
       expect(project.get('isGithubRepoFamily')).to.equal(true);
       expect(project.get('isGitlabRepo')).to.equal(false);
-      expect(ProjectContainer.builds().count).to.equal(1);
+      expect(ProjectContainer.builds.length).to.equal(1);
       expect(
         ProjectContainer.repoLinked.githubLogo.isVisible,
         'github logo is not visible',
@@ -211,7 +211,7 @@ describe('Integration: ProjectContainer', function() {
       expect(project.get('isGithubEnterpriseRepo')).to.equal(false);
       expect(project.get('isGithubRepoFamily')).to.equal(false);
       expect(project.get('isGitlabRepo')).to.equal(true);
-      expect(ProjectContainer.builds().count).to.equal(1);
+      expect(ProjectContainer.builds.length).to.equal(1);
       expect(
         ProjectContainer.repoLinked.gitlabLogo.isVisible,
         'gitlab logo is not visible',
@@ -302,11 +302,11 @@ describe('Integration: ProjectContainer', function() {
 
       await selectChoose('', 'branch-1');
       await percySnapshot(this.test);
-      expect(ProjectContainer.builds().count).to.equal(4);
+      expect(ProjectContainer.builds.length).to.equal(4);
       expect(ProjectContainer.infinityLoader.isPresent).to.equal(false);
 
       await selectChoose('', 'All branches');
-      expect(ProjectContainer.builds().count).to.equal(15);
+      expect(ProjectContainer.builds.length).to.equal(15);
       expect(ProjectContainer.infinityLoader.isPresent).to.equal(true);
     });
   });
@@ -341,11 +341,11 @@ describe('Integration: ProjectContainer', function() {
 
       await selectChoose('', 'branch-1');
       await percySnapshot(this.test);
-      expect(ProjectContainer.builds().count).to.equal(4);
+      expect(ProjectContainer.builds.length).to.equal(4);
       expect(ProjectContainer.infinityLoader.isPresent).to.equal(false);
 
       await selectChoose('', 'All branches');
-      expect(ProjectContainer.builds().count).to.equal(15);
+      expect(ProjectContainer.builds.length).to.equal(15);
       expect(ProjectContainer.infinityLoader.isPresent).to.equal(true);
     });
   });

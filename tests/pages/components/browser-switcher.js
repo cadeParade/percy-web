@@ -1,4 +1,5 @@
 import {text, create, collection, hasClass, isPresent} from 'ember-cli-page-object';
+import {getter} from 'ember-cli-page-object/macros';
 
 const SELECTORS = {
   BROWSER_SWITCHER: '[data-test-browser-switcher]',
@@ -10,40 +11,25 @@ const SELECTORS = {
 export const BrowserSwitcher = {
   scope: SELECTORS.BROWSER_SWITCHER,
 
-  buttons: collection({
-    itemScope: SELECTORS.BUTTON,
-    item: {
-      isActive: hasClass('is-browser-active'),
-      diffCount: text(SELECTORS.DIFF_COUNT),
-      isDiffCountPresent: isPresent(SELECTORS.DIFF_COUNT),
-      isAllApproved: isPresent(SELECTORS.APPROVED_CHECK),
-      isChrome: hasClass('data-test-browser-switcher-chrome'),
-      isFirefox: hasClass('data-test-browser-switcher-firefox'),
-    },
+  buttons: collection(SELECTORS.BUTTON, {
+    isActive: hasClass('is-browser-active'),
+    diffCount: text(SELECTORS.DIFF_COUNT),
+    isDiffCountPresent: isPresent(SELECTORS.DIFF_COUNT),
+    isAllApproved: isPresent(SELECTORS.APPROVED_CHECK),
+    isChrome: hasClass('data-test-browser-switcher-chrome'),
+    isFirefox: hasClass('data-test-browser-switcher-firefox'),
   }),
 
-  chromeButton: {
-    isDescriptor: true,
-    get() {
-      return this.buttons()
-        .toArray()
-        .findBy('isChrome');
-    },
-  },
+  chromeButton: getter(function() {
+    return this.buttons.toArray().findBy('isChrome');
+  }),
 
-  firefoxButton: {
-    isDescriptor: true,
-    get() {
-      return this.buttons()
-        .toArray()
-        .findBy('isFirefox');
-    },
-  },
+  firefoxButton: getter(function() {
+    return this.buttons.toArray().findBy('isFirefox');
+  }),
 
   switchBrowser() {
-    const activeBrowser = this.buttons()
-      .toArray()
-      .findBy('isActive');
+    const activeBrowser = this.buttons.toArray().findBy('isActive');
     if (activeBrowser.isChrome) {
       return this.firefoxButton.click();
     } else {

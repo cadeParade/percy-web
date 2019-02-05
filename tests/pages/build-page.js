@@ -7,6 +7,7 @@ import {BuildInfoDropdown} from 'percy-web/tests/pages/components/build-info-dro
 import {BrowserSwitcher} from 'percy-web/tests/pages/components/browser-switcher';
 import {BuildToolbar} from 'percy-web/tests/pages/components/build-toolbar';
 import {DemoTooltip} from 'percy-web/tests/pages/components/demo-tooltip';
+import {getter} from 'ember-cli-page-object/macros';
 
 const SELECTORS = {
   SHOW_SUPPORT_LINK: '[data-test-build-overview-show-support]',
@@ -33,23 +34,16 @@ const BuildPage = {
   snapshotList: SnapshotList,
   snapshots: alias('snapshotList.snapshots'),
 
-  snapshotTitles: {
-    isDescriptor: true,
-    get() {
-      return this.snapshots().map(snapshot => snapshot.name);
-    },
-  },
+  snapshotTitles: getter(function() {
+    return this.snapshots.map(snapshot => snapshot.name);
+  }),
 
   findSnapshotByName(name) {
-    return this.snapshots()
-      .toArray()
-      .findBy('name', name);
+    return this.snapshots.toArray().findBy('name', name);
   },
 
   focusedSnapshot() {
-    return this.snapshots()
-      .toArray()
-      .findBy('isFocused', true);
+    return this.snapshots.toArray().findBy('isFocused', true);
   },
 
   urlWithSnapshotQueryParam(snapshot, build) {
@@ -73,11 +67,7 @@ const BuildPage = {
 
   isPublicBuildNoticeVisible: isVisible(SELECTORS.PUBLIC_BUILD_NOTICE),
 
-  demoTooltips: collection({
-    scope: '.BuildContainer',
-    itemScope: DemoTooltip.scope,
-    item: DemoTooltip,
-  }),
+  demoTooltips: collection(DemoTooltip.scope, DemoTooltip),
 };
 
 export default create(BuildPage);

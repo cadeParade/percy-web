@@ -78,8 +78,8 @@ describe('Integration: UserCard', function() {
         expect(UserCard.userName.isVisible).to.equal(true);
         expect(UserCard.joinDate.isVisible).to.equal(true);
         expect(UserCard.role).to.equal('Administrator');
-        expect(UserCard.buttons().count).to.equal(1);
-        expect(UserCard.buttons(0).text).to.equal('Leave organization');
+        expect(UserCard.buttons.length).to.equal(1);
+        expect(UserCard.buttons.objectAt(0).text).to.equal('Leave organization');
 
         // Show buttons that are hidden until hover so Percy can snapshot them:
         find('.user-card-actions').classList.add('opacity-100');
@@ -95,9 +95,9 @@ describe('Integration: UserCard', function() {
         expect(UserCard.userName.isVisible).to.equal(true);
         expect(UserCard.joinDate.isVisible).to.equal(true);
         expect(UserCard.role).to.equal('Administrator');
-        expect(UserCard.buttons().count).to.equal(2);
-        expect(UserCard.buttons(0).text).to.equal('Make member');
-        expect(UserCard.buttons(1).text).to.equal('Remove');
+        expect(UserCard.buttons.length).to.equal(2);
+        expect(UserCard.buttons.objectAt(0).text).to.equal('Make member');
+        expect(UserCard.buttons.objectAt(1).text).to.equal('Remove');
 
         // Show buttons that are hidden until hover so Percy can snapshot them:
         find('.user-card-actions').classList.add('opacity-100');
@@ -111,9 +111,9 @@ describe('Integration: UserCard', function() {
         expect(UserCard.userName.isVisible).to.equal(true);
         expect(UserCard.joinDate.isVisible).to.equal(true);
         expect(UserCard.role).to.equal('Member');
-        expect(UserCard.buttons().count).to.equal(2);
-        expect(UserCard.buttons(0).text).to.equal('Make admin');
-        expect(UserCard.buttons(1).text).to.equal('Remove');
+        expect(UserCard.buttons.length).to.equal(2);
+        expect(UserCard.buttons.objectAt(0).text).to.equal('Make admin');
+        expect(UserCard.buttons.objectAt(1).text).to.equal('Remove');
 
         // Show buttons that are hidden until hover so Percy can snapshot them:
         find('.user-card-actions').classList.add('opacity-100');
@@ -136,8 +136,8 @@ describe('Integration: UserCard', function() {
         expect(UserCard.userName.isVisible).to.equal(true);
         expect(UserCard.joinDate.isVisible).to.equal(true);
         expect(UserCard.role).to.equal('Member');
-        expect(UserCard.buttons().count).to.equal(1);
-        expect(UserCard.buttons(0).text).to.equal('Leave organization');
+        expect(UserCard.buttons.length).to.equal(1);
+        expect(UserCard.buttons.objectAt(0).text).to.equal('Leave organization');
 
         // Show buttons that are hidden until hover so Percy can snapshot them:
         find('.user-card-actions').classList.add('opacity-100');
@@ -152,9 +152,9 @@ describe('Integration: UserCard', function() {
         expect(UserCard.userName.isVisible).to.equal(true);
         expect(UserCard.joinDate.isVisible).to.equal(true);
         expect(UserCard.role).to.equal('Administrator');
-        expect(UserCard.buttons().count).to.equal(2);
-        expect(UserCard.buttons(0).text).to.equal('Make member');
-        expect(UserCard.buttons(1).text).to.equal('Remove');
+        expect(UserCard.buttons.length).to.equal(2);
+        expect(UserCard.buttons.objectAt(0).text).to.equal('Make member');
+        expect(UserCard.buttons.objectAt(1).text).to.equal('Remove');
 
         // Show buttons that are hidden until hover so Percy can snapshot them:
         find('.user-card-actions').classList.add('opacity-100');
@@ -169,9 +169,9 @@ describe('Integration: UserCard', function() {
         expect(UserCard.userName.isVisible).to.equal(true);
         expect(UserCard.joinDate.isVisible).to.equal(true);
         expect(UserCard.role).to.equal('Member');
-        expect(UserCard.buttons().count).to.equal(2);
-        expect(UserCard.buttons(0).text).to.equal('Make admin');
-        expect(UserCard.buttons(1).text).to.equal('Remove');
+        expect(UserCard.buttons.length).to.equal(2);
+        expect(UserCard.buttons.objectAt(0).text).to.equal('Make admin');
+        expect(UserCard.buttons.objectAt(1).text).to.equal('Remove');
 
         // Show buttons that are hidden until hover so Percy can snapshot them:
         find('.user-card-actions').classList.add('opacity-100');
@@ -205,8 +205,8 @@ describe('Integration: UserCard', function() {
           );
           const orgUserStub = sinon.stub(organizationOtherAdminUser, 'destroyRecord');
 
-          expect(UserCard.buttons(1).text).to.equal('Remove');
-          await UserCard.buttons(1).click();
+          expect(UserCard.buttons.objectAt(1).text).to.equal('Remove');
+          await UserCard.buttons.objectAt(1).click();
 
           expect(confirmationAlert).to.have.been.called;
           expect(orgUserStub).to.have.been.called;
@@ -223,8 +223,8 @@ describe('Integration: UserCard', function() {
           expect(this.organizationMemberUser.role).to.equal('member');
           const orgUserStub = sinon.stub(organizationMemberUser, 'save');
 
-          expect(UserCard.buttons(0).text).to.equal('Make admin');
-          await UserCard.buttons(0).click();
+          expect(UserCard.buttons.objectAt(0).text).to.equal('Make admin');
+          await UserCard.buttons.objectAt(0).click();
 
           expect(orgUserStub).to.have.been.called;
         });
@@ -239,8 +239,8 @@ describe('Integration: UserCard', function() {
           expect(this.organizationOtherAdminUser.role).to.equal('admin');
           const orgUserStub = sinon.stub(organizationOtherAdminUser, 'save');
 
-          expect(UserCard.buttons(0).text).to.equal('Make member');
-          await UserCard.buttons(0).click();
+          expect(UserCard.buttons.objectAt(0).text).to.equal('Make member');
+          await UserCard.buttons.objectAt(0).click();
 
           expect(orgUserStub).to.have.been.called;
         });
@@ -263,8 +263,8 @@ describe('Integration: UserCard', function() {
           );
           const orgUserStub = sinon.stub(organizationOtherMemberUser, 'destroyRecord');
 
-          expect(UserCard.buttons(1).text).to.equal('Remove');
-          await UserCard.buttons(1).click();
+          expect(UserCard.buttons.objectAt(1).text).to.equal('Remove');
+          await UserCard.buttons.objectAt(1).click();
 
           expect(confirmationAlert).not.to.have.been.called;
           expect(orgUserStub).not.to.have.been.called;
@@ -281,8 +281,8 @@ describe('Integration: UserCard', function() {
           expect(this.organizationOtherMemberUser.role).to.equal('member');
           const orgUserStub = sinon.stub(organizationOtherMemberUser, 'save');
 
-          expect(UserCard.buttons(0).text).to.equal('Make admin');
-          await UserCard.buttons(0).click();
+          expect(UserCard.buttons.objectAt(0).text).to.equal('Make admin');
+          await UserCard.buttons.objectAt(0).click();
 
           expect(orgUserStub).not.to.have.been.called;
 
@@ -298,8 +298,8 @@ describe('Integration: UserCard', function() {
           expect(this.organizationOtherAdminUser.role).to.equal('admin');
           const orgUserStub = sinon.stub(organizationOtherAdminUser, 'save');
 
-          expect(UserCard.buttons(0).text).to.equal('Make member');
-          await UserCard.buttons(0).click();
+          expect(UserCard.buttons.objectAt(0).text).to.equal('Make member');
+          await UserCard.buttons.objectAt(0).click();
 
           expect(orgUserStub).not.to.have.been.called;
 

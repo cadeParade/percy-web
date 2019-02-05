@@ -5,9 +5,7 @@ const SELECTORS = {
 };
 
 const QuoteBlock = {
-  dots: collection({
-    itemScope: SELECTORS.DOT,
-  }),
+  dots: collection(SELECTORS.DOT),
 };
 
 export default create(QuoteBlock);

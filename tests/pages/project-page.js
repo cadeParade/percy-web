@@ -1,6 +1,7 @@
 import {ProjectContainer} from 'percy-web/tests/pages/components/project-container';
 import {visitable, clickable, create, isVisible, collection} from 'ember-cli-page-object';
 import {alias} from 'ember-cli-page-object/macros';
+import {getter} from 'ember-cli-page-object/macros';
 import {FixedTopHeader} from 'percy-web/tests/pages/components/fixed-top-header';
 import {ProjectSidebar} from 'percy-web/tests/pages/components/project-sidebar';
 
@@ -40,17 +41,12 @@ const ProjectPage = {
   toggleArchivedProjects: alias('projectSidebar.toggleArchivedProjects'),
   projectLinks: alias('projectSidebar.projectLinks'),
 
-  frameworks: collection({
-    itemScope: SELECTORS.FRAMEWORK_ITEMS,
-  }),
+  frameworks: collection(SELECTORS.FRAMEWORK_ITEMS),
 
-  lastFramework: {
-    isDescriptor: true,
-    get() {
-      const numFrameworks = this.frameworks().count;
-      return this.frameworks(numFrameworks - 1);
-    },
-  },
+  lastFramework: getter(function() {
+    const numFrameworks = this.frameworks.length;
+    return this.frameworks.objectAt(numFrameworks - 1);
+  }),
 
   isGenericDocsButtonVisible: isVisible(SELECTORS.GENERIC_DOCS_BUTTON),
   isExampleProjectButtonVisible: isVisible(SELECTORS.EXAMPLE_PROJECT_BUTTON),

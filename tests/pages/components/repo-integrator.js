@@ -20,11 +20,8 @@ export const RepoIntegrator = {
     options: {
       count: count(SELECTORS.POWER_SELECT_OPTIONS),
     },
-    groups: collection({
-      itemScope: SELECTORS.POWER_SELECT_GROUPS,
-      item: {
-        name: text(SELECTORS.POWER_SELECT_GROUP_NAME),
-      },
+    groups: collection(SELECTORS.POWER_SELECT_GROUPS, {
+      name: text(SELECTORS.POWER_SELECT_GROUP_NAME),
     }),
 
     lastGroup: {

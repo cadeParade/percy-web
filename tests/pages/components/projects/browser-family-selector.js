@@ -1,4 +1,5 @@
 import {create, collection, hasClass} from 'ember-cli-page-object';
+import {getter} from 'ember-cli-page-object/macros';
 
 const SELECTORS = {
   BROWSER_FAMILY_SELECTOR: '[data-test-browser-family-selector]',
@@ -8,32 +9,19 @@ const SELECTORS = {
 export const BrowserFamilySelector = {
   scope: SELECTORS.BROWSER_FAMILY_SELECTOR,
 
-  buttons: collection({
-    itemScope: SELECTORS.BUTTON,
-    item: {
-      isActive: hasClass('is-browser-active'),
-      isChrome: hasClass('data-test-browser-selector-chrome'),
-      isFirefox: hasClass('data-test-browser-selector-firefox'),
-    },
+  buttons: collection(SELECTORS.BUTTON, {
+    isActive: hasClass('is-browser-active'),
+    isChrome: hasClass('data-test-browser-selector-chrome'),
+    isFirefox: hasClass('data-test-browser-selector-firefox'),
   }),
 
-  chromeButton: {
-    isDescriptor: true,
-    get() {
-      return this.buttons()
-        .toArray()
-        .findBy('isChrome');
-    },
-  },
+  chromeButton: getter(function() {
+    return this.buttons.toArray().findBy('isChrome');
+  }),
 
-  firefoxButton: {
-    isDescriptor: true,
-    get() {
-      return this.buttons()
-        .toArray()
-        .findBy('isFirefox');
-    },
-  },
+  firefoxButton: getter(function() {
+    return this.buttons.toArray().findBy('isFirefox');
+  }),
 
   clickChrome() {
     this.chromeButton.click();

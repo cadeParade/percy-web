@@ -46,7 +46,7 @@ describe('Integration: BrowserSwitcher', function() {
   });
 
   it('renders correct number of browsers', function() {
-    expect(browserSwitcher.buttons().count).to.equal(2);
+    expect(browserSwitcher.buttons.length).to.equal(2);
   });
 
   it('displays the correct browser as active', function() {
@@ -70,6 +70,6 @@ describe('Integration: BrowserSwitcher', function() {
   });
 
   it('displays chrome button first', function() {
-    expect(browserSwitcher.buttons(0).isChrome).to.equal(true);
+    expect(browserSwitcher.buttons.objectAt(0).isChrome).to.equal(true);
   });
 });

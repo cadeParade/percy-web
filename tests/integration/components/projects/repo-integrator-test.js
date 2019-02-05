@@ -44,7 +44,7 @@ describe('Integration: RepoIntegratorComponent', function() {
     it('renders powerselect open', async function() {
       await clickTrigger();
       expect(RepoIntegrator.dropdown.isSelectorOpen).to.eq(true);
-      expect(RepoIntegrator.dropdown.groups(0).name).to.eq('GitHub');
+      expect(RepoIntegrator.dropdown.groups.objectAt(0).name).to.eq('GitHub');
 
       await percySnapshot(this.test.fullTitle());
     });
@@ -70,7 +70,7 @@ describe('Integration: RepoIntegratorComponent', function() {
     it('renders powerselect open', async function() {
       await clickTrigger();
       expect(RepoIntegrator.dropdown.isSelectorOpen).to.eq(true);
-      expect(RepoIntegrator.dropdown.groups(0).name).to.eq('GitLab');
+      expect(RepoIntegrator.dropdown.groups.objectAt(0).name).to.eq('GitLab');
 
       await percySnapshot(this.test.fullTitle());
     });
@@ -100,7 +100,7 @@ describe('Integration: RepoIntegratorComponent', function() {
     it('renders powerselect open', async function() {
       await clickTrigger();
       expect(RepoIntegrator.dropdown.isSelectorOpen).to.eq(true);
-      expect(RepoIntegrator.dropdown.groups(0).name).to.eq('GitLab Self-Managed');
+      expect(RepoIntegrator.dropdown.groups.objectAt(0).name).to.eq('GitLab Self-Managed');
 
       await percySnapshot(this.test.fullTitle());
     });
@@ -129,7 +129,7 @@ describe('Integration: RepoIntegratorComponent', function() {
     it('renders powerselect open', async function() {
       await clickTrigger();
       expect(RepoIntegrator.dropdown.isSelectorOpen).to.eq(true);
-      expect(RepoIntegrator.dropdown.groups(0).name).to.eq('GitHub Enterprise');
+      expect(RepoIntegrator.dropdown.groups.objectAt(0).name).to.eq('GitHub Enterprise');
 
       await percySnapshot(this.test.fullTitle());
     });
@@ -154,10 +154,10 @@ describe('Integration: RepoIntegratorComponent', function() {
     it('renders powerselect open', async function() {
       await clickTrigger();
       expect(RepoIntegrator.dropdown.isSelectorOpen).to.eq(true);
-      expect(RepoIntegrator.dropdown.groups(0).name).to.eq('GitHub');
-      expect(RepoIntegrator.dropdown.groups(1).name).to.eq('GitLab');
-      expect(RepoIntegrator.dropdown.groups(2).name).to.eq('GitLab Self-Managed');
-      expect(RepoIntegrator.dropdown.groups(3).name).to.eq('GitHub Enterprise');
+      expect(RepoIntegrator.dropdown.groups.objectAt(0).name).to.eq('GitHub');
+      expect(RepoIntegrator.dropdown.groups.objectAt(1).name).to.eq('GitLab');
+      expect(RepoIntegrator.dropdown.groups.objectAt(2).name).to.eq('GitLab Self-Managed');
+      expect(RepoIntegrator.dropdown.groups.objectAt(3).name).to.eq('GitHub Enterprise');
       await percySnapshot(this.test.fullTitle());
     });
   });

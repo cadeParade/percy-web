@@ -13,14 +13,14 @@ describe('Integration: ManageUsersList', function() {
 
   function rendersAUserCorrectly() {
     it('renders a user correctly', async function() {
-      const userCard = ManageUsersList.userCards(0);
+      const userCard = ManageUsersList.userCards.objectAt(0);
       expect(userCard.avatarUrl).to.equal(this.organizationUsers[0].user.avatarUrl);
       expect(userCard.userName.isVisible).to.equal(true);
       expect(userCard.joinDate.isVisible).to.equal(true);
       expect(userCard.role).to.equal('Member');
-      expect(userCard.buttons().count).to.equal(2);
-      expect(userCard.buttons(0).text).to.equal('Make admin');
-      expect(userCard.buttons(1).text).to.equal('Remove');
+      expect(userCard.buttons.length).to.equal(2);
+      expect(userCard.buttons.objectAt(0).text).to.equal('Make admin');
+      expect(userCard.buttons.objectAt(1).text).to.equal('Remove');
     });
   }
 
@@ -33,7 +33,7 @@ describe('Integration: ManageUsersList', function() {
           organizationUsers=organizationUsers}}`,
       );
 
-      const inviteCard = ManageUsersList.inviteCards(0);
+      const inviteCard = ManageUsersList.inviteCards.objectAt(0);
       const invite = this.invites[0];
       expect(inviteCard.email).to.equal(invite.email);
       expect(inviteCard.role).to.equal('Member');
@@ -93,13 +93,13 @@ describe('Integration: ManageUsersList', function() {
     });
 
     it('renders all users', function() {
-      expect(ManageUsersList.userCards().count).to.equal(numberOfUsers);
+      expect(ManageUsersList.userCards.length).to.equal(numberOfUsers);
     });
 
     rendersAUserCorrectly();
 
     it('does not render any invites', function() {
-      expect(ManageUsersList.inviteCards().count).to.equal(0);
+      expect(ManageUsersList.inviteCards.length).to.equal(0);
     });
   });
 
@@ -129,13 +129,13 @@ describe('Integration: ManageUsersList', function() {
     });
 
     it('renders all users', function() {
-      expect(ManageUsersList.userCards().count).to.equal(numberOfUsers);
+      expect(ManageUsersList.userCards.length).to.equal(numberOfUsers);
     });
 
     rendersAUserCorrectly();
 
     it('renders all invites', function() {
-      expect(ManageUsersList.inviteCards().count).to.equal(numberOfInvites);
+      expect(ManageUsersList.inviteCards.length).to.equal(numberOfInvites);
     });
 
     describe('as an admin', function() {

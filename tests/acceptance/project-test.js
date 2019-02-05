@@ -77,7 +77,7 @@ describe('Acceptance: Project', function() {
 
       await percySnapshot(this.test);
 
-      await ProjectPage.frameworks(0).click();
+      await ProjectPage.frameworks.objectAt(0).click();
 
       expect(ProjectPage.isExampleProjectButtonVisible).to.equal(true);
       expect(ProjectPage.isFrameworkDocsButtonVisible).to.equal(true);
@@ -105,7 +105,7 @@ describe('Acceptance: Project', function() {
 
       await ProjectPage.visitProject(urlParams);
 
-      expect(ProjectPage.builds().count).to.equal(1);
+      expect(ProjectPage.builds.length).to.equal(1);
     });
   });
 
@@ -140,9 +140,9 @@ describe('Acceptance: Project', function() {
       });
 
       expect(currentRouteName()).to.equal('organization.project.settings.index');
-      expect(ProjectSettingsPage.projectLinks(0).projectName).to.match(/Enabled Project/);
+      expect(ProjectSettingsPage.projectLinks.objectAt(0).projectName).to.match(/Enabled Project/);
       await ProjectSettingsPage.sideNav.toggleArchivedProjects();
-      expect(ProjectSettingsPage.projectLinks(1).projectName).to.match(/Disabled Project/);
+      expect(ProjectSettingsPage.projectLinks.objectAt(1).projectName).to.match(/Disabled Project/);
       await percySnapshot(this.test);
     });
 
@@ -153,7 +153,7 @@ describe('Acceptance: Project', function() {
       });
 
       expect(currentRouteName()).to.equal('organization.project.settings.index');
-      expect(ProjectSettingsPage.projectLinks(0).projectName).to.match(/Enabled Project/);
+      expect(ProjectSettingsPage.projectLinks.objectAt(0).projectName).to.match(/Enabled Project/);
 
       await percySnapshot(this.test);
     });
@@ -200,7 +200,7 @@ describe('Acceptance: Project', function() {
 
       await percySnapshot(this.test);
 
-      expect(ProjectSettingsPage.webhookConfigList.webhookConfigs(0).url).to.equal(
+      expect(ProjectSettingsPage.webhookConfigList.webhookConfigs.objectAt(0).url).to.equal(
         webhookConfig.url,
       );
     });
@@ -325,7 +325,7 @@ describe('Acceptance: Project', function() {
         orgSlug: organization.slug,
         projectSlug: enabledProject.slug,
       });
-      await ProjectSettingsPage.projectLinks(1).click();
+      await ProjectSettingsPage.projectLinks.objectAt(1).click();
       expect(currentRouteName()).to.equal('organization.project.settings.index');
     });
   });
@@ -435,7 +435,7 @@ describe('Acceptance: Project', function() {
       await ProjectPage.visitProject(urlParams);
 
       expect(ProjectPage.infinityLoader.isPresent).to.equal(false);
-      expect(ProjectPage.builds().count).to.equal(12);
+      expect(ProjectPage.builds.length).to.equal(12);
     });
 
     it('shows builds with identical build numbers', async function() {
@@ -446,7 +446,7 @@ describe('Acceptance: Project', function() {
       });
 
       await ProjectPage.visitProject(urlParams);
-      expect(ProjectPage.builds().count).to.equal(13);
+      expect(ProjectPage.builds.length).to.equal(13);
     });
 
     it('shows the loader when there are more than 50 builds', async function() {
@@ -477,8 +477,8 @@ describe('Acceptance: Project', function() {
       await ProjectPage.visitProject(urlParams);
       await selectChoose('', 'branch-mc-branch-face');
       await ProjectPage.toggleProjectSidebar();
-      await ProjectPage.projectLinks(2).click();
-      expect(ProjectPage.builds().count).to.equal(3);
+      await ProjectPage.projectLinks.objectAt(2).click();
+      expect(ProjectPage.builds.length).to.equal(3);
     });
 
     it('resets builds when navigating to another project in another org with the same slug', async function() { // eslint-disable-line
@@ -497,7 +497,7 @@ describe('Acceptance: Project', function() {
       await UserMenu.toggleUserMenu();
       await UserMenu.orgLinks(1).clickLink();
 
-      expect(ProjectPage.builds().count).to.equal(0);
+      expect(ProjectPage.builds.length).to.equal(0);
     });
 
     it('resets builds when navigating to another project in same org with no scm integration', async function() { // eslint-disable-line
@@ -507,10 +507,10 @@ describe('Acceptance: Project', function() {
       server.createList('build', 2, {project: project2});
 
       await ProjectPage.visitProject({orgSlug: organization.slug, projectSlug: project1.slug});
-      expect(ProjectPage.builds().count).to.equal(3);
+      expect(ProjectPage.builds.length).to.equal(3);
       await ProjectPage.toggleProjectSidebar();
-      await ProjectPage.projectLinks(3).click();
-      expect(ProjectPage.builds().count).to.equal(2);
+      await ProjectPage.projectLinks.objectAt(3).click();
+      expect(ProjectPage.builds.length).to.equal(2);
     });
   });
 

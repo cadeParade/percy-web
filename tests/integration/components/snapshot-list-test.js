@@ -52,8 +52,8 @@ describe('Integration: SnapshotList', function() {
     });
 
     it('renders snapshot header placeholder', async function() {
-      expect(SnapshotList.snapshots().count).to.equal(numSnapshots);
-      SnapshotList.snapshots().forEach(snapshot => {
+      expect(SnapshotList.snapshots.length).to.equal(numSnapshots);
+      SnapshotList.snapshots.forEach(snapshot => {
         expect(snapshot.isLazyRenderHeaderVisible).to.equal(true);
       });
       await percySnapshot(this.test);
@@ -97,9 +97,9 @@ describe('Integration: SnapshotList', function() {
     it('automatically expands collapsed snapshots if focused', async function() {
       this.set('isUnchangedSnapshotsVisible', true);
 
-      const firstNoDiffSnapshot = SnapshotList.snapshots(3);
-      const secondNoDiffSnapshot = SnapshotList.snapshots(4);
-      const thirdNoDiffSnapshot = SnapshotList.snapshots(5);
+      const firstNoDiffSnapshot = SnapshotList.snapshots.objectAt(3);
+      const secondNoDiffSnapshot = SnapshotList.snapshots.objectAt(4);
+      const thirdNoDiffSnapshot = SnapshotList.snapshots.objectAt(5);
 
       // Manaully click the first snapshot.
       await firstNoDiffSnapshot.expandSnapshot();
@@ -129,48 +129,48 @@ describe('Integration: SnapshotList', function() {
     });
 
     it('focuses snapshots on arrow presses', async function() {
-      const numRenderedSnapshots = SnapshotList.snapshots().count;
+      const numRenderedSnapshots = SnapshotList.snapshots.length;
       expect(numRenderedSnapshots).to.equal(numSnapshots);
 
       // select first snapshot
       await SnapshotList.typeDownArrow();
-      expect(SnapshotList.snapshots(0).isFocused).to.equal(true);
-      expect(SnapshotList.snapshots(1).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots(numRenderedSnapshots - 1).isFocused).to.equal(false);
+      expect(SnapshotList.snapshots.objectAt(0).isFocused).to.equal(true);
+      expect(SnapshotList.snapshots.objectAt(1).isFocused).to.equal(false);
+      expect(SnapshotList.snapshots.objectAt(numRenderedSnapshots - 1).isFocused).to.equal(false);
 
       // select second snapshot
       await SnapshotList.typeDownArrow();
-      expect(SnapshotList.snapshots(0).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots(1).isFocused).to.equal(true);
-      expect(SnapshotList.snapshots(numRenderedSnapshots - 1).isFocused).to.equal(false);
+      expect(SnapshotList.snapshots.objectAt(0).isFocused).to.equal(false);
+      expect(SnapshotList.snapshots.objectAt(1).isFocused).to.equal(true);
+      expect(SnapshotList.snapshots.objectAt(numRenderedSnapshots - 1).isFocused).to.equal(false);
 
       // select first snapshot
       await SnapshotList.typeUpArrow();
-      expect(SnapshotList.snapshots(0).isFocused).to.equal(true);
-      expect(SnapshotList.snapshots(1).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots(numRenderedSnapshots - 1).isFocused).to.equal(false);
+      expect(SnapshotList.snapshots.objectAt(0).isFocused).to.equal(true);
+      expect(SnapshotList.snapshots.objectAt(1).isFocused).to.equal(false);
+      expect(SnapshotList.snapshots.objectAt(numRenderedSnapshots - 1).isFocused).to.equal(false);
 
       // wrap around to select last snapshot
       await SnapshotList.typeUpArrow();
-      expect(SnapshotList.snapshots(0).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots(1).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots(numRenderedSnapshots - 1).isFocused).to.equal(true);
+      expect(SnapshotList.snapshots.objectAt(0).isFocused).to.equal(false);
+      expect(SnapshotList.snapshots.objectAt(1).isFocused).to.equal(false);
+      expect(SnapshotList.snapshots.objectAt(numRenderedSnapshots - 1).isFocused).to.equal(true);
       await percySnapshot(this.test);
 
       // wrap around to select first snapshot
       await SnapshotList.typeDownArrow();
-      expect(SnapshotList.snapshots(0).isFocused).to.equal(true);
-      expect(SnapshotList.snapshots(1).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots(numRenderedSnapshots - 1).isFocused).to.equal(false);
+      expect(SnapshotList.snapshots.objectAt(0).isFocused).to.equal(true);
+      expect(SnapshotList.snapshots.objectAt(1).isFocused).to.equal(false);
+      expect(SnapshotList.snapshots.objectAt(numRenderedSnapshots - 1).isFocused).to.equal(false);
     });
 
     it('does not send keyboard actions when isKeyboardNavEnabled is false', async function() {
-      const numRenderedSnapshots = SnapshotList.snapshots().count;
+      const numRenderedSnapshots = SnapshotList.snapshots.length;
       this.set('isKeyboardNavEnabled', false);
       await SnapshotList.typeDownArrow();
-      expect(SnapshotList.snapshots(0).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots(1).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots(numRenderedSnapshots - 1).isFocused).to.equal(false);
+      expect(SnapshotList.snapshots.objectAt(0).isFocused).to.equal(false);
+      expect(SnapshotList.snapshots.objectAt(1).isFocused).to.equal(false);
+      expect(SnapshotList.snapshots.objectAt(numRenderedSnapshots - 1).isFocused).to.equal(false);
     });
   });
 });

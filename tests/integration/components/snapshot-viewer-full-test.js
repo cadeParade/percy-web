@@ -116,25 +116,25 @@ describe('Integration: SnapshotViewerFull', function() {
     });
 
     it('displays correct number as selected', function() {
-      expect(FullSnapshotPage.header.widthSwitcher.buttons(0).isActive).to.equal(false);
-      expect(FullSnapshotPage.header.widthSwitcher.buttons(1).isActive).to.equal(true);
-      expect(FullSnapshotPage.header.widthSwitcher.buttons(2).isActive).to.equal(false);
+      expect(FullSnapshotPage.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(false);
+      expect(FullSnapshotPage.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(true);
+      expect(FullSnapshotPage.header.widthSwitcher.buttons.objectAt(2).isActive).to.equal(false);
     });
 
     it('updates active button when clicked', async function() {
-      await FullSnapshotPage.header.widthSwitcher.buttons(0).click();
-      expect(FullSnapshotPage.header.widthSwitcher.buttons(0).isActive).to.equal(true);
-      expect(FullSnapshotPage.header.widthSwitcher.buttons(1).isActive).to.equal(false);
-      expect(FullSnapshotPage.header.widthSwitcher.buttons(2).isActive).to.equal(false);
-      await FullSnapshotPage.header.widthSwitcher.buttons(2).click();
-      expect(FullSnapshotPage.header.widthSwitcher.buttons(0).isActive).to.equal(false);
-      expect(FullSnapshotPage.header.widthSwitcher.buttons(1).isActive).to.equal(false);
-      expect(FullSnapshotPage.header.widthSwitcher.buttons(2).isActive).to.equal(true);
+      await FullSnapshotPage.header.widthSwitcher.buttons.objectAt(0).click();
+      expect(FullSnapshotPage.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(true);
+      expect(FullSnapshotPage.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(false);
+      expect(FullSnapshotPage.header.widthSwitcher.buttons.objectAt(2).isActive).to.equal(false);
+      await FullSnapshotPage.header.widthSwitcher.buttons.objectAt(2).click();
+      expect(FullSnapshotPage.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(false);
+      expect(FullSnapshotPage.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(false);
+      expect(FullSnapshotPage.header.widthSwitcher.buttons.objectAt(2).isActive).to.equal(true);
 
-      await FullSnapshotPage.header.widthSwitcher.buttons(1).click();
-      expect(FullSnapshotPage.header.widthSwitcher.buttons(0).isActive).to.equal(false);
-      expect(FullSnapshotPage.header.widthSwitcher.buttons(1).isActive).to.equal(true);
-      expect(FullSnapshotPage.header.widthSwitcher.buttons(2).isActive).to.equal(false);
+      await FullSnapshotPage.header.widthSwitcher.buttons.objectAt(1).click();
+      expect(FullSnapshotPage.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(false);
+      expect(FullSnapshotPage.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(true);
+      expect(FullSnapshotPage.header.widthSwitcher.buttons.objectAt(2).isActive).to.equal(false);
     });
   });
 

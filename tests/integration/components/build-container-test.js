@@ -113,7 +113,7 @@ describe('Integration: BuildContainer', function() {
     await percySnapshot(this.test.fullTitle());
 
     expect(BuildPage.snapshotList.isVisible).to.equal(true);
-    expect(BuildPage.snapshotList.snapshots().count).to.equal(1);
+    expect(BuildPage.snapshotList.snapshots.length).to.equal(1);
     expect(BuildPage.snapshotList.isNoDiffsBatchVisible).to.equal(true);
   });
 
@@ -167,7 +167,7 @@ describe('Integration: BuildContainer', function() {
     await BuildPage.snapshotList.clickToggleNoDiffsSection();
 
     expect(BuildPage.snapshotList.isNoDiffsBatchVisible).to.equal(false);
-    expect(BuildPage.snapshotList.snapshots().count).to.equal(numSnapshotsUnchanged);
+    expect(BuildPage.snapshotList.snapshots.length).to.equal(numSnapshotsUnchanged);
   });
 
   describe('when a build has more than one browser', function() {
@@ -246,11 +246,11 @@ describe('Integration: BuildContainer', function() {
 
     it('shows unchanged snapshots when it is toggled', async function() {
       expect(BuildPage.isUnchangedPanelVisible).to.equal(true);
-      expect(BuildPage.snapshots().count).to.equal(2);
+      expect(BuildPage.snapshots.length).to.equal(2);
       await BuildPage.clickToggleNoDiffsSection();
 
       expect(BuildPage.isUnchangedPanelVisible).to.equal(false);
-      expect(BuildPage.snapshots().count).to.equal(3);
+      expect(BuildPage.snapshots.length).to.equal(3);
     });
 
     it('resets unchanged snapshots when unchanged snapshots are visible and browser is switched', async function() { // eslint-disable-line
@@ -259,10 +259,10 @@ describe('Integration: BuildContainer', function() {
       await BuildPage.browserSwitcher.switchBrowser();
 
       expect(BuildPage.isUnchangedPanelVisible).to.equal(true);
-      expect(BuildPage.snapshots().count).to.equal(1);
+      expect(BuildPage.snapshots.length).to.equal(1);
       await BuildPage.clickToggleNoDiffsSection();
 
-      expect(BuildPage.snapshots().count).to.equal(3);
+      expect(BuildPage.snapshots.length).to.equal(3);
     });
 
     it('selects browser with most diffs by default', async function() {

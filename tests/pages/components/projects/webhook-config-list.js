@@ -9,11 +9,8 @@ const SELECTORS = {
 export const WebhookConfigList = {
   scope: SELECTORS.WEBHOOK_CONFIG_LIST,
 
-  webhookConfigs: collection({
-    itemScope: SELECTORS.WEBHOOK_CONFIG_ITEM,
-    item: {
-      url: text('[data-test-webhook-config-url]'),
-    },
+  webhookConfigs: collection(SELECTORS.WEBHOOK_CONFIG_ITEM, {
+    url: text('[data-test-webhook-config-url]'),
   }),
 
   newWebhookConfig: clickable('button'),

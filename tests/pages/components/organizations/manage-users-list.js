@@ -12,18 +12,13 @@ const SELECTORS = {
 export const ManageUsersList = {
   scope: SELECTORS.CONTAINER,
   columnHeaders: text(SELECTORS.COLUMN_HEADERS),
-  inviteCards: collection({
-    itemScope: InviteCard.scope,
-    item: InviteCard,
-  }),
+  inviteCards: collection(InviteCard.scope, InviteCard),
+
   invitesHeader: {
     scope: SELECTORS.INVITES_HEADERS,
     isVisible: isVisible(),
   },
-  userCards: collection({
-    itemScope: UserCard.scope,
-    item: UserCard,
-  }),
+  userCards: collection(UserCard.scope, UserCard),
   usersHeader: {
     scope: SELECTORS.USERS_HEADERS,
     isVisible: isVisible(),

@@ -61,7 +61,7 @@ describe('Integration: SnapshotViewerHeader', function() {
       }}`);
 
       await SnapshotViewerHeaderPO.clickDropdownToggle();
-      expect(SnapshotViewerHeaderPO.dropdownOptions(0).text).to.equal('Copy snapshot URL');
+      expect(SnapshotViewerHeaderPO.dropdownOptions.objectAt(0).text).to.equal('Copy snapshot URL');
       await percySnapshot(this.test);
     });
 
@@ -90,8 +90,12 @@ describe('Integration: SnapshotViewerHeader', function() {
         this.set('comparison.baseSnapshot', baseSnapshot);
 
         await SnapshotViewerHeaderPO.clickDropdownToggle();
-        expect(SnapshotViewerHeaderPO.dropdownOptions(1).text).to.equal('Download original source');
-        expect(SnapshotViewerHeaderPO.dropdownOptions(2).text).to.equal('Download new source');
+        expect(SnapshotViewerHeaderPO.dropdownOptions.objectAt(1).text).to.equal(
+          'Download original source',
+        );
+        expect(SnapshotViewerHeaderPO.dropdownOptions.objectAt(2).text).to.equal(
+          'Download new source',
+        );
         await percySnapshot(this.test);
       });
 
@@ -99,7 +103,9 @@ describe('Integration: SnapshotViewerHeader', function() {
         this.set('comparison.headSnapshot', headSnapshot);
 
         await SnapshotViewerHeaderPO.clickDropdownToggle();
-        expect(SnapshotViewerHeaderPO.dropdownOptions(1).text).to.equal('Download new source');
+        expect(SnapshotViewerHeaderPO.dropdownOptions.objectAt(1).text).to.equal(
+          'Download new source',
+        );
         await percySnapshot(this.test);
       });
     });
@@ -130,8 +136,10 @@ describe('Integration: SnapshotViewerHeader', function() {
 
         it('shows download source diff', async function() {
           await SnapshotViewerHeaderPO.clickDropdownToggle();
-          expect(SnapshotViewerHeaderPO.dropdownOptions().contains('Download source diff')).to.be
-            .true;
+
+          expect(
+            SnapshotViewerHeaderPO.dropdownOptions.mapBy('text').includes('Download source diff'),
+          ).to.be.true;
           await percySnapshot(this.test);
         });
       });
@@ -157,8 +165,9 @@ describe('Integration: SnapshotViewerHeader', function() {
 
         it('shows download source diff', async function() {
           await SnapshotViewerHeaderPO.clickDropdownToggle();
-          expect(SnapshotViewerHeaderPO.dropdownOptions().contains('Download source diff')).to.be
-            .true;
+          expect(
+            SnapshotViewerHeaderPO.dropdownOptions.mapBy('text').includes('Download source diff'),
+          ).to.be.true;
           await percySnapshot(this.test);
         });
       });
@@ -182,8 +191,9 @@ describe('Integration: SnapshotViewerHeader', function() {
 
         it('does not show download source diff', async function() {
           await SnapshotViewerHeaderPO.clickDropdownToggle();
-          expect(SnapshotViewerHeaderPO.dropdownOptions().contains('Download source diff')).to.be
-            .false;
+          expect(
+            SnapshotViewerHeaderPO.dropdownOptions.mapBy('text').includes('Download source diff'),
+          ).to.be.false;
           await percySnapshot(this.test);
         });
       });
@@ -206,13 +216,13 @@ describe('Integration: SnapshotViewerHeader', function() {
       });
 
       it('displays all comparison widths', function() {
-        expect(SnapshotViewerHeaderPO.widthSwitcher.buttons().count).to.equal(
+        expect(SnapshotViewerHeaderPO.widthSwitcher.buttons.length).to.equal(
           this.get('snapshot.comparisons.length'),
         );
       });
 
       it('displays correct text on the buttons', function() {
-        SnapshotViewerHeaderPO.widthSwitcher.buttons().forEach((button, i) => {
+        SnapshotViewerHeaderPO.widthSwitcher.buttons.forEach((button, i) => {
           expect(button.text, `button ${i} should contain correct width`).to.equal(
             `${this.get('snapshot.comparisons')
               .toArray()
@@ -248,13 +258,13 @@ describe('Integration: SnapshotViewerHeader', function() {
       });
 
       it('displays only widths with diffs', function() {
-        expect(SnapshotViewerHeaderPO.widthSwitcher.buttons().count).to.equal(2);
+        expect(SnapshotViewerHeaderPO.widthSwitcher.buttons.length).to.equal(2);
       });
 
       it('displays correct text on the buttons', function() {
-        SnapshotViewerHeaderPO.widthSwitcher.buttons().forEach((button, i) => {
+        SnapshotViewerHeaderPO.widthSwitcher.buttons.forEach((button, i) => {
           expect(button.text, `button ${i} should contain correct width`).to.equal(
-            `${comparisonsWithDiffs.toArray()[i].get('width')}px`, // eslint-disable-line
+            `${comparisonsWithDiffs.toArray()[i].get('width')}px`,
           );
         });
       });
@@ -268,9 +278,9 @@ describe('Integration: SnapshotViewerHeader', function() {
       it('shows all comparisons widths when toggle widths option is clicked', async function() {
         await SnapshotViewerHeaderPO.clickDropdownToggle();
         await SnapshotViewerHeaderPO.clickToggleAllWidths();
-        expect(SnapshotViewerHeaderPO.widthSwitcher.buttons().count).to.equal(3);
+        expect(SnapshotViewerHeaderPO.widthSwitcher.buttons.length).to.equal(3);
 
-        SnapshotViewerHeaderPO.widthSwitcher.buttons().forEach((button, i) => {
+        SnapshotViewerHeaderPO.widthSwitcher.buttons.forEach((button, i) => {
           expect(button.text, `button ${i} should contain correct width`).to.equal(
             `${this.get('snapshot.comparisons')
               .toArray()
@@ -296,13 +306,13 @@ describe('Integration: SnapshotViewerHeader', function() {
       });
 
       it('displays all widths', function() {
-        expect(SnapshotViewerHeaderPO.widthSwitcher.buttons().count).to.equal(
+        expect(SnapshotViewerHeaderPO.widthSwitcher.buttons.length).to.equal(
           this.get('snapshot.comparisons.length'),
         );
       });
 
       it('displays correct text on the buttons', function() {
-        SnapshotViewerHeaderPO.widthSwitcher.buttons().forEach((button, i) => {
+        SnapshotViewerHeaderPO.widthSwitcher.buttons.forEach((button, i) => {
           expect(button.text, `button ${i} should contain correct width`).to.equal(
             `${this.get('snapshot.comparisons')
               .toArray()
@@ -336,7 +346,7 @@ describe('Integration: SnapshotViewerHeader', function() {
       });
     });
 
-    it('displays "No Changes in [browser]" when there are changes in a different browser', async function() {  // eslint-disable-line
+    it('displays "No Changes in [browser]" when there are changes in a different browser', async function() { // eslint-disable-line
       const browser = make('browser', 'chrome');
       this.set('browser', browser);
       await this.render(hbs`{{snapshot-viewer-header

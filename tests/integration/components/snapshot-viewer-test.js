@@ -120,8 +120,8 @@ describe('Integration: SnapshotViewer', function() {
         isBuildApprovable=isBuildApprovable
       }}`);
 
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons(0).isActive).to.equal(false);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons(1).isActive).to.equal(true);
+      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(false);
+      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(true);
     });
 
     it('shows widest width with diff as active by default when no comparisons have diffs', async function() { // eslint-disable-line
@@ -138,9 +138,9 @@ describe('Integration: SnapshotViewer', function() {
         isBuildApprovable=isBuildApprovable
       }}`);
 
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons(0).isActive).to.equal(false);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons(1).isActive).to.equal(false);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons(2).isActive).to.equal(true);
+      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(false);
+      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(false);
+      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(2).isActive).to.equal(true);
     });
 
     it('updates active button when clicked', async function() {
@@ -155,21 +155,21 @@ describe('Integration: SnapshotViewer', function() {
         isBuildApprovable=isBuildApprovable
       }}`);
 
-      await SnapshotViewerPO.header.widthSwitcher.buttons(0).click();
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons(0).isActive).to.equal(true);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons(1).isActive).to.equal(false);
+      await SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(0).click();
+      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(true);
+      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(false);
 
       await SnapshotViewerPO.header.clickDropdownToggle();
       await SnapshotViewerPO.header.clickToggleAllWidths();
-      await SnapshotViewerPO.header.widthSwitcher.buttons(2).click();
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons(0).isActive).to.equal(false);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons(1).isActive).to.equal(false);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons(2).isActive).to.equal(true);
+      await SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(2).click();
+      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(false);
+      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(false);
+      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(2).isActive).to.equal(true);
 
-      await SnapshotViewerPO.header.widthSwitcher.buttons(1).click();
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons(0).isActive).to.equal(false);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons(1).isActive).to.equal(true);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons(2).isActive).to.equal(false);
+      await SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(1).click();
+      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(false);
+      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(true);
+      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(2).isActive).to.equal(false);
     });
   });
 

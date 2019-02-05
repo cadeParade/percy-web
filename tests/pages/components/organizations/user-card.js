@@ -14,10 +14,7 @@ export const UserCard = {
   scope: SELECTORS.CONTAINER,
 
   avatarUrl: property('src', 'img', {scope: SELECTORS.AVATAR}),
-  buttons: collection({
-    scope: SELECTORS.BUTTON_TOOLBAR,
-    itemScope: SELECTORS.PERCY_BTN,
-  }),
+  buttons: collection(SELECTORS.PERCY_BTN),
   joinDate: {scope: SELECTORS.JOIN_DATE},
   role: text(SELECTORS.ROLE),
   userName: {scope: SELECTORS.NAME},

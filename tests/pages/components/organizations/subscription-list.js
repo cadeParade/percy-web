@@ -10,8 +10,7 @@ const SELECTORS = {
 };
 
 export const SubscriptionList = {
-  listItems: collection({
-    itemScope: SubscriptionListItem.scope,
+  listItems: collection(SubscriptionListItem.scope, {
     item: SubscriptionListItem,
   }),
 

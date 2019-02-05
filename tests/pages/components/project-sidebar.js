@@ -9,11 +9,8 @@ const SELECTORS = {
 };
 
 export const ProjectSidebar = {
-  projectLinks: collection({
-    itemScope: SELECTORS.SIDEBAR_PROJECT_ITEM,
-    item: {
-      projectName: text(),
-    },
+  projectLinks: collection(SELECTORS.SIDEBAR_PROJECT_ITEM, {
+    projectName: text(),
   }),
   toggleArchivedProjects: clickable(SELECTORS.TOGGLE_ARCHIVED_PROJECTS),
 };

@@ -10,6 +10,7 @@ import {
 import {SnapshotApprovalButton} from 'percy-web/tests/pages/components/snapshot-approval-button';
 import {alias} from 'ember-cli-page-object/macros';
 import clickDropdownTrigger from 'percy-web/tests/pages/helpers/click-basic-dropdown-trigger';
+import {getter} from 'ember-cli-page-object/macros';
 
 const SELECTORS = {
   HEADER: '[data-test-SnapshotViewer-header]',
@@ -37,23 +38,17 @@ export const SnapshotViewerHeader = {
 
   expandSnapshot: clickable(),
 
-  isComparisonModeSwitcherVisible: {
-    isDescriptor: true,
-    get() {
-      return this._isComparisonModeSwitcherPresent && !this._isComparisonModeSwitcherInvisible;
-    },
-  },
+  isComparisonModeSwitcherVisible: getter(function() {
+    return this._isComparisonModeSwitcherPresent && !this._isComparisonModeSwitcherInvisible;
+  }),
 
   isWidthSwitcherVisible: isVisible(SELECTORS.WIDTH_SWITCHER),
 
   widthSwitcher: {
     scope: SELECTORS.WIDTH_SWITCHER,
-    buttons: collection({
-      itemScope: SELECTORS.WIDTH_SWITCHER_BUTTON,
-      item: {
-        isActive: hasClass('is-active'),
-        text: text(),
-      },
+    buttons: collection(SELECTORS.WIDTH_SWITCHER_BUTTON, {
+      isActive: hasClass('is-active'),
+      text: text(),
     }),
   },
 
@@ -72,13 +67,10 @@ export const SnapshotViewerHeader = {
     resetScope: true,
     testContainer: '#ember-testing-container',
   }),
-  dropdownOptions: collection({
-    itemScope: SELECTORS.DROPDOWN_PANE_ITEMS,
+  dropdownOptions: collection(SELECTORS.DROPDOWN_PANE_ITEMS, {
     resetScope: true,
     testContainer: '#ember-testing-container',
-    item: {
-      text: text(),
-    },
+    text: text(),
   }),
   isToggleWidthsOptionVisible: isVisible(SELECTORS.DROPDOWN_TOGGLE_WIDTHS_OPTION, {
     resetScope: true,

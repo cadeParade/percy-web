@@ -33,14 +33,14 @@ describe('Acceptance: ManageUsers', function() {
 
       await UsersPage.visitUsersPage({orgSlug: organization.slug});
       expect(currentRouteName()).to.equal('organizations.organization.users.index');
-      expect(ManageUsersList.userCards().count).to.equal(numberOfUsers + 1);
+      expect(ManageUsersList.userCards.length).to.equal(numberOfUsers + 1);
     });
 
     it('renders all invites', async function() {
       await UsersPage.visitUsersPage({orgSlug: organization.slug});
 
       expect(currentRouteName()).to.equal('organizations.organization.users.index');
-      expect(ManageUsersList.inviteCards().count).to.equal(numberOfInvites);
+      expect(ManageUsersList.inviteCards.length).to.equal(numberOfInvites);
     });
   }
 
@@ -92,9 +92,9 @@ describe('Acceptance: ManageUsers', function() {
 
     it('cancelling an invite removes it from the page', async function() {
       await UsersPage.visitUsersPage({orgSlug: organization.slug});
-      expect(ManageUsersList.inviteCards().count).to.equal(numberOfInvites);
-      await ManageUsersList.inviteCards(0).cancelButton.click();
-      expect(ManageUsersList.inviteCards().count).to.equal(numberOfInvites - 1);
+      expect(ManageUsersList.inviteCards.length).to.equal(numberOfInvites);
+      await ManageUsersList.inviteCards.objectAt(0).cancelButton.click();
+      expect(ManageUsersList.inviteCards.length).to.equal(numberOfInvites - 1);
       await percySnapshot(this.test.fullTitle());
     });
 
@@ -103,12 +103,13 @@ describe('Acceptance: ManageUsers', function() {
       server.create('organizationUser', {organization, user: user});
 
       await UsersPage.visitUsersPage({orgSlug: organization.slug});
-      expect(ManageUsersList.userCards().count).to.equal(2);
+      expect(ManageUsersList.userCards.length).to.equal(2);
 
-      await ManageUsersList.userCards(1)
-        .buttons(1)
+      await ManageUsersList.userCards
+        .objectAt(1)
+        .buttons.objectAt(1)
         .click();
-      expect(ManageUsersList.userCards().count).to.equal(1);
+      expect(ManageUsersList.userCards.length).to.equal(1);
       await percySnapshot(this.test.fullTitle());
     });
 
@@ -122,9 +123,12 @@ describe('Acceptance: ManageUsers', function() {
         });
         await UsersPage.visitUsersPage({orgSlug: organization.slug});
 
-        expect(ManageUsersList.userCards(0).buttons(0).text).to.equal('Leave organization');
-        await ManageUsersList.userCards(0)
-          .buttons(0)
+        expect(ManageUsersList.userCards.objectAt(0).buttons.objectAt(0).text).to.equal(
+          'Leave organization',
+        );
+        await ManageUsersList.userCards
+          .objectAt(0)
+          .buttons.objectAt(0)
           .click();
 
         expect(currentRouteName()).to.equal('organizations.organization.projects.new');
@@ -136,9 +140,12 @@ describe('Acceptance: ManageUsers', function() {
       it('redirects to organization.new when it is in no other organizations', async function() {
         await UsersPage.visitUsersPage({orgSlug: organization.slug});
 
-        expect(ManageUsersList.userCards(0).buttons(0).text).to.equal('Leave organization');
-        await ManageUsersList.userCards(0)
-          .buttons(0)
+        expect(ManageUsersList.userCards.objectAt(0).buttons.objectAt(0).text).to.equal(
+          'Leave organization',
+        );
+        await ManageUsersList.userCards
+          .objectAt(0)
+          .buttons.objectAt(0)
           .click();
 
         expect(currentRouteName()).to.equal('organizations.new');
@@ -149,7 +156,7 @@ describe('Acceptance: ManageUsers', function() {
     describe('when seats are available', function() {
       it('inviting a user adds it to the page', async function() {
         await UsersPage.visitUsersPage({orgSlug: organization.slug});
-        expect(ManageUsersList.inviteCards().count).to.equal(numberOfInvites);
+        expect(ManageUsersList.inviteCards.length).to.equal(numberOfInvites);
 
         await UsersHeader.inviteButton.click();
         expect(currentRouteName()).to.equal('organizations.organization.users.invite');
@@ -159,13 +166,13 @@ describe('Acceptance: ManageUsers', function() {
         await UsersHeader.sendInvitesButton.click();
 
         expect(currentRouteName()).to.equal('organizations.organization.users.index');
-        expect(ManageUsersList.inviteCards().count).to.equal(numberOfInvites + 1);
+        expect(ManageUsersList.inviteCards.length).to.equal(numberOfInvites + 1);
         await percySnapshot(this.test.fullTitle());
       });
 
       it('cancelling from the invite form returns user to users route', async function() {
         await UsersPage.visitUsersPage({orgSlug: organization.slug});
-        expect(ManageUsersList.inviteCards().count).to.equal(numberOfInvites);
+        expect(ManageUsersList.inviteCards.length).to.equal(numberOfInvites);
         await UsersHeader.inviteButton.click();
         expect(currentRouteName()).to.equal('organizations.organization.users.invite');
 

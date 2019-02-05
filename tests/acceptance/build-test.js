@@ -61,10 +61,10 @@ describe('Acceptance: Build', function() {
     await BuildPage.visitBuild(urlParams);
 
     // check that the tooltips actually exist on the page
-    expect(BuildPage.demoTooltips().count).to.be.at.least(2);
+    expect(BuildPage.demoTooltips.length).to.be.at.least(2);
 
     // verify that all tooltips are not visible
-    BuildPage.demoTooltips().forEach(tooltip => {
+    BuildPage.demoTooltips.forEach(tooltip => {
       expect(tooltip.isAnchorVisible).to.equal(false);
     });
   });
@@ -76,12 +76,12 @@ describe('Acceptance: Build', function() {
 
     await BuildPage.visitBuild(urlParams);
     const store = this.owner.__container__.lookup('service:store');
-    expect(BuildPage.snapshots().count).to.equal(5);
+    expect(BuildPage.snapshots.length).to.equal(5);
     expect(BuildPage.isUnchangedPanelVisible).to.equal(true);
     expect(store.peekAll('snapshot').get('length')).to.equal(5);
 
     await BuildPage.snapshotList.clickToggleNoDiffsSection();
-    expect(BuildPage.snapshots().count).to.equal(6);
+    expect(BuildPage.snapshots.length).to.equal(6);
     expect(store.peekAll('snapshot').get('length')).to.equal(6);
   });
 
@@ -91,12 +91,12 @@ describe('Acceptance: Build', function() {
       const secondSnapshotExpectedName = twoWidthsSnapshot.name;
 
       await BuildPage.visitBuild(urlParams);
-      expect(BuildPage.snapshots(0).name).to.equal(firstSnapshotExpectedName);
-      expect(BuildPage.snapshots(1).name).to.equal(secondSnapshotExpectedName);
+      expect(BuildPage.snapshots.objectAt(0).name).to.equal(firstSnapshotExpectedName);
+      expect(BuildPage.snapshots.objectAt(1).name).to.equal(secondSnapshotExpectedName);
 
-      await BuildPage.snapshots(0).clickApprove();
-      expect(BuildPage.snapshots(0).name).to.equal(firstSnapshotExpectedName);
-      expect(BuildPage.snapshots(1).name).to.equal(secondSnapshotExpectedName);
+      await BuildPage.snapshots.objectAt(0).clickApprove();
+      expect(BuildPage.snapshots.objectAt(0).name).to.equal(firstSnapshotExpectedName);
+      expect(BuildPage.snapshots.objectAt(1).name).to.equal(secondSnapshotExpectedName);
     });
 
     // This tests the polling behavior in build-container and that initializeSnapshotOrdering method
@@ -133,7 +133,7 @@ describe('Acceptance: Build', function() {
       // So the normal second snapshot (twoWidthsSnapshot) will now be first, and defaultSnapshot
       // will be second.
       expect(BuildPage.snapshotList.lastSnapshot.name).to.equal(defaultSnapshot.name);
-      expect(BuildPage.snapshots(0).name).to.equal(twoWidthsSnapshot.name);
+      expect(BuildPage.snapshots.objectAt(0).name).to.equal(twoWidthsSnapshot.name);
 
       await percySnapshot(this.test);
     });
@@ -171,13 +171,13 @@ describe('Acceptance: Build', function() {
 
       await BuildPage.visitBuild(urlParams);
       // Same order as above
-      expect(BuildPage.snapshots(0).name).to.equal(defaultSnapshot.name);
-      expect(BuildPage.snapshots(1).name).to.equal(twoWidthsSnapshot.name);
+      expect(BuildPage.snapshots.objectAt(0).name).to.equal(defaultSnapshot.name);
+      expect(BuildPage.snapshots.objectAt(1).name).to.equal(twoWidthsSnapshot.name);
       await BuildPage.browserSwitcher.switchBrowser();
 
       // Previously first snapshot should now be second.
-      expect(BuildPage.snapshots(0).name).to.equal(twoWidthsSnapshot.name);
-      expect(BuildPage.snapshots(1).name).to.equal(defaultSnapshot.name);
+      expect(BuildPage.snapshots.objectAt(0).name).to.equal(twoWidthsSnapshot.name);
+      expect(BuildPage.snapshots.objectAt(1).name).to.equal(defaultSnapshot.name);
     });
   });
 
@@ -223,7 +223,7 @@ describe('Acceptance: Build', function() {
     expect(BuildPage.isDiffsVisibleForAllSnapshots).to.equal(false);
 
     await BuildPage.clickProject();
-    await ProjectPage.builds(0).click();
+    await ProjectPage.builds.objectAt(0).click();
     expect(BuildPage.isDiffsVisibleForAllSnapshots).to.equal(true);
   });
 
@@ -234,9 +234,9 @@ describe('Acceptance: Build', function() {
     const urlBase = `/${project.fullSlug}/builds/1`;
 
     await BuildPage.visitBuild(urlParams);
-    firstSnapshot = BuildPage.snapshots(0);
-    secondSnapshot = BuildPage.snapshots(1);
-    thirdSnapshot = BuildPage.snapshots(2);
+    firstSnapshot = BuildPage.snapshots.objectAt(0);
+    secondSnapshot = BuildPage.snapshots.objectAt(1);
+    thirdSnapshot = BuildPage.snapshots.objectAt(2);
     expect(currentRouteName()).to.equal('organization.project.builds.build.index');
     expect(currentURL()).to.equal(urlBase);
 
@@ -303,13 +303,13 @@ describe('Acceptance: Build', function() {
     expect(BuildPage.snapshotList.isNoDiffsBatchVisible).to.equal(true);
 
     await BuildPage.snapshotList.clickToggleNoDiffsSection();
-    expect(BuildPage.snapshots().count).to.equal(1);
-    expect(BuildPage.snapshots(0).isCollapsed).to.equal(true);
+    expect(BuildPage.snapshots.length).to.equal(1);
+    expect(BuildPage.snapshots.objectAt(0).isCollapsed).to.equal(true);
   });
 
   it('toggles full view', async function() {
     await BuildPage.visitBuild(urlParams);
-    await BuildPage.snapshots(0).header.clickToggleFullscreen();
+    await BuildPage.snapshots.objectAt(0).header.clickToggleFullscreen();
     expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
     expect(BuildPage.snapshotFullscreen.isVisible).to.equal(true);
 
@@ -322,7 +322,7 @@ describe('Acceptance: Build', function() {
     await BuildPage.visitBuild(urlParams);
     expect(server.db.reviews.length).to.equal(0);
 
-    await BuildPage.snapshots(0).clickApprove();
+    await BuildPage.snapshots.objectAt(0).clickApprove();
     expect(server.db.reviews.length).to.equal(1);
 
     const snapshotReview = server.db.reviews.find(1);
@@ -459,7 +459,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     it('loops through changed + unchanged snapshots', async function() {
       await BuildPage.visitBuild(urlParams);
       await BuildPage.clickToggleNoDiffsSection();
-      await BuildPage.snapshots(0).header.clickToggleFullscreen();
+      await BuildPage.snapshots.objectAt(0).header.clickToggleFullscreen();
       expect(currentURL().includes(snapshot.id)).to.equal(true);
       await BuildPage.snapshotFullscreen.clickPreviousSnapshot();
       expect(currentURL().includes(noDiffSnapshot.id)).to.equal(true);
@@ -496,14 +496,14 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     await BuildPage.visitFullPageSnapshot(urlParams);
     await BuildPage.snapshotFullscreen.clickToggleFullScreen();
     await percySnapshot(this.test);
-    expect(BuildPage.snapshots().count).to.equal(2);
+    expect(BuildPage.snapshots.length).to.equal(2);
   });
 
   it("fetches the build's snapshots when the fullscreen view of snapshot with no diff is closed", async function() { // eslint-disable-line
     urlParams.snapshotId = noDiffSnapshot.id;
     await BuildPage.visitFullPageSnapshot(urlParams);
     await BuildPage.snapshotFullscreen.clickToggleFullScreen();
-    expect(BuildPage.snapshots().count).to.equal(2);
+    expect(BuildPage.snapshots.length).to.equal(2);
     await percySnapshot(this.test);
   });
 
@@ -685,9 +685,9 @@ describe('Acceptance: Demo Project Build', function() {
 
     const tooltipElement = await findAll('.ember-attacher').firstObject;
 
-    expect(BuildPage.demoTooltips().count).to.be.at.least(2);
+    expect(BuildPage.demoTooltips.length).to.be.at.least(2);
 
-    await BuildPage.demoTooltips(0).clickAnchor();
+    await BuildPage.demoTooltips.objectAt(0).clickAnchor();
 
     expect(attacherIsVisible(tooltipElement)).to.equal(true);
   });
@@ -695,26 +695,26 @@ describe('Acceptance: Demo Project Build', function() {
   it('hides a single tooltip and anchor when it is dismissed', async function() {
     await BuildPage.visitBuild(urlParams);
 
-    expect(BuildPage.demoTooltips().count).to.be.at.least(2);
+    expect(BuildPage.demoTooltips.length).to.be.at.least(2);
 
-    expect(BuildPage.demoTooltips(0).isAnchorVisible).to.equal(true);
+    expect(BuildPage.demoTooltips.objectAt(0).isAnchorVisible).to.equal(true);
 
-    await BuildPage.demoTooltips(0).clickAnchor();
-    await BuildPage.demoTooltips(0).clickDismiss();
+    await BuildPage.demoTooltips.objectAt(0).clickAnchor();
+    await BuildPage.demoTooltips.objectAt(0).clickDismiss();
 
-    expect(BuildPage.demoTooltips(0).isAnchorVisible).to.equal(false);
+    expect(BuildPage.demoTooltips.objectAt(0).isAnchorVisible).to.equal(false);
   });
 
   it('hides all tooltips and all anchors when all are dismissed', async function() {
     await BuildPage.visitBuild(urlParams);
 
-    expect(BuildPage.demoTooltips().count).to.be.at.least(2);
+    expect(BuildPage.demoTooltips.length).to.be.at.least(2);
 
-    await BuildPage.demoTooltips(0).clickAnchor();
-    await BuildPage.demoTooltips(0).clickDismissAll();
+    await BuildPage.demoTooltips.objectAt(0).clickAnchor();
+    await BuildPage.demoTooltips.objectAt(0).clickDismissAll();
 
     // verify that all tooltips were dismissed
-    BuildPage.demoTooltips().forEach(demoTooltip => {
+    BuildPage.demoTooltips.forEach(demoTooltip => {
       expect(demoTooltip.isAnchorVisible).to.equal(false, 'anchor should be hidden');
     });
   });

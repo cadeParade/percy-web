@@ -1,4 +1,5 @@
 import {collection, clickable, create, isVisible, isPresent} from 'ember-cli-page-object';
+import {getter} from 'ember-cli-page-object/macros';
 import {BuildCard} from 'percy-web/tests/pages/components/build-card';
 
 const SELECTORS = {
@@ -19,10 +20,7 @@ const SELECTORS = {
 export const ProjectContainer = {
   scope: SELECTORS.PROJECT_CONTAINER,
 
-  builds: collection({
-    itemScope: BuildCard.scope,
-    item: BuildCard,
-  }),
+  builds: collection(BuildCard.scope, BuildCard),
 
   infinityLoader: {
     scope: SELECTORS.INFINITY_LOADER,
@@ -41,12 +39,9 @@ export const ProjectContainer = {
     },
   },
 
-  finishedBuilds: {
-    isDescriptor: true,
-    get() {
-      return this.builds().filter(build => !!build.isFinished);
-    },
-  },
+  finishedBuilds: getter(function() {
+    return this.builds.filter(build => !!build.isFinished);
+  }),
 
   clickQuickstartButton: clickable(SELECTORS.QUICKSTART_BUTTON),
 

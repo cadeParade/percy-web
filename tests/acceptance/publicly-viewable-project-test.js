@@ -32,12 +32,12 @@ describe('Acceptance: Publicly viewable projects', function() {
 
       expect(currentRouteName()).to.equal('organization.project.builds.build.index');
       expect(
-        BuildPage.snapshots(0).header.snapshotApprovalButton.isDisabled,
+        BuildPage.snapshots.objectAt(0).header.snapshotApprovalButton.isDisabled,
         'button should be disabled',
       ).to.equal(true);
       await percySnapshot(this.test);
 
-      await BuildPage.snapshots(0).header.clickToggleFullscreen();
+      await BuildPage.snapshots.objectAt(0).header.clickToggleFullscreen();
       expect(
         SnapshotViewerFull.header.snapshotApprovalButton.isDisabled,
         'fullscreen snapshot buttons should be disabled',
@@ -117,12 +117,12 @@ describe('Acceptance: Publicly viewable projects', function() {
 
           expect(currentRouteName()).to.equal('organization.project.builds.build.index');
           expect(
-            BuildPage.snapshots(0).header.snapshotApprovalButton.isDisabled,
+            BuildPage.snapshots.objectAt(0).header.snapshotApprovalButton.isDisabled,
             'build page button should be enabled',
           ).to.equal(false);
           await percySnapshot(this.test);
 
-          await BuildPage.snapshots(0).header.clickToggleFullscreen();
+          await BuildPage.snapshots.objectAt(0).header.clickToggleFullscreen();
           expect(
             SnapshotViewerFull.header.snapshotApprovalButton.isDisabled,
             'full screen snapshot button should be enabled',
@@ -151,12 +151,12 @@ describe('Acceptance: Publicly viewable projects', function() {
           });
           expect(currentRouteName()).to.equal('organization.project.builds.build.index');
           expect(
-            BuildPage.snapshots(0).header.snapshotApprovalButton.isDisabled,
+            BuildPage.snapshots.objectAt(0).header.snapshotApprovalButton.isDisabled,
             'build screen buttons are disabled',
           ).to.equal(true);
           await percySnapshot(this.test);
 
-          await BuildPage.snapshots(0).header.clickToggleFullscreen();
+          await BuildPage.snapshots.objectAt(0).header.clickToggleFullscreen();
           expect(
             SnapshotViewerFull.header.snapshotApprovalButton.isDisabled,
             'fullscreen buttons are disabled',
