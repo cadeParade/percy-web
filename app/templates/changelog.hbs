@@ -1,42 +1,17 @@
 {{title "Changelog"}}
-<header class="primary-hero bg-purple-gradient text-white pb-2">
-  <div class="container container-xl">
-    <div class="flex justify-between items-center mb-9">
-      {{inline-svg "percy-full-horizontal-on-dark"}}
-      <div class="flex justify-end pt-2 mb-2 text-white font-semibold">
-        {{#if session.isAuthenticated}}
-          {{nav-menu user=session.currentUser}}
-        {{else}}
-          <div class="flex justify-end pt-2 mb-4">
-            {{nav-menu}}
-          </div>
-        {{/if}}
-      </div>
-    </div>
-  </div>
-  <div class="container container-lg mb-3">
-    <div class="w-3/4 mb-9">
-      <h1 class="text-2xl md:text-3xl md:text-4xl font-normal mb-2">Percy Changelog</h1>
-      <div class="w-3/4">
-        <h2 class="text-xl font-normal mb-3">Have a look at what we're building to make automated visual testing more efficient and accessible to all.</h2>
-      </div>
-      <div class="mb-2">
-        {{#if session.isAuthenticated}}
-          {{#link-to "default-org" class="btn btn-md py-1 px-4 btn-app-access text-white text-base cursor-pointer"}}Go to App{{/link-to}}
-        {{else}}
-          {{#link-to "login" class="btn btn-md py-1 px-4 btn-app-access text-white text-base cursor-pointer"}}Sign In{{/link-to}}
-        {{/if}}
-      </div>
-    </div>
-  </div>
-</header>
+{{#marketing/marketing-header
+  logomark=hero.logomark
+  image=hero.mainImage
+  classes=hero.classes}}
+  {{marketing/hero-block content=hero}}
+{{/marketing/marketing-header}}
 
 <section class="bg-gray-pattern">
   <div class="container-md relative pt-8 pb-4">
 
     <div class="hidden sm:block absolute h-full bg-gray-100" style="width: 1px; top: 0; left: 116px;"></div>
 
-    {{changelog-post-list changelogPosts=model}}
+    {{changelog-post-list changelogPosts=posts}}
   </div>
 </section>
 
