@@ -42,7 +42,7 @@
     <button type="button" disabled={{if isNewRecord true false}} data-test-gitlab-settings-delete class="btn btn-danger" {{action "delete" "Are you sure you want to remove this project's GitLab integration?"}}>Remove Integration</button>
     <div class="flex align-center">
       {{#link-to
-        "organizations.organization.integrations"
+        "organizations.organization.integrations.index"
         organization.slug
         class="btn back"
       }}

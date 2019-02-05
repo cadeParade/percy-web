@@ -1,4 +1,4 @@
-import {text, clickable, collection, create} from 'ember-cli-page-object';
+import {clickable, create} from 'ember-cli-page-object';
 
 const SELECTORS = {
   SETTINGS_CONTAINER: '[data-test-organizations-settings-nav-wrapper]',
@@ -10,17 +10,7 @@ const SELECTORS = {
 
 export const SettingsNavWrapper = {
   scope: SELECTORS.SETTINGS_CONTAINER,
-
-  projectLinks: collection({
-    itemScope: SELECTORS.PROJECT_SIDENAV_ITEM,
-    item: {
-      projectName: text(),
-    },
-  }),
-
   clickBilling: clickable(SELECTORS.BILLING_LINK),
-
-  toggleArchivedProjects: clickable(SELECTORS.TOGGLE_ARCHIVED_PROJECTS),
 };
 
 export default create(SettingsNavWrapper);

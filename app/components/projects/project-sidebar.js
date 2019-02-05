@@ -1,10 +1,12 @@
 import Component from '@ember/component';
-import {readOnly, filterBy} from '@ember/object/computed';
+import {filterBy} from '@ember/object/computed';
 
 export default Component.extend({
-  organization: null,
+  tagName: 'aside',
+  project: null,
+  projects: null,
+  toggleSidebar: null,
 
-  projects: readOnly('organization.projects'),
   enabledProjects: filterBy('projects', 'isEnabled', true),
   archivedProjects: filterBy('projects', 'isDisabled', true),
 });

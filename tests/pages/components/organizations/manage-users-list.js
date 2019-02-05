@@ -13,7 +13,7 @@ export const ManageUsersList = {
   scope: SELECTORS.CONTAINER,
   columnHeaders: text(SELECTORS.COLUMN_HEADERS),
   inviteCards: collection({
-    scope: InviteCard.scope,
+    itemScope: InviteCard.scope,
     item: InviteCard,
   }),
   invitesHeader: {

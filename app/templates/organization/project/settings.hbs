@@ -1,78 +1,25 @@
+{{title (concat model.project.fullSlug " project settings | Percy") replace=true}}
+
 {{fixed-top-header currentOrganization=model.organization project=model.project shouldDisplayDashboardLink=true}}
 
-{{#organizations/settings-nav-wrapper organization=model.organization}}
-  <section class="px-2 pt-3">
-    <div class="flex items-start">
-      <div>
-        <h1 class="text-xl font-semibold mb-sm">Project Settings</h1>
-        <p class="text-gray-400 md:w-3/4 mb-0">
-          These are the settings specific to the {{model.project.slug}} project. If you want to update settings for your entire organization, use the settings link in the header above. Not seeing the setting you were looking for? <strong><a href="#" {{action (route-action "showSupport")}} data-test-project-settings-show-support>Reach out</a></strong> and let us know!
-        </p>
-      </div>
-    </div>
-    {{#unless model.project.isEnabled}}
-      <div class="Alert Alert--warning mt-2">
-        <strong>This project is archived.</strong>
-      </div>
-    {{/unless}}
-  </section>
-  <section class="p-2">
-    {{#if model.project.isEnabled}}
-      <div class="bg-white rounded shadow-1 p-2 mb-2">
-        <h2 class="text-xl font-semibold mb-1">Browsers</h2>
-        <p class="text-gray-400 mb-2">
-          This setting lets you change which browser your snapshots are created in. Better yet, you can enable multiple browsers for cross browser testing snapshots! {{#link-to "docs.page" "learn/cross-browser-visual-testing"}}See docs{{/link-to}}
-        </p>
-        <div class="p-2 bg-gray-000 rounded border">
-          {{projects/browser-family-selector
-            allBrowserFamilies=model.browserFamilies
-            project=model.project
-            removeProjectBrowserTargetForFamily=(route-action "removeProjectBrowserTargetForFamily")
-            addProjectBrowserTargetForFamily=(route-action "addProjectBrowserTargetForFamily")
-          }}
-        </div>
-      </div>
+<section class="flex relative {{if isSidebarVisible 'sidebar-is-visible'}}" >
+  {{projects/project-sidebar
+    project=model.project
+    projects=model.projects
+    toggleSidebar=(action (toggle "isSidebarVisible" this))
+    isUserMember=true
+    targetRoute="organization.project.settings"
+  }}
 
-      <div class="bg-white rounded shadow-1 p-2 mb-2">
-        <h2 class="text-xl font-semibold mb-1">Project Details</h2>
-        {{forms/project-edit
-          project=model.project
-          saveSuccess=(route-action "projectUpdated")
-        }}
-      </div>
+  <div class="project-container flex-1 pb-8 bg-gray-pattern border-l">
+    {{projects/project-header
+      project=model.project
+      shouldShowLinks=true
+      toggleSidebar=(action (toggle "isSidebarVisible" this))
+      shouldDisplayBottomBorder=true
+    }}
 
-      <div class="bg-white rounded shadow-1 p-2 mb-2">
-        <h2 class="text-xl font-semibold mb-sm">Environment variables for CI</h2>
-        <p class="text-gray-400 mb-2">See the {{#link-to "docs" class="font-semibold"}}docs{{/link-to}} for how to set up client authentication for your app.</p>
-        <div class="p-2 bg-gray-000 rounded border">
-          {{projects/env-vars project=model.project}}
-          <div class="rounded bg-yellow-000 border border-yellow-100 p-2">
-            <strong>Reminder:</strong> <code>PERCY_TOKEN</code> is a project-specific, write-only API key that only has access to create builds, snapshots, and upload resources to this project. It should be kept secret.
-          </div>
-        </div>
-      </div>
+    {{outlet}}
 
-      <div class="bg-white rounded shadow-1 p-2 mb-2">
-        <h2 class="text-xl font-semibold mb-sm">Link a repository</h2>
-        {{projects/repo-integrator project=model.project}}
-        {{#if (eq model.project.diffBase "manual")}}
-          <h2 class="text-xl font-semibold mb-1 mt-3">Diff base config</h2>
-          <div class="Alert Alert--warning">
-            <strong>Deprecated:</strong> Manual diff base mode is deprecated and may be removed in the future. Switching to Automatic diff base is encouraged, and cannot be undone.
-          </div>
-          {{projects/diff-base-settings project=model.project}}
-        {{/if}}
-      </div>
-
-      {{projects/webhook-config-list
-        webhookConfigs=model.webhookConfigs
-        deleteWebhookConfig=(route-action "deleteWebhookConfig")
-      }}
-    {{/if}}
-
-    <div class="bg-white rounded shadow-1 p-2 mb-2">
-      <h2 class="text-xl font-semibold mb-1">Actions</h2>
-      {{projects/enabled-toggle project=model.project}}
-    </div>
-  </section>
-{{/organizations/settings-nav-wrapper}}
+  </div>
+</section>

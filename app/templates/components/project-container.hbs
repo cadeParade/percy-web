@@ -1,91 +1,37 @@
-<header class="sticky pin-t bg-white z-1">
-  {{#unless isUserMember}}
-    {{public-project-notice}}
-  {{/unless}}
-  <div class="flex flex-wrap justify-between items-center py-3 px-4">
-    <div>
-      <div class="flex items-center">
-        {{menu-icon
-          class="mr-2 cursor-pointer show-on-tablet"
-          toggleSidebar=toggleSidebar
-          isSidebarVisible=isSidebarVisible
-        }}
-
-        {{#if project.publiclyReadable}}
-          {{fa-icon data-test-public-project-icon "globe" class="text-lg text-blue-200 mr-1"}}
-        {{/if}}
-
-        <h2 class="m-0 mr-2 text-xl md:text-2xl font-normal">{{project.name}}</h2>
-        {{#if project.isDisabled}}
-          <div class="label mr-2">archived</div>
-        {{/if}}
-        {{#if project.isDemo}}
-          <div class="label mr-2">demo</div>
-        {{/if}}
-        {{#if isUserMember}}
-          {{#link-to "organization.project.settings" project.organization.slug project.slug class="mr-2" data-test-settings-icon=true}}
-            <figure class="svg-container">
-              {{inline-svg "settings-icon"}}
-            </figure>
-          {{/link-to}}
-        {{/if}}
-        <button {{action "refresh"}} class="btn-icon-only {{if isRefreshing 'animate-rotate-360'}}">
-          {{inline-svg "refresh-icon"}}
-        </button>
-      </div>
+{{#projects/project-header
+  project=project
+  shouldShowLinks=isUserMember
+  toggleSidebar=toggleSidebar
+  shouldDisplayBottomBorder=false
+}}
+  {{#if shouldShowBranchFilter}}
+    <div class="flex justify-end mt-1" data-test-project-container-branch-filter>
+      {{#power-select
+        triggerClass="ember-power-select-branch-filter-trigger"
+        selected=selectedBranch
+        placeholder="Filter by branch"
+        renderInPlace=true
+        horizontalPosition="right"
+        options=projectBranches
+        searchPlaceholder="Type to filter branches"
+        noMatchesMessage="No branches found"
+        onchange=(action "chooseBranch")
+        as |branch|
+      }}
+        {{branch}}
+      {{/power-select}}
     </div>
+  {{/if}}
+{{/projects/project-header}}
 
-    <div data-test-project-container-project-repo-linked>
-      {{#if project.repo}}
-        <div class="flex items-center mb-1">
-          <figure class="svg-container mr-1">
-            {{#if (repo-logo project.repo)}}
-              {{inline-svg (repo-logo project.repo)}}
-            {{/if}}
-          </figure>
-          <span class="whitespace-no-wrap font-semibold mr-1">Linked to</span>
-          <a href="{{project.repo.htmlUrl}}"><code>{{project.repo.slug}}</code></a>
-        </div>
-      {{/if}}
-
-      {{#if project.isDemo}}
-        <div data-test-start-new-project class="flex justify-end">
-          {{#link-to "organizations.organization.projects.new" project.organization.slug}}
-            {{#percy-btn isPrimaryButton=true }}
-              Start your own project
-            {{/percy-btn}}
-          {{/link-to}}
-        </div>
-      {{/if}}
-      {{#if shouldShowBranchFilter}}
-        <div class="flex justify-end" data-test-project-container-branch-filter>
-          {{#power-select
-            triggerClass="ember-power-select-branch-filter-trigger"
-            selected=selectedBranch
-            placeholder="Filter by branch"
-            renderInPlace=true
-            horizontalPosition="right"
-            options=projectBranches
-            searchPlaceholder="Type to filter branches"
-            noMatchesMessage="No branches found"
-            onchange=(action "chooseBranch")
-            as |branch|
-          }}
-            {{branch}}
-          {{/power-select}}
-        </div>
-      {{/if}}
-    </div>
-  </div>
-  <div class="build-list-header px-4 border-b">
-    {{#if builds}}
-      <div class="text-sm text-gray-400 font-semibold pb-sm">Build #</div>
-      <div class="text-sm text-gray-400 font-semibold pb-sm">Details</div>
-      <div class="text-sm text-gray-400 font-semibold pb-sm">Diffs</div>
-      <div class="text-sm text-gray-400 font-semibold pb-sm">Status</div>
-    {{/if}}
-  </div>
-</header>
+<div class="build-list-header bg-white px-4 pt-sm border-b">
+  {{#if builds}}
+    <div class="text-sm text-gray-400 font-semibold pb-sm">Build #</div>
+    <div class="text-sm text-gray-400 font-semibold pb-sm">Details</div>
+    <div class="text-sm text-gray-400 font-semibold pb-sm">Diffs</div>
+    <div class="text-sm text-gray-400 font-semibold pb-sm">Status</div>
+  {{/if}}
+</div>
 {{#if (and builds.isPending (not isRefreshing))}}
   {{loading-page}}
 {{else}}
@@ -144,7 +90,7 @@
         }}
       {{/if}}
     {{else}}
-      <p>No builds yet, and this project is disabled.</p>
+      <p class="p-2">No builds yet, and this project is disabled.</p>
     {{/if}}
   {{/if}}
 {{/if}}

@@ -77,7 +77,7 @@ describe('Acceptance: Project', function() {
 
       await percySnapshot(this.test);
 
-      await ProjectPage.frameworks.objectAt(0).click();
+      await ProjectPage.frameworks(0).click();
 
       expect(ProjectPage.isExampleProjectButtonVisible).to.equal(true);
       expect(ProjectPage.isFrameworkDocsButtonVisible).to.equal(true);
@@ -139,7 +139,7 @@ describe('Acceptance: Project', function() {
         projectSlug: disabledProject.slug,
       });
 
-      expect(currentRouteName()).to.equal('organization.project.settings');
+      expect(currentRouteName()).to.equal('organization.project.settings.index');
       expect(ProjectSettingsPage.projectLinks(0).projectName).to.match(/Enabled Project/);
       await ProjectSettingsPage.sideNav.toggleArchivedProjects();
       expect(ProjectSettingsPage.projectLinks(1).projectName).to.match(/Disabled Project/);
@@ -152,7 +152,7 @@ describe('Acceptance: Project', function() {
         projectSlug: enabledProject.slug,
       });
 
-      expect(currentRouteName()).to.equal('organization.project.settings');
+      expect(currentRouteName()).to.equal('organization.project.settings.index');
       expect(ProjectSettingsPage.projectLinks(0).projectName).to.match(/Enabled Project/);
 
       await percySnapshot(this.test);
@@ -218,7 +218,7 @@ describe('Acceptance: Project', function() {
       await percySnapshot(this.test);
 
       expect(currentRouteName()).to.equal(
-        'organization.project.integrations.webhooks.webhook-config',
+        'organization.project.settings.integrations.webhooks.webhook-config',
       );
     });
 
@@ -315,8 +315,18 @@ describe('Acceptance: Project', function() {
           publiclyReadable: true,
         });
 
-        expect(currentRouteName()).to.equal('organization.project.index');
+        expect(currentRouteName()).to.equal('organization.project.settings.index');
       });
+    });
+
+    it('navigates to settings page for project in sidebar', async function() {
+      server.create('project', {organization});
+      await ProjectSettingsPage.visitProjectSettings({
+        orgSlug: organization.slug,
+        projectSlug: enabledProject.slug,
+      });
+      await ProjectSettingsPage.projectLinks(1).click();
+      expect(currentRouteName()).to.equal('organization.project.settings.index');
     });
   });
 
@@ -467,7 +477,7 @@ describe('Acceptance: Project', function() {
       await ProjectPage.visitProject(urlParams);
       await selectChoose('', 'branch-mc-branch-face');
       await ProjectPage.toggleProjectSidebar();
-      await ProjectPage.projectLinks.objectAt(2).click();
+      await ProjectPage.projectLinks(2).click();
       expect(ProjectPage.builds().count).to.equal(3);
     });
 
@@ -499,7 +509,7 @@ describe('Acceptance: Project', function() {
       await ProjectPage.visitProject({orgSlug: organization.slug, projectSlug: project1.slug});
       expect(ProjectPage.builds().count).to.equal(3);
       await ProjectPage.toggleProjectSidebar();
-      await ProjectPage.projectLinks.objectAt(3).click();
+      await ProjectPage.projectLinks(3).click();
       expect(ProjectPage.builds().count).to.equal(2);
     });
   });

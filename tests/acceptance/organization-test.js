@@ -8,7 +8,6 @@ import {visit, click, currentRouteName, fillIn, find, findAll} from '@ember/test
 import Response from 'ember-cli-mirage/response';
 import AdminMode from 'percy-web/lib/admin-mode';
 import ProjectPage from 'percy-web/tests/pages/project-page';
-import ProjectSettingsPage from 'percy-web/tests/pages/project-settings-page';
 import NewOrganization from 'percy-web/tests/pages/components/new-organization';
 import setupAcceptance, {
   setupSession,
@@ -30,13 +29,9 @@ describe('Acceptance: Organization', function() {
     });
 
     it('denies billing settings', async function() {
-      await ProjectPage.visitOrg({orgSlug: organization.slug});
-      expect(currentRouteName()).to.equal('organization.project.index');
-
-      await ProjectPage.clickProjectSettings();
-      expect(currentRouteName()).to.equal('organization.project.settings');
-
-      await ProjectSettingsPage.sideNav.clickBilling();
+      await visit(`/organizations/${organization.slug}/settings`);
+      expect(currentRouteName()).to.equal('organizations.organization.settings');
+      await click('.data-test-sidenav-billing');
       expect(currentRouteName()).to.equal('organizations.organization.billing');
 
       await percySnapshot(this.test);

@@ -102,10 +102,11 @@ Router.map(function() {
     // Don't add anything else in this top-level namespace, we want to allow users to own the whole
     // projects namespace. Org-level settings and such should go in the above "organizations" route.
     this.route('project', {path: '/:project_id'}, function() {
-      this.route('settings');
-      this.route('integrations', function() {
-        this.route('webhooks', {}, function() {
-          this.route('webhook-config', {path: '/:webhook_config_id'});
+      this.route('settings', {}, function() {
+        this.route('integrations', {}, function() {
+          this.route('webhooks', {}, function() {
+            this.route('webhook-config', {path: '/:webhook_config_id'});
+          });
         });
       });
       this.route('builds', {}, function() {

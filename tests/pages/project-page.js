@@ -1,17 +1,17 @@
 import {ProjectContainer} from 'percy-web/tests/pages/components/project-container';
 import {visitable, clickable, create, isVisible, collection} from 'ember-cli-page-object';
 import {alias} from 'ember-cli-page-object/macros';
+import {FixedTopHeader} from 'percy-web/tests/pages/components/fixed-top-header';
+import {ProjectSidebar} from 'percy-web/tests/pages/components/project-sidebar';
 
 const SELECTORS = {
   PROJECT_PAGE: '[data-test-project-page]',
   TOGGLE_PROJECT_SIDEBAR: '[data-test-toggle-project-sidebar]',
-  TOGGLE_ARCHIVED_PROJECTS: '[data-test-toggle-archived-projects]',
   FRAMEWORK_ITEMS: '[data-test-tech-card]',
   EXAMPLE_PROJECT_BUTTON: '[data-test-example-framework-project-button]',
   FRAMEWORK_DOCS_BUTTON: '[data-test-framework-docs-button]',
   GENERIC_DOCS_BUTTON: '[data-test-generic-docs-button]',
   SDK_REQUEST_FIELD: '[data-test-sdk-request-field]',
-  SIDEBAR_PROJECT_ITEM: '[data-test-project-list-item] a',
 };
 
 const ProjectPage = {
@@ -20,6 +20,8 @@ const ProjectPage = {
   visitOrg: visitable('/:orgSlug'),
   visitProject: visitable('/:orgSlug/:projectSlug'),
 
+  fixedTopHeader: FixedTopHeader,
+  projectSidebar: ProjectSidebar,
   projectContainer: ProjectContainer,
 
   builds: alias('projectContainer.builds'),
@@ -35,16 +37,18 @@ const ProjectPage = {
   clickProjectSettings: alias('projectContainer.clickProjectSettings'),
 
   toggleProjectSidebar: clickable(SELECTORS.TOGGLE_PROJECT_SIDEBAR),
-  toggleArchivedProjects: clickable(SELECTORS.TOGGLE_ARCHIVED_PROJECTS),
-  projectLinks: collection(SELECTORS.SIDEBAR_PROJECT_ITEM),
+  toggleArchivedProjects: alias('projectSidebar.toggleArchivedProjects'),
+  projectLinks: alias('projectSidebar.projectLinks'),
 
-  frameworks: collection(SELECTORS.FRAMEWORK_ITEMS),
+  frameworks: collection({
+    itemScope: SELECTORS.FRAMEWORK_ITEMS,
+  }),
 
   lastFramework: {
     isDescriptor: true,
     get() {
-      const numFrameworks = this.frameworks.length;
-      return this.frameworks.objectAt(numFrameworks - 1);
+      const numFrameworks = this.frameworks().count;
+      return this.frameworks(numFrameworks - 1);
     },
   },
 

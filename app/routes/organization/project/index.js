@@ -45,6 +45,15 @@ export default Route.extend(ResetScrollMixin, {
     });
   },
 
+  setupController(controller, model) {
+    controller.setProperties({
+      project: model.project,
+      projects: model.projects,
+      infinityBuilds: model.infinityBuilds,
+      isUserMember: model.isUserMemberOfOrg,
+    });
+  },
+
   afterModel(model) {
     if (model.infinityBuilds.length < 1) {
       this.set('hasNoBuilds', 'true');

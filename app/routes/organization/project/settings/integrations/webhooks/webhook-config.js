@@ -32,7 +32,7 @@ export default Route.extend(AuthenticatedRouteMixin, ResetScrollMixin, {
       // Ensures the route is updated with the webhook config's new ID,
       // in case it was a new record.
       this.replaceWith(
-        'organization.project.integrations.webhooks.webhook-config',
+        'organization.project.settings.integrations.webhooks.webhook-config',
         organization.slug,
         project.slug,
         webhookConfig.id,

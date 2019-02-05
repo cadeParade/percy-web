@@ -69,9 +69,6 @@ export default Component.extend(PollingMixin, {
     chooseBranch(newBranch) {
       this.set('selectedBranch', newBranch);
     },
-    refresh() {
-      this._refresh();
-    },
   },
 
   async _refresh() {

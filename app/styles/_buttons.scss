@@ -177,7 +177,8 @@ button,
     opacity: 0.25;
   }
 
-  &.is-active {
+  &.is-active,
+  &.active {
     color: var(--white);
     background: var(--blue);
   }
