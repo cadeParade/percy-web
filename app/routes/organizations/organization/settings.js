@@ -5,6 +5,7 @@ import {inject as service} from '@ember/service';
 
 export default Route.extend(AuthenticatedRouteMixin, {
   intercom: service(),
+  redirects: service(),
 
   actions: {
     didTransition() {
@@ -22,6 +23,11 @@ export default Route.extend(AuthenticatedRouteMixin, {
     },
     showSupport() {
       this.get('intercom').showIntercom();
+    },
+    redirectToRecentProjectSettings() {
+      this.get('redirects').redirectToRecentProjectForOrg(this.modelFor(this.routeName), {
+        goToSettings: true,
+      });
     },
   },
 });

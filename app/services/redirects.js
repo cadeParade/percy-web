@@ -36,7 +36,7 @@ export default Service.extend({
     }
   },
 
-  async redirectToRecentProjectForOrg(org) {
+  async redirectToRecentProjectForOrg(org, {goToSettings = false} = {}) {
     if (!org) {
       return this.redirectToDefaultOrganization();
     }
@@ -47,16 +47,20 @@ export default Service.extend({
     const recentProjectSlug = recentProjectSlugs[orgSlug];
     const defaultProjectForOrg = this._defaultProjectForOrg(orgProjects);
     if (recentProjectSlug && orgProjects.findBy('slug', recentProjectSlug)) {
-      return this._transitionToProject(orgSlug, recentProjectSlug);
+      return this._transitionToProject(orgSlug, recentProjectSlug, goToSettings);
     } else if (defaultProjectForOrg) {
-      return this._transitionToProject(orgSlug, defaultProjectForOrg.get('slug'));
+      return this._transitionToProject(orgSlug, defaultProjectForOrg.get('slug'), goToSettings);
     } else {
       return this._transitionToNewProject(orgSlug);
     }
   },
 
-  _transitionToProject(orgSlug, projectSlug) {
-    return this.get('router').transitionTo('organization.project.index', orgSlug, projectSlug);
+  _transitionToProject(orgSlug, projectSlug, goToSettings) {
+    if (goToSettings) {
+      return this.get('router').transitionTo('organization.project.settings', orgSlug, projectSlug);
+    } else {
+      return this.get('router').transitionTo('organization.project.index', orgSlug, projectSlug);
+    }
   },
 
   _transitionToNewProject(orgSlug) {

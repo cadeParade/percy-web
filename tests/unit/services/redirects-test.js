@@ -92,6 +92,24 @@ describe('RedirectsService', function() {
         });
       });
     });
+
+    describe('when goToSettings is true', function() {
+      let org;
+      beforeEach(async function() {
+        localStorageProxy.set('recentProjectSlugs', {[orgSlug]: recentProjectSlug});
+        const projects = [make('project', {slug: recentProjectSlug})];
+        org = _constructOrgObject(orgSlug, projects);
+      });
+
+      it('redirects to project settings page', async function() {
+        await service.redirectToRecentProjectForOrg(org, {goToSettings: true});
+        return expect(transitionToStub).to.have.been.calledWith(
+          'organization.project.settings',
+          orgSlug,
+          recentProjectSlug,
+        );
+      });
+    });
   });
 
   function _expectTransitionToNewProject(orgSlug) {
