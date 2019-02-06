@@ -2,7 +2,7 @@ import {setupRenderingTest} from 'ember-mocha';
 import {beforeEach, it, describe} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import {expect} from 'chai';
-import {find, waitUntil, waitFor} from '@ember/test-helpers';
+import {find, waitUntil, waitFor, click} from '@ember/test-helpers';
 import {isVisible as attacherIsVisible} from 'ember-attacher';
 
 import hbs from 'htmlbars-inline-precompile';
@@ -31,6 +31,7 @@ describe('Integration: DemoTooltipComponent', function() {
             title='Important Tip'
             message='Never get involved in a land war in Asia'
           }}
+          <div class="outside"></div>
         </div>
       `);
     });
@@ -85,12 +86,12 @@ describe('Integration: DemoTooltipComponent', function() {
       expect(DemoTooltip.isAnchorVisible).to.equal(false);
     });
 
-    it('does not hide the anchor element when clicking the anchor to close', async function() {
+    it('does not hide the anchor element when clicking outside to close', async function() {
       const tooltipElement = find('.ember-attacher');
 
       await DemoTooltip.clickAnchor();
       expect(attacherIsVisible(tooltipElement)).to.equal(true, 'tooltip should be visible');
-      await DemoTooltip.clickAnchor();
+      await click('.outside');
 
       await waitUntil(() => {
         return !attacherIsVisible(tooltipElement);

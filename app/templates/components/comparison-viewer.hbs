@@ -15,7 +15,7 @@
           anchorPlacement='left-corner'
           key="three"
           title="Visual Diff"
-          message="These are the that have changed due to changes in code. We call this a visual diff. To toggle between the visual diff and the new screenshot that makes up that diff you can click the screenshot on the right or just type “d”."
+          message="These red pixels highlight the visual changes underneath—we call this a 'visual diff'. To toggle the visual diff on or off click it (or press 'd')."
         }}
           <div class="Viewer-pdiffImageBox Viewer-pdiffImageBox--actionable" style={{html-safe "max-width: " lossyImage.width "px"}} data-test-comparison-viewer-diff-image-container>
             {{image-spacer action=(action "toggleOverlay") image=lossyImage imageClass="ComparisonViewer-pdiffImage ComparisonViewer-pdiffImage--actionable"}}
