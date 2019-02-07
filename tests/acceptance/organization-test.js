@@ -3,7 +3,6 @@ import moment from 'moment';
 import freezeMoment from '../helpers/freeze-moment';
 import {percySnapshot} from 'ember-percy';
 import {beforeEach, afterEach} from 'mocha';
-import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
 import {visit, click, currentRouteName, fillIn, find, findAll} from '@ember/test-helpers';
 import Response from 'ember-cli-mirage/response';
 import AdminMode from 'percy-web/lib/admin-mode';
@@ -24,8 +23,6 @@ describe('Acceptance: Organization', function() {
     setupSession(function(server) {
       organization = server.create('organization', 'withUser');
       server.create('project', {organization});
-
-      withVariation(this.owner, 'new-demo-project');
     });
 
     it('denies billing settings', async function() {

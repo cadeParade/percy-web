@@ -135,9 +135,7 @@ module.exports = function(environment) {
     ENV.contentful.usePreviewApi = true;
 
     ENV.launchDarkly.local = true;
-    ENV.launchDarkly.localFeatureFlags = {
-      'new-demo-project': false,
-    };
+    ENV.launchDarkly.localFeatureFlags = {};
   }
 
   if (environment === 'test') {

@@ -8,7 +8,6 @@ import sinon from 'sinon';
 import {percySnapshot} from 'ember-percy';
 import Service from '@ember/service';
 import {defer} from 'rsvp';
-import enableLaunchDarklyFlag from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
 
 describe('Integration: OrganizationNewForm', function() {
   setupRenderingTest('forms/organization-new', {
@@ -25,8 +24,6 @@ describe('Integration: OrganizationNewForm', function() {
     saveStub = sinon.stub();
     newOrganization.save = saveStub;
     const identities = [];
-
-    enableLaunchDarklyFlag(this, 'new-demo-project');
 
     this.setProperties({
       isFirstOrganization: false,

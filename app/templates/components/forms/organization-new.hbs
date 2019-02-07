@@ -31,25 +31,23 @@
     {{/if}}
   </div>
 
-  {{#if (variation "new-demo-project")}}
-    <div class="flex items-center justify-between pb-2 mb-2 border-b">
-      <div class="leading-none">
-        <div class="mb-sm font-semibold">
-          Percy Demo
-        </div>
-        <div class="text-gray-400">
-          Check out what Percy is capable of
-        </div>
+  <div class="flex items-center justify-between pb-2 mb-2 border-b">
+    <div class="leading-none">
+      <div class="mb-sm font-semibold">
+        Percy Demo
       </div>
-      {{form-fields/submit
-        value="Try demo project"
-        classes="percy-btn percy-btn-primary data-test-demo-submit-button"
-        submit=(action "handleSubmit" "demo")
-        isSaving=isDemoSaving
-        disabled=isDemoDisabled
-      }}
+      <div class="text-gray-400">
+        Check out what Percy is capable of
+      </div>
     </div>
-  {{/if}}
+    {{form-fields/submit
+      value="Try demo project"
+      classes="percy-btn percy-btn-primary data-test-demo-submit-button"
+      submit=(action "handleSubmit" "demo")
+      isSaving=isDemoSaving
+      disabled=isDemoDisabled
+    }}
+  </div>
 
   <div class="flex items-center justify-between pb-2 mb-2">
     <div class="leading-none">
@@ -62,7 +60,7 @@
     </div>
     {{form-fields/submit
       value="Start new project"
-      classes=(concat "percy-btn data-test-project-submit-button" (if (not (variation "new-demo-project")) " percy-btn-primary"))
+      classes="percy-btn data-test-project-submit-button"
       submit=(action "handleSubmit" "project")
       isSaving=isCustomProjectSaving
       disabled=isCustomProjectDisabled
