@@ -27,5 +27,8 @@ export default Component.extend({
         this._getUserOrganizations.perform();
       }
     },
+    logout() {
+      this.get('session').invalidateAndLogout();
+    },
   },
 });
