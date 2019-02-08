@@ -7,6 +7,7 @@ const SELECTORS = {
   ORG_ITEM: '[data-test-org-switcher-item]',
   ORG_LINK: '[data-test-switcher-item-link]',
   ORG_SETTINGS_LINK: '[data-test-settings-link]',
+  LOGOUT: '[data-test-logout]',
 };
 
 export const userMenu = {
@@ -22,6 +23,8 @@ export const userMenu = {
       clickSettings: clickable(SELECTORS.ORG_SETTINGS_LINK),
     },
   }),
+
+  logout: clickable(SELECTORS.LOGOUT),
 };
 
 export default create(userMenu);
