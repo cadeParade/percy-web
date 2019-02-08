@@ -3,25 +3,8 @@
     You can optionally link this project to a repository. This enables
     <a class="font-semibold" href="https://docs.percy.io/docs/github">Pull Request integration</a> for this project.
   </p>
-  <div class='repo-selector flex items-center mb-2'>
-    {{#power-select
-      selected=selectedRepo
-      searchField="slug"
-      placeholder="Select a repository"
-      renderInPlace=true
-      matchTriggerWidth=false
-      allowClear=true
-      options=organization.groupedRepos
-      searchPlaceholder="Type to filter repositories"
-      noMatchesMessage="No repositories found"
-      afterOptionsComponent=(component "repo-refresh-status" isRepoRefreshInProgress=isRepoRefreshInProgress lastSyncedAt=lastSyncedAt)
-      onchange=(action "chooseRepo")
-      onopen=(action "refreshRepos")
-      as |repo|
-    }}
-      {{repo.slug}}
-    {{/power-select}}
-    {{saving-indicator isSaving=isSaving isSaveSuccessful=isSaveSuccessful}}
+  <div class="mb-2">
+    {{repo-selector project=project}}
   </div>
   <div class="rounded border p-2">
     <strong>Note:</strong> Missing a repository? Check your organization's {{#link-to "organizations.organization.integrations" project.organization.slug class="font-semibold"}} integration settings{{/link-to}}.

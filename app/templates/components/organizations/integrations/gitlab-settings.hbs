@@ -24,9 +24,4 @@
       }}
     {{/organizations/require-role}}
   </div>
-  {{#if (not isNewRecord)}}
-    <div class="rounded bg-yellow-000 border border-yellow-100 p-2 mb-2">
-      <strong>Reminder:</strong> Each project must be linked to a GitLab repository for <strong>{{#link-to "docs.page" "integrations/gitlab"}}Merge Request integration{{/link-to}}</strong> to work. You can verify the link in each project's settings.
-    </div>
-  {{/if}}
 </section>

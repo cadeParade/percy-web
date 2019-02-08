@@ -115,6 +115,7 @@
 
 .ProjectsRepoIntegrator .ember-basic-dropdown {
   @apply w-1/2;
+  min-width: 360px;
 }
 
 .BuildInfoDropdown-modal {
@@ -127,4 +128,8 @@
   @apply px-2 py-1;
   @apply font-semibold text-sm text-gray-300 leading-none;
   @apply bg-white border-t rounded-b;
+}
+
+.repo-selector .ember-basic-dropdown {
+  min-width: 360px;
 }

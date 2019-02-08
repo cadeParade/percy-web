@@ -7,28 +7,35 @@
   </div>
 </section>
 
-<section class="px-2">
-  <div class="bg-white rounded shadow-1 p-2 mb-2">
-    <div class="flex items-center mb-2">
-      {{inline-svg "github-icon-lg" class="mr-1"}}
-      <h2 class="text-xl font-semibold m-0">GitHub Integration</h2>
-    </div>
+<section class="px-2 mb-9">
+  <div class="bg-white rounded shadow-1 mb-2">
+    <div class="p-2">
+      <div class="flex items-center mb-2">
+        {{inline-svg "github-icon-lg" class="mr-1"}}
+        <h2 class="text-xl font-semibold m-0">GitHub Integration</h2>
+      </div>
 
-    {{#organizations/require-role role="admin" organization=organization}}
-      <div class="p-2 bg-gray-000 rounded border mb-2">
+      {{#organizations/require-role role="admin" organization=organization}}
+      <div class="mb-2">
         {{#if (not (await isEligibleForGithubIntegration))}}
           To install the GitHub integration you first need to {{#link-to 'settings.connected-accounts'}} connect your GitHub account{{/link-to}}.
         {{else}}
           {{organizations/github-integrator organization=organization}}
+
+          {{#if organization.githubIntegration}}
+            {{organizations/integrations/repo-linker-list organization=organization}}
+          {{/if}}
         {{/if}}
       </div>
-    {{/organizations/require-role}}
+      {{/organizations/require-role}}
+    </div>
 
-    <div class="flex justify-end">
+
+    <div class="flex justify-end px-2 pb-2">
       {{#link-to
-        'organizations.organization.integrations.index'
+        'organizations.organization.integrations'
         organization.slug
-        class="btn"
+        class="percy-btn"
       }}
         Back
       {{/link-to}}

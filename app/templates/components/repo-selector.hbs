@@ -1,0 +1,20 @@
+<div class="repo-selector flex items-center flex-1">
+  {{#power-select
+    selected=selectedRepo
+    searchField="slug"
+    placeholder="Select a repository"
+    renderInPlace=true
+    matchTriggerWidth=false
+    allowClear=true
+    options=groupedRepos
+    searchPlaceholder="Type to filter repositories"
+    noMatchesMessage="No repositories found"
+    afterOptionsComponent=(component "repo-refresh-status" isRepoRefreshInProgress=isRepoRefreshInProgress lastSyncedAt=lastSyncedAt)
+    onchange=(action "chooseRepo")
+    onopen=(action "refreshRepos")
+    as |repo|
+  }}
+    {{repo.slug}}
+  {{/power-select}}
+  {{saving-indicator isSaving=isSaving isSaveSuccessful=isSaveSuccessful}}
+</div>
