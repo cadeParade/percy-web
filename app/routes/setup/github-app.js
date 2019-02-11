@@ -20,7 +20,10 @@ export default Route.extend(AuthenticatedRouteMixin, {
     afterAppInstalled(organization) {
       organization.get('projects').then(projects => {
         if (projects.get('length') > 0) {
-          this.replaceWith('organizations.organization.integrations', organization.get('slug'));
+          this.replaceWith(
+            'organizations.organization.integrations.github',
+            organization.get('slug'),
+          );
         } else {
           this.replaceWith('organization.index', organization.get('slug'));
         }
