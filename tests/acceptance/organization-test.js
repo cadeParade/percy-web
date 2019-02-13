@@ -49,7 +49,7 @@ describe('Acceptance: Organization', function() {
       expect(currentRouteName()).to.equal('organizations.new');
 
       await UserMenu.toggleUserMenu();
-      expect(UserMenu.orgLinks().count).to.equal(1);
+      expect(UserMenu.orgLinks.length).to.equal(1);
 
       await percySnapshot(this.test.fullTitle() + ' | new');
       await NewOrganization.organizationName('New organization');
@@ -57,7 +57,7 @@ describe('Acceptance: Organization', function() {
       expect(currentRouteName()).to.equal('organizations.organization.projects.new');
 
       await UserMenu.toggleUserMenu();
-      expect(UserMenu.orgLinks().count).to.equal(2);
+      expect(UserMenu.orgLinks.length).to.equal(2);
 
       await percySnapshot(this.test.fullTitle() + ' | setup');
     });
@@ -190,7 +190,7 @@ describe('Acceptance: Organization', function() {
       await visit(`/${organization.slug}`);
       expect(currentRouteName()).to.equal('organizations.organization.projects.new');
       await UserMenu.toggleUserMenu();
-      await UserMenu.orgLinks(0).clickSettings();
+      await UserMenu.orgLinks.objectAt(0).clickSettings();
       expect(currentRouteName()).to.equal('organizations.organization.settings');
 
       await percySnapshot(this.test);

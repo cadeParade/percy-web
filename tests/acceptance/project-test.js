@@ -495,7 +495,7 @@ describe('Acceptance: Project', function() {
 
       await ProjectPage.visitProject(urlParams);
       await UserMenu.toggleUserMenu();
-      await UserMenu.orgLinks(1).clickLink();
+      await UserMenu.orgLinks.objectAt(1).clickLink();
 
       expect(ProjectPage.builds.length).to.equal(0);
     });

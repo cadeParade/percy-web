@@ -73,7 +73,7 @@ describe('Acceptance: Marketing pages', function() {
         expect(currentRouteName()).to.equal(expectedPath);
       });
       it('can select enterprise plan', async function() {
-        await click(cardCtas[2]);
+        await click(cardCtas[1]);
         expect(currentRouteName()).to.equal('schedule-demo');
       });
     });

@@ -28,15 +28,85 @@
   </div>
 </section>
 
-<section class="{{if (and cards.isFulfilled (not (is-test-env))) "animated-pricing-header"}} md:flex container container-lg mb-3">
-  {{#if cards.isFulfilled}}
-    {{#each cards as |card|}}
-      {{marketing/pricing-card card=card class="flex-1"}}
-    {{/each}}
-  {{else}}
-    <div class="w-full text-center">
-      {{fa-icon "fa-spinner fa-pulse"}}
-    </div>
-  {{/if}}
-</section>
+<section class="{{if (not (is-test-env)) "animated-pricing-header"}} md:flex container container-lg mb-3">
 
+  <div class="pricing-card-container md:mx-1">
+    <div class="pricing-card bg-white-gradient-pattern shadow-purple-2">
+      <div class="pt-2 px-2">
+        <h3 class="pricing-card-name text-purple-600">{{essentialPlan.name}}</h3>
+        <p>Instant access to visual testing with room to scale at your own pace.</p>
+
+        <div class="mb-2">
+          {{#each essentialPlan.features as |feature|}}
+            <div class="font-semibold">{{feature}}</div>
+          {{/each}}
+        </div>
+        <div class="font-semibold text-lg mb-1 text-gray-700" data-test-snapshot-count>
+          {{format-number displaySnapshotCount}} snapshots / month
+        </div>
+      </div>
+
+      <div class="px-2">
+        {{range-slider
+          min=essentialPlan.numDiffs
+          max=essentialPlanSliderSetup.maxRange
+          step=essentialPlanSliderSetup.step
+          value=displaySnapshotCount
+          handleSliderMoved=(action "handleSliderMoved")
+        }}
+      </div>
+
+      <div class="font-semibold text-gray-500 text-right" data-test-price-text>
+        {{priceText}} <span class="tabular-nums text-purple-600 text-3xl" data-test-calculated-price>${{sliderCalculatedPrice}}</span>/mo
+        <br>
+        <span class="text-sm font-normal text-gray-300">Additional snapshots at ${{essentialPlan.extraDiffPrice}}/snapshot</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pricing-card-container md:mx-1">
+    <div class="pricing-card bg-white-gradient-pattern shadow-purple-2">
+      <div class="pt-2 px-2">
+        <h3 class="pricing-card-name text-orange-500">{{businessPlan.name}}</h3>
+        <p>Increased capacity for your team to use visual testing to its full potential.</p>
+
+        <div class="mb-2">
+          {{#each businessPlan.features as |feature|}}
+            <div class="font-semibold">{{feature}}</div>
+          {{/each}}
+        </div>
+        <div class="font-semibold text-lg mb-4 text-gray-700">
+          {{format-number businessPlan.numDiffs}} snapshots / month
+        </div>
+      </div>
+
+      <div class="font-semibold text-gray-500 text-right">
+        Starting at <span class="text-gray-500 text-3xl">${{businessPlan.monthlyPrice}}</span>/mo
+        <br>
+        <span class="text-sm font-normal text-gray-300">Additional snapshots at ${{businessPlan.extraDiffPrice}}/snapshot</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pricing-card-container md:mx-1">
+    <div class="pricing-card bg-white-gradient-pattern shadow-purple-2">
+      <div class="pt-2 px-2">
+        <h3 class="pricing-card-name text-gray-500">Enterprise</h3>
+        <p>Visual testing solution for enterprise applications and teams.</p>
+
+        <div class="mb-3">
+          <div class="text-lg pb-1 inline-block font-semibold">
+            World-class support, security, and scale.
+          </div>
+          <div class="font-normal leading-normal text-gray-700">
+            We will work with you to create a custom plan to fit your business needs. Contact us to schedule a demo and we will get back to you within 2 business days.
+          </div>
+        </div>
+      </div>
+      {{#link-to 'schedule-demo' class="btn btn-md btn-gray btn-scale text-center w-full" data-test-pricing-card-cta=true}}
+        Schedule a demo
+      {{/link-to}}
+    </div>
+  </div>
+
+</section>

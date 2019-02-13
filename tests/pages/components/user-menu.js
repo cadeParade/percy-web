@@ -16,12 +16,9 @@ export const userMenu = {
   toggleUserMenu: clickable(SELECTORS.MENU_TOGGLE),
   createNewOrg: clickable(SELECTORS.CREATE_ORG),
 
-  orgLinks: collection({
-    itemScope: SELECTORS.ORG_ITEM,
-    item: {
-      clickLink: clickable(SELECTORS.ORG_LINK),
-      clickSettings: clickable(SELECTORS.ORG_SETTINGS_LINK),
-    },
+  orgLinks: collection(SELECTORS.ORG_ITEM, {
+    clickLink: clickable(SELECTORS.ORG_LINK),
+    clickSettings: clickable(SELECTORS.ORG_SETTINGS_LINK),
   }),
 
   logout: clickable(SELECTORS.LOGOUT),

@@ -1,0 +1,19 @@
+.pricing-card-container {
+  @apply mb-2;
+  @apply flex-1;
+}
+
+.pricing-card {
+  @apply flex;
+  @apply flex-col;
+  @apply justify-between;
+  @apply h-full;
+  @apply rounded;
+  @apply p-2;
+}
+
+.pricing-card-name {
+  @apply font-semibold;
+  @apply mb-0;
+  @apply text-xl;
+}
