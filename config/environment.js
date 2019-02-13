@@ -27,9 +27,7 @@ module.exports = function(environment) {
       preventDuplicates: true,
     },
 
-    launchDarkly: {
-      clientSideId: '5b453a435b18c32c7440a5bd',
-    },
+    launchDarkly: {},
 
     APP: {
       // Don't use these directly; use utils.buildApiUrl instead.
@@ -134,8 +132,11 @@ module.exports = function(environment) {
 
     ENV.contentful.usePreviewApi = true;
 
-    ENV.launchDarkly.local = true;
-    ENV.launchDarkly.localFeatureFlags = {};
+    // Do not set your flags locally here.
+    // Go to launch darkly development environment and add your user.
+    // https://app.launchdarkly.com/default/development/features
+    ENV.launchDarkly.clientSideId = '5bec6f7aa64e7f30df631bc1';
+    ENV.launchDarkly.local = false;
   }
 
   if (environment === 'test') {
@@ -178,6 +179,8 @@ module.exports = function(environment) {
 
   if (environment === 'production') {
     ENV.stripe.publishableKey = 'pk_live_cmaeNcmPuMihdT3Q7QDBDMDr';
+    ENV.launchDarkly.clientSideId = '5b453a435b18c32c7440a5bd';
+
     ENV.APP.INTERCOM_APP_ID = 'm37fs4zj';
     ENV.APP.GOOGLE_ANALYTICS_ID = 'UA-63384548-1';
 
