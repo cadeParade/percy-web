@@ -1,6 +1,5 @@
 import DS from 'ember-data';
-import {equal} from '@ember/object/computed';
-import {mapBy, max, not, or} from '@ember/object/computed';
+import {equal, mapBy, max, not, or, readOnly} from '@ember/object/computed';
 
 export const SNAPSHOT_APPROVED_STATE = 'approved';
 export const SNAPSHOT_UNAPPROVED_STATE = 'unreviewed';
@@ -29,6 +28,9 @@ export default DS.Model.extend({
   name: DS.attr(),
   build: DS.belongsTo('build', {async: true}),
   screenshots: DS.hasMany('screenshot', {async: false}),
+
+  gatedFingerprint: DS.attr(),
+  fingerprint: readOnly('gatedFingerprint'),
 
   // Review state.
   reviewState: DS.attr(),
