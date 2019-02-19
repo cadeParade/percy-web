@@ -1,6 +1,8 @@
 {{#each page.blocks as |block|}}
   {{#if block.isContentBlock}}
     {{marketing/content-block block=block.contentBlock}}
+  {{else if block.isVideoBlock}}
+    {{marketing/video-block block=block.videoBlock}}
   {{else if block.isQuoteBlock}}
     {{marketing/customer-quote-block quoteBlock=block.quoteBlock}}
   {{else if block.isFooter}}

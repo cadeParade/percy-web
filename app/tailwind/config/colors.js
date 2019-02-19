@@ -16,6 +16,7 @@
 
 export default {
   transparent: 'transparent',
+  translucent: 'rgba(0, 0, 0, 0.5)',
 
      'white': '#ffffff',
   'gray-000': '#fbfafc',

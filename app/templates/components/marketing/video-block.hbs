@@ -1,0 +1,51 @@
+<section class="border-b border-purple-300 pt-8 pb-4 md:py-16 {{block.classes}}">
+  <div class="container-lg">
+    <div class="md:flex items-center {{if block.isImageRightAligned "flex-row-reverse"}} {{if block.isImageCentered "flex-col"}}">
+      {{#if block.isImagePresent}}
+        <div class="flex-1 px-6 text-center mb-6 md:mb-0">
+          <div class="relative rounded overflow-hidden shadow-y-lg-purple-600" {{action (toggle "isVideoModalVisible" this)}} data-test-video-block-image>
+            <img src="{{block.imageUrl}}" alt={{block.imageDescription}}>
+            <div class="flex justify-center items-center absolute pin-t pin-b w-full bg-translucent">
+              <figure class="svg-container">
+                {{inline-svg "video-play"}}
+              </figure>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+      <div class="flex-1 mb-6 md:mb-0">
+
+        {{#if block.header}}
+          <h3 class="text-center text-2xl md:text-3xl lg:text-4xl font-bold leading-none mb-2 content-block-header">
+            {{block.header}}
+          </h3>
+        {{/if}}
+
+        {{#if block.subheader}}
+          <div class="content-block-subheader text-gray-400 text-center mb-2 pt-2">
+            {{markdown-to-html block.subheader}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+
+    {{#if isVideoModalVisible}}
+      {{#modal-dialog
+        onClose=(action (toggle "isVideoModalVisible" this))
+        translucentOverlay=true
+        containerClassNames="container-lg"
+      }}
+        <iframe
+          width="100%"
+          height="350"
+          src="{{block.videoEmbedUrl}}?autoplay=1"
+          frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        >
+        </iframe>
+      {{/modal-dialog}}
+    {{/if}}
+
+  </div>
+</section>

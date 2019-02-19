@@ -8,6 +8,9 @@ export default Contentful.extend({
   contentBlock: lookupContentfulModel('id', 'content-block'),
   isContentBlock: bool('contentBlock'),
 
+  videoBlock: lookupContentfulModel('id', 'videoBlock'),
+  isVideoBlock: bool('videoBlock'),
+
   quoteBlock: lookupContentfulModel('id', 'customer-quote-block'),
   isQuoteBlock: bool('quoteBlock'),
 
