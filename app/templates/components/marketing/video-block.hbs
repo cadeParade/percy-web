@@ -2,7 +2,7 @@
   <div class="container-lg">
     <div class="md:flex items-center {{if block.isImageRightAligned "flex-row-reverse"}} {{if block.isImageCentered "flex-col"}}">
       {{#if block.isImagePresent}}
-        <div class="flex-1 px-6 text-center mb-6 md:mb-0">
+        <div class="flex-1 px-6 text-center mb-6 md:mb-0 {{if block.isImageCentered "md:mb-6"}}">
           <div class="relative rounded overflow-hidden shadow-y-lg-purple-600" {{action (toggle "isVideoModalVisible" this)}} data-test-video-block-image>
             <img src="{{block.imageUrl}}" alt={{block.imageDescription}}>
             <div class="flex justify-center items-center absolute pin-t pin-b w-full bg-translucent">
