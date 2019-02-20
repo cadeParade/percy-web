@@ -3,12 +3,15 @@
 
 input[type=range] {
   width: 100%;
+  font-size: 0;
   -webkit-appearance: none;
 }
 
 input[type=range]:focus {
   outline: none;
 }
+
+/* Chrome & Safari support */
 
 input[type=range]::-webkit-slider-runnable-track {
   @apply cursor-pointer;
@@ -34,6 +37,8 @@ input[type=range]:focus::-webkit-slider-runnable-track {
   @apply bg-purple-400;
   @apply border border-purple-500;
 }
+
+/* Firefox support */
 
 input[type=range]:focus::-moz-range-track {
   @apply bg-purple-400;
@@ -62,4 +67,62 @@ input[type=range]::-moz-range-thumb {
   @apply w-8;
   @apply h-8;
   box-shadow: 0 4px 12px rgba(158, 102, 191, 0.4);
+}
+
+/* Edge styling */
+
+input[type=range]::-ms-tooltip {
+  display: none;
+}
+
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 4px;
+  color: transparent;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  border-top-width: 10px;
+  border-bottom-width: 12px;
+}
+
+input[type=range]::-ms-fill-lower {
+  @apply cursor-pointer;
+  @apply bg-purple-300;
+  @apply w-full;
+  height: 4px;
+  @apply border border-purple-600;
+  border: 1px solid var(--purple-400);
+  border-radius: 2px;
+}
+
+input[type=range]::-ms-fill-upper {
+  @apply cursor-pointer;
+  @apply bg-purple-300;
+  @apply w-full;
+  height: 4px;
+  @apply border border-purple-600;
+  border: 1px solid var(--purple-400);
+  border-radius: 2px;
+}
+
+input[type=range]::-ms-thumb {
+  @apply cursor-pointer;
+  @apply bg-purple-600;
+  @apply rounded-full;
+  @apply border-none;
+  @apply w-8;
+  @apply h-8;
+  margin-top: -4px;
+  box-shadow: 0 4px 12px rgba(158, 102, 191, 0.4);
+}
+
+input[type=range]:focus::-ms-fill-lower {
+  @apply bg-purple-400;
+  @apply border border-purple-500;
+}
+
+input[type=range]:focus::-ms-fill-upper {
+  @apply bg-purple-400;
+  @apply border border-purple-500;
 }
