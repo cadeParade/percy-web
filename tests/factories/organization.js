@@ -128,8 +128,12 @@ FactoryGuy.define('organization', {
     withGitlabSelfHostedRepos: {repos: () => makeList('repo', 3, 'gitlabSelfHosted')},
     withGithubEnterpriseRepos: {repos: () => makeList('repo', 3, 'githubEnterprise')},
     withProjects: {projects: () => makeList('project', 5)},
-    withSponsoredSubscription: {subscription: () => make('subscription', 'withSponsoredPlan')},
+    withSponsoredPlan: {subscription: () => make('subscription', 'withSponsoredPlan')},
     withFreePlan: {subscription: () => make('subscription', 'withFreePlan')},
     withTrialPlan: {subscription: () => make('subscription', 'withTrialPlan')},
+    withPaidPlan: {subscription: () => make('subscription', 'withPaidPlan')},
+    withUsageNotificationSetting: {
+      usageNotificationSetting: () => make('usage-notification-setting'),
+    },
   },
 });

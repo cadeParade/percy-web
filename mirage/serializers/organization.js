@@ -12,6 +12,7 @@ export default JSONAPISerializer.extend({
         'subscription.currentUsageStats',
         'githubIntegrationRequest',
         'githubIntegrationRequest.createdBy',
+        'usageNotificationSetting',
       ];
     }
   },

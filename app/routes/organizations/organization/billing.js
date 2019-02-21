@@ -20,9 +20,13 @@ export default Route.extend(AuthenticatedRouteMixin, {
         include: includes,
       })
       .then(organization => {
+        // If you want to access more properties that belong to the organization in this route,
+        // you must set them in setupController or for some reason the property will be overwritten
+        // SORRY
         return {
           organization,
           usageStats: organization.get('subscription.currentUsageStats'),
+          usageNotificationSetting: organization.get('usageNotificationSetting'),
         };
       });
   },
@@ -31,6 +35,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
     controller.setProperties({
       model: model.organization,
       currentUsageStats: model.usageStats,
+      usageNotificationSetting: model.usageNotificationSetting,
     });
   },
 

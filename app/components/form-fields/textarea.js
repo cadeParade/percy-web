@@ -7,7 +7,7 @@ export default Component.extend({
   property: null,
   autofocus: false,
   classes: null,
-
+  validateProperty: () => {}, // this empty function makes validateProperty optional
   classNames: ['FormFieldsTextarea'],
   classNameBindings: ['classes'],
 

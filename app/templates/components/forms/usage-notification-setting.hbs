@@ -1,0 +1,50 @@
+<div data-test-usage-notification-setting-form>
+  <div class="flex items-center justify-between">
+    <h2 class="text-xl font-semibold mb-1">Usage Notifications</h2>
+    {{form-fields/checkbox
+      property="isEnabled"
+      title="Enabled"
+      checkedValue=true
+      uncheckedValue=false
+      toggle=true
+      changeset=changeset
+      testLabel="usage-notification-enabled-slider"
+    }}
+  </div>
+  <p>Receive emails based on how many Percy snapshots you've used in your current billing cycle.</p>
+
+  <form action="javascript:;" class="Form mb-0">
+    {{form-fields/textarea
+      property="displayEmails"
+      title="Email addresses (separated by spaces)"
+      placeholder="Separate each email address with a space: person1@email.com person2@email.com"
+      changeset=changeset
+      validateProperty=(action "validateProperty" changeset "displayEmails")
+      testLabel="usage-notification-emails"
+    }}
+
+    {{form-fields/input
+      property="displayThresholds"
+      title="Number of snapshots reached to receive notification (separated by spaces)"
+      placeholder="Separate each number with a space: 5000 30000"
+      changeset=changeset
+      validateProperty=(action "validateProperty" changeset "displayThresholds")
+      testLabel="usage-notification-thresholds"
+    }}
+
+    {{#if errorMessage}}
+      <div class="Form-errors">
+        {{errorMessage}}
+      </div>
+    {{/if}}
+
+    <div class="flex justify-end">
+      {{form-fields/submit
+        value="Save"
+        classes="percy-btn percy-btn-primary mb-0"
+        submit=(action "customSave")
+        testLabel="usage-notification-save"
+      }}
+    </div>
+  </form>
+</div>

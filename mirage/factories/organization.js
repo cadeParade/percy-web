@@ -26,7 +26,13 @@ export default Factory.extend({
     },
   }),
 
-  withSponsoredSubscription: trait({
+  withPaidPlan: trait({
+    afterCreate(organization, server) {
+      server.create('subscription', 'withPaidPlan', {organization});
+    },
+  }),
+
+  withSponsoredPlan: trait({
     afterCreate(organization, server) {
       server.create('subscription', 'withSponsoredPlan', {organization});
     },

@@ -10,6 +10,7 @@ export default Factory.extend({
   overageUnitCost: 0.006,
   isTrial: false,
   isFree: false,
+  isPaid: true,
   type: 'self_serve',
 
   free: trait({
@@ -22,6 +23,7 @@ export default Factory.extend({
     historyLimitDays: 7,
     isTrial: false,
     isFree: true,
+    isPaid: false,
     type: 'trial',
   }),
 
@@ -35,6 +37,7 @@ export default Factory.extend({
     overageUnitCost: 0.01,
     isTrial: true,
     isFree: false,
+    isPaid: false,
     type: 'trial',
   }),
 
@@ -48,6 +51,7 @@ export default Factory.extend({
     overageUnitCost: 0.006,
     isTrial: false,
     isFree: false,
+    isPaid: true,
     type: 'self_serve',
   }),
 
@@ -61,6 +65,7 @@ export default Factory.extend({
     overageUnitCost: 0.01,
     isTrial: false,
     isFree: false,
+    isPaid: true,
     type: 'custom',
   }),
 
@@ -74,6 +79,7 @@ export default Factory.extend({
     overageUnitCost: 0.01,
     isTrial: false,
     isFree: false,
+    isPaid: false,
     type: 'sponsored',
   }),
 });

@@ -5,7 +5,7 @@ import {beforeEach, afterEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import ManageUsersList from 'percy-web/tests/pages/components/organizations/manage-users-list';
 import UsersHeader from 'percy-web/tests/pages/components/organizations/users-header';
-import UsersPage from 'percy-web/tests/pages/users-page';
+import UsersPage from 'percy-web/tests/pages/organizations/users-page';
 import utils from 'percy-web/lib/utils';
 import sinon from 'sinon';
 
@@ -61,8 +61,8 @@ describe('Acceptance: ManageUsers', function() {
       seatLimit = 10;
       seatsRemaining = 10;
       numberOfInvites = 2;
-      // using 'withSponsoredSubscription' to avoid a trial expiration error in the snapshots
-      organization = server.create('organization', 'withSponsoredSubscription', {
+      // using 'withPaidPlan' to avoid a trial expiration error in the snapshots
+      organization = server.create('organization', 'withPaidPlan', {
         seatsUsed,
         seatLimit,
         seatsRemaining,
@@ -115,7 +115,7 @@ describe('Acceptance: ManageUsers', function() {
 
     describe('leaving organization', function() {
       it('redirects user to an organization.index page ', async function() {
-        const otherOrganization = server.create('organization', 'withSponsoredSubscription');
+        const otherOrganization = server.create('organization', 'withPaidPlan');
         server.create('organizationUser', {
           organization: otherOrganization,
           user: adminUser,
@@ -215,7 +215,7 @@ describe('Acceptance: ManageUsers', function() {
 
   describe('when currentUser is a Member', function() {
     setupSession(function(server) {
-      organization = server.create('organization', 'withSponsoredSubscription', 'withUser');
+      organization = server.create('organization', 'withPaidPlan', 'withUser');
     });
 
     describe('on the /invite page', function() {

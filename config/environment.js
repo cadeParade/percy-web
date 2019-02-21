@@ -43,6 +43,8 @@ module.exports = function(environment) {
         organizationUsers: '/api/v1/organizations/%@/organization-users',
         organizationVersionControlIntegrations:
           '/api/v1/organizations/%@/version-control-integrations',
+        organizationUsageNotificationSettings:
+          '/api/v1/organizations/%@/usage-notification-settings',
         subscription: '/api/v1/organizations/%@/subscription',
         invites: '/api/v1/organizations/%@/invites',
         user: '/api/v1/user',

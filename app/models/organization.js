@@ -19,6 +19,7 @@ export default DS.Model.extend({
     async: false,
   }),
   invites: DS.hasMany('invite'),
+  usageNotificationSetting: DS.belongsTo('usageNotificationSetting', {async: false}),
 
   githubIntegration: computed('versionControlIntegrations.@each.githubIntegrationId', function() {
     return this.get('versionControlIntegrations').findBy('isGithubIntegration');

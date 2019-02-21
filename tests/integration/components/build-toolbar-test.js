@@ -18,7 +18,7 @@ describe('Integration: BuildToolbar', function() {
 
   describe('when the project is public', function() {
     beforeEach(function() {
-      const organization = make('organization', 'withProjects', 'withSponsoredSubscription');
+      const organization = make('organization', 'withProjects', 'withSponsoredPlan');
       const project = organization.get('projects.firstObject');
       const build = make('build', {project});
       this.setProperties({

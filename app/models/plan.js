@@ -18,6 +18,7 @@ export default DS.Model.extend({
   overageUnitCost: DS.attr('number'),
   isTrial: DS.attr('boolean'),
   isFree: DS.attr('boolean'),
+  isPaid: DS.attr('boolean'),
   type: DS.attr(),
 
   isCustom: computed('id', 'isTrial', function() {

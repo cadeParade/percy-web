@@ -1,7 +1,7 @@
 {{!-- TODO: #billingadmins --}}
-<section class="px-2 pt-3">
+<section class="px-2 pt-3 pb-9" data-test-billing-section-container>
   {{#unless (or isUserOrgAdmin (is-admin))}}
-    <div class="Alert Alert--error">
+    <div data-test-member-view class="Alert Alert--error" >
       <strong>Changing billing settings requires organization admin permissions.</strong>
     </div>
   {{else}}
@@ -10,7 +10,7 @@
          This page is only visible to you as a Percy superuser with admin mode enabled.
       </div>
     {{/if}}
-    <section>
+    <section data-test-admin-view>
       <div class="bg-white rounded shadow-1" style="min-height: 363px;">
         <div class="flex items-center justify-between p-6">
           <div class="flex items-center text-5xl">
@@ -86,6 +86,15 @@
           <h2 class="text-xl font-semibold mb-1">Billing Details</h2>
           {{organizations/billing-card-updater
             organization=organization
+          }}
+        </div>
+      {{/if}}
+
+      {{#if subscription.isPaid}}
+        <div class="bg-white rounded shadow-1 p-2 mb-2">
+          {{forms/usage-notification-setting
+            organization=organization
+            setting=usageNotificationSetting
           }}
         </div>
       {{/if}}

@@ -51,7 +51,7 @@ describe('Integration: ProjectEditForm', function() {
 
     describe('when project belongs to an organization with a sponsored plan', function() {
       beforeEach(function() {
-        const organization = make('organization', 'withSponsoredSubscription');
+        const organization = make('organization', 'withSponsoredPlan');
         const project = make('project', 'public', {organization});
         this.set('project', project);
       });

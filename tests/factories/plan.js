@@ -9,6 +9,7 @@ const BUSINESS_PLAN_ATTRIBUTES = {
   numTeamMembersTitle: '20 team members',
   historyLimitTitle: '1 year history',
   isFree: false,
+  isPaid: true,
   type: 'self_serve',
 };
 
@@ -27,6 +28,7 @@ FactoryGuy.define('plan', {
       overageUnitCost: 0.01,
       isTrial: true,
       isFree: false,
+      isPaid: false,
       type: 'trial',
     },
 
@@ -40,7 +42,9 @@ FactoryGuy.define('plan', {
       extraDiffPrice: 0.00001,
       numTeamMembersTitle: '1000 team members',
       historyLimitTitle: '1000 year history',
+      isTriale: false,
       isFree: false,
+      isPaid: true,
       type: 'enterprise',
     },
 
@@ -54,6 +58,7 @@ FactoryGuy.define('plan', {
       historyLimitDays: 7,
       isTrial: false,
       isFree: true,
+      isPaid: false,
       type: 'trial',
     },
 
@@ -66,6 +71,7 @@ FactoryGuy.define('plan', {
       numTeamMembersTitle: '1000 team members',
       historyLimitTitle: '1000 year history',
       isFree: false,
+      isPaid: false,
       type: 'sponsored',
     },
   },

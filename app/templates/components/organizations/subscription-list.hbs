@@ -74,7 +74,7 @@
         </div>
 
         <div style="max-width: 150px" class="flex-1 pr-2 flex items-start justify-end self-center">
-          {{#if (eq "admin" organization.currentUserMembership.role)}}
+          {{#if organization.currentUserIsAdmin}}
             <button href="#" class="btn btn-primary shadow-purple-lg mb-0" disabled={{eq plan.id planData.id}} {{action "showSupportTargeted"}} data-test-subscription-list-choose-enterprise>
               Contact Us
             </button>

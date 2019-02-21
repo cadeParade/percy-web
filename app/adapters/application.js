@@ -72,6 +72,14 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
         snapshot.record.get('organization.id'),
       );
     }
+    // Use the nested /organizations/:org_id/usage-notification-setting route
+    if (requestType === 'createRecord' && modelName === 'usage-notification-setting') {
+      return utils.buildApiUrl(
+        'organizationUsageNotificationSettings',
+        snapshot.record.get('organization.slug'),
+      );
+    }
+
     // Use the nested /organizations/:org_id/organization-users collection route.
     if (requestType === 'query' && modelName === 'organization-user') {
       let organization = query.organization;

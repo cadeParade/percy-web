@@ -34,6 +34,10 @@ export default Factory.extend({
     plan: association('free'),
   }),
 
+  withPaidPlan: trait({
+    plan: association('standard'),
+  }),
+
   withStandardPlan: trait({
     plan: association('standard'),
   }),

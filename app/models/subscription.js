@@ -1,5 +1,5 @@
 import {inject as service} from '@ember/service';
-import {alias, lt, not, or} from '@ember/object/computed';
+import {alias, lt, not, or, readOnly} from '@ember/object/computed';
 import {computed} from '@ember/object';
 import DS from 'ember-data';
 import moment from 'moment';
@@ -22,7 +22,8 @@ export default DS.Model.extend({
   isTrial: alias('plan.isTrial'),
   isFree: alias('plan.isFree'),
   isTrialOrFree: or('plan.isTrial', 'plan.isFree'),
-  isCustomer: not('isTrialOrFree'),
+  isCustomer: not('isTrialOrFree'), // this includes sponsored plans
+  isPaid: readOnly('plan.isPaid'),
 
   // This is only here so that ember-data will send the token on create, it will never be populated
   // in API responses.
