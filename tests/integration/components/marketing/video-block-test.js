@@ -12,8 +12,8 @@ describe('Integration: Marketing/VideoBlock', function() {
 
   const videoBlock = {
     isImagePresent: true,
-    isImageRightAligned: true,
-    isImageCentered: false,
+    isImageRightAligned: false,
+    isImageCentered: true,
     imageUrl: '/images/test/westworld-logo.png',
     imageDescription: 'Westworld Logo',
     header: 'This is the header',
