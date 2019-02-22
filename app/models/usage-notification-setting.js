@@ -21,13 +21,16 @@ export default DS.Model.extend({
   }),
 });
 
-function returnFormattedThresholds(input) {
-  if (!input || typeOf(input) !== 'array') {
+export function returnFormattedThresholds(input) {
+  let thresholds;
+  if (!input) {
     return null;
   } else if (typeOf(input) === 'string') {
-    return input.split(' ');
+    thresholds = input.split(' ');
+  } else if (typeOf(input) === 'array') {
+    thresholds = input;
   }
-  return input.map(num => Formatting.formatNumber(num)).join(' ');
+  return thresholds.map(num => Formatting.formatNumber(num)).join(' ');
 }
 
 function returnString(input) {
