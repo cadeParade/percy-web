@@ -2,55 +2,70 @@ import Ember from 'ember';
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import {task, timeout} from 'ember-concurrency';
+import {hash} from 'rsvp';
+import {inject as service} from '@ember/service';
 
-const MAX_REFRESH_REQUESTS = 6;
 const WAIT_TIME = 10; // in minutes
 const MILLISECONDS_IN_MIN = 60000;
 
 export default Route.extend(AuthenticatedRouteMixin, {
+  redirects: service(),
+
   model() {
     const organization = this.modelFor('organizations.organization');
-    const demoProject = this.get('store').createRecord('project', {organization, isDemo: true});
 
-    return demoProject;
+    return hash({
+      organization,
+      projects: organization.get('projects'),
+    });
   },
 
   // save in afterModel so we can render a loading template while we wait
-  afterModel(demoProject) {
-    this.saveProcess(demoProject);
+  afterModel(model) {
+    const organization = model.organization;
+    const projects = model.projects;
+
+    if (projects.length === 0) {
+      const demoProject = this.get('store').createRecord('project', {organization, isDemo: true});
+      this.saveProcess(demoProject);
+    } else if (projects.length === 1 && projects.lastObject.isNew) {
+      this.saveProcess(projects.lastObject);
+    } else if (projects.length === 1 && projects.lastObject.isDemo) {
+      this.transitionToDemo(projects.lastObject);
+    } else {
+      this.get('redirects').redirectToRecentProjectForOrg(organization);
+    }
   },
 
   async saveProcess(demoProject) {
     const initialSaveResult = await this.saveDemo(demoProject);
     if (initialSaveResult.error) {
       this.controller.set('hasError', true);
-      this.saveDemoRetryTask.perform(demoProject);
+      this.saveDemoRetryTask.perform();
     } else {
       this.transitionToDemo(demoProject);
     }
   },
 
-  saveDemoRetryTask: task(function*(demoProject) {
-    let _numPollRequests = 0;
-
-    for (_numPollRequests; _numPollRequests < MAX_REFRESH_REQUESTS; _numPollRequests) {
-      const saveRetry = yield this.saveDemo(demoProject);
-      const error = saveRetry.error;
-
-      if (error) {
-        if (Ember.testing) {
-          return;
-        } else {
-          yield timeout(WAIT_TIME * MILLISECONDS_IN_MIN);
-        }
-      } else {
-        // if there is no error then clear errors and route to demo project
-        this.controller.set('hasError', false);
-        this.transitionToDemo(demoProject);
-        return;
-      }
+  saveDemoRetryTask: task(function*() {
+    if (Ember.testing) {
+      // used to test for correct redirect after error in organization acceptance test
+      this._testingRefreshOnce();
+      return;
     }
+
+    yield timeout(WAIT_TIME * MILLISECONDS_IN_MIN);
+    this.refresh();
   }).drop(),
+
+  // only for organization acceptance testing
+  _testingCanRefreshOnce: true,
+  _testingRefreshOnce() {
+    if (this.get('_testingCanRefreshOnce') === true) {
+      this.set('_testingCanRefreshOnce', false);
+      this.refresh();
+    }
+  },
 
   async transitionToDemo(demoProject) {
     const organization = this.modelFor('organizations.organization');
