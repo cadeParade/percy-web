@@ -84,7 +84,7 @@
     "ember-mocha": "^0.14.0",
     "ember-modal-dialog": "^3.0.0",
     "ember-moment": "^7.7.0",
-    "ember-page-title": "5.0.0",
+    "ember-page-title": "5.0.1",
     "ember-percy": "percy/ember-percy.git#agentified",
     "ember-power-select": "^2.2.2",
     "ember-promise-helpers": "^1.0.3",
