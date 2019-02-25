@@ -17,6 +17,7 @@ export default Component.extend({
   'data-test-snapshot-list': true,
   store: service(),
   snapshotQuery: service(),
+  analytics: service(),
 
   // Required params
   snapshotsChanged: null,
@@ -93,6 +94,15 @@ export default Component.extend({
             this.get('toggleAllDiffs')({trackSource: 'keypress'});
           }
         }
+        this.get('analytics').track(
+          'Snapshot List Navigated',
+          this.get('build.project.organization'),
+          {
+            type: 'keyboard',
+            project_id: this.get('build.project.id'),
+            build_id: this.get('build.id'),
+          },
+        );
       }.bind(this),
     );
   },
