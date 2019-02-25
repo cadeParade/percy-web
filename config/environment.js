@@ -177,6 +177,10 @@ module.exports = function(environment) {
     ENV.moment = {
       allowEmpty: true,
     };
+    ENV.launchDarkly.local = true;
+    ENV.launchDarkly.localFeatureFlags = {
+      'allow-snapshot-groups': false,
+    };
   }
 
   if (environment === 'production') {

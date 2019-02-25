@@ -173,4 +173,65 @@ describe('Integration: SnapshotList', function() {
       expect(SnapshotList.snapshots.objectAt(numRenderedSnapshots - 1).isFocused).to.equal(false);
     });
   });
+
+  describe('snapshot groups', function() {
+    describe('ordering', function() {
+      beforeEach(async function() {
+        const stub = sinon.stub();
+        const build = make('build', 'finished', {totalSnapshots: 11});
+        const browser = make('browser');
+
+        const approvedGroup = makeList('snapshot', 5, 'approved', 'withComparisons', {
+          build,
+          gatedFingerprint: 'approvedGroup',
+        });
+
+        const unapprovedGroup = makeList('snapshot', 3, 'withComparisons', {
+          build,
+          gatedFingerprint: 'unapprovedGroup',
+        });
+
+        const singleSnapshots = makeList(
+          'snapshot',
+          ['withComparisons', 'approved', {build}],
+          ['withComparisons', 'approved', {build}],
+          ['withComparisons', {build}],
+        );
+
+        const snapshotsChanged = singleSnapshots.concat(approvedGroup, unapprovedGroup);
+
+        this.setProperties({snapshotsChanged, build, stub, browser, numSnapshotsUnchanged: 0});
+
+        await this.render(hbs`{{snapshot-list
+          snapshotsChanged=snapshotsChanged
+          snapshotsUnchanged=snapshotsUnchanged
+          build=build
+          createReview=stub
+          showSnapshotFullModalTriggered=stub
+          activeBrowser=browser
+          toggleUnchangedSnapshotsVisible=stub
+          isBuildApprovable=true
+        }}`);
+      });
+
+      it('orders individual and grouped snapshots correctly', async function() {
+        expect(SnapshotList.snapshotBlocks.length).to.equal(5);
+
+        expect(SnapshotList.snapshotBlocks[0].isGroup).to.equal(true);
+        expect(SnapshotList.snapshotBlocks[0].isApproved).to.equal(false);
+
+        expect(SnapshotList.snapshotBlocks[1].isSnapshot).to.equal(true);
+        expect(SnapshotList.snapshotBlocks[1].isApproved).to.equal(false);
+
+        expect(SnapshotList.snapshotBlocks[2].isGroup).to.equal(true);
+        expect(SnapshotList.snapshotBlocks[2].isApproved).to.equal(true);
+
+        expect(SnapshotList.snapshotBlocks[3].isSnapshot).to.equal(true);
+        expect(SnapshotList.snapshotBlocks[3].isApproved).to.equal(true);
+
+        expect(SnapshotList.snapshotBlocks[4].isSnapshot).to.equal(true);
+        expect(SnapshotList.snapshotBlocks[4].isApproved).to.equal(true);
+      });
+    });
+  });
 });

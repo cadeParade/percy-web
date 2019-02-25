@@ -1,8 +1,9 @@
 import $ from 'jquery';
-import {alias, gt, mapBy} from '@ember/object/computed';
-import {computed} from '@ember/object';
+import {alias, filterBy, gt, mapBy, readOnly} from '@ember/object/computed';
+import {computed, get} from '@ember/object';
 import Component from '@ember/component';
 import {inject as service} from '@ember/service';
+import groupSnapshots from 'percy-web/lib/group-snapshots';
 
 const KEYS = {
   DOWN_ARROW: 40,
@@ -34,8 +35,42 @@ export default Component.extend({
 
   shouldDeferRendering: gt('snapshotsChanged.length', 75),
 
+  _singleSnapshotsChanged: readOnly('_snapshotGroups.singles'),
+  _unapprovedSingleSnapshots: filterBy('_singleSnapshotsChanged', 'isApproved', false),
+  _approvedSingleSnapshots: filterBy('_singleSnapshotsChanged', 'isApproved', true),
+
+  _groupedSnapshotsChanged: readOnly('_snapshotGroups.groups'),
+
   numSnapshotsUnchanged: computed('build.totalSnapshots', 'snapshotsChanged.length', function() {
     return this.get('build.totalSnapshots') - this.get('snapshotsChanged.length');
+  }),
+
+  _snapshotGroups: computed('snapshotsChanged.@each.fingerprint', function() {
+    return groupSnapshots(get(this, 'snapshotsChanged'));
+  }),
+
+  _unapprovedGroups: computed('_groupedSnapshotsChanged.[]', function() {
+    return get(this, '_groupedSnapshotsChanged').filter(group => {
+      return group.any(snapshot => get(snapshot, 'isUnreviewed'));
+    });
+  }),
+
+  _approvedGroups: computed('_groupedSnapshotsChanged.[]', function() {
+    return get(this, '_groupedSnapshotsChanged').filter(group => {
+      return group.every(snapshot => get(snapshot, 'isApproved'));
+    });
+  }),
+
+  // These can be single snapshots or grouped snapshots.
+  // This computed property purposely does not depend on all the things it contains because we don't
+  // want snapshots to change order until the page is refreshed.
+  // Unless the browser changes, then we want it to be in the new order for the browser.
+  snapshotBlocks: computed('activeBrowser', function() {
+    return get(this, '_unapprovedGroups').concat(
+      get(this, '_unapprovedSingleSnapshots'),
+      get(this, '_approvedGroups'),
+      get(this, '_approvedSingleSnapshots'),
+    );
   }),
 
   actions: {

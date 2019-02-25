@@ -271,7 +271,10 @@ describe('Integration: BuildContainer', function() {
     });
 
     it('selects chrome by default when both browsers have equal snapshots with diffs', async function() { // eslint-disable-line
-      this.set('allChangedBrowserSnapshotsSorted', {'chrome-id': ['bar'], 'firefox-id': ['foo']});
+      this.set('allChangedBrowserSnapshotsSorted', {
+        'chrome-id': [{foo: 'bar'}],
+        'firefox-id': [{bar: 'foo'}],
+      });
 
       expect(BuildPage.browserSwitcher.chromeButton.isActive).to.equal(true);
       expect(BuildPage.browserSwitcher.firefoxButton.isActive).to.equal(false);

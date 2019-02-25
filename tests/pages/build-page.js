@@ -33,6 +33,7 @@ const BuildPage = {
 
   snapshotList: SnapshotList,
   snapshots: alias('snapshotList.snapshots'),
+  snapshotBlocks: alias('snapshotList.snapshotBlocks'),
 
   snapshotTitles: getter(function() {
     return this.snapshots.map(snapshot => snapshot.name);

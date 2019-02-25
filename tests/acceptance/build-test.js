@@ -11,6 +11,7 @@ import {beforeEach} from 'mocha';
 import {currentRouteName, currentURL, findAll} from '@ember/test-helpers';
 import {percySnapshot} from 'ember-percy';
 import {isVisible as attacherIsVisible} from 'ember-attacher';
+import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Acceptance: Build', function() {
   freezeMoment('2018-05-22');
@@ -86,17 +87,40 @@ describe('Acceptance: Build', function() {
   });
 
   describe('snapshot order/caching', function() {
+    beforeEach(function() {
+      withVariation(this.owner, 'allow-snapshot-groups', true);
+      server.createList('snapshot', 5, 'withComparison', 'userApproved', {
+        build,
+        fingerprint: 'approvedGroup',
+      });
+
+      server.createList('snapshot', 3, 'withComparison', 'unreviewed', {
+        build,
+        fingerprint: 'unapprovedGroup',
+      });
+    });
+
     it('displays snapshots in the correct order, before and after approval when build is finished', async function() { // eslint-disable-line
       const firstSnapshotExpectedName = defaultSnapshot.name;
       const secondSnapshotExpectedName = twoWidthsSnapshot.name;
 
       await BuildPage.visitBuild(urlParams);
-      expect(BuildPage.snapshots.objectAt(0).name).to.equal(firstSnapshotExpectedName);
-      expect(BuildPage.snapshots.objectAt(1).name).to.equal(secondSnapshotExpectedName);
+      expect(BuildPage.snapshotBlocks[0].name).to.equal('3 duplicate changes');
+      expect(BuildPage.snapshotBlocks[1].name).to.equal(firstSnapshotExpectedName);
+      expect(BuildPage.snapshotBlocks[2].name).to.equal(secondSnapshotExpectedName);
+      expect(BuildPage.snapshotBlocks[4].name).to.equal('5 duplicate changes');
 
-      await BuildPage.snapshots.objectAt(0).clickApprove();
-      expect(BuildPage.snapshots.objectAt(0).name).to.equal(firstSnapshotExpectedName);
-      expect(BuildPage.snapshots.objectAt(1).name).to.equal(secondSnapshotExpectedName);
+      await BuildPage.snapshotBlocks[1].clickApprove();
+      expect(BuildPage.snapshotBlocks[0].name).to.equal('3 duplicate changes');
+      expect(BuildPage.snapshotBlocks[1].name).to.equal(firstSnapshotExpectedName);
+      expect(BuildPage.snapshotBlocks[2].name).to.equal(secondSnapshotExpectedName);
+      expect(BuildPage.snapshotBlocks[4].name).to.equal('5 duplicate changes');
+
+      await BuildPage.snapshotBlocks[0].clickApprove();
+      expect(BuildPage.snapshotBlocks[0].name).to.equal('3 duplicate changes');
+      expect(BuildPage.snapshotBlocks[1].name).to.equal(firstSnapshotExpectedName);
+      expect(BuildPage.snapshotBlocks[2].name).to.equal(secondSnapshotExpectedName);
+      expect(BuildPage.snapshotBlocks[4].name).to.equal('5 duplicate changes');
     });
 
     // This tests the polling behavior in build-container and that initializeSnapshotOrdering method
@@ -133,7 +157,8 @@ describe('Acceptance: Build', function() {
       // So the normal second snapshot (twoWidthsSnapshot) will now be first, and defaultSnapshot
       // will be second.
       expect(BuildPage.snapshotList.lastSnapshot.name).to.equal(defaultSnapshot.name);
-      expect(BuildPage.snapshots.objectAt(0).name).to.equal(twoWidthsSnapshot.name);
+      expect(BuildPage.snapshotBlocks[0].name).to.equal('3 duplicate changes');
+      expect(BuildPage.snapshotBlocks[1].name).to.equal(twoWidthsSnapshot.name);
 
       await percySnapshot(this.test);
     });
@@ -684,11 +709,12 @@ describe('Acceptance: Demo Project Build', function() {
     await BuildPage.visitBuild(urlParams);
 
     const tooltipElement = await findAll('.ember-attacher').firstObject;
-
-    expect(BuildPage.demoTooltips.length).to.be.at.least(2);
+    expect(BuildPage.demoTooltips.length).to.equal(5);
+    // Anchors on snapshot viewers should be visible
+    // This line checks that the index param is being passed correctly
+    expect(BuildPage.demoTooltips[3].isAnchorVisible).to.equal(true);
 
     await BuildPage.demoTooltips.objectAt(0).clickAnchor();
-
     expect(attacherIsVisible(tooltipElement)).to.equal(true);
   });
 

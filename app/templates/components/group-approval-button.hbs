@@ -1,0 +1,17 @@
+{{#if isGroupApproved}}
+  <div class="status-pill is-approved" data-test-group-approved>
+    {{numTotalSnapshots}} changes approved
+  </div>
+{{else}}
+  <div class="{{if isDisabled "hint--left hint--rounded hint--bounce"}}"
+    aria-label="{{if isDisabled "You can't approve this group because you are not a member of this build's organization or are not logged in"}}">
+    <button
+      {{action "approveGroup"}}
+      type="button"
+      class="btn btn-success
+        {{if isLoading 'is-loading'}}"
+      disabled="{{if isDisabled "disabled"}}"
+      data-test-group-approval-button
+    >Approve {{numUnapprovedSnapshots}} changes</button>
+  </div>
+{{/if}}

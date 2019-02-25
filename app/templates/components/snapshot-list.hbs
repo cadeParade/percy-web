@@ -1,18 +1,39 @@
-{{#each snapshotsChanged as |snapshot index|}}
-  {{snapshot-viewer
-    build=build
-    snapshot=snapshot
-    allDiffsShown=allDiffsShown
-    activeSnapshotId=activeSnapshotId
-    shouldDeferRendering=shouldDeferRendering
-    showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-    createReview=createReview
-    updateActiveSnapshotId=(action "updateActiveSnapshotId")
-    activeBrowser=activeBrowser
-    updateActiveBrowser=updateActiveBrowser
-    isBuildApprovable=isBuildApprovable
-    index=index
-  }}
+{{#each snapshotBlocks as |block index|}}
+  <div data-test-snapshot-block>
+  {{#if (is-item-array block)}}
+    {{snapshot-group
+      snapshots=block
+      fingerprint=block.firstObject.fingerprint
+      build=build
+      allDiffsShown=allDiffsShown
+      activeSnapshotId=activeSnapshotId
+      shouldDeferRendering=shouldDeferRendering
+      showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+      createReview=createReview
+      updateActiveSnapshotId=(action "updateActiveSnapshotId")
+      activeBrowser=activeBrowser
+      updateActiveBrowser=updateActiveBrowser
+      isBuildApprovable=isBuildApprovable
+      class="data-test-snapshot-group"
+    }}
+  {{else}}
+    {{snapshot-viewer
+      build=build
+      snapshot=block
+      allDiffsShown=allDiffsShown
+      activeSnapshotId=activeSnapshotId
+      shouldDeferRendering=shouldDeferRendering
+      showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+      createReview=createReview
+      updateActiveSnapshotId=(action "updateActiveSnapshotId")
+      activeBrowser=activeBrowser
+      updateActiveBrowser=updateActiveBrowser
+      isBuildApprovable=isBuildApprovable
+      index=index
+      class="data-test-snapshot-viewer"
+    }}
+  {{/if}}
+  </div>
 {{/each}}
 
 {{#if numSnapshotsUnchanged}}
