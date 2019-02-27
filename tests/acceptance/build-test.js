@@ -123,6 +123,24 @@ describe('Acceptance: Build', function() {
       expect(BuildPage.snapshotBlocks[4].name).to.equal('5 duplicate changes');
     });
 
+    it('behaves correctly when approving snapshots within a group', async function() {
+      await BuildPage.visitBuild(urlParams);
+      let firstSnapshotGroup = BuildPage.snapshotBlocks[0].snapshotGroup;
+
+      await firstSnapshotGroup.toggleShowAllSnapshots();
+      let firstSnapshot = firstSnapshotGroup.snapshots[0];
+      await percySnapshot(this.test.fullTitle() + 'group is expanded');
+
+      expect(firstSnapshotGroup.snapshots.length).to.equal(3);
+
+      await firstSnapshot.clickApprove();
+      await percySnapshot(this.test.fullTitle() + 'group is expanded, first snapshot is approved');
+      expect(firstSnapshotGroup.snapshots[0]).to.equal(firstSnapshot);
+      expect(firstSnapshot.isApproved).to.equal(true);
+      expect(firstSnapshot.isExpanded).to.equal(true);
+      expect(firstSnapshotGroup.isApproved).to.equal(false);
+    });
+
     // This tests the polling behavior in build-container and that initializeSnapshotOrdering method
     // is called and works correctly in builds/build controller.
     it('sorts snapshots correctly when a build moves from processing to finished via polling', async function() { // eslint-disable-line
@@ -203,6 +221,45 @@ describe('Acceptance: Build', function() {
       // Previously first snapshot should now be second.
       expect(BuildPage.snapshots.objectAt(0).name).to.equal(twoWidthsSnapshot.name);
       expect(BuildPage.snapshots.objectAt(1).name).to.equal(defaultSnapshot.name);
+    });
+  });
+
+  describe('interacting with a snapshot group', function() {
+    let unapprovedSnapshots;
+    beforeEach(async function() {
+      withVariation(this.owner, 'allow-snapshot-groups', true);
+      unapprovedSnapshots = server.createList(
+        'snapshot',
+        3,
+        'withComparison',
+        'withMobile',
+        'unreviewed',
+        {
+          build,
+          fingerprint: 'unapprovedGroup',
+        },
+      );
+    });
+
+    it('shows first snapshot in fullscreen view', async function() {
+      await BuildPage.visitBuild(urlParams);
+      await BuildPage.snapshotBlocks[0].clickToggleFullscreen();
+      expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
+      expect(currentURL()).to.include(build.id);
+      expect(currentURL()).to.include(unapprovedSnapshots[0].id);
+      percySnapshot(this.test);
+    });
+
+    it('switches widths', async function() {
+      await BuildPage.visitBuild(urlParams);
+      const firstWidthSwitcher = BuildPage.snapshotBlocks[0].header.widthSwitcher;
+      expect(firstWidthSwitcher.buttons[0].isActive).to.equal(false);
+      expect(firstWidthSwitcher.buttons[1].isActive).to.equal(true);
+
+      await firstWidthSwitcher.buttons[0].click();
+      expect(firstWidthSwitcher.buttons[0].isActive).to.equal(true);
+      expect(firstWidthSwitcher.buttons[1].isActive).to.equal(false);
+      percySnapshot(this.test);
     });
   });
 

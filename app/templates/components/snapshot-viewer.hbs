@@ -2,12 +2,12 @@
   {{snapshot-viewer-header
     fullscreen=false
     snapshot=snapshot
-    snapshotSelectedWidth=snapshotSelectedWidth
+    snapshotSelectedWidth=blockSelectedWidth
     selectedComparison=selectedComparison
-    toggleViewMode=(action showSnapshotFullModalTriggered snapshot.id snapshotSelectedWidth activeBrowser)
+    toggleViewMode=(action showSnapshotFullModalTriggered snapshot.id blockSelectedWidth activeBrowser)
     updateSelectedWidth=(action "updateSelectedWidth")
     createReview=createReview
-    expandSnapshot=(action "expandSnapshot")
+    expandSnapshot=(action "expandBlock")
     activeBrowser=activeBrowser
     updateActiveBrowser=updateActiveBrowser
     isBuildApprovable=isBuildApprovable
@@ -19,7 +19,7 @@
       {{comparison-viewer
         comparison=selectedComparison
         allDiffsShown=allDiffsShown
-        snapshotSelectedWidth=snapshotSelectedWidth
+        snapshotSelectedWidth=blockSelectedWidth
         isDefaultExpanded=isDefaultExpanded
         isUnchangedSnapshotExpanded=isUnchangedSnapshotExpanded
         data-test-SnapshotViewer-comparison=true
@@ -28,7 +28,7 @@
       }}
     {{else}}
       <div class="p-2 text-center bg-gray-000 border-b" data-test-SnapshotViewer-noComparison>
-        No snapshot taken at {{snapshotSelectedWidth}}px.
+        No snapshot taken at {{blockSelectedWidth}}px.
       </div>
     {{/if}}
   {{/if}}

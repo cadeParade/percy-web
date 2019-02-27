@@ -1,4 +1,4 @@
-<header class="SnapshotViewer-header sticky pin-t grid gap-4 z-1 px-2 py-1 bg-gray-000 border-t border-b">
+<header class="SnapshotViewer-header sticky pin-t grid gap-4 z-1 px-2 py-1 bg-gray-000 border-t border-b" {{action "expandBlock"}} data-test-snapshot-group-header>
   <div style="min-width: 0;" class="flex items-center">
     <div class="Viewer-header-title SnapshotViewer-title cursor-default font-bold truncate" title="{{snapshots.length}} matching changes" data-test-snapshot-group-name>
       {{snapshots.length}} duplicate changes
@@ -7,20 +7,20 @@
 
   <div class="flex justify-end">
     <div class="btn-toolbar">
-      {{#if (not isGroupExpanded)}}
+      {{#if (not areAllSnapshotsExpanded)}}
         <div class="btn-group btn-group-alt">
           {{comparison-switcher
             comparisons=filteredComparisons.comparisonsWithDiffs
-            selectedWidth=groupSelectedWidth
+            selectedWidth=blockSelectedWidth
             updateSelectedWidth=(action "updateSelectedWidth")
           }}
         </div>
       {{/if}}
 
-      {{#if (not isGroupExpanded)}}
+      {{#if (not areAllSnapshotsExpanded)}}
         <div class="btn-group" role="group" aria-label="Second Group">
           <button type="button" class="ToggleFullViewButton btn btn-square maximize-snapshot"
-            {{action showSnapshotFullModalTriggered snapshots.firstObject.id groupSelectedWidth activeBrowser}}>
+            {{action showSnapshotFullModalTriggered snapshots.firstObject.id blockSelectedWidth activeBrowser}} data-test-snapshot-header-dropdown-toggle>
             <figure class="svg-container">
               {{inline-svg "maximize-icon"}}
             </figure>
@@ -30,8 +30,8 @@
 
       <div class="btn-toolbar">
         <div class="btn-group">
-          <button class="percy-btn" {{action (toggle "isGroupExpanded" this)}}>
-            {{#if isGroupExpanded}}
+          <button class="percy-btn" {{action (toggle "areAllSnapshotsExpanded" this)}} data-test-show-group-snapshots>
+            {{#if areAllSnapshotsExpanded}}
               Collapse Duplicates
             {{else}}
               Expand Duplicates
@@ -53,30 +53,34 @@
   </div>
 </header>
 
-{{#unless isGroupExpanded}}
-  {{comparison-viewer
-    comparison=filteredComparisons.selectedComparison
-    allDiffsShown=false
-    snapshotSelectedWidth=groupSelectedWidth
-    isDefaultExpanded=true
-    isUnchangedSnapshotExpanded=true
-    activeBrowser=activeBrowser
-  }}
-{{else}}
-  {{#each snapshots as |snapshot|}}
-    {{snapshot-viewer
-      build=build
-      snapshot=snapshot
-      allDiffsShown=allDiffsShown
-      activeSnapshotId=activeSnapshotId
-      shouldDeferRendering=shouldDeferRendering
-      showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-      createReview=createReview
-      updateActiveSnapshotId=updateActiveSnapshotId
-      activeBrowser=activeBrowser
-      updateActiveBrowser=updateActiveBrowser
-      isBuildApprovable=isBuildApprovable
-      class="ml-8 mr-2 mt-2 border-l border-r"
-    }}
-  {{/each}}
-{{/unless}}
+<div class="mt-2">
+  {{#if isExpanded}}
+    {{#unless areAllSnapshotsExpanded}}
+      {{comparison-viewer
+        comparison=selectedComparison
+        allDiffsShown=false
+        snapshotSelectedWidth=blockSelectedWidth
+        isDefaultExpanded=true
+        isUnchangedSnapshotExpanded=true
+        activeBrowser=activeBrowser
+      }}
+    {{else}}
+      {{#each snapshots as |snapshot|}}
+        {{snapshot-viewer
+          build=build
+          snapshot=snapshot
+          allDiffsShown=allDiffsShown
+          activeSnapshotBlockId=activeSnapshotBlockId
+          shouldDeferRendering=shouldDeferRendering
+          showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+          createReview=createReview
+          updateActiveSnapshotBlockId=updateActiveSnapshotBlockId
+          activeBrowser=activeBrowser
+          updateActiveBrowser=updateActiveBrowser
+          isBuildApprovable=isBuildApprovable
+          class="ml-8 mr-2 mt-2 border-l border-r"
+        }}
+      {{/each}}
+    {{/unless}}
+  {{/if}}
+  </div>

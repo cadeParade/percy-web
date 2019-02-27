@@ -151,7 +151,7 @@ describe('Integration: SnapshotViewer', function() {
         userSelectedWidth=userSelectedWidth
         createReview=createReview
         activeBrowser=browser
-        updateActiveSnapshotId=stub
+        updateActiveSnapshotBlockId=stub
         isBuildApprovable=isBuildApprovable
       }}`);
 
@@ -181,7 +181,7 @@ describe('Integration: SnapshotViewer', function() {
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
         userSelectedWidth=userSelectedWidth
         createReview=createReview
-        updateActiveSnapshotId=stub
+        updateActiveSnapshotBlockId=stub
         activeBrowser=browser
         isBuildApprovable=isBuildApprovable
       }}`);
@@ -205,7 +205,7 @@ describe('Integration: SnapshotViewer', function() {
 
   describe('expand/collapse', function() {
     beforeEach(async function() {
-      this.set('activeSnapshotId', null);
+      this.set('activeSnapshotBlockId', null);
 
       await this.render(hbs`{{snapshot-viewer
         snapshot=snapshot
@@ -213,8 +213,8 @@ describe('Integration: SnapshotViewer', function() {
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
         userSelectedWidth=userSelectedWidth
         createReview=createReview
-        activeSnapshotId=activeSnapshotId
-        updateActiveSnapshotId=stub
+        activeSnapshotBlockId=activeSnapshotBlockId
+        updateActiveSnapshotBlockId=stub
         activeBrowser=browser
         isBuildApprovable=isBuildApprovable
       }}`);
@@ -237,9 +237,9 @@ describe('Integration: SnapshotViewer', function() {
       expect(SnapshotViewerPO.isExpanded).to.equal(true);
     });
 
-    it("is expanded when activeSnapshotId is equal to the snapshot's id", async function() {
+    it("is expanded when activeSnapshotBlockId is equal to the snapshot's id", async function() {
       this.set('snapshot.reviewState', SNAPSHOT_APPROVED_STATE);
-      this.set('activeSnapshotId', snapshot.get('id'));
+      this.set('activeSnapshotBlockId', snapshot.get('id'));
       expect(SnapshotViewerPO.isExpanded).to.equal(true);
     });
 
@@ -261,7 +261,7 @@ describe('Integration: SnapshotViewer', function() {
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
         createReview=createReview
-        updateActiveSnapshotId=stub
+        updateActiveSnapshotBlockId=stub
         activeBrowser=browser
         isBuildApprovable=isBuildApprovable
       }}`);

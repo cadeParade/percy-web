@@ -2,15 +2,14 @@
   <div data-test-snapshot-block>
   {{#if (is-item-array block)}}
     {{snapshot-group
-      snapshots=block
-      fingerprint=block.firstObject.fingerprint
       build=build
+      snapshots=block
       allDiffsShown=allDiffsShown
-      activeSnapshotId=activeSnapshotId
+      activeSnapshotBlockId=activeSnapshotBlockId
       shouldDeferRendering=shouldDeferRendering
       showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
       createReview=createReview
-      updateActiveSnapshotId=(action "updateActiveSnapshotId")
+      updateActiveSnapshotBlockId=(action "updateActiveSnapshotBlockId")
       activeBrowser=activeBrowser
       updateActiveBrowser=updateActiveBrowser
       isBuildApprovable=isBuildApprovable
@@ -21,11 +20,11 @@
       build=build
       snapshot=block
       allDiffsShown=allDiffsShown
-      activeSnapshotId=activeSnapshotId
+      activeSnapshotBlockId=activeSnapshotBlockId
       shouldDeferRendering=shouldDeferRendering
       showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
       createReview=createReview
-      updateActiveSnapshotId=(action "updateActiveSnapshotId")
+      updateActiveSnapshotBlockId=(action "updateActiveSnapshotBlockId")
       activeBrowser=activeBrowser
       updateActiveBrowser=updateActiveBrowser
       isBuildApprovable=isBuildApprovable
@@ -59,19 +58,21 @@
     </div>
   {{else}}
     {{#each snapshotsUnchanged as |snapshot|}}
-      {{snapshot-viewer
-        build=build
-        allDiffsShown=allDiffsShown
-        snapshot=snapshot
-        activeSnapshotId=activeSnapshotId
-        shouldDeferRendering=shouldDeferRendering
-        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-        createReview=createReview
-        updateActiveSnapshotId=(action "updateActiveSnapshotId")
-        activeBrowser=activeBrowser
-        updateActiveBrowser=updateActiveBrowser
-        isBuildApprovable=isBuildApprovable
-      }}
+      <div data-test-snapshot-block>
+        {{snapshot-viewer
+          build=build
+          allDiffsShown=allDiffsShown
+          snapshot=snapshot
+          activeSnapshotBlockId=activeSnapshotBlockId
+          shouldDeferRendering=shouldDeferRendering
+          showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+          createReview=createReview
+          updateActiveSnapshotBlockId=(action "updateActiveSnapshotBlockId")
+          activeBrowser=activeBrowser
+          updateActiveBrowser=updateActiveBrowser
+          isBuildApprovable=isBuildApprovable
+        }}
+      </div>
     {{/each}}
   {{/if}}
 {{/if}}

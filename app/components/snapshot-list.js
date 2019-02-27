@@ -1,6 +1,6 @@
 import $ from 'jquery';
-import {alias, filterBy, gt, mapBy, readOnly} from '@ember/object/computed';
-import {computed, get} from '@ember/object';
+import {alias, filterBy, gt, readOnly} from '@ember/object/computed';
+import {computed, get, set} from '@ember/object';
 import Component from '@ember/component';
 import {inject as service} from '@ember/service';
 import groupSnapshots from 'percy-web/lib/group-snapshots';
@@ -32,7 +32,7 @@ export default Component.extend({
   snapshotsUnchanged: null,
 
   // Set internally by actions
-  activeSnapshotId: null,
+  activeSnapshotBlockId: null,
 
   shouldDeferRendering: gt('snapshotsChanged.length', 75),
 
@@ -43,7 +43,7 @@ export default Component.extend({
   _groupedSnapshotsChanged: readOnly('_snapshotGroups.groups'),
 
   numSnapshotsUnchanged: computed('build.totalSnapshots', 'snapshotsChanged.length', function() {
-    return this.get('build.totalSnapshots') - this.get('snapshotsChanged.length');
+    return get(this, 'build.totalSnapshots') - get(this, 'snapshotsChanged.length');
   }),
 
   _snapshotGroups: computed('snapshotsChanged.@each.fingerprint', function() {
@@ -75,8 +75,8 @@ export default Component.extend({
   }),
 
   actions: {
-    updateActiveSnapshotId(newSnapshotId) {
-      this.set('activeSnapshotId', newSnapshotId);
+    updateActiveSnapshotBlockId(newSnapshotBlockId) {
+      set(this, 'activeSnapshotBlockId', newSnapshotBlockId);
     },
   },
 
@@ -84,14 +84,22 @@ export default Component.extend({
     $(document).bind(
       'keydown.snapshots',
       function(e) {
-        if (this.get('isKeyboardNavEnabled')) {
+        if (get(this, 'isKeyboardNavEnabled')) {
           if (e.keyCode === KEYS.DOWN_ARROW) {
-            this.set('activeSnapshotId', this._calculateNewActiveSnapshotId({isNext: true}));
+            set(
+              this,
+              'activeSnapshotBlockId',
+              this._calculateNewActiveSnapshotBlockId({isNext: true}),
+            );
           } else if (e.keyCode === KEYS.UP_ARROW) {
-            this.set('activeSnapshotId', this._calculateNewActiveSnapshotId({isNext: false}));
+            set(
+              this,
+              'activeSnapshotBlockId',
+              this._calculateNewActiveSnapshotBlockId({isNext: false}),
+            );
           } else if (e.keyCode === KEYS.D) {
             e.preventDefault();
-            this.get('toggleAllDiffs')({trackSource: 'keypress'});
+            get(this, 'toggleAllDiffs')({trackSource: 'keypress'});
           }
         }
         this.get('analytics').track(
@@ -110,33 +118,37 @@ export default Component.extend({
     $(document).unbind('keydown.snapshots');
   },
 
-  _allVisibleSnapshots: computed(
-    'snapshotsChanged.[]',
+  _allVisibleSnapshotBlocks: computed(
+    'snapshotBlocks.[]',
     'snapshotsUnchanged.[]',
     'isUnchangedSnapshotsVisible',
     function() {
-      if (this.get('isUnchangedSnapshotsVisible')) {
-        return [].concat(this.get('snapshotsChanged'), this.get('snapshotsUnchanged'));
+      if (get(this, 'isUnchangedSnapshotsVisible')) {
+        return [].concat(get(this, 'snapshotBlocks'), get(this, 'snapshotsUnchanged'));
       } else {
-        return this.get('snapshotsChanged');
+        return get(this, 'snapshotBlocks');
       }
     },
   ),
 
-  _snapshotIds: mapBy('_allVisibleSnapshots', 'id'),
-  _numSnapshots: alias('_allVisibleSnapshots.length'),
-  _calculateNewActiveSnapshotId({isNext = true} = {}) {
-    let currentIndex = this.get('_snapshotIds').indexOf(this.get('activeSnapshotId'));
+  _snapshotBlockIds: computed('_allVisibleSnapshotBlocks.@each.id', function() {
+    return get(this, '_allVisibleSnapshotBlocks').map(block => {
+      return get(block, 'id') || get(block, 'firstObject.fingerprint');
+    });
+  }),
+  _numSnapshotBlocks: alias('_allVisibleSnapshotBlocks.length'),
+  _calculateNewActiveSnapshotBlockId({isNext = true} = {}) {
+    let currentIndex = get(this, '_snapshotBlockIds').indexOf(get(this, 'activeSnapshotBlockId'));
 
     // if we are moving forward and are on the last snapshot, wrap to beginning of list
-    if (isNext && currentIndex === this.get('_numSnapshots') - 1) {
+    if (isNext && currentIndex === get(this, '_numSnapshotBlocks') - 1) {
       currentIndex = -1;
     } else if (!isNext && currentIndex === 0) {
       // if we are moving backward and are on the first snapshot, wrap to end of list
-      currentIndex = this.get('_numSnapshots');
+      currentIndex = get(this, '_numSnapshotBlocks');
     }
 
     const newIndex = isNext ? currentIndex + 1 : currentIndex - 1;
-    return this.get('_snapshotIds')[newIndex];
+    return get(this, '_snapshotBlockIds')[newIndex];
   },
 });

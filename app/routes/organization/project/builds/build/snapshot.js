@@ -133,9 +133,13 @@ export default Route.extend(ResetScrollMixin, {
 
       const allVisibleSnapshots = [].concat(snapshotsForBrowser, unchangedSnapshots);
 
-      const activeSnapshotId = snapshotController.get('snapshotId');
+      const activeSnapshotBlockId = snapshotController.get('snapshotId');
 
-      const newSnapshotId = this._updateSnapshotId(allVisibleSnapshots, activeSnapshotId, isNext);
+      const newSnapshotId = this._updateSnapshotId(
+        allVisibleSnapshots,
+        activeSnapshotBlockId,
+        isNext,
+      );
 
       if (newSnapshotId) {
         this.transitionTo(

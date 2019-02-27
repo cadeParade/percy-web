@@ -1,41 +1,25 @@
-import Component from '@ember/component';
-import {computed, get, set} from '@ember/object';
-import {filterBy, or, readOnly} from '@ember/object/computed';
-import filteredComparisons from 'percy-web/lib/filtered-comparisons';
+import {computed, get} from '@ember/object';
+import {filterBy, readOnly} from '@ember/object/computed';
+import SnapshotListItem from 'percy-web/components/snapshot-list-item';
 
-export default Component.extend({
+export default SnapshotListItem.extend({
   snapshots: null,
-  activeBrowser: null,
-  userSelectedWidth: null,
 
-  isGroupExpanded: false,
+  areAllSnapshotsExpanded: false,
 
   attributeBindings: ['data-test-snapshot-group'],
   'data-test-snapshot-group': true,
 
+  id: readOnly('snapshots.firstObject.fingerprint'),
   coverSnapshot: readOnly('snapshots.firstObject'),
   approvableSnapshots: filterBy('snapshots', 'isUnreviewed'),
-  groupSelectedWidth: or('userSelectedWidth', 'filteredComparisons.defaultWidth'),
   _unapprovedSnapshots: filterBy('snapshots', 'isUnreviewed'),
   numUnapprovedSnapshots: readOnly('_unapprovedSnapshots.length'),
+  _isApproved: readOnly('isGroupApproved'),
 
   isGroupApproved: computed('snapshots.@each.isApproved', function() {
     return get(this, 'snapshots').every(snapshot => {
-      return snapshot.get('isApproved');
+      return get(snapshot, 'isApproved');
     });
   }),
-
-  filteredComparisons: computed('coverSnapshot', 'activeBrowser', 'groupSelectedWidth', function() {
-    return filteredComparisons.create({
-      snapshot: get(this, 'coverSnapshot'),
-      activeBrowser: get(this, 'activeBrowser'),
-      snapshotSelectedWidth: get(this, 'userSelectedWidth'),
-    });
-  }),
-
-  actions: {
-    updateSelectedWidth(value) {
-      set(this, 'userSelectedWidth', value);
-    },
-  },
 });

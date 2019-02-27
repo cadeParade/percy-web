@@ -61,18 +61,35 @@ describe('Integration: SnapshotList', function() {
   });
 
   describe('keyboard nav behavior', function() {
-    const numSnapshots = 3;
     beforeEach(async function() {
       const stub = sinon.stub();
       const build = make('build', 'finished');
       const browser = make('browser');
 
-      const snapshotsChanged = makeList('snapshot', numSnapshots, 'withComparisons', {build});
+      const snapshotsChanged = makeList('snapshot', 1, 'withComparisons', {build});
       const snapshotsUnchanged = makeList('snapshot', 3, 'withNoDiffs', {build});
+      const approvedGroup1 = makeList('snapshot', 5, 'approved', 'withComparisons', {
+        build,
+        gatedFingerprint: 'approvedGroup1',
+      });
+      const approvedGroup2 = makeList('snapshot', 2, 'approved', 'withComparisons', {
+        build,
+        gatedFingerprint: 'approvedGroup2',
+      });
+      const unapprovedGroup = makeList('snapshot', 3, 'withComparisons', {
+        build,
+        gatedFingerprint: 'unapprovedGroup',
+      });
+
+      const allSnapshotsChanged = snapshotsChanged.concat(
+        approvedGroup1,
+        approvedGroup2,
+        unapprovedGroup,
+      );
 
       this.setProperties({
         build,
-        snapshotsChanged,
+        snapshotsChanged: allSnapshotsChanged,
         snapshotsUnchanged,
         stub,
         browser,
@@ -94,83 +111,114 @@ describe('Integration: SnapshotList', function() {
       }}`);
     });
 
-    it('automatically expands collapsed snapshots if focused', async function() {
+    it('automatically expands collapsed snapshot blocks if focused', async function() {
       this.set('isUnchangedSnapshotsVisible', true);
+      const firstApprovedGroup = SnapshotList.snapshotBlocks[2].snapshotGroup;
+      const secondApprovedGroup = SnapshotList.snapshotBlocks[3].snapshotGroup;
+      const firstNoDiffSnapshot = SnapshotList.snapshotBlocks[4].snapshotViewer;
+      const secondNoDiffSnapshot = SnapshotList.snapshotBlocks[5].snapshotViewer;
+      const thirdNoDiffSnapshot = SnapshotList.snapshotBlocks[6].snapshotViewer;
 
-      const firstNoDiffSnapshot = SnapshotList.snapshots.objectAt(3);
-      const secondNoDiffSnapshot = SnapshotList.snapshots.objectAt(4);
-      const thirdNoDiffSnapshot = SnapshotList.snapshots.objectAt(5);
+      // Manaully click the first approved snapshot group and first unchanged snapshot.
+      // Clicking on these objects mean that they should not ever collapse with arrow nav.
+      // The group was clicked last, so that is where the active snapshot starts.
+      await firstNoDiffSnapshot.header.expandSnapshot();
+      await firstApprovedGroup.header.expandGroup();
 
-      // Manaully click the first snapshot.
-      await firstNoDiffSnapshot.expandSnapshot();
-
-      // We clicked on the first snapshot, so it's comparisons should be visible
+      expect(firstApprovedGroup.isExpanded).to.equal(true);
+      expect(secondApprovedGroup.isExpanded).to.equal(false);
       expect(firstNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
       expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
       expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
-      // Arrow to second snapshot.
+
+      // Arrow to second approved group.
+      // Since we clicked the first group, it's snapshots should be visible.
+      // Since we arrowed to the second group, it's snapshots should be visible.
+      // Since we clicked the first unchanged snapshot, it's comparisons should be visible.
       await SnapshotList.typeDownArrow();
 
-      // We clicked on the first snapshot, so it's comparisons should always visible.
-      // We arrowed to second snapshot so it's comparisons should be visible.
+      expect(firstApprovedGroup.isExpanded).to.equal(true);
+      expect(secondApprovedGroup.isExpanded).to.equal(true);
       expect(firstNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
-      expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
+      expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
       expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
 
-      // Arrow to third-to-last snapshot.
+      // Arrow to first unchanged snapshot.
       await SnapshotList.typeDownArrow();
 
-      // We clicked on the first snapshot, so it's comparisons should always visible.
-      // We previously arrowed to the second snapshot, so it's comparisons should stay visible.
-      // We arrowed to third snapshot so it's comparisons should be visible.
+      // We clicked on the first group, it's snapshots should always visible.
+      // We arrowed to and away from the second group, so its snapshots should now be hidden.
+      // We arrowed to the first unchanged snapshots, and it was already expanded,
+      // so its comparisons should be visible.
+      expect(firstApprovedGroup.isExpanded).to.equal(true);
+      expect(secondApprovedGroup.isExpanded).to.equal(false);
+      expect(firstNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
+      expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
+      expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
+
+      // Arrow to the second unchanged snapshot.
+      await SnapshotList.typeDownArrow();
+
+      // We clicked on the first group, its snapshots should always visible.
+      // We arrowed to and away from the second group, so its snapshots should now be hidden.
+      // We arrowed to and away from the first unchanged snapshots,
+      // so its snapshots should now be hidden
+      // We arrowed to the second unchanged snapshot, so its comparisons should now be visible.
+      expect(firstApprovedGroup.isExpanded).to.equal(true);
+      expect(secondApprovedGroup.isExpanded).to.equal(false);
       expect(firstNoDiffSnapshot.isUnchangedComparisonsVisible, 'one').to.equal(true);
-      expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible, 'two').to.equal(false);
-      expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible, 'three').to.equal(true);
+      expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible, 'two').to.equal(true);
+      expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible, 'three').to.equal(false);
     });
 
     it('focuses snapshots on arrow presses', async function() {
-      const numRenderedSnapshots = SnapshotList.snapshots.length;
-      expect(numRenderedSnapshots).to.equal(numSnapshots);
+      const numRenderedSnapshots = SnapshotList.snapshotBlocks.length;
+      // 4 = 1 unapproved group, 1 unapproved snapshot, 2 approved groups
+      expect(numRenderedSnapshots).to.equal(4);
 
-      // select first snapshot
+      const firstSnapshotBlock = SnapshotList.snapshotBlocks[0];
+      const secondSnapshotBlock = SnapshotList.snapshotBlocks[1];
+      const lastSnapshotBlock = SnapshotList.snapshotBlocks[numRenderedSnapshots - 1];
+
+      // select first snapshotBlock
       await SnapshotList.typeDownArrow();
-      expect(SnapshotList.snapshots.objectAt(0).isFocused).to.equal(true);
-      expect(SnapshotList.snapshots.objectAt(1).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots.objectAt(numRenderedSnapshots - 1).isFocused).to.equal(false);
+      expect(firstSnapshotBlock.isFocused).to.equal(true);
+      expect(secondSnapshotBlock.isFocused).to.equal(false);
+      expect(lastSnapshotBlock.isFocused).to.equal(false);
 
-      // select second snapshot
+      // select second snapshotBlock
       await SnapshotList.typeDownArrow();
-      expect(SnapshotList.snapshots.objectAt(0).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots.objectAt(1).isFocused).to.equal(true);
-      expect(SnapshotList.snapshots.objectAt(numRenderedSnapshots - 1).isFocused).to.equal(false);
+      expect(firstSnapshotBlock.isFocused).to.equal(false);
+      expect(secondSnapshotBlock.isFocused).to.equal(true);
+      expect(lastSnapshotBlock.isFocused).to.equal(false);
 
-      // select first snapshot
+      // select first snapshotBlock
       await SnapshotList.typeUpArrow();
-      expect(SnapshotList.snapshots.objectAt(0).isFocused).to.equal(true);
-      expect(SnapshotList.snapshots.objectAt(1).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots.objectAt(numRenderedSnapshots - 1).isFocused).to.equal(false);
+      expect(firstSnapshotBlock.isFocused).to.equal(true);
+      expect(secondSnapshotBlock.isFocused).to.equal(false);
+      expect(lastSnapshotBlock.isFocused).to.equal(false);
 
-      // wrap around to select last snapshot
+      // wrap around to select last snapshotBlock
       await SnapshotList.typeUpArrow();
-      expect(SnapshotList.snapshots.objectAt(0).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots.objectAt(1).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots.objectAt(numRenderedSnapshots - 1).isFocused).to.equal(true);
+      expect(firstSnapshotBlock.isFocused).to.equal(false);
+      expect(secondSnapshotBlock.isFocused).to.equal(false);
+      expect(lastSnapshotBlock.isFocused).to.equal(true);
       await percySnapshot(this.test);
 
-      // wrap around to select first snapshot
+      // wrap around to select first snapshotBlock
       await SnapshotList.typeDownArrow();
-      expect(SnapshotList.snapshots.objectAt(0).isFocused).to.equal(true);
-      expect(SnapshotList.snapshots.objectAt(1).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots.objectAt(numRenderedSnapshots - 1).isFocused).to.equal(false);
+      expect(firstSnapshotBlock.isFocused).to.equal(true);
+      expect(secondSnapshotBlock.isFocused).to.equal(false);
+      expect(lastSnapshotBlock.isFocused).to.equal(false);
     });
 
     it('does not send keyboard actions when isKeyboardNavEnabled is false', async function() {
-      const numRenderedSnapshots = SnapshotList.snapshots.length;
+      const numRenderedSnapshots = SnapshotList.snapshotBlocks.length;
       this.set('isKeyboardNavEnabled', false);
       await SnapshotList.typeDownArrow();
-      expect(SnapshotList.snapshots.objectAt(0).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots.objectAt(1).isFocused).to.equal(false);
-      expect(SnapshotList.snapshots.objectAt(numRenderedSnapshots - 1).isFocused).to.equal(false);
+      expect(SnapshotList.snapshotBlocks[0].isFocused).to.equal(false);
+      expect(SnapshotList.snapshotBlocks[1].isFocused).to.equal(false);
+      expect(SnapshotList.snapshotBlocks[numRenderedSnapshots - 1].isFocused).to.equal(false);
     });
   });
 
@@ -231,6 +279,7 @@ describe('Integration: SnapshotList', function() {
 
         expect(SnapshotList.snapshotBlocks[4].isSnapshot).to.equal(true);
         expect(SnapshotList.snapshotBlocks[4].isApproved).to.equal(true);
+        await percySnapshot(this.test);
       });
     });
   });
