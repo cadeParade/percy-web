@@ -9,6 +9,7 @@ export default Contentful.extend({
   superheader: attr(),
   header: attr(),
   subheadText: attr(),
+  videoEmbedUrl: attr(),
   mainImage: DS.belongsTo('contentful-asset'), // model here: https://bit.ly/2MoN7fD
   logomark: DS.belongsTo('contentful-asset'), // model here: https://bit.ly/2MoN7fD
   classes: attr(),
