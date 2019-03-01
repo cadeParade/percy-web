@@ -3,7 +3,6 @@
 
     {{#each (sort-by "name" enabledProjects) as |enabledProject|}}
       {{project-list-item
-        data-test-project-list-item
         displayDynamicStatusDot=(eq enabledProject.id project.id)
         project=enabledProject
         toggleSidebar=toggleSidebar
