@@ -6,9 +6,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
     return this.modelFor('organizations.organization');
   },
 
-  setupController(controller, resolvedModel) {
-    controller.setProperties({
-      organization: resolvedModel,
-    });
+  setupController(controller, model) {
+    controller.set('organization', model);
   },
 });

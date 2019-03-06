@@ -1,25 +1,39 @@
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import {hash} from 'rsvp';
 
 import {INTEGRATION_TYPES} from 'percy-web/lib/integration-types';
 
 export default Route.extend(AuthenticatedRouteMixin, {
-  setupController(controller, model) {
-    this._super(controller, model);
+  model() {
+    const organization = this.modelFor('organizations.organization');
+    const versionControlIntegrations = organization.get('versionControlIntegrations');
+    const availableIntegrations = organization.get('availableIntegrations');
 
-    controller.setProperties({
-      integrationItems: INTEGRATION_TYPES,
-      availableIntegrations: model.get('availableIntegrations'),
+    return hash({
+      organization,
+      versionControlIntegrations,
+      availableIntegrations,
     });
   },
+
+  setupController(controller, model) {
+    controller.setProperties({
+      integrationItems: INTEGRATION_TYPES,
+      organization: model.organization,
+      versionControlIntegrations: model.versionControlIntegrations,
+      availableIntegrations: model.availableIntegrations,
+    });
+  },
+
   actions: {
     didTransition() {
-      this._super.apply(this, arguments);
+      const organization = this.controller.get('organization');
 
-      let organization = this.modelFor(this.routeName);
       if (organization) {
         this.analytics.track('Integrations Index Viewed', organization);
       }
+
       return true;
     },
   },

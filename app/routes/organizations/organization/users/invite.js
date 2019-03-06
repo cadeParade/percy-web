@@ -5,16 +5,18 @@ import {hash} from 'rsvp';
 export default Route.extend(AuthenticatedRouteMixin, {
   model() {
     const organization = this.modelFor('organizations.organization');
+    const invites = this.store.query('invite', {organization});
+
     return hash({
       organization,
-      invites: this.store.query('invite', {organization}),
+      invites,
     });
   },
 
-  setupController(controller, resolvedModel) {
+  setupController(controller, model) {
     controller.setProperties({
-      organization: resolvedModel.organization,
-      invites: resolvedModel.invites,
+      organization: model.organization,
+      invites: model.invites,
     });
   },
 });

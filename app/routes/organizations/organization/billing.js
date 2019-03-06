@@ -9,20 +9,22 @@ export default Route.extend(AuthenticatedRouteMixin, {
     return this.get('stripe').load();
   },
 
-  // Important: this model loads extra includes, so it requires that we're always using .slug when
-  // using link-to into this route so that the model hook always fires. :( Ember 3!
+  // This model loads extra includes, so it requires that we're always using .slug
+  // when using link-to into this route so that the model hook always fires.
   model() {
-    let organization = this.modelFor('organizations.organization');
-    let includes = 'subscription.current-usage-stats';
+    const organization = this.modelFor('organizations.organization');
+    const includes = 'subscription.current-usage-stats';
+
     return this.get('store')
       .findRecord('organization', organization.id, {
         reload: true,
         include: includes,
       })
       .then(organization => {
-        // If you want to access more properties that belong to the organization in this route,
-        // you must set them in setupController or for some reason the property will be overwritten
-        // SORRY
+        // If you want to access more relationships that belong to the
+        // organization in this route, you must set them in setupController
+        // or, for some reason, the relationship will be overwritten or dropped
+
         return {
           organization,
           usageStats: organization.get('subscription.currentUsageStats'),
@@ -33,7 +35,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
   setupController(controller, model) {
     controller.setProperties({
-      model: model.organization,
+      organization: model.organization,
       currentUsageStats: model.usageStats,
       usageNotificationSetting: model.usageNotificationSetting,
     });
@@ -41,8 +43,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
   actions: {
     didTransition() {
-      this._super.apply(this, arguments);
-      let organization = this.modelFor('organizations.organization');
+      const organization = this.controller.get('organization');
       this.analytics.track('Billing Viewed', organization);
     },
   },

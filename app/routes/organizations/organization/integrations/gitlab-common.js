@@ -1,47 +1,76 @@
-import {computed} from '@ember/object';
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import {hash} from 'rsvp';
+import {INTEGRATION_TYPES} from 'percy-web/lib/integration-types';
 
 export default Route.extend(AuthenticatedRouteMixin, {
-  newGitlabIntegration: computed('currentIntegration', function() {
-    // This computed property relies on currentIntegration, because the current integration can
-    // change between routes, therefore requiring to recompute the property
-    return this.store.createRecord('version-control-integration', {
-      integrationType: this.get('currentIntegrationType'),
-      organization: this.modelFor(this.routeName),
-    });
-  }),
+  // REQUIRED: any routes that extend this must define currentIntegrationType
+  currentIntegrationType: null,
+
   model() {
-    let organization = this.modelFor('organizations.organization');
-    this.set('currentOrganization', organization);
-    return organization;
-  },
-  setupController(controller, model) {
-    this._super(controller, model);
-    controller.setProperties({
-      organization: model,
-      currentGitlabIntegration: this.get('currentGitlabIntegration'),
+    const integrationModelAttribute = this._getIntegrationModelAttribute();
+    const organization = this.modelFor('organizations.organization');
+    const gitlabIntegration = organization.get(integrationModelAttribute);
+
+    return hash({
+      organization,
+      gitlabIntegration,
     });
   },
+
+  setupController(controller, model) {
+    const currentGitlabIntegration = this._checkForGitlabIntegration(model);
+
+    controller.setProperties({
+      organization: model.organization,
+      currentGitlabIntegration: currentGitlabIntegration,
+    });
+  },
+
   actions: {
     redirectToIntegrationsIndex() {
       this.transitionTo('organizations.organization.integrations.index');
     },
+
     willTransition() {
       let model = this.store.peekAll('version-control-integration').findBy('isNew', true);
       if (model) {
         this.store.unloadRecord(model);
       }
     },
-    didTransition() {
-      this._super.apply(this, arguments);
 
-      let organization = this.modelFor(this.routeName);
-      let friendlyName = this.get('currentGitlabIntegration.friendlyName');
+    didTransition() {
+      const organization = this.controller.get('organization');
+      const friendlyName = this.controller.get('currentGitlabIntegration.friendlyName');
+
       if (friendlyName) {
         this.analytics.track(`Integrations ${friendlyName} Viewed`, organization);
       }
+
       return true;
     },
+  },
+
+  _getIntegrationModelAttribute() {
+    // returns the model attibute of the current integration type
+    const integrationInfo = INTEGRATION_TYPES[this.get('currentIntegrationType')];
+
+    return integrationInfo.organizationModelAttribute;
+  },
+
+  _checkForGitlabIntegration(model) {
+    // checks for and returns new or existing gitlab integration
+    let currentGitlabIntegration;
+
+    if (model.gitlabIntegration) {
+      currentGitlabIntegration = model.gitlabIntegration;
+    } else {
+      currentGitlabIntegration = this.store.createRecord('version-control-integration', {
+        integrationType: this.get('currentIntegrationType'),
+        organization: model.organization,
+      });
+    }
+
+    return currentGitlabIntegration;
   },
 });

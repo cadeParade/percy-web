@@ -1,17 +1,17 @@
-{{title (concat model.name " settings | Percy") replace=true}}
+{{title (concat organization.name " settings | Percy") replace=true}}
 
-{{#organizations/settings-nav-wrapper organization=model}}
+{{#organizations/settings-nav-wrapper organization=organization}}
   <section class="px-2 pt-3">
-    <h1 class="text-xl font-semibold mb-sm">Configure {{capitalize model.name}}</h1>
+    <h1 class="text-xl font-semibold mb-sm">Configure {{capitalize organization.name}}</h1>
     <p class="text-gray-400 w-3/4">
       These are the settings for the whole Percy organization. Update the settings for your projects <a href="#" {{action (route-action "redirectToRecentProjectSettings")}}>here</a>. Not seeing the setting you were looking for? <a href="#" {{action (route-action "showSupport")}} data-test-org-settings-show-support>Reach out</a> and let us know!
     </p>
 
-    {{#organizations/require-role role="admin" organization=model}}
+    {{#organizations/require-role role="admin" organization=organization}}
       <div class="bg-white rounded shadow-1 p-2">
         <h2 class="text-xl font-semibold mb-1">Organization Settings</h2>
         {{forms/organization-edit
-          organization=model
+          organization=organization
           saveSuccess=(route-action "organizationUpdated")
         }}
       </div>
