@@ -20,6 +20,7 @@ const SELECTORS = {
   FULL_SCREEN_TOGGLE: '[data-test-snapshot-header-dropdown-toggle]',
   HEADER: '[data-test-snapshot-group-header]',
   SHOW_ALL_SNAPSHOTS_TOGGLE: '[data-test-show-group-snapshots]',
+  LAZY_RENDER_HEADER: '[data-test-snapshot-viewer-lazy-header]',
 };
 
 export const snapshotGroup = {
@@ -36,6 +37,7 @@ export const snapshotGroup = {
 
   snapshots: collection(SnapshotViewer.scope, SnapshotViewer),
   isFocused: hasClass('SnapshotViewer--focus'),
+  isLazyRenderHeaderVisible: isVisible(SELECTORS.LAZY_RENDER_HEADER),
 
   header: {
     scope: SELECTORS.HEADER,

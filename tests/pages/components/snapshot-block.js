@@ -31,6 +31,7 @@ export const snapshotBlock = {
   name: alias('_block.name'),
   clickApprove: alias('_block.clickApprove'),
   clickToggleFullscreen: alias('header.clickToggleFullscreen'),
+  isLazyRenderHeaderVisible: alias('_block.isLazyRenderHeaderVisible'),
 };
 
 export default create(snapshotBlock);

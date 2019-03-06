@@ -22,4 +22,8 @@ export default SnapshotListItem.extend({
       return get(snapshot, 'isApproved');
     });
   }),
+
+  groupTitle: computed('snapshots.length', function() {
+    return `${get(this, 'snapshots.length')} duplicate changes`;
+  }),
 });

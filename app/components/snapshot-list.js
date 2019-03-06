@@ -34,7 +34,7 @@ export default Component.extend({
   // Set internally by actions
   activeSnapshotBlockId: null,
 
-  shouldDeferRendering: gt('snapshotsChanged.length', 75),
+  shouldDeferRendering: gt('snapshotBlocks.length', 75),
 
   _singleSnapshotsChanged: readOnly('_snapshotGroups.singles'),
   _unapprovedSingleSnapshots: filterBy('_singleSnapshotsChanged', 'isApproved', false),

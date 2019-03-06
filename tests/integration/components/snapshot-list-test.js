@@ -28,11 +28,11 @@ describe('Integration: SnapshotList', function() {
       const build = make('build', 'finished');
       const browser = make('browser');
 
-      const snapshotsChanged = makeList('snapshot', numSnapshots, 'withComparisons', {build});
-      this.set('snapshotsChanged', snapshotsChanged);
+      const singleSnapshotsChanged = makeList('snapshot', numSnapshots, 'withComparisons', {build});
+      const group = makeList('snapshot', 2, 'withComparisons', {build, gatedFingerprint: 'aaa'});
 
       this.setProperties({
-        snapshotsChanged,
+        snapshotsChanged: singleSnapshotsChanged.concat(group),
         build,
         stub,
         browser,
@@ -52,9 +52,9 @@ describe('Integration: SnapshotList', function() {
     });
 
     it('renders snapshot header placeholder', async function() {
-      expect(SnapshotList.snapshots.length).to.equal(numSnapshots);
-      SnapshotList.snapshots.forEach(snapshot => {
-        expect(snapshot.isLazyRenderHeaderVisible).to.equal(true);
+      expect(SnapshotList.snapshotBlocks.length).to.equal(numSnapshots + 1);
+      SnapshotList.snapshotBlocks.forEach(block => {
+        expect(block.isLazyRenderHeaderVisible).to.equal(true);
       });
       await percySnapshot(this.test);
     });
