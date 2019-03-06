@@ -166,12 +166,12 @@ export default function() {
 
   this.post('/organizations/:org_id/version-control-integrations/', function(schema, request) {
     if (request.requestBody.match(/"integration-type":"gitlab"/)) {
-      let attrs = this.normalizedRequestAttrs('versionControlIntegration');
+      let attrs = this.normalizedRequestAttrs('version-control-integration');
       let newAttrs = Object.assign({}, attrs, {gitlabIntegrationId: 1234});
       let versionControlIntegration = schema.versionControlIntegrations.create(newAttrs);
       return versionControlIntegration;
     } else if (request.requestBody.match(/"integration-type":"gitlab_self_hosted"/)) {
-      let attrs = this.normalizedRequestAttrs('versionControlIntegration');
+      let attrs = this.normalizedRequestAttrs('version-control-integration');
       let versionControlIntegration = schema.versionControlIntegrations.create(attrs);
       return versionControlIntegration;
     } else {
@@ -181,7 +181,7 @@ export default function() {
 
   this.patch('/version-control-integrations/:id', function(schema, request) {
     if (request.requestBody.match(/"integration-type":"gitlab"/)) {
-      let attrs = this.normalizedRequestAttrs('versionControlIntegration');
+      let attrs = this.normalizedRequestAttrs('version-control-integration');
       let newAttrs = Object.assign({}, attrs, {
         gitlabIntegrationId: 1234,
         isGitlabPersonalAccessTokenPresent: true,
@@ -192,7 +192,7 @@ export default function() {
       versionControlIntegration.update(newAttrs);
       return versionControlIntegration;
     } else if (request.requestBody.match(/"integration-type":"gitlab_self_hosted"/)) {
-      let attrs = this.normalizedRequestAttrs('versionControlIntegration');
+      let attrs = this.normalizedRequestAttrs('version-control-integration');
       let newAttrs = Object.assign({}, attrs, {
         gitlabHost: attrs['gitlabHost'],
         isGitlabPersonalAccessTokenPresent: true,

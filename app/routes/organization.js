@@ -12,12 +12,12 @@ export default Route.extend({
   store: service(),
   currentUser: alias('session.currentUser'),
 
-  async beforeModel(transition) {
+  async beforeModel() {
     const currentUser = this.get('currentUser');
 
     // If we get an organization, it is accessible to whoever's asking for it. Keep going.
     try {
-      const org = await this.get('_getOrganization').perform(transition.params);
+      const org = await this.get('_getOrganization').perform();
       this.set('_organization', org);
       return this._super(...arguments);
     } catch (e) {
@@ -45,8 +45,8 @@ export default Route.extend({
     localStorageProxy.set('lastOrganizationSlug', organization.get('slug'));
   },
 
-  _getOrganization: task(function*(params) {
-    const orgSlug = params['organization'].organization_id;
+  _getOrganization: task(function*() {
+    const orgSlug = this.paramsFor(this.routeName).organization_id;
     const preloadedOrg = this.get('store')
       .peekAll('organization')
       .findBy('slug', orgSlug);

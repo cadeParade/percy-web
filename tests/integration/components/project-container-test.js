@@ -7,7 +7,6 @@ import {make, makeList} from 'ember-data-factory-guy';
 import ProjectContainer from 'percy-web/tests/pages/components/project-container';
 import sinon from 'sinon';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {merge} from '@ember/polyfills';
 import {selectChoose} from 'ember-power-select/test-support/helpers';
 
 const INFINITY_MODEL_STUB = {
@@ -30,7 +29,7 @@ describe('Integration: ProjectContainer', function() {
     beforeEach(async function() {
       const project = make('project');
       const builds = makeList('build', 1, {buildNumber: 1});
-      const infinityBuilds = merge(builds, INFINITY_MODEL_STUB);
+      const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const isSidebarVisible = false;
       const toggleSidebar = sinon.stub();
       const stub = sinon.stub();
@@ -65,7 +64,7 @@ describe('Integration: ProjectContainer', function() {
     beforeEach(async function() {
       const project = make('project', 'withRepo');
       const builds = makeList('build', 1, 'withRepo', 'hasPullRequest', {buildNumber: 1});
-      const infinityBuilds = merge(builds, INFINITY_MODEL_STUB);
+      const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const isSidebarVisible = false;
       const toggleSidebar = sinon.stub();
       const stub = sinon.stub();
@@ -104,7 +103,7 @@ describe('Integration: ProjectContainer', function() {
     beforeEach(async function() {
       const project = make('project', 'withGithubRepo');
       const builds = makeList('build', 1, 'withGithubRepo', 'hasPullRequest', {buildNumber: 1});
-      const infinityBuilds = merge(builds, INFINITY_MODEL_STUB);
+      const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const isSidebarVisible = false;
       const toggleSidebar = sinon.stub();
       const stub = sinon.stub();
@@ -146,7 +145,7 @@ describe('Integration: ProjectContainer', function() {
       const builds = makeList('build', 1, 'withGithubEnterpriseRepo', 'hasPullRequest', {
         buildNumber: 1,
       });
-      const infinityBuilds = merge(builds, INFINITY_MODEL_STUB);
+      const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const isSidebarVisible = false;
       const toggleSidebar = sinon.stub();
       const stub = sinon.stub();
@@ -186,7 +185,7 @@ describe('Integration: ProjectContainer', function() {
     beforeEach(async function() {
       const project = make('project', 'withGitlabRepo');
       const builds = makeList('build', 1, 'withGitlabRepo', 'hasPullRequest', {buildNumber: 1});
-      const infinityBuilds = merge(builds, INFINITY_MODEL_STUB);
+      const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const isSidebarVisible = false;
       const toggleSidebar = sinon.stub();
       const stub = sinon.stub();
@@ -226,7 +225,7 @@ describe('Integration: ProjectContainer', function() {
     beforeEach(async function() {
       const project = make('project', 'withGithubRepo');
       const builds = makeList('build', 1);
-      const infinityBuilds = merge(builds, INFINITY_MODEL_STUB);
+      const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const stub = sinon.stub();
       this.setProperties({project, infinityBuilds, stub});
 
@@ -250,7 +249,7 @@ describe('Integration: ProjectContainer', function() {
     beforeEach(function() {
       const project = make('project', 'public');
       const builds = makeList('build', 1);
-      const infinityBuilds = merge(builds, INFINITY_MODEL_STUB);
+      const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const stub = sinon.stub();
       this.setProperties({
         project,
@@ -279,7 +278,7 @@ describe('Integration: ProjectContainer', function() {
       const branch2Builds = makeList('build', 5, 'finished', {branch: 'branch-2'});
       const branch3Builds = makeList('build', 6, 'finished', {branch: 'branch-3'});
       const allBuilds = branch1Builds.concat(branch2Builds).concat(branch3Builds);
-      const infinityBuilds = merge(allBuilds, INFINITY_MODEL_STUB);
+      const infinityBuilds = Object.assign(allBuilds, INFINITY_MODEL_STUB);
       infinityBuilds.reachedInfinity = false;
       const isSidebarVisible = false;
       const toggleSidebar = sinon.stub();
@@ -318,7 +317,7 @@ describe('Integration: ProjectContainer', function() {
       const branch2Builds = makeList('build', 5, 'finished', {branch: 'branch-2'});
       const branch3Builds = makeList('build', 6, 'finished', {branch: 'branch-3'});
       const allBuilds = branch1Builds.concat(branch2Builds).concat(branch3Builds);
-      const infinityBuilds = merge(allBuilds, INFINITY_MODEL_STUB);
+      const infinityBuilds = Object.assign(allBuilds, INFINITY_MODEL_STUB);
       infinityBuilds.reachedInfinity = false;
       const isSidebarVisible = false;
       const toggleSidebar = sinon.stub();
@@ -354,7 +353,7 @@ describe('Integration: ProjectContainer', function() {
     beforeEach(async function() {
       const project = make('project');
       const branch1Builds = makeList('build', 4, 'finished', {branch: 'branch-1'});
-      const infinityBuilds = merge(branch1Builds, INFINITY_MODEL_STUB);
+      const infinityBuilds = Object.assign(branch1Builds, INFINITY_MODEL_STUB);
       infinityBuilds.reachedInfinity = true;
       const isSidebarVisible = false;
       const toggleSidebar = sinon.stub();

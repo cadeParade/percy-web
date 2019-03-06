@@ -10,12 +10,12 @@ export default Route.extend({
   store: service(),
   currentUser: readOnly('session.currentUser'),
 
-  async beforeModel(transition) {
+  async beforeModel() {
     const currentUser = this.get('currentUser');
 
     try {
       // If we get a project, it is accessible to whoever's asking for it. Keep going.
-      const project = await this.get('_getProject').perform(transition.params);
+      const project = await this.get('_getProject').perform();
       this.set('_project', project);
       return this._super(...arguments);
     } catch (e) {
@@ -34,9 +34,9 @@ export default Route.extend({
     localStorageProxy.set('recentProjectSlugs', recentProjects);
   },
 
-  _getProject: task(function*(params) {
-    const projectSlug = params['organization.project'].project_id;
-    const orgSlug = params['organization'].organization_id;
+  _getProject: task(function*() {
+    const projectSlug = this.paramsFor(this.routeName).project_id;
+    const orgSlug = this.paramsFor('organization').organization_id;
 
     const preLoadedProject = this.get('store')
       .peekAll('project')
