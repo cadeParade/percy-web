@@ -1,3 +1,4 @@
+import {get} from '@ember/object';
 import {or, readOnly} from '@ember/object/computed';
 import SnapshotListItem from 'percy-web/components/snapshot-list-item';
 
@@ -13,4 +14,12 @@ export default SnapshotListItem.extend({
   coverSnapshot: readOnly('snapshot'),
   _isApproved: readOnly('snapshot.isApproved'),
   isUnchangedSnapshotExpanded: or('isFocus', 'isExpanded'),
+
+  isSnapshotShowingDiffOverlay: true,
+  actions: {
+    toggleSnapshotOverlay() {
+      this.toggleProperty('isSnapshotShowingDiffOverlay');
+      this.trackToggleOverlay(get(this, 'isSnapshotShowingDiffOverlay'));
+    },
+  },
 });

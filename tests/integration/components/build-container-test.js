@@ -309,4 +309,43 @@ describe('Integration: BuildContainer', function() {
       await percySnapshot(this.test);
     });
   });
+
+  describe('toggle all diffs', function() {
+    beforeEach(async function() {
+      const build = make('build', 'withBaseBuild', 'finished');
+      const diffSnapshot = make('snapshot', 'withComparisons', {build});
+      const group = makeList('snapshot', 3, 'withComparisons', {build, gatedFingerprint: 'aaa'});
+      const allChangedBrowserSnapshotsSorted = {'firefox-id': [diffSnapshot].concat(group)};
+      const stub = sinon.stub();
+      this.setProperties({
+        build,
+        stub,
+        allChangedBrowserSnapshotsSorted,
+      });
+
+      await this.render(hbs`{{build-container
+        build=build
+        allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
+        createReview=stub
+        notifyOfUnchangedSnapshots=stub
+      }}`);
+    });
+
+    it('toggles diffs of snapshots and snapshot groups', async function() {
+      BuildPage.snapshotBlocks.forEach(block => expect(block.isDiffImageVisible).to.equal(true));
+      await BuildPage.clickToggleDiffsButton();
+      BuildPage.snapshotBlocks.forEach(block => expect(block.isDiffImageVisible).to.equal(false));
+      await BuildPage.clickToggleDiffsButton();
+      BuildPage.snapshotBlocks.forEach(block => expect(block.isDiffImageVisible).to.equal(true));
+    });
+
+    it('toggles snapshots within group when group is expanded', async function() {
+      const group = BuildPage.snapshotBlocks[0].snapshotGroup;
+      await group.toggleShowAllSnapshots();
+      group.snapshots.forEach(snapshot => expect(snapshot.isDiffImageVisible).to.equal(true));
+      await BuildPage.clickToggleDiffsButton();
+      group.snapshots.forEach(snapshot => expect(snapshot.isDiffImageVisible).to.equal(false));
+      expect(BuildPage.snapshotBlocks[1].isDiffImageVisible).to.equal(false);
+    });
+  });
 });

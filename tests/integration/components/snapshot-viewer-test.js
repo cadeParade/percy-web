@@ -7,7 +7,7 @@ import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import sinon from 'sinon';
-import SnapshotViewerPO from 'percy-web/tests/pages/components/snapshot-viewer';
+import SnapshotViewer from 'percy-web/tests/pages/components/snapshot-viewer';
 import {resolve} from 'rsvp';
 import {SNAPSHOT_APPROVED_STATE, SNAPSHOT_UNAPPROVED_STATE} from 'percy-web/models/snapshot';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
@@ -24,7 +24,7 @@ describe('Integration: SnapshotViewer', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    SnapshotViewerPO.setContext(this);
+    SnapshotViewer.setContext(this);
 
     showSnapshotFullModalTriggeredStub = sinon.stub();
     createReviewStub = sinon.stub().returns(resolve());
@@ -58,11 +58,9 @@ describe('Integration: SnapshotViewer', function() {
       isBuildApprovable=isBuildApprovable
     }}`);
 
-    expect(SnapshotViewerPO.header.isTitleVisible, 'title should be visible').to.equal(true);
+    expect(SnapshotViewer.header.isTitleVisible, 'title should be visible').to.equal(true);
 
-    expect(SnapshotViewerPO.header.titleText, 'title text should be correct').to.equal(
-      snapshotTitle,
-    );
+    expect(SnapshotViewer.header.titleText, 'title text should be correct').to.equal(snapshotTitle);
   });
 
   it('compares visually to previous screenshot', async function() {
@@ -94,7 +92,7 @@ describe('Integration: SnapshotViewer', function() {
 
     it('does not display', async function() {
       expect(
-        SnapshotViewerPO.header.isComparisonModeSwitcherVisible,
+        SnapshotViewer.header.isComparisonModeSwitcherVisible,
         'comparison mode switcher should not be visible',
       ).to.equal(false);
     });
@@ -120,8 +118,8 @@ describe('Integration: SnapshotViewer', function() {
         isBuildApprovable=isBuildApprovable
       }}`);
 
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(false);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(true);
+      expect(SnapshotViewer.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(false);
+      expect(SnapshotViewer.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(true);
     });
 
     it('shows widest width with diff as active by default when no comparisons have diffs', async function() { // eslint-disable-line
@@ -138,9 +136,9 @@ describe('Integration: SnapshotViewer', function() {
         isBuildApprovable=isBuildApprovable
       }}`);
 
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(false);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(false);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(2).isActive).to.equal(true);
+      expect(SnapshotViewer.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(false);
+      expect(SnapshotViewer.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(false);
+      expect(SnapshotViewer.header.widthSwitcher.buttons.objectAt(2).isActive).to.equal(true);
     });
 
     it('updates active button when clicked', async function() {
@@ -155,21 +153,21 @@ describe('Integration: SnapshotViewer', function() {
         isBuildApprovable=isBuildApprovable
       }}`);
 
-      await SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(0).click();
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(true);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(false);
+      await SnapshotViewer.header.widthSwitcher.buttons.objectAt(0).click();
+      expect(SnapshotViewer.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(true);
+      expect(SnapshotViewer.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(false);
 
-      await SnapshotViewerPO.header.clickDropdownToggle();
-      await SnapshotViewerPO.header.clickToggleAllWidths();
-      await SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(2).click();
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(false);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(false);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(2).isActive).to.equal(true);
+      await SnapshotViewer.header.clickDropdownToggle();
+      await SnapshotViewer.header.clickToggleAllWidths();
+      await SnapshotViewer.header.widthSwitcher.buttons.objectAt(2).click();
+      expect(SnapshotViewer.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(false);
+      expect(SnapshotViewer.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(false);
+      expect(SnapshotViewer.header.widthSwitcher.buttons.objectAt(2).isActive).to.equal(true);
 
-      await SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(1).click();
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(false);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(true);
-      expect(SnapshotViewerPO.header.widthSwitcher.buttons.objectAt(2).isActive).to.equal(false);
+      await SnapshotViewer.header.widthSwitcher.buttons.objectAt(1).click();
+      expect(SnapshotViewer.header.widthSwitcher.buttons.objectAt(0).isActive).to.equal(false);
+      expect(SnapshotViewer.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(true);
+      expect(SnapshotViewer.header.widthSwitcher.buttons.objectAt(2).isActive).to.equal(false);
     });
   });
 
@@ -188,14 +186,14 @@ describe('Integration: SnapshotViewer', function() {
     });
 
     it('displays', async function() {
-      expect(SnapshotViewerPO.header.isFullScreenToggleVisible).to.equal(true);
+      expect(SnapshotViewer.header.isFullScreenToggleVisible).to.equal(true);
     });
 
     it('sends closeSnapshotFullModal when toggle fullscreen button is clicked', async function() {
       const selectedWidth = snapshot.get('comparisons.firstObject.width');
       this.set('userSelectedWidth', selectedWidth);
 
-      await SnapshotViewerPO.header.clickToggleFullscreen();
+      await SnapshotViewer.header.clickToggleFullscreen();
       expect(showSnapshotFullModalTriggeredStub).to.have.been.calledWith(
         this.get('snapshot.id'),
         selectedWidth,
@@ -222,40 +220,37 @@ describe('Integration: SnapshotViewer', function() {
 
     it('is expanded by default when the snapshot is unapproved', async function() {
       this.set('snapshot.reviewState', SNAPSHOT_UNAPPROVED_STATE);
-      expect(SnapshotViewerPO.isExpanded).to.equal(true);
+      expect(SnapshotViewer.isExpanded).to.equal(true);
     });
 
     it('is collapsed by default when the snapshot is approved', async function() {
       this.set('snapshot.reviewState', SNAPSHOT_APPROVED_STATE);
-      expect(SnapshotViewerPO.isExpanded).to.equal(false);
+      expect(SnapshotViewer.isExpanded).to.equal(false);
     });
 
     it('is expanded when build is approved', async function() {
       this.set('snapshot.reviewState', SNAPSHOT_APPROVED_STATE);
       this.set('build.isApproved', true);
 
-      expect(SnapshotViewerPO.isExpanded).to.equal(true);
+      expect(SnapshotViewer.isExpanded).to.equal(true);
     });
 
     it("is expanded when activeSnapshotBlockId is equal to the snapshot's id", async function() {
       this.set('snapshot.reviewState', SNAPSHOT_APPROVED_STATE);
       this.set('activeSnapshotBlockId', snapshot.get('id'));
-      expect(SnapshotViewerPO.isExpanded).to.equal(true);
+      expect(SnapshotViewer.isExpanded).to.equal(true);
     });
 
     it('expands when the snapshot is collapsed and a user clicks the header ', async function() {
       this.set('snapshot.reviewState', SNAPSHOT_APPROVED_STATE);
 
-      await SnapshotViewerPO.header.click();
-      expect(SnapshotViewerPO.isExpanded).to.equal(true);
+      await SnapshotViewer.header.click();
+      expect(SnapshotViewer.isExpanded).to.equal(true);
     });
   });
 
   describe('approve snapshot button', function() {
     beforeEach(async function() {
-      setupFactoryGuy(this);
-      SnapshotViewerPO.setContext(this);
-
       await this.render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
@@ -268,13 +263,33 @@ describe('Integration: SnapshotViewer', function() {
     });
 
     it('sends createReview with correct arguments when approve button is clicked', async function() { //eslint-disable-line
-      await SnapshotViewerPO.header.clickApprove();
+      await SnapshotViewer.header.clickApprove();
       expect(createReviewStub).to.have.been.calledWith([this.get('build.snapshots.firstObject')]);
     });
 
     it('does not display when build is not finished', async function() {
       this.set('build.state', 'pending');
-      expect(SnapshotViewerPO.header.snapshotApprovalButton.isVisible).to.equal(false);
+      expect(SnapshotViewer.header.snapshotApprovalButton.isVisible).to.equal(false);
+    });
+  });
+
+  describe('diff toggling', function() {
+    beforeEach(async function() {
+      await this.render(hbs`{{snapshot-viewer
+        snapshot=snapshot
+        build=build
+        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+        createReview=createReview
+        updateActiveSnapshotBlockId=stub
+        activeBrowser=browser
+        isBuildApprovable=isBuildApprovable
+      }}`);
+    });
+
+    it('toggles diff when clicking', async function() {
+      expect(SnapshotViewer.isDiffImageVisible).to.equal(true);
+      await SnapshotViewer.clickDiffImage();
+      expect(SnapshotViewer.isDiffImageVisible).to.equal(false);
     });
   });
 });

@@ -108,6 +108,19 @@ export default Component.extend(InViewportMixin, {
     set(this, '_shouldScroll', true);
   }),
 
+  trackToggleOverlay(isDiffOverlayShowing) {
+    const build = get(this, 'build');
+    const organization = get(build, 'project.organization');
+    const eventProperties = {
+      project_id: get(build, 'project.id'),
+      project_slug: get(build, 'project.slug'),
+      build_id: get(build, 'id'),
+      state: isDiffOverlayShowing ? 'on' : 'off',
+      source: 'clicked_overlay',
+    };
+    this.get('analytics').track('Diff Toggled', organization, eventProperties);
+  },
+
   actions: {
     updateSelectedWidth(value) {
       set(this, 'userSelectedWidth', value);

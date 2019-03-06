@@ -10,6 +10,7 @@ import {
 import {groupApprovalButton} from 'percy-web/tests/pages/components/group-approval-button';
 import {alias} from 'ember-cli-page-object/macros';
 import {SnapshotViewer} from 'percy-web/tests/pages/components/snapshot-viewer';
+import {comparisonViewer} from 'percy-web/tests/pages/components/comparison-viewer';
 
 const SELECTORS = {
   SCOPE: '[data-test-snapshot-group]',
@@ -25,6 +26,7 @@ const SELECTORS = {
 
 export const snapshotGroup = {
   scope: SELECTORS.SCOPE,
+  comparisonViewer,
 
   name: alias('header.name'),
 
@@ -38,6 +40,14 @@ export const snapshotGroup = {
   snapshots: collection(SnapshotViewer.scope, SnapshotViewer),
   isFocused: hasClass('SnapshotViewer--focus'),
   isLazyRenderHeaderVisible: isVisible(SELECTORS.LAZY_RENDER_HEADER),
+
+  isDiffImageVisible: alias('comparisonViewer.isDiffImageVisible'),
+  clickDiffImage: alias('comparisonViewer.clickDiffImage'),
+
+  isDiffImageBoxVisible: alias('comparisonViewer.isDiffImageVisible'),
+  clickDiffImageBox: alias('comparisonViewer.SELECTORS.clickDiffImage'),
+
+  isNoDiffBoxVisible: alias('comparisonViewer.SELECTORS.isNoDiffBoxVisible'),
 
   header: {
     scope: SELECTORS.HEADER,

@@ -32,6 +32,8 @@ export const snapshotBlock = {
   clickApprove: alias('_block.clickApprove'),
   clickToggleFullscreen: alias('header.clickToggleFullscreen'),
   isLazyRenderHeaderVisible: alias('_block.isLazyRenderHeaderVisible'),
+  isDiffImageVisible: alias('_block.isDiffImageVisible'),
+  clickDiffImage: alias('_block.clickDiffImage'),
 };
 
 export default create(snapshotBlock);

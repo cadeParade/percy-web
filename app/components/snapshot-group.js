@@ -10,6 +10,7 @@ export default SnapshotListItem.extend({
   attributeBindings: ['data-test-snapshot-group'],
   'data-test-snapshot-group': true,
 
+  isGroupShowingDiffOverlay: true,
   id: readOnly('snapshots.firstObject.fingerprint'),
   coverSnapshot: readOnly('snapshots.firstObject'),
   approvableSnapshots: filterBy('snapshots', 'isUnreviewed'),
@@ -26,4 +27,11 @@ export default SnapshotListItem.extend({
   groupTitle: computed('snapshots.length', function() {
     return `${get(this, 'snapshots.length')} matching changes`;
   }),
+
+  actions: {
+    toggleGroupOverlay() {
+      this.toggleProperty('isGroupShowingDiffOverlay');
+      this.trackToggleOverlay(get(this, 'isGroupShowingDiffOverlay'));
+    },
+  },
 });

@@ -243,4 +243,56 @@ describe('Integration: SnapshotGroup', function() {
       expect(createReviewStub).to.have.been.calledWith(snapshots);
     });
   });
+
+  describe('diff toggling', function() {
+    beforeEach(async function() {
+      await this.render(hbs`{{snapshot-group
+        snapshots=snapshots
+        build=build
+        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+        userSelectedWidth=userSelectedWidth
+        activeBrowser=browser
+        createReview=createReview
+        isBuildApprovable=isBuildApprovable
+        updateActiveSnapshotBlockId=stub
+      }}`);
+    });
+
+    it('toggles cover image diff when clicking', async function() {
+      expect(SnapshotGroup.isDiffImageVisible).to.equal(true);
+      await SnapshotGroup.clickDiffImage();
+      expect(SnapshotGroup.isDiffImageVisible).to.equal(false);
+    });
+
+    describe('when showing all snapshots for a group', function() {
+      it('shows diffs for all snapshots by default', async function() {
+        expect(SnapshotGroup.isDiffImageVisible).to.equal(true);
+        await SnapshotGroup.toggleShowAllSnapshots();
+        SnapshotGroup.snapshots.forEach(snapshot => {
+          expect(snapshot.isDiffImageVisible).to.equal(true);
+        });
+      });
+
+      it('toggles diff image for individual snapshots', async function() {
+        await SnapshotGroup.toggleShowAllSnapshots();
+        await SnapshotGroup.snapshots[0].clickDiffImage();
+        SnapshotGroup.snapshots.forEach((snapshot, i) => {
+          const expectedValue = i === 0 ? false : true;
+          expect(
+            snapshot.isDiffImageVisible,
+            `Snapshot ${i} should isDiffVisible = ${expectedValue}`,
+          ).to.equal(expectedValue);
+        });
+      });
+
+      it('displays diff image in same state when collapsing all snapshots', async function() {
+        await SnapshotGroup.clickDiffImage();
+        expect(SnapshotGroup.isDiffImageVisible).to.equal(false);
+
+        await SnapshotGroup.toggleShowAllSnapshots();
+        await SnapshotGroup.toggleShowAllSnapshots();
+        expect(SnapshotGroup.isDiffImageVisible).to.equal(false);
+      });
+    });
+  });
 });

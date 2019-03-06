@@ -28,6 +28,8 @@
         data-test-SnapshotViewer-comparison=true
         activeBrowser=activeBrowser
         index=index
+        showDiffOverlay=isSnapshotShowingDiffOverlay
+        toggleOverlay=(action "toggleSnapshotOverlay")
       }}
     {{else}}
       <div class="p-2 text-center bg-gray-000 border-b" data-test-SnapshotViewer-noComparison>

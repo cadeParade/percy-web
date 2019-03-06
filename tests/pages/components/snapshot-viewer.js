@@ -1,18 +1,17 @@
-import {create, isVisible, clickable, hasClass, notHasClass} from 'ember-cli-page-object';
+import {create, isVisible, hasClass, notHasClass} from 'ember-cli-page-object';
 import {SnapshotViewerHeader} from 'percy-web/tests/pages/components/snapshot-viewer-header';
 import {alias} from 'ember-cli-page-object/macros';
+import {comparisonViewer} from 'percy-web/tests/pages/components/comparison-viewer';
 
 const SELECTORS = {
   SNAPSHOT_VIEWER: '[data-test-snapshot-viewer]',
-  DIFF_IMAGE: '[data-test-comparison-viewer-full-diff-image-overlay] img',
-  DIFF_IMAGE_BOX: '[data-test-comparison-viewer-diff-image-container] img',
-  NO_DIFF_BOX: '[data-test-comparison-viewer-unchanged]',
-  SHOW_UNCHANGED_COMPARISONS: '[data-test-comaprison-viewer-show-unchanged-comparisons]',
   LAZY_RENDER_HEADER: '[data-test-snapshot-viewer-lazy-header]',
+  SHOW_UNCHANGED_COMPARISONS: '[data-test-comaprison-viewer-show-unchanged-comparisons]',
 };
 
 export const SnapshotViewer = {
   scope: SELECTORS.SNAPSHOT_VIEWER,
+  comparisonViewer,
 
   header: SnapshotViewerHeader,
   widthSwitcher: alias('header.widthSwitcher'),
@@ -26,13 +25,13 @@ export const SnapshotViewer = {
   isCollapsed: hasClass('SnapshotViewer--collapsed'),
   isExpanded: notHasClass('SnapshotViewer--collapsed'),
 
-  isDiffImageVisible: isVisible(SELECTORS.DIFF_IMAGE),
-  clickDiffImage: clickable(SELECTORS.DIFF_IMAGE),
+  isDiffImageVisible: alias('comparisonViewer.isDiffImageVisible'),
+  clickDiffImage: alias('comparisonViewer.clickDiffImage'),
 
-  isDiffImageBoxVisible: isVisible(SELECTORS.DIFF_IMAGE_BOX),
-  clickDiffImageBox: clickable(SELECTORS.DIFF_IMAGE_BOX),
+  isDiffImageBoxVisible: alias('comparisonViewer.isDiffImageVisible'),
+  clickDiffImageBox: alias('comparisonViewer.clickDiffImageBox'),
 
-  isNoDiffBoxVisible: isVisible(SELECTORS.NO_DIFF_BOX),
+  isNoDiffBoxVisible: alias('comparisonViewer.isNoDiffBoxVisible'),
 
   isFocused: hasClass('SnapshotViewer--focus'),
 

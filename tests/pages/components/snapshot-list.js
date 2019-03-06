@@ -35,8 +35,8 @@ export const SnapshotList = {
   clickToggleNoDiffsSection: clickable(SELECTORS.NO_DIFFS_TOGGLE),
 
   isDiffsVisibleForAllSnapshots: getter(function() {
-    return this.snapshots.toArray().every(snapshot => {
-      return snapshot.isDiffImageVisible;
+    return this.snapshotBlocks.toArray().every(block => {
+      return block.isDiffImageVisible;
     });
   }),
 
