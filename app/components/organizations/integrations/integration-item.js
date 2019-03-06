@@ -34,10 +34,10 @@ export default Component.extend({
     return this.get('isBeta') && !this.get('isGHEnterprise') ? true : false;
   }),
 
-  organizationModelAttribute: lookup(
+  integrationStatusKey: lookup(
     'integrationName',
     INTEGRATIONS_LOOKUP,
-    'organizationModelAttribute',
+    'organizationIntegrationStatus',
   ),
 
   integrationItems: INTEGRATIONS_LOOKUP,
@@ -53,7 +53,7 @@ export default Component.extend({
   }),
 
   isInstalled: computed('integrationName', function() {
-    return this.get(`organization.${this.get('organizationModelAttribute')}`);
+    return this.get(`organization.${this.get('integrationStatusKey')}`);
   }),
 
   integrationSettingsRoute: computed('integrationName', function() {

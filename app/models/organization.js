@@ -73,7 +73,7 @@ export default DS.Model.extend({
     let integrations = [];
     for (const key of Object.keys(INTEGRATION_TYPES)) {
       let item = INTEGRATION_TYPES[key];
-      if (this.get(`${item.organizationModelAttribute}`) != true) {
+      if (this.get(`${item.organizationIntegrationStatus}`) != true) {
         integrations.push(key);
       }
     }

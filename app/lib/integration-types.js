@@ -10,7 +10,8 @@ export const INTEGRATION_TYPES = {
     isBeta: false,
     isGeneralAvailability: true,
     iconName: 'github-icon-lg',
-    organizationModelAttribute: 'isGithubIntegrated',
+    organizationIntegrationStatus: 'isGithubIntegrated',
+    organizationModelAttribute: 'githubIntegration',
     settingsRouteSlug: 'github',
   },
   [GITHUB_ENTERPRISE_INTEGRATION_TYPE]: {
@@ -19,7 +20,8 @@ export const INTEGRATION_TYPES = {
     isGeneralAvailability: false,
     betaLink: 'https://docs.percy.io/docs/github-enterprise',
     iconName: 'github-icon-lg',
-    organizationModelAttribute: 'isGithubEnterpriseIntegrated',
+    organizationIntegrationStatus: 'isGithubEnterpriseIntegrated',
+    organizationModelAttribute: 'githubEnterpriseIntegration',
     settingsRouteSlug: 'github-enterprise',
   },
   [GITLAB_INTEGRATION_TYPE]: {
@@ -28,7 +30,8 @@ export const INTEGRATION_TYPES = {
     isGeneralAvailability: true,
     betaLink: 'https://docs.percy.io/docs/gitlab',
     iconName: 'gitlab-icon-lg',
-    organizationModelAttribute: 'isGitlabIntegrated',
+    organizationIntegrationStatus: 'isGitlabIntegrated',
+    organizationModelAttribute: 'gitlabIntegration',
     settingsRouteSlug: 'gitlab',
   },
   [GITLAB_SELF_HOSTED_INTEGRATION_TYPE]: {
@@ -37,7 +40,8 @@ export const INTEGRATION_TYPES = {
     isGeneralAvailability: true,
     betaLink: 'https://docs.percy.io/docs/gitlab-self-hosted',
     iconName: 'gitlab-icon-lg',
-    organizationModelAttribute: 'isGitlabSelfHostedIntegrated',
+    organizationIntegrationStatus: 'isGitlabSelfHostedIntegrated',
+    organizationModelAttribute: 'gitlabSelfHostedIntegration',
     settingsRouteSlug: 'gitlab-self-hosted',
   },
 };
