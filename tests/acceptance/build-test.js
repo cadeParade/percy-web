@@ -105,22 +105,22 @@ describe('Acceptance: Build', function() {
       const secondSnapshotExpectedName = twoWidthsSnapshot.name;
 
       await BuildPage.visitBuild(urlParams);
-      expect(BuildPage.snapshotBlocks[0].name).to.equal('3 duplicate changes');
+      expect(BuildPage.snapshotBlocks[0].name).to.equal('3 matching changes');
       expect(BuildPage.snapshotBlocks[1].name).to.equal(firstSnapshotExpectedName);
       expect(BuildPage.snapshotBlocks[2].name).to.equal(secondSnapshotExpectedName);
-      expect(BuildPage.snapshotBlocks[4].name).to.equal('5 duplicate changes');
+      expect(BuildPage.snapshotBlocks[4].name).to.equal('5 matching changes');
 
       await BuildPage.snapshotBlocks[1].clickApprove();
-      expect(BuildPage.snapshotBlocks[0].name).to.equal('3 duplicate changes');
+      expect(BuildPage.snapshotBlocks[0].name).to.equal('3 matching changes');
       expect(BuildPage.snapshotBlocks[1].name).to.equal(firstSnapshotExpectedName);
       expect(BuildPage.snapshotBlocks[2].name).to.equal(secondSnapshotExpectedName);
-      expect(BuildPage.snapshotBlocks[4].name).to.equal('5 duplicate changes');
+      expect(BuildPage.snapshotBlocks[4].name).to.equal('5 matching changes');
 
       await BuildPage.snapshotBlocks[0].clickApprove();
-      expect(BuildPage.snapshotBlocks[0].name).to.equal('3 duplicate changes');
+      expect(BuildPage.snapshotBlocks[0].name).to.equal('3 matching changes');
       expect(BuildPage.snapshotBlocks[1].name).to.equal(firstSnapshotExpectedName);
       expect(BuildPage.snapshotBlocks[2].name).to.equal(secondSnapshotExpectedName);
-      expect(BuildPage.snapshotBlocks[4].name).to.equal('5 duplicate changes');
+      expect(BuildPage.snapshotBlocks[4].name).to.equal('5 matching changes');
     });
 
     it('behaves correctly when approving snapshots within a group', async function() {
@@ -175,7 +175,7 @@ describe('Acceptance: Build', function() {
       // So the normal second snapshot (twoWidthsSnapshot) will now be first, and defaultSnapshot
       // will be second.
       expect(BuildPage.snapshotList.lastSnapshot.name).to.equal(defaultSnapshot.name);
-      expect(BuildPage.snapshotBlocks[0].name).to.equal('3 duplicate changes');
+      expect(BuildPage.snapshotBlocks[0].name).to.equal('3 matching changes');
       expect(BuildPage.snapshotBlocks[1].name).to.equal(twoWidthsSnapshot.name);
 
       await percySnapshot(this.test);

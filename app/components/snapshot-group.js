@@ -24,6 +24,6 @@ export default SnapshotListItem.extend({
   }),
 
   groupTitle: computed('snapshots.length', function() {
-    return `${get(this, 'snapshots.length')} duplicate changes`;
+    return `${get(this, 'snapshots.length')} matching changes`;
   }),
 });
