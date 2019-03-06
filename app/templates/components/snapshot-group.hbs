@@ -2,10 +2,19 @@
   shouldFullyRender=shouldFullyRender
   displayTitle=groupTitle
 }}
-  <header class="SnapshotViewer-header sticky pin-t grid gap-4 z-1 px-2 py-1 bg-gray-000 border-t border-b" {{action "expandBlock"}} data-test-snapshot-group-header>
+  <header class="SnapshotViewer-header sticky pin-t grid gap-4 z-2 px-2 py-1 bg-gray-000 border-b border-t" {{action "expandBlock"}} data-test-snapshot-group-header>
     <div style="min-width: 0;" class="flex items-center">
-      <div class="Viewer-header-title SnapshotViewer-title cursor-default font-bold truncate" title="{{snapshots.length}} matching changes" data-test-snapshot-group-name>
-        {{groupTitle}}
+      <div class="Viewer-header-title SnapshotViewer-title flex items-center overflow-hidden cursor-default font-bold" title="{{snapshots.length}} matching changes" data-test-snapshot-group-name>
+        <figure class="svg-container mr-1">
+          {{#if isGroupApproved}}
+            {{inline-svg "comparison-icon-group-approved"}}
+          {{else}}
+            {{inline-svg "comparison-icon-group"}}
+          {{/if}}
+        </figure>
+        <div class="truncate">
+          {{groupTitle}}
+        </div>
       </div>
     </div>
 
@@ -36,9 +45,9 @@
           <div class="btn-group">
             <button class="percy-btn" {{action (toggle "areAllSnapshotsExpanded" this)}} data-test-show-group-snapshots>
               {{#if areAllSnapshotsExpanded}}
-                Collapse Matches
+                Collapse matches
               {{else}}
-                Expand Matches
+                Expand matches
               {{/if}}
             </button>
           </div>
@@ -57,39 +66,77 @@
     </div>
   </header>
 
-
-  <div class="mt-2">
+  <div>
     {{#if isExpanded}}
       {{#unless areAllSnapshotsExpanded}}
-        {{comparison-viewer
-          comparison=selectedComparison
-          allDiffsShown=allDiffsShown
-          snapshotSelectedWidth=blockSelectedWidth
-          isDefaultExpanded=true
-          isUnchangedSnapshotExpanded=true
-          activeBrowser=activeBrowser
-          toggleOverlay=(action "toggleGroupOverlay")
-          showDiffOverlay=isGroupShowingDiffOverlay
-        }}
+        <div class="relative border-b">
+          <div style="left: 28px;" class="snapshot-group-indent-line snapshot-group-indent-line-gradient"></div>
+          <div class="flex bg-gray-000">
+            <div style="padding: 22px 16px 10px;" class="mb-2">
+              <div style="top: 126px;" class="sticky">
+                <figure class="svg-container">
+                  {{#if isGroupApproved}}
+                    {{inline-svg "comparison-icon-group-snapshot-approved"}}
+                  {{else}}
+                    {{inline-svg "comparison-icon-group-snapshot"}}
+                  {{/if}}
+                </figure>
+              </div>
+            </div>
+            <div class="relative flex-1 p-2">
+              <div class="absolute bg-white rounded border pin-t-4 pin-r-4 pin-l pin-b-2 shadow-lg"></div>
+              <div class="absolute bg-white rounded border pin-t-3 pin-r-3 pin-l-1 pin-b-3 shadow-lg"></div>
+              <div class="relative pl-0 pb-2">
+                {{comparison-viewer
+                  comparison=selectedComparison
+                  allDiffsShown=allDiffsShown
+                  snapshotSelectedWidth=blockSelectedWidth
+                  isDefaultExpanded=true
+                  isUnchangedSnapshotExpanded=true
+                  activeBrowser=activeBrowser
+                  toggleOverlay=(action "toggleGroupOverlay")
+                  showDiffOverlay=isGroupShowingDiffOverlay
+                  class="snapshot-group-comparison-viewer"
+                }}
+              </div>
+            </div>
+          </div>
+        </div>
       {{else}}
-        {{#each snapshots as |snapshot|}}
-          {{snapshot-viewer
-            build=build
-            snapshot=snapshot
-            allDiffsShown=allDiffsShown
-            activeSnapshotBlockId=activeSnapshotBlockId
-            shouldDeferRendering=shouldDeferRendering
-            showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-            createReview=createReview
-            updateActiveSnapshotBlockId=updateActiveSnapshotBlockId
-            activeBrowser=activeBrowser
-            updateActiveBrowser=updateActiveBrowser
-            isBuildApprovable=isBuildApprovable
-            toggleOverlay=(action "toggleGroupOverlay")
-            showDiffOverlay=isGroupShowingDiffOverlay
-            class="ml-8 mr-2 mt-2 border-l border-r"
-          }}
-        {{/each}}
+        <div class="relative pt-2 bg-gray-000">
+          <div style="left: 28px;" class="snapshot-group-indent-line"></div>
+          {{#each snapshots as |snapshot|}}
+            <div class="flex bg-gray-000">
+              <div style="padding: 11px 16px 10px;" class="mb-2">
+                <div style="top: 132px;" class="sticky">
+                  <figure class="svg-container">
+                    {{#if snapshot.isApproved}}
+                      {{inline-svg "comparison-icon-group-snapshot-approved"}}
+                    {{else}}
+                      {{inline-svg "comparison-icon-group-snapshot"}}
+                    {{/if}}
+                  </figure>
+                </div>
+              </div>
+              {{snapshot-viewer
+                build=build
+                snapshot=snapshot
+                allDiffsShown=allDiffsShown
+                activeSnapshotBlockId=activeSnapshotBlockId
+                shouldDeferRendering=shouldDeferRendering
+                showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+                createReview=createReview
+                updateActiveSnapshotBlockId=updateActiveSnapshotBlockId
+                activeBrowser=activeBrowser
+                updateActiveBrowser=updateActiveBrowser
+                isBuildApprovable=isBuildApprovable
+                toggleOverlay=(action "toggleGroupOverlay")
+                showDiffOverlay=isGroupShowingDiffOverlay
+                class="snapshot-group-snapshot rounded-l flex-1 border-l border-b"
+              }}
+            </div>
+          {{/each}}
+        </div>
       {{/unless}}
     {{/if}}
   </div>

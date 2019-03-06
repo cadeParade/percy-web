@@ -1,0 +1,34 @@
+.snapshot-group-snapshot .SnapshotViewer-header {
+  top: 121px;
+  @apply rounded-l;
+}
+
+.snapshot-group-snapshot .SnapshotViewer-header::before {
+  content: "";
+  @apply block;
+  @apply absolute;
+  @apply h-3;
+  @apply w-full;
+  @apply -mt-2 -ml-px;
+  @apply bg-gray-000;
+  height: 15px;
+}
+
+.snapshot-group-snapshot .snapshot-icon {
+  @apply hidden;
+}
+
+.snapshot-group-indent-line {
+  @apply absolute pin-t;
+  @apply w-px h-full;
+  @apply bg-purple-700;
+}
+
+.snapshot-group-indent-line-gradient {
+  background: linear-gradient(180deg, #9e66bf 0%, #f0eef1 100%);
+}
+
+.snapshot-group-comparison-viewer.ComparisonViewer {
+  @apply bg-white;
+  @apply border rounded;
+}
