@@ -611,7 +611,9 @@ describe('Acceptance: Fullscreen Snapshot', function() {
 });
 
 describe('Acceptance: Auto-Approved Branch Build', function() {
+  freezeMoment('2018-05-22');
   setupAcceptance();
+
   let urlParams;
 
   setupSession(function(server) {
