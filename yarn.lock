@@ -5887,10 +5887,10 @@ ember-data-contentful@^0.2.4:
     ember-cli-babel "^6.8.2"
     ember-get-config "0.2.4"
 
-ember-data-factory-guy@^3.3.0:
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/ember-data-factory-guy/-/ember-data-factory-guy-3.6.1.tgz#e555754033f65d06415a1e0f1fb16e19e3fb9661"
-  integrity sha512-Y323Pr7ibhWlPJtk38aOMvmfiFNxrWq5V+zf4IXJE57WDTp3hiMXKqX6RlOg/GY5xgnkqrLlq2Vf++1tWG+eLQ==
+ember-data-factory-guy@^3.6.7:
+  version "3.6.7"
+  resolved "https://registry.yarnpkg.com/ember-data-factory-guy/-/ember-data-factory-guy-3.6.7.tgz#1cf127aa4b7e0e2ffbd43103df7bc635c7841b88"
+  integrity sha512-M9oQRYR6Rac3ol1IPYGX8Z5KQSeya4RxoeFHXzI6r1E3GV3w840uPXJ5T5J8gLtfxINJgdLpbC6mgqqbKn2IzA==
   dependencies:
     broccoli-funnel "^2.0.1"
     broccoli-merge-trees "^3.0.1"
