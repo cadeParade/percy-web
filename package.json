@@ -100,7 +100,7 @@
     "ember-truth-helpers": "^2.1.0",
     "ember-watson": "^0.9.1",
     "eslint": "^5.14.1",
-    "eslint-config-prettier": "4.0.0",
+    "eslint-config-prettier": "4.1.0",
     "eslint-plugin-prettier": "2.6.0",
     "glob": "^7.1.2",
     "http-proxy": "^1.17.0",
