@@ -25,8 +25,13 @@ export default Route.extend({
   },
 
   setupController(controller, model) {
+    const enabledProjects = model.projects.filterBy('isEnabled', true);
+    const archivedProjects = model.projects.filterBy('isDisabled', true);
+
+    const sortedProjects = enabledProjects.concat(archivedProjects);
+
     controller.setProperties({
-      projects: model.projects,
+      projects: sortedProjects,
       organization: model.organization,
       isUserMember: model.isUserMember,
     });
