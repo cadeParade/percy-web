@@ -1,0 +1,22 @@
+.tab-bar {
+  @apply flex items-center;
+  @apply -ml-1;
+  @apply font-semibold leading-none;
+}
+
+.tab-bar-tab {
+  @apply px-1 pb-2;
+  @apply mr-1;
+  @apply text-gray-300;
+}
+
+.tab-bar-tab:hover {
+  @apply text-gray-700;
+  @apply no-underline;
+}
+
+.tab-bar-tab.active {
+  @apply text-purple-600;
+  @apply pointer-events-none;
+  @apply shadow-purple-underline;
+}

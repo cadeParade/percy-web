@@ -12,7 +12,6 @@ describe('Integration: UsersHeader', function() {
   });
 
   let organization;
-  const organizationName = 'Meow Mediaworks';
   const seatsUsed = 3;
   const seatLimit = 10;
 
@@ -20,7 +19,7 @@ describe('Integration: UsersHeader', function() {
     setupFactoryGuy(this);
     UsersHeader.setContext(this);
     organization = make('organization', {
-      name: organizationName,
+      name: 'Meow Mediaworks',
       hasSeatsRemaining: true,
       seatLimit,
       seatsUsed,
@@ -40,7 +39,6 @@ describe('Integration: UsersHeader', function() {
       }}`);
 
       const text = `You’ve used ${seatsUsed} of ${seatLimit} seats available.`;
-      expect(UsersHeader.organizationName).to.equal(organizationName);
       expect(UsersHeader.seatCount.text).to.equal(text);
       expect(UsersHeader.billingLink.isVisible).to.equal(true);
       expect(UsersHeader.supportLink.isVisible).to.equal(true);

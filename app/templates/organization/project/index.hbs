@@ -2,20 +2,12 @@
 
 {{fixed-top-header currentOrganization=project.organization project=project}}
 
-<section class="flex relative {{if isSidebarVisible 'sidebar-is-visible'}}" data-test-project-page>
-  {{projects/project-sidebar
-    project=project
-    projects=projects
-    toggleSidebar=(action (toggle "isSidebarVisible" this))
-    isUserMember=isUserMember
-    targetRoute="organization.project.index"
-  }}
-
+<div data-test-project-page>
   {{project-container
     project=project
     selectedBranch='All branches'
     infinityBuilds=infinityBuilds
     isUserMember=isUserMember
-    toggleSidebar=(action (toggle "isSidebarVisible" this))
   }}
-</section>
+</div>
+

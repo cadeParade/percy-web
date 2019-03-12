@@ -1,45 +1,43 @@
-<div class="Header px-2 flex justify-between items-center w-full border-b bg-gray-000" data-test-fixed-top-header>
-  <div class="flex items-center">
-    {{#if session.isAuthenticated}}
-      {{#link-to "index"}}
-        <figure class="svg-container">
-          {{inline-svg "percy-logo-on-light" class="mr-2"}}
-        </figure>
-      {{/link-to}}
-    {{else}}
-      {{#link-to "index"}}
-        <figure class="svg-container">
-          {{inline-svg "percy-full-horizontal-on-light" class="mr-3"}}
-        </figure>
-      {{/link-to}}
-    {{/if}}
-
-    {{#if session.isAuthenticated}}
-      <div class="flex items-center mr-3">
-        {{#if currentOrganization}}
-          <div class="bg-purple-300 text-sm text-purple-600 rounded px-1 py-sm">
-            {{#link-to "organization" currentOrganization.slug class="inline-block text-purple-600 truncate truncate-target font-mono"}}{{currentOrganization.name}}{{/link-to}}
-            {{#if project}}
-              <span class="font-semibold text-gray-700 text-sm mx-px">/</span>
-              {{#link-to "organization.project" currentOrganization.slug project class="inline-block font-mono text-purple-600 truncate truncate-target"}}
-                {{project.name}}
-              {{/link-to}}
-            {{/if}}
-          </div>
-        {{/if}}
-      </div>
-
-      {{#if shouldDisplayDashboardLink}}
-        <a class="link-dark cursor-pointer" {{action "handleDashboardClick"}} data-test-dashboard-link>Dashboard</a>
+<div class="Header flex items-center px-2 border-b bg-gray-000" data-test-fixed-top-header>
+  <div class="container-xl flex justify-between items-center">
+    <div class="flex items-center">
+      {{#if session.isAuthenticated}}
+        {{#link-to "index"}}
+          <figure class="svg-container">
+            {{inline-svg "percy-logo-on-light" class="mr-2"}}
+          </figure>
+        {{/link-to}}
+      {{else}}
+        {{#link-to "index"}}
+          <figure class="svg-container">
+            {{inline-svg "percy-full-horizontal-on-light" class="mr-3"}}
+          </figure>
+        {{/link-to}}
       {{/if}}
+
+      {{#if session.isAuthenticated}}
+        <div class="flex items-center mr-3">
+          {{#if currentOrganization}}
+            <div class="bg-purple-300 text-sm text-purple-600 rounded px-1 py-sm">
+              {{#link-to "organization" currentOrganization.slug class="inline-block text-purple-600 truncate truncate-target font-mono data-test-organization-dashboard-link"}}{{currentOrganization.name}}{{/link-to}}
+              {{#if project}}
+                <span class="font-semibold text-gray-700 text-sm mx-px">/</span>
+                {{#link-to "organization.project" currentOrganization.slug project class="inline-block font-mono text-purple-600 truncate truncate-target"}}
+                  {{project.name}}
+                {{/link-to}}
+              {{/if}}
+            </div>
+          {{/if}}
+        </div>
+      {{/if}}
+    </div>
+
+    {{notice-bar organization=currentOrganization}}
+
+    {{#if session.isAuthenticated}}
+      {{nav-menu user=session.currentUser currentOrganization=currentOrganization isTransparentHeader=isTransparentHeader}}
+    {{else}}
+      {{nav-menu}}
     {{/if}}
   </div>
-
-  {{notice-bar organization=currentOrganization}}
-
-  {{#if session.isAuthenticated}}
-    {{nav-menu user=session.currentUser currentOrganization=currentOrganization isTransparentHeader=isTransparentHeader}}
-  {{else}}
-    {{nav-menu}}
-  {{/if}}
 </div>

@@ -1,4 +1,5 @@
 import {Factory, trait} from 'ember-cli-mirage';
+import moment from 'moment';
 
 export default Factory.extend({
   isEnabled: true,
@@ -12,6 +13,9 @@ export default Factory.extend({
   fullSlug() {
     return `${this.organization.slug}/${this.slug}`;
   },
+  updatedAt() {
+    return moment();
+  },
 
   afterCreate(project, server) {
     server.create('token', {project});
@@ -20,6 +24,8 @@ export default Factory.extend({
   isDisabled: trait({isEnabled: false}),
 
   demo: trait({isDemo: true}),
+
+  publiclyReadable: trait({publiclyReadable: true}),
 
   withChrome: trait({
     afterCreate(project, server) {

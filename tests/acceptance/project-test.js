@@ -10,6 +10,8 @@ import {percySnapshot} from 'ember-percy';
 import {visit, currentRouteName, currentURL} from '@ember/test-helpers';
 import {selectChoose} from 'ember-power-select/test-support/helpers';
 import UserMenu from 'percy-web/tests/pages/components/user-menu';
+import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
+import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
 
 describe('Acceptance: Project', function() {
   setupAcceptance();
@@ -109,10 +111,29 @@ describe('Acceptance: Project', function() {
     });
   });
 
+  describe('with a public project', function() {
+    freezeMoment('2018-05-22');
+
+    let urlParams;
+
+    setupSession(function(server) {
+      const organization = server.create('organization', 'withUser');
+      const demoProject = server.create('project', 'publiclyReadable', {organization});
+      urlParams = {
+        orgSlug: organization.slug,
+        projectSlug: demoProject.slug,
+      };
+    });
+
+    it('shows the public globe icon in the header', async function() {
+      await ProjectPage.visitProject(urlParams);
+      expect(ProjectPage.isPublicProjectIconVisible).to.equal(true);
+    });
+  });
+
   describe('settings', function() {
     let organization;
     let enabledProject;
-    let disabledProject;
     let versionControlIntegration;
     let repos;
     let webhookConfig;
@@ -122,40 +143,10 @@ describe('Acceptance: Project', function() {
       versionControlIntegration = server.create('versionControlIntegration', 'github');
       repos = server.createList('repo', 3);
       webhookConfig = server.create('webhookConfig');
-      disabledProject = server.create('project', {
-        name: 'Disabled Project',
-        isEnabled: false,
-        organization,
-      });
       enabledProject = server.create('project', 'withChromeAndFirefox', {
         name: 'Enabled Project',
         organization,
       });
-    });
-
-    it('for disabled', async function() {
-      await ProjectSettingsPage.visitProjectSettings({
-        orgSlug: organization.slug,
-        projectSlug: disabledProject.slug,
-      });
-
-      expect(currentRouteName()).to.equal('organization.project.settings.index');
-      expect(ProjectSettingsPage.projectLinks.objectAt(0).projectName).to.match(/Enabled Project/);
-      await ProjectSettingsPage.sideNav.toggleArchivedProjects();
-      expect(ProjectSettingsPage.projectLinks.objectAt(1).projectName).to.match(/Disabled Project/);
-      await percySnapshot(this.test);
-    });
-
-    it('for enabled', async function() {
-      await ProjectSettingsPage.visitProjectSettings({
-        orgSlug: organization.slug,
-        projectSlug: enabledProject.slug,
-      });
-
-      expect(currentRouteName()).to.equal('organization.project.settings.index');
-      expect(ProjectSettingsPage.projectLinks.objectAt(0).projectName).to.match(/Enabled Project/);
-
-      await percySnapshot(this.test);
     });
 
     it('displays github integration select menu', async function() {
@@ -318,16 +309,6 @@ describe('Acceptance: Project', function() {
         expect(currentRouteName()).to.equal('organization.project.settings.index');
       });
     });
-
-    it('navigates to settings page for project in sidebar', async function() {
-      server.create('project', {organization});
-      await ProjectSettingsPage.visitProjectSettings({
-        orgSlug: organization.slug,
-        projectSlug: enabledProject.slug,
-      });
-      await ProjectSettingsPage.projectLinks.objectAt(1).click();
-      expect(currentRouteName()).to.equal('organization.project.settings.index');
-    });
   });
 
   describe('builds', function() {
@@ -462,7 +443,7 @@ describe('Acceptance: Project', function() {
     it('navigates to build page after clicking build', async function() {
       await ProjectPage.visitProject(urlParams);
       expect(currentRouteName()).to.equal('organization.project.index');
-      await ProjectPage.finishedBuilds[4].click();
+      await ProjectPage.finishedBuilds.objectAt(4).click();
       expect(currentRouteName()).to.equal('organization.project.builds.build.index');
 
       await percySnapshot(this.test.fullTitle());
@@ -476,8 +457,10 @@ describe('Acceptance: Project', function() {
 
       await ProjectPage.visitProject(urlParams);
       await selectChoose('', 'branch-mc-branch-face');
-      await ProjectPage.toggleProjectSidebar();
-      await ProjectPage.projectLinks.objectAt(2).click();
+
+      await FixedTopHeader.clickOrgDashboardLink();
+      await OrganizationDashboard.projects.objectAt(2).clickLink();
+
       expect(ProjectPage.builds.length).to.equal(3);
     });
 
@@ -508,42 +491,11 @@ describe('Acceptance: Project', function() {
 
       await ProjectPage.visitProject({orgSlug: organization.slug, projectSlug: project1.slug});
       expect(ProjectPage.builds.length).to.equal(3);
-      await ProjectPage.toggleProjectSidebar();
-      await ProjectPage.projectLinks.objectAt(3).click();
+
+      await FixedTopHeader.clickOrgDashboardLink();
+      await OrganizationDashboard.projects.objectAt(3).clickLink();
+
       expect(ProjectPage.builds.length).to.equal(2);
-    });
-  });
-
-  describe('sidebar', function() {
-    freezeMoment('2018-05-22');
-
-    let urlParams;
-
-    setupSession(function(server) {
-      let organization = server.create('organization', 'withUser');
-      let project = server.create('project', {
-        name: 'enabled project',
-        organization,
-      });
-      server.create('project', 'isDisabled', {
-        name: 'disabled project',
-        organization,
-      });
-
-      urlParams = {
-        orgSlug: organization.slug,
-        projectSlug: project.slug,
-      };
-
-      server.create('build', 'withSnapshots', {project});
-    });
-
-    it('toggles disabled projects', async function() {
-      await ProjectPage.visitProject(urlParams);
-      await ProjectPage.toggleProjectSidebar();
-      await percySnapshot(this.test.fullTitle() + ' before archived toggle');
-      await ProjectPage.toggleArchivedProjects();
-      await percySnapshot(this.test.fullTitle() + ' after archived toggle');
     });
   });
 
@@ -560,8 +512,8 @@ describe('Acceptance: Project', function() {
 
     it('links user to create project page', async function() {
       await ProjectPage.visitProject(urlParams);
-      expect(ProjectPage.projectContainer.isStartNewProjectButtonVisible).to.equal(true);
-      await ProjectPage.projectContainer.clickStartNewProject();
+      expect(ProjectPage.isStartNewProjectButtonVisible).to.equal(true);
+      await ProjectPage.clickStartNewProject();
       expect(currentRouteName()).to.equal('organizations.organization.projects.new');
     });
   });

@@ -17,7 +17,6 @@ describe('Acceptance: ManageUsers', function() {
       const text = `You’ve used ${seatsUsed} of ${seatLimit} seats available.`;
 
       await UsersPage.visitUsersPage({orgSlug: organization.slug});
-      expect(UsersHeader.organizationName).to.equal(organizationName);
       expect(UsersHeader.seatCount.text).to.equal(text);
       expect(UsersHeader.billingLink.isVisible).to.equal(true);
       expect(UsersHeader.supportLink.isVisible).to.equal(true);
@@ -46,7 +45,6 @@ describe('Acceptance: ManageUsers', function() {
 
   setupAcceptance();
   let organization;
-  let organizationName;
   let seatsUsed;
   let seatLimit;
   let seatsRemaining;
@@ -56,7 +54,6 @@ describe('Acceptance: ManageUsers', function() {
 
   describe('when currentUser is an Admin', function() {
     setupSession(function(server) {
-      organizationName = 'Meow Mediaworks';
       seatsUsed = 3;
       seatLimit = 10;
       seatsRemaining = 10;
@@ -66,7 +63,7 @@ describe('Acceptance: ManageUsers', function() {
         seatsUsed,
         seatLimit,
         seatsRemaining,
-        name: organizationName,
+        name: 'Meow Mediaworks',
       });
       adminUser = server.create('user');
       server.create('organizationUser', {

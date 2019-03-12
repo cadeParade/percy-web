@@ -30,18 +30,14 @@ describe('Integration: ProjectContainer', function() {
       const project = make('project');
       const builds = makeList('build', 1, {buildNumber: 1});
       const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
-      const isSidebarVisible = false;
-      const toggleSidebar = sinon.stub();
       const stub = sinon.stub();
-      this.setProperties({project, infinityBuilds, stub, isSidebarVisible, toggleSidebar});
+      this.setProperties({project, infinityBuilds, stub});
 
       await this.render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
-        isSidebarVisible=isSidebarVisible
-        toggleSidebar=toggleSidebar
         isUserMember=true
       }}`);
     });
@@ -65,18 +61,14 @@ describe('Integration: ProjectContainer', function() {
       const project = make('project', 'withRepo');
       const builds = makeList('build', 1, 'withRepo', 'hasPullRequest', {buildNumber: 1});
       const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
-      const isSidebarVisible = false;
-      const toggleSidebar = sinon.stub();
       const stub = sinon.stub();
-      this.setProperties({project, infinityBuilds, stub, isSidebarVisible, toggleSidebar});
+      this.setProperties({project, infinityBuilds, stub});
 
       await this.render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
-        isSidebarVisible=isSidebarVisible
-        toggleSidebar=toggleSidebar
         isUserMember=true
       }}`);
     });
@@ -104,18 +96,14 @@ describe('Integration: ProjectContainer', function() {
       const project = make('project', 'withGithubRepo');
       const builds = makeList('build', 1, 'withGithubRepo', 'hasPullRequest', {buildNumber: 1});
       const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
-      const isSidebarVisible = false;
-      const toggleSidebar = sinon.stub();
       const stub = sinon.stub();
-      this.setProperties({project, infinityBuilds, stub, isSidebarVisible, toggleSidebar});
+      this.setProperties({project, infinityBuilds, stub});
 
       await this.render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
-        isSidebarVisible=isSidebarVisible
-        toggleSidebar=toggleSidebar
         isUserMember=true
       }}`);
     });
@@ -146,18 +134,14 @@ describe('Integration: ProjectContainer', function() {
         buildNumber: 1,
       });
       const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
-      const isSidebarVisible = false;
-      const toggleSidebar = sinon.stub();
       const stub = sinon.stub();
-      this.setProperties({project, infinityBuilds, stub, isSidebarVisible, toggleSidebar});
+      this.setProperties({project, infinityBuilds, stub});
 
       await this.render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
-        isSidebarVisible=isSidebarVisible
-        toggleSidebar=toggleSidebar
         isUserMember=true
       }}`);
     });
@@ -186,18 +170,14 @@ describe('Integration: ProjectContainer', function() {
       const project = make('project', 'withGitlabRepo');
       const builds = makeList('build', 1, 'withGitlabRepo', 'hasPullRequest', {buildNumber: 1});
       const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
-      const isSidebarVisible = false;
-      const toggleSidebar = sinon.stub();
       const stub = sinon.stub();
-      this.setProperties({project, infinityBuilds, stub, isSidebarVisible, toggleSidebar});
+      this.setProperties({project, infinityBuilds, stub});
 
       await this.render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
-        isSidebarVisible=isSidebarVisible
-        toggleSidebar=toggleSidebar
         isUserMember=true
       }}`);
     });
@@ -234,7 +214,6 @@ describe('Integration: ProjectContainer', function() {
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
-        toggleSidebar=stub
         isUserMember=false
       }}`);
     });
@@ -257,18 +236,6 @@ describe('Integration: ProjectContainer', function() {
         infinityBuilds,
       });
     });
-
-    it('shows public globe icon in header', async function() {
-      await this.render(hbs`{{project-container
-        project=project
-        builds=infinityBuilds
-        infinityBuilds=infinityBuilds
-        pollRefresh=stub
-        toggleSidebar=stub
-      }}`);
-
-      expect(ProjectContainer.isPublicProjectIconVisible).to.equal(true);
-    });
   });
 
   describe('branch filter with github repo', function() {
@@ -280,18 +247,14 @@ describe('Integration: ProjectContainer', function() {
       const allBuilds = branch1Builds.concat(branch2Builds).concat(branch3Builds);
       const infinityBuilds = Object.assign(allBuilds, INFINITY_MODEL_STUB);
       infinityBuilds.reachedInfinity = false;
-      const isSidebarVisible = false;
-      const toggleSidebar = sinon.stub();
       const stub = sinon.stub();
-      this.setProperties({project, infinityBuilds, isSidebarVisible, toggleSidebar, stub});
+      this.setProperties({project, infinityBuilds, stub});
 
       await this.render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
-        isSidebarVisible=isSidebarVisible
-        toggleSidebar=toggleSidebar
         isUserMember=true
       }}`);
     });
@@ -319,18 +282,14 @@ describe('Integration: ProjectContainer', function() {
       const allBuilds = branch1Builds.concat(branch2Builds).concat(branch3Builds);
       const infinityBuilds = Object.assign(allBuilds, INFINITY_MODEL_STUB);
       infinityBuilds.reachedInfinity = false;
-      const isSidebarVisible = false;
-      const toggleSidebar = sinon.stub();
       const stub = sinon.stub();
-      this.setProperties({project, infinityBuilds, isSidebarVisible, toggleSidebar, stub});
+      this.setProperties({project, infinityBuilds, stub});
 
       await this.render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
-        isSidebarVisible=isSidebarVisible
-        toggleSidebar=toggleSidebar
         isUserMember=true
       }}`);
     });
@@ -355,18 +314,14 @@ describe('Integration: ProjectContainer', function() {
       const branch1Builds = makeList('build', 4, 'finished', {branch: 'branch-1'});
       const infinityBuilds = Object.assign(branch1Builds, INFINITY_MODEL_STUB);
       infinityBuilds.reachedInfinity = true;
-      const isSidebarVisible = false;
-      const toggleSidebar = sinon.stub();
       const stub = sinon.stub();
-      this.setProperties({project, infinityBuilds, isSidebarVisible, toggleSidebar, stub});
+      this.setProperties({project, infinityBuilds, stub});
 
       await this.render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
-        isSidebarVisible=isSidebarVisible
-        toggleSidebar=toggleSidebar
         isUserMember=true
       }}`);
     });

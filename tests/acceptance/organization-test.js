@@ -28,7 +28,7 @@ describe('Acceptance: Organization', function() {
     it('denies billing settings', async function() {
       await visit(`/organizations/${organization.slug}/settings`);
       expect(currentRouteName()).to.equal('organizations.organization.settings');
-      await click('.data-test-sidenav-billing');
+      await click('.data-test-dashboard-nav-org-billing');
       expect(currentRouteName()).to.equal('organizations.organization.billing');
 
       await percySnapshot(this.test);
@@ -199,12 +199,11 @@ describe('Acceptance: Organization', function() {
         await click('[data-test-edit-org-form] [data-test-org-save-button]');
         return percySnapshot(this.test.fullTitle() + ' | Error when invalid slug');
       });
-
-      await click('.data-test-sidenav-users');
+      await click('.data-test-dashboard-nav-org-users');
       expect(currentRouteName()).to.equal('organizations.organization.users.index');
 
       await percySnapshot(this.test.fullTitle() + ' | Users settings');
-      await click('.data-test-sidenav-billing');
+      await click('.data-test-dashboard-nav-org-billing');
       expect(currentRouteName()).to.equal('organizations.organization.billing');
 
       await percySnapshot(this.test.fullTitle() + ' | Billing settings');

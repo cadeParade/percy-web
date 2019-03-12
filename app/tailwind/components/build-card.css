@@ -4,3 +4,43 @@
   background: url("/images/build-card-placeholder.jpg");
   @apply bg-cover;
 }
+
+.build-card-container {
+  @apply relative;
+  @apply bg-white;
+}
+
+.build-card-container::after {
+  @apply trans;
+  @apply w-2 h-full;
+  @apply absolute pin-t;
+  content: "";
+  left: -4px;
+  background: var(--status-color, transparent);
+}
+
+.build-card-container:hover .status-pill {
+  transform: scale(1.05);
+}
+
+.build-card-container:hover::after {
+  transform: translate3d(4px, 0, 0);
+}
+
+.build-card {
+  @apply grid items-center;
+  @apply py-3;
+  @apply border-b;
+  @apply cursor-pointer;
+  grid-gap: var(--spacing-4);
+  grid-template-areas:
+    "build"
+    "details"
+    "diffs"
+    "status";
+
+  @media screen and (min-width: 768px) {
+    grid-template-areas: "build details diffs status";
+    grid-template-columns: 108px 4fr 180px 108px;
+  }
+}

@@ -1,44 +1,46 @@
-<section data-test-integration-header class="px-2 pt-3">
-  <div class="w-3/4 pb-3">
-    <h1 class="text-xl font-semibold mb-sm">Set up GitHub</h1>
-    <p class="text-gray-400">
-      The Percy GitHub app will automatically update the pull request summary if there are visual differences needing review, and will show which team member approved them. It will also help us provide smarter comparisons for you, by picking more relevant base builds. Check out the <strong>{{#link-to "docs.page" "integrations/github"}}Percy + GitHub{{/link-to}}</strong> docs to learn more.
-    </p>
-  </div>
-</section>
+<div class="container-xl">
+  <section data-test-integration-header class="pt-3">
+    <div class="w-3/4 pb-3">
+      <h1 class="text-xl font-semibold mb-sm">Set up GitHub</h1>
+      <p class="text-gray-400">
+        The Percy GitHub app will automatically update the pull request summary if there are visual differences needing review, and will show which team member approved them. It will also help us provide smarter comparisons for you, by picking more relevant base builds. Check out the <strong>{{#link-to "docs.page" "integrations/github"}}Percy + GitHub{{/link-to}}</strong> docs to learn more.
+      </p>
+    </div>
+  </section>
 
-<section class="px-2 mb-9">
-  <div class="bg-white rounded shadow-1 mb-2">
-    <div class="p-2">
-      <div class="flex items-center mb-2">
-        {{inline-svg "github-icon-lg" class="mr-1"}}
-        <h2 class="text-xl font-semibold m-0">GitHub Integration</h2>
-      </div>
+  <section class="mb-9">
+    <div class="bg-white rounded shadow-1 mb-2">
+      <div class="p-2">
+        <div class="flex items-center mb-2">
+          {{inline-svg "github-icon-lg" class="mr-1"}}
+          <h2 class="text-xl font-semibold m-0">GitHub Integration</h2>
+        </div>
 
-      {{#organizations/require-role role="admin" organization=organization}}
-      <div class="mb-2">
-        {{#if (not (await isEligibleForGithubIntegration))}}
-          To install the GitHub integration you first need to {{#link-to 'settings.connected-accounts'}} connect your GitHub account{{/link-to}}.
-        {{else}}
-          {{organizations/github-integrator organization=organization}}
+        {{#organizations/require-role role="admin" organization=organization}}
+        <div class="mb-2">
+          {{#if (not (await isEligibleForGithubIntegration))}}
+            To install the GitHub integration you first need to {{#link-to 'settings.connected-accounts'}} connect your GitHub account{{/link-to}}.
+          {{else}}
+            {{organizations/github-integrator organization=organization}}
 
-          {{#if organization.githubIntegration}}
-            {{organizations/integrations/repo-linker-list organization=organization}}
+            {{#if organization.githubIntegration}}
+              {{organizations/integrations/repo-linker-list organization=organization}}
+            {{/if}}
           {{/if}}
-        {{/if}}
+        </div>
+        {{/organizations/require-role}}
       </div>
-      {{/organizations/require-role}}
-    </div>
 
 
-    <div class="flex justify-end px-2 pb-2">
-      {{#link-to
-        'organizations.organization.integrations'
-        organization.slug
-        class="percy-btn"
-      }}
-        Back
-      {{/link-to}}
+      <div class="flex justify-end px-2 pb-2">
+        {{#link-to
+          'organizations.organization.integrations.index'
+          organization.slug
+          class="percy-btn"
+        }}
+          Back
+        {{/link-to}}
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+</div>

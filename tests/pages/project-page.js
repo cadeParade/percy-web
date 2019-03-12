@@ -3,16 +3,16 @@ import {visitable, clickable, create, isVisible, collection} from 'ember-cli-pag
 import {alias} from 'ember-cli-page-object/macros';
 import {getter} from 'ember-cli-page-object/macros';
 import {FixedTopHeader} from 'percy-web/tests/pages/components/fixed-top-header';
-import {ProjectSidebar} from 'percy-web/tests/pages/components/project-sidebar';
 
 const SELECTORS = {
   PROJECT_PAGE: '[data-test-project-page]',
-  TOGGLE_PROJECT_SIDEBAR: '[data-test-toggle-project-sidebar]',
   FRAMEWORK_ITEMS: '[data-test-tech-card]',
   EXAMPLE_PROJECT_BUTTON: '[data-test-example-framework-project-button]',
   FRAMEWORK_DOCS_BUTTON: '[data-test-framework-docs-button]',
   GENERIC_DOCS_BUTTON: '[data-test-generic-docs-button]',
   SDK_REQUEST_FIELD: '[data-test-sdk-request-field]',
+  START_NEW_PROJECT_BUTTON: '[data-test-start-new-project] [data-test-percy-btn]',
+  PUBLIC_PROJECT_ICON: '[data-test-public-project-icon]',
 };
 
 const ProjectPage = {
@@ -22,7 +22,6 @@ const ProjectPage = {
   visitProject: visitable('/:orgSlug/:projectSlug'),
 
   fixedTopHeader: FixedTopHeader,
-  projectSidebar: ProjectSidebar,
   projectContainer: ProjectContainer,
 
   builds: alias('projectContainer.builds'),
@@ -34,12 +33,8 @@ const ProjectPage = {
   isNoBuildsPanelVisible: alias('projectContainer.isNoBuildsPanelVisible'),
   isPublicProjectNoticeVisible: alias('projectContainer.isPublicProjectNoticeVisible'),
 
-  isPublicProjectIconVisible: alias('projectContainer.isPublicProjectIconVisible'),
+  isPublicProjectIconVisible: isVisible(SELECTORS.PUBLIC_PROJECT_ICON),
   clickProjectSettings: alias('projectContainer.clickProjectSettings'),
-
-  toggleProjectSidebar: clickable(SELECTORS.TOGGLE_PROJECT_SIDEBAR),
-  toggleArchivedProjects: alias('projectSidebar.toggleArchivedProjects'),
-  projectLinks: alias('projectSidebar.projectLinks'),
 
   frameworks: collection(SELECTORS.FRAMEWORK_ITEMS),
 
@@ -53,6 +48,9 @@ const ProjectPage = {
   isFrameworkDocsButtonVisible: isVisible(SELECTORS.FRAMEWORK_DOCS_BUTTON),
 
   isSdkRequestFieldVisible: isVisible(SELECTORS.SDK_REQUEST_FIELD),
+
+  isStartNewProjectButtonVisible: isVisible(SELECTORS.START_NEW_PROJECT_BUTTON),
+  clickStartNewProject: clickable(SELECTORS.START_NEW_PROJECT_BUTTON),
 };
 
 export default create(ProjectPage);

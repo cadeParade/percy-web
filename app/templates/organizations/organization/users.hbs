@@ -1,6 +1,6 @@
 {{title (concat organization.name " users | Percy") replace=true}}
 
-{{#organizations/settings-nav-wrapper organization=organization}}
+{{#dashboard-nav-wrapper organization=organization showMemberLinks=true}}
   {{outlet}}
   {{organizations/manage-users-list organization=organization organizationUsers=organizationUsers}}
-{{/organizations/settings-nav-wrapper}}
+{{/dashboard-nav-wrapper}}

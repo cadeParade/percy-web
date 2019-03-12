@@ -1,4 +1,4 @@
-import {attribute, create, fillable, hasClass, isVisible, text} from 'ember-cli-page-object';
+import {attribute, create, fillable, hasClass, isVisible} from 'ember-cli-page-object';
 
 const SELECTORS = {
   CONTAINER: '[data-test-users-header]',
@@ -7,7 +7,6 @@ const SELECTORS = {
   FORM_ERROR: '[data-test-invite-permission-error]',
   INVITE_BUTTON: '[data-test-invite-button]',
   INVITE_FORM: '[data-test-invite-form-wrapper]',
-  ORGANIZATION_NAME: '[data-test-organization-name]',
   SEAT_COUNT_TEXT: '[data-test-seat-count-text]',
   SEND_INVITES_BUTTON: '[data-test-form-submit-button]',
   SHOW_SUPPORT_LINK: '[data-test-users-show-support]',
@@ -32,7 +31,6 @@ export const UsersHeader = {
     isActive: hasClass('hint--rounded'),
     label: attribute('aria-label'),
   },
-  organizationName: text(SELECTORS.ORGANIZATION_NAME),
   seatCount: {scope: SELECTORS.SEAT_COUNT_TEXT},
   sendInvitesButton: {scope: SELECTORS.SEND_INVITES_BUTTON},
   supportLink: {scope: SELECTORS.SHOW_SUPPORT_LINK},

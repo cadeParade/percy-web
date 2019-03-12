@@ -18,10 +18,6 @@ export default Component.extend(PollingMixin, {
 
   POLLING_INTERVAL_SECONDS: 10,
 
-  tagName: 'main',
-  classNames: ['project-container flex-1 pb-8 bg-gray-pattern border-l'],
-  attributeBindings: ['data-test-project-container'],
-  'data-test-project-container': true,
   buildsLimit: INFINITY_SCROLL_LIMIT,
 
   canLoadMore: computed.not('infinityBuilds.reachedInfinity'),

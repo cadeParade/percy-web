@@ -1,7 +1,0 @@
-.org-switcher-organization:hover .org-switcher-organization-settings {
-  @apply opacity-100;
-}
-
-.org-switcher-organization-settings {
-  @apply trans;
-}

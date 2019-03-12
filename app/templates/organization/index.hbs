@@ -1,1 +1,48 @@
-{{outlet}}
+{{fixed-top-header currentOrganization=organization}}
+
+{{#dashboard-nav-wrapper organization=organization showMemberLinks=isUserMember}}
+  {{#each projects as |project|}}
+    <div class="border-b py-3 leading-none" data-test-project-list-item>
+      <div class="flex justify-between items-center">
+        <div>
+          <div class="flex items-center mb-1">
+            {{#if project.publiclyReadable}}
+              <div class="mr-1 hint--top hint--rounded hint--bounce" aria-label="Public project">
+                {{fa-icon data-test-public-project-icon "globe" class="text-lg text-blue-200"}}
+              </div>
+            {{/if}}
+            {{#link-to 'organization.project' organization.slug project.slug class="block text-2xl link-dark mr-1 data-test-project-link"}}
+              {{project.name}}
+            {{/link-to}}
+            {{#if project.isDisabled}}
+              {{#label-tag class="mr-2"}}
+                archived
+              {{/label-tag}}
+            {{/if}}
+            {{#if project.isDemo}}
+              {{#label-tag class="mr-2"}}
+                demo
+              {{/label-tag}}
+            {{/if}}
+          </div>
+
+          <div class="text-sm text-gray-400 font-semibold">
+            Updated {{moment-from-now project.updatedAt interval=60000}}
+          </div>
+        </div>
+
+        {{#if project.repo}}
+          <div class="flex items-center">
+            <figure class="svg-container mr-1">
+              {{#if (repo-logo project.repo)}}
+                {{inline-svg (repo-logo project.repo)}}
+              {{/if}}
+            </figure>
+            <span class="whitespace-no-wrap font-semibold mr-1">Linked to</span>
+            <a href="{{project.repo.htmlUrl}}"><code>{{project.repo.slug}}</code></a>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  {{/each}}
+{{/dashboard-nav-wrapper}}

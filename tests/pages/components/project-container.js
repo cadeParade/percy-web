@@ -11,10 +11,8 @@ const SELECTORS = {
   NO_BUILDS_PANEL: '[data-test-status-panel]',
   PUBIC_PROJECT_NOTICE: '[data-test-public-project-notice]',
   INFINITY_LOADER: '.infinity-loader', // only one possible per page
-  PUBLIC_PROJECT_ICON: '[data-test-public-project-icon]',
   PROJECT_SETTINGS_ICON: '[data-test-settings-icon]',
   BRANCH_FILTER_DROPDOWN: '[data-test-project-container-branch-filter]',
-  START_NEW_PROJECT_BUTTON: '[data-test-start-new-project] [data-test-percy-btn]',
 };
 
 export const ProjectContainer = {
@@ -28,6 +26,7 @@ export const ProjectContainer = {
   },
 
   repoLinked: {
+    resetScope: true,
     scope: SELECTORS.REPO_LINKED,
     githubLogo: {
       scope: SELECTORS.GITHUB_LOGO,
@@ -48,13 +47,9 @@ export const ProjectContainer = {
   isNoBuildsPanelVisible: isVisible(SELECTORS.NO_BUILDS_PANEL),
   isPublicProjectNoticeVisible: isVisible(SELECTORS.PUBLIC_BUILD_NOTICE),
 
-  isPublicProjectIconVisible: isVisible(SELECTORS.PUBLIC_PROJECT_ICON),
   clickProjectSettings: clickable(SELECTORS.PROJECT_SETTINGS_ICON),
 
   isBranchSelectorVisible: isVisible(SELECTORS.BRANCH_FILTER_DROPDOWN),
-
-  isStartNewProjectButtonVisible: isVisible(SELECTORS.START_NEW_PROJECT_BUTTON),
-  clickStartNewProject: clickable(SELECTORS.START_NEW_PROJECT_BUTTON),
 };
 
 export default create(ProjectContainer);

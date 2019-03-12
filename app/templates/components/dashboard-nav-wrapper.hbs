@@ -1,0 +1,55 @@
+<header class="bg-white border-b" data-test-dashboard-nav>
+  <div class="flex flex-col justify-between h-24">
+    {{! This empty div allows flexible spacing for the variable height header component internals}}
+    <div></div>
+
+    <div class="container-xl flex justify-between items-center">
+      <div class="text-2xl font-semibold leading-none">
+        {{organization.name}}
+      </div>
+      <div>
+        {{#if shouldShowNewProject}}
+          {{#link-to "organizations.organization.projects.new" organization.slug class="data-test-dashboard-nav-new-project"}}
+            {{#percy-btn isPrimaryButton=true}}
+              New project
+            {{/percy-btn}}
+          {{/link-to}}
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="container-xl">
+      <nav class="tab-bar">
+        {{#link-to "organization.index" organization.slug class="tab-bar-tab data-test-dashboard-nav-projects"}}
+          Projects
+        {{/link-to}}
+
+        {{#if showMemberLinks}}
+          {{#link-to "organizations.organization.settings" organization.slug class="tab-bar-tab data-test-dashboard-nav-org-settings"}}
+            Details
+          {{/link-to}}
+
+          {{#link-to "organizations.organization.billing" organization.slug class="tab-bar-tab data-test-dashboard-nav-org-billing"}}
+            Billing
+          {{/link-to}}
+
+          {{#link-to "organizations.organization.users" organization.slug class="tab-bar-tab data-test-dashboard-nav-org-users"}}
+            Users ({{organization.seatsUsed}})
+          {{/link-to}}
+
+          {{#link-to "organizations.organization.integrations" organization.slug class="tab-bar-tab data-test-dashboard-nav-org-integrations"}}
+            Integrations
+          {{/link-to}}
+        {{/if}}
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="container-xl">
+    {{yield}}
+  </section>
+</main>
+
+

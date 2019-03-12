@@ -189,13 +189,15 @@ describe('Acceptance: Publicly viewable organizations', function() {
       this.loginUser = false;
 
       publicOrganization = server.create('organization');
-      const project = server.create('project', {organization: publicOrganization});
+      const project = server.create('project', 'publiclyReadable', {
+        organization: publicOrganization,
+      });
       server.create('build', {project});
     });
 
     it('shows organization page with projects when org request returns an org', async function() {
       await visit(`/${publicOrganization.slug}`);
-      expect(currentRouteName()).to.equal('organization.project.index');
+      expect(currentRouteName()).to.equal('organization.index');
       percySnapshot(this.test);
     });
 
@@ -222,7 +224,7 @@ describe('Acceptance: Publicly viewable organizations', function() {
 
     it('shows organization page when org request returns an org', async function() {
       await visit(`/${userOrganization.slug}`);
-      expect(currentRouteName()).to.equal('organization.project.index');
+      expect(currentRouteName()).to.equal('organization.index');
       percySnapshot(this.test);
     });
 

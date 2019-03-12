@@ -23,7 +23,7 @@ describe('Acceptance: Default org', function() {
     setupAcceptance();
     SetupLocalStorageSandbox();
 
-    describe('when user has organizations', function() {
+    describe('when user has organizations without projects', function() {
       let organization;
       let otherOrganization;
 
@@ -35,10 +35,31 @@ describe('Acceptance: Default org', function() {
         server.create('organizationUser', {organization: otherOrganization, user});
       });
 
-      it("redirects to user's first org", async function() {
+      it('redirects to new project screen', async function() {
         localStorageProxy.set('lastOrganizationSlug', otherOrganization.slug);
         await visit('/default-org');
         expect(currentRouteName()).to.equal('organizations.organization.projects.new');
+        expect(currentURL()).to.include(organization.slug);
+      });
+    });
+
+    describe('when user has organizations with projects', function() {
+      let organization;
+      let otherOrganization;
+
+      setupSession(function(server) {
+        const user = server.create('user');
+        organization = server.create('organization');
+        otherOrganization = server.create('organization');
+        server.create('project', {organization});
+        server.create('organizationUser', {organization, user});
+        server.create('organizationUser', {organization: otherOrganization, user});
+      });
+
+      it('redirects to org project listing', async function() {
+        localStorageProxy.set('lastOrganizationSlug', otherOrganization.slug);
+        await visit('/default-org');
+        expect(currentRouteName()).to.equal('organization.index');
         expect(currentURL()).to.include(organization.slug);
       });
     });

@@ -15,6 +15,7 @@
 */
 
 export default {
+  'purple-underline': '0 1px 0 var(--purple-600)',
   default: '0 2px 4px 0 rgba(0,0,0,0.10)',
   md: '0 4px 8px 0 rgba(0,0,0,0.12), 0 2px 4px 0 rgba(0,0,0,0.08)',
   lg: '0 4px 12px rgba(63, 58, 64, 0.06)',
