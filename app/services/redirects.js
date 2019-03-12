@@ -9,7 +9,7 @@ export default Service.extend({
   router: service(),
   store: service(),
 
-  // This method is tested via most-recent-org-test and default-org-test
+  // This method is tested via default-project-test and default-org-test
   redirectToDefaultOrganization({useMostRecentOrg = true} = {}) {
     const currentUser = this.get('currentUser');
     const router = this.get('router');
@@ -52,6 +52,22 @@ export default Service.extend({
       return this._transitionToProject(orgSlug, defaultProjectForOrg.get('slug'), goToSettings);
     } else {
       return this._transitionToNewProject(orgSlug);
+    }
+  },
+
+  redirectToRecentLocalstorageProject() {
+    const lastOrganizationSlug = localStorageProxy.get('lastOrganizationSlug');
+    const recentProjectSlugs = localStorageProxy.get('recentProjectSlugs') || {};
+
+    const recentProjectSlug = recentProjectSlugs[lastOrganizationSlug];
+    if (lastOrganizationSlug && recentProjectSlug) {
+      this.get('router').transitionTo(
+        'organization.project.index',
+        lastOrganizationSlug,
+        recentProjectSlug,
+      );
+    } else {
+      this.redirectToDefaultOrganization();
     }
   },
 

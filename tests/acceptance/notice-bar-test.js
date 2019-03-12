@@ -1,5 +1,6 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import stubLockModal from 'percy-web/tests/helpers/stub-lock-modal';
+import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
 import ProjectPage from 'percy-web/tests/pages/project-page';
 import BuildPage from 'percy-web/tests/pages/build-page';
 import NoticeBar from 'percy-web/tests/pages/components/notice-bar';
@@ -7,6 +8,7 @@ import {currentRouteName} from '@ember/test-helpers';
 import {percySnapshot} from 'ember-percy';
 
 describe('Acceptance: Notice Bar', function() {
+  freezeMoment('2018-05-22');
   async function checkNoticeBar(context) {
     expect(NoticeBar.message.isVisible).to.equal(true);
     expect(NoticeBar.billingLink.isVisible).to.equal(true);

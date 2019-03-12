@@ -4,7 +4,7 @@ import localStorageProxy from 'percy-web/lib/localstorage';
 import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage-sandbox';
 import {visit, currentRouteName, currentURL} from '@ember/test-helpers';
 
-describe('Acceptance: Most recent org', function() {
+describe('Acceptance: Recent Project', function() {
   describe('when user is not logged in', function() {
     setupAcceptance({authenticate: false});
 
@@ -14,7 +14,7 @@ describe('Acceptance: Most recent org', function() {
     });
 
     it('redirects to login', async function() {
-      await visit('/most-recent-org');
+      await visit('/recent-project');
       expect(currentRouteName()).to.equal('login');
     });
   });
@@ -23,7 +23,7 @@ describe('Acceptance: Most recent org', function() {
     setupAcceptance();
     SetupLocalStorageSandbox();
 
-    describe('when user has organizations', function() {
+    describe('when user has organizations without projects', function() {
       let organization;
       let otherOrganization;
 
@@ -37,9 +37,36 @@ describe('Acceptance: Most recent org', function() {
 
       it("redirects to user's most recent org", async function() {
         localStorageProxy.set('lastOrganizationSlug', otherOrganization.slug);
-        await visit('/most-recent-org');
+        await visit('/recent-project');
         expect(currentRouteName()).to.equal('organizations.organization.projects.new');
         expect(currentURL()).to.include(otherOrganization.slug);
+      });
+    });
+
+    describe('when a user has organizations with projects', function() {
+      let organization;
+      let otherOrganization;
+      let project;
+
+      setupSession(function(server) {
+        const user = server.create('user');
+        organization = server.create('organization');
+        otherOrganization = server.create('organization');
+        project = server.create('project', {organization});
+
+        server.create('organizationUser', {organization, user});
+        server.create('organizationUser', {organization: otherOrganization, user});
+      });
+
+      it('redirects to the org and project in localstorage', async function() {
+        let recentProjectSlugs = {};
+        recentProjectSlugs[organization.slug] = project.slug;
+
+        localStorageProxy.set('lastOrganizationSlug', organization.slug);
+        localStorageProxy.set('recentProjectSlugs', recentProjectSlugs);
+
+        await visit('/recent-project');
+        expect(currentRouteName()).to.equal('organization.project.index');
       });
     });
 
@@ -49,7 +76,7 @@ describe('Acceptance: Most recent org', function() {
       });
 
       it('redirects to organizations.new', async function() {
-        await visit('/most-recent-org');
+        await visit('/recent-project');
         expect(currentRouteName()).to.equal('organizations.new');
       });
     });
