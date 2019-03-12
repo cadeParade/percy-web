@@ -28,10 +28,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
       window.location.href = destinationUrl;
     },
 
-    showSupport() {
-      this.get('intercom').showIntercom();
-    },
-
     redirectToRecentProjectSettings() {
       this.get('redirects').redirectToRecentProjectForOrg(this.modelFor(this.routeName), {
         goToSettings: true,

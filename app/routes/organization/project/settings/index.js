@@ -72,10 +72,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
         });
       this._callAnalytics('Browser Family Added', {browser_family_slug: familyToAdd.get('slug')});
     },
-
-    showSupport() {
-      this.get('intercom').showIntercom();
-    },
   },
 
   _callAnalytics(actionName, extraProps) {

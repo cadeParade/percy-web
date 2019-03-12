@@ -156,14 +156,6 @@ describe('Acceptance: Organization', function() {
       });
     });
 
-    it('shows support on settings page', async function() {
-      window.Intercom = sinon.stub();
-      await visit(`/organizations/${organization.slug}/settings`);
-
-      await click('[data-test-org-settings-show-support]');
-      expect(window.Intercom).to.have.been.called;
-    });
-
     it('shows support on users page', async function() {
       window.Intercom = sinon.stub();
       await visit(`/organizations/${organization.slug}/users`);
