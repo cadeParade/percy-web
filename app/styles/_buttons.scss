@@ -345,7 +345,8 @@ button,
 .btn-success {
   color: var(--white);
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  background: var(--green-gradient);
+  // This is the var --green-gradient, but for performance reasons we're repeating it here.
+  background: linear-gradient(45deg, #43cb54 0%, #4fd960 100%);
 
   &:hover,
   &:focus,
