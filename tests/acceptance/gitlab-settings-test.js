@@ -265,7 +265,7 @@ describe('Acceptance: GitLab Integration Settings', function() {
         expect(currentRouteName()).to.equal('organizations.organization.integrations.index');
 
         await IntegrationsIndexPage.gitlabIntegration.install();
-        expect(GitlabSettings.integrationName).to.equal('GitLab Integration');
+        expect(GitlabSettings.integrationName).to.equal('GitLab integration');
 
         await GitlabSettings.integrationSettings.toolbar.back();
         expect(currentRouteName()).to.equal('organizations.organization.integrations.index');

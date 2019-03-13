@@ -77,13 +77,13 @@
 
       {{!-- TODO: #billingadmins --}}
       <div class="bg-white rounded shadow-1 p-2 mb-2">
-        <h2 class="text-xl font-semibold mb-1">Invoice Settings</h2>
+        <h2 class="text-xl font-semibold mb-1">Invoice settings</h2>
         {{forms/billing-edit subscription=subscription}}
       </div>
 
       {{#if subscription.isCustomer}}
         <div class="bg-white rounded shadow-1 p-2 mb-2">
-          <h2 class="text-xl font-semibold mb-1">Billing Details</h2>
+          <h2 class="text-xl font-semibold mb-1">Billing details</h2>
           {{organizations/billing-card-updater
             organization=organization
           }}
