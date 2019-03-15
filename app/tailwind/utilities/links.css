@@ -46,3 +46,13 @@
     color: var(--blue-500) !important;
   }
 }
+
+.link-purple,
+.link-purple a {
+  color: var(--purple-600) !important;
+
+  &:hover {
+    color: var(--purple-600) !important;
+    text-decoration: underline;
+  }
+}

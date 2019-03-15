@@ -5,15 +5,15 @@
         {{inline-svg "percy-logo-on-light"}}
       </figure>
     {{/link-to}}
-    <div class="relative flex items-center bg-purple-300 text-sm rounded px-1 py-sm hide-on-mobile">
-      {{#link-to "organization" organization class="font-mono text-purple-600 truncate truncate-target hide-on-tablet"}}{{organization.name}}{{/link-to}}
-      <span class="font-semibold mx-sm hide-on-tablet">/</span>
 
-      {{#link-to "organization.project" organization.slug project class="font-mono text-purple-600 truncate truncate-target" data-test-build-toolbar-project-link=true}}
-        {{project.name}}
-      {{/link-to}}
+    <div class="flex items-center mr-1 hide-on-mobile">
+      <div class="text-lg font-semibold">
+        {{#link-to "organization" organization class="inline-block link-purple truncate truncate-target hide-on-tablet"}}{{organization.name}}{{/link-to}}
+          <span class="font-semibold text-gray-700 mx-px hide-on-tablet">/</span>
+          {{#link-to "organization.project" organization.slug project class="inline-block link-purple truncate truncate-target" data-test-build-toolbar-project-link=true}}{{project.name}}{{/link-to}}
+      </div>
       {{#if organization.isSponsored}}
-        {{fa-icon data-test-build-public-project "globe" class="text-blue-200 ml-1"}}
+        {{fa-icon data-test-build-public-project "globe" class="text-blue-500 ml-sm"}}
       {{/if}}
     </div>
   </div>

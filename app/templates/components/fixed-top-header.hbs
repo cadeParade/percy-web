@@ -18,11 +18,11 @@
       {{#if session.isAuthenticated}}
         <div class="flex items-center mr-3">
           {{#if currentOrganization}}
-            <div class="bg-purple-300 text-sm text-purple-600 rounded px-1 py-sm">
-              {{#link-to "organization" currentOrganization.slug class="inline-block text-purple-600 truncate truncate-target font-mono data-test-organization-dashboard-link"}}{{currentOrganization.name}}{{/link-to}}
+            <div class="text-lg">
+              {{#link-to "organization" currentOrganization.slug class="inline-block link-purple truncate truncate-target data-test-organization-dashboard-link"}}{{currentOrganization.name}}{{/link-to}}
               {{#if project}}
-                <span class="font-semibold text-gray-700 text-sm mx-px">/</span>
-                {{#link-to "organization.project" currentOrganization.slug project class="inline-block font-mono text-purple-600 truncate truncate-target"}}
+                <span class="font-semibold text-gray-700 mx-px">/</span>
+                {{#link-to "organization.project" currentOrganization.slug project class="inline-block link-purple truncate truncate-target"}}
                   {{project.name}}
                 {{/link-to}}
               {{/if}}

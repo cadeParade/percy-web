@@ -4,8 +4,11 @@
   as |dropdown|
 }}
   {{#dropdown.trigger class="focus:outline-none"}}
-    <div {{action "loadOrgs" dropdown.isOpen}} data-test-org-switcher-toggle>
-      {{user-avatar user=user class="cursor-pointer z-top"}}
+    <div class="flex items-center cursor-pointer z-top" {{action "loadOrgs" dropdown.isOpen}} data-test-org-switcher-toggle>
+      {{user-avatar user=user class="mr-sm"}}
+      <figure class="svg-container">
+        {{inline-svg "dropdown-icon"}}
+      </figure>
     </div>
   {{/dropdown.trigger}}
 
