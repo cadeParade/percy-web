@@ -3,7 +3,7 @@ import {DashboardNav} from 'percy-web/tests/pages/components/dashboard-nav';
 
 const SELECTORS = {
   PROJECT_ITEM: '[data-test-project-list-item]',
-  PROJECT_LINK: '.data-test-project-link',
+  PROJECT_LINK: '[data-test-project-link]',
 };
 
 export const OrganizationDashboard = {
