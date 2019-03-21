@@ -11,7 +11,7 @@
       </div>
     {{/if}}
     <section data-test-admin-view>
-      <div class="bg-white rounded shadow-1" style="min-height: 363px;">
+      <div class="bg-white rounded shadow-1 border-t" style="min-height: 363px;">
         <div class="flex items-center justify-between p-6">
           <div class="flex items-center text-5xl">
             {{inline-svg 'comparison-icon-lg' class="mr-2"}}
@@ -43,7 +43,7 @@
       </div>
 
       {{#unless (or organization.billingLocked organization.subscription.plan.isCustom organization.subscription.isTrialOrFree)}}
-        <div class="bg-white rounded shadow-1 p-2 mb-2">
+        <div class="bg-white rounded shadow-1 border-t p-2 mb-2">
           <h2 class="text-xl font-semibold mb-1">Current billing period</h2>
           <div class="rounded border py-2 bg-gray-000">
             {{#if (not currentUsageStats)}}
@@ -76,13 +76,13 @@
       }}
 
       {{!-- TODO: #billingadmins --}}
-      <div class="bg-white rounded shadow-1 p-2 mb-2">
+      <div class="bg-white rounded shadow-1 border-t p-2 mb-2">
         <h2 class="text-xl font-semibold mb-1">Invoice settings</h2>
         {{forms/billing-edit subscription=subscription}}
       </div>
 
       {{#if subscription.isCustomer}}
-        <div class="bg-white rounded shadow-1 p-2 mb-2">
+        <div class="bg-white rounded shadow-1 border-t p-2 mb-2">
           <h2 class="text-xl font-semibold mb-1">Billing details</h2>
           {{organizations/billing-card-updater
             organization=organization
@@ -91,7 +91,7 @@
       {{/if}}
 
       {{#if subscription.isPaid}}
-        <div class="bg-white rounded shadow-1 p-2 mb-2">
+        <div class="bg-white rounded shadow-1 border-t p-2 mb-2">
           {{forms/usage-notification-setting
             organization=organization
             setting=usageNotificationSetting

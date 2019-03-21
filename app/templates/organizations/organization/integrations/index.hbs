@@ -9,7 +9,7 @@
 <div data-test-all-integrations>
   {{#if organization.isVersionControlIntegrated}}
     <section>
-      <div class="bg-white rounded shadow-1 p-2 mb-2">
+      <div class="bg-white rounded shadow-1 border-t p-2 mb-2">
         <h2 data-test-integrations-installed class="text-xl font-semibold mb-2">Installed integrations</h2>
         <div class="bg-gray-000 rounded border border-gray-100">
           {{#each versionControlIntegrations as |integration|}}
@@ -25,7 +25,7 @@
   {{/if}}
 
   <section>
-    <div data-test-integrations-available class="bg-white rounded shadow-1 mb-2">
+    <div data-test-integrations-available class="bg-white rounded shadow-1 border-t mb-2">
       {{#each availableIntegrations as |integrationName| }}
         {{organizations/integrations/integration-item
           integrationName=integrationName
