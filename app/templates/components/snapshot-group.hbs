@@ -16,6 +16,13 @@
           {{groupTitle}}
         </div>
       </div>
+
+      {{demo-tooltip
+        shouldShowTip=(and build.project.isDemo (eq index 0))
+        key="seven"
+        title="Automatic visual diff matching"
+        message="Percy automatically matches and groups snapshots that have the same visual change."
+      }}
     </div>
 
     <div class="flex justify-end">
@@ -52,6 +59,13 @@
             </button>
           </div>
           <div class="btn-group">
+            {{demo-tooltip
+              shouldShowTip=(and build.project.isDemo (eq index 0))
+              anchorPlacement='left-corner'
+              key="eight"
+              title="Approving matching changes"
+              message="You can review and approve individual changes in a group one by one, or approve all grouped changes with a single click. For the whole build, all changes can be approved at once with the “Approve All” button at the top of the page."
+            }}
             {{group-approval-button
               createReview=createReview
               approvableSnapshots=approvableSnapshots
@@ -97,6 +111,7 @@
                   toggleOverlay=(action "toggleGroupOverlay")
                   showDiffOverlay=isGroupShowingDiffOverlay
                   class="snapshot-group-comparison-viewer"
+                  index=index
                 }}
               </div>
             </div>

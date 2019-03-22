@@ -28,7 +28,7 @@ describe('Integration: DemoTooltipComponent', function() {
           {{demo-tooltip
             shouldShowTip=true
             key='test-one'
-            title='Important Tip'
+            title='Important tip'
             message='Never get involved in a land war in Asia'
           }}
           <div class="outside"></div>
