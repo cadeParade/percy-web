@@ -45,8 +45,13 @@ export default Route.extend(AuthenticatedRouteMixin, {
             {title: 'Oh Well.'},
           );
         })
-        .catch(() => {
-          this.get('flashMessages').danger('Something went wrong. Please try again later');
+        .catch(e => {
+          const errors = e.errors;
+          if (Array.isArray(errors)) {
+            this.get('flashMessages').danger(this._errorsWithDetails(errors).mapBy('detail'));
+          } else {
+            this.get('flashMessages').danger('Something went wrong. Please try again later');
+          }
         });
       this._callAnalytics('Browser Family Removed', {
         browser_family_slug: familyToRemove.get('slug'),
@@ -72,6 +77,12 @@ export default Route.extend(AuthenticatedRouteMixin, {
         });
       this._callAnalytics('Browser Family Added', {browser_family_slug: familyToAdd.get('slug')});
     },
+  },
+
+  _errorsWithDetails(errors) {
+    return errors.filter(error => {
+      return !!error.detail;
+    });
   },
 
   _callAnalytics(actionName, extraProps) {
