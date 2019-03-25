@@ -5,8 +5,8 @@ window.deprecationWorkflow.config = {
     {handler: 'silence', matchId: 'ember-simple-auth.baseAuthorizer'},
     {handler: 'silence', matchId: 'ember-simple-auth-auth0.jwtAuthorizer'},
     {handler: 'silence', matchId: 'ember-font-awesome.no-fa-prefix'},
-    // ember 3.4 upgrade
-    {handler: 'silence', matchId: 'ember-metal.getting-each'},
+    // ember 3.8 upgrade
+    {handler: 'silence', matchId: 'remove-handler-infos'}, // until 3.9
   ],
 };
 
