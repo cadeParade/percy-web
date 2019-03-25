@@ -1176,10 +1176,10 @@ abbrev@1:
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
   integrity sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==
 
-abortcontroller-polyfill@^1.1.9, abortcontroller-polyfill@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/abortcontroller-polyfill/-/abortcontroller-polyfill-1.2.1.tgz#4e88847513a4ed691d5e4899d8b3a3af6f7d90ee"
-  integrity sha512-9jN7+BijYKWO8fxfcG7QZh7js6V+g3OjkxMRHfKWNjjs85048VY4cd27Uoe6yk55P66L/z7Dflu5+YEApgMzkA==
+abortcontroller-polyfill@^1.2.5:
+  version "1.2.9"
+  resolved "https://registry.yarnpkg.com/abortcontroller-polyfill/-/abortcontroller-polyfill-1.2.9.tgz#402311d2aac7e8e093ecb045726b45fdafd834fe"
+  integrity sha512-0goWhDrwoWtK6XCdFdzPtvHBmmQU91j3tULNL85MAnDuM7bNlzUDfmL5AZGL819L7pn9kra35HJGWG25UgRCBw==
 
 accepts@~1.3.4, accepts@~1.3.5:
   version "1.3.5"
@@ -5981,30 +5981,12 @@ ember-fakerjs@^0.2.0:
     faker "git+https://github.com/Marak/faker.js.git"
     resolve "^1.5.0"
 
-ember-fetch@6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/ember-fetch/-/ember-fetch-6.0.0.tgz#a88c6f2436413e4e397651e1ed60e07f0e7c9d17"
-  integrity sha512-sqCBc5k/gFkUoC4nEl4IkgT6aLRBg7UQWcUDBqpfZy+rkPKxwzZROjJtCPlwCZg5PmZysV5TptaWNcs8r0g75Q==
+ember-fetch@6.5.0, "ember-fetch@^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0":
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/ember-fetch/-/ember-fetch-6.5.0.tgz#efed80b3dd2259b52efce7498659e9125235bfb7"
+  integrity sha512-B9KSeeO3xDNMQ22JqNwbmgnOprBzc8kNVfQMtzkAmugMb2aCmBZohAlQlwUUX5ODz8fHq2xfuZXDHD81Dzb0vg==
   dependencies:
-    abortcontroller-polyfill "^1.1.9"
-    babel-core "^6.26.3"
-    babel-preset-env "^1.7.0"
-    broccoli-concat "^3.2.2"
-    broccoli-merge-trees "^3.0.0"
-    broccoli-rollup "^2.1.1"
-    broccoli-stew "^2.0.0"
-    broccoli-templater "^2.0.1"
-    ember-cli-babel "^6.8.2"
-    node-fetch "^2.0.0-alpha.9"
-    rollup-plugin-babel "^3.0.7"
-    whatwg-fetch "^3.0.0"
-
-"ember-fetch@^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0":
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/ember-fetch/-/ember-fetch-6.4.0.tgz#806b2acfbda07f3b0dd48a9fcdbc575c5519611d"
-  integrity sha512-/GtJWQiUAAOX2HMGuLrWQMNWO9YRNH9+AiMzZYc5PrTHKdv+Ib5fciysz0+e97Dj9vyvF2mQa49mrosAPW9ziQ==
-  dependencies:
-    abortcontroller-polyfill "^1.2.1"
+    abortcontroller-polyfill "^1.2.5"
     broccoli-concat "^3.2.2"
     broccoli-debug "^0.6.5"
     broccoli-merge-trees "^3.0.0"
@@ -10692,7 +10674,7 @@ node-fetch@^1.0.1:
     encoding "^0.1.11"
     is-stream "^1.0.1"
 
-node-fetch@^2.0.0-alpha.9, node-fetch@^2.3.0:
+node-fetch@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.3.0.tgz#1a1d940bbfb916a1d3e0219f037e89e71f8c5fa5"
   integrity sha512-MOd8pV3fxENbryESLgVIeaGKrdl+uaYhCSSVkjeOb/31/njTpcis5aWfdqgNlHIrKOLRbMnfPINPOML2CIFeXA==
@@ -12685,13 +12667,6 @@ rollup-plugin-babel@^2.7.1:
     babel-core "6"
     babel-plugin-transform-es2015-classes "^6.9.0"
     object-assign "^4.1.0"
-    rollup-pluginutils "^1.5.0"
-
-rollup-plugin-babel@^3.0.7:
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-babel/-/rollup-plugin-babel-3.0.7.tgz#5b13611f1ab8922497e9d15197ae5d8a23fe3b1e"
-  integrity sha512-bVe2y0z/V5Ax1qU8NX/0idmzIwJPdUGu8Xx3vXH73h0yGjxfv2gkFI82MBVg49SlsFlLTBadBHb67zy4TWM3hA==
-  dependencies:
     rollup-pluginutils "^1.5.0"
 
 rollup-plugin-commonjs@^8.0.2, rollup-plugin-commonjs@^8.3.0:
