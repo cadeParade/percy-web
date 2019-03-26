@@ -89,9 +89,9 @@ export default Route.extend({
       this.transitionTo('organization.project.builds.build', build.get('id'));
     },
 
-    createReview(snapshots) {
+    createReview(snapshots, eventData) {
       const build = this._getBuild();
-      return this.get('reviews').createApprovalReview(build, snapshots);
+      return this.get('reviews').createApprovalReview(build, snapshots, eventData);
     },
   },
 

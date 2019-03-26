@@ -13,7 +13,12 @@ export default Component.extend({
   actions: {
     async approveGroup() {
       set(this, 'isLoading', true);
-      await get(this, 'createReview')(get(this, 'approvableSnapshots'));
+      await get(this, 'createReview')(get(this, 'approvableSnapshots'), {
+        title: 'Group Approved',
+        properties: {
+          build_id: get(this, 'approvableSnapshots.firstObject.build.id'),
+        },
+      });
       // The time between when we get the response back from the server and the time
       // it takes Ember to process and render the returned data is actually quite long (~1s)
       // on production. So setting these properties here disguises that transition time and

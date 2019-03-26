@@ -33,5 +33,15 @@ export default SnapshotListItem.extend({
       this.toggleProperty('isGroupShowingDiffOverlay');
       this.trackToggleOverlay(get(this, 'isGroupShowingDiffOverlay'));
     },
+
+    toggleAreAllSnapshotsExpanded() {
+      const build = get(this, 'build');
+      this.toggleProperty('areAllSnapshotsExpanded');
+      this.get('analytics').track('Group Toggled', get(build, 'project.organization'), {
+        project_id: get(build, 'project.id'),
+        build_id: get(build, 'id'),
+        toggledTo: get(this, 'areAllSnapshotsExpanded') ? 'Open' : 'Collapsed',
+      });
+    },
   },
 });
