@@ -54,6 +54,26 @@
       webhookConfigs=model.webhookConfigs
       deleteWebhookConfig=(route-action "deleteWebhookConfig")
     }}
+
+    <div class="bg-white rounded shadow-1 p-2 mb-2">
+      <h2 class="text-xl font-semibold mb-1">Percy badge</h2>
+        <img src="https://percy.io/static/images/percy-badge.png">
+        <div>
+          <label>
+            <div class="mb-1">Show the world that you're using Percy for visual testing. Place this badge in your README by copying the markdown snippet below:</div>
+            <div class="flex justify-between">
+              <textarea readonly=true class="w-full font-mono text-sm">{{badgeMarkdown}}</textarea>
+              {{#copy-button
+                class="percy-btn ml-1"
+                clipboardText=badgeMarkdown
+                success=(route-action "onCopyBadgeMarkdown")
+              }}
+                {{fa-icon "copy"}}
+              {{/copy-button}}
+            </div>
+          </label>
+        </div>
+    </div>
   {{/if}}
 
   <div class="bg-white rounded shadow-1 p-2 mb-2">

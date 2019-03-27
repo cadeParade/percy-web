@@ -31,7 +31,6 @@ module.exports = function(defaults) {
     fingerprint: {
       extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'svg'],
       prepend: '/static/',
-      exclude: ['public/images/percy-badge.png'],
     },
     svg: {
       paths: ['public/images/icons', 'public/images/logos', 'public/images/icons/tech'],

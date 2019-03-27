@@ -7,6 +7,7 @@ import utils from 'percy-web/lib/utils';
 export default Route.extend(AuthenticatedRouteMixin, {
   flashMessages: service(),
   intercom: service(),
+  router: service(),
 
   model() {
     const project = this.modelFor('organization.project');
@@ -14,6 +15,31 @@ export default Route.extend(AuthenticatedRouteMixin, {
     const webhookConfigs = project.get('webhookConfigs');
 
     return hash({project, browserFamilies, webhookConfigs});
+  },
+
+  setupController(controller, model) {
+    controller.setProperties({
+      model,
+      badgeMarkdown: this._badgeMarkdown(model.project),
+    });
+  },
+
+  _badgeMarkdown(project) {
+    // Making this string two lines messes up the formatting.
+    return `[![This project is using Percy.io for visual regression testing.](https://percy.io/static/images/percy-badge.png)](${this._badgeLinkURL(project)})`; //eslint-disable-line
+  },
+
+  _badgeLinkURL(project) {
+    const origin = window.location.origin;
+    if (project.publiclyReadable) {
+      return `${origin}${this.get('router').urlFor(
+        'organization.project',
+        project.get('organization'),
+        project,
+      )}`;
+    } else {
+      return origin;
+    }
   },
 
   actions: {
@@ -76,6 +102,10 @@ export default Route.extend(AuthenticatedRouteMixin, {
           this.get('flashMessages').danger('Something went wrong. Please try again later');
         });
       this._callAnalytics('Browser Family Added', {browser_family_slug: familyToAdd.get('slug')});
+    },
+
+    onCopyBadgeMarkdown() {
+      this.get('flashMessages').success('Badge markdown was copied to your clipboard');
     },
   },
 
