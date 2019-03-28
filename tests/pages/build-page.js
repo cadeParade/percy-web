@@ -68,7 +68,8 @@ const BuildPage = {
 
   isPublicBuildNoticeVisible: isVisible(SELECTORS.PUBLIC_BUILD_NOTICE),
 
-  demoTooltips: collection(DemoTooltip.scope, DemoTooltip),
+  demoTooltips: collection(DemoTooltip.wrapperScope, DemoTooltip),
+  nextableDemoTooltips: collection(DemoTooltip.nextableScope, DemoTooltip),
 };
 
 export default create(BuildPage);

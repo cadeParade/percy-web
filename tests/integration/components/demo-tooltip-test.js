@@ -4,8 +4,9 @@ import {percySnapshot} from 'ember-percy';
 import {expect} from 'chai';
 import {find, waitUntil, waitFor, click} from '@ember/test-helpers';
 import {isVisible as attacherIsVisible} from 'ember-attacher';
-
+import {make, makeList} from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
+import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import DemoTooltip from 'percy-web/tests/pages/components/demo-tooltip';
 import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage-sandbox';
 
@@ -17,7 +18,14 @@ describe('Integration: DemoTooltipComponent', function() {
   });
 
   beforeEach(function() {
+    setupFactoryGuy(this);
     DemoTooltip.setContext(this);
+    // create a build with snapshots
+    const snapshots = makeList('snapshot', 5, 'withComparisons', {fingerprint: 'fingerprint'});
+    const build = make('build', 'finished', {project: {isDemo: true}});
+    build.set('snapshots', snapshots);
+
+    this.set('build', build);
   });
 
   describe('for a single tooltip', function() {
@@ -26,7 +34,7 @@ describe('Integration: DemoTooltipComponent', function() {
       await this.render(hbs`
         <div style="position: absolute; top: 20px; left:20px;">
           {{demo-tooltip
-            shouldShowTip=true
+            build=build
             key='test-one'
             title='Important tip'
             message='Never get involved in a land war in Asia'
@@ -55,20 +63,6 @@ describe('Integration: DemoTooltipComponent', function() {
       tooltipElement.style.removeProperty('transform');
       tooltipElement.style.setProperty('left', '50px');
       await percySnapshot(this.test);
-    });
-
-    it('hides the tooltip and anchor element when dismissed', async function() {
-      const tooltipElement = find('.ember-attacher');
-
-      await DemoTooltip.clickAnchor();
-      expect(attacherIsVisible(tooltipElement)).to.equal(true, 'tooltip should be visible');
-      await DemoTooltip.clickDismiss();
-
-      await waitUntil(() => {
-        return !attacherIsVisible(tooltipElement);
-      });
-
-      expect(attacherIsVisible(tooltipElement)).to.equal(false, 'tooltip should be hidden');
     });
 
     it('hides the tooltip and anchor element when all are dismissed', async function() {

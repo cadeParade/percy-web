@@ -777,23 +777,30 @@ describe('Acceptance: Demo Project Build', function() {
     expect(attacherIsVisible(tooltipElement)).to.equal(true);
   });
 
-  it('hides a single tooltip and anchor when it is dismissed', async function() {
+  it('moves on to the next tooltip when clicking next', async function() {
     await BuildPage.visitBuild(urlParams);
 
-    expect(BuildPage.demoTooltips.length).to.be.at.least(2);
+    const tooltipElements = await findAll('.ember-attacher .nextable');
+    const firstTooltip = tooltipElements[0];
+    const secondTooltip = tooltipElements[1];
 
-    expect(BuildPage.demoTooltips.objectAt(0).isAnchorVisible).to.equal(true);
+    expect(BuildPage.demoTooltips.length).to.equal(5);
+    expect(BuildPage.nextableDemoTooltips.length).to.equal(4);
 
-    await BuildPage.demoTooltips.objectAt(0).clickAnchor();
-    await BuildPage.demoTooltips.objectAt(0).clickDismiss();
+    await BuildPage.nextableDemoTooltips.objectAt(0).clickAnchor();
 
-    expect(BuildPage.demoTooltips.objectAt(0).isAnchorVisible).to.equal(false);
+    expect(firstTooltip.classList.contains('ember-attacher-show')).to.equal(true);
+    expect(secondTooltip.classList.contains('ember-attacher-hide')).to.equal(true);
+
+    await BuildPage.nextableDemoTooltips.objectAt(0).clickNext();
+
+    await expect(secondTooltip.classList.contains('ember-attacher-show')).to.equal(true);
   });
 
   it('hides all tooltips and all anchors when all are dismissed', async function() {
     await BuildPage.visitBuild(urlParams);
 
-    expect(BuildPage.demoTooltips.length).to.be.at.least(2);
+    expect(BuildPage.demoTooltips.length).to.equal(5);
 
     await BuildPage.demoTooltips.objectAt(0).clickAnchor();
     await BuildPage.demoTooltips.objectAt(0).clickDismissAll();

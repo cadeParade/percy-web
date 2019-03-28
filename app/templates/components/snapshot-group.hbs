@@ -18,7 +18,8 @@
       </div>
 
       {{demo-tooltip
-        shouldShowTip=(and build.project.isDemo (eq index 0))
+        build=build
+        isFirstInstance=(eq index 0)
         key="seven"
         title="Automatic visual diff matching"
         message="Percy automatically matches and groups snapshots that have the same visual change."
@@ -60,7 +61,8 @@
           </div>
           <div class="btn-group">
             {{demo-tooltip
-              shouldShowTip=(and build.project.isDemo (eq index 0))
+              build=build
+              isFirstInstance=(eq index 0)
               anchorPlacement='left-corner'
               key="eight"
               title="Approving matching changes"

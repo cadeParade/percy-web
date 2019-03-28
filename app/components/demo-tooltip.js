@@ -1,7 +1,6 @@
 import Component from '@ember/component';
-import localStorageProxy from 'percy-web/lib/localstorage';
 import {computed} from '@ember/object';
-import {or, readOnly, not} from '@ember/object/computed';
+import {not, or, readOnly} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
 
 export default Component.extend({
@@ -13,43 +12,65 @@ export default Component.extend({
   title: null,
   message: null,
   anchorPlacement: null,
+  build: null,
+  isFirstInstance: true,
 
-  _hiddenByAction: false,
-
-  _isHidden: or('_hiddenByLocalStorage', '_hiddenByAction'),
+  _isNotDemo: not('build.project.isDemo'),
+  _isNotFirstInstance: not('isFirstInstance'),
   _isAllHidden: readOnly('tooltips.allHidden'),
-  _isNotDemoProject: not('shouldShowTip'),
 
-  shouldHideTooltip: or('_isNotDemoProject', '_isAllHidden', '_isHidden'),
-
-  _hiddenByLocalStorage: computed(function() {
-    return localStorageProxy.get(this.get('tooltipKey'));
-  }),
+  // hide anchor if not demo, not first instance, or all tooltips hidden
+  shouldHideWholeTooltip: or('_isNotDemo', '_isAllHidden', '_isNotFirstInstance'),
 
   tooltipKey: computed(function() {
-    const key = this.get('key');
-    return `percy_tooltip_hidden_${key}`;
+    return `percy_tooltip_hidden_${this.key}`;
   }),
 
+  isLastTooltip: computed('tooltips.currentSequence', function() {
+    // if is the last item in current presentation sequence
+    if (this.tooltips.currentSequence) {
+      return this.tooltips.currentSequence.lastObject === this.key;
+    } else {
+      return false;
+    }
+  }),
+
+  shouldShowTooltip: computed('tooltips.currentTooltipKey', function() {
+    // should be visible if isDemo, tooltips are not hidden, & is currentStep
+    const isCurrentStep = this.tooltips.currentTooltipKey === this.key;
+
+    // this line requires this.get because project object is a proxy here
+    const isDemo = this.get('build.project.isDemo');
+
+    return !this.shouldHideWholeTooltip && isCurrentStep && isDemo;
+  }),
+
+  init() {
+    this._super(...arguments);
+    this.tooltips.setCurrentBuild(this.build);
+  },
+
   actions: {
-    onShow(visible) {
+    onChange(visible) {
       if (visible) {
-        const tooltipInfo = this.get('tooltipKey');
-        this.get('analytics').track('Tooltip Opened', null, {tooltipInfo});
+        this._trackTooltipOpen();
+
+        // set this tooltip as the current step in the flow
+        this.tooltips.resetTooltipFlow(this.key, this.build);
       }
     },
 
-    removeTooltip(popoverHideAction) {
-      popoverHideAction();
-
-      localStorageProxy.set(this.get('tooltipKey'), true);
-
-      this.set('_hiddenByAction', true);
+    hideAllTooltips() {
+      this.tooltips.hideAll();
     },
 
-    hideAllTooltips(popoverHideAction) {
-      popoverHideAction();
-      this.get('tooltips').hideAll();
+    next() {
+      this.tooltips.next();
     },
+  },
+
+  _trackTooltipOpen() {
+    const tooltipInfo = this.tooltipKey;
+    this.get('analytics').track('Tooltip Opened', null, {tooltipInfo});
   },
 });

@@ -11,7 +11,8 @@
       <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--right">
         {{#with comparison.headScreenshot.lossyImage as |lossyImage|}}
         {{demo-tooltip
-          shouldShowTip=(and comparison.headBuild.project.isDemo (eq index 0))
+          build=comparison.headBuild
+          isFirstInstance=(eq index 0)
           anchorPlacement='left-corner'
           key="three"
           title="Visual diff"
