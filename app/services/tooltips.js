@@ -32,6 +32,10 @@ export default Service.extend({
     });
   },
 
+  unhideAll() {
+    localStorageProxy.removeItem(TOOLTIP_MASTER_KEY);
+  },
+
   hideAll() {
     localStorageProxy.set(TOOLTIP_MASTER_KEY, true);
     this.set('allHidden', true);

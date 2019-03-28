@@ -10,6 +10,7 @@ const MILLISECONDS_IN_MIN = 60000;
 
 export default Route.extend(AuthenticatedRouteMixin, {
   redirects: service(),
+  tooltips: service(),
 
   model() {
     const organization = this.modelFor('organizations.organization');
@@ -70,6 +71,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
   async transitionToDemo(demoProject) {
     const organization = this.modelFor('organizations.organization');
 
+    this.get('tooltips').unhideAll();
     const builds = await demoProject.get('builds');
     if (builds.get('length') > 2) {
       const secondBuild = builds.findBy('buildNumber', 2);

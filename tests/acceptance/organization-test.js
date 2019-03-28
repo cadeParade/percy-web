@@ -1,6 +1,7 @@
 import sinon from 'sinon';
 import moment from 'moment';
 import freezeMoment from '../helpers/freeze-moment';
+import localStorageProxy from 'percy-web/lib/localstorage';
 import {percySnapshot} from 'ember-percy';
 import {beforeEach, afterEach} from 'mocha';
 import {visit, click, currentRouteName, fillIn, find, findAll} from '@ember/test-helpers';
@@ -153,6 +154,30 @@ describe('Acceptance: Organization', function() {
         await NewOrganization.clickSubmitNewDemo();
         expect(currentRouteName()).to.equal('organization.project.builds.build.index');
         await percySnapshot(this.test);
+      });
+
+      it('resets demo tooltips when redirecting to the new demo project', async function() {
+        // set the tooltip master key before the redirect
+        localStorageProxy.set('percy_demo_tooltips_hidden', true);
+        // do the redirect
+        server.get('/projects/:organization_slug/:project_slug/builds', function(schema, request) {
+          const demoProject = schema.projects
+            .all()
+            .models.findBy('slug', request.params.project_slug);
+          [1, 2, 3].map(i => {
+            return schema.builds.create({id: i, buildNumber: i, project: demoProject});
+          });
+          return schema.builds.where(build => {
+            return build.projectId === demoProject.id;
+          });
+        });
+        await visit('/organizations/new/');
+        await NewOrganization.organizationName('New organization');
+        await NewOrganization.clickSubmitNewDemo();
+        expect(currentRouteName()).to.equal('organization.project.builds.build.index');
+
+        // test that the master key has been removed from local storage
+        expect(localStorageProxy.get('percy_demo_tooltips_hidden')).to.be.undefined;
       });
     });
 
