@@ -26,7 +26,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
   _badgeMarkdown(project) {
     // Making this string two lines messes up the formatting.
-    return `[![This project is using Percy.io for visual regression testing.](https://percy.io/static/images/percy-badge.png)](${this._badgeLinkURL(project)})`; //eslint-disable-line
+    return `[![This project is using Percy.io for visual regression testing.](https://percy.io/static/images/percy-badge.svg)](${this._badgeLinkURL(project)})`; //eslint-disable-line
   },
 
   _badgeLinkURL(project) {
