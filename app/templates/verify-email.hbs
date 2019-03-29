@@ -10,12 +10,12 @@
         <p class="alt-p text-gray-400">
           Your email address if now verified!
         </p>
-        {{#link-to 'settings.profile' classNames='Button Button--primary test-verify-email-profile-link'}}Continue to Profile{{/link-to}}
+        {{#link-to 'settings.profile' classNames='percy-btn percy-btn-primary test-verify-email-profile-link'}}Continue to Profile{{/link-to}}
       {{else}}
         <p class="alt-p text-gray-400">
           Your account has been created!
         </p>
-        {{#link-to 'login' classNames='Button Button--primary test-verify-email-signin-link'}}Sign In{{/link-to}}
+        {{#link-to 'login' classNames='percy-btn percy-btn-primary test-verify-email-signin-link'}}Sign In{{/link-to}}
       {{/if}}
     {{/status-panel}}
   {{else}}

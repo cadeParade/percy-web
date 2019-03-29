@@ -43,46 +43,6 @@ input[type="button"] {
     border: var(--gray);
   }
 
-  &.Button--primary {
-    color: var(--white);
-    background-color: var(--purple);
-    border: 0;
-
-    &:hover,
-    &:focus {
-      background-color: var(--dark-purple);
-    }
-
-    &:active {
-      background-color: var(--darker-purple);
-    }
-
-    &[disabled] {
-      color: var(--gray);
-      cursor: default;
-      background: none;
-      border: var(--lighter-gray-border);
-    }
-  }
-
-  &.Button--onDark.Button--primary {
-    font-size: 1.6rem;
-    line-height: 4rem;
-    color: var(--white);
-    background-color: var(--purple);
-    border: 0;
-
-    &:hover,
-    &:focus {
-      color: var(--white);
-      background-color: var(--light-purple);
-    }
-
-    &:active {
-      background-color: var(--purple);
-    }
-  }
-
   &.Button--small {
     height: $button-small-height;
     padding: 0 9px;
