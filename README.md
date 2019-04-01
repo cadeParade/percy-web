@@ -1,6 +1,7 @@
 # percy-web
 
-[![Build status](https://badge.buildkite.com/c5a2ecb69c413ef1b2709d9c256edb4a17c1922b23f38bbefe.svg)](https://buildkite.com/percy/test-web)
+[![Build Status](https://badge.buildkite.com/60d960043195dee6461e480205d3724b19c11959d9f8531d09.svg)](https://buildkite.com/percy/percy-web)
+[![Percy.io for visual regression testing.](https://percy.io/static/images/percy-badge.svg)](https://percy.io/percy/percy-web)
 
 [Percy](https://percy.io)'s frontend web application, built with Ember.
 
