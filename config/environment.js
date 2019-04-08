@@ -178,9 +178,7 @@ module.exports = function(environment) {
       allowEmpty: true,
     };
     ENV.launchDarkly.local = true;
-    ENV.launchDarkly.localFeatureFlags = {
-      'allow-snapshot-groups': false,
-    };
+    ENV.launchDarkly.localFeatureFlags = {};
   }
 
   if (environment === 'production') {

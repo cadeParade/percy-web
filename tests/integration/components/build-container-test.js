@@ -314,7 +314,7 @@ describe('Integration: BuildContainer', function() {
     beforeEach(async function() {
       const build = make('build', 'withBaseBuild', 'finished');
       const diffSnapshot = make('snapshot', 'withComparisons', {build});
-      const group = makeList('snapshot', 3, 'withComparisons', {build, gatedFingerprint: 'aaa'});
+      const group = makeList('snapshot', 3, 'withComparisons', {build, fingerprint: 'aaa'});
       const allChangedBrowserSnapshotsSorted = {'firefox-id': [diffSnapshot].concat(group)};
       const stub = sinon.stub();
       this.setProperties({

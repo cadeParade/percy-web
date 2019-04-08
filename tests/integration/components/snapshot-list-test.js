@@ -29,7 +29,7 @@ describe('Integration: SnapshotList', function() {
       const browser = make('browser');
 
       const singleSnapshotsChanged = makeList('snapshot', numSnapshots, 'withComparisons', {build});
-      const group = makeList('snapshot', 2, 'withComparisons', {build, gatedFingerprint: 'aaa'});
+      const group = makeList('snapshot', 2, 'withComparisons', {build, fingerprint: 'aaa'});
 
       this.setProperties({
         snapshotsChanged: singleSnapshotsChanged.concat(group),
@@ -70,15 +70,15 @@ describe('Integration: SnapshotList', function() {
       const snapshotsUnchanged = makeList('snapshot', 3, 'withNoDiffs', {build});
       const approvedGroup1 = makeList('snapshot', 5, 'approved', 'withComparisons', {
         build,
-        gatedFingerprint: 'approvedGroup1',
+        fingerprint: 'approvedGroup1',
       });
       const approvedGroup2 = makeList('snapshot', 2, 'approved', 'withComparisons', {
         build,
-        gatedFingerprint: 'approvedGroup2',
+        fingerprint: 'approvedGroup2',
       });
       const unapprovedGroup = makeList('snapshot', 3, 'withComparisons', {
         build,
-        gatedFingerprint: 'unapprovedGroup',
+        fingerprint: 'unapprovedGroup',
       });
 
       const allSnapshotsChanged = snapshotsChanged.concat(
@@ -231,12 +231,12 @@ describe('Integration: SnapshotList', function() {
 
         const approvedGroup = makeList('snapshot', 5, 'approved', 'withComparisons', {
           build,
-          gatedFingerprint: 'approvedGroup',
+          fingerprint: 'approvedGroup',
         });
 
         const unapprovedGroup = makeList('snapshot', 3, 'withComparisons', {
           build,
-          gatedFingerprint: 'unapprovedGroup',
+          fingerprint: 'unapprovedGroup',
         });
 
         const singleSnapshots = makeList(

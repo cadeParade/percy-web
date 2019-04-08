@@ -11,7 +11,6 @@ import {beforeEach} from 'mocha';
 import {currentRouteName, currentURL, findAll} from '@ember/test-helpers';
 import {percySnapshot} from 'ember-percy';
 import {isVisible as attacherIsVisible} from 'ember-attacher';
-import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Acceptance: Build', function() {
   freezeMoment('2018-05-22');
@@ -88,7 +87,6 @@ describe('Acceptance: Build', function() {
 
   describe('snapshot order/caching', function() {
     beforeEach(function() {
-      withVariation(this.owner, 'allow-snapshot-groups', true);
       server.createList('snapshot', 5, 'withComparison', 'userApproved', {
         build,
         fingerprint: 'approvedGroup',
@@ -227,7 +225,6 @@ describe('Acceptance: Build', function() {
   describe('interacting with a snapshot group', function() {
     let unapprovedSnapshots;
     beforeEach(async function() {
-      withVariation(this.owner, 'allow-snapshot-groups', true);
       unapprovedSnapshots = server.createList(
         'snapshot',
         3,
