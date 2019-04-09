@@ -10,7 +10,7 @@ import utils from 'percy-web/lib/utils';
 describe('VerifyEmailRoute', function() {
   let subject;
   let ajaxStub;
-  const fakeCode = 'codezzz';
+  const fakeCode = 'codezzz0123';
 
   setupTest('route:verify-email', {
     needs: ['service:session', 'service:headTags'],
@@ -35,6 +35,19 @@ describe('VerifyEmailRoute', function() {
       };
 
       const modelPromise = subject.model({code: fakeCode});
+      return modelPromise.then(() => {
+        expect(ajaxStub).to.have.been.calledWith(expectedArgs);
+      });
+    });
+
+    it('sanitizes the code to only include word characters to prevent CSRFs', function() {
+      ajaxStub.returns(resolve());
+      const expectedArgs = {
+        type: 'PATCH',
+        url: utils.buildApiUrl('emailVerifications', fakeCode),
+      };
+
+      const modelPromise = subject.model({code: fakeCode + '/../../'});
       return modelPromise.then(() => {
         expect(ajaxStub).to.have.been.calledWith(expectedArgs);
       });
