@@ -1,0 +1,28 @@
+<section class="px-2 mb-9">
+  <div class="bg-white rounded shadow-1 mb-2">
+    <div class="p-2">
+      <div class="flex items-center mb-2">
+        {{inline-svg "slack-icon" class="mr-2"}}
+        <h2 class="text-xl font-semibold m-0">Slack notifications for {{channelName}}</h2>
+      </div>
+      <div class="mb-2">
+        <p class='label-body'>Configure what Percy sends to {{channelName}} in your {{teamName}} Slack team.</p>
+        {{#each slackIntegrationConfigs as |slackIntegrationConfig|}}
+          {{organizations/integrations/slack-config-item
+            slackIntegrationConfig=slackIntegrationConfig
+            projectOptions=projectOptions
+            deleteSlackIntegrationConfig=deleteSlackIntegrationConfig
+          }}
+        {{/each}}
+
+        {{#percy-btn handleClick=(action "createNewIntegrationConfig")}}
+          Add a Percy project
+        {{/percy-btn}}
+
+        {{#percy-btn handleClick=(action "deleteSlackIntegration")}}
+          Delete {{channelName}}
+        {{/percy-btn}}
+      </div>
+    </div>
+  </div>
+</section>

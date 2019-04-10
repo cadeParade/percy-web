@@ -1,0 +1,24 @@
+<div class="bg-white rounded shadow-1 mb-2">
+  {{#if isNew}}
+    <div class="rounded bg-yellow-000 border border-yellow-100 p-2">
+      Configure what Percy sends to Slack
+    </div>
+    {{forms/slack-integration-config
+      projectOptions=projectOptions
+      slackIntegrationConfig=slackIntegrationConfig
+    }}
+  {{else}}
+    <!-- This will be the slack-integration-config-card component-->
+    <div class='flex justify-between m-2'>
+      <div class='flex justify-start'>
+        <div>
+          <p>Project: {{projectName}}</p>
+          <p>Notification Types: {{slackIntegrationConfig.notificationTypes}}</p>
+        </div>
+      </div>
+      {{#percy-btn handleClick=(action "deleteSlackIntegrationConfig")}}
+        {{fa-icon 'times'}}
+      {{/percy-btn}}
+    </div>
+  {{/if}}
+</div>

@@ -1,0 +1,46 @@
+<div data-test-usage-notification-setting-form>
+  <form action="javascript:;" class="Form mb-0">
+    <div class="p-2 bg-gray-000 rounded border mb-2">
+      <div class='flex justify-start'>
+        <span class='bg-white'>
+          {{#power-select
+            options=projectOptions
+            selected=selectedProject
+            onchange=(action 'selectProject')
+            label='Project'
+            placeholder='Select a project'
+            searchPlaceholder='Type to filter project'
+            searchField='name'
+            noMatchesMessage='No project found'
+            as |project|
+          }}
+            {{project.name}}
+          {{/power-select}}
+        </span>
+      </div>
+
+    {{form-fields/checkbox-set
+      property="notificationTypes"
+      changeset=changeset
+      title='Notifications'
+      allValues=slackNotificationOptions
+    }}
+
+    {{#if errorMessage}}
+      <div class="Form-errors">
+        {{errorMessage}}
+      </div>
+    {{/if}}
+
+    <div class="flex justify-end">
+      {{form-fields/submit
+        value="Save"
+        classes="percy-btn percy-btn-primary mb-0"
+        isSaving=isSaving
+        isSaveSuccessful=isSaveSuccessful
+        submit=(action "customSave")
+      }}
+    </div>
+  </div>
+ </form>
+</div>

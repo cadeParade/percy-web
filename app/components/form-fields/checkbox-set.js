@@ -5,6 +5,7 @@ export default Component.extend({
   changeset: null,
   title: null,
   property: null,
+  validateProperty: () => {}, // make this an optional property
 
   // key-value map of the attribute name => description.
   // This might have to change to an array of {title, value, description} later.

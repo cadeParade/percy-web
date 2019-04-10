@@ -1,7 +1,19 @@
 import {computed} from '@ember/object';
-import {alias, bool, equal, filterBy, gt, mapBy, readOnly, uniq} from '@ember/object/computed';
+import {
+  alias,
+  bool,
+  not,
+  or,
+  equal,
+  filterBy,
+  gt,
+  mapBy,
+  readOnly,
+  uniq,
+} from '@ember/object/computed';
 import DS from 'ember-data';
 import {INTEGRATION_TYPES} from 'percy-web/lib/integration-types';
+import {inject as service} from '@ember/service';
 
 const DISPLAY_NAMES = {
   github: 'GitHub',
@@ -11,10 +23,13 @@ const DISPLAY_NAMES = {
 };
 
 export default DS.Model.extend({
+  launchDarkly: service(),
+
   name: DS.attr(),
   slug: DS.attr(),
   isSyncing: DS.attr(),
   lastSyncedAt: DS.attr(),
+  slackIntegrations: DS.hasMany('slackIntegrations', {async: false}),
   versionControlIntegrations: DS.hasMany('version-control-integrations', {
     async: false,
   }),
@@ -68,11 +83,19 @@ export default DS.Model.extend({
   isGitlabIntegrated: bool('gitlabIntegration'),
   isGitlabSelfHostedIntegrated: bool('gitlabSelfHostedIntegration'),
   isVersionControlIntegrated: bool('versionControlIntegrations.length'),
-
+  isIntegrated: or('isVersionControlIntegrated', 'isSlackIntegrated'),
+  isSlackIntegrated: gt('slackIntegrations.length', 0),
+  isNotSlackIntegrated: not('isSlackIntegrated'),
+  isSlackAllowed: computed(function() {
+    return this.get('launchDarkly').variation('slack-integration');
+  }),
   availableIntegrations: computed('versionControlIntegrations.[]', function() {
     let integrations = [];
     for (const key of Object.keys(INTEGRATION_TYPES)) {
       let item = INTEGRATION_TYPES[key];
+      if (key == 'slack') {
+        continue;
+      }
       if (this.get(`${item.organizationIntegrationStatus}`) != true) {
         integrations.push(key);
       }

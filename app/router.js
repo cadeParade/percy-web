@@ -96,6 +96,10 @@ Router.map(function() {
         this.route('github');
         this.route('gitlab');
         this.route('gitlab-self-hosted');
+        this.route('slack');
+      });
+      this.route('setup', {path: '/setup'}, function() {
+        this.route('slack-integration');
       });
     });
   });

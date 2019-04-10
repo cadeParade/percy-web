@@ -109,6 +109,20 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
       return utils.buildApiUrl('userOrganizations');
     }
 
+    // /api/v1/organizations/%@/slack-integrations
+    if (requestType === 'createRecord' && modelName === 'slack-integration') {
+      return utils.buildApiUrl('slackIntegrations', snapshot.record.get('organization.slug'));
+    }
+    // /api/v1/slack-integrations/%@/slack-integration-configs
+    if (requestType === 'createRecord' && modelName === 'slack-integration-config') {
+      let integrationId = snapshot.record.get('slackIntegration.id');
+      return utils.buildApiUrl('slackIntegrationConfigs', integrationId);
+    }
+    // /api/v1/slack-integrations/%@/slack-integration-configs/%@
+    if (requestType === 'deleteRecord' && modelName === 'slack-integration-config' && id) {
+      let integrationId = snapshot.record.get('slackIntegration.id');
+      return utils.buildApiUrl('slackIntegrationConfig', integrationId, id);
+    }
     // Customize buildURL for models where we want to use the slug as the ID in the API URL, but
     // keep the internal ID stable. TODO: remove this when Ember Data fully supports JSON-API
     // self links.

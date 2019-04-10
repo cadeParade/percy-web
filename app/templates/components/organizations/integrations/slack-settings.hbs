@@ -1,0 +1,35 @@
+<div>
+  <section data-test-integration-header class="px-2 pt-3">
+    <div class="w-3/4 pb-3">
+      <h1 class="text-xl font-semibold mb-sm">Set up Slack</h1>
+      <p class="text-gray-400">
+        The Percy Slack integration helps you keep your team updated about visual changes in your app!
+      </p>
+    </div>
+  </section>
+
+  {{#if organization.isSlackIntegrated}}
+    {{#each organization.slackIntegrations as |slackIntegration|}}
+      {{organizations/integrations/slack-integration-item
+        slackIntegration=slackIntegration
+        deleteSlackIntegration=deleteSlackIntegration
+        createNewIntegrationConfig=createNewIntegrationConfig
+        deleteSlackIntegrationConfig=deleteSlackIntegrationConfig}}
+    {{/each}}
+  {{/if}}
+
+  <div class="flex justify-around px-2 pb-2">
+    <p>
+      {{#percy-btn handleClick=(action "connectSlackChannel") isPrimaryButton=true}}
+        Connect another Slack channel
+      {{/percy-btn}}
+    </p>
+    {{#link-to
+      'organizations.organization.integrations'
+      organization.slug
+      class="percy-btn"
+    }}
+      Back
+    {{/link-to}}
+  </div>
+</div>

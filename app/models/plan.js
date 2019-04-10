@@ -3,7 +3,7 @@ import {equal} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
 import DS from 'ember-data';
 
-export const SPONSORED_TYPE = 'sponsored';
+const SPONSORED_TYPE = 'sponsored';
 
 export default DS.Model.extend({
   subscriptionData: service(),

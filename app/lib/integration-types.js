@@ -3,6 +3,7 @@ export const GITHUB_ENTERPRISE_INTEGRATION_TYPE = 'github_enterprise';
 export const GITHUB_INTEGRATION_TYPE = 'github';
 export const GITLAB_INTEGRATION_TYPE = 'gitlab';
 export const GITLAB_SELF_HOSTED_INTEGRATION_TYPE = 'gitlab_self_hosted';
+const SLACK_INTEGRATION_TYPE = 'slack';
 
 export const INTEGRATION_TYPES = {
   [GITHUB_INTEGRATION_TYPE]: {
@@ -43,5 +44,15 @@ export const INTEGRATION_TYPES = {
     organizationIntegrationStatus: 'isGitlabSelfHostedIntegrated',
     organizationModelAttribute: 'gitlabSelfHostedIntegration',
     settingsRouteSlug: 'gitlab-self-hosted',
+  },
+  [SLACK_INTEGRATION_TYPE]: {
+    textName: 'Slack',
+    isBeta: false,
+    isGeneralAvailability: true,
+    betaLink: 'https://docs.percy.io/docs/slack', // does not exist
+    iconName: 'slack-icon',
+    organizationIntegrationStatus: 'isSlackIntegrated',
+    organizationModelAttribute: 'isSlackIntegrated',
+    settingsRouteSlug: 'slack',
   },
 };

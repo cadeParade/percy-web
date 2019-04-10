@@ -41,10 +41,14 @@ module.exports = function(environment) {
         projectsCollection: '/api/v1/organizations/%@/projects',
         projectBuilds: '/api/v1/projects/%@/builds',
         organizationUsers: '/api/v1/organizations/%@/organization-users',
-        organizationVersionControlIntegrations:
-          '/api/v1/organizations/%@/version-control-integrations',
         organizationUsageNotificationSettings:
           '/api/v1/organizations/%@/usage-notification-settings',
+        organizationVersionControlIntegrations:
+          '/api/v1/organizations/%@/version-control-integrations',
+        slackIntegrations: '/api/v1/organizations/%@/slack-integrations',
+        slackIntegrationConfig: '/api/v1/slack-integrations/%@/slack-integration-configs/%@',
+        slackIntegrationConfigs: '/api/v1/slack-integrations/%@/slack-integration-configs',
+        slackIntegrationRequests: '/api/v1/organizations/%@/slack-integration-requests',
         subscription: '/api/v1/organizations/%@/subscription',
         invites: '/api/v1/organizations/%@/invites',
         user: '/api/v1/user',
@@ -178,7 +182,9 @@ module.exports = function(environment) {
       allowEmpty: true,
     };
     ENV.launchDarkly.local = true;
-    ENV.launchDarkly.localFeatureFlags = {};
+    ENV.launchDarkly.localFeatureFlags = {
+      'slack-integration': false,
+    };
   }
 
   if (environment === 'production') {
