@@ -217,7 +217,7 @@ describe('Acceptance: GitLab Integration Settings', function() {
         expect(currentRouteName()).to.equal('organizations.organization.integrations.index');
         expect(
           IntegrationsIndexPage.gitlabSelfHostedIntegration.hasInstallButton,
-          'Install button is mising',
+          'Install button is missing',
         ).to.equal(true);
 
         await percySnapshot(this.test.fullTitle());

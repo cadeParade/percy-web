@@ -14,7 +14,7 @@ export const IntegrationItem = {
 
   contactButtonLink: attribute('href', SELECTORS.CONTACT_BUTTON),
 
-  hasInstallButton: isPresent(SELECTORS.INSTALL_BUTTON),
+  installButton: {scope: SELECTORS.INSTALL_BUTTON},
   hasDisabledBadge: isPresent(SELECTORS.DISABLED_BADGE),
   hasEditButton: isPresent(SELECTORS.EDIT_BUTTON),
   hasContactButton: isPresent(SELECTORS.CONTACT_BUTTON),

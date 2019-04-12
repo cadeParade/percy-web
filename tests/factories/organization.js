@@ -89,6 +89,9 @@ FactoryGuy.define('organization', {
         return makeList('version-control-integration', ['newGitlabSelfHosted']);
       },
     },
+    withSlackIntegration: {
+      slackIntegrations: FactoryGuy.hasMany('slack-integration', 1),
+    },
     withMultipleIntegrations: {
       versionControlIntegrations: () => {
         return makeList(

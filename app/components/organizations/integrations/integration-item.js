@@ -60,8 +60,13 @@ export default Component.extend({
     return `organizations.organization.integrations.${this.get('routeSlug')}`;
   }),
 
-  buttonText: computed('isInstalled', function() {
-    return this.get('isInstalled') ? 'Edit Settings' : 'Install';
+  installButtonText: lookup('integrationName', INTEGRATIONS_LOOKUP, 'installButtonText'),
+  buttonText: computed('isInstalled', 'installButtonText', function() {
+    if (this.get('isInstalled')) {
+      return 'Edit Settings';
+    } else {
+      return this.get('installButtonText') || 'Install';
+    }
   }),
 
   buttonClasses: computed('isInstalled', function() {

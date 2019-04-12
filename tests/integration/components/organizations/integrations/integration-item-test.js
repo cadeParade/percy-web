@@ -4,11 +4,11 @@ import {setupRenderingTest} from 'ember-mocha';
 import {make} from 'ember-data-factory-guy';
 import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
-import IntegrationItem from 'percy-web/tests/pages/components/integration-item';
-import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import AdminMode from 'percy-web/lib/admin-mode';
-import mockIntercomService from 'percy-web/tests/helpers/mock-intercom-service';
 import sinon from 'sinon';
+import AdminMode from 'percy-web/lib/admin-mode';
+import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import IntegrationItem from 'percy-web/tests/pages/components/integration-item';
+import mockIntercomService from 'percy-web/tests/helpers/mock-intercom-service';
 
 describe('Integration | Component | organizations/integrations/integration-item', function() {
   setupRenderingTest('organizations/integrations/integration-item', {
@@ -32,7 +32,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
         integrationName="github"
         organization=organization}}`);
 
-      expect(IntegrationItem.hasInstallButton).to.equal(true);
+      expect(IntegrationItem.installButton.isVisible).to.equal(true);
       await percySnapshot(this.test);
     });
 
@@ -50,7 +50,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
         integrationName="gitlab"
         organization=organization}}`);
 
-      expect(IntegrationItem.hasInstallButton).to.equal(true);
+      expect(IntegrationItem.installButton.isVisible).to.equal(true);
       await percySnapshot(this.test);
     });
 
@@ -59,7 +59,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
         integrationName="gitlab_self_hosted"
         organization=organization}}`);
 
-      expect(IntegrationItem.hasInstallButton, 'Install button is mising').to.equal(true);
+      expect(IntegrationItem.installButton.isVisible, 'Install button is missing').to.equal(true);
 
       await percySnapshot(this.test);
     });
@@ -88,6 +88,15 @@ describe('Integration | Component | organizations/integrations/integration-item'
         organization=organization}}`);
 
       expect(IntegrationItem.hasBetaBadge).to.equal(false);
+    });
+
+    it('shows the Connect to Slack button', async function() {
+      await this.render(hbs`{{organizations/integrations/integration-item
+          integrationName="slack"
+          organization=organization}}`);
+
+      expect(IntegrationItem.installButton.text).to.equal('Connect to Slack');
+      await percySnapshot(this.test);
     });
   });
 
@@ -137,6 +146,22 @@ describe('Integration | Component | organizations/integrations/integration-item'
 
       await this.render(hbs`{{organizations/integrations/integration-item
         integrationName="gitlab"
+        organization=organization}}`);
+    });
+
+    it('shows the edit settings button', async function() {
+      expect(IntegrationItem.hasEditButton).to.equal(true);
+      await percySnapshot(this.test);
+    });
+  });
+
+  describe('as an installed Slack integration item', function() {
+    beforeEach(async function() {
+      const organization = make('organization', 'withSlackIntegration');
+      this.set('organization', organization);
+
+      await this.render(hbs`{{organizations/integrations/integration-item
+        integrationName="slack"
         organization=organization}}`);
     });
 
