@@ -31,15 +31,11 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
   _badgeLinkURL(project) {
     const origin = window.location.origin;
-    if (project.publiclyReadable) {
-      return `${origin}${this.get('router').urlFor(
-        'organization.project',
-        project.get('organization'),
-        project,
-      )}`;
-    } else {
-      return origin;
-    }
+    return `${origin}${this.get('router').urlFor(
+      'organization.project',
+      project.get('organization'),
+      project,
+    )}`;
   },
 
   actions: {
