@@ -875,9 +875,9 @@
     tslib "^1"
 
 "@oclif/command@^1", "@oclif/command@^1.5.3", "@oclif/command@^1.5.8":
-  version "1.5.12"
-  resolved "https://registry.yarnpkg.com/@oclif/command/-/command-1.5.12.tgz#d4b5033c4e9d9f37e06857cf84cf0c8927e368b5"
-  integrity sha512-D5/Kph9smL92X1z9WPmxFd9zDruFsCk4/LbfCaBmiO2Vyyt7Y9O6kI1YLsC3B0KC9wymSCTH14IK96rf9AFHfQ==
+  version "1.5.13"
+  resolved "https://registry.yarnpkg.com/@oclif/command/-/command-1.5.13.tgz#7047f3e5c3abb8a08fb88ba3bf00ea96ea9a1d77"
+  integrity sha512-zkO8hRd5Sjl7a+GM9ZMNHLD8rneAPjFBFjkAwLPs/hEv72RnFeWSyW6eE1nDbKVzMyDUYmmWNQFp0lQuwhHCdA==
   dependencies:
     "@oclif/errors" "^1.2.2"
     "@oclif/parser" "^3.7.3"
@@ -11614,9 +11614,9 @@ pend@~1.2.0:
   integrity sha1-elfrVQpng/kRUzH89GY9XI4AelA=
 
 percy-client@^3.0.3:
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/percy-client/-/percy-client-3.0.7.tgz#99604e1aa6ec5b4b4fc92f7c0de06d5e6bd850b0"
-  integrity sha512-+AIx6SbREZrqtC+32KQutndkNVIJGllEIlTBSH+owWUvGr8uBH8vDGykobr7Teb4vYUcDcMSrrzNS0rw/NowNQ==
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/percy-client/-/percy-client-3.0.8.tgz#6c9bb6b2352397ce6816953a8e0d928c3e1db024"
+  integrity sha512-PQKIEwiL40E5UqXq4wEcD/86eLgC0gvJKvUvssV8ah7t3uc7XfdUc+ppC1j2HUJ0n1IFx4Ssm9jdCkQVzNGZTg==
   dependencies:
     base64-js "^1.2.3"
     bluebird "^3.5.1"
