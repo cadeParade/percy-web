@@ -1,0 +1,12 @@
+/* Global disabled state for elements.
+  - Remember to put the disabled state on <label> wrappers for input fields
+    since they are the click focus triggers
+  - Remember to add tabindex="-1" to the disabled input itslef to prevent
+    the user from being able to tab to focus the disabled input
+*/
+
+.disabled,
+[disabled] {
+  @apply pointer-events-none;
+  @apply opacity-50;
+}
