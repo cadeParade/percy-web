@@ -12,6 +12,11 @@ FactoryGuy.define('project', {
     withGithubRepo: {repo: FactoryGuy.belongsTo('repo', 'github')},
     withGitlabRepo: {repo: FactoryGuy.belongsTo('repo', 'gitlab')},
     withGithubEnterpriseRepo: {repo: FactoryGuy.belongsTo('repo', 'githubEnterprise')},
+    demo: {
+      isDemo: true,
+      name: () => 'demo-' + faker.commerce.productName(),
+      slug: f => faker.helpers.slugify(f.name),
+    },
     public: {publiclyReadable: true},
   },
 });

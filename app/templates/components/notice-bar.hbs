@@ -1,40 +1,50 @@
-{{#if (await isUserMember)}}
-  {{#if organization.subscription.isFree}}
-    <div data-test-notice-bar class="flex items-center hide-on-laptop">
-      {{#if (eq organization.subscription.hasIncludedSnapshotsRemaining true)}}
-        <div data-test-message class="px-2 py-sm rounded-l border border-gray-100 text-gray-700 font-normal">
-          You have used <strong data-test-percentage>{{organization.subscription.currentUsagePercentage}}%</strong> of your free snapshots this month.
-        </div>
-        <div class="px-2 py-sm rounded-r bg-gray-100 border border-gray-100 font-semibold">
-          {{#link-to data-test-link "organizations.organization.billing" organization.slug class="hover:underline"}}
-            More Info
-          {{/link-to}}
-        </div>
+{{#if showNoticeBar}}
+  {{#notice-bar-container organization=organization as |bar|}}
+
+    {{#if shouldShowNewProjectPrompt}}
+      {{#bar.body}}Get started with your own project.{{/bar.body}}
+      {{#bar.button
+        linkRoute="organizations.organization.projects.new"}}Create project
+      {{/bar.button}}
+
+    {{else if isSubscriptionFree}}
+
+      {{#if hasRemainingSnapshots}}
+        {{#bar.body classes="notice-bar-black-on-white"}}
+          You have used <strong data-test-percentage>{{currentUsagePercentage}}%</strong> of your free snapshots this month.
+        {{/bar.body}}
+        {{#bar.button
+          buttonClasses="notice-bar-button-gray border border-gray-100"
+          linkClasses="text-blue-500"
+        }}
+          More Info
+        {{/bar.button}}
       {{else}}
-        <div data-test-message class="px-2 py-sm rounded-l border border-purple-600 text-purple-600">
+
+        {{#bar.body}}
           You have used <span data-test-percentage>all</span> of your free snapshots this month.
-        </div>
-        <div class="px-2 py-sm rounded-r bg-purple-600 border border-purple-600 font-semibold">
-          {{#link-to data-test-link "organizations.organization.billing" organization.slug class="hover:underline link-white"}}
-            Upgrade Plan
-          {{/link-to}}
-        </div>
+        {{/bar.body}}
+        {{#bar.button}}
+          Upgrade Plan
+        {{/bar.button}}
       {{/if}}
-    </div>
-  {{else if organization.subscription.isTrial}}
-    <div data-test-notice-bar class="flex items-center hide-on-laptop font-normal">
-      <div data-test-message class="px-2 py-sm rounded-l bg-gray-100 text-gray-700 {{if organization.subscription.plan.isFree 'bg-red-500'}}" style="margin-right: 1px;">
-        {{#if (eq organization.subscription.trialDaysRemaining 0)}}
-          <strong>Your trial ends today!</strong>
+
+    {{else if isSubscriptionTrial}}
+
+      {{#bar.body classes="notice-bar-black-on-gray"}}
+        {{#if isTrialEndingToday}}
+          Your trial ends today!
         {{else}}
-          You have <strong>{{pluralize organization.subscription.trialDaysRemaining "day"}}</strong> left in your trial.
+          You have <strong>{{pluralize trialDaysRemaining "day"}}</strong> left in your trial.
         {{/if}}
-      </div>
-      <div class="px-2 py-sm rounded-r bg-gray-100 font-semibold hover:underline {{if organization.subscription.plan.isFree 'text-white bg-red-500 hover:text-white'}} {{type}}">
-        {{#link-to data-test-link "organizations.organization.billing" organization.slug}}
-          See plans
-        {{/link-to}}
-      </div>
-    </div>
-  {{/if}}
+      {{/bar.body}}
+      {{#bar.button
+        buttonClasses="notice-bar-button-gray"
+        linkClasses="text-blue-500"
+      }}
+        See plans
+      {{/bar.button}}
+
+    {{/if}}
+  {{/notice-bar-container}}
 {{/if}}

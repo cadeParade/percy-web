@@ -13,10 +13,34 @@ describe('Integration: Notice Bar', function() {
 
   let organization;
 
+  beforeEach(function() {
+    setupFactoryGuy(this);
+    NoticeBar.setContext(this);
+  });
+
+  describe('New project prompt bar', function() {
+    beforeEach(async function() {
+      organization = make('organization');
+      organization.set('_filteredOrganizationUsers', [make('user')]);
+      this.setProperties({
+        organization,
+      });
+    });
+
+    it('shows new project prompt', async function() {
+      await this.render(hbs`{{notice-bar
+        organization=organization
+        shouldShowNewProjectPrompt=true
+      }}`);
+
+      expect(NoticeBar.message.text).to.equal('Get started with your own project.');
+      expect(NoticeBar.buttonLink.text).to.equal('Create project');
+      await percySnapshot(this.test);
+    });
+  });
+
   describe('Free Usage Bar', function() {
     beforeEach(function() {
-      setupFactoryGuy(this);
-      NoticeBar.setContext(this);
       organization = make('organization', 'withFreePlan');
       organization.set('_filteredOrganizationUsers', [make('user')]);
       this.setProperties({
@@ -32,7 +56,7 @@ describe('Integration: Notice Bar', function() {
       it('shows 1% and "More Info" link', async function() {
         await this.render(hbs`{{notice-bar organization=organization}}`);
         expect(NoticeBar.percentage.text).to.equal('1%');
-        expect(NoticeBar.billingLink.text).to.equal('More Info');
+        expect(NoticeBar.buttonLink.text).to.equal('More Info');
 
         await percySnapshot(this.test);
       });
@@ -47,7 +71,7 @@ describe('Integration: Notice Bar', function() {
         await this.render(hbs`{{notice-bar organization=organization}}`);
 
         expect(NoticeBar.percentage.text).to.equal('99%');
-        expect(NoticeBar.billingLink.text).to.equal('More Info');
+        expect(NoticeBar.buttonLink.text).to.equal('More Info');
 
         await percySnapshot(this.test);
       });
@@ -62,7 +86,7 @@ describe('Integration: Notice Bar', function() {
         await this.render(hbs`{{notice-bar organization=organization}}`);
 
         expect(NoticeBar.percentage.text).to.equal('all');
-        expect(NoticeBar.billingLink.text).to.equal('Upgrade Plan');
+        expect(NoticeBar.buttonLink.text).to.equal('Upgrade Plan');
 
         await percySnapshot(this.test);
       });
@@ -71,8 +95,6 @@ describe('Integration: Notice Bar', function() {
 
   describe('Trial Bar', function() {
     beforeEach(function() {
-      setupFactoryGuy(this);
-      NoticeBar.setContext(this);
       organization = make('organization', 'withTrialPlan');
       organization.set('_filteredOrganizationUsers', [make('user')]);
       this.setProperties({
@@ -85,7 +107,7 @@ describe('Integration: Notice Bar', function() {
         await this.render(hbs`{{notice-bar organization=organization}}`);
 
         expect(NoticeBar.message.text).to.equal('Your trial ends today!');
-        expect(NoticeBar.billingLink.text).to.equal('See plans');
+        expect(NoticeBar.buttonLink.text).to.equal('See plans');
 
         await percySnapshot(this.test);
       });
@@ -98,7 +120,7 @@ describe('Integration: Notice Bar', function() {
         await this.render(hbs`{{notice-bar organization=organization}}`);
 
         expect(NoticeBar.message.text).to.equal('You have 2 days left in your trial.');
-        expect(NoticeBar.billingLink.text).to.equal('See plans');
+        expect(NoticeBar.buttonLink.text).to.equal('See plans');
 
         await percySnapshot(this.test);
       });

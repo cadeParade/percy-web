@@ -32,7 +32,7 @@
       {{/if}}
     </div>
 
-    {{notice-bar organization=currentOrganization}}
+    {{notice-bar organization=currentOrganization shouldShowNewProjectPrompt=project.isDemo}}
 
     {{#if session.isAuthenticated}}
       {{nav-menu user=session.currentUser currentOrganization=currentOrganization isTransparentHeader=isTransparentHeader}}

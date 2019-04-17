@@ -11,7 +11,7 @@ export const NoticeBar = {
   scope: SELECTORS.CONTAINER,
   message: {scope: SELECTORS.MESSAGE, isVisible: isVisible()},
   percentage: {scope: SELECTORS.PERCENTAGE, isVisible: isVisible()},
-  billingLink: {scope: SELECTORS.LINK, isVisible: isVisible()},
+  buttonLink: {scope: SELECTORS.LINK, isVisible: isVisible()},
 };
 
 export default create(NoticeBar);

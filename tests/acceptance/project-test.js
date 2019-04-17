@@ -486,23 +486,4 @@ describe('Acceptance: Project', function() {
       expect(ProjectPage.builds.length).to.equal(2);
     });
   });
-
-  describe('demo project', function() {
-    let urlParams;
-    setupSession(function(server) {
-      const organization = server.create('organization', 'withUser');
-      const demoProject = server.create('project', 'demo', {organization});
-      urlParams = {
-        orgSlug: organization.slug,
-        projectSlug: demoProject.slug,
-      };
-    });
-
-    it('links user to create project page', async function() {
-      await ProjectPage.visitProject(urlParams);
-      expect(ProjectPage.isStartNewProjectButtonVisible).to.equal(true);
-      await ProjectPage.clickStartNewProject();
-      expect(currentRouteName()).to.equal('organizations.organization.projects.new');
-    });
-  });
 });

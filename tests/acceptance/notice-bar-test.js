@@ -9,13 +9,15 @@ import {percySnapshot} from 'ember-percy';
 
 describe('Acceptance: Notice Bar', function() {
   freezeMoment('2018-05-22');
-  async function checkNoticeBar(context) {
+  async function checkNoticeBar(
+    context,
+    {expectedRoute = 'organizations.organization.billing'} = {},
+  ) {
     expect(NoticeBar.message.isVisible).to.equal(true);
-    expect(NoticeBar.billingLink.isVisible).to.equal(true);
-
+    expect(NoticeBar.buttonLink.isVisible).to.equal(true);
     await percySnapshot(context.test);
-    await NoticeBar.billingLink.click();
-    expect(currentRouteName()).to.equal('organizations.organization.billing');
+    await NoticeBar.buttonLink.click();
+    expect(currentRouteName()).to.equal(expectedRoute);
   }
 
   async function checkNoticeBarAbsentOnProject(context, organization) {
@@ -31,6 +33,69 @@ describe('Acceptance: Notice Bar', function() {
 
     await percySnapshot(context.test);
   }
+
+  describe('New project bar', function() {
+    describe('as an authenticated user', function() {
+      setupAcceptance();
+      let urlParams;
+      let organization;
+      let project;
+
+      setupSession(function(server) {
+        organization = server.create('organization', 'withUser', 'withFreePlan');
+        project = server.create('project', 'demo', {organization});
+        let build = server.create('build', {project});
+        urlParams = {
+          orgSlug: organization.slug,
+          projectSlug: project.slug,
+          buildId: build.id,
+        };
+      });
+
+      it('appears on demo project page', async function() {
+        await ProjectPage.visitProject({orgSlug: organization.slug, projectSlug: project.slug});
+        await checkNoticeBar(this, {expectedRoute: 'organizations.organization.projects.new'});
+      });
+
+      it('appears on build page', async function() {
+        await BuildPage.visitBuild(urlParams);
+        await checkNoticeBar(this, {expectedRoute: 'organizations.organization.projects.new'});
+      });
+    });
+
+    describe('as a guest in a public demo', function() {
+      setupAcceptance({authenticate: false});
+      let organization;
+      let project;
+      let build;
+
+      setupSession(function(server) {
+        stubLockModal(this.owner);
+        this.loginUser = false;
+
+        organization = server.create('organization', 'withFreePlan');
+        project = server.create('project', 'demo', 'publiclyReadable', {organization});
+        build = server.create('build', {project});
+      });
+
+      it('does not appear on demo project page', async function() {
+        await ProjectPage.visitProject({
+          orgSlug: organization.slug,
+          projectSlug: project.slug,
+        });
+        expect(NoticeBar.message.isVisible).to.equal(false);
+      });
+
+      it('does not appear on demo build page', async function() {
+        await BuildPage.visitBuild({
+          orgSlug: organization.slug,
+          projectSlug: project.slug,
+          buildId: build.id,
+        });
+        expect(NoticeBar.message.isVisible).to.equal(false);
+      });
+    });
+  });
 
   describe('Free Usage Bar', function() {
     describe('as an authenticated user', function() {

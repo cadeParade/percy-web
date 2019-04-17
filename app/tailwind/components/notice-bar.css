@@ -1,0 +1,16 @@
+.notice-bar-black-on-white {
+  @apply border border-gray-100 text-gray-700 font-normal;
+}
+
+.notice-bar-black-on-gray {
+  @apply bg-gray-100 text-gray-700 font-normal;
+  border-right: 1px solid white;
+}
+
+.notice-bar-button-gray {
+  @apply bg-gray-100;
+}
+
+.notice-bar-button-purple {
+  @apply bg-purple-600 border border-purple-600;
+}
