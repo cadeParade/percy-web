@@ -1,5 +1,5 @@
 import {ProjectContainer} from 'percy-web/tests/pages/components/project-container';
-import {visitable, clickable, create, isVisible, collection} from 'ember-cli-page-object';
+import {visitable, create, isVisible, collection} from 'ember-cli-page-object';
 import {alias} from 'ember-cli-page-object/macros';
 import {getter} from 'ember-cli-page-object/macros';
 import {FixedTopHeader} from 'percy-web/tests/pages/components/fixed-top-header';
@@ -11,7 +11,6 @@ const SELECTORS = {
   FRAMEWORK_DOCS_BUTTON: '[data-test-framework-docs-button]',
   GENERIC_DOCS_BUTTON: '[data-test-generic-docs-button]',
   SDK_REQUEST_FIELD: '[data-test-sdk-request-field]',
-  START_NEW_PROJECT_BUTTON: '[data-test-start-new-project] [data-test-percy-btn]',
   PUBLIC_PROJECT_ICON: '[data-test-public-project-icon]',
 };
 
@@ -48,9 +47,6 @@ const ProjectPage = {
   isFrameworkDocsButtonVisible: isVisible(SELECTORS.FRAMEWORK_DOCS_BUTTON),
 
   isSdkRequestFieldVisible: isVisible(SELECTORS.SDK_REQUEST_FIELD),
-
-  isStartNewProjectButtonVisible: isVisible(SELECTORS.START_NEW_PROJECT_BUTTON),
-  clickStartNewProject: clickable(SELECTORS.START_NEW_PROJECT_BUTTON),
 };
 
 export default create(ProjectPage);

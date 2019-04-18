@@ -486,4 +486,59 @@ describe('Acceptance: Project', function() {
       expect(ProjectPage.builds.length).to.equal(2);
     });
   });
+
+  describe('demo project', function() {
+    let urlParams;
+    setupSession(function(server) {
+      const organization = server.create('organization', 'withUser');
+      const demoProject = server.create('project', 'demo', 'withChromeAndFirefox', {organization});
+      urlParams = {
+        orgSlug: organization.slug,
+        projectSlug: demoProject.slug,
+      };
+    });
+
+    describe('project settings page', function() {
+      beforeEach(async function() {
+        await ProjectSettingsPage.visitProjectSettings(urlParams);
+      });
+
+      it('everything is disabled', async function() {
+        const editForm = ProjectSettingsPage.projectEditForm;
+
+        await ProjectSettingsPage.browserSelector.buttons.forEach(async button => {
+          expect(button.isDisabled, 'browser button should be disabled').to.equal(true);
+          expect(button.isActive, 'browser button should be active').to.equal(true);
+          await button.click();
+          expect(button.isActive, 'button should be active after click').to.equal(true);
+        });
+
+        expect(editForm.isNameDisabled).to.equal(true);
+        expect(editForm.isSlugDisabled).to.equal(true);
+        expect(editForm.isAutoApproveInputDisabled).to.equal(true);
+        expect(editForm.isPublicCheckboxDisabled).to.equal(true);
+        await editForm.togglePublicCheckbox();
+        expect(editForm.isPublicCheckboxChecked).to.equal(false);
+
+        expect(ProjectSettingsPage.envVarText).to.equal(
+          'PERCY_TOKEN=[This is a demo project. Create your own project to get a PERCY_TOKEN]',
+        );
+
+        expect(
+          ProjectSettingsPage.repoIntegrator.demoNotice.text.includes('Set up your own project'),
+        ).to.equal(true);
+
+        expect(ProjectSettingsPage.webhookConfigList.isNewWebhookConfigButtonDisabled).to.equal(
+          true,
+        );
+        await ProjectSettingsPage.webhookConfigList.newWebhookConfig();
+        expect(currentRouteName()).to.equal('organization.project.settings.index');
+
+        await percySnapshot(this.test.fullTitle());
+
+        await ProjectSettingsPage.repoIntegrator.clickDemoLink();
+        expect(currentRouteName()).to.equal('organizations.organization.projects.new');
+      });
+    });
+  });
 });

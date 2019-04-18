@@ -1,5 +1,5 @@
     <div
-      class="browser-family-selector overflow-hidden cursor-pointer flex justify-center bg-white-pattern border border-transparent rounded p-3 shadow-1 {{if isBrowserEnabled "is-browser-active"}} {{concat "data-test-browser-selector-" family.slug}}"
+      class="browser-family-selector overflow-hidden cursor-pointer flex justify-center bg-white-pattern border border-transparent rounded p-3 shadow-1 {{if isBrowserEnabled "is-browser-active"}} {{concat "data-test-browser-selector-" family.slug}} {{if isDisabled "opacity-50"}}"
       {{action updateProjectBrowserTargets family}}
       data-test-browser-selector-button>
       <div class="browser-family-selector-detail flex flex-col items-center">

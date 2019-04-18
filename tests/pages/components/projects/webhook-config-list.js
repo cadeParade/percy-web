@@ -1,4 +1,4 @@
-import {text, create, collection, clickable} from 'ember-cli-page-object';
+import {text, create, collection, clickable, is} from 'ember-cli-page-object';
 
 const SELECTORS = {
   WEBHOOK_CONFIG_LIST: '[data-test-webhook-config-list]',
@@ -13,7 +13,8 @@ export const WebhookConfigList = {
     url: text('[data-test-webhook-config-url]'),
   }),
 
-  newWebhookConfig: clickable('button'),
+  newWebhookConfig: clickable(SELECTORS.NEW_WEBHOOK_CONFIG_BUTTON),
+  isNewWebhookConfigButtonDisabled: is(':disabled', SELECTORS.NEW_WEBHOOK_CONFIG_BUTTON),
 };
 
 export default create(WebhookConfigList);

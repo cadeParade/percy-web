@@ -13,6 +13,7 @@ export const BrowserFamilySelector = {
     isActive: hasClass('is-browser-active'),
     isChrome: hasClass('data-test-browser-selector-chrome'),
     isFirefox: hasClass('data-test-browser-selector-firefox'),
+    isDisabled: hasClass('opacity-50'),
   }),
 
   chromeButton: getter(function() {

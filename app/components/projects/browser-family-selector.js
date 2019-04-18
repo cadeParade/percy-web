@@ -34,6 +34,10 @@ export default Component.extend({
 
   actions: {
     updateProjectBrowserTargets(targetFamily) {
+      if (this.get('project.isDemo')) {
+        return;
+      }
+
       // {<str:browserFamilyId>: <Obj:browserTarget>}
       const existingBrowserTargetsByFamilyId = this.get('existingBrowserTargets').reduce(
         (acc, browserTarget) => {

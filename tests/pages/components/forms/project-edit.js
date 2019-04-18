@@ -30,6 +30,10 @@ export const ProjectEdit = {
   clickSave: clickable(SELECTORS.SAVE_BUTTON),
 
   errorText: text(SELECTORS.ERRORS),
+
+  isNameDisabled: is(':disabled', SELECTORS.PROJECT_NAME_INPUT),
+  isSlugDisabled: is(':disabled', SELECTORS.PROJECT_SLUG_INPUT),
+  isAutoApproveInputDisabled: is(':disabled', SELECTORS.AUTO_APPROVE_FILTER_INPUT),
 };
 
 export default create(ProjectEdit);

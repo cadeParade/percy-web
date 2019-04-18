@@ -59,11 +59,12 @@
   {{/if}}
 
   <div class="flex justify-end">
-    {{#link-to "organization.project.settings.integrations.webhooks.webhook-config" "new"}}
+    {{#link-to "organization.project.settings.integrations.webhooks.webhook-config" "new" disabled=isDisabled}}
       <button
         type="button"
         name="button"
         class="btn btn-primary shadow-purple-lg mb-0"
+        disabled={{isDisabled}}
         data-test-new-webhook-config
       >
         Add Webhook

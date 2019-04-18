@@ -1,16 +1,22 @@
-{{#if organization.isVersionControlIntegrated}}
-  <p class="text-gray-400 mb-2">
-    You can optionally link this project to a repository. This enables
-    <a class="font-semibold" href="https://docs.percy.io/docs/github">Pull Request integration</a> for this project.
-  </p>
-  <div class="mb-2">
-    {{repo-selector project=project}}
-  </div>
-  <div class="rounded border p-2">
-    <strong>Note:</strong> Missing a repository? Check your organization's {{#link-to "organizations.organization.integrations" project.organization.slug class="font-semibold"}} integration settings{{/link-to}}.
-  </div>
+{{#unless project.isDemo}}
+  {{#if organization.isVersionControlIntegrated}}
+    <p class="text-gray-400 mb-2">
+      You can optionally link this project to a repository. This enables
+      <a class="font-semibold" href="https://docs.percy.io/docs/github">Pull Request integration</a> for this project.
+    </p>
+    <div class="mb-2">
+      {{repo-selector project=project}}
+    </div>
+    <div class="rounded border p-2">
+      <strong>Note:</strong> Missing a repository? Check your organization's {{#link-to "organizations.organization.integrations" organization.slug class="font-semibold"}} integration settings{{/link-to}}.
+    </div>
+  {{else}}
+    <div class="Alert Alert--info" data-test-repo-integrator-no-integrations>
+      <strong>Missing organization source code integration.</strong> Before you can link a repository you must first {{#link-to "organizations.organization.integrations" organization.slug}}install an integration{{/link-to}} for your organization.
+    </div>
+  {{/if}}
 {{else}}
-  <div class="Alert Alert--info" data-test-repo-integrator-no-integrations>
-    <strong>Missing organization source code integration.</strong> Before you can link a repository you must first {{#link-to "organizations.organization.integrations" project.organization.slug}}install an integration{{/link-to}} for your organization.
+  <div class="Alert Alert--info" data-test-repo-integrator-demo-project>
+    <strong>Missing organization source code integration.</strong> {{#link-to data-test-repo-integrator-demo-link 'organizations.organization.projects.new' organization.slug}}Set up your own project {{/link-to}}to install a source code integration.
   </div>
-{{/if}}
+{{/unless}}

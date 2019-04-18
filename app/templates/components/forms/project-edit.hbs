@@ -5,6 +5,7 @@
         title="Project name"
         changeset=changeset
         validateProperty=(action "validateProperty" changeset "name")
+        disabled=project.isDemo
         testLabel="data-test-project-edit-name"
     }}
     {{form-fields/input
@@ -12,6 +13,7 @@
         title="Slug"
         changeset=changeset
         validateProperty=(action "validateProperty" changeset "slug")
+        disabled=project.isDemo
         testLabel="data-test-project-edit-slug"
     }}
     <div class="rounded bg-yellow-000 border border-yellow-100 p-2">
@@ -29,6 +31,7 @@
       property="autoApproveBranchFilter"
       title="Branch filter pattern"
       changeset=changeset
+      disabled=project.isDemo
       testLabel="data-test-project-edit-autoapprove"
     }}
     Separate multiple branches with spaces. You can use <code>*</code> as a wildcard match. Example: <code>master staging-* release-*.*.*</code>
@@ -44,7 +47,7 @@
         checkedValue=true
         uncheckedValue=false
         toggle=true
-        isDisabled=isPlanSponsored
+        isDisabled=(or isPlanSponsored project.isDemo)
         testLabel="data-test-project-edit-public-checkbox"
       }}
     </div>
@@ -63,6 +66,7 @@
       isSaveSuccessful=isSaveSuccessful
       value="Save"
       classes="btn btn-primary shadow-purple-lg mb-0"
+      disabled=project.isDemo
       submit=(action "save")
     }}
   </div>
