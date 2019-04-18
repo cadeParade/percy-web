@@ -12,12 +12,10 @@ describe('VerifyEmailRoute', function() {
   let ajaxStub;
   const fakeCode = 'codezzz0123';
 
-  setupTest('route:verify-email', {
-    needs: ['service:session', 'service:headTags'],
-  });
+  setupTest();
 
   beforeEach(function() {
-    subject = this.subject();
+    subject = this.owner.lookup('route:verify-email');
     sinon.stub(subject, 'transitionTo');
     ajaxStub = sinon.stub($, 'ajax');
   });

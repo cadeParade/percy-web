@@ -1,13 +1,14 @@
-import {on} from '@ember/object/evented';
 import Component from '@ember/component';
 import AdminMode from 'percy-web/lib/admin-mode';
 
 export default Component.extend({
   isAdminEnabled: false,
 
-  setup: on('init', function() {
+  init() {
+    this._super(...arguments);
+
     this.set('isAdminEnabled', AdminMode.isAdmin());
-  }),
+  },
 
   actions: {
     toggleAdmin() {

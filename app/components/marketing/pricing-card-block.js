@@ -4,6 +4,10 @@ import {or, readOnly} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
 
 const EXTRA_FEATURES = ['Dynamic concurrent renderers', 'Unlimited projects'];
+const ESSENTIAL_PLAN_SLIDER_SETUP = {
+  maxRange: 150000, // This is how many snapshots it takes to get slightly over $849
+  step: 5000, // arbitrary
+};
 
 // Slider settings
 // There are two numbers the snapshot count is calculated from:
@@ -20,10 +24,7 @@ export default Component.extend({
   attributeBindings: ['data-test-pricing-card-block'],
   'data-test-pricing-card-block': true,
 
-  essentialPlanSliderSetup: {
-    maxRange: 150000, // This is how many snapshots it takes to get slightly over $849
-    step: 5000, // arbitrary
-  },
+  essentialPlanSliderSetup: ESSENTIAL_PLAN_SLIDER_SETUP,
 
   _sliderSnapshotCount: null,
 

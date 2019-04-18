@@ -1,4 +1,5 @@
 import Route from '@ember/routing/route';
+import {run} from '@ember/runloop';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import utils from 'percy-web/lib/utils';
 import $ from 'jquery';
@@ -21,7 +22,10 @@ export default Route.extend(AuthenticatedRouteMixin, {
           this.paramsFor('organizations.organization').organization_id,
         ),
       }).done(response => {
-        utils.replaceWindowLocation(response['slack_auth_url']);
+        // Make sure Ember runloop knows about the ajax situation.
+        run(() => {
+          utils.replaceWindowLocation(response['slack_auth_url']);
+        });
       });
     },
 

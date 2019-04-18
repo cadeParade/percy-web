@@ -1,4 +1,3 @@
-import {on} from '@ember/object/evented';
 import {computed, get, trySet} from '@ember/object';
 import {inject as service} from '@ember/service';
 import Component from '@ember/component';
@@ -25,10 +24,11 @@ export default Component.extend({
 
     return new Changeset(model, lookupValidator(validator), validator);
   }),
-  focusOnInsert: on('didInsertElement', function() {
+
+  didInsertElement() {
     // We can't only use autofocus=true because it apparently only works on first load.
     this.$('[autofocus]').focus();
-  }),
+  },
 
   _successIndicatorTimeout: timeoutForEnv(3000),
 

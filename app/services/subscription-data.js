@@ -1,3 +1,4 @@
+/* eslint ember/avoid-leaking-state-in-ember-objects: 0 */
 import Service from '@ember/service';
 
 export default Service.extend({

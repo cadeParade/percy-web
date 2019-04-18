@@ -90,7 +90,7 @@ export default Component.extend(InViewportMixin, {
     },
   ),
 
-  _scrollToTop: observer('isActiveSnapshotBlock', function() {
+  _scrollToTop: observer('isActiveSnapshotBlock', function() { // eslint-disable-line
     if (get(this, '_shouldScroll') && get(this, 'isActiveSnapshotBlock') && !Ember.testing) {
       if (get(this, 'snapshot.isUnchanged')) {
         setProperties(this, {

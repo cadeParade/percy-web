@@ -41,8 +41,7 @@ export default Component.extend({
   isShowingAllComparisons: or('noComparisonsHaveDiffs', 'isNotShowingFilteredComparisons'),
   noComparisonsHaveDiffs: equal('filteredComparisons.comparisonsWithDiffs.length', 0),
   allComparisonsHaveDiffs: computed(
-    'filteredComparisons.comparisons.[]',
-    'filteredComparisons.comparisonsWithDiffs.[]',
+    'filteredComparisons.{comparisons.[],comparisonsWithDiffs.[]}',
     function() {
       return (
         this.get('filteredComparisons.comparisons.length') ===

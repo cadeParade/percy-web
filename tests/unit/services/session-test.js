@@ -10,10 +10,8 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage-sandbox';
 
 describe('SessionService', function() {
+  setupTest();
   SetupLocalStorageSandbox();
-  setupTest('service:session', {
-    needs: ['service:analytics', 'model:user', 'service:raven', 'model:identity'],
-  });
 
   describe('loadCurrentUser', function() {
     let subject = null;
@@ -21,10 +19,10 @@ describe('SessionService', function() {
     let user;
 
     beforeEach(function() {
-      subject = this.subject();
-      store = subject.get('store');
+      subject = this.owner.lookup('service:session');
+      store = this.owner.lookup('service:store');
+      setupFactoryGuy(this);
 
-      setupFactoryGuy(this.container);
       user = make('user', {id: 'foo'});
     });
 

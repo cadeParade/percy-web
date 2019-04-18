@@ -9,7 +9,10 @@ export default Component.extend({
 
   // key-value map of the attribute name => description.
   // This might have to change to an array of {title, value, description} later.
-  allValues: {},
+  init() {
+    this._super(...arguments);
+    this.allValues = this.allValues || {};
+  },
 
   classNames: ['FormFieldsCheckboxSet'],
 

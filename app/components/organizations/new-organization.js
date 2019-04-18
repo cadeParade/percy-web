@@ -6,10 +6,14 @@ import {inject as service} from '@ember/service';
 
 export default Component.extend(EnsureStatefulLogin, {
   session: service(),
-  organizationsForUser: [],
 
   newOrganization: null,
   userIdentities: null,
+
+  init() {
+    this._super(...arguments);
+    this.organizationsForUser = this.organizationsForUser || [];
+  },
 
   currentUser: computed.alias('session.currentUser'),
   githubIdentity: computed('userIdentities.@each.isGithubIdentity', function() {

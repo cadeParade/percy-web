@@ -9,7 +9,7 @@ module.exports = {
     es6: true,
   },
   plugins: ['prettier'],
-  extends: ['prettier', 'eslint:recommended'],
+  extends: ['prettier', 'eslint:recommended', 'plugin:ember/recommended'],
   rules: {
     'prettier/prettier': [
       'error',
@@ -40,6 +40,8 @@ module.exports = {
       rules: {
         "no-unused-expressions": 'off'
       }
+    }, {
+      files: ['mirage/**'],
     }, {
       // node files
       files: [

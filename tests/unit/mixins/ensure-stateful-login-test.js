@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import Ember from 'ember';
+import EmberObject from '@ember/object';
 import {expect} from 'chai';
 import {it, describe, beforeEach, afterEach} from 'mocha';
 import sinon from 'sinon';
@@ -43,10 +43,10 @@ describe('EnsureStatefulLoginMixin', function() {
     });
 
     // inject mixin and fake auth0 service into test subject
-    subject = Ember.Object.extend(EnsureStatefulLogin).create({
+    subject = EmberObject.extend(EnsureStatefulLogin).create({
       session: {},
       transitionTo: sinon.stub(),
-      auth0: Ember.Object.create({
+      auth0: EmberObject.create({
         getAuth0LockInstance: getLockInstanceStub,
         _setupLock: setupLockStub,
       }),

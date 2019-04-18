@@ -24,6 +24,7 @@ export default Service.extend({
   }),
 
   init() {
+    this._super(...arguments);
     const isAllHidden = localStorageProxy.get(TOOLTIP_MASTER_KEY) || false;
     this.set('allHidden', isAllHidden);
 

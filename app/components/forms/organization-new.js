@@ -47,7 +47,8 @@ export default BaseFormComponent.extend({
 
   userChangeset: computed('currentUser', function() {
     const validator = UserEmailValidations;
-    this.set('currentUser.email', '');
+    // Set this to nothing temporarily so we can get a new email address from them.
+    this.set('currentUser.email', ''); // eslint-disable-line
     return new Changeset(this.get('currentUser'), lookupValidator(validator), validator);
   }),
 

@@ -11,6 +11,8 @@ export default Service.extend({
   organizationInstance: null,
 
   init() {
+    this._super(...arguments);
+
     if (!this.isEnabled()) {
       return;
     }

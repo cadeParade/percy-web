@@ -4,11 +4,15 @@ import {get, set} from '@ember/object';
 export default Component.extend({
   numTotalSnapshots: null,
   numUnapprovedSnapshots: null,
-  approvableSnapshots: [],
   isGroupApproved: false,
   isLoading: false,
   isDisabled: false,
   tagName: '',
+
+  init() {
+    this._super(...arguments);
+    this.approvableSnapshots = this.approvableSnapshots || [];
+  },
 
   actions: {
     async approveGroup() {

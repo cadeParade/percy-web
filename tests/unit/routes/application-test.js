@@ -8,23 +8,11 @@ import {setupTest} from 'ember-mocha';
 describe('ApplicationRoute', function() {
   let subject;
 
-  setupTest('route:application', {
-    needs: [
-      'service:session',
-      'service:flashMessages',
-      'service:auth0',
-      'service:analytics',
-      'service:raven',
-      'service:launch-darkly',
-      'service:headTags',
-      'service:redirects',
-      'service:intercom',
-    ],
-  });
+  setupTest();
 
   beforeEach(function() {
     sessionStorage.clear();
-    subject = this.subject();
+    subject = this.owner.lookup('route:application');
   });
 
   afterEach(function() {

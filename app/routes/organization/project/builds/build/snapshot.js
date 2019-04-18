@@ -7,7 +7,7 @@ import {hash} from 'rsvp';
 export default Route.extend(ResetScrollMixin, {
   store: service(),
   flashMessages: service(),
-  params: {},
+  params: null,
   queryParams: {
     comparisonMode: {as: 'mode'},
     activeBrowserFamilySlug: {as: 'browser', refreshModel: true},

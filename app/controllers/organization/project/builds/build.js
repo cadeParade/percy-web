@@ -11,6 +11,11 @@ export default Controller.extend({
 
   allChangedBrowserSnapshotsSorted: null, // Manually managed by initializeSnapshotOrdering.
 
+  init() {
+    this._super(...arguments);
+    this._unchangedSnapshots = this._unchangedSnapshots || [];
+  },
+
   // This breaks the binding for allChangedBrowserSnapshotsSorted,
   // specifically so that when a user clicks
   // approve, the snapshot stays in place until reload.
@@ -54,8 +59,6 @@ export default Controller.extend({
       isSnapshotsLoading: false,
     });
   },
-
-  _unchangedSnapshots: [],
 
   actions: {
     notifyOfUnchangedSnapshots(unchangedSnapshots) {

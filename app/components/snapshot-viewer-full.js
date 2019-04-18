@@ -11,6 +11,8 @@ const KEYS = {
   ESC: 27,
 };
 
+const GALLERY_MAP = ['base', 'diff', 'head'];
+
 export default Component.extend({
   classNames: ['SnapshotViewerFull'],
   attributeBindings: ['data-test-snapshot-viewer-full'],
@@ -35,7 +37,7 @@ export default Component.extend({
   }),
   selectedComparison: alias('filteredComparisons.selectedComparison'),
 
-  galleryMap: ['base', 'diff', 'head'],
+  galleryMap: GALLERY_MAP,
 
   galleryIndex: computed('comparisonMode', function() {
     return this.get('galleryMap').indexOf(this.get('comparisonMode'));

@@ -7,7 +7,10 @@ export default Component.extend({
   session: service(),
   store: service(),
   flashMessages: service(),
-  identities: [],
+  init() {
+    this._super(...arguments);
+    this.identities = this.identities || [];
+  },
 
   githubIdentity: computed('identities.@each.provider', function() {
     return this.get('identities').findBy('provider', 'github');

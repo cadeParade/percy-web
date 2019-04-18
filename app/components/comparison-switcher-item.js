@@ -4,7 +4,6 @@ import Component from '@ember/component';
 export default Component.extend({
   selectedWidth: null,
   width: null,
-  comparisons: [],
   tagName: 'button',
   classNames: ['btn'],
   classNameBindings: [
@@ -12,6 +11,11 @@ export default Component.extend({
     'matchingComparison::is-disabled',
     'matchingComparison.isDifferent:has-diffs',
   ],
+
+  init() {
+    this._super(...arguments);
+    this.comparisons = this.comparisons || [];
+  },
 
   matchingComparison: computed('comparisons', 'width', function() {
     let comparisons = this.get('comparisons') || [];

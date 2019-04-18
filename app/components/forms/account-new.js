@@ -1,4 +1,5 @@
 import {computed, get} from '@ember/object';
+import {run} from '@ember/runloop';
 import Changeset from 'ember-changeset';
 import lookupValidator from 'ember-changeset-validations';
 import {inject as service} from '@ember/service';
@@ -41,22 +42,26 @@ export default BaseFormComponent.extend(EnsureStatefulLogin, {
           data: {data: {attributes: {password: desiredPassword}}},
         })
           .done(() => {
-            this.set('isSaveSuccessful', true);
-            this.get('saveSuccess')();
+            // Make sure Ember runloop knows about the ajax situation.
+            run(() => {
+              this.set('isSaveSuccessful', true);
+              this.set('isSaving', false);
+              this.get('saveSuccess')();
+            });
           })
           .fail(response => {
-            let errorData = response.responseJSON['errors'];
+            run(() => {
+              let errorData = response.responseJSON['errors'];
 
-            errorData.forEach(error => {
-              if (error['detail']) {
-                changeset.addError('password', [error['detail']]);
-              }
+              errorData.forEach(error => {
+                if (error['detail']) {
+                  changeset.addError('password', [error['detail']]);
+                }
+              });
+
+              this.set('isSaving', false);
+              this.set('isSaveSuccessful', false);
             });
-
-            this.set('isSaveSuccessful', false);
-          })
-          .always(() => {
-            this.set('isSaving', false);
           });
       }
     },
