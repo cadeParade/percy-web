@@ -1,4 +1,5 @@
-import {create} from 'ember-cli-page-object';
+import {collection, create} from 'ember-cli-page-object';
+import SlackIntegrationItem from 'percy-web/tests/pages/components/organizations/slack-integration-item'; // eslint-disable-line
 
 export const SELECTORS = {
   CONTAINER: '[data-test-slack-settings]',
@@ -8,6 +9,7 @@ export const SELECTORS = {
 export const SlackSettings = {
   scope: SELECTORS.CONTAINER,
   addChannelButton: {scope: SELECTORS.ADD_CHANNEL_BUTTON},
+  slackIntegrationItems: collection(SlackIntegrationItem.scope, SlackIntegrationItem),
 };
 
 export default create(SlackSettings);

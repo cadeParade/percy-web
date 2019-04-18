@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import {readOnly} from '@ember/object/computed';
+import {gt, readOnly} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
 import {ALL_PROJECTS_ID, ALL_PROJECTS_LABEL} from 'percy-web/models/slack-integration-config';
@@ -18,6 +18,7 @@ export default Component.extend({
   slackIntegrationConfigs: readOnly('slackIntegration.slackIntegrationConfigs'),
   projects: readOnly('slackIntegration.organization.projects'),
 
+  hasConfigs: gt('slackIntegrationConfigs.length', 0),
   projectOptions: computed('projects.@each.{id,name}', function() {
     let orgProjects = this.get('projects').map(project => {
       return {id: Number(project.get('id')), name: project.get('name')};

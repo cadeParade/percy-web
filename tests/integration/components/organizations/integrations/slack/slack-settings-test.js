@@ -1,10 +1,10 @@
 import {it, describe, beforeEach} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
-import hbs from 'htmlbars-inline-precompile';
-import {percySnapshot} from 'ember-percy';
 import {make} from 'ember-data-factory-guy';
-import SlackSettings from 'percy-web/tests/pages/components/organizations/slack-settings';
+import {percySnapshot} from 'ember-percy';
+import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import SlackSettings from 'percy-web/tests/pages/components/organizations/slack-settings';
 
 describe('Integration: SlackSettings', function() {
   setupRenderingTest('slack-settings', {
@@ -26,8 +26,32 @@ describe('Integration: SlackSettings', function() {
       }}`);
     });
 
-    it('renders the Add Slack Channel button', async function() {
+    it('renders correctly', async function() {
       expect(SlackSettings.addChannelButton.isVisible).to.equal(true);
+
+      await percySnapshot(this.test.fullTitle());
+    });
+  });
+
+  describe('with an integration without configs', function() {
+    beforeEach(async function() {
+      const organization = make('organization');
+      make('slack-integration', {organization});
+      this.setProperties({organization});
+      await this.render(hbs`{{
+        organizations/integrations/slack-settings
+        organization=organization
+      }}`);
+    });
+
+    it('renders correctly', async function() {
+      expect(SlackSettings.addChannelButton.isVisible).to.equal(true);
+      expect(SlackSettings.slackIntegrationItems[0].isVisible).to.equal(true);
+      expect(SlackSettings.slackIntegrationItems[0].reminder.isVisible).to.equal(true);
+      expect(SlackSettings.slackIntegrationItems[0].addProjectButton.isVisible).to.equal(true);
+      expect(SlackSettings.slackIntegrationItems[0].deleteIntegrationButton.isVisible).to.equal(
+        true,
+      );
 
       await percySnapshot(this.test.fullTitle());
     });
