@@ -5,6 +5,7 @@ import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import SlackIntegrationItem from 'percy-web/tests/pages/components/organizations/slack-integration-item'; // eslint-disable-line
+import sinon from 'sinon';
 
 describe('Integration: SlackIntegrationItem', function() {
   setupRenderingTest('slack-integration-item', {
@@ -17,15 +18,22 @@ describe('Integration: SlackIntegrationItem', function() {
   });
 
   describe('without a config', function() {
+    let slackIntegration;
+    let deleteSlackIntegrationStub;
+
     beforeEach(async function() {
-      const slackIntegration = make('slack-integration');
-      const deleteSlackIntegration = null; // mock this
+      slackIntegration = make('slack-integration');
+      deleteSlackIntegrationStub = sinon.stub();
       const createNewIntegrationConfig = null; // mock this
-      this.setProperties({slackIntegration, deleteSlackIntegration, createNewIntegrationConfig});
+      this.setProperties({
+        slackIntegration,
+        deleteSlackIntegrationStub,
+        createNewIntegrationConfig,
+      });
       await this.render(hbs`{{
         organizations/integrations/slack-integration-item
         slackIntegration=slackIntegration
-        deleteSlackIntegration=deleteSlackIntegration
+        deleteSlackIntegration=deleteSlackIntegrationStub
         createNewIntegrationConfig=createNewIntegrationConfig
       }}`);
     });
@@ -39,7 +47,12 @@ describe('Integration: SlackIntegrationItem', function() {
       await percySnapshot(this.test.fullTitle());
     });
 
-    it.skip('can delete the integration');
+    it('can delete the integration', async function() {
+      await SlackIntegrationItem.deleteIntegrationButton.click();
+
+      expect(deleteSlackIntegrationStub).to.have.been.called;
+    });
+
     it.skip('can add a project');
   });
 });

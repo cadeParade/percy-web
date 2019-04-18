@@ -2,6 +2,8 @@ import {beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import SlackIntegrationPage from 'percy-web/tests/pages/organizations/slack-integration-page';
+import utils from 'percy-web/lib/utils';
+import sinon from 'sinon';
 
 describe('Acceptance: Slack Integration', function() {
   setupAcceptance();
@@ -35,6 +37,18 @@ describe('Acceptance: Slack Integration', function() {
       expect(SlackIntegrationPage.slackIntegrationItems[0].isVisible).to.equal(true);
 
       await percySnapshot(this.test.fullTitle());
+    });
+
+    it('can delete the integration', async function() {
+      let confirmationAlertStub = sinon.stub(utils, 'confirmMessage').returns(true);
+      await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
+      await SlackIntegrationPage.slackIntegrationItems[0].deleteIntegrationButton.click();
+
+      expect(SlackIntegrationPage.slackIntegrationItems.length).to.equal(0);
+
+      await percySnapshot(this.test.fullTitle());
+
+      confirmationAlertStub.restore();
     });
   });
 

@@ -298,6 +298,11 @@ export default function() {
   this.get('/builds/:build_id/comparisons');
   this.get('/repos/:id');
   this.post('/reviews');
+
+  this.delete('/slack-integrations/:id', function(schema, request) {
+    schema.slackIntegrations.find(request.params.id).destroy();
+    return new Mirage.Response(204);
+  });
 }
 
 const _error401 = new Mirage.Response(
