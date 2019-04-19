@@ -48,9 +48,12 @@
               {{#if stripeError}}
                 <p class="error">{{stripeError.message}}</p>
               {{/if}}
-              <div class="flex justify-end mt-2">
-                <button class="btn" {{action "hideCardInput"}}>Cancel</button>
-                <button class="btn btn-primary btn-shadow-purple ml-1" {{action 'updateCreditCard' stripeElement planData.id}} disabled={{if (not shouldShowSubmit) "disabled"}}>Update Card</button>
+              <div class="flex justify-between mt-2">
+                <div>{{inline-svg "powered-by-stripe"}}</div>
+                <div>
+                  <button class="btn" {{action "hideCardInput"}}>Cancel</button>
+                  <button class="btn btn-primary btn-shadow-purple ml-1" {{action 'updateCreditCard' stripeElement planData.id}} disabled={{if (not shouldShowSubmit) "disabled"}}>Update Card</button>
+                </div>
               </div>
             {{/stripe-card}}
           </div>
