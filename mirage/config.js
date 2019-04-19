@@ -161,7 +161,18 @@ export default function() {
 
   this.get('/organizations/:slug/projects', function(schema, request) {
     let organization = schema.organizations.findBy({slug: request.params.slug});
-    return schema.projects.where({organizationId: organization.id});
+    const projects = schema.projects.where({organizationId: organization.id});
+    let filteredProjects = projects.filter(project => project.isEnabled);
+
+    const queryParams = request.queryParams;
+    if ('enabled' in queryParams) {
+      if (queryParams['enabled'] === 'all') {
+        filteredProjects = projects;
+      } else if (queryParams['enabled'] === 'false') {
+        filteredProjects = projects.filter(project => !project.isEnabled);
+      }
+    }
+    return filteredProjects;
   });
 
   this.post('/organizations/:org_id/version-control-integrations/', function(schema, request) {

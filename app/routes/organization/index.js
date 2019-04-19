@@ -5,10 +5,11 @@ import {inject as service} from '@ember/service';
 
 export default Route.extend({
   redirects: service(),
+  projectQuery: service(),
 
   model() {
     const organization = this.modelFor('organization');
-    const projects = this.store.query('project', {organization: organization});
+    const projects = this.projectQuery.getAllProjects(organization);
     const isUserMember = isUserMemberPromise(organization);
 
     return hash({
@@ -28,10 +29,9 @@ export default Route.extend({
     const enabledProjects = model.projects.filterBy('isEnabled', true);
     const archivedProjects = model.projects.filterBy('isDisabled', true);
 
-    const sortedProjects = enabledProjects.concat(archivedProjects);
-
     controller.setProperties({
-      projects: sortedProjects,
+      enabledProjects,
+      archivedProjects,
       organization: model.organization,
       isUserMember: model.isUserMember,
     });

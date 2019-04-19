@@ -48,7 +48,7 @@ describe('Acceptance: Organization Dashboard', function() {
     });
 
     it('lists the projects for the orgnization', async function() {
-      expect(OrganizationDashboard.projects.length).to.equal(5);
+      expect(OrganizationDashboard.projects.length).to.equal(4);
       await percySnapshot(this.test);
     });
 
@@ -80,6 +80,12 @@ describe('Acceptance: Organization Dashboard', function() {
       await OrganizationDashboard.nav.clickNewProjectButton();
       expect(currentRouteName()).to.equal('organizations.organization.projects.new');
     });
+
+    it('allows toggle of archived projects', async function() {
+      await OrganizationDashboard.toggleArchivedProjects();
+      expect(OrganizationDashboard.projects.length).to.equal(5);
+      await percySnapshot(this.test);
+    });
   });
 
   describe('organization has public project', function() {
@@ -104,6 +110,8 @@ describe('Acceptance: Organization Dashboard', function() {
       expect(OrganizationDashboard.nav.isUsersLinkPresent).to.equal(false);
       expect(OrganizationDashboard.nav.isIntegrationsLinkPresent).to.equal(false);
       expect(OrganizationDashboard.nav.isNewProjectButtonPresent).to.equal(false);
+
+      expect(OrganizationDashboard.isToggleArchivedProjectsVisible).to.equal(false);
     });
   });
 });
