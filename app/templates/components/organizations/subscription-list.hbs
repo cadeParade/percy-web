@@ -10,7 +10,7 @@
   <h2 class="text-xl font-semibold mb-1">Subscription</h2>
   {{#if plan.isFree}}
     <div class="Alert Alert--info">
-      You're currently on the <strong>free plan</strong>, which provides {{format-number subscriptionData.PLANS.[0].numDiffs precision=0}} snapshots per month. You can upgrade below or feel free to <a href="#" {{action "showSupport"}} data-test-free-plan-support>reach out</a> with any questions!
+      You're currently on the <strong>free plan</strong>, which provides {{format-number subscriptionData.PLANS.[0].usageIncluded precision=0}} snapshots per month. You can upgrade below or feel free to <a href="#" {{action "showSupport"}} data-test-free-plan-support>reach out</a> with any questions!
     </div>
   {{/if}}
   {{#if plan.isCustom}}

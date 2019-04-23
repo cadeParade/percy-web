@@ -17,9 +17,9 @@ describe('Integration: SubscriptionListItem', function() {
   const realPlanData = {
     id: 'v3-large',
     name: 'Business',
-    monthlyPrice: 849,
-    numDiffs: 200000,
-    extraDiffPrice: 0.006,
+    amount: 849,
+    usageIncluded: 200000,
+    overageUnitCost: 0.006,
     numTeamMembersTitle: '20 team members',
     historyLimitTitle: '1 year history',
   };

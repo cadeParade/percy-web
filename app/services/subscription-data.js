@@ -1,6 +1,10 @@
 /* eslint ember/avoid-leaking-state-in-ember-objects: 0 */
 import Service from '@ember/service';
 
+// The data in this file is for deciding how to display plans on the
+// billing page and also the pricing page. They are not 1:1 with actual
+// DB plans.
+
 export default Service.extend({
   PLAN_IDS: ['free', 'v3-small', 'v3-medium', 'v3-large'],
   UPGRADEABLE_PLAN_IDS: [
@@ -25,35 +29,35 @@ export default Service.extend({
     {
       id: 'free',
       name: 'Free',
-      monthlyPrice: 0,
-      numDiffs: 5000,
+      amount: 0,
+      usageIncluded: 5000,
       numTeamMembersTitle: '10 team members',
       historyLimitTitle: '30 day history',
     },
     {
       id: 'v3-small',
       name: 'Essential',
-      monthlyPrice: 29,
-      numDiffs: 10000,
-      extraDiffPrice: 0.006,
+      amount: 29,
+      usageIncluded: 10000,
+      overageUnitCost: 0.006,
       numTeamMembersTitle: '10 team members',
       historyLimitTitle: '1 year history',
     },
     {
       id: 'v3-medium',
       name: 'Professional',
-      monthlyPrice: 349,
-      numDiffs: 80000,
-      extraDiffPrice: 0.006,
+      amount: 349,
+      usageIncluded: 80000,
+      overageUnitCost: 0.006,
       numTeamMembersTitle: '15 team members',
       historyLimitTitle: '1 year history',
     },
     {
       id: 'v3-large',
       name: 'Business',
-      monthlyPrice: 849,
-      numDiffs: 200000,
-      extraDiffPrice: 0.006,
+      amount: 849,
+      usageIncluded: 200000,
+      overageUnitCost: 0.006,
       numTeamMembersTitle: '20 team members',
       historyLimitTitle: '1 year history',
     },

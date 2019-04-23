@@ -11,6 +11,7 @@ export default DS.Model.extend({
   name: DS.attr(),
   interval: DS.attr(),
   intervalCount: DS.attr('number'),
+  amount: DS.attr('number'),
   workerLimit: DS.attr('number'),
   usageIncluded: DS.attr('number'),
   historyLimitDays: DS.attr('number'),

@@ -7,10 +7,8 @@
     <div class="flex">
       <div class="flex-1 pr-2">
         <div>
-          {{#if planData.numDiffs}}
-            {{format-number planData.numDiffs}}
-          {{else if planData.numDiffsTitle}}
-            {{planData.numDiffsTitle}}
+          {{#if planData.usageIncluded}}
+            {{format-number planData.usageIncluded}}
           {{/if}}
           snapshots / month included {{snapshot-explanation-tooltip}}
         </div>
@@ -19,12 +17,12 @@
         </div>
       </div>
       <div style="max-width: 300px" class="flex-1 pr-2">
-        {{#if planData.monthlyPrice}}
-          <strong class="text-lg"><span>$</span>{{format-number planData.monthlyPrice precision=0}}</strong> / month
+        {{#if planData.amount}}
+          <strong class="text-lg"><span>$</span>{{format-number planData.amount precision=0}}</strong> / month
         {{/if}}
         <br>
-        {{#if planData.extraDiffPrice}}
-          ${{planData.extraDiffPrice}} / additional snapshot
+        {{#if planData.overageUnitCost}}
+          ${{planData.overageUnitCost}} / additional snapshot
         {{/if}}
       </div>
       <div style="max-width: 150px" class="flex-1 pr-2 flex items-start justify-end">

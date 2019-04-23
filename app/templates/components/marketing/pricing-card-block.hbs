@@ -48,7 +48,7 @@
 
       <div class="px-2">
         {{range-slider
-          min=essentialPlan.numDiffs
+          min=essentialPlan.usageIncluded
           max=essentialPlanSliderSetup.maxRange
           step=essentialPlanSliderSetup.step
           value=displaySnapshotCount
@@ -59,7 +59,7 @@
       <div class="font-semibold text-gray-500 text-right" data-test-price-text>
         {{priceText}} <span class="tabular-nums text-purple-600 text-3xl" data-test-calculated-price>${{sliderCalculatedPrice}}</span>/mo
         <br>
-        <span class="text-sm font-normal text-gray-300">Additional snapshots at ${{essentialPlan.extraDiffPrice}}/snapshot</span>
+        <span class="text-sm font-normal text-gray-300">Additional snapshots at ${{essentialPlan.overageUnitCost}}/snapshot</span>
       </div>
     </div>
   </div>
@@ -76,14 +76,14 @@
           {{/each}}
         </div>
         <div class="font-semibold text-lg mb-4 text-gray-700">
-          {{format-number businessPlan.numDiffs}} snapshots / month
+          {{format-number businessPlan.usageIncluded}} snapshots / month
         </div>
       </div>
 
       <div class="font-semibold text-gray-500 text-right">
-        Starting at <span class="text-gray-500 text-3xl">${{businessPlan.monthlyPrice}}</span>/mo
+        Starting at <span class="text-gray-500 text-3xl">${{businessPlan.amount}}</span>/mo
         <br>
-        <span class="text-sm font-normal text-gray-300">Additional snapshots at ${{businessPlan.extraDiffPrice}}/snapshot</span>
+        <span class="text-sm font-normal text-gray-300">Additional snapshots at ${{businessPlan.overageUnitCost}}/snapshot</span>
       </div>
     </div>
   </div>

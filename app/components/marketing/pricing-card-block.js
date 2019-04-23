@@ -29,7 +29,7 @@ export default Component.extend({
   _sliderSnapshotCount: null,
 
   displaySnapshotCount: or('_sliderSnapshotCount', 'initialSnapshotCount'),
-  initialSnapshotCount: readOnly('essentialPlan.numDiffs'),
+  initialSnapshotCount: readOnly('essentialPlan.usageIncluded'),
 
   essentialPlan: computed('subscriptionData', function() {
     return this._getPlanAndAddFeatures('Essential');
@@ -48,16 +48,16 @@ export default Component.extend({
 
   sliderCalculatedPrice: computed('displaySnapshotCount', function() {
     return _calculatePrice({
-      basePrice: get(this, 'essentialPlan.monthlyPrice'),
-      baseSnapshots: get(this, 'essentialPlan.numDiffs'),
+      basePrice: get(this, 'essentialPlan.amount'),
+      baseSnapshots: get(this, 'essentialPlan.usageIncluded'),
       snapshotCount: get(this, 'displaySnapshotCount'),
-      extraDiffPrice: get(this, 'essentialPlan.extraDiffPrice'),
+      overageUnitCost: get(this, 'essentialPlan.overageUnitCost'),
     });
   }),
 
-  priceText: computed('sliderCalculatedPrice', 'essentialPlan.monthlyPrice', function() {
+  priceText: computed('sliderCalculatedPrice', 'essentialPlan.amount', function() {
     const price = get(this, 'sliderCalculatedPrice');
-    if (price <= get(this, 'essentialPlan.monthlyPrice')) {
+    if (price <= get(this, 'essentialPlan.amount')) {
       return 'Starting at';
     } else {
       return 'Your price';
@@ -71,11 +71,11 @@ export default Component.extend({
   },
 });
 
-function _calculatePrice({basePrice, baseSnapshots, snapshotCount, extraDiffPrice} = {}) {
+function _calculatePrice({basePrice, baseSnapshots, snapshotCount, overageUnitCost} = {}) {
   let price = basePrice;
   if (snapshotCount > baseSnapshots) {
     const extraSnapshots = snapshotCount - baseSnapshots;
-    const extraSnapshotPrice = extraSnapshots * extraDiffPrice;
+    const extraSnapshotPrice = extraSnapshots * overageUnitCost;
     price = price + extraSnapshotPrice;
   }
   return price;
