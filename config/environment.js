@@ -90,6 +90,8 @@ module.exports = function(environment) {
     },
   };
 
+  ENV.factoryGuy = {enabled: false};
+
   ENV.stripe = {
     publishableKey: 'pk_test_N5PmOTEMBIbsZMjbxnaWthNy',
     lazyLoad: true,
@@ -163,6 +165,8 @@ module.exports = function(environment) {
     };
     ENV['ember-simple-auth'].auth0.clientID = 'foo';
     ENV['ember-simple-auth'].auth0.domain = 'percy-io-test.auth0.com';
+
+    ENV.factoryGuy = {enabled: true};
 
     ENV.sentry = {
       dsn: 'https://1234567890@sentry.io/123456789',
