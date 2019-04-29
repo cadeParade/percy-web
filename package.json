@@ -105,7 +105,7 @@
     "eslint-plugin-ember": "^6.4.1",
     "glob": "^7.1.2",
     "http-proxy": "^1.17.0",
-    "husky": "^1.0.0",
+    "husky": "^2.1.0",
     "lint-staged": "8.1.5",
     "loader.js": "^4.7.0",
     "morgan": "^1.9.0",
