@@ -14,6 +14,7 @@ export default JSONAPISerializer.extend({
         'githubIntegrationRequest.createdBy',
         'usageNotificationSettings',
         'slackIntegrations',
+        'slackIntegrations.slackIntegrationConfigs',
       ];
     }
   },

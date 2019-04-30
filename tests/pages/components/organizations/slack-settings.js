@@ -9,7 +9,7 @@ export const SELECTORS = {
 export const SlackSettings = {
   scope: SELECTORS.CONTAINER,
   addChannelButton: {scope: SELECTORS.ADD_CHANNEL_BUTTON},
-  slackIntegrationItems: collection(SlackIntegrationItem.scope, SlackIntegrationItem),
+  integrationItems: collection(SlackIntegrationItem.scope, SlackIntegrationItem),
 };
 
 export default create(SlackSettings);

@@ -16,6 +16,7 @@ export default Component.extend({
   isSaveSuccessful: null,
   errorMessage: null,
   confirmationMessage: null,
+  saveSuccess: () => {},
 
   store: service(),
   changeset: computed('model', 'validator', function() {

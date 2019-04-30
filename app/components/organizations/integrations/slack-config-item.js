@@ -1,18 +1,10 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object';
-import {readOnly} from '@ember/object/computed';
-import {ALL_PROJECTS_ID} from 'percy-web/models/slack-integration-config';
-
-export function selectedProjectOption(projectOptions, projectId) {
-  return projectOptions.find(projectOption => projectOption.id === (projectId || ALL_PROJECTS_ID));
-}
+import {selectedProjectOption} from 'percy-web/components/organizations/integrations/slack-details-container'; // eslint-disable-line
 
 export default Component.extend({
   slackIntegrationConfig: null,
   projectOptions: null,
-  deleteSlackIntegrationConfig: null,
-
-  isNew: readOnly('slackIntegrationConfig.isNew'),
 
   projectName: computed('projectOptions', 'slackIntegrationConfig.projectId', function() {
     const selectedProject = selectedProjectOption(
@@ -21,10 +13,4 @@ export default Component.extend({
     );
     return selectedProject && selectedProject.name;
   }),
-
-  actions: {
-    deleteSlackIntegrationConfig() {
-      this.get('deleteSlackIntegrationConfig')(this.get('slackIntegrationConfig'));
-    },
-  },
 });

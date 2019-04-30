@@ -12,7 +12,7 @@ const SlackIntegrationPage = {
   visitSlackIntegration: visitable('/organizations/:orgSlug/integrations/slack'),
   slackSettings: SlackSettings,
   addChannelButton: alias('slackSettings.addChannelButton'),
-  slackIntegrationItems: collection(SlackIntegrationItem.scope, SlackIntegrationItem),
+  integrationItems: collection(SlackIntegrationItem.scope, SlackIntegrationItem),
 };
 
 export default create(SlackIntegrationPage);

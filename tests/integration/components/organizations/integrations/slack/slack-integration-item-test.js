@@ -1,6 +1,6 @@
 import {it, describe, beforeEach} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
-import {make} from 'ember-data-factory-guy';
+import {make, makeList} from 'ember-data-factory-guy';
 import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
@@ -12,9 +12,17 @@ describe('Integration: SlackIntegrationItem', function() {
     integration: true,
   });
 
+  let project;
+  let projectOptions;
+
   beforeEach(function() {
     setupFactoryGuy(this);
     SlackIntegrationItem.setContext(this);
+    project = make('project');
+    projectOptions = [
+      {id: 'allProjects', name: 'All projects'},
+      {id: Number(project.id), name: project.name},
+    ];
   });
 
   describe('without a config', function() {
@@ -24,17 +32,16 @@ describe('Integration: SlackIntegrationItem', function() {
     beforeEach(async function() {
       slackIntegration = make('slack-integration');
       deleteSlackIntegrationStub = sinon.stub();
-      const createNewIntegrationConfig = null; // mock this
       this.setProperties({
+        projectOptions,
         slackIntegration,
         deleteSlackIntegrationStub,
-        createNewIntegrationConfig,
       });
       await this.render(hbs`{{
         organizations/integrations/slack-integration-item
+        projectOptions=projectOptions
         slackIntegration=slackIntegration
         deleteSlackIntegration=deleteSlackIntegrationStub
-        createNewIntegrationConfig=createNewIntegrationConfig
       }}`);
     });
 
@@ -52,7 +59,53 @@ describe('Integration: SlackIntegrationItem', function() {
 
       expect(deleteSlackIntegrationStub).to.have.been.called;
     });
+  });
 
-    it.skip('can add a project');
+  describe('with configs', function() {
+    let slackIntegration;
+    let deleteSlackIntegrationStub;
+
+    beforeEach(async function() {
+      slackIntegration = make('slack-integration');
+      makeList('slack-integration-config', 3, {
+        slackIntegration,
+        notificationTypes: ['approved'],
+      });
+      deleteSlackIntegrationStub = sinon.stub();
+      this.setProperties({
+        projectOptions,
+        slackIntegration,
+        deleteSlackIntegrationStub,
+      });
+    });
+
+    it('renders the integration correctly for All Projects', async function() {
+      await this.render(hbs`{{
+        organizations/integrations/slack-integration-item
+        projectOptions=projectOptions
+        slackIntegration=slackIntegration
+        deleteSlackIntegration=deleteSlackIntegrationStub
+      }}`);
+
+      expect(SlackIntegrationItem.configItems.length).to.equal(3);
+
+      await percySnapshot(this.test.fullTitle());
+    });
+
+    it('renders the integration correctly for a specific project', async function() {
+      make('slack-integration-config', {
+        slackIntegration,
+        projectId: project.id,
+      });
+      await this.render(hbs`{{
+        organizations/integrations/slack-integration-item
+        projectOptions=projectOptions
+        slackIntegration=slackIntegration
+        deleteSlackIntegration=deleteSlackIntegrationStub
+      }}`);
+      expect(SlackIntegrationItem.configItems.length).to.equal(4);
+
+      await percySnapshot(this.test.fullTitle());
+    });
   });
 });

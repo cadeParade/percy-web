@@ -1,46 +1,80 @@
-<div data-test-usage-notification-setting-form>
-  <form action="javascript:;" class="Form mb-0">
-    <div class="p-2 bg-gray-000 rounded border mb-2">
-      <div class='flex justify-start'>
-        <span class='bg-white'>
-          {{#power-select
-            options=projectOptions
-            selected=selectedProject
-            onchange=(action 'selectProject')
-            label='Project'
-            placeholder='Select a project'
-            searchPlaceholder='Type to filter project'
-            searchField='name'
-            noMatchesMessage='No project found'
-            as |project|
-          }}
-            {{project.name}}
-          {{/power-select}}
-        </span>
+<section class="px-2" data-test-slack-config-form>
+  <div class="bg-white rounded shadow-1 border-t p-2 mb-2">
+    <div class="flex justify-between items-center mb-1">
+      <div class="flex items-center">
+        {{inline-svg "slack-icon" class="mr-1 mb-1 h-9 w-9"}}
+        <h2 class="text-xl font-semibold mb-1">{{teamName}}: {{channelName}}</h2>
       </div>
-
-    {{form-fields/checkbox-set
-      property="notificationTypes"
-      changeset=changeset
-      title='Notifications'
-      allValues=slackNotificationOptions
-    }}
-
-    {{#if errorMessage}}
-      <div class="Form-errors">
-        {{errorMessage}}
+      <div class="flex justify-end">
+        {{#link-to
+          data-test-cancel-button
+          "organizations.organization.integrations.slack"
+          slackIntegrationConfig.slackIntegration.organization.slug
+          class="percy-btn mr-1"
+        }}
+          Cancel
+        {{/link-to}}
+        {{form-fields/submit
+          data-test-save-button
+          value="Save configuration"
+          classes="percy-btn percy-btn-primary mb-0"
+          isSaving=isSaving
+          isSaveSuccessful=isSaveSuccessful
+          submit=(action "customSave")
+        }}
       </div>
-    {{/if}}
-
-    <div class="flex justify-end">
-      {{form-fields/submit
-        value="Save"
-        classes="percy-btn percy-btn-primary mb-0"
-        isSaving=isSaving
-        isSaveSuccessful=isSaveSuccessful
-        submit=(action "customSave")
-      }}
     </div>
-  </div>
- </form>
-</div>
+
+    <p class='label-body'>Configure what Percy sends to {{channelName}} in your {{teamName}} Slack team.</p>
+
+    <form action="javascript:;" class="Form mb-0">
+      <div class="p-2 bg-gray-000 rounded border mb-2">
+        <span class="label-body font-semibold">
+          Select a Percy project
+        </span>
+        <span class="repo-selector flex justify-start flex-1 mb-2">
+          <span class="bg-white" data-test-project-box>
+            {{#power-select
+              selected=selectedProject
+              searchField='name'
+              placeholder='Select a project'
+              renderInPlace=true
+              matchTriggerWidth=false
+              options=projectOptions
+              searchPlaceholder='Type to filter projects'
+              noMatchesMessage='No project found'
+              onchange=(action 'selectProject')
+              label='Project'
+              as |project|
+            }}
+              {{project.name}}
+            {{/power-select}}
+          </span>
+        </span>
+
+        {{form-fields/checkbox-set
+          property="notificationTypes"
+          changeset=changeset
+          title='Notifications'
+          subtitle='Send notifications to Slack when a build is finished or approved.'
+          allValues=slackNotificationOptions
+        }}
+
+        {{#if errorMessage}}
+          <div class="Form-errors">
+            {{errorMessage}}
+          </div>
+        {{/if}}
+
+        {{#if isEditing}}
+          {{#percy-btn
+            handleClick=(action "deleteSlackIntegrationConfig")
+            class="border border-red-100 text-red-600"
+          }}
+            Remove project from {{channelName}}
+          {{/percy-btn}}
+        {{/if}}
+      </div>
+   </form>
+ </div>
+</section>

@@ -6,8 +6,6 @@ export default Component.extend({
 
   connectSlackChannel: null,
   deleteSlackIntegration: null,
-  createNewIntegrationConfig: null,
-  deleteSlackIntegrationConfig: null,
 
   actions: {
     connectSlackChannel() {

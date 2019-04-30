@@ -314,6 +314,28 @@ export default function() {
     schema.slackIntegrations.find(request.params.id).destroy();
     return new Mirage.Response(204);
   });
+  this.post('/organizations/:organization_id/slack-integration-requests', function() {
+    return {slack_auth_url: 'fake_slack_oauth_url'};
+  });
+  this.post('/slack-integrations/:slack_integration_id/slack-integration-configs', function(
+    schema,
+  ) {
+    const attrs = this.normalizedRequestAttrs();
+    const config = schema.slackIntegrationConfigs.create({
+      slackIntegrationId: attrs.slackIntegrationId,
+      projectId: attrs.projectId,
+      notificationTypes: attrs.notificationTypes,
+    });
+    return config;
+  });
+  this.patch('/slack-integrations/:slack_integration_id/slack-integration-configs/:id', function(
+    schema,
+  ) {
+    const attrs = this.normalizedRequestAttrs();
+    const config = schema.slackIntegrationConfigs.findBy({id: attrs.id});
+    config.update(attrs);
+    return config;
+  });
 }
 
 const _error401 = new Mirage.Response(

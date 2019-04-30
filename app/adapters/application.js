@@ -118,6 +118,11 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
       let integrationId = snapshot.record.get('slackIntegration.id');
       return utils.buildApiUrl('slackIntegrationConfigs', integrationId);
     }
+    // /api/v1/slack-integrations/%@/slack-integration-config/%@
+    if (requestType === 'updateRecord' && modelName === 'slack-integration-config' && id) {
+      let integrationId = snapshot.record.get('slackIntegration.id');
+      return utils.buildApiUrl('slackIntegrationConfig', integrationId, id);
+    }
     // /api/v1/slack-integrations/%@/slack-integration-configs/%@
     if (requestType === 'deleteRecord' && modelName === 'slack-integration-config' && id) {
       let integrationId = snapshot.record.get('slackIntegration.id');

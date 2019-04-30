@@ -1,9 +1,12 @@
-<div data-test-slack-integration-page>
-  {{organizations/integrations/slack-settings
-    organization=organization
-    connectSlackChannel=(route-action "connectSlackChannel")
-    deleteSlackIntegration=(route-action "deleteSlackIntegration")
-    createNewIntegrationConfig=(route-action "createNewIntegrationConfig")
-    deleteSlackIntegrationConfig=(route-action "deleteSlackIntegrationConfig")
-  }}
+<div data-test-integration-slack>
+  <section data-test-integration-header class="px-2 pt-3">
+    <div class="w-3/4">
+      <h1 class="text-xl font-semibold mb-sm">Integrate with Slack</h1>
+      <p class="text-gray-400">
+        The Percy Slack integration helps you keep your team updated about visual changes in your app.
+      </p>
+    </div>
+  </section>
+
+  {{outlet}}
 </div>

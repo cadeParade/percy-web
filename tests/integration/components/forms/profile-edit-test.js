@@ -2,7 +2,8 @@ import {it, describe, beforeEach} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
-import ProfileEditForm from '../../../pages/components/forms/profile-edit';
+import ProfileEditForm from 'percy-web/tests/pages/components/forms/profile-edit';
+
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 
 describe('Integration: ProfileEditForm', function() {
