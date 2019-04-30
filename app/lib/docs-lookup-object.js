@@ -1,4 +1,4 @@
-// this is a master lookup object used to create the resources widges
+// this is a master lookup object used to create the resources widgets
 // in the empty state of the project container
 
 export default {
