@@ -91,6 +91,7 @@ Router.map(function() {
         this.route('invite');
       });
       this.route('billing');
+      this.route('usage');
       this.route('integrations', function() {
         this.route('github-enterprise');
         this.route('github');

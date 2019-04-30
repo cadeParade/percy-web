@@ -1,8 +1,9 @@
-{{title (concat model.name " billing | Percy") replace=true}}
+{{title (concat model.name " Usage | Percy") replace=true}}
 
 {{#dashboard-nav-wrapper organization=organization showMemberLinks=true}}
-  {{organizations/billing-section
+  {{organizations/usage-section
     organization=organization
     currentUsageStats=currentUsageStats
+    usageNotificationSetting=usageNotificationSetting
   }}
 {{/dashboard-nav-wrapper}}

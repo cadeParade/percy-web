@@ -26,5 +26,11 @@ FactoryGuy.define('subscription', {
     withPaidPlan: {
       plan: FactoryGuy.belongsTo('plan', 'business'),
     },
+    withEnterprisePlan: {
+      plan: FactoryGuy.belongsTo('plan', 'enterprise'),
+    },
+    withGithubMarketplacePlan: {
+      plan: FactoryGuy.belongsTo('plan', 'githubMarketplace'),
+    },
   },
 });

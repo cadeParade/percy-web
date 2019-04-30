@@ -37,6 +37,10 @@ FactoryGuy.define('organization', {
       }),
     },
 
+    billingLocked: {
+      billingLocked: true,
+    },
+
     withGithubIntegration: {
       versionControlIntegrations: () => {
         return makeList('version-control-integration', ['github']);
@@ -135,6 +139,14 @@ FactoryGuy.define('organization', {
     withFreePlan: {subscription: () => make('subscription', 'withFreePlan')},
     withTrialPlan: {subscription: () => make('subscription', 'withTrialPlan')},
     withPaidPlan: {subscription: () => make('subscription', 'withPaidPlan')},
+    withLegacyPlan: {subscription: () => make('subscription', 'withCustomPlan')},
+    withEnterprisePlan: {subscription: () => make('subscription', 'withEnterprisePlan')},
+    withGithubMarketplacePlan: {
+      subscription: () => {
+        return make('subscription', 'withGithubMarketplacePlan');
+      },
+      billingLocked: true,
+    },
     withUsageNotificationSetting: {
       usageNotificationSetting: () => make('usage-notification-setting'),
     },

@@ -32,113 +32,99 @@ describe('Integration: BillingSection', function() {
       await this.render(hbs`{{organizations/billing-section
         organization=organization}}`);
 
-      expect(BillingSection.adminView.isVisible).to.equal(true);
       expect(BillingSection.memberView.isVisible).to.equal(false);
+      expect(BillingSection.adminView.isVisible).to.equal(true);
 
       await percySnapshot(this.test);
     });
 
-    describe('with paid plan', function() {
-      beforeEach(async function() {
-        organization = make('organization', 'withPaidPlan');
-        this.set('organization', organization);
-
-        // To prevent an API call and setup for admin tests:
-        organization.set('currentUserIsAdmin', true);
-      });
-
-      it('renders Usage Notification settings', async function() {
+    describe('billing card updater', function() {
+      it('does not display card updater when plan is free', async function() {
+        organization.set('subscription', make('subscription', 'withFreePlan'));
         await this.render(hbs`{{organizations/billing-section
-            organization=organization}}`);
+          organization=organization}}`);
 
-        expect(UsageNotificationSettingForm.isVisible).to.equal(true);
-
-        await percySnapshot(this.test);
+        expect(BillingSection.billingCardUpdater.isCardUpdaterVisible).to.equal(false);
       });
 
-      describe('when a setting exists', function() {
-        it('renders the data for the setting', async function() {
-          let setting = make('usage-notification-setting', {
-            organization,
-            thresholds: {'snapshot-count': ['1', '20', '33000']},
-          });
-          this.set('setting', setting);
-          await this.render(hbs`{{organizations/billing-section
-            organization=organization
-            usageNotificationSetting=setting}}`);
+      it('does not display card updater when plan is trial', async function() {
+        organization.set('subscription', make('subscription', 'withTrialPlan'));
+        await this.render(hbs`{{organizations/billing-section
+          organization=organization}}`);
 
-          expect(UsageNotificationSettingForm.isVisible).to.equal(true);
-          expect(UsageNotificationSettingForm.isVisible).to.equal(true);
-          expect(UsageNotificationSettingForm.isEnabled).to.equal(true);
-          expect(UsageNotificationSettingForm.emails.value).to.equal(setting.emails.join(' '));
-          expect(UsageNotificationSettingForm.thresholds.value).to.equal('1 20 33,000');
+        expect(BillingSection.billingCardUpdater.isCardUpdaterVisible).to.equal(false);
+      });
 
-          await percySnapshot(this.test);
-        });
+      it('does not display card updater when plan is sponsored', async function() {
+        organization.set('subscription', make('subscription', 'withSponsoredPlan'));
+        await this.render(hbs`{{organizations/billing-section
+          organization=organization}}`);
+
+        expect(BillingSection.billingCardUpdater.isCardUpdaterVisible).to.equal(false);
+      });
+
+      it('displays card updater when plan is not free or trial', async function() {
+        organization.set('subscription', make('subscription', 'withPaidPlan'));
+        await this.render(hbs`{{organizations/billing-section
+          organization=organization}}`);
+
+        expect(BillingSection.billingCardUpdater.isCardUpdaterVisible).to.equal(true);
       });
     });
 
-    describe('with a free plan', function() {
-      beforeEach(async function() {
-        organization = make('organization', 'withFreePlan');
-        this.set('organization', organization);
-
+    describe('shouldDisplayUsageStatus', function() {
+      async function _expectDoesNotDisplayWithPlan(context, orgTraits) {
+        const organization = make(...['organization'].concat(orgTraits));
         // To prevent an API call and setup for admin tests:
         organization.set('currentUserIsAdmin', true);
+
+        context.set('organization', organization);
+        await context.render(hbs`{{organizations/billing-section
+          organization=organization}}`);
+        expect(BillingSection.isUsageStatsVisible).to.equal(false);
+      }
+
+      it('does not display when billing is locked', async function() {
+        await _expectDoesNotDisplayWithPlan(this, ['withGithubMarketplacePlan']);
       });
 
-      it('does not render Usage Notification settings', async function() {
-        await this.render(hbs`{{organizations/billing-section
-            organization=organization}}`);
-
-        expect(UsageNotificationSettingForm.isVisible).to.equal(false);
-
-        await percySnapshot(this.test);
+      it('does not display when subscription is custom with no amount', async function() {
+        await _expectDoesNotDisplayWithPlan(this, ['withEnterprisePlan']);
       });
-    });
 
-    describe('with a trial plan', function() {
-      beforeEach(async function() {
-        organization = make('organization', 'withTrialPlan');
-        this.set('organization', organization);
+      it('does not display when subscription is trial', async function() {
+        await _expectDoesNotDisplayWithPlan(this, ['withTrialPlan']);
+      });
 
-        // To prevent an API call and setup for admin tests:
+      it('does not display when subscription is free', async function() {
+        await _expectDoesNotDisplayWithPlan(this, ['withFreePlan']);
+      });
+
+      it('does display when subscription is paid and not locked', async function() {
+        const organization = make('organization', 'withPaidPlan');
         organization.set('currentUserIsAdmin', true);
-      });
-
-      it('does not render Usage Notification settings', async function() {
-        await this.render(hbs`{{organizations/billing-section
-            organization=organization}}`);
-
-        expect(UsageNotificationSettingForm.isVisible).to.equal(false);
-
-        await percySnapshot(this.test);
-      });
-    });
-
-    describe('with a sponsored plan', function() {
-      beforeEach(async function() {
-        organization = make('organization', 'withSponsoredPlan');
         this.set('organization', organization);
+        await this.render(hbs`{{organizations/billing-section
+          organization=organization}}`);
 
-        // To prevent an API call and setup for admin tests:
-        organization.set('currentUserIsAdmin', true);
+        expect(BillingSection.isUsageStatsVisible).to.equal(true);
       });
 
-      it('does not render Usage Notification settings', async function() {
+      it('does display when subscription is custom with amount', async function() {
+        const organization = make('organization', 'withLegacyPlan');
+        organization.set('currentUserIsAdmin', true);
+        this.set('organization', organization);
         await this.render(hbs`{{organizations/billing-section
-            organization=organization}}`);
+          organization=organization}}`);
 
-        expect(UsageNotificationSettingForm.isVisible).to.equal(false);
-
-        await percySnapshot(this.test);
+        expect(BillingSection.isUsageStatsVisible).to.equal(true);
       });
     });
   });
 
   describe('when currentUser is a Member', function() {
     beforeEach(async function() {
-      organization = make('organization');
+      organization = make('organization', 'withPaidPlan');
       this.set('organization', organization);
 
       // To prevent an API call and setup for non-admin tests:
@@ -148,8 +134,7 @@ describe('Integration: BillingSection', function() {
     it('renders the member view', async function() {
       await this.render(hbs`{{organizations/billing-section
         organization=organization
-        currentUsageStats=currentUsageStats
-        usageNotificationSetting=setting}}`);
+       }}`);
 
       expect(BillingSection.memberView.isVisible).to.equal(true);
       expect(BillingSection.adminView.isVisible).to.equal(false);

@@ -6,11 +6,12 @@ const SELECTORS = {
   SUBMIT_CARD_BUTTON: '[data-test-submit-card-button]',
 };
 
-export const GithubEnterpriseSettings = {
+export const BillingCardUpdater = {
   isStripeCardComponentVisible: isVisible(SELECTORS.STRIPE_CARD_COMPONENT),
   clickUpdateCard: clickable(SELECTORS.UPDATE_CARD_BUTTON),
   isSubmitCardButtonDisabled: is(':disabled', SELECTORS.SUBMIT_CARD_BUTTON),
   clickSubmitCard: clickable(SELECTORS.SUBMIT_CARD_BUTTON),
+  isCardUpdaterVisible: isVisible(SELECTORS.UPDATE_CARD_BUTTON),
 };
 
-export default create(GithubEnterpriseSettings);
+export default create(BillingCardUpdater);

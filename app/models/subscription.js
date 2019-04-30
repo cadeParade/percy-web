@@ -1,5 +1,5 @@
 import {inject as service} from '@ember/service';
-import {alias, lt, not, or, readOnly} from '@ember/object/computed';
+import {alias, and, lt, not, or, readOnly} from '@ember/object/computed';
 import {computed} from '@ember/object';
 import DS from 'ember-data';
 import moment from 'moment';
@@ -26,8 +26,10 @@ export default DS.Model.extend({
   isTrial: alias('plan.isTrial'),
   isFree: alias('plan.isFree'),
   isTrialOrFree: or('plan.isTrial', 'plan.isFree'),
+  isCustom: readOnly('plan.isCustom'),
   isCustomer: not('isTrialOrFree'), // this includes sponsored plans
   isPaid: readOnly('plan.isPaid'),
+  isSponsored: readOnly('plan.isSponsored'),
 
   // This is only here so that ember-data will send the token on create, it will never be populated
   // in API responses.
@@ -43,4 +45,5 @@ export default DS.Model.extend({
     return percentage < 1 ? Math.ceil(percentage) : Math.floor(percentage);
   }),
   hasIncludedSnapshotsRemaining: lt('currentUsageRatio', 1),
+  hasCreditCard: and('isCustomer', 'plan.isNotSponsored'),
 });

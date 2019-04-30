@@ -33,6 +33,10 @@
             Billing
           {{/link-to}}
 
+          {{#link-to "organizations.organization.usage" organization.slug class="tab-bar-tab data-test-dashboard-nav-org-usage"}}
+            Usage
+          {{/link-to}}
+
           {{#link-to "organizations.organization.users" organization.slug class="tab-bar-tab data-test-dashboard-nav-org-users"}}
             Users ({{organization.seatsUsed}})
           {{/link-to}}

@@ -196,6 +196,35 @@ describe('Acceptance: Organization', function() {
       await click('[data-test-users-show-support]');
       expect(window.Intercom).to.have.been.called;
     });
+
+    describe('usage page', function() {
+      async function _canViewUsagePageWithPlan(context, subscriptionTrait) {
+        server.create('subscription', subscriptionTrait, {organization});
+        await visit(`/organizations/${organization.slug}/usage`);
+        expect(currentRouteName()).to.equal('organizations.organization.usage');
+        await percySnapshot(context.test);
+      }
+
+      it('can view usage page on trial plan', async function() {
+        await _canViewUsagePageWithPlan(this, 'withTrialPlan');
+      });
+
+      it('can view usage page on free plan', async function() {
+        await _canViewUsagePageWithPlan(this, 'withFreePlan');
+      });
+
+      it('can view usage page on paid plan', async function() {
+        await _canViewUsagePageWithPlan(this, 'withPaidPlan');
+      });
+
+      it('can view usage page on legacy plan', async function() {
+        await _canViewUsagePageWithPlan(this, 'withCustomPlan');
+      });
+
+      it('can view usage page on sponsored plan', async function() {
+        await _canViewUsagePageWithPlan(this, 'withSponsoredPlan');
+      });
+    });
   });
 
   describe('user is admin', function() {

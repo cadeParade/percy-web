@@ -1,14 +1,7 @@
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-import {inject as service} from '@ember/service';
 
 export default Route.extend(AuthenticatedRouteMixin, {
-  stripe: service('stripev3'),
-
-  beforeModel() {
-    return this.get('stripe').load();
-  },
-
   // This model loads extra includes, so it requires that we're always using .slug
   // when using link-to into this route so that the model hook always fires.
   model() {
@@ -28,6 +21,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
         return {
           organization,
           usageStats: organization.get('subscription.currentUsageStats'),
+          usageNotificationSetting: organization.get('usageNotificationSetting'),
         };
       });
   },
@@ -36,13 +30,14 @@ export default Route.extend(AuthenticatedRouteMixin, {
     controller.setProperties({
       organization: model.organization,
       currentUsageStats: model.usageStats,
+      usageNotificationSetting: model.usageNotificationSetting,
     });
   },
 
   actions: {
     didTransition() {
       const organization = this.controller.get('organization');
-      this.analytics.track('Billing Viewed', organization);
+      this.analytics.track('Usage Viewed', organization);
     },
   },
 });

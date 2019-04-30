@@ -1,55 +1,27 @@
 import Component from '@ember/component';
-import AdminMode from 'percy-web/lib/admin-mode';
-import {computed} from '@ember/object';
-import {empty, readOnly} from '@ember/object/computed';
+import {readOnly} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
+import {computed} from '@ember/object';
 
 export default Component.extend({
   subscriptionData: service(),
-
-  classNames: ['OrganizationsBillingSection'],
-  classNameBindings: ['classes'],
-
   organization: null,
-  classes: null,
-
-  isSaving: null,
-  isSaveSuccessful: null,
 
   subscription: readOnly('organization.subscription'),
-
-  showCancel: computed('organization.subscription.isCustomer', function() {
-    let isCustomer = this.get('organization.subscription.isCustomer');
-    return isCustomer && AdminMode.isAdmin();
-  }),
-
-  daysInBillingCycle: computed('dayStats', function() {
-    const dayStats = this.get('dayStats');
-    if (!dayStats) {
-      return;
-    }
-
-    return this.get('dayStats').length;
-  }),
+  plan: readOnly('subscription.plan'),
 
   isUserOrgAdmin: readOnly('organization.currentUserIsAdmin'),
 
-  isCurrentUsageStatsLoading: empty('subscription.currentUsageStats'),
-
-  actions: {
-    changingSubscription(savingPromise) {
-      this.set('isSaveSuccessful', null);
-      this.set('isSaving', true);
-      savingPromise.then(
-        () => {
-          this.set('isSaving', false);
-          this.set('isSaveSuccessful', true);
-        },
-        () => {
-          this.set('isSaving', false);
-          this.set('isSaveSuccessful', false);
-        },
-      );
+  shouldDisplayUsageStats: computed(
+    'organization.billingLocked',
+    'subscription.{isTrialOrFree}',
+    'plan.{isCustom,hasAmount,isStandardAndNotFree}',
+    function() {
+      const isStandardPlan = this.plan.isStandardAndNotFree;
+      const isCustomWithAmount = this.plan.isCustom && this.plan.hasAmount;
+      const isnotLockedOrFree =
+        !this.organization.billingLocked && !this.subscription.isTrialOrFree;
+      return isStandardPlan || (isCustomWithAmount && isnotLockedOrFree);
     },
-  },
+  ),
 });
