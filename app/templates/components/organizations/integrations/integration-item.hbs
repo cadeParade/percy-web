@@ -13,9 +13,9 @@
   </div>
 
   {{#if isEnabled}}
-    {{#link-to integrationSettingsRoute orgSlug class=buttonClasses}}
+    {{#percy-btn handleClick=(action "installButtonAction") class=buttonClasses}}
       {{buttonText}}
-    {{/link-to}}
+    {{/percy-btn}}
   {{else if (and isBeta isInstalled)}}
     <button
       class="btn btn-primary shadow-purple-lg m-0"

@@ -13,8 +13,10 @@ export default Component.extend({
   tagName: '',
   integrationName: null, // required
   integrationStatus: null,
+  customInstallButtonAction: null,
 
   intercom: service(),
+  router: service(),
 
   orgSlug: computed.readOnly('organization.slug'),
 
@@ -71,7 +73,7 @@ export default Component.extend({
 
   buttonClasses: computed('isInstalled', function() {
     return this.get('isInstalled')
-      ? 'data-test-integration-button-edit btn'
+      ? 'data-test-integration-button-edit btn text-blue-500'
       : 'data-test-integration-button-install btn btn-primary shadow-purple-lg m-0';
   }),
 
@@ -81,6 +83,14 @@ export default Component.extend({
         "Hi! I'd like to edit the details of our " + `${this.get('textName')} integration.`;
 
       this.get('intercom').showIntercom('showNewMessage', messageText);
+    },
+
+    installButtonAction() {
+      if (this.get('customInstallButtonAction')) {
+        this.get('customInstallButtonAction')();
+      } else {
+        this.get('router').transitionTo(this.get('integrationSettingsRoute'), this.get('orgSlug'));
+      }
     },
   },
 });

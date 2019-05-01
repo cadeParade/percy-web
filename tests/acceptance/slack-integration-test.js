@@ -1,4 +1,4 @@
-import {beforeEach} from 'mocha';
+import {afterEach, beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import sinon from 'sinon';
 import {currentRouteName, visit} from '@ember/test-helpers';
@@ -6,6 +6,8 @@ import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import utils from 'percy-web/lib/utils';
 import SlackIntegrationPage from 'percy-web/tests/pages/organizations/slack-integration-page';
 import SlackConfigForm from 'percy-web/tests/pages/components/forms/slack-config';
+import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
+import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
 
 describe('Acceptance: Slack Integration', function() {
   setupAcceptance();
@@ -27,6 +29,26 @@ describe('Acceptance: Slack Integration', function() {
   });
 
   describe('without an integration', function() {
+    let windowStub;
+
+    beforeEach(function() {
+      windowStub = sinon.stub(utils, 'replaceWindowLocation').returns(true);
+      withVariation(this.owner, 'slack-integration', true);
+    });
+
+    afterEach(function() {
+      windowStub.restore();
+    });
+
+    it('integrations list page kicks off the OAuth process', async function() {
+      await IntegrationsIndexPage.visitIntegrationsPage({orgSlug: organization.slug});
+
+      await IntegrationsIndexPage.slackIntegration.install();
+
+      expect(windowStub).to.have.been.calledWith('fake_slack_oauth_url');
+      await percySnapshot(this.test.fullTitle());
+    });
+
     it('renders', async function() {
       await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
 
@@ -35,23 +57,17 @@ describe('Acceptance: Slack Integration', function() {
 
       await percySnapshot(this.test.fullTitle());
     });
-
-    it('can begin the Slack OAuth process', async function() {
-      const windowStub = sinon.stub(utils, 'replaceWindowLocation');
-      await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
-
-      await SlackIntegrationPage.addChannelButton.click();
-
-      expect(windowStub).to.have.been.calledWith('fake_slack_oauth_url');
-      await percySnapshot(this.test.fullTitle());
-
-      windowStub.restore();
-    });
   });
 
   describe('with an integration without configs', function() {
+    let windowStub;
+
     beforeEach(function() {
       server.create('slackIntegration', {organization});
+      windowStub = sinon.stub(utils, 'replaceWindowLocation').returns(true);
+    });
+    afterEach(function() {
+      windowStub.restore();
     });
 
     it('renders correctly', async function() {
@@ -76,15 +92,12 @@ describe('Acceptance: Slack Integration', function() {
     });
 
     it('can begin the Slack OAuth process', async function() {
-      const windowStub = sinon.stub(utils, 'replaceWindowLocation');
       await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
 
       await SlackIntegrationPage.addChannelButton.click();
 
       expect(windowStub).to.have.been.calledWith('fake_slack_oauth_url');
       await percySnapshot(this.test.fullTitle());
-
-      windowStub.restore();
     });
   });
 
