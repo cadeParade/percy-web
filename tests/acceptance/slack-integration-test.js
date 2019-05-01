@@ -144,6 +144,18 @@ describe('Acceptance: Slack Integration', function() {
     });
 
     it('can add a project', async function() {
+      server.post('/slack-integrations/:slack_integration_id/slack-integration-configs', function(
+        schema,
+      ) {
+        const attrs = this.normalizedRequestAttrs();
+        expect(attrs.projectId).to.equal(null);
+        return schema.slackIntegrationConfigs.create({
+          slackIntegrationId: attrs.slackIntegrationId,
+          projectId: attrs.projectId,
+          notificationTypes: attrs.notificationTypes,
+        });
+      });
+
       await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
       expect(SlackIntegrationPage.integrationItems[0].configItems.length).to.equal(3);
 

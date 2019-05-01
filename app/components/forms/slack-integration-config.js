@@ -36,7 +36,7 @@ export default BaseFormComponent.extend({
 
     customSave() {
       const changeset = this.get('changeset');
-      if (changeset.get('project.id') === ALL_PROJECTS_ID) {
+      if (changeset.get('projectId') === ALL_PROJECTS_ID) {
         this.get('changeset').set('projectId', null);
       }
       this.send('save');
