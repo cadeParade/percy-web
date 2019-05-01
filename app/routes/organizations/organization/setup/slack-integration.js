@@ -32,8 +32,10 @@ export default Route.extend(AuthenticatedRouteMixin, {
       () => {
         organization.reload().then(() => {
           this.replaceWith(
-            'organizations.organization.integrations.slack',
+            'organizations.organization.integrations.slack.slack-config',
             organization.get('slug'),
+            newIntegration.id,
+            'new',
           );
         });
       },

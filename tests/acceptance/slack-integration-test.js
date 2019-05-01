@@ -1,7 +1,7 @@
 import {beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import sinon from 'sinon';
-import {currentRouteName} from '@ember/test-helpers';
+import {currentRouteName, visit} from '@ember/test-helpers';
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import utils from 'percy-web/lib/utils';
 import SlackIntegrationPage from 'percy-web/tests/pages/organizations/slack-integration-page';
@@ -14,6 +14,16 @@ describe('Acceptance: Slack Integration', function() {
   setupSession(function(server) {
     organization = server.create('organization', 'withUser', 'withPaidPlan');
     server.create('project', {organization});
+  });
+
+  describe('after connecting a channel', function() {
+    it('redirects to the new config form', async function() {
+      await visit(`/organizations/${organization.slug}/setup/slack-integration`);
+
+      expect(SlackConfigForm.isVisible).to.equal(true);
+
+      await percySnapshot(this.test.fullTitle());
+    });
   });
 
   describe('without an integration', function() {

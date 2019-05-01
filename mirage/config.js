@@ -1,4 +1,5 @@
 import Mirage from 'ember-cli-mirage';
+import faker from 'faker';
 
 export default function() {
   // Enable this to see verbose request logging from mirage:
@@ -310,6 +311,13 @@ export default function() {
   this.get('/repos/:id');
   this.post('/reviews');
 
+  // Slack
+  this.post('/organizations/:organization_id/slack-integrations', function(schema) {
+    return schema.slackIntegrations.create({
+      teamName: faker.company.companyName(),
+      channelName: `#${faker.lorem.slug()}`,
+    });
+  });
   this.delete('/slack-integrations/:id', function(schema, request) {
     schema.slackIntegrations.find(request.params.id).destroy();
     return new Mirage.Response(204);
@@ -321,12 +329,11 @@ export default function() {
     schema,
   ) {
     const attrs = this.normalizedRequestAttrs();
-    const config = schema.slackIntegrationConfigs.create({
+    return schema.slackIntegrationConfigs.create({
       slackIntegrationId: attrs.slackIntegrationId,
       projectId: attrs.projectId,
       notificationTypes: attrs.notificationTypes,
     });
-    return config;
   });
   this.patch('/slack-integrations/:slack_integration_id/slack-integration-configs/:id', function(
     schema,
