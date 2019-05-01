@@ -73,6 +73,11 @@ export default Service.extend({
   },
 
   async _getCurrentSequence(build) {
+    // assume redirecting to demo project build 2 with groups when no build is present
+    if (!build) {
+      return GROUP_SEQUENCE;
+    }
+
     const snapshots = await build.get('snapshots');
 
     // only need to know if there is a group, don't need them to be in order
