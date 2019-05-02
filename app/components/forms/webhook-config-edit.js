@@ -2,12 +2,28 @@ import {computed} from '@ember/object';
 import BaseFormComponent from './base';
 import WebhookConfigEditValidations from '../../validations/webhook-config-edit';
 
-const SUBSCRIBABLE_EVENTS = {
-  ping: 'Webhook notification settings have been updated',
-  build_created: 'A build has been created',
-  build_approved: 'A build has been approved',
-  build_finished: 'A build has finished',
-};
+const SUBSCRIBABLE_EVENTS = [
+  {
+    label: 'ping',
+    value: 'ping',
+    description: 'Webhook notification settings have been updated',
+  },
+  {
+    label: 'build_created',
+    value: 'build_created',
+    description: 'A build has been created',
+  },
+  {
+    label: 'build_approved',
+    value: 'build_approved',
+    description: 'A build has been approved',
+  },
+  {
+    label: 'build_finished',
+    value: 'build_finished',
+    description: 'A build has finished',
+  },
+];
 
 const FORM_FIELD_LABELS = {
   url: {
@@ -57,5 +73,5 @@ export default BaseFormComponent.extend({
 
   labels: FORM_FIELD_LABELS,
 
-  allValues: SUBSCRIBABLE_EVENTS,
+  allOptions: SUBSCRIBABLE_EVENTS,
 });

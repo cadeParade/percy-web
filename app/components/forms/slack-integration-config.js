@@ -1,15 +1,11 @@
 import BaseFormComponent from './base';
 import {computed} from '@ember/object';
 import {alias, bool, readOnly} from '@ember/object/computed';
-import {ALL_PROJECTS_ID} from 'percy-web/models/slack-integration-config';
+import {
+  ALL_PROJECTS_ID,
+  SLACK_NOTIFICATION_OPTIONS,
+} from 'percy-web/models/slack-integration-config'; // eslint-disable-line
 import {selectedProjectOption} from 'percy-web/components/organizations/integrations/slack-details-container'; // eslint-disable-line
-
-const SLACK_NOTIFICATION_OPTIONS = {
-  approved: 'Builds approved by anyone on the team',
-  finished_unreviewed_snapshots: 'Builds that finished but need review',
-  finished_no_changes: 'Builds with no visual changes',
-  finished_auto_approved_branch: 'Builds auto-approved from your auto-approved branches.',
-};
 
 export default BaseFormComponent.extend({
   model: alias('slackIntegrationConfig'),

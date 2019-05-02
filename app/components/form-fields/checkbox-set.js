@@ -2,16 +2,17 @@ import {computed, get} from '@ember/object';
 import Component from '@ember/component';
 
 export default Component.extend({
+  allOptions: null, // array of objects with keys of label, value, and description
   changeset: null,
   title: null,
   property: null,
+  subtitle: null,
+  labelClasses: null,
   validateProperty: () => {}, // make this an optional property
 
-  // key-value map of the attribute name => description.
-  // This might have to change to an array of {title, value, description} later.
   init() {
     this._super(...arguments);
-    this.allValues = this.allValues || {};
+    this.allOptions = this.allOptions || {};
   },
 
   classNames: ['FormFieldsCheckboxSet'],

@@ -2,6 +2,28 @@ import DS from 'ember-data';
 
 export const ALL_PROJECTS_ID = 'allProjects';
 export const ALL_PROJECTS_LABEL = 'All projects';
+export const SLACK_NOTIFICATION_OPTIONS = [
+  {
+    label: 'Approved',
+    value: 'approved',
+    description: 'Builds approved by anyone on the team',
+  },
+  {
+    label: 'Unreviewed',
+    value: 'finished_unreviewed_snapshots',
+    description: 'Builds that finished but need review',
+  },
+  {
+    label: 'No changes',
+    value: 'finished_no_changes',
+    description: 'Builds with no visual changes',
+  },
+  {
+    label: 'Auto-Approved',
+    value: 'finished_auto_approved_branch',
+    description: 'Builds auto-approved from your auto-approved branches.',
+  },
+];
 
 export default DS.Model.extend({
   slackIntegration: DS.belongsTo('slack-integration', {async: false}),
