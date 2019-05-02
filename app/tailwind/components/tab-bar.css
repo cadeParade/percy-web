@@ -17,6 +17,5 @@
 
 .tab-bar-tab.active {
   @apply text-purple-600;
-  @apply pointer-events-none;
   @apply shadow-purple-underline;
 }
