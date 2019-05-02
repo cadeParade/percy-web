@@ -8,9 +8,7 @@
           </div>
           <div class="flex-shrink">
             {{#each notificationLabels as |type|}}
-              <code class="mr-1" data-test-notification-type>
-                {{type}}
-              </code>
+              <code class="mr-1 lowercase" data-test-notification-type>{{type}}</code>
             {{/each}}
           </div>
         </div>
