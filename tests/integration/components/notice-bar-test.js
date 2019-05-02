@@ -104,6 +104,7 @@ describe('Integration: Notice Bar', function() {
 
     describe('when no trial days are left', function() {
       it('shows "Your trial ends today!" and "See plans"', async function() {
+        organization.subscription.set('trialDaysRemaining', 0);
         await this.render(hbs`{{notice-bar organization=organization}}`);
 
         expect(NoticeBar.message.text).to.equal('Your trial ends today!');

@@ -71,55 +71,6 @@ describe('Integration: BillingSection', function() {
         expect(BillingSection.billingCardUpdater.isCardUpdaterVisible).to.equal(true);
       });
     });
-
-    describe('shouldDisplayUsageStatus', function() {
-      async function _expectDoesNotDisplayWithPlan(context, orgTraits) {
-        const organization = make(...['organization'].concat(orgTraits));
-        // To prevent an API call and setup for admin tests:
-        organization.set('currentUserIsAdmin', true);
-
-        context.set('organization', organization);
-        await context.render(hbs`{{organizations/billing-section
-          organization=organization}}`);
-        expect(BillingSection.isUsageStatsVisible).to.equal(false);
-      }
-
-      it('does not display when billing is locked', async function() {
-        await _expectDoesNotDisplayWithPlan(this, ['withGithubMarketplacePlan']);
-      });
-
-      it('does not display when subscription is custom with no amount', async function() {
-        await _expectDoesNotDisplayWithPlan(this, ['withEnterprisePlan']);
-      });
-
-      it('does not display when subscription is trial', async function() {
-        await _expectDoesNotDisplayWithPlan(this, ['withTrialPlan']);
-      });
-
-      it('does not display when subscription is free', async function() {
-        await _expectDoesNotDisplayWithPlan(this, ['withFreePlan']);
-      });
-
-      it('does display when subscription is paid and not locked', async function() {
-        const organization = make('organization', 'withPaidPlan');
-        organization.set('currentUserIsAdmin', true);
-        this.set('organization', organization);
-        await this.render(hbs`{{organizations/billing-section
-          organization=organization}}`);
-
-        expect(BillingSection.isUsageStatsVisible).to.equal(true);
-      });
-
-      it('does display when subscription is custom with amount', async function() {
-        const organization = make('organization', 'withLegacyPlan');
-        organization.set('currentUserIsAdmin', true);
-        this.set('organization', organization);
-        await this.render(hbs`{{organizations/billing-section
-          organization=organization}}`);
-
-        expect(BillingSection.isUsageStatsVisible).to.equal(true);
-      });
-    });
   });
 
   describe('when currentUser is a Member', function() {

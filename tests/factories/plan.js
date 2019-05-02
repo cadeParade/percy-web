@@ -14,5 +14,6 @@ FactoryGuy.define('plan', {
     sponsored: planFixtureData.sponsored,
     enterprise: planFixtureData.enterprise,
     githubMarketplace: planFixtureData.githubMarketplace,
+    legacy: planFixtureData.legacy,
   },
 });

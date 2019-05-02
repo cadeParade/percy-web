@@ -13,9 +13,12 @@ export default Route.extend(AuthenticatedRouteMixin, {
   // when using link-to into this route so that the model hook always fires.
   model() {
     const organization = this.modelFor('organizations.organization');
-    const includes = 'subscription.current-usage-stats';
+    const plan = organization.subscription.plan;
+    // Don't include usage stats if we don't have to. That query is very slow.
+    const shouldIncludeUsageStats = _shouldIncludeUsageStats(plan);
+    const includes = shouldIncludeUsageStats ? 'subscription.current-usage-stats' : '';
 
-    return this.get('store')
+    return this.store
       .findRecord('organization', organization.id, {
         reload: true,
         include: includes,
@@ -27,7 +30,9 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
         return {
           organization,
-          usageStats: organization.get('subscription.currentUsageStats'),
+          usageStats: shouldIncludeUsageStats
+            ? organization.get('subscription.currentUsageStats')
+            : null,
         };
       });
   },
@@ -41,8 +46,12 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
   actions: {
     didTransition() {
-      const organization = this.controller.get('organization');
+      const organization = this.controller.organization;
       this.analytics.track('Billing Viewed', organization);
     },
   },
 });
+
+function _shouldIncludeUsageStats(plan) {
+  return plan.isCurrentPaidPlan || (plan.isDeprecated && plan.hasAmount);
+}

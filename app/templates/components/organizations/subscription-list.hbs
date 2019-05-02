@@ -1,63 +1,6 @@
-{{#if plan.isTrial}}
-  <div class="Alert Alert--info">
-    <strong>Trial ends {{moment-from-now subscription.trialEnd}}</strong>.
-    <br>
-    <br>
-    After the trial expires, you will be moved to the free plan which includes 5,000 snapshots per month. You can upgrade to a paid plan at any time below.
-  </div>
-{{/if}}
-<div class="bg-white rounded shadow-1 border-t p-2 mb-2">
-  <h2 class="text-xl font-semibold mb-1">Subscription</h2>
-  {{#if plan.isFree}}
-    <div class="Alert Alert--info">
-      You're currently on the <strong>free plan</strong>, which provides {{format-number subscriptionData.PLANS.[0].usageIncluded precision=0}} snapshots per month. You can upgrade below or feel free to <a href="#" {{action "showSupport"}} data-test-free-plan-support>reach out</a> with any questions!
-    </div>
-  {{/if}}
-  {{#if plan.isCustom}}
-    <div class="p-2 bg-gray-000 rounded border mb-2">
-      <div>
-        <div class="pr-2 text-xl font-semibold">
-          {{plan.name}}
-        </div>
-        <div class="flex">
-          <div class="flex-1 pr-2">
-            <div>
-              <strong>
-                {{format-number plan.usageIncluded}} snapshots / month
-              </strong>
-            </div>
-            {{#unless plan.isUpgradeable}}
-              <div>
-                {{plan.workerLimit}} concurrent renderers
-              </div>
-            {{/unless}}
-            <div>
-              {{#if plan.allowOverages}}${{plan.overageUnitCost}} / additional snapshot{{else}}No additional snapshots allowed{{/if}}
-            </div>
-            <div>
-              {{plan.historyLimitDays}} day history
-            </div>
-            {{#unless plan.isTrial}}
-              {{#if plan.isUpgradeable}}
-                <div class="mt-2">
-                  You are on a legacy pricing plan, you can change to a modern plan below.
-                </div>
-              {{else}}
-                <div class="mt-2">
-                  You are on a custom plan, feel free to <a href="#" {{action "showSupport"}} data-test-custom-plan-support>reach out</a> with any questions.
-                </div>
-              {{/if}}
-            {{/unless}}
-          </div>
-          <div style="max-width: 150px" class="flex-1 pr-2"></div>
-          <div style="max-width: 150px" class="flex-1 pr-2 flex items-start justify-end">
-            <a href="#" disabled="disabled" class="btn btn-primary shadow-purple-lg mb-0">Selected Plan</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  {{/if}}
-  {{#if plan.isUpgradeable}}
+{{#if plan.isUpgradeable}}
+  <div class="bg-white rounded shadow-1 border-t p-2 mb-2">
+    <h2 class="text-xl font-semibold mb-1">Subscription</h2>
     <div class="bg-gray-000 rounded border">
       {{#each subscriptionData.PLANS as |planData|}}
         {{organizations/subscription-list-item
@@ -82,10 +25,11 @@
         </div>
       </div>
     </div>
-  {{/if}}
-</div>
+  </div>
+
+  <div class="rounded border p-2 mb-2">
+    <strong>Note:</strong> For more information, see {{#link-to "pricing" class="font-semibold"}}Pricing{{/link-to}}. Feel free to <a class="font-semibold" href="#" {{action "showSupport"}} data-test-more-information-support>reach out</a> with any questions.
+  </div>
+{{/if}}
 
 
-<div class="rounded border p-2 mb-2">
-  <strong>Note:</strong> For more information, see {{#link-to "pricing" class="font-semibold"}}Pricing{{/link-to}}. Feel free to <a class="font-semibold" href="#" {{action "showSupport"}} data-test-more-information-support>reach out</a> with any questions.
-</div>

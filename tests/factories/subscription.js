@@ -1,5 +1,6 @@
 import FactoryGuy from 'ember-data-factory-guy';
 import faker from 'faker';
+import moment from 'moment';
 
 FactoryGuy.define('subscription', {
   default: {
@@ -22,15 +23,16 @@ FactoryGuy.define('subscription', {
     },
     withTrialPlan: {
       plan: FactoryGuy.belongsTo('plan', 'trial'),
+      trialEnd: () => new moment().add(7, 'days'),
     },
     withPaidPlan: {
-      plan: FactoryGuy.belongsTo('plan', 'business'),
+      plan: FactoryGuy.belongsTo('plan', 'standard'),
+    },
+    withLegacyPlan: {
+      plan: FactoryGuy.belongsTo('plan', 'legacy'),
     },
     withEnterprisePlan: {
       plan: FactoryGuy.belongsTo('plan', 'enterprise'),
-    },
-    withGithubMarketplacePlan: {
-      plan: FactoryGuy.belongsTo('plan', 'githubMarketplace'),
     },
   },
 });

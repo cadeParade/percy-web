@@ -1,5 +1,5 @@
 import {inject as service} from '@ember/service';
-import {alias, and, lt, not, or, readOnly} from '@ember/object/computed';
+import {and, lt, not, readOnly} from '@ember/object/computed';
 import {computed} from '@ember/object';
 import DS from 'ember-data';
 import moment from 'moment';
@@ -23,10 +23,9 @@ export default DS.Model.extend({
   }),
   trialStart: DS.attr('date'),
   trialEnd: DS.attr('date'),
-  isTrial: alias('plan.isTrial'),
-  isFree: alias('plan.isFree'),
-  isTrialOrFree: or('plan.isTrial', 'plan.isFree'),
-  isCustom: readOnly('plan.isCustom'),
+  isTrial: readOnly('plan.isTrial'),
+  isFree: readOnly('plan.isFree'),
+  isTrialOrFree: readOnly('plan.isTrialOrFree'),
   isCustomer: not('isTrialOrFree'), // this includes sponsored plans
   isPaid: readOnly('plan.isPaid'),
   isSponsored: readOnly('plan.isSponsored'),

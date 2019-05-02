@@ -40,17 +40,8 @@ describe('Integration: SubscriptionList', function() {
       organization.set('_filteredOrganizationUsers', [organizationUser]);
     });
 
-    it('calls intercom service when clicking free plan support', async function() {
-      await organization.set('subscription', make('subscription', 'withFreePlan'));
-      await testShowSupportCalled(this, organization, 'clickFreePlanSupport');
-    });
-
-    it('calls intercom service when clicking custom plan support', async function() {
-      await organization.set('subscription', make('subscription', 'withCustomPlan'));
-      await testShowSupportCalled(this, organization, 'clickCustomPlanSupport');
-    });
-
     it('calls intercom service when clicking more info support', async function() {
+      await organization.set('subscription', make('subscription', 'withPaidPlan'));
       await testShowSupportCalled(this, organization, 'clickMoreInformationSupport');
     });
 

@@ -1,0 +1,60 @@
+<div class="bg-white rounded shadow-1 border-t b p-2 mb-2" data-test-current-plan>
+  <h2 class="text-xl font-semibold mb-1">Current plan</h2>
+  <div class="p-2 bg-gray-000 rounded border mb-2">
+    <div class="flex">
+
+      <div class="w-1/3 items-start mr-3 pr-2 text-xl font-semibold">
+        {{plan.name}} {{#if plan.isDeprecated}}(Legacy){{/if}}
+      </div>
+
+      <div class="w-2/3">
+        <div class="mb-3">
+          <div>
+            <strong data-test-snapshots-included>{{format-number plan.usageIncluded}} snapshots/month included.</strong>
+
+            {{#if plan.userLimit}}
+              <span data-test-user-limit>{{plan.userLimit}} team members.</span>
+            {{/if}}
+          </div>
+
+          <div>
+            {{#if shouldShowMonthlyCost}}
+              <strong data-test-monthly-cost>${{displayAmount}}/month</strong>
+              {{#if plan.allowOverages}}<span data-test-overages> plus additional snapshots at ${{plan.overageUnitCost}}/snapshot</span>{{/if}}.
+            {{else if shouldShowOverageInfo}}
+               <span data-test-overages>Additional snapshots at ${{plan.overageUnitCost}}/snapshot.</span>
+            {{/if}}
+          </div>
+        </div>
+
+        {{#if shouldDisplayUsageStats}}
+          <div class="mb-3" data-test-current-usage-stats>
+            <div class="font-semibold">This billing period:</div>
+            <div>Current usage: <span class="font-semibold">{{format-number currentUsageStats.total}} snapshots</span>{{snapshot-explanation-tooltip}}</div>
+            <div>Estimated cost: <span class="font-semibold">{{format-currency currentUsageStats.currentCostDollars}}</span></div>
+          </div>
+        {{/if}}
+
+        {{#if plan.isTrial}}
+          <div data-test-trial-blurb>
+            <strong>Trial ends {{moment-from-now subscription.trialEnd}}</strong>.
+            <br>
+            After the trial expires, you will be moved to the free plan which includes 5,000 snapshots per month. You can upgrade to a paid plan at any time below.
+          </div>
+        {{else if plan.isFree}}
+          <div data-test-free-blurb>
+            You're currently on the <strong>free plan</strong>, which provides {{format-number plan.usageIncluded}} snapshots per month. You can upgrade below or feel free to <a href="#" {{action "showSupport"}} data-test-free-plan-support>reach out</a> with any questions.
+          </div>
+        {{else if plan.isDeprecated}}
+          <div data-test-deprecated-blurb>
+            You are on a legacy pricing plan, you can change to a modern plan below.
+          </div>
+        {{else if (not plan.isFree)}}
+          <div data-test-contact-us-blurb>
+            Please <span class="text-blue-500 cursor-pointer" {{action "showIntercom"}}>contact us</span> with any questions about your plan.
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</div>

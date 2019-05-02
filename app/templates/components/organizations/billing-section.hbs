@@ -10,10 +10,13 @@
          This page is only visible to you as a Percy superuser with admin mode enabled.
       </div>
     {{/if}}
+
     <section data-test-admin-view>
-      {{#if shouldDisplayUsageStats}}
-        {{organizations/current-usage currentUsageStats=currentUsageStats plan=subscription.plan}}
-      {{/if}}
+      {{organizations/current-plan
+        organization=organization
+        currentUsageStats=currentUsageStats
+      }}
+
       {{organizations/subscription-list
         organization=organization
       }}

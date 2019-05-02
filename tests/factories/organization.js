@@ -139,14 +139,8 @@ FactoryGuy.define('organization', {
     withFreePlan: {subscription: () => make('subscription', 'withFreePlan')},
     withTrialPlan: {subscription: () => make('subscription', 'withTrialPlan')},
     withPaidPlan: {subscription: () => make('subscription', 'withPaidPlan')},
-    withLegacyPlan: {subscription: () => make('subscription', 'withCustomPlan')},
     withEnterprisePlan: {subscription: () => make('subscription', 'withEnterprisePlan')},
-    withGithubMarketplacePlan: {
-      subscription: () => {
-        return make('subscription', 'withGithubMarketplacePlan');
-      },
-      billingLocked: true,
-    },
+    withLegacyPlan: {subscription: () => make('subscription', 'withLegacyPlan')},
     withUsageNotificationSetting: {
       usageNotificationSetting: () => make('usage-notification-setting'),
     },
