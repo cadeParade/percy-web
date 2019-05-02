@@ -1,11 +1,19 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object';
+import {alias} from '@ember/object/computed';
 import {selectedProjectOption} from 'percy-web/components/organizations/integrations/slack-details-container'; // eslint-disable-line
+import {SLACK_NOTIFICATION_OPTIONS} from 'percy-web/models/slack-integration-config';
 
 export default Component.extend({
   slackIntegrationConfig: null,
   projectOptions: null,
 
+  notificationTypes: alias('slackIntegrationConfig.notificationTypes'),
+  notificationLabels: computed('notificationTypes', function() {
+    return this.get('notificationTypes').map(function(setting) {
+      return SLACK_NOTIFICATION_OPTIONS.findBy('value', setting).label;
+    });
+  }),
   projectName: computed('projectOptions', 'slackIntegrationConfig.projectId', function() {
     const selectedProject = selectedProjectOption(
       this.get('projectOptions'),

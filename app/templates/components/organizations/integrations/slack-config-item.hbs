@@ -3,12 +3,12 @@
     <div class="flex justify-start items-center">
       <div>
         <div class="flex justify-start items-center">
-          <div class="text-xl font-semibold truncate mr-2" data-test-project-name>
+          <div class="text-lg font-semibold mr-2" data-test-project-name>
             {{projectName}}
           </div>
           <div class="flex-shrink">
-            {{#each slackIntegrationConfig.notificationTypes as |type|}}
-              <code class="truncate mr-1" data-test-notification-type>
+            {{#each notificationLabels as |type|}}
+              <code class="mr-1" data-test-notification-type>
                 {{type}}
               </code>
             {{/each}}
