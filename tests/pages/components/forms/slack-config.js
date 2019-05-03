@@ -6,6 +6,7 @@ const SELECTORS = {
   SAVE_BUTTON: '[data-test-form-submit-button]',
   PROJECT: '[data-test-project-box]',
   NOTIFICATION_TYPES: '[data-test-checkbox-set-input]',
+  DELETE_BUTTON: '[data-test-delete-button] button',
 };
 
 export const SlackConfig = {
@@ -18,6 +19,7 @@ export const SlackConfig = {
     value: is(':checked', 'input'),
     click: clickable('input'),
   }),
+  deleteButton: {scope: SELECTORS.DELETE_BUTTON},
 };
 
 export default create(SlackConfig);

@@ -67,12 +67,14 @@
         {{/if}}
 
         {{#if isEditing}}
-          {{#percy-btn
-            handleClick=(action "deleteSlackIntegrationConfig")
-            class="border border-red-100 text-red-600"
-          }}
-            Remove project from {{channelName}}
-          {{/percy-btn}}
+          <div data-test-delete-button>
+            {{#percy-btn
+              handleClick=(action "deleteSlackIntegrationConfig")
+              class="border border-red-100 text-red-600"
+            }}
+              Remove project from {{channelName}}
+            {{/percy-btn}}
+          </div>
         {{/if}}
       </div>
    </form>

@@ -343,6 +343,13 @@ export default function() {
     config.update(attrs);
     return config;
   });
+  this.delete('/slack-integrations/:slack_integration_id/slack-integration-configs/:id', function(
+    schema,
+    request,
+  ) {
+    schema.slackIntegrationConfigs.find(request.params.id).destroy();
+    return new Mirage.Response(204);
+  });
 }
 
 const _error401 = new Mirage.Response(

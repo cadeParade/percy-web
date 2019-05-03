@@ -188,5 +188,22 @@ describe('Acceptance: Slack Integration', function() {
 
       await percySnapshot(this.test.fullTitle());
     });
+
+    it('can delete a config', async function() {
+      let confirmationAlertStub = sinon.stub(utils, 'confirmMessage').returns(true);
+      await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
+      expect(SlackIntegrationPage.integrationItems[0].configItems.length).to.equal(3);
+      await SlackIntegrationPage.integrationItems[0].configItems[0].editButton.click();
+      await percySnapshot(this.test.fullTitle() + ' | edit slack-config form');
+
+      await SlackConfigForm.deleteButton.click();
+
+      expect(currentRouteName()).to.equal('organizations.organization.integrations.slack.index');
+      expect(SlackIntegrationPage.integrationItems[0].configItems.length).to.equal(2);
+
+      await percySnapshot(this.test.fullTitle());
+
+      confirmationAlertStub.restore();
+    });
   });
 });

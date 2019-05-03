@@ -38,8 +38,8 @@ export default BaseFormComponent.extend({
       this.send('save');
     },
 
-    deleteSlackIntegrationConfig(slackIntegrationConfig) {
-      this.get('deleteSlackIntegrationConfig')(slackIntegrationConfig);
+    deleteSlackIntegrationConfig() {
+      this.get('deleteSlackIntegrationConfig')(this.get('slackIntegrationConfig'));
     },
   },
 });

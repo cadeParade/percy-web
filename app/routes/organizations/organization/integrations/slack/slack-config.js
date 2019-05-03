@@ -1,8 +1,8 @@
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import {hash} from 'rsvp';
 import utils from 'percy-web/lib/utils';
 import {ALL_PROJECTS_ID} from 'percy-web/models/slack-integration-config';
-import {hash} from 'rsvp';
 
 export default Route.extend(AuthenticatedRouteMixin, {
   model(params) {
@@ -38,12 +38,24 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
   actions: {
     deleteSlackIntegrationConfig(slackIntegrationConfig) {
-      const confirmationMessage =
-        'Are you sure you want remove this project from this Slack integration?';
+      const slackIntegration = slackIntegrationConfig.get('slackIntegration');
+      const confirmationMessage = `Are you sure you want remove this project from your ${
+        slackIntegration.channelName
+      } Slack integration?`;
       if (!utils.confirmMessage(confirmationMessage)) {
         return;
       }
-      slackIntegrationConfig.destroyRecord();
+      slackIntegrationConfig.destroyRecord().then(() => {
+        this.get('flashMessages').success(
+          `Successfully removed project configuration from your ${
+            slackIntegration.channelName
+          } Slack integration`,
+        );
+        this.transitionTo(
+          'organizations.organization.integrations.slack',
+          slackIntegration.get('organization.slug'),
+        );
+      });
     },
   },
 });
