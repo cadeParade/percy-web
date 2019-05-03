@@ -7,6 +7,8 @@ import {RepoIntegrator} from 'percy-web/tests/pages/components/repo-integrator';
 
 const SELECTORS = {
   DEMO_ENV_VAR: '[data-test-env-var-demo]',
+  SLACK_INFO: '[data-test-slack-info]',
+  SLACK_INTEGRATIONS_LINK: '[data-test-slack-organization-integrations-link]',
 };
 
 export const ProjectSettingsPage = {
@@ -23,6 +25,9 @@ export const ProjectSettingsPage = {
   webhookConfigList: WebhookConfigList,
 
   envVarText: text(SELECTORS.DEMO_ENV_VAR),
+
+  slackInfo: {scope: SELECTORS.SLACK_INFO},
+  slackIntegrationsLink: {scope: SELECTORS.SLACK_INTEGRATIONS_LINK},
 };
 
 export default create(ProjectSettingsPage);

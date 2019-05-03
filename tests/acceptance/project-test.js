@@ -12,6 +12,8 @@ import {selectChoose} from 'ember-power-select/test-support/helpers';
 import UserMenu from 'percy-web/tests/pages/components/user-menu';
 import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
 import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
+import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
+import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
 
 describe('Acceptance: Project', function() {
   setupAcceptance();
@@ -199,6 +201,23 @@ describe('Acceptance: Project', function() {
       expect(currentRouteName()).to.equal(
         'organization.project.settings.integrations.webhooks.webhook-config',
       );
+    });
+
+    it('displays the Slack section', async function() {
+      withVariation(this.owner, 'slack-integration', true);
+
+      await ProjectSettingsPage.visitProjectSettings({
+        orgSlug: organization.slug,
+        projectSlug: enabledProject.slug,
+      });
+      expect(ProjectSettingsPage.slackInfo.isVisible).to.equal(true);
+      await percySnapshot(this.test);
+
+      await ProjectSettingsPage.slackIntegrationsLink.click();
+      expect(IntegrationsIndexPage.isVisible).to.equal(true);
+      await percySnapshot(this.test);
+
+      withVariation(this.owner, 'slack-integration', false);
     });
 
     describe('browser toggling', function() {
