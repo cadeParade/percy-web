@@ -40,7 +40,7 @@ describe('Acceptance: Slack Integration', function() {
       windowStub.restore();
     });
 
-    it('integrations list page kicks off the OAuth process', async function() {
+    it('integrations page starts the OAuth process & can render a failure error', async function() {
       await IntegrationsIndexPage.visitIntegrationsPage({orgSlug: organization.slug});
 
       await IntegrationsIndexPage.slackIntegration.install();
@@ -91,7 +91,7 @@ describe('Acceptance: Slack Integration', function() {
       confirmationAlertStub.restore();
     });
 
-    it('can begin the Slack OAuth process', async function() {
+    it('can start the OAuth process & can render a failure error', async function() {
       await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
 
       await SlackIntegrationPage.addChannelButton.click();

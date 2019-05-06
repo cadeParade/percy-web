@@ -3,8 +3,11 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 import {hash} from 'rsvp';
 import utils from 'percy-web/lib/utils';
 import {ALL_PROJECTS_ID} from 'percy-web/models/slack-integration-config';
+import {inject as service} from '@ember/service';
 
 export default Route.extend(AuthenticatedRouteMixin, {
+  flashMessages: service(),
+
   model(params) {
     const organization = this.modelFor('organizations.organization');
     const slackIntegration = this.store.peekRecord('slackIntegration', params.slack_integration_id);
@@ -45,17 +48,25 @@ export default Route.extend(AuthenticatedRouteMixin, {
       if (!utils.confirmMessage(confirmationMessage)) {
         return;
       }
-      slackIntegrationConfig.destroyRecord().then(() => {
-        this.get('flashMessages').success(
-          `Successfully removed project configuration from your ${
-            slackIntegration.channelName
-          } Slack integration`,
-        );
-        this.transitionTo(
-          'organizations.organization.integrations.slack',
-          slackIntegration.get('organization.slug'),
-        );
-      });
+      slackIntegrationConfig
+        .destroyRecord()
+        .then(() => {
+          this.get('flashMessages').success(
+            `Successfully removed project configuration from your ${
+              slackIntegration.channelName
+            } Slack integration`,
+          );
+          this.transitionTo(
+            'organizations.organization.integrations.slack',
+            slackIntegration.get('organization.slug'),
+          );
+        })
+        .catch(() => {
+          this.get('flashMessages').danger(
+            'There was a problem deleting this integration.' +
+              ' Please try again or contact customer support.',
+          );
+        });
     },
   },
 });

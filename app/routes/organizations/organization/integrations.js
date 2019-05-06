@@ -3,8 +3,11 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 import utils from 'percy-web/lib/utils';
 import {run} from '@ember/runloop';
 import $ from 'jquery';
+import {inject as service} from '@ember/service';
 
 export default Route.extend(AuthenticatedRouteMixin, {
+  flashMessages: service(),
+
   actions: {
     connectSlackChannel() {
       $.ajax({
@@ -13,12 +16,19 @@ export default Route.extend(AuthenticatedRouteMixin, {
           'slackIntegrationRequests',
           this.paramsFor('organizations.organization').organization_id,
         ),
-      }).done(response => {
-        // Make sure Ember runloop knows about the ajax situation.
-        run(() => {
-          utils.replaceWindowLocation(response['slack_auth_url']);
-        });
-      });
+      })
+        .done(response => {
+          // Make sure Ember runloop knows about the ajax situation.
+          run(() => {
+            utils.replaceWindowLocation(response['slack_auth_url']);
+          });
+        })
+        .fail(
+          this.get('flashMessages').danger(
+            'There was a problem starting the process of authenticating with Slack.' +
+              ' Please try again or contact customer support.',
+          ),
+        );
     },
   },
 });
