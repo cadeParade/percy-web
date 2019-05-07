@@ -2,6 +2,7 @@ import FactoryGuy from 'ember-data-factory-guy';
 import faker from 'faker';
 
 import {
+  BITBUCKET_CLOUD_INTEGRATION_TYPE,
   GITHUB_INTEGRATION_TYPE,
   GITHUB_ENTERPRISE_INTEGRATION_TYPE,
   GITLAB_INTEGRATION_TYPE,
@@ -11,6 +12,9 @@ import {
 FactoryGuy.define('version-control-integration', {
   default: {},
   traits: {
+    bitbucketCloud: {
+      integrationType: BITBUCKET_CLOUD_INTEGRATION_TYPE,
+    },
     github: {
       githubInstallationId: () => faker.random.number(),
       integrationType: GITHUB_INTEGRATION_TYPE,

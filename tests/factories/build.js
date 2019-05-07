@@ -16,6 +16,8 @@ FactoryGuy.define('build', {
     commit: FactoryGuy.belongsTo('commit'),
     snapshots: FactoryGuy.hasMany('snapshot'),
     browsers: () => [FactoryGuy.make('browser')],
+    commitHtmlUrl: 'http://example.com/commit/123',
+    branchHtmlUrl: 'http://example.com/tree/master',
   },
   traits: {
     withLongBranch: {branch: () => faker.lorem.slug(20)},

@@ -12,10 +12,15 @@ import {
   uniq,
 } from '@ember/object/computed';
 import DS from 'ember-data';
-import {INTEGRATION_TYPES} from 'percy-web/lib/integration-types';
+import {
+  INTEGRATION_TYPES,
+  SLACK_INTEGRATION_TYPE,
+  BITBUCKET_CLOUD_INTEGRATION_TYPE,
+} from 'percy-web/lib/integration-types';
 import {inject as service} from '@ember/service';
 
 const DISPLAY_NAMES = {
+  bitbucketCloud: 'Bitbucket Cloud',
   github: 'GitHub',
   githubEnterprise: 'GitHub Enterprise',
   gitlab: 'GitLab',
@@ -35,6 +40,13 @@ export default DS.Model.extend({
   }),
   invites: DS.hasMany('invite'),
   usageNotificationSetting: DS.belongsTo('usageNotificationSetting', {async: false}),
+
+  bitbucketCloudIntegration: computed(
+    'versionControlIntegrations.@each.bitbucketCloudIntegrationId',
+    function() {
+      return this.get('versionControlIntegrations').findBy('isBitbucketCloudIntegration');
+    },
+  ),
 
   githubIntegration: computed('versionControlIntegrations.@each.githubIntegrationId', function() {
     return this.get('versionControlIntegrations').findBy('isGithubIntegration');
@@ -78,6 +90,7 @@ export default DS.Model.extend({
   // useful on their own other than for listing. A repo must be linked to a project.
   repos: DS.hasMany('repo'),
 
+  isBitbucketCloudIntegrated: bool('bitbucketCloudIntegration'),
   isGithubIntegrated: bool('githubIntegration'),
   isGithubEnterpriseIntegrated: bool('githubEnterpriseIntegration'),
   isGitlabIntegrated: bool('gitlabIntegration'),
@@ -93,7 +106,7 @@ export default DS.Model.extend({
     let integrations = [];
     for (const key of Object.keys(INTEGRATION_TYPES)) {
       let item = INTEGRATION_TYPES[key];
-      if (key == 'slack') {
+      if (key == SLACK_INTEGRATION_TYPE || key == BITBUCKET_CLOUD_INTEGRATION_TYPE) {
         continue;
       }
       if (this.get(`${item.organizationIntegrationStatus}`) != true) {
@@ -121,6 +134,7 @@ export default DS.Model.extend({
   }),
   currentUserIsAdmin: equal('currentUserMembership.role', 'admin'),
 
+  bitbucketCloudRepos: filterBy('repos', 'source', 'bitbucket_cloud'),
   githubRepos: filterBy('repos', 'source', 'github'),
   githubEnterpriseRepos: filterBy('repos', 'source', 'github_enterprise'),
   gitlabRepos: filterBy('repos', 'source', 'gitlab'),
@@ -134,6 +148,7 @@ export default DS.Model.extend({
   //   { groupName: 'GitHub Enterprise', options: [repo:model, repo:model, ...] },
   // ]
   groupedRepos: computed(
+    'bitbucketCloudRepos.[]',
     'githubRepos.[]',
     'githubEnterpriseRepos.[]',
     'gitlabRepos.[]',

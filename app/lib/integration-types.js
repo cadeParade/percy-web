@@ -1,11 +1,21 @@
 // these strings must match what comes down from the api
 export const GITHUB_ENTERPRISE_INTEGRATION_TYPE = 'github_enterprise';
+export const BITBUCKET_CLOUD_INTEGRATION_TYPE = 'bitbucket_cloud';
 export const GITHUB_INTEGRATION_TYPE = 'github';
 export const GITLAB_INTEGRATION_TYPE = 'gitlab';
 export const GITLAB_SELF_HOSTED_INTEGRATION_TYPE = 'gitlab_self_hosted';
-const SLACK_INTEGRATION_TYPE = 'slack';
+export const SLACK_INTEGRATION_TYPE = 'slack';
 
 export const INTEGRATION_TYPES = {
+  [BITBUCKET_CLOUD_INTEGRATION_TYPE]: {
+    textName: 'Bitbucket Cloud',
+    isBeta: false,
+    isGeneralAvailability: false,
+    iconName: 'github-icon-lg',
+    organizationIntegrationStatus: 'isBitbucketCloudIntegrated',
+    organizationModelAttribute: 'bitbucketCloudIntegration',
+    settingsRouteSlug: 'bitbucket-cloud',
+  },
   [GITHUB_INTEGRATION_TYPE]: {
     textName: 'GitHub',
     isBeta: false,

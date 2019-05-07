@@ -2,6 +2,7 @@ import {equal} from '@ember/object/computed';
 import DS from 'ember-data';
 import {computed} from '@ember/object';
 import {
+  BITBUCKET_CLOUD_INTEGRATION_TYPE,
   GITHUB_INTEGRATION_TYPE,
   GITHUB_ENTERPRISE_INTEGRATION_TYPE,
   GITLAB_INTEGRATION_TYPE,
@@ -30,6 +31,7 @@ export default DS.Model.extend({
 
   createdAt: DS.attr('date'),
   updatedAt: DS.attr('date'),
+  isBitbucketCloudIntegration: equal('integrationType', BITBUCKET_CLOUD_INTEGRATION_TYPE),
   isGithubIntegration: equal('integrationType', GITHUB_INTEGRATION_TYPE),
   isGithubEnterpriseIntegration: equal('integrationType', GITHUB_ENTERPRISE_INTEGRATION_TYPE),
   isGitlabIntegration: equal('integrationType', GITLAB_INTEGRATION_TYPE),

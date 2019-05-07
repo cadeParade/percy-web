@@ -3,9 +3,9 @@
     <td>Commit</td>
     <td>
       {{#if isRepoLinked}}
-        <code><a data-test-commit-table-branch-url href="{{branchUrl}}">{{@build.branch}}</a></code>
+        <code><a data-test-commit-table-branch-url href="{{@build.branchHtmlUrl}}">{{@build.branch}}</a></code>
         @
-        <a data-test-commit-table-commit-url href="{{commitUrl}}">{{@commit.shaShort}}</a>
+        <a data-test-commit-table-commit-url href="{{@build.commitHtmlUrl}}">{{@commit.shaShort}}</a>
       {{else}}
         <code>{{build.branch}}</code> @ <code>{{commit.shaShort}}</code>
       {{/if}}

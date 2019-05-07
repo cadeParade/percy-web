@@ -158,6 +158,8 @@ export default DS.Model.extend({
   }),
 
   hasNoDiffs: not('hasDiffs'),
+  commitHtmlUrl: DS.attr(),
+  branchHtmlUrl: DS.attr(),
   isPullRequest: DS.attr('boolean'),
   pullRequestNumber: DS.attr('number'),
   pullRequestHtmlUrl: DS.attr(),

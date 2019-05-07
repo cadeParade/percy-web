@@ -17,7 +17,7 @@
           {{build.branch}}
         </code>
         {{#if build.isRepoLinked}}
-          <a class="text-sm font-mono" href="{{build.repo.htmlUrl}}/commit/{{build.commit.sha}}" onclick={{action "stopPropagation"}}>{{build.commit.shaShort}}</a>
+          <a class="text-sm font-mono" href="{{build.commitHtmlUrl}}" onclick={{action "stopPropagation"}}>{{build.commit.shaShort}}</a>
         {{else}}
           <span class="text-sm font-mono">{{build.commit.shaShort}}</span>
         {{/if}}

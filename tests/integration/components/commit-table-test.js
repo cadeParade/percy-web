@@ -30,9 +30,10 @@ describe('Integration: CommitTable', function() {
     it('has the correct commit URL', function() {
       let htmlUrl = build.get('repo.htmlUrl');
       let commitSha = build.get('commit.sha');
+      let commitHtmlUrl = build.get('commitHtmlUrl');
       expect(commitSha).to.equal('01cb4be6f5dc5a3d19d57bbf840328fd0eb3a01f');
       expect(htmlUrl).to.not.equal(undefined);
-      expect(CommitTable.commitUrl.href).to.equal(`${htmlUrl}/commit/${commitSha}`);
+      expect(CommitTable.commitUrl.href).to.equal(commitHtmlUrl);
     });
 
     it('has the correct commit SHA label', function() {
@@ -48,10 +49,10 @@ describe('Integration: CommitTable', function() {
     });
 
     it('has the correct branch URL', function() {
-      let htmlUrl = build.get('repo.htmlUrl');
       let branch = build.get('branch');
+      let branchHtmlUrl = build.get('branchHtmlUrl');
       expect(branch).to.equal('master');
-      expect(CommitTable.branchUrl.href).to.equal(`${htmlUrl}/tree/${branch}`);
+      expect(CommitTable.branchUrl.href).to.equal(branchHtmlUrl);
     });
   });
 
@@ -74,9 +75,10 @@ describe('Integration: CommitTable', function() {
     it('has the correct commit URL', function() {
       let htmlUrl = build.get('repo.htmlUrl');
       let commitSha = build.get('commit.sha');
+      let commitHtmlUrl = build.get('commitHtmlUrl');
       expect(commitSha).to.equal('01cb4be6f5dc5a3d19d57bbf840328fd0eb3a01f');
       expect(htmlUrl).to.not.equal(undefined);
-      expect(CommitTable.commitUrl.href).to.equal(`${htmlUrl}/commit/${commitSha}`);
+      expect(CommitTable.commitUrl.href).to.equal(commitHtmlUrl);
     });
 
     it('has the correct commit SHA label', function() {
@@ -92,10 +94,10 @@ describe('Integration: CommitTable', function() {
     });
 
     it('has the correct branch URL', function() {
-      let htmlUrl = build.get('repo.htmlUrl');
       let branch = build.get('branch');
+      let branchHtmlUrl = build.get('branchHtmlUrl');
       expect(branch).to.equal('master');
-      expect(CommitTable.branchUrl.href).to.equal(`${htmlUrl}/tree/${branch}`);
+      expect(CommitTable.branchUrl.href).to.equal(branchHtmlUrl);
     });
   });
 
@@ -118,9 +120,10 @@ describe('Integration: CommitTable', function() {
     it('has the correct commit URL', function() {
       let htmlUrl = build.get('repo.htmlUrl');
       let commitSha = build.get('commit.sha');
+      let commitHtmlUrl = build.get('commitHtmlUrl');
       expect(commitSha).to.equal('01cb4be6f5dc5a3d19d57bbf840328fd0eb3a01f');
       expect(htmlUrl).to.not.equal(undefined);
-      expect(CommitTable.commitUrl.href).to.equal(`${htmlUrl}/commit/${commitSha}`);
+      expect(CommitTable.commitUrl.href).to.equal(commitHtmlUrl);
     });
 
     it('has the correct commit SHA label', function() {
@@ -136,10 +139,10 @@ describe('Integration: CommitTable', function() {
     });
 
     it('has the correct branch URL', function() {
-      let htmlUrl = build.get('repo.htmlUrl');
       let branch = build.get('branch');
+      let branchHtmlUrl = build.get('branchHtmlUrl');
       expect(branch).to.equal('master');
-      expect(CommitTable.branchUrl.href).to.equal(`${htmlUrl}/tree/${branch}`);
+      expect(CommitTable.branchUrl.href).to.equal(branchHtmlUrl);
     });
   });
 
@@ -162,9 +165,10 @@ describe('Integration: CommitTable', function() {
     it('has the correct commit URL', function() {
       let htmlUrl = build.get('repo.htmlUrl');
       let commitSha = build.get('commit.sha');
+      let commitHtmlUrl = build.get('commitHtmlUrl');
       expect(commitSha).to.equal('01cb4be6f5dc5a3d19d57bbf840328fd0eb3a01f');
       expect(htmlUrl).to.not.equal(undefined);
-      expect(CommitTable.commitUrl.href).to.equal(`${htmlUrl}/commit/${commitSha}`);
+      expect(CommitTable.commitUrl.href).to.equal(commitHtmlUrl);
     });
 
     it('has the correct commit SHA label', function() {
@@ -180,10 +184,10 @@ describe('Integration: CommitTable', function() {
     });
 
     it('has the correct branch URL', function() {
-      let htmlUrl = build.get('repo.htmlUrl');
       let branch = build.get('branch');
+      let branchHtmlUrl = build.get('branchHtmlUrl');
       expect(branch).to.equal('master');
-      expect(CommitTable.branchUrl.href).to.equal(`${htmlUrl}/tree/${branch}`);
+      expect(CommitTable.branchUrl.href).to.equal(branchHtmlUrl);
     });
   });
 
@@ -206,9 +210,10 @@ describe('Integration: CommitTable', function() {
     it('has the correct commit URL', function() {
       let htmlUrl = build.get('repo.htmlUrl');
       let commitSha = build.get('commit.sha');
+      let commitHtmlUrl = build.get('commitHtmlUrl');
       expect(commitSha).to.equal('01cb4be6f5dc5a3d19d57bbf840328fd0eb3a01f');
       expect(htmlUrl).to.not.equal(undefined);
-      expect(CommitTable.commitUrl.href).to.equal(`${htmlUrl}/commits/${commitSha}`);
+      expect(CommitTable.commitUrl.href).to.equal(commitHtmlUrl);
     });
 
     it('has the correct commit SHA label', function() {
@@ -224,10 +229,10 @@ describe('Integration: CommitTable', function() {
     });
 
     it('has the correct branch URL', function() {
-      let htmlUrl = build.get('repo.htmlUrl');
       let branch = build.get('branch');
+      let branchHtmlUrl = build.get('branchHtmlUrl');
       expect(branch).to.equal('master');
-      expect(CommitTable.branchUrl.href).to.equal(`${htmlUrl}/src/${branch}`);
+      expect(CommitTable.branchUrl.href).to.equal(branchHtmlUrl);
     });
   });
 });

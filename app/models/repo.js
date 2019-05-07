@@ -1,7 +1,7 @@
-import {computed} from '@ember/object';
 import {equal, or} from '@ember/object/computed';
 import DS from 'ember-data';
 import {
+  BITBUCKET_CLOUD_INTEGRATION_TYPE,
   GITHUB_INTEGRATION_TYPE,
   GITHUB_ENTERPRISE_INTEGRATION_TYPE,
   GITLAB_INTEGRATION_TYPE,
@@ -20,26 +20,11 @@ export default DS.Model.extend({
   createdAt: DS.attr('date'),
   updatedAt: DS.attr('date'),
 
+  isBitbucketCloudRepo: equal('source', BITBUCKET_CLOUD_INTEGRATION_TYPE),
   isGithubRepo: equal('source', GITHUB_INTEGRATION_TYPE),
   isGithubEnterpriseRepo: equal('source', GITHUB_ENTERPRISE_INTEGRATION_TYPE),
   isGithubRepoFamily: or('isGithubRepo', 'isGithubEnterpriseRepo'),
   isGitlabRepo: equal('source', GITLAB_INTEGRATION_TYPE),
   isGitlabSelfHostedRepo: equal('source', GITLAB_SELF_HOSTED_INTEGRATION_TYPE),
   isGitlabRepoFamily: or('isGitlabRepo', 'isGitlabSelfHostedRepo'),
-  branchUrlFragment: computed('source', function() {
-    let source = this.get('source');
-    if (source === 'bitbucket') {
-      return 'src';
-    } else {
-      return 'tree';
-    }
-  }),
-  commitUrlFragment: computed('source', function() {
-    let source = this.get('source');
-    if (source === 'bitbucket') {
-      return 'commits';
-    } else {
-      return 'commit';
-    }
-  }),
 });
