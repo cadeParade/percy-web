@@ -20,7 +20,7 @@
   >
 </label>
 {{#if fieldErrors}}
-  <ul class="Form-errors">
+  <ul class="Form-errors" data-test-input-errors>
     {{#each (get fieldErrors "validation") as |message|}}
       <li>{{message}}</li>
     {{/each}}

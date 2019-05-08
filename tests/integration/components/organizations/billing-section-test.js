@@ -6,8 +6,11 @@ import UsageNotificationSettingForm from 'percy-web/tests/pages/components/forms
 import BillingSection from 'percy-web/tests/pages/components/organizations/billing-section';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {percySnapshot} from 'ember-percy';
+import mockStripeService from 'percy-web/tests/helpers/mock-stripe-service';
+import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage-sandbox';
 
 describe('Integration: BillingSection', function() {
+  SetupLocalStorageSandbox();
   setupRenderingTest('billing-section', {
     integration: true,
   });
@@ -17,6 +20,7 @@ describe('Integration: BillingSection', function() {
   beforeEach(function() {
     setupFactoryGuy(this);
     BillingSection.setContext(this);
+    mockStripeService(this);
   });
 
   describe('when currentUser is an Admin', function() {
@@ -38,37 +42,81 @@ describe('Integration: BillingSection', function() {
       await percySnapshot(this.test);
     });
 
+    describe('subscription list', function() {
+      async function _expectSubscriptionListVisibility(
+        context,
+        planTrait,
+        {isVisible = true} = {},
+      ) {
+        const organization = make('organization', planTrait);
+        organization.set('currentUserIsAdmin', true);
+        context.set('organization', organization);
+        await context.render(hbs`{{organizations/billing-section
+          organization=organization}}`);
+        expect(BillingSection.subscriptionList.isVisible).to.equal(isVisible);
+      }
+
+      it('displays when plan is free', async function() {
+        await _expectSubscriptionListVisibility(this, 'withFreePlan', {isVisible: true});
+      });
+
+      it('displays when plan is trial', async function() {
+        await _expectSubscriptionListVisibility(this, 'withTrialPlan', {isVisible: true});
+      });
+
+      it('does display when plan is self serve v3', async function() {
+        await _expectSubscriptionListVisibility(this, 'withPaidPlan', {isVisible: true});
+      });
+
+      it('displays when plan is legacy', async function() {
+        await _expectSubscriptionListVisibility(this, 'withLegacyPlan', {isVisible: true});
+      });
+
+      it('does not display when plan is enterprise', async function() {
+        await _expectSubscriptionListVisibility(this, 'withEnterprisePlan', {isVisible: false});
+      });
+
+      it('does not display when plan is sponsored', async function() {
+        await _expectSubscriptionListVisibility(this, 'withSponsoredPlan', {isVisible: false});
+      });
+    });
+
     describe('billing card updater', function() {
-      it('does not display card updater when plan is free', async function() {
-        organization.set('subscription', make('subscription', 'withFreePlan'));
-        await this.render(hbs`{{organizations/billing-section
-          organization=organization}}`);
+      async function _expectBillingCardUpdaterVisibility(
+        context,
+        planTrait,
+        {isVisible = false, isEmailOrCardSaving = false} = {},
+      ) {
+        organization.set('subscription', make('subscription', planTrait));
+        context.setProperties({isEmailOrCardSaving});
+        await context.render(hbs`{{organizations/billing-section
+          organization=organization
+          isEmailOrCardSaving=isEmailOrCardSaving
+        }}`);
 
-        expect(BillingSection.billingCardUpdater.isCardUpdaterVisible).to.equal(false);
+        expect(BillingSection.billingCardUpdater.isCardUpdaterVisible).to.equal(isVisible);
+      }
+
+      it('does not display when plan is free', async function() {
+        await _expectBillingCardUpdaterVisibility(this, 'withFreePlan', {isVisible: false});
       });
 
-      it('does not display card updater when plan is trial', async function() {
-        organization.set('subscription', make('subscription', 'withTrialPlan'));
-        await this.render(hbs`{{organizations/billing-section
-          organization=organization}}`);
-
-        expect(BillingSection.billingCardUpdater.isCardUpdaterVisible).to.equal(false);
+      it('does not display when plan is trial', async function() {
+        await _expectBillingCardUpdaterVisibility(this, 'withTrialPlan', {isVisible: false});
       });
 
-      it('does not display card updater when plan is sponsored', async function() {
-        organization.set('subscription', make('subscription', 'withSponsoredPlan'));
-        await this.render(hbs`{{organizations/billing-section
-          organization=organization}}`);
-
-        expect(BillingSection.billingCardUpdater.isCardUpdaterVisible).to.equal(false);
+      it('does not display when plan is sponsored', async function() {
+        await _expectBillingCardUpdaterVisibility(this, 'withSponsoredPlan', {isVisible: false});
       });
 
-      it('displays card updater when plan is not free or trial', async function() {
-        organization.set('subscription', make('subscription', 'withPaidPlan'));
-        await this.render(hbs`{{organizations/billing-section
-          organization=organization}}`);
+      it('displays when plan is not free or trial', async function() {
+        await _expectBillingCardUpdaterVisibility(this, 'withPaidPlan', {isVisible: true});
+      });
 
-        expect(BillingSection.billingCardUpdater.isCardUpdaterVisible).to.equal(true);
+      it('does not display when isEmailOrCardSaving is true', async function() {
+        await _expectBillingCardUpdaterVisibility(this, 'withPaidPlan', {
+          isEmailOrCardSaving: true,
+        });
       });
     });
   });

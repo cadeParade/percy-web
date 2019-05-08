@@ -49,4 +49,12 @@ export default Factory.extend({
   withSponsoredPlan: trait({
     plan: association('sponsored'),
   }),
+
+  withEnterprisePlan: trait({
+    plan: association('enterprise'),
+  }),
+
+  withLegacyPlan: trait({
+    plan: association('legacy'),
+  }),
 });

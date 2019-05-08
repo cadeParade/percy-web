@@ -1,0 +1,57 @@
+/* stylelint-disable selector-max-compound-selectors */
+
+.bar {
+  height: var(--bar-height);
+  min-height: 1px;
+  border-radius: 2px 2px 0 0;
+  transition: background 75ms;
+
+  &:not(.bar-future):hover {
+    background: var(--purple-700) !important;
+  }
+}
+
+.bar-future {
+  height: 4px;
+}
+
+.bar-item {
+  max-height: 0;
+  animation: bar-height 0.5s ease-out !important;
+  animation-fill-mode: forwards !important;
+
+  @for $i from 1 through 31 {
+    &:nth-child(#{$i}) {
+      animation-delay: ($i * 40) * 1ms !important;
+    }
+  }
+
+  @at-root {
+    @keyframes bar-height {
+      to {
+        max-height: 200px;
+      }
+    }
+  }
+
+  &::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: -20px;
+    width: 100%;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gray-200);
+    text-align: center;
+
+    @media screen and (max-width: $width-md) {
+      display: none;
+    }
+  }
+}
+
+.bar-item-today {
+  &::after {
+    color: var(--purple-600);
+  }
+}

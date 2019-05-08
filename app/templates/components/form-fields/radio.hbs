@@ -1,12 +1,13 @@
-<label class="block flex items-center m-0">
+<label class="block flex items-center m-0 {{if disabled "opacity-50"}}" onclick={{action handleRadioClick value}}>
   <input
     type="radio"
     name={{name}}
+    value={{value}}
     class="block mr-1"
     checked={{shouldBeChecked}}
     disabled={{isDisabled}}
     data-test-radio-input={{testLabel}}
   >
   <span class="block radio-box mr-1"></span>
-  <span class="block">{{title}}</span>
+  <span class="block cursor-pointer">{{title}}</span>
 </label>

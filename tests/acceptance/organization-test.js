@@ -1,12 +1,9 @@
 import sinon from 'sinon';
-import moment from 'moment';
 import freezeMoment from '../helpers/freeze-moment';
 import localStorageProxy from 'percy-web/lib/localstorage';
 import {percySnapshot} from 'ember-percy';
-import {beforeEach, afterEach} from 'mocha';
-import {visit, click, currentRouteName, fillIn, find, findAll} from '@ember/test-helpers';
+import {visit, click, currentRouteName, fillIn, findAll} from '@ember/test-helpers';
 import Response from 'ember-cli-mirage/response';
-import AdminMode from 'percy-web/lib/admin-mode';
 import ProjectPage from 'percy-web/tests/pages/project-page';
 import NewOrganization from 'percy-web/tests/pages/components/new-organization';
 import setupAcceptance, {
@@ -24,15 +21,6 @@ describe('Acceptance: Organization', function() {
     setupSession(function(server) {
       organization = server.create('organization', 'withUser');
       server.create('project', {organization});
-    });
-
-    it('denies billing settings', async function() {
-      await visit(`/organizations/${organization.slug}/settings`);
-      expect(currentRouteName()).to.equal('organizations.organization.settings');
-      await click('.data-test-dashboard-nav-org-billing');
-      expect(currentRouteName()).to.equal('organizations.organization.billing');
-
-      await percySnapshot(this.test);
     });
 
     it('can create new org via org switcher', async function() {
@@ -253,106 +241,6 @@ describe('Acceptance: Organization', function() {
       expect(currentRouteName()).to.equal('organizations.organization.billing');
 
       await percySnapshot(this.test.fullTitle() + ' | Billing settings');
-    });
-
-    it('can update billing email', async function() {
-      await visit(`/organizations/${organization.slug}/billing`);
-      expect(currentRouteName()).to.equal('organizations.organization.billing');
-
-      await percySnapshot(this.test);
-      await fillIn('[data-test-form-input=billing-email]', 'a_valid_email@gmail.com');
-      await click('[data-test-billing-edit-form] [data-test-form-submit-button]');
-      expect(server.schema.subscriptions.first().billingEmail).to.equal('a_valid_email@gmail.com');
-
-      await percySnapshot(this.test.fullTitle() + ' | ok modification');
-      await renderAdapterErrorsAsPage(async () => {
-        await fillIn('[data-test-form-input=billing-email]', 'an invalid email@gmail.com');
-        await click('[data-test-billing-edit-form] [data-test-form-submit-button]');
-        expect(
-          find('[data-test-billing-edit-form] .FormFieldsInput ul.Form-errors li').innerText,
-        ).to.equal('Billing email is invalid');
-        expect(server.schema.subscriptions.first().billingEmail).to.equal(
-          'a_valid_email@gmail.com',
-        );
-        return percySnapshot(this.test.fullTitle() + ' | invalid modification');
-      });
-    });
-
-    describe('organization is on trial plan', function() {
-      setupSession(function(server) {
-        server.create('subscription', 'withTrialPlan', {
-          organization,
-          trialStart: moment(),
-          trialEnd: moment()
-            .add(14, 'days')
-            .add(1, 'hour'),
-        });
-      });
-
-      it('can view billing page', async function() {
-        await visit(`/organizations/${organization.slug}/billing`);
-        expect(currentRouteName()).to.equal('organizations.organization.billing');
-        await percySnapshot(this.test);
-      });
-    });
-
-    describe('organization is on trial expired plan', function() {
-      setupSession(function(server) {
-        server.create('subscription', {organization});
-      });
-
-      it('can view billing page', async function() {
-        await visit(`/organizations/${organization.slug}/billing`);
-        expect(currentRouteName()).to.equal('organizations.organization.billing');
-        await percySnapshot(this.test);
-      });
-    });
-
-    describe('organization is on a standard plan', function() {
-      setupSession(function(server) {
-        server.create('subscription', 'withStandardPlan', {organization});
-      });
-
-      it('can view billing page', async function() {
-        await visit(`/organizations/${organization.slug}/billing`);
-        expect(currentRouteName()).to.equal('organizations.organization.billing');
-        await percySnapshot(this.test);
-      });
-    });
-
-    describe('organization is on custom plan', function() {
-      setupSession(function(server) {
-        server.create('subscription', 'withCustomPlan', {organization});
-      });
-
-      it('can view billing page', async function() {
-        await visit(`/organizations/${organization.slug}/billing`);
-        expect(currentRouteName()).to.equal('organizations.organization.billing');
-        await percySnapshot(this.test);
-      });
-    });
-  });
-
-  describe('user is not member of organization but is in admin-mode', function() {
-    let organization;
-    setupSession(function(server) {
-      organization = server.create('organization');
-      server.create('project', {organization});
-      server.create('user');
-    });
-
-    beforeEach(() => {
-      AdminMode.setAdminMode();
-    });
-
-    afterEach(() => {
-      AdminMode.clear();
-    });
-
-    it('shows billing page with warning message', async function() {
-      await visit(`/organizations/${organization.slug}/billing`);
-      expect(currentRouteName()).to.equal('organizations.organization.billing');
-      await percySnapshot(this.test.fullTitle() + ' | setup');
     });
   });
 });

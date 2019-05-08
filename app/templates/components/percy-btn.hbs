@@ -9,6 +9,7 @@
     {{if isPrimaryButton "percy-btn-primary"}}
     {{if isNoShadow "shadow-none"}}
     {{if isNoAnimate "animate-none"}}
+    {{if isSaving 'is-loading'}}
   "
   {{action "handleClick"}}>
   {{yield}}

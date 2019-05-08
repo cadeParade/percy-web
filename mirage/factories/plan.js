@@ -20,4 +20,6 @@ export default Factory.extend({
   standard: trait(planFixtureData.standard),
   custom: trait(planFixtureData.legacy),
   sponsored: trait(planFixtureData.sponsored),
+  enterprise: trait(planFixtureData.enterprise),
+  legacy: trait(planFixtureData.legacy),
 });

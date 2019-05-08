@@ -1,6 +1,8 @@
 import {create} from 'ember-cli-page-object';
 import {BillingCardUpdater} from 'percy-web/tests/pages/components/organizations/billing-card-updater'; // eslint-disable-line
-import {currentPlan} from 'percy-web/tests/pages/components/organizations/current-plan'; // eslint-disable-line
+import {currentPlan} from 'percy-web/tests/pages/components/organizations/current-plan';
+import {subscriptionList} from 'percy-web/tests/pages/components/organizations/subscription-list';
+import {billingEdit} from 'percy-web/tests/pages/components/forms/billing-edit';
 
 export const SELECTORS = {
   CONTAINER: '[data-test-billing-section-container]',
@@ -13,8 +15,10 @@ export const BillingSection = {
 
   memberView: {scope: SELECTORS.MEMBER_VIEW},
   adminView: {scope: SELECTORS.ADMIN_VIEW},
-  billingCardUpdater: BillingCardUpdater,
   currentPlan,
+  subscriptionList,
+  billingEditForm: billingEdit,
+  billingCardUpdater: BillingCardUpdater,
 };
 
 export default create(BillingSection);

@@ -17,20 +17,29 @@
         currentUsageStats=currentUsageStats
       }}
 
-      {{organizations/subscription-list
-        organization=organization
-      }}
+      {{#if subscription.plan.isUpgradeable}}
+        {{organizations/subscription-list
+          organization=organization
+          updateEmail=updateEmail
+          updateSubscription=updateSubscription
+          updateCreditCard=updateCreditCard
+          updateSavingState=(action "updateSavingState")
+        }}
+      {{/if}}
 
-      <div class="bg-white rounded shadow-1 border-t p-2 mb-2">
-        <h2 class="text-xl font-semibold mb-1">Invoice settings</h2>
-        {{forms/billing-edit subscription=subscription}}
-      </div>
+      {{#if (and subscription.isPaid (not isEmailOrCardSaving))}}
+        <div class="bg-white rounded shadow-1 border-t p-2 mb-2">
+          <h2 class="text-xl font-semibold mb-1">Invoice settings</h2>
+          {{forms/billing-edit subscription=subscription}}
+        </div>
+      {{/if}}
 
-      {{#if subscription.hasCreditCard}}
+      {{#if (and subscription.hasCreditCard (not isEmailOrCardSaving))}}
         <div class="bg-white rounded shadow-1 border-t p-2 mb-2">
           <h2 class="text-xl font-semibold mb-1">Billing details</h2>
           {{organizations/billing-card-updater
             organization=organization
+            updateCreditCard=updateCreditCard
           }}
         </div>
       {{/if}}

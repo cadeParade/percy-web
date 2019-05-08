@@ -2,8 +2,8 @@
 import Service from '@ember/service';
 
 // The data in this file is for deciding how to display plans on the
-// billing page and also the pricing page. They are not 1:1 with actual
-// DB plans.
+// billing page and also the pricing page. The values should be the same, but some of the props on
+// these objects have labels included.
 
 export default Service.extend({
   PLAN_IDS: ['free', 'v3-small', 'v3-medium', 'v3-large'],

@@ -2,9 +2,8 @@ import Component from '@ember/component';
 import {computed} from '@ember/object';
 import {and, or, readOnly} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
-import BillingUpdater from 'percy-web/mixins/billing-updater';
 
-export default Component.extend(BillingUpdater, {
+export default Component.extend({
   intercom: service(),
 
   subscription: readOnly('organization.subscription'),

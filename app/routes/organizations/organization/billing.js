@@ -1,12 +1,14 @@
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import {inject as service} from '@ember/service';
+import {task} from 'ember-concurrency';
 
 export default Route.extend(AuthenticatedRouteMixin, {
+  subscriptionService: service('subscriptions'),
   stripe: service('stripev3'),
 
   beforeModel() {
-    return this.get('stripe').load();
+    return this.stripe.load();
   },
 
   // This model loads extra includes, so it requires that we're always using .slug
@@ -49,7 +51,35 @@ export default Route.extend(AuthenticatedRouteMixin, {
       const organization = this.controller.organization;
       this.analytics.track('Billing Viewed', organization);
     },
+
+    updateEmail(subscriptionChangeset) {
+      return this._saveEmail.perform(subscriptionChangeset);
+    },
+
+    updateSubscription(planId, token) {
+      return this._updateSubscription.perform(planId, token);
+    },
+
+    updateCreditCard(stripeElement, planId) {
+      return this._updateCreditCard.perform(stripeElement, planId);
+    },
   },
+
+  _saveEmail: task(function*(subscriptionChangeset) {
+    yield subscriptionChangeset.save();
+  }),
+
+  _updateCreditCard: task(function*(stripeElement, planId) {
+    const response = yield this.stripe.createToken(stripeElement);
+    return this._updateSubscription.perform(planId, response.token);
+  }),
+
+  _updateSubscription: task(function*(planId, token) {
+    const organization = this.modelFor(this.routeName).organization;
+    const subscriptionService = this.subscriptionService;
+
+    yield subscriptionService.changeSubscription(organization, planId, token);
+  }),
 });
 
 function _shouldIncludeUsageStats(plan) {
