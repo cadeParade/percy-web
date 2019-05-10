@@ -23,12 +23,12 @@ export default Route.extend(AuthenticatedRouteMixin, {
             utils.replaceWindowLocation(response['slack_auth_url']);
           });
         })
-        .fail(
+        .fail(() => {
           this.get('flashMessages').danger(
             'There was a problem starting the process of authenticating with Slack.' +
               ' Please try again or contact customer support.',
-          ),
-        );
+          );
+        });
     },
   },
 });
