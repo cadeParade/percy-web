@@ -90,12 +90,12 @@ describe('Integration | Component | organizations/integrations/integration-item'
       expect(IntegrationItem.hasBetaBadge).to.equal(false);
     });
 
-    it('shows the Connect to Slack button', async function() {
+    it('shows the Connect button for Slack', async function() {
       await this.render(hbs`{{organizations/integrations/integration-item
           integrationName="slack"
           organization=organization}}`);
 
-      expect(IntegrationItem.installButton.text).to.equal('Connect to Slack');
+      expect(IntegrationItem.installButton.text).to.equal('Connect');
       await percySnapshot(this.test);
     });
   });

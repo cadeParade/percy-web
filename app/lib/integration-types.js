@@ -64,6 +64,6 @@ export const INTEGRATION_TYPES = {
     organizationIntegrationStatus: 'isSlackIntegrated',
     organizationModelAttribute: 'isSlackIntegrated',
     settingsRouteSlug: 'slack',
-    installButtonText: 'Connect to Slack',
+    installButtonText: 'Connect',
   },
 };
