@@ -6,6 +6,7 @@ FactoryGuy.define('subscription', {
   default: {
     organization: FactoryGuy.belongsTo('organization'),
     plan: FactoryGuy.belongsTo('plan'),
+    paymentMethod: FactoryGuy.belongsTo('payment-method'),
     billingEmail: () => faker.internet.email(),
   },
   traits: {
@@ -33,6 +34,9 @@ FactoryGuy.define('subscription', {
     },
     withEnterprisePlan: {
       plan: FactoryGuy.belongsTo('plan', 'enterprise'),
+    },
+    withNoPaymentMethod: {
+      paymentMethod: null,
     },
   },
 });

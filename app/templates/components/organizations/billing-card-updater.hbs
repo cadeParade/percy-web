@@ -1,16 +1,23 @@
-{{#if shouldShowCardInput}}
-  {{#stripe-card
-    data-test-billing-card-updater-stripe-card
-    options=stripeOptions
-    change=(action 'checkCard')
-    as |stripeElement stripeError|}}
-    {{#if stripeError}}
-      <p class="error">{{stripeError.message}}</p>
-    {{/if}}
-    <div class="flex justify-end mt-2">
-      <button class="btn btn-primary btn-shadow-purple {{if isSaving "is-loading"}}" {{action "submitCardUpdate" stripeElement planId}} disabled={{if (not isCardValid) "disabled"}} data-test-submit-card-button>Update Card</button>
-    </div>
-  {{/stripe-card}}
-{{else}}
-  <button class="btn btn-primary btn-shadow-purple" {{action 'showCardInput'}} data-test-open-card-form>Update credit card</button>
-{{/if}}
+{{#stripe-card
+  data-test-billing-card-updater-stripe-card
+  options=stripeOptions
+  change=(action 'checkCard')
+  as |stripeElement stripeError|}}
+  {{#if stripeError}}
+    <p class="error">{{stripeError.message}}</p>
+  {{/if}}
+  <div class="flex justify-start mt-2">
+    {{#percy-btn
+      handleClick=(
+      action "submitCardUpdate" stripeElement planId)
+      isPrimaryButton=true
+      isDisabled=(not isCardValid)
+      isSaving=isSaving
+      class="mr-2"
+      testLabel="submit"
+    }}
+      Update card
+    {{/percy-btn}}
+    {{#percy-btn handleClick=(action "cancel") testLabel="cancel"}}Cancel{{/percy-btn}}
+  </div>
+{{/stripe-card}}

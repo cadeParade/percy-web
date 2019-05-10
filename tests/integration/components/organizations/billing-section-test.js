@@ -81,8 +81,8 @@ describe('Integration: BillingSection', function() {
       });
     });
 
-    describe('billing card updater', function() {
-      async function _expectBillingCardUpdaterVisibility(
+    describe('billing settings', function() {
+      async function _expectBillingSettingsVisibility(
         context,
         planTrait,
         {isVisible = false, isEmailOrCardSaving = false} = {},
@@ -94,27 +94,36 @@ describe('Integration: BillingSection', function() {
           isEmailOrCardSaving=isEmailOrCardSaving
         }}`);
 
-        expect(BillingSection.billingCardUpdater.isCardUpdaterVisible).to.equal(isVisible);
+        expect(BillingSection.billingSettings.isVisible).to.equal(isVisible);
       }
 
       it('does not display when plan is free', async function() {
-        await _expectBillingCardUpdaterVisibility(this, 'withFreePlan', {isVisible: false});
+        await _expectBillingSettingsVisibility(this, 'withFreePlan', {isVisible: false});
       });
 
       it('does not display when plan is trial', async function() {
-        await _expectBillingCardUpdaterVisibility(this, 'withTrialPlan', {isVisible: false});
+        await _expectBillingSettingsVisibility(this, 'withTrialPlan', {isVisible: false});
       });
 
       it('does not display when plan is sponsored', async function() {
-        await _expectBillingCardUpdaterVisibility(this, 'withSponsoredPlan', {isVisible: false});
+        await _expectBillingSettingsVisibility(this, 'withSponsoredPlan', {isVisible: false});
       });
 
-      it('displays when plan is not free or trial', async function() {
-        await _expectBillingCardUpdaterVisibility(this, 'withPaidPlan', {isVisible: true});
+      it('displays when plan is paid', async function() {
+        await _expectBillingSettingsVisibility(this, 'withPaidPlan', {isVisible: true});
+      });
+
+      it('displays when plan is paid+legacy', async function() {
+        await _expectBillingSettingsVisibility(this, 'withLegacyPlan', {isVisible: true});
+      });
+
+      it('displays when plan is enterprise', async function() {
+        await _expectBillingSettingsVisibility(this, 'withEnterprisePlan', {isVisible: true});
       });
 
       it('does not display when isEmailOrCardSaving is true', async function() {
-        await _expectBillingCardUpdaterVisibility(this, 'withPaidPlan', {
+        await _expectBillingSettingsVisibility(this, 'withPaidPlan', {
+          isVisible: false,
           isEmailOrCardSaving: true,
         });
       });

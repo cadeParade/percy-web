@@ -1,17 +1,17 @@
-import {create, is, clickable, isVisible} from 'ember-cli-page-object';
+import {create, is, clickable, hasClass} from 'ember-cli-page-object';
 
 const SELECTORS = {
   STRIPE_CARD_COMPONENT: '[data-test-billing-card-updater-stripe-card]',
-  UPDATE_CARD_BUTTON: '[data-test-open-card-form]',
-  SUBMIT_CARD_BUTTON: '[data-test-submit-card-button]',
+  SUBMIT_CARD_BUTTON: '[data-test-percy-btn-label=submit]',
+  CANCEL: '[data-test-percy-btn-label=cancel]',
 };
 
 export const BillingCardUpdater = {
-  isStripeCardComponentVisible: isVisible(SELECTORS.STRIPE_CARD_COMPONENT),
-  clickUpdateCard: clickable(SELECTORS.UPDATE_CARD_BUTTON),
+  scope: SELECTORS.STRIPE_CARD_COMPONENT,
   isSubmitCardButtonDisabled: is(':disabled', SELECTORS.SUBMIT_CARD_BUTTON),
   clickSubmitCard: clickable(SELECTORS.SUBMIT_CARD_BUTTON),
-  isCardUpdaterVisible: isVisible(SELECTORS.UPDATE_CARD_BUTTON),
+  cancel: clickable(SELECTORS.CANCEL),
+  isCardSubmitButtonLoading: hasClass('is-loading', SELECTORS.SUBMIT_CARD_BUTTON),
 };
 
 export default create(BillingCardUpdater);

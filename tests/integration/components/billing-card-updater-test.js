@@ -5,6 +5,8 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {make} from 'ember-data-factory-guy';
 import BillingCardUpdater from 'percy-web/tests/pages/components/organizations/billing-card-updater'; // eslint-disable-line
 import mockStripeService from 'percy-web/tests/helpers/mock-stripe-service';
+import sinon from 'sinon';
+import {resolve} from 'rsvp';
 
 describe('Integration: BillingCardUpdater', function() {
   setupRenderingTest('organizations/billing-card-updater', {
@@ -16,18 +18,8 @@ describe('Integration: BillingCardUpdater', function() {
     setupFactoryGuy(this);
     mockStripeService(this);
     BillingCardUpdater.setContext(this);
-    organization = make('organization');
+    organization = make('organization', 'withPaidPlan');
     this.setProperties({organization});
-  });
-
-  it('shows credit card form', async function() {
-    await this.render(hbs`{{
-      organizations/billing-card-updater
-      organization=organization
-    }}`);
-    await BillingCardUpdater.clickUpdateCard();
-
-    expect(BillingCardUpdater.isStripeCardComponentVisible).to.equal(true);
   });
 
   it('disables "Update Credit Card" button when card is not complete', async function() {
@@ -36,7 +28,6 @@ describe('Integration: BillingCardUpdater', function() {
       organization=organization
       _isCardComplete=false
     }}`);
-    await BillingCardUpdater.clickUpdateCard();
 
     expect(BillingCardUpdater.isSubmitCardButtonDisabled).to.equal(true);
   });
@@ -47,8 +38,89 @@ describe('Integration: BillingCardUpdater', function() {
       organization=organization
       _isCardComplete=true
     }}`);
-    await BillingCardUpdater.clickUpdateCard();
 
     expect(BillingCardUpdater.isSubmitCardButtonDisabled).to.equal(false);
+  });
+
+  it('calls hideForm when the cancel button is clicked', async function() {
+    const hideFormStub = sinon.stub().returns(resolve());
+    this.setProperties({hideFormStub});
+    await this.render(hbs`{{
+      organizations/billing-card-updater
+      organization=organization
+      hideForm=hideFormStub
+    }}`);
+
+    await BillingCardUpdater.cancel();
+    expect(hideFormStub).to.have.been.called;
+  });
+
+  describe('submitting card', function() {
+    let updateCreditCardStub;
+    let hideFormStub;
+    beforeEach(async function() {
+      updateCreditCardStub = sinon.stub().returns(resolve());
+      hideFormStub = sinon.stub().returns(resolve());
+      this.setProperties({updateCreditCardStub, hideFormStub});
+    });
+
+    it('calls updateCreditCard when submitted', async function() {
+      await this.render(hbs`{{
+        organizations/billing-card-updater
+        organization=organization
+        updateCreditCard=updateCreditCardStub
+        hideForm=hideFormStub
+        _isCardComplete=true
+      }}`);
+
+      await BillingCardUpdater.clickSubmitCard();
+      expect(updateCreditCardStub).to.have.been.calledWith(
+        sinon.match.any,
+        organization.subscription.plan.id,
+      );
+    });
+
+    it('calls hideForm after save', async function() {
+      await this.render(hbs`{{
+        organizations/billing-card-updater
+        organization=organization
+        updateCreditCard=updateCreditCardStub
+        hideForm=hideFormStub
+        _isCardComplete=true
+      }}`);
+
+      await BillingCardUpdater.clickSubmitCard();
+      expect(hideFormStub).to.have.been.called;
+    });
+
+    it('shows flashMessage after success', async function() {
+      const flashMessageService = this.owner
+        .lookup('service:flash-messages')
+        .registerTypes(['success']);
+      const flashMessageSuccessStub = sinon.stub(flashMessageService, 'success');
+
+      await this.render(hbs`{{
+        organizations/billing-card-updater
+        organization=organization
+        updateCreditCard=updateCreditCardStub
+        hideForm=hideFormStub
+        _isCardComplete=true
+      }}`);
+
+      await BillingCardUpdater.clickSubmitCard();
+      expect(flashMessageSuccessStub).to.have.been.called;
+    });
+
+    it('shows button loading state when save task is running', async function() {
+      const cardSaveTask = {isRunning: true};
+      this.setProperties({cardSaveTask});
+      await this.render(hbs`{{
+        organizations/billing-card-updater
+        organization=organization
+        cardSaveTask=cardSaveTask
+        _isCardComplete=true
+      }}`);
+      expect(BillingCardUpdater.isCardSubmitButtonLoading).to.equal(true);
+    });
   });
 });

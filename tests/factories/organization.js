@@ -144,5 +144,8 @@ FactoryGuy.define('organization', {
     withUsageNotificationSetting: {
       usageNotificationSetting: () => make('usage-notification-setting'),
     },
+    withNoPaymentMethod: {
+      subscription: () => make('subscription', 'withEnterprisePlan', 'withNoPaymentMethod'),
+    },
   },
 });

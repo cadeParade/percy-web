@@ -8,8 +8,9 @@ const BillingPage = {
   visitOrgSettings: visitable('/organizations/:orgSlug/settings'),
   visitBillingPage: visitable('/organizations/:orgSlug/billing'),
   billingSection: BillingSection,
-  subscriptionList: alias('billingSection.subscriptionList'),
-  billingEditForm: alias('billingSection.billingEditForm'),
+  billingSettings: alias('billingSection.billingSettings'),
+  subscriptionList: alias('billingSection.billingSettings.subscriptionList'),
+  billingEditForm: alias('billingSection.billingSettings.billingEditForm'),
 };
 
 export default create(BillingPage);

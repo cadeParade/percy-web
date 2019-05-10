@@ -1,9 +1,13 @@
-import {alias} from '@ember/object/computed';
+import {not, readOnly} from '@ember/object/computed';
 import BaseFormComponent from './base';
+import SubscriptionValidations from 'percy-web/validations/subscription';
 
 export default BaseFormComponent.extend({
   subscription: null,
 
-  model: alias('subscription'),
-  validator: null,
+  model: readOnly('subscription'),
+  validator: SubscriptionValidations,
+
+  isSubmitEnabled: readOnly('changeset.isValid'),
+  isSubmitDisabled: not('isSubmitEnabled'),
 });

@@ -7,6 +7,7 @@ import moment from 'moment';
 export default DS.Model.extend({
   organization: DS.belongsTo('organization', {async: false}),
   plan: DS.belongsTo('plan', {async: false}),
+  paymentMethod: DS.belongsTo('payment-method', {async: false}),
   billingEmail: DS.attr(),
   currentUsageStats: DS.belongsTo('usage-stat', {async: false}),
   status: DS.attr(),

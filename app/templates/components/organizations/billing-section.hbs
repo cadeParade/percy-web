@@ -28,20 +28,10 @@
       {{/if}}
 
       {{#if (and subscription.isPaid (not isEmailOrCardSaving))}}
-        <div class="bg-white rounded shadow-1 border-t p-2 mb-2">
-          <h2 class="text-xl font-semibold mb-1">Invoice settings</h2>
-          {{forms/billing-edit subscription=subscription}}
-        </div>
-      {{/if}}
-
-      {{#if (and subscription.hasCreditCard (not isEmailOrCardSaving))}}
-        <div class="bg-white rounded shadow-1 border-t p-2 mb-2">
-          <h2 class="text-xl font-semibold mb-1">Billing details</h2>
-          {{organizations/billing-card-updater
-            organization=organization
-            updateCreditCard=updateCreditCard
-          }}
-        </div>
+        {{organizations/billing-settings
+          organization=organization
+          updateCreditCard=updateCreditCard
+        }}
       {{/if}}
     </section>
   {{/unless}}
