@@ -18,9 +18,20 @@ export default Route.extend(AuthenticatedRouteMixin, {
   afterModel() {
     const params = this.paramsFor(this.routeName);
     const organization = this.modelFor('organizations.organization');
+
+    // The 'access_denied' error happens if someone cancels out of authorizing Slack
+    if (params.error === 'access_denied') {
+      return this.replaceWith(
+        'organizations.organization.integrations.slack',
+        organization.get('slug'),
+      );
+    }
+    // This handles any other error
     if (params.error) {
       this.replaceWith('organizations.organization.integrations.slack', organization.get('slug'));
-      this.get('flashMessages').danger(`There with your Slack authorization: ${params.error}`);
+      return this.get('flashMessages').danger(
+        `There was a problem connecting to Slack: ${params.error}`,
+      );
     }
 
     const newIntegration = this.get('store').createRecord('slack-integration', {

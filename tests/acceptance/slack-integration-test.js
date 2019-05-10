@@ -144,6 +144,7 @@ describe('Acceptance: Slack Integration', function() {
     });
 
     it('can add a project', async function() {
+      // This is needed to verify that projectId is null when creating an All Projects config
       server.post('/slack-integrations/:slack_integration_id/slack-integration-configs', function(
         schema,
       ) {
@@ -163,11 +164,22 @@ describe('Acceptance: Slack Integration', function() {
       expect(currentRouteName()).to.equal(
         'organizations.organization.integrations.slack.slack-config',
       );
-      await percySnapshot(this.test.fullTitle() + ' | new slack-config form');
       await SlackConfigForm.saveButton.click();
 
       expect(currentRouteName()).to.equal('organizations.organization.integrations.slack.index');
       expect(SlackIntegrationPage.integrationItems[0].configItems.length).to.equal(4);
+    });
+
+    it('when you cancel out of adding a project, a new record is not displayed', async function() {
+      await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
+      expect(SlackIntegrationPage.integrationItems[0].configItems.length).to.equal(3);
+
+      await SlackIntegrationPage.integrationItems[0].addProjectButton.click();
+
+      await percySnapshot(this.test.fullTitle() + ' | new slack-config form');
+      await SlackConfigForm.cancelButton.click();
+
+      expect(SlackIntegrationPage.integrationItems[0].configItems.length).to.equal(3);
       await percySnapshot(this.test.fullTitle());
     });
 

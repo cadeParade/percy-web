@@ -25,6 +25,11 @@ export default BaseFormComponent.extend({
     return selectedProjectOption(this.get('projectOptions'), this.get('changeset.projectId'));
   }),
 
+  willDestroyElement() {
+    // Don't leave an unsaved new project model in the store.
+    this.get('model').rollbackAttributes();
+  },
+
   actions: {
     selectProject(project) {
       this.get('changeset').set('projectId', project.id);
