@@ -114,7 +114,7 @@
     "prettier-eslint-cli": "^4.7.0",
     "raven-js": "^3.26.3",
     "siema": "^1.5.1",
-    "stylelint": "^9.5.0",
+    "stylelint": "^10.0.1",
     "stylelint-config-standard": "^18.3.0",
     "stylelint-order": "2.2.1",
     "stylelint-scss": "^3.6.0"
