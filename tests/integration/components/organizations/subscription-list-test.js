@@ -30,12 +30,42 @@ describe('Integration: SubscriptionList', function() {
 
   describe('when org is on v3-self-serve plan', function() {
     _expectForPaidPlans('withPaidPlan');
+
+    it('displays info for existing plan', async function() {
+      const organization = make('organization', 'withBusinessPlan');
+      this.set('organization', organization);
+      await this.render(hbs`{{organizations/subscription-list
+        organization=organization
+      }}`);
+      expect(SubscriptionList.isPlanInfoVisible).to.equal(true);
+      expect(SubscriptionList.planInfoText).to.include('849');
+    });
   });
   describe('when org is on legacy plan', function() {
     _expectForPaidPlans('withLegacyPlan');
+
+    it('displays info for default plan', async function() {
+      const organization = make('organization', 'withLegacyPlan');
+      this.set('organization', organization);
+      await this.render(hbs`{{organizations/subscription-list
+        organization=organization
+      }}`);
+      expect(SubscriptionList.isPlanInfoVisible).to.equal(true);
+      expect(SubscriptionList.planInfoText).to.include('29');
+    });
   });
 
   async function _expectForFreeAndTrial(planTrait) {
+    it('selects "Essential" plan by default', async function() {
+      const organization = make('organization', planTrait);
+      this.setProperties({organization});
+      await this.render(hbs`{{organizations/subscription-list
+        organization=organization
+      }}`);
+
+      expect(SubscriptionList.isSmallPlanSelected).to.equal(true);
+    });
+
     describe('submit button state', function() {
       beforeEach(async function() {
         const organization = make('organization', planTrait);
@@ -50,20 +80,16 @@ describe('Integration: SubscriptionList', function() {
         }}`);
       });
 
-      it('is disabled when there is no plan selected', async function() {
-        // Subscription should have a valid email by default.
-        this.set('_isCardComplete', true);
-        expect(SubscriptionList.isInputSubmitDisabled).to.equal(true);
-      });
-
       it('is disabled when the credit card input is invalid', async function() {
         // Subscription should have a valid email by default.
+        // Subscription should have small plan selected by default.
         await this.set('_isCardComplete', false);
         await SubscriptionList.selectSmallPlan();
         expect(SubscriptionList.isInputSubmitDisabled).to.equal(true);
       });
 
       it('is disabled when the email is invalid', async function() {
+        // Subscription should have small plan selected by default.
         this.set('_isCardComplete', true);
         await SubscriptionList.enterBillingEmail('not a valid email address');
         await SubscriptionList.selectSmallPlan();
@@ -73,6 +99,7 @@ describe('Integration: SubscriptionList', function() {
 
       it('is enabled when a plan is selected, credit card and email are valid', async function() {
         // Subscription should have a valid email by default.
+        // Subscription should have small plan selected by default.
         await SubscriptionList.selectSmallPlan();
         await this.set('_isCardComplete', true);
         expect(SubscriptionList.isInputSubmitDisabled).to.equal(false);
@@ -89,8 +116,8 @@ describe('Integration: SubscriptionList', function() {
         }}`);
       });
 
-      it('does not display plan info when there is no plan selected', async function() {
-        expect(SubscriptionList.isPlanInfoVisible).to.equal(false);
+      it('displays default plan info', async function() {
+        expect(SubscriptionList.isPlanInfoVisible).to.equal(true);
       });
 
       it('displays plan info for selected plan when a is plan selected', async function() {
@@ -292,13 +319,6 @@ describe('Integration: SubscriptionList', function() {
         }}`);
       });
 
-      it('displays info for existing plan', async function() {
-        expect(SubscriptionList.isPlanInfoVisible).to.equal(planTrait === 'withPaidPlan');
-        if (planTrait === 'withPaidPlan') {
-          expect(SubscriptionList.planInfoText).to.include('29');
-        }
-      });
-
       it('updates info when another plan is selected', async function() {
         await SubscriptionList.selectMediumPlan();
         expect(SubscriptionList.isPlanInfoVisible).to.equal(true);
@@ -329,7 +349,6 @@ describe('Integration: SubscriptionList', function() {
         beforeEach(async function() {
           await this.render(hbs`{{organizations/subscription-list
             organization=organization
-            _isCardComplete=_isCardComplete
             updateEmail=updateEmailStub
             updateSubscription=updateSubscriptionStub
             updateCreditCard=updateCreditCardStub
@@ -344,14 +363,6 @@ describe('Integration: SubscriptionList', function() {
           expect(updateCreditCard).to.not.have.been.called;
           expect(updateSubscription).to.have.been.called;
         });
-
-        it('does not send updateSubscription when entry is not valid', async function() {
-          await SubscriptionList.submitNewPlan();
-
-          expect(updateEmail).to.not.have.been.called;
-          expect(updateCreditCard).to.not.have.been.called;
-          expect(updateSubscription).to.not.have.been.called;
-        });
       });
 
       describe('waiting on actions', function() {
@@ -360,7 +371,6 @@ describe('Integration: SubscriptionList', function() {
           this.setProperties({subscriptionSaveTask});
           await this.render(hbs`{{organizations/subscription-list
             organization=organization
-            _isCardComplete=_isCardComplete
             subscriptionSaveTask=subscriptionSaveTask
           }}`);
         });

@@ -139,6 +139,7 @@ FactoryGuy.define('organization', {
     withFreePlan: {subscription: () => make('subscription', 'withFreePlan')},
     withTrialPlan: {subscription: () => make('subscription', 'withTrialPlan')},
     withPaidPlan: {subscription: () => make('subscription', 'withPaidPlan')},
+    withBusinessPlan: {subscription: () => make('subscription', 'withBusinessPlan')},
     withEnterprisePlan: {subscription: () => make('subscription', 'withEnterprisePlan')},
     withLegacyPlan: {subscription: () => make('subscription', 'withLegacyPlan')},
     withUsageNotificationSetting: {

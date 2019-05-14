@@ -5,6 +5,8 @@ import Service from '@ember/service';
 // billing page and also the pricing page. The values should be the same, but some of the props on
 // these objects have labels included.
 
+export const DEFAULT_PLAN_ID = 'v3-small';
+
 export default Service.extend({
   PLAN_IDS: ['free', 'v3-small', 'v3-medium', 'v3-large'],
   UPGRADEABLE_PLAN_IDS: [

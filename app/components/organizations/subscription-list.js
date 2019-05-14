@@ -7,6 +7,7 @@ import SubscriptionValidations from 'percy-web/validations/subscription';
 import lookupValidator from 'ember-changeset-validations';
 import StripeOptions from 'percy-web/lib/stripe-elements-options';
 import {resolve} from 'rsvp';
+import {DEFAULT_PLAN_ID} from 'percy-web/services/subscription-data';
 
 export default Component.extend({
   subscriptionData: service(),
@@ -19,11 +20,11 @@ export default Component.extend({
   updateSavingState: () => {},
   _isCardComplete: false,
   stripeOptions: StripeOptions,
+  defaultPlanId: DEFAULT_PLAN_ID,
 
   plan: readOnly('subscription.plan'),
   subscription: readOnly('organization.subscription'),
   isCardValid: readOnly('_isCardComplete'),
-  selectedPlanId: or('userSelectedPlanId', 'plan.id'),
   shouldShowInputs: readOnly('plan.isTrialOrFree'),
   isEmailValid: readOnly('subscriptionChangeset.isValid'),
   isSubmitWithoutInputsEnabled: readOnly('isNewPlanSelected'),
@@ -35,19 +36,35 @@ export default Component.extend({
   emailSaveTask: null,
   cardSaveTask: null,
   isEmailOrCardSaving: or('emailSaveTask.isRunning', 'cardSaveTask.isRunning'),
+  selectedPlanId: readOnly('selectedPlan.id'),
+
+  defaultPlan: computed('defaultPlanId', function() {
+    return this.subscriptionData.PLANS.findBy('id', this.defaultPlanId);
+  }),
 
   subscriptionChangeset: computed(function() {
     const validator = SubscriptionValidations;
     return new Changeset(this.subscription, lookupValidator(validator), validator);
   }),
 
-  selectedPlan: computed('userSelectedPlanId', 'plan.isTrialOrFree', function() {
-    if (this.plan.isTrialOrFree && !this.userSelectedPlanId) {
-      return null;
-    } else {
-      return this.subscriptionData.PLANS.findBy('id', this.selectedPlanId);
-    }
-  }),
+  selectedPlan: computed(
+    'userSelectedPlanId',
+    'defaultPlan',
+    'plan.{id,isTrialOrFree,isCurrentPaidPlan}',
+    function() {
+      // If the plan doesn't exist in the list and the user hasn't picked one yet,
+      // choose the default
+      if ((this.plan.isTrialOrFree || !this.plan.isCurrentPaidPlan) && !this.userSelectedPlanId) {
+        return this.defaultPlan;
+        // If the user picked one, defintiely choose that.
+      } else if (this.userSelectedPlanId) {
+        return this.subscriptionData.PLANS.findBy('id', this.userSelectedPlanId);
+        // if the user hasn't picked one, and the plan exists in the list, choose that.
+      } else {
+        return this.plan;
+      }
+    },
+  ),
 
   isNewPlanSelected: computed(
     'plan.{id,isTrialOrFree}',

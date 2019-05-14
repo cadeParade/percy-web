@@ -36,6 +36,7 @@ export default DS.Model.extend({
   isSponsored: equal('type', SPONSORED_TYPE),
   isNotSponsored: not('isSponsored'),
 
+  // This should exclude legacy paid plans and enterprise plans.
   isCurrentPaidPlan: computed('id', function() {
     return this.subscriptionData.PLAN_IDS.includes(this.id) && this.isNotFree;
   }),

@@ -10,6 +10,8 @@ const SELECTORS = {
   INPUT_SUBMIT_BUTTON: '[data-test-submit-inputs] [data-test-percy-btn]',
   PLAN_SUBMIT_BUTTON: '[data-test-submit-plan] [data-test-percy-btn]',
   PLAN_INFO: '[data-test-plan-info]',
+  PLAN_ITEM: '[data-test-plan-item]',
+  PlAN_ITEM_RADIO: '[data-test-radio-input]',
 };
 
 export const subscriptionList = {
@@ -32,6 +34,10 @@ export const subscriptionList = {
   selectSmallPlan: clickable(SELECTORS.SMALL_PLAN_RADIO),
   selectMediumPlan: clickable(SELECTORS.MEDIUM_PLAN_RADIO),
   selectLargePlan: clickable(SELECTORS.LARGE_PLAN_RADIO),
+
+  isSmallPlanSelected: is(':checked', SELECTORS.SMALL_PLAN_RADIO),
+  isMediumPlanSelected: is(':checked', SELECTORS.MEDIUM_PLAN_RADIO),
+  isLargePlanSelected: is(':checked', SELECTORS.LARGE_PLAN_RADIO),
 };
 
 export default create(subscriptionList);

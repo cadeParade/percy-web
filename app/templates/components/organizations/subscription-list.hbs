@@ -9,7 +9,7 @@
     {{#each subscriptionData.PLANS as |planData|}}
       {{#unless (eq planData.id "free")}}
         <div class="flex items-center pb-1">
-          <div class="items-start mr-3 pr-2 text-xl font-semibold BillingSection-left-col">
+          <div class="items-start mr-3 pr-2 text-xl font-semibold BillingSection-left-col" data-test-plan-item>
             {{form-fields/radio
               name='planSelector'
               value=planData.id
@@ -59,9 +59,7 @@
               {{/percy-btn}}
             </div>
             <div class="flex-1 items-start mr-3 pr-2">
-              {{#if selectedPlan}}
-                {{organizations/subscription-list/plan-info plan=selectedPlan}}
-              {{/if}}
+              {{organizations/subscription-list/plan-info selectedPlanId=selectedPlanId}}
             </div>
 
           </div>
@@ -82,9 +80,7 @@
           {{/percy-btn}}
         </div>
         <div class="flex-1 items-start mr-3 pr-2">
-          {{#if selectedPlan}}
-            {{organizations/subscription-list/plan-info plan=selectedPlan}}
-          {{/if}}
+          {{organizations/subscription-list/plan-info selectedPlanId=selectedPlanId}}
         </div>
       </div>
     {{/if}}
