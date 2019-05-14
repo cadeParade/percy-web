@@ -9,7 +9,7 @@ export default DS.Model.extend({
   isCard: DS.attr('boolean'),
 
   displayLabel: computed('cardBrand', 'cardExpiresAt', 'cardLast4', function() {
-    const formattedDate = moment().format('M/YY');
+    const formattedDate = moment(this.cardExpiresAt).format('M/YY');
     return `${this.cardBrand} expires ${formattedDate}. Ending in ${this.cardLast4}`;
   }),
 });
