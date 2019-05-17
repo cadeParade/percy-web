@@ -2,16 +2,24 @@ import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import utils from 'percy-web/lib/utils';
 import {inject as service} from '@ember/service';
+import {hash} from 'rsvp';
 
 export default Route.extend(AuthenticatedRouteMixin, {
   flashMessages: service(),
 
   model() {
-    return this.modelFor('organizations.organization');
+    const organization = this.modelFor('organizations.organization');
+
+    return hash({
+      organization,
+    });
   },
 
   setupController(controller, model) {
-    controller.set('organization', model);
+    controller.setProperties({
+      organization: model.organization,
+      isAdmin: model.organization.currentUserIsAdmin,
+    });
   },
 
   actions: {

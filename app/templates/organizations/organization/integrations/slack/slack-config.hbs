@@ -1,6 +1,10 @@
-{{organizations/integrations/slack-details-container
-  showSlackIntegrationConfig=true
-  organization=organization
-  slackIntegrationConfig=slackIntegrationConfig
-  deleteSlackIntegrationConfig=(route-action "deleteSlackIntegrationConfig")
-}}
+{{#if isAdmin}}
+  {{organizations/integrations/slack-details-container
+    showSlackIntegrationConfig=true
+    organization=organization
+    slackIntegrationConfig=slackIntegrationConfig
+    deleteSlackIntegrationConfig=(route-action "deleteSlackIntegrationConfig")
+  }}
+{{else}}
+  {{organizations/integrations/slack-permissions-warning}}
+{{/if}}

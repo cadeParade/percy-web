@@ -10,6 +10,13 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
   actions: {
     connectSlackChannel() {
+      const isAdmin = this.modelFor(this.routeName).get('currentUserIsAdmin');
+      if (!isAdmin) {
+        return this.get('flashMessages').danger(
+          'Configuring Slack requires organization admin permissions.',
+        );
+      }
+
       $.ajax({
         type: 'POST',
         url: utils.buildApiUrl(

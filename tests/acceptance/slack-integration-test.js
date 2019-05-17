@@ -5,6 +5,7 @@ import {currentRouteName, visit} from '@ember/test-helpers';
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import utils from 'percy-web/lib/utils';
 import SlackIntegrationPage from 'percy-web/tests/pages/organizations/slack-integration-page';
+import SlackPermissionsWarning from 'percy-web/tests/pages/components/organizations/slack-permissions-warning'; // eslint-disable-line
 import SlackConfigForm from 'percy-web/tests/pages/components/forms/slack-config';
 import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
 import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
@@ -224,6 +225,76 @@ describe('Acceptance: Slack Integration', function() {
         await percySnapshot(this.test.fullTitle());
 
         confirmationAlertStub.restore();
+      });
+    });
+  });
+
+  describe('when currentUser is a Member', function() {
+    describe('without an integration', function() {
+      setupSession(function(server) {
+        organization = server.create('organization', 'withPaidPlan', 'withUser');
+        server.create('project', {organization});
+      });
+
+      describe('integrations page', function() {
+        let windowStub;
+
+        beforeEach(function() {
+          windowStub = sinon.stub(utils, 'replaceWindowLocation').returns(true);
+          withVariation(this.owner, 'slack-integration', true);
+        });
+
+        afterEach(function() {
+          windowStub.restore();
+        });
+
+        it('integrations page does not start the OAuth process', async function() {
+          await IntegrationsIndexPage.visitIntegrationsPage({orgSlug: organization.slug});
+
+          await IntegrationsIndexPage.slackIntegration.install();
+
+          expect(windowStub).to.not.have.been.calledWith('fake_slack_oauth_url');
+          expect(currentRouteName()).to.equal('organizations.organization.integrations.index');
+
+          await percySnapshot(this.test.fullTitle());
+        });
+      });
+    });
+
+    describe('with an integration installed', function() {
+      let slackIntegration;
+
+      setupSession(function(server) {
+        organization = server.create('organization', 'withPaidPlan', 'withUser');
+        server.create('project', {organization});
+        slackIntegration = server.create('slackIntegration', {organization});
+      });
+
+      describe('Slack integrations page', function() {
+        it('does not render integrations', async function() {
+          await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
+
+          expect(SlackIntegrationPage.addChannelButton.isVisible).to.equal(false);
+          expect(SlackIntegrationPage.integrationItems[0].isVisible).to.equal(false);
+          expect(SlackPermissionsWarning.isVisible).to.equal(true);
+
+          await percySnapshot(this.test.fullTitle());
+        });
+      });
+
+      describe('Slack config form', function() {
+        it('does not render', async function() {
+          await visit(
+            `/organizations/${organization.slug}/integrations/slack/${
+              slackIntegration.id
+            }/configs/new`,
+          );
+
+          expect(SlackConfigForm.saveButton.isVisible).to.equal(false);
+          expect(SlackPermissionsWarning.isVisible).to.equal(true);
+
+          await percySnapshot(this.test.fullTitle());
+        });
       });
     });
   });

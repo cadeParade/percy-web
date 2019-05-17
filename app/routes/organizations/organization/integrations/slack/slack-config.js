@@ -35,6 +35,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
   setupController(controller, model) {
     controller.setProperties({
       organization: model.organization,
+      isAdmin: model.organization.currentUserIsAdmin,
       slackIntegrationConfig: model.slackIntegrationConfig,
     });
   },
