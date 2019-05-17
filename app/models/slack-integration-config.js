@@ -4,14 +4,11 @@ export const ALL_PROJECTS_ID = 'allProjects';
 export const ALL_PROJECTS_LABEL = 'All projects';
 export const SLACK_NOTIFICATION_OPTIONS = [
   {
-    label: 'Approved',
-    value: 'approved',
-    description: 'Builds approved by anyone on the team',
-  },
-  {
     label: 'Unreviewed',
     value: 'finished_unreviewed_snapshots',
-    description: 'Builds that finished but need review',
+    description:
+      'Builds with visual changes to review; these notifications will auto-update if ' +
+      'the builds are approved',
   },
   {
     label: 'No changes',
@@ -21,7 +18,12 @@ export const SLACK_NOTIFICATION_OPTIONS = [
   {
     label: 'Auto-Approved',
     value: 'finished_auto_approved_branch',
-    description: 'Builds auto-approved from your auto-approved branches.',
+    description: 'Builds auto-approved from your auto-approved branches',
+  },
+  {
+    label: 'Approved',
+    value: 'approved',
+    description: 'Additional notifications when builds are approved',
   },
 ];
 

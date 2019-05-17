@@ -17,7 +17,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
       slackIntegrationConfig = this.store.createRecord('slackIntegrationConfig', {
         slackIntegration: slackIntegration,
         projectId: ALL_PROJECTS_ID,
-        notificationTypes: ['approved', 'finished_unreviewed_snapshots'], // set defaults
+        notificationTypes: ['finished_unreviewed_snapshots'], // set defaults
       });
     } else {
       slackIntegrationConfig = this.store.peekRecord(
