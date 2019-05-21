@@ -49,8 +49,10 @@ export default Component.extend({
         errors => {
           this.set('isSaving', false);
           this.set('isSaveSuccessful', false);
-          if (errors && errors.errors && errors.errors[0].detail) {
-            this.set('errorMessage', errors.errors[0].detail);
+          if (errors && errors.errors) {
+            if (errors.errors.length == 1 && errors.errors[0].detail && !errors.errors[0].source) {
+              this.set('errorMessage', errors.errors[0].detail);
+            }
           } else {
             this.set('errorMessage', 'An unhandled error occured');
             throw errors;
