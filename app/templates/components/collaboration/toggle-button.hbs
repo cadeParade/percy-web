@@ -1,0 +1,17 @@
+<button type="button" class="btn btn-square collaboration-toggle relative" {{action toggleCollaborationPanel}} data-test-toggle-comment-sidebar>
+  <figure class="svg-container">
+    {{#if unresolvedCommentAmount}}
+      {{inline-svg "conversation-icon-purple"}}
+    {{else if isResolved}}
+      {{inline-svg "conversation-icon-resolved"}}
+    {{else}}
+      {{inline-svg "conversation-icon-add"}}
+    {{/if}}
+  </figure>
+
+  {{#if unresolvedCommentAmount}}
+    <div class="collaboration-conversation-count">
+      {{unresolvedCommentAmount}}
+    </div>
+  {{/if}}
+</button>

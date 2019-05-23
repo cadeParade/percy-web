@@ -7,6 +7,8 @@ export default SnapshotListItem.extend({
   showSnapshotFullModalTriggered: null,
   createReview: null,
 
+  isCommentPanelShowing: false,
+
   attributeBindings: ['data-test-snapshot-viewer'],
   'data-test-snapshot-viewer': true,
 
@@ -20,6 +22,10 @@ export default SnapshotListItem.extend({
     toggleSnapshotOverlay() {
       this.toggleProperty('isSnapshotShowingDiffOverlay');
       this.trackToggleOverlay(get(this, 'isSnapshotShowingDiffOverlay'));
+    },
+
+    toggleCollaborationPanel() {
+      this.toggleProperty('isCommentPanelShowing');
     },
   },
 });

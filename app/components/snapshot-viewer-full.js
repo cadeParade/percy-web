@@ -28,6 +28,8 @@ export default Component.extend({
   snapshotSelectedWidth: null,
   activeBrowser: null,
 
+  isCommentPanelShowing: false,
+
   filteredComparisons: computed('snapshot', 'activeBrowser', 'snapshotSelectedWidth', function() {
     return filteredComparisons.create({
       snapshot: this.get('snapshot'),
@@ -65,6 +67,10 @@ export default Component.extend({
       let newIndex =
         (((galleryIndex + directional) % galleryLength) + galleryLength) % galleryLength;
       this.get('updateComparisonMode')(galleryMap[newIndex]);
+    },
+
+    toggleCollaborationPanel() {
+      this.toggleProperty('isCommentPanelShowing');
     },
   },
 

@@ -84,7 +84,8 @@ export default Service.extend({
     const groupedSnapshots = groupSnapshots(snapshots);
 
     // if build.baseBuild = null then this is the first build and has no comparisons
-    if (!build.baseBuild) {
+    // need to use `get` syntax for this because `build` in this case is actually a proxy object.
+    if (!build.get('baseBuild')) {
       return NO_DIFF_SEQUENCE;
     } else if (groupedSnapshots.groups.length > 0) {
       return GROUP_SEQUENCE;

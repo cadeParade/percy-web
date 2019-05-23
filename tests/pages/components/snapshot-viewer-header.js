@@ -29,6 +29,7 @@ const SELECTORS = {
   DROPDOWN_PANE_ITEMS: '[data-test-snapshot-header-dropdown-pane] li',
   DROPDOWN_TOGGLE_WIDTHS_OPTION: '[data-test-toggle-widths-option]',
   APPROVAL_BUTTON_SCOPE: '[data-test-snapshot-approval-button]',
+  TOGGLE_COMMENT_SIDEBAR: '[data-test-toggle-comment-sidebar]',
 };
 
 export const SnapshotViewerHeader = {
@@ -104,6 +105,8 @@ export const SnapshotViewerHeader = {
 
   _isComparisonModeSwitcherPresent: isPresent(SELECTORS.COMPARISON_MODE_SWITCHER),
   _isComparisonModeSwitcherInvisible: hasClass('is-invisible', SELECTORS.COMPARISON_MODE_SWITCHER),
+
+  toggleCommentSidebar: clickable(SELECTORS.TOGGLE_COMMENT_SIDEBAR),
 };
 
 export default create(SnapshotViewerHeader);

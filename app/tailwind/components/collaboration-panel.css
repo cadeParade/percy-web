@@ -1,0 +1,86 @@
+.collaboration-panel {
+  @apply flex;
+  @apply flex-col;
+  @apply w-320;
+  @apply py-1;
+}
+
+.collaboration-panel textarea {
+  resize: none;
+}
+
+.collaboration-panel textarea::placeholder {
+  @apply text-gray-300;
+  opacity: 1;
+}
+
+.collaboration-container {
+  @apply flex-1;
+  @apply px-2 pt-3;
+  @apply bg-white;
+  @apply border rounded-l;
+  @apply border-r-0;
+}
+
+.collaboration {
+  @apply relative;
+  @apply mb-6;
+}
+
+.collaboration-comment-replied::after {
+  content: "";
+  @apply absolute pin-b;
+  @apply block;
+  @apply w-px;
+  @apply bg-gray-100;
+  top: 36px;
+  left: 14px;
+}
+
+.collaboration-content-inset {
+  @apply relative;
+  @apply z-1;
+}
+
+.collaboration-comment-new {
+  height: 140px;
+}
+
+.collaboration-content-inset,
+.collaboration-comment-reply {
+  padding-left: 36px;
+}
+
+.collaboration-comment-reply {
+  @apply mb-3;
+}
+
+@media screen and (max-width: 1012px /* var(--width-lg) */) {
+  .collaboration-panel {
+    @apply w-full;
+  }
+
+  .collaboration-container {
+    @apply px-0;
+    @apply bg-transparent;
+    @apply border-0;
+  }
+}
+
+.collaboration-conversation-count {
+  @apply absolute pin-t pin-r;
+  top: -4px;
+  right: -4px;
+  @apply px-sm;
+  @apply shadow-purple-lg bg-purple-600;
+  @apply text-xs text-center font-semibold text-white leading-none;
+  @apply z-1;
+  min-width: 14px;
+  height: 14px;
+  padding-top: 2px;
+  border-radius: 7px;
+}
+
+.collaboration-toggle:focus {
+  @apply bg-white !important;
+}

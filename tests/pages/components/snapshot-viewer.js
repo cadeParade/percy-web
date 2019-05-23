@@ -2,6 +2,7 @@ import {create, isVisible, hasClass, notHasClass} from 'ember-cli-page-object';
 import {SnapshotViewerHeader} from 'percy-web/tests/pages/components/snapshot-viewer-header';
 import {alias} from 'ember-cli-page-object/macros';
 import {comparisonViewer} from 'percy-web/tests/pages/components/comparison-viewer';
+import {collaborationPanel} from 'percy-web/tests/pages/components/collaboration/collaboration-panel'; // eslint-disable-line
 
 const SELECTORS = {
   SNAPSHOT_VIEWER: '[data-test-snapshot-viewer]',
@@ -42,6 +43,8 @@ export const SnapshotViewer = {
   clickApprove: alias('header.clickApprove'),
 
   isLazyRenderHeaderVisible: isVisible(SELECTORS.LAZY_RENDER_HEADER),
+
+  collaborationPanel,
 };
 
 export default create(SnapshotViewer);

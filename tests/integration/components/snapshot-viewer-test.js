@@ -11,6 +11,7 @@ import SnapshotViewer from 'percy-web/tests/pages/components/snapshot-viewer';
 import {resolve} from 'rsvp';
 import {SNAPSHOT_APPROVED_STATE, SNAPSHOT_UNAPPROVED_STATE} from 'percy-web/models/snapshot';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
 
 describe('Integration: SnapshotViewer', function() {
   setupRenderingTest('snapshot-viewer', {
@@ -290,6 +291,40 @@ describe('Integration: SnapshotViewer', function() {
       expect(SnapshotViewer.isDiffImageVisible).to.equal(true);
       await SnapshotViewer.clickDiffImage();
       expect(SnapshotViewer.isDiffImageVisible).to.equal(false);
+    });
+  });
+
+  describe('commenting', function() {
+    beforeEach(async function() {
+      withVariation(this.owner, 'comments', true);
+    });
+
+    describe('panel toggling', function() {
+      beforeEach(async function() {
+        await this.render(hbs`{{snapshot-viewer
+          snapshot=snapshot
+          build=build
+          showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+          userSelectedWidth=userSelectedWidth
+          createReview=createReview
+          activeBrowser=browser
+          isBuildApprovable=isBuildApprovable
+          updateActiveSnapshotBlockId=stub
+        }}`);
+      });
+
+      it('does not show panel by default', async function() {
+        expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
+      });
+
+      it('opens and closes sidebar when toggle button is clicked', async function() {
+        await SnapshotViewer.header.toggleCommentSidebar();
+        expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
+        await percySnapshot(this.test);
+
+        await SnapshotViewer.header.toggleCommentSidebar();
+        expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
+      });
     });
   });
 });

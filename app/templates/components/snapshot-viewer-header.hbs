@@ -1,4 +1,4 @@
-<header class="SnapshotViewer-header sticky pin-t grid gap-4 z-1 px-2 py-1 bg-gray-000 border-t border-b {{if fullscreen 'SnapshotViewer-header-full fixed w-screen z-1'}}" data-test-SnapshotViewer-header {{action expandSnapshot}}>
+<header class="SnapshotViewer-header sticky pin-t grid gap-4 z-1 px-2 py-1 bg-gray-000 border-t border-b {{if fullscreen 'SnapshotViewer-header-full fixed w-screen z-2'}}" data-test-SnapshotViewer-header {{action expandSnapshot}}>
   <div style="min-width: 0;" class="flex items-center">
     {{#if fullscreen}}
       <div class="btn-group mr-2">
@@ -148,6 +148,15 @@
             updateActiveBrowser=updateActiveBrowser
           }}
         {{/if}}
+
+        {{#if (variation "comments")}}
+          {{collaboration/toggle-button
+            toggleCollaborationPanel=toggleCollaborationPanel
+            isResolved=false
+            unresolvedCommentAmount=0
+          }}
+        {{/if}}
+
         <div class="btn-group" data-test-snapshot-approval-button>
           {{demo-tooltip
             build=snapshot.build

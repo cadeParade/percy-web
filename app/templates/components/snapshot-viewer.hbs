@@ -8,6 +8,7 @@
     snapshotSelectedWidth=blockSelectedWidth
     selectedComparison=selectedComparison
     toggleViewMode=(action showSnapshotFullModalTriggered snapshot.id blockSelectedWidth activeBrowser)
+    toggleCollaborationPanel=(action "toggleCollaborationPanel")
     updateSelectedWidth=(action "updateSelectedWidth")
     createReview=createReview
     expandSnapshot=(action "expandBlock")
@@ -19,18 +20,26 @@
 
   {{#if isExpanded}}
     {{#if selectedComparison}}
-      {{comparison-viewer
-        comparison=selectedComparison
-        allDiffsShown=allDiffsShown
-        snapshotSelectedWidth=blockSelectedWidth
-        isDefaultExpanded=isDefaultExpanded
-        isUnchangedSnapshotExpanded=isUnchangedSnapshotExpanded
-        data-test-SnapshotViewer-comparison=true
-        activeBrowser=activeBrowser
-        index=index
-        showDiffOverlay=isSnapshotShowingDiffOverlay
-        toggleOverlay=(action "toggleSnapshotOverlay")
-      }}
+      <div class="flex flex-col flex-col-reverse lg:flex-row bg-gray-000">
+        {{comparison-viewer
+          comparison=selectedComparison
+          allDiffsShown=allDiffsShown
+          snapshotSelectedWidth=blockSelectedWidth
+          isDefaultExpanded=isDefaultExpanded
+          isUnchangedSnapshotExpanded=isUnchangedSnapshotExpanded
+          data-test-SnapshotViewer-comparison=true
+          activeBrowser=activeBrowser
+          index=index
+          showDiffOverlay=isSnapshotShowingDiffOverlay
+          toggleOverlay=(action "toggleSnapshotOverlay")
+          class="flex-1"
+        }}
+        {{#if isCommentPanelShowing}}
+          {{collaboration/collaboration-panel
+            showCollaborationPanel=isShowingCollaborationPanel
+          }}
+        {{/if}}
+      </div>
     {{else}}
       <div class="p-2 text-center bg-gray-000 border-b" data-test-SnapshotViewer-noComparison>
         No snapshot taken at {{blockSelectedWidth}}px.

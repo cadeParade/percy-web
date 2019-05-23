@@ -10,3 +10,11 @@
 .animate-scale {
   transform: scale(1.05) translate3d(0, 0, 0);
 }
+
+.scale-1\/2 {
+  transform: scale(0.5);
+}
+
+.scale-3\/4 {
+  transform: scale(0.75);
+}

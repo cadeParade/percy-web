@@ -166,9 +166,9 @@ describe('Integration: SnapshotList', function() {
       // We arrowed to the second unchanged snapshot, so its comparisons should now be visible.
       expect(firstApprovedGroup.isExpanded).to.equal(true);
       expect(secondApprovedGroup.isExpanded).to.equal(false);
-      expect(firstNoDiffSnapshot.isUnchangedComparisonsVisible, 'one').to.equal(true);
-      expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible, 'two').to.equal(true);
-      expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible, 'three').to.equal(false);
+      expect(firstNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
+      expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
+      expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
     });
 
     it('focuses snapshots on arrow presses', async function() {
