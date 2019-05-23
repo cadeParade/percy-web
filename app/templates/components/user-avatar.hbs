@@ -1,6 +1,6 @@
-<div data-test-user-avatar style="width: 40px; height: 40px;" class="rounded-full overflow-hidden {{class}}">
+<div data-test-user-avatar class="rounded-full border border-gray-200 overflow-hidden {{if isSmallAvatar 'w-28 h-28' 'w-40 h-40'}}">
   {{#if (or showPlaceholder (not user))}}
-    <img src="/images/placeholder-avatar.jpg" alt="placeholder avatar">
+    <img src="/images/placeholder-avatar.svg" alt="placeholder avatar">
   {{else}}
     <img src="{{@user.avatarUrl}}" alt="user avatar">
   {{/if}}
