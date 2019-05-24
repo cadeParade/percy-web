@@ -2,8 +2,8 @@ import DS from 'ember-data';
 import {and, empty, equal, notEmpty, readOnly} from '@ember/object/computed';
 import {computed} from '@ember/object';
 
-const REVIEW_COMMENT_TYPE = 'request-changes';
-const NOTE_COMMENT_TYPE = 'note';
+export const REVIEW_COMMENT_TYPE = 'request-changes';
+export const NOTE_COMMENT_TYPE = 'note';
 
 export default DS.Model.extend({
   masterSnapshot: DS.belongsTo('master-snapshot', {async: false}),

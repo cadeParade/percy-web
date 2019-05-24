@@ -1,0 +1,41 @@
+<div class="collaboration-comment-reply" data-test-comment-reply>
+  <div class="items-center {{unless isExpanded 'flex'}}">
+    <div class="flex items-center">
+      {{user-avatar user=currentUser class="mr-1" isSmallAvatar=true}}
+      {{#if isExpanded}}
+        <div class="font-semibold leading-none">
+          {{currentUser.name}}
+        </div>
+      {{/if}}
+    </div>
+    <div class="flex-1 {{if isExpanded 'collaboration-content-inset'}}" {{action "expandReply"}} data-test-comment-reply-textarea-container>
+      {{textarea
+        data-test-comment-reply-textarea
+        placeholder="Add reply..."
+        value=commentBody
+        classNameBindings="isExpanded:h-24:collaboration-collapsed-comment-reply"
+        class="percy-input"
+      }}
+    </div>
+  </div>
+
+  {{#if isExpanded}}
+    <div class="flex justify-end mt-1">
+      {{#percy-btn
+        handleClick=(action "collapseReply")
+        testLabel="cancel"
+      }}
+        Cancel
+      {{/percy-btn}}
+      {{#percy-btn
+        handleClick=(action "saveReply")
+        class="ml-1"
+        isPrimaryButton=true
+        isDisabled=(is-empty commentBody)
+        testLabel="submit"
+      }}
+        Comment
+      {{/percy-btn}}
+    </div>
+  {{/if}}
+</div>

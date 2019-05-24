@@ -1,0 +1,69 @@
+{{#if shouldShowNewCommentInput}}
+  <div class="collaboration-comment mb-3" data-test-new-comment>
+    <div data-test-new-comment-container>
+      <div class="flex items-center">
+        {{user-avatar user=currentUser class="mr-1" isSmallAvatar=true}}
+        <div class="font-semibold leading-none">
+          {{currentUser.name}}
+        </div>
+      </div>
+      <div class="flex-1 collaboration-content-inset">
+        <div class="relative">
+          {{textarea
+            data-test-new-comment-textarea
+            autofocus=true
+            placeholder="Add comment..."
+            value=commentBody
+            class="percy-input collaboration-new-thread relative pb-5"
+          }}
+
+          <div class="absolute pin-r pin-b pin-l bg-white border-t p-1-1/2 m-px rounded-b font-semibold text-sm text-gray-400 leading-none">
+            <label class="flex items-center justify-end m-0 -mr-1">
+              <span>Request changes</span>
+              {{input
+                data-test-request-changes-checkbox
+                type="checkbox"
+                name="isRequestChanges"
+                checked=areChangesRequested
+                class="ml-1"
+              }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-end mt-1">
+      {{#percy-btn
+        handleClick=(action "toggleShouldShowNewCommentInput")
+        testLabel="cancelNewComment"
+      }}
+        Cancel
+      {{/percy-btn}}
+      {{#percy-btn
+        handleClick=(action "saveComment")
+        class="ml-1"
+        isPrimaryButton=true
+        isDisabled=(is-empty commentBody)
+        testLabel="saveNewComment"
+      }}
+        Comment
+      {{/percy-btn}}
+    </div>
+  </div>
+{{else}}
+  <div class="flex items-center mb-3 cursor-pointer" {{action "toggleShouldShowNewCommentInput"}}
+ data-test-new-comment>
+    {{#percy-btn
+      isPrimaryButton=true
+      class="w-28 h-28 px-0 mr-1 rounded-full"
+      testLabel="showNewCommentTextarea"
+    }}
+      {{inline-svg "add-icon-white"}}
+    {{/percy-btn}}
+
+    <div class="text-purple-600 font-semibold leading-none">
+      New comment
+    </div>
+  </div>
+{{/if}}

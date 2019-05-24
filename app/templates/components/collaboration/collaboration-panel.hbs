@@ -1,5 +1,17 @@
 <div class="collaboration-panel" data-test-collaboration-panel>
-  <div class="collaboration-container pl-2">
-    Coming soon.
+  <div class="collaboration-container">
+
+    {{collaboration/new-thread
+      shouldShowNewCommentInput=(not hasCommentThreads)
+      currentUser=currentUser
+    }}
+
+    {{#each commentThreads as |thread|}}
+      {{collaboration/comment-thread
+        commentThread=thread
+      }}
+    {{/each}}
+
   </div>
 </div>
+

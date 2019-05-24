@@ -1,0 +1,35 @@
+ <div class="collaboration {{if (gt commentThread.comments.length 1)  'collaboration-comment-replied'}}" data-test-comment-thread>
+
+    {{#if areCommentsCollapsed}}
+      {{collaboration/collaboration-comment
+        comment=commentThread.firstComment
+        isFirstComment=true
+      }}
+      <div class="collaboration-content-inset">
+        {{collaboration/collaboration-comment
+          comment=commentThread.secondComment
+        }}
+        {{collaboration/collaboration-expand
+          isThreadClosed=commentThread.isClosed
+          numCollapsedComments=numCollapsedComments
+          showCollapsedComments=(action "showCollapsedComments")
+        }}
+        {{collaboration/collaboration-comment
+          comment=commentThread.lastComment
+        }}
+      </div>
+    {{else}}
+      {{#each commentThread.comments as |comment index|}}
+        <div class="{{if (not-eq index 0) "collaboration-content-inset"}}">
+          {{collaboration/collaboration-comment
+            comment=comment
+            isFirstComment=(eq index 0)
+          }}
+        </div>
+      {{/each}}
+    {{/if}}
+
+    {{#unless commentThread.isClosed}}
+      {{collaboration/collaboration-comment-reply commentThread=commentThread}}
+    {{/unless}}
+  </div>

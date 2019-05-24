@@ -1,0 +1,11 @@
+.percy-input {
+  @apply block;
+  @apply w-full;
+  @apply mb-0;
+  @apply border-gray-200;
+}
+
+.percy-input:focus {
+  @apply border-purple-600;
+  @apply shadow-input-focus;
+}

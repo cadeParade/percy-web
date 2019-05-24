@@ -1,0 +1,56 @@
+<div class="collaboration-comment" data-test-collaboration-comment>
+  <header class="flex justify-between mb-sm {{if isClosed 'items-center' 'items-start'}}">
+    <div class="flex items-center">
+      {{user-avatar user=user class="mr-1" isSmallAvatar=true}}
+      <div class="leading-none">
+        <div class="font-semibold">
+          {{author.name}}
+        </div>
+        <div class="text-sm text-gray-300 font-semibold">
+          {{displayCreatedAt}}
+        </div>
+      </div>
+    </div>
+    {{#if isFirstComment}}
+      {{#if isReview}}
+        {{#if isClosed}}
+          <div class="flex items-center text-green-500 font-semibold text-sm leading-none" data-test-resolved>
+            <div class="mr-sm">
+              {{inline-svg "check-green-icon" class="scale-3/4"}}
+            </div>
+            <div>Resolved</div>
+          </div>
+        {{else}}
+          {{#percy-btn
+            handleClick=(action "closeCommentThread")
+            isPrimaryButton=true
+            isSmallButton=true
+            testLabel="commentResolve"
+          }}
+            Resolve
+          {{/percy-btn}}
+        {{/if}}
+      {{else}}
+        {{#if isClosed}}
+          <div class="flex items-center" data-test-archived>
+            <div class="text-purple-600 font-semibold text-sm leading-none">
+              Archived
+            </div>
+          </div>
+        {{else}}
+          {{#percy-btn
+            handleClick=(action "closeCommentThread")
+            isSecondaryButton=true
+            isSmallButton=true
+            testLabel="commentArchive"
+          }}
+            Archive
+          {{/percy-btn}}
+        {{/if}}
+      {{/if}}
+    {{/if}}
+  </header>
+  <p class="collaboration-content-inset">
+    {{comment.body}}
+  </p>
+</div>

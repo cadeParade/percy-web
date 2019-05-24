@@ -13,5 +13,6 @@
 */
 
 export default {
-  current: 'currentColor'
+  current: 'currentColor',
+  'gray-700': '#3f3a40'
 };

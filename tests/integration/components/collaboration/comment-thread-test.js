@@ -1,0 +1,136 @@
+import {setupRenderingTest} from 'ember-mocha';
+import {expect} from 'chai';
+import {it, describe, beforeEach} from 'mocha';
+import {percySnapshot} from 'ember-percy';
+import hbs from 'htmlbars-inline-precompile';
+import {make} from 'ember-data-factory-guy';
+import CommentThread from 'percy-web/tests/pages/components/collaboration/comment-thread';
+import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import Service from '@ember/service';
+
+describe('Integration: CommentThread', function() {
+  setupRenderingTest('comment-thread', {
+    integration: true,
+  });
+
+  beforeEach(async function() {
+    setupFactoryGuy(this);
+    CommentThread.setContext(this);
+
+    const currentUser = make('user');
+    const sessionServiceStub = Service.extend({currentUser});
+    this.owner.register('service:session', sessionServiceStub, 'sessionService');
+  });
+
+  describe('when thread is open', function() {
+    describe('when there are less than 4 comments in thread', function() {
+      it('displays correctly with one comment', async function() {
+        const commentThread = make('comment-thread', 'withOneComment');
+        this.setProperties({commentThread});
+        await this.render(hbs`{{collaboration/comment-thread
+          commentThread=commentThread
+        }}`);
+
+        expect(CommentThread.comments.length).to.equal(1);
+        expect(CommentThread.isReplyVisible).to.equal(true);
+        await percySnapshot(this.test);
+      });
+
+      it('displays correctly with two comments', async function() {
+        const commentThread = make('comment-thread', 'withTwoComments');
+        this.setProperties({commentThread});
+        await this.render(hbs`{{collaboration/comment-thread
+          commentThread=commentThread
+        }}`);
+
+        expect(CommentThread.comments.length).to.equal(2);
+        expect(CommentThread.isReplyVisible).to.equal(true);
+        await percySnapshot(this.test);
+      });
+
+      it('expands reply input when clicked', async function() {
+        const commentThread = make('comment-thread', 'withOneComment');
+        this.setProperties({commentThread});
+        await this.render(hbs`{{collaboration/comment-thread
+          commentThread=commentThread
+        }}`);
+        await CommentThread.focusReply();
+        await percySnapshot(this.test);
+      });
+    });
+
+    describe('when there are more than four comments in thread', function() {
+      beforeEach(async function() {
+        const commentThread = make('comment-thread', 'withTenComments');
+        this.setProperties({commentThread});
+        await this.render(hbs`{{collaboration/comment-thread
+          commentThread=commentThread
+        }}`);
+      });
+
+      it('displays correctly', async function() {
+        expect(CommentThread.comments.length).to.equal(3);
+        expect(CommentThread.expandComments.collapsedCommentCount).to.include(7);
+        expect(CommentThread.isReplyVisible).to.equal(true);
+        await percySnapshot(this.test);
+      });
+
+      it('expands collapsed comments when "Show additional comments" is clicked', async function() {
+        await CommentThread.expandComments.click();
+        expect(CommentThread.comments.length).to.equal(10);
+        expect(CommentThread.isReplyVisible).to.equal(true);
+      });
+    });
+  });
+
+  describe('when thread is closed', function() {
+    describe('when there are less than four comments in the thread', function() {
+      it('displays correctly with one comment', async function() {
+        const commentThread = make('comment-thread', 'withOneComment', 'closed');
+        this.setProperties({commentThread});
+        await this.render(hbs`{{collaboration/comment-thread
+          commentThread=commentThread
+        }}`);
+
+        expect(CommentThread.comments.length).to.equal(1);
+        expect(CommentThread.isReplyVisible).to.equal(false);
+        await percySnapshot(this.test);
+      });
+
+      it('displays correctly with two comments', async function() {
+        const commentThread = make('comment-thread', 'withTwoComments', 'closed');
+        this.setProperties({commentThread});
+        await this.render(hbs`{{collaboration/comment-thread
+          commentThread=commentThread
+        }}`);
+
+        expect(CommentThread.comments.length).to.equal(2);
+        expect(CommentThread.isReplyVisible).to.equal(false);
+        await percySnapshot(this.test);
+      });
+    });
+
+    describe('when there are more than four comments in thread', function() {
+      beforeEach(async function() {
+        const commentThread = make('comment-thread', 'withTenComments', 'closed');
+        this.setProperties({commentThread});
+        await this.render(hbs`{{collaboration/comment-thread
+          commentThread=commentThread
+        }}`);
+      });
+
+      it('displays correctly', async function() {
+        expect(CommentThread.comments.length).to.equal(3);
+        expect(CommentThread.expandComments.collapsedCommentCount).to.include('View conversation');
+        expect(CommentThread.isReplyVisible).to.equal(false);
+        await percySnapshot(this.test);
+      });
+
+      it('expands collapsed comments when "View conversation" is clicked', async function() {
+        await CommentThread.expandComments.click();
+        expect(CommentThread.comments.length).to.equal(10);
+        expect(CommentThread.isReplyVisible).to.equal(false);
+      });
+    });
+  });
+});

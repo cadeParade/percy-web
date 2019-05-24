@@ -8,9 +8,11 @@
     percy-btn
     {{class}}
     {{if isPrimaryButton "percy-btn-primary"}}
+    {{if isSecondaryButton "percy-btn-secondary"}}
     {{if isNoShadow "shadow-none"}}
     {{if isNoAnimate "animate-none"}}
     {{if isSaving 'is-loading'}}
+    {{if isSmallButton "percy-btn-sm"}}
   "
   {{action "handleClick"}}>
   {{yield}}

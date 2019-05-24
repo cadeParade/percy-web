@@ -42,8 +42,17 @@
   @apply z-1;
 }
 
-.collaboration-comment-new {
+.collaboration-new-thread {
   height: 140px;
+}
+
+.collaboration-collapsed-comment-reply {
+  @apply min-h-0;
+  @apply h-28;
+  @apply text-sm;
+  @apply font-semibold;
+  @apply py-sm;
+  @apply px-1;
 }
 
 .collaboration-content-inset,
