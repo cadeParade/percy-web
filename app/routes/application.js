@@ -33,7 +33,7 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
   },
 
   model() {
-    return this._loadLaunchDarkly(this.get('currentUser'));
+    return this._loadLaunchDarkly();
   },
 
   // Special case: turn off ember-simple-auth-auth0's application-route-mixin expiration timer.
@@ -49,27 +49,15 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
     return reject();
   },
 
-  async _loadLaunchDarkly(currentUser) {
+  async _loadLaunchDarkly() {
     const anonUser = {key: 'anon', anonymous: true};
-    const user = currentUser ? await this.launchDarklyUser(currentUser) : anonUser;
     try {
-      return this.get('launchDarkly').initialize(user);
+      return this.get('launchDarkly').initialize(anonUser);
     } catch (e) {
       // If anything goes wrong with the launch darkly identification, don't crash the app,
       // just return a resolved promise so the app can keep loading.
       return resolve();
     }
-  },
-
-  async launchDarklyUser(currentUser) {
-    const organizations = await currentUser.get('organizations');
-    return {
-      key: this.get('currentUser.userHash'),
-      name: this.get('currentUser.name'),
-      custom: {
-        organizations: organizations.mapBy('id'),
-      },
-    };
   },
 
   sessionAuthenticated() {

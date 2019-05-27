@@ -10,6 +10,7 @@ export default SessionService.extend({
   store: service(),
   analytics: service(),
   raven: service(),
+  launchDarkly: service(),
 
   // set by load method
   currentUser: null,
@@ -18,9 +19,9 @@ export default SessionService.extend({
     if (this.get('isAuthenticated')) {
       return (
         this.forceReloadUser()
-          .then(user => {
+          .then(async user => {
             this.set('currentUser', user);
-            this._setupThirdPartyUserContexts(user);
+            await this._setupThirdPartyUserContexts(user);
           })
           // This catch will be triggered if the queryRecord or set currentUser
           // fails. If we don't have a user, the site will be very broken
@@ -56,11 +57,16 @@ export default SessionService.extend({
     }
     // Always resolve this successfully, even if it errors.
     // The user should be able to access the site even if third party services fail.
-    return new EmberPromise((resolve /*reject*/) => {
-      this._setupSentry(user);
-      this._setupAnalytics(user);
-      this._setupIntercom(user);
-      resolve();
+    return new EmberPromise(async (resolve /*reject*/) => {
+      try {
+        this._setupSentry(user);
+        this._setupAnalytics(user);
+        this._setupIntercom(user);
+        await this._setupLaunchDarkly(user);
+        resolve();
+      } catch (_) {
+        resolve();
+      }
     });
   },
 
@@ -105,5 +111,16 @@ export default SessionService.extend({
       window.Intercom('shutdown');
     }
     localStorageProxy.removeKeysWithString('intercom');
+  },
+  async _setupLaunchDarkly(user) {
+    const organizations = await user.get('organizations');
+    const launchDarklyUser = {
+      key: user.get('userHash'),
+      name: user.get('name'),
+      custom: {
+        organizations: organizations.mapBy('id'),
+      },
+    };
+    this.get('launchDarkly').identify(launchDarklyUser);
   },
 });

@@ -23,7 +23,7 @@ describe('SessionService', function() {
       store = this.owner.lookup('service:store');
       setupFactoryGuy(this);
 
-      user = make('user', {id: 'foo'});
+      user = make('user', 'withOrganizations', {id: 'foo'});
     });
 
     describe('when isAuthenticated is false', function() {
@@ -82,6 +82,22 @@ describe('SessionService', function() {
 
         return promise.then(() => {
           expect(setupAnalyticsStub).to.have.been.calledWith(user);
+        });
+      });
+
+      it("calls Launch Darkly's identify via _setupLaunchDarkly", function() {
+        const identifyStub = sinon.stub();
+        subject.set('launchDarkly.identify', identifyStub);
+
+        const promise = subject.loadCurrentUser(user);
+        return promise.then(() => {
+          expect(identifyStub).to.have.been.calledWith({
+            key: user.get('userHash'),
+            name: user.get('name'),
+            custom: {
+              organizations: user.get('organizations').mapBy('id'),
+            },
+          });
         });
       });
     });
