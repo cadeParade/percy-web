@@ -117,6 +117,14 @@ module.exports = function(environment) {
         discoverEmberDataModels: true,
       };
     }
+    ENV.APP.bitbucketCloudUrls = {
+      integration:
+        'https://bitbucket.org/site/addons/authorize?descriptor_uri=' +
+        'https%3A%2F%2Fhipster-porcupine-2ctplnao.ngrok.io%2Fapi%2Fbitbucket_cloud%2Fdescriptor&' +
+        'redirect_uri=https%3A%2F%2Fhipster-porcupine-2ctplnao.ngrok.io%2Fapi%2Fbitbucket_cloud' +
+        '%2F%@%2Fsetup_redirect',
+    };
+
     ENV.APP.githubUrls = {
       integration: 'https://github.com/apps/percy-dev/installations/new',
     };
@@ -189,6 +197,15 @@ module.exports = function(environment) {
     ENV.launchDarkly.localFeatureFlags = {
       'slack-integration': false,
       comments: false,
+      'bitbucket-cloud-integration': false,
+    };
+
+    ENV.APP.bitbucketCloudUrls = {
+      integration:
+        'https://bitbucket.org/site/addons/authorize?descriptor_uri=' +
+        'https%3A%2F%2Fhipster-porcupine-2ctplnao.ngrok.io%2Fapi%2Fbitbucket_cloud%2Fdescriptor&' +
+        'redirect_uri=https%3A%2F%2Fhipster-porcupine-2ctplnao.ngrok.io%2Fapi%2Fbitbucket_cloud' +
+        '%2F%@%2Fsetup_redirect',
     };
   }
 
@@ -216,6 +233,14 @@ module.exports = function(environment) {
     if (process.env.VERSION) {
       ENV.APP.VERSION = process.env.VERSION;
     }
+
+    ENV.APP.bitbucketCloudUrls = {
+      integration:
+        'https://bitbucket.org/site/addons/authorize?descriptor_uri=' +
+        'https%3A%2F%2Fpercy.io%2Fapi%2Fbitbucket_cloud%2Fdescriptor&' +
+        'redirect_uri=https%3A%2F%2Fpercy.io%2Fapi%2Fbitbucket_cloud' +
+        '%2F%@%2Fsetup_redirect',
+    };
   }
 
   return ENV;

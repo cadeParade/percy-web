@@ -102,11 +102,17 @@ export default DS.Model.extend({
   isSlackAllowed: computed(function() {
     return this.get('launchDarkly').variation('slack-integration');
   }),
+  isBitbucketCloudAllowed: computed(function() {
+    return this.get('launchDarkly').variation('bitbucket-cloud-integration');
+  }),
   availableIntegrations: computed('versionControlIntegrations.[]', function() {
     let integrations = [];
     for (const key of Object.keys(INTEGRATION_TYPES)) {
       let item = INTEGRATION_TYPES[key];
-      if (key == SLACK_INTEGRATION_TYPE || key == BITBUCKET_CLOUD_INTEGRATION_TYPE) {
+      if (key == SLACK_INTEGRATION_TYPE) {
+        continue;
+      }
+      if (key == BITBUCKET_CLOUD_INTEGRATION_TYPE && !this.get('isBitbucketCloudAllowed')) {
         continue;
       }
       if (this.get(`${item.organizationIntegrationStatus}`) != true) {

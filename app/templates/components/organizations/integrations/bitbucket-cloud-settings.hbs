@@ -1,0 +1,47 @@
+<div class="container-xl">
+  <section data-test-integration-header class="pt-3">
+    <div class="w-3/4 pb-3">
+      <h1 class="text-xl font-semibold mb-sm">Set up Bitbucket Cloud</h1>
+      <p class="text-gray-400">
+        The Percy Bitbucket Cloud app will automatically update the pull request status if there are visual differences needing review, and will show which team member approved them. It will also help us provide smarter comparisons for you, by picking more relevant base builds. Check out the <strong><a href="https://docs.percy.io/docs/bitbucket-cloud" target="_blank">Percy + Bitbucket Cloud</a></strong> docs to learn more.
+      </p>
+    </div>
+  </section>
+
+  <section class="mb-9">
+    <div class="bg-white rounded shadow-1 border-t mb-2">
+      <div class="p-2">
+        <div class="flex items-center mb-2">
+          {{inline-svg "bitbucket-icon-lg" class="mr-1"}}
+          <h2 class="text-xl font-semibold m-0">Bitbucket Cloud Integration</h2>
+        </div>
+
+        <div data-test-bitbucket-cloud-settings>
+          {{#organizations/require-role role="admin" organization=organization}}
+          <div class="mb-2">
+            {{organizations/bitbucket-cloud-integrator organization=organization}}
+
+            {{#if organization.bitbucketCloudIntegration}}
+              {{organizations/integrations/repo-linker-list organization=organization}}
+            {{/if}}
+          </div>
+          {{/organizations/require-role}}
+        </div>
+      </div>
+
+
+      <div class="flex justify-between px-2 pb-2">
+        {{#if currentIntegration}}
+          <button type="button" data-test-bitbucket-cloud-settings-delete class="btn btn-danger" {{action deleteBitbucketCloud currentIntegration}}>Remove Integration</button>
+        {{/if}}
+        {{#link-to
+          'organizations.organization.integrations.index'
+          organization.slug
+          class="percy-btn"
+        }}
+          Back
+        {{/link-to}}
+      </div>
+    </div>
+  </section>
+</div>

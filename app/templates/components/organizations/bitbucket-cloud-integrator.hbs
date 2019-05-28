@@ -1,0 +1,18 @@
+{{#if currentIntegration}}
+  {{organizations/bitbucket-cloud-integration organization=organization}}
+{{else}}
+  <div class="mb-2">
+    <a
+      data-test-bitbucket-cloud-app-install-button
+      href="{{bitbucketCloudIntegrationUrl}}"
+      class="percy-btn percy-btn-primary"
+      rel="noopener">
+      {{fa-icon "bitbucket" classNames="fa--left"}}
+      Install Bitbucket Cloud App
+    </a>
+  </div>
+
+  <div class="rounded bg-yellow-000 border border-yellow-100 p-2 mb-2">
+    <strong>Note:</strong> You can add the Bitbucket integration to your personal Bitbucket account, or any Bitbucket team you're an Administrator of.
+  </div>
+{{/if}}

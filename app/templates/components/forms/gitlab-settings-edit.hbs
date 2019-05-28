@@ -47,7 +47,7 @@
     {{/if}}
   </div>
   <div data-test-gitlab-settings-edit-form-toolbar class="flex justify-between">
-    <button type="button" disabled={{if isNewRecord true false}} data-test-gitlab-settings-delete class="btn btn-danger" {{action "delete" "Are you sure you want to remove this project's GitLab integration?"}}>Remove Integration</button>
+    <button type="button" disabled={{if isNewRecord true false}} data-test-gitlab-settings-delete class="btn btn-danger" {{action "delete" "Are you sure you want to remove the GitLab integration?"}}>Remove Integration</button>
     <div class="flex align-center">
       {{#link-to
         "organizations.organization.integrations.index"

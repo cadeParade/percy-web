@@ -1,6 +1,13 @@
 import {Factory, trait} from 'ember-cli-mirage';
 
 export default Factory.extend({
+  bitbucketCloud: trait({
+    afterCreate(integration) {
+      integration.update({
+        integrationType: 'bitbucket_cloud',
+      });
+    },
+  }),
   github: trait({
     afterCreate(integration) {
       integration.update({

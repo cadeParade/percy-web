@@ -7,6 +7,20 @@ import {currentRouteName} from '@ember/test-helpers';
 describe('Acceptance: GitHubAppInstall', function() {
   setupAcceptance();
 
+  describe('with a non-admin user', function() {
+    let organization;
+    setupSession(function(server) {
+      organization = server.create('organization', 'withUser');
+    });
+
+    it('informs the user that the feature requires admin permissions', async function() {
+      await GithubSettings.visitGithubSettings({orgSlug: organization.slug});
+      expect(currentRouteName()).to.equal('organizations.organization.integrations.github');
+
+      await percySnapshot(this.test);
+    });
+  });
+
   describe('without a linked github account', function() {
     let organization;
     setupSession(function(server) {
@@ -33,13 +47,10 @@ describe('Acceptance: GitHubAppInstall', function() {
 
     it('shows GitHub integration installation page', async function() {
       expect(currentRouteName()).to.equal('organizations.organization.integrations.github');
-
-      await percySnapshot(this.test);
     });
 
     it('shows "Install Github" button when github is not installed', async function() {
       expect(GithubSettings.isGithubAppInstallButtonVisible).to.equal(true);
-
       await percySnapshot(this.test);
     });
   });

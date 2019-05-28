@@ -93,6 +93,7 @@ Router.map(function() {
       this.route('billing');
       this.route('usage');
       this.route('integrations', function() {
+        this.route('bitbucket-cloud');
         this.route('github-enterprise');
         this.route('github');
         this.route('gitlab');
@@ -105,6 +106,7 @@ Router.map(function() {
       });
       this.route('setup', {path: '/setup'}, function() {
         this.route('slack-integration');
+        this.route('bitbucket-cloud-integration');
       });
     });
   });

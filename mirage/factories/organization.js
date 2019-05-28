@@ -66,6 +66,12 @@ export default Factory.extend({
     },
   }),
 
+  withBitbucketCloudIntegration: trait({
+    afterCreate(organization, server) {
+      server.create('versionControlIntegration', 'bitbucketCloud', {organization});
+    },
+  }),
+
   withGithubIntegration: trait({
     afterCreate(organization, server) {
       server.create('versionControlIntegration', 'github', {organization});

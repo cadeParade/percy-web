@@ -10,8 +10,8 @@ export const INTEGRATION_TYPES = {
   [BITBUCKET_CLOUD_INTEGRATION_TYPE]: {
     textName: 'Bitbucket Cloud',
     isBeta: false,
-    isGeneralAvailability: false,
-    iconName: 'github-icon-lg',
+    isGeneralAvailability: true,
+    iconName: 'bitbucket-icon-lg',
     organizationIntegrationStatus: 'isBitbucketCloudIntegrated',
     organizationModelAttribute: 'bitbucketCloudIntegration',
     settingsRouteSlug: 'bitbucket-cloud',
