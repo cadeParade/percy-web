@@ -2,7 +2,7 @@ import {equal, reads} from '@ember/object/computed';
 import Component from '@ember/component';
 
 export default Component.extend({
-  classNames: ['ComparisonViewerFull', 'w-full'],
+  classNames: ['ComparisonViewerFull', 'w-full', 'overflow-y-scroll'],
   comparison: null,
   isBase: equal('comparisonMode', 'base'),
   isHead: equal('comparisonMode', 'head'),
