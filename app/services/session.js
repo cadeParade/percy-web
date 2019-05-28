@@ -121,6 +121,6 @@ export default SessionService.extend({
         organizations: organizations.mapBy('id'),
       },
     };
-    this.get('launchDarkly').identify(launchDarklyUser);
+    return this.get('launchDarkly').identify(launchDarklyUser);
   },
 });
