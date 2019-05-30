@@ -1,11 +1,8 @@
-import {create, collection, clickable, isVisible, triggerable} from 'ember-cli-page-object';
+import {create, collection, clickable, isVisible} from 'ember-cli-page-object';
 import {SnapshotViewer} from 'percy-web/tests/pages/components/snapshot-viewer';
 import {snapshotBlock} from 'percy-web/tests/pages/components/snapshot-block';
 import {getter} from 'ember-cli-page-object/macros';
-
-const DOWN_ARROW_KEY = 40;
-const UP_ARROW_KEY = 38;
-const D_KEY = 68;
+import {triggerKeyUp} from 'ember-keyboard';
 
 const SELECTORS = {
   SNAPSHOT_LIST: '[data-test-snapshot-list]',
@@ -40,15 +37,15 @@ export const SnapshotList = {
     });
   }),
 
-  typeDownArrow: triggerable('keydown', '', {
-    eventProperties: {keyCode: DOWN_ARROW_KEY},
-  }),
-  typeUpArrow: triggerable('keydown', '', {
-    eventProperties: {keyCode: UP_ARROW_KEY},
-  }),
-  typeDiffToggleKey: triggerable('keydown', '', {
-    eventProperties: {keyCode: D_KEY},
-  }),
+  typeDownArrow() {
+    triggerKeyUp('ArrowDown');
+  },
+  typeUpArrow() {
+    triggerKeyUp('ArrowUp');
+  },
+  typeDiffToggleKey() {
+    triggerKeyUp('KeyD');
+  },
 };
 
 export default create(SnapshotList);

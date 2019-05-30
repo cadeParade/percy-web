@@ -1,17 +1,12 @@
-import $ from 'jquery';
 import {alias, filterBy, gt, readOnly} from '@ember/object/computed';
 import {computed, get, set} from '@ember/object';
 import Component from '@ember/component';
 import {inject as service} from '@ember/service';
 import groupSnapshots from 'percy-web/lib/group-snapshots';
+import {EKMixin, keyUp} from 'ember-keyboard';
+import {on} from '@ember/object/evented';
 
-const KEYS = {
-  DOWN_ARROW: 40,
-  UP_ARROW: 38,
-  D: 68,
-};
-
-export default Component.extend({
+export default Component.extend(EKMixin, {
   classNames: ['SnapshotList'],
   attributeBindings: ['data-test-snapshot-list'],
   'data-test-snapshot-list': true,
@@ -80,42 +75,38 @@ export default Component.extend({
     },
   },
 
-  didInsertElement() {
-    $(document).bind(
-      'keydown.snapshots',
-      function(e) {
-        if (get(this, 'isKeyboardNavEnabled')) {
-          if (e.keyCode === KEYS.DOWN_ARROW) {
-            set(
-              this,
-              'activeSnapshotBlockId',
-              this._calculateNewActiveSnapshotBlockId({isNext: true}),
-            );
-          } else if (e.keyCode === KEYS.UP_ARROW) {
-            set(
-              this,
-              'activeSnapshotBlockId',
-              this._calculateNewActiveSnapshotBlockId({isNext: false}),
-            );
-          } else if (e.keyCode === KEYS.D) {
-            e.preventDefault();
-            get(this, 'toggleAllDiffs')({trackSource: 'keypress'});
-          }
-        }
-        this.get('analytics').track(
-          'Snapshot List Navigated',
-          this.get('build.project.organization'),
-          {
-            type: 'keyboard',
-            project_id: this.get('build.project.id'),
-            build_id: this.get('build.id'),
-          },
-        );
-      }.bind(this),
-    );
+  init() {
+    this._super(...arguments);
+    this.set('keyboardActivated', true);
   },
-  willDestroyElement() {
-    $(document).unbind('keydown.snapshots');
+
+  onDKeyPress: on(keyUp('KeyD'), function() {
+    if (this.isKeyboardNavEnabled) {
+      get(this, 'toggleAllDiffs')({trackSource: 'keypress'});
+      this._trackKeyPress();
+    }
+  }),
+
+  onUpKeyPress: on(keyUp('ArrowUp'), function() {
+    if (this.isKeyboardNavEnabled) {
+      set(this, 'activeSnapshotBlockId', this._calculateNewActiveSnapshotBlockId({isNext: false}));
+      this._trackKeyPress();
+    }
+  }),
+
+  onDownKeyPress: on(keyUp('ArrowDown'), function() {
+    if (this.isKeyboardNavEnabled) {
+      set(this, 'activeSnapshotBlockId', this._calculateNewActiveSnapshotBlockId({isNext: true}));
+      this._trackKeyPress();
+    }
+  }),
+
+  _trackKeyPress() {
+    this.get('analytics').track('Snapshot List Navigated', this.get('build.project.organization'), {
+      type: 'keyboard',
+      project_id: this.get('build.project.id'),
+      build_id: this.get('build.id'),
+    });
   },
 
   _allVisibleSnapshotBlocks: computed(

@@ -6499,6 +6499,14 @@ ember-k-codemod@^0.1.0:
     glob "^7.1.1"
     jscodeshift "^0.3.29"
 
+ember-keyboard@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/ember-keyboard/-/ember-keyboard-4.0.0.tgz#63764ebf0fac8153977b04faa73ef1c11820800c"
+  integrity sha512-445XJXehcxzB/bPFWNhA0OO/m6pQ3sfipCGcjMGSU3erpOZSfM4kZ7uRFEUIf0Pz0tyHRQ9BoLq5RY7VBEXUWw==
+  dependencies:
+    babel-plugin-transform-object-rest-spread "^6.26.0"
+    ember-cli-babel "^6.6.0"
+
 ember-launch-darkly@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/ember-launch-darkly/-/ember-launch-darkly-0.7.0.tgz#abd184cae57e1dcdab197f781472d29dc6e92c94"
