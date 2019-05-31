@@ -25,6 +25,9 @@ export default DS.Model.extend({
     async: false,
     inverse: 'headSnapshot',
   }),
+
+  commentThreads: DS.hasMany('commentThreads', {async: false}),
+
   name: DS.attr(),
   build: DS.belongsTo('build', {async: true}),
   screenshots: DS.hasMany('screenshot', {async: false}),

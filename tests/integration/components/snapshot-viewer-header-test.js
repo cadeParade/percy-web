@@ -1,12 +1,16 @@
 /* jshint expr:true */
 import {setupRenderingTest} from 'ember-mocha';
-import {beforeEach, it, describe} from 'mocha';
+import {beforeEach, it, describe, afterEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
-import {make} from 'ember-data-factory-guy';
+import {make, makeList} from 'ember-data-factory-guy';
 import SnapshotViewerHeaderPO from 'percy-web/tests/pages/components/snapshot-viewer-header';
 import sinon from 'sinon';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {
+  enableFlag,
+  disableFlag,
+} from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
 
 describe('Integration: SnapshotViewerHeader', function() {
   setupRenderingTest('snapshot-viewer-header', {
@@ -378,6 +382,38 @@ describe('Integration: SnapshotViewerHeader', function() {
         false,
       );
       expect(SnapshotViewerHeaderPO.snapshotApprovalButton.isUnapproved).to.equal(true);
+    });
+  });
+
+  describe('comment button', function() {
+    beforeEach(async function() {
+      enableFlag(this, 'comments');
+    });
+
+    afterEach(async function() {
+      disableFlag(this, 'comments');
+    });
+
+    it('displays number of open comment threads', async function() {
+      const stub = sinon.stub();
+      const openCommentThreads = makeList('comment-thread', 3);
+      const snapshot = make('snapshot', 'withFinishedBuild', {openCommentThreads});
+
+      this.setProperties({snapshot, stub, openCommentThreads});
+
+      await this.render(hbs`{{snapshot-viewer-header
+        snapshot=snapshot
+        toggleViewMode=stub
+        updateSelectedWidth=stub
+        expandSnapshot=stub
+        activeBrowser=browser
+        openCommentThreads=openCommentThreads
+        toggleCollaborationPanel=stub
+        isBuildApprovable=true
+      }}`);
+
+      expect(SnapshotViewerHeaderPO.isToggleCommentSidebarVisible).to.equal(true);
+      expect(SnapshotViewerHeaderPO.numOpenCommentThreads).to.equal('3');
     });
   });
 });

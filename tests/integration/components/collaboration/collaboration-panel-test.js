@@ -3,11 +3,15 @@ import {expect} from 'chai';
 import {it, describe, beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
-import {make, makeList} from 'ember-data-factory-guy';
+import {make} from 'ember-data-factory-guy';
 import CollaborationPanel from 'percy-web/tests/pages/components/collaboration/collaboration-panel';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import moment from 'moment';
+import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
 
 describe('Integration: CollaborationPanel', function() {
+  freezeMoment('2018-12-17');
+
   setupRenderingTest('collaboration-panel', {
     integration: true,
   });
@@ -41,8 +45,15 @@ describe('Integration: CollaborationPanel', function() {
   });
 
   describe('when there are comment threads', function() {
-    it('displays comment threads', async function() {
-      const commentThreads = makeList('comment-thread', 2, 'withTwoComments');
+    it('displays comment threads in correct order', async function() {
+      const oldCommentThread = make('comment-thread', 'old', {
+        createdAt: moment().subtract(100, 'days'),
+      });
+      const newCommentThread = make('comment-thread', 'withTwoComments', {
+        createdAt: moment().subtract(1, 'hours'),
+      });
+
+      const commentThreads = [oldCommentThread, newCommentThread];
       this.setProperties({commentThreads});
       await this.render(hbs`{{collaboration/collaboration-panel
         commentThreads=commentThreads
@@ -51,7 +62,7 @@ describe('Integration: CollaborationPanel', function() {
       expect(CollaborationPanel.newComment.isNewThreadButtonVisible).to.equal(true);
       expect(CollaborationPanel.newComment.isNewThreadContainerVisible).to.equal(false);
       expect(CollaborationPanel.commentThreads.length).to.equal(2);
-      await percySnapshot(this.test);
+      expect(CollaborationPanel.commentThreads[0].comments[0].createdAt).to.equal('a day ago');
     });
   });
 });

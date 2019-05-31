@@ -13,7 +13,7 @@ import UserMenu from 'percy-web/tests/pages/components/user-menu';
 import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
 import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
 import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
-import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
+import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Acceptance: Project', function() {
   setupAcceptance();

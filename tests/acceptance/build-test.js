@@ -7,10 +7,11 @@ import {TEST_IMAGE_URLS} from 'percy-web/mirage/factories/screenshot';
 import {SNAPSHOT_APPROVED_STATE, SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 import {BUILD_STATES} from 'percy-web/models/build';
 import ProjectPage from 'percy-web/tests/pages/project-page';
-import {beforeEach} from 'mocha';
+import {beforeEach, afterEach} from 'mocha';
 import {currentRouteName, currentURL, findAll} from '@ember/test-helpers';
 import {percySnapshot} from 'ember-percy';
 import {isVisible as attacherIsVisible} from 'ember-attacher';
+import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Acceptance: Build', function() {
   freezeMoment('2018-05-22');
@@ -257,6 +258,79 @@ describe('Acceptance: Build', function() {
       expect(firstWidthSwitcher.buttons[0].isActive).to.equal(true);
       expect(firstWidthSwitcher.buttons[1].isActive).to.equal(false);
       percySnapshot(this.test);
+    });
+  });
+
+  describe('commenting', function() {
+    beforeEach(async function() {
+      withVariation(this.owner, 'comments', true);
+      server.create('commentThread', 'withTwoComments', {
+        snapshot: defaultSnapshot,
+      });
+      server.create('commentThread', 'withOneComment', {
+        snapshot: defaultSnapshot,
+      });
+      server.create('commentThread', 'withTenComments', 'note', {
+        snapshot: defaultSnapshot,
+      });
+
+      await BuildPage.visitBuild(urlParams);
+    });
+
+    afterEach(function() {
+      withVariation(this.owner, 'comments', false);
+    });
+
+    it('displays correctly with many comments', async function() {
+      const firstSnapshot = BuildPage.snapshots[0];
+      expect(firstSnapshot.collaborationPanel.isVisible).to.equal(true);
+      expect(firstSnapshot.commentThreads.length).to.equal(3);
+      expect(firstSnapshot.header.numOpenCommentThreads).to.equal('3');
+      await percySnapshot(this.test);
+    });
+
+    it('can create a new comment reply', async function() {
+      const firstSnapshot = BuildPage.snapshots[0];
+      const firstThread = firstSnapshot.commentThreads[0];
+
+      await firstThread.focusReply();
+      await firstThread.typeReply('what a great reply');
+      await firstThread.submitReply();
+
+      expect(firstThread.comments.length).to.equal(3);
+    });
+
+    it('can create a new comment thread', async function() {
+      const secondSnapshot = BuildPage.snapshots[1];
+      await secondSnapshot.header.toggleCommentSidebar();
+      await secondSnapshot.collaborationPanel.newComment.typeNewComment('wow, what a great thread');
+      await secondSnapshot.collaborationPanel.newComment.submitNewThread();
+
+      expect(secondSnapshot.commentThreads.length).to.equal(1);
+      expect(secondSnapshot.header.numOpenCommentThreads).to.equal('1');
+      await percySnapshot(this.test);
+    });
+
+    it('can close comment threads', async function() {
+      const firstSnapshot = BuildPage.snapshots[0];
+      const reviewThread = firstSnapshot.commentThreads[0];
+      const noteThread = firstSnapshot.commentThreads[2];
+
+      expect(firstSnapshot.header.numOpenCommentThreads).to.equal('3');
+      expect(reviewThread.isResolved, 'review thread should open').to.equal(false);
+      expect(noteThread.isArchived, 'note thread should be open').to.equal(false);
+
+      await reviewThread.close();
+      expect(firstSnapshot.header.numOpenCommentThreads).to.equal('2');
+      expect(reviewThread.isResolved, 'review thread should be resolved').to.equal(true);
+      expect(noteThread.isArchived, 'note thread should be open').to.equal(false);
+
+      await noteThread.close();
+      expect(firstSnapshot.header.numOpenCommentThreads).to.equal('1');
+      expect(reviewThread.isResolved, 'review thread should be resolved').to.equal(true);
+      expect(noteThread.isArchived, 'note thread should be archived').to.equal(true);
+
+      await percySnapshot(this.test);
     });
   });
 
@@ -528,7 +602,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expectFirstSnapshotURL();
 
       // Should wrap around
-      await BuildPage.snapshotFullscreen.typeDownArrow();
+      await BuildPage.snapshotFullscreen.typeUpArrow();
       expectSecondSnapshotURL();
 
       await BuildPage.snapshotFullscreen.typeUpArrow();
@@ -604,6 +678,69 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     await BuildPage.visitFullPageSnapshot(urlParams);
     expect(currentURL()).to.include('browser=firefox');
     expect(findAll('.flash-message.flash-message-danger')).to.have.length(1);
+  });
+
+  describe('commenting', function() {
+    beforeEach(async function() {
+      withVariation(this.owner, 'comments', true);
+      server.create('commentThread', 'withTwoComments', {snapshot});
+      server.create('commentThread', 'withOneComment', {snapshot});
+      server.create('commentThread', 'withTenComments', 'note', {snapshot});
+
+      await BuildPage.visitFullPageSnapshot(urlParams);
+    });
+
+    it('displays correctly with many comments', async function() {
+      const fullscreenSnapshot = BuildPage.snapshotFullscreen;
+      expect(fullscreenSnapshot.collaborationPanel.isVisible).to.equal(true);
+      expect(fullscreenSnapshot.commentThreads.length).to.equal(3);
+      expect(fullscreenSnapshot.header.numOpenCommentThreads).to.equal('3');
+      await percySnapshot(this.test);
+    });
+
+    it('can create a new comment reply', async function() {
+      const snapshot = BuildPage.snapshotFullscreen;
+      const firstThread = snapshot.commentThreads[0];
+
+      await firstThread.focusReply();
+      await firstThread.typeReply('what a great reply');
+      await firstThread.submitReply();
+
+      expect(firstThread.comments.length).to.equal(3);
+    });
+
+    it('can create a new comment thread', async function() {
+      const snapshot = BuildPage.snapshotFullscreen;
+      await snapshot.collaborationPanel.newComment.clickNewThreadButton();
+      await snapshot.collaborationPanel.newComment.typeNewComment('wow, what a great thread');
+      await snapshot.collaborationPanel.newComment.submitNewThread();
+
+      expect(snapshot.commentThreads.length).to.equal(4);
+      expect(snapshot.header.numOpenCommentThreads).to.equal('4');
+      await percySnapshot(this.test);
+    });
+
+    it('can close comment threads', async function() {
+      const snapshot = BuildPage.snapshotFullscreen;
+      const reviewThread = snapshot.commentThreads[0];
+      const noteThread = snapshot.commentThreads[2];
+
+      expect(snapshot.header.numOpenCommentThreads).to.equal('3');
+      expect(reviewThread.isResolved, 'review thread should open').to.equal(false);
+      expect(noteThread.isArchived, 'note thread should be open').to.equal(false);
+
+      await reviewThread.close();
+      expect(snapshot.header.numOpenCommentThreads).to.equal('2');
+      expect(reviewThread.isResolved, 'review thread should be resolved').to.equal(true);
+      expect(noteThread.isArchived, 'note thread should be open').to.equal(false);
+
+      await noteThread.close();
+      expect(snapshot.header.numOpenCommentThreads).to.equal('1');
+      expect(reviewThread.isResolved, 'review thread should be resolved').to.equal(true);
+      expect(noteThread.isArchived, 'note thread should be archived').to.equal(true);
+
+      await percySnapshot(this.test);
+    });
   });
 });
 

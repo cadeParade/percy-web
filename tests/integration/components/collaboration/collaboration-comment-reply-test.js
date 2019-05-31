@@ -51,7 +51,7 @@ describe('Integration: CollaborationCommentReply', function() {
       this.setProperties({commentThread, submitStub});
       await this.render(hbs`{{collaboration/collaboration-comment-reply
         commentThread=commentThread
-        saveReply=submitStub
+        createComment=submitStub
       }}`);
 
       await CommentReply.expandTextarea();
@@ -83,6 +83,41 @@ describe('Integration: CollaborationCommentReply', function() {
         commentThread,
         commentBody: commentText,
       });
+    });
+
+    it('shows saving indicator when saving', async function() {
+      submitStub.returns({isRunning: true});
+      const commentText = 'When you play the game of thrones, you win or you die';
+      await CommentReply.typeComment(commentText);
+      await CommentReply.submit.click();
+      expect(CommentReply.submit.isLoading).to.equal(true);
+      await percySnapshot(this.test);
+    });
+
+    it('resets reply when comment is successfully saved', async function() {
+      submitStub.returns({isSuccessful: true});
+      const commentText = 'That’s what I do: I drink and I know things.';
+      await CommentReply.typeComment(commentText);
+      await CommentReply.submit.click();
+
+      expect(CommentReply.isCollapsed).to.equal(true);
+      expect(CommentReply.commentText).to.equal('');
+    });
+
+    it('shows flash message when comment save fails', async function() {
+      const flashMessageService = this.owner
+        .lookup('service:flash-messages')
+        .registerTypes(['danger']);
+      sinon.stub(flashMessageService, 'danger');
+
+      submitStub.returns({isSuccessful: false});
+      const commentText = 'That’s what I do: I drink and I know things.';
+      await CommentReply.typeComment(commentText);
+      await CommentReply.submit.click();
+
+      expect(flashMessageService.danger).to.have.been.called;
+      expect(CommentReply.isCollapsed).to.equal(false);
+      expect(CommentReply.commentText).to.equal(commentText);
     });
   });
 });

@@ -1,14 +1,18 @@
 /* jshint expr:true */
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
-import {it, describe, beforeEach} from 'mocha';
+import {it, describe, beforeEach, afterEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
-import {make} from 'ember-data-factory-guy';
+import {make, makeList} from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import {resolve} from 'rsvp';
 import FullSnapshotPage from 'percy-web/tests/pages/components/snapshot-viewer-full';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {
+  enableFlag,
+  disableFlag,
+} from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
 
 describe('Integration: SnapshotViewerFull', function() {
   setupRenderingTest('snapshot-viewer-full', {
@@ -69,6 +73,9 @@ describe('Integration: SnapshotViewerFull', function() {
       activeBrowser=browser
       isBuildApprovable=isBuildApprovable
       updateSnapshotId=stub
+      createCommentThread=stub
+      closeCommentThread=stub
+      createComment=stub
     }}`);
   });
 
@@ -174,6 +181,72 @@ describe('Integration: SnapshotViewerFull', function() {
     it('displays when isBuildApprovable is false', function() {
       this.set('isBuildApprovable', false);
       expect(FullSnapshotPage.isPublicBuildNoticeVisible).to.equal(true);
+    });
+  });
+
+  describe('commenting', function() {
+    beforeEach(async function() {
+      enableFlag(this, 'comments');
+    });
+
+    afterEach(function() {
+      disableFlag(this, 'comments');
+    });
+
+    describe('panel toggling', function() {
+      describe('when there are no comments', function() {
+        it('does not show panel by default', async function() {
+          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(false);
+        });
+
+        it('opens and closes sidebar when toggle button is clicked', async function() {
+          await FullSnapshotPage.header.toggleCommentSidebar();
+          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(true);
+          await percySnapshot(this.test);
+
+          await FullSnapshotPage.header.toggleCommentSidebar();
+          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(false);
+        });
+      });
+
+      describe('when there are open comments', function() {
+        beforeEach(async function() {
+          makeList('comment-thread', 2, 'withTwoComments', {snapshot});
+        });
+
+        it('shows panel by default', async function() {
+          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(true);
+        });
+
+        it('opens and closes sidebar when toggle button is clicked', async function() {
+          await FullSnapshotPage.header.toggleCommentSidebar();
+          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(false);
+          await percySnapshot(this.test);
+
+          await FullSnapshotPage.header.toggleCommentSidebar();
+          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(true);
+        });
+      });
+
+      describe('when there are only closed comments', function() {
+        beforeEach(async function() {
+          make('comment-thread', 'withTwoComments', 'closed', {snapshot});
+          make('comment-thread', 'withTwoComments', 'closed', 'note', {snapshot});
+        });
+
+        it('does not show panel by default', async function() {
+          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(false);
+        });
+
+        it('opens and closes sidebar when toggle button is clicked', async function() {
+          await FullSnapshotPage.header.toggleCommentSidebar();
+          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(true);
+          await percySnapshot(this.test);
+
+          await FullSnapshotPage.header.toggleCommentSidebar();
+          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(false);
+        });
+      });
     });
   });
 });

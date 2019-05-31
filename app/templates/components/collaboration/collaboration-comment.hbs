@@ -1,12 +1,12 @@
 <div class="collaboration-comment" data-test-collaboration-comment>
   <header class="flex justify-between mb-sm {{if isClosed 'items-center' 'items-start'}}">
     <div class="flex items-center">
-      {{user-avatar user=user class="mr-1" isSmallAvatar=true}}
+      {{user-avatar user=author class="mr-1" isSmallAvatar=true}}
       <div class="leading-none">
         <div class="font-semibold">
           {{author.name}}
         </div>
-        <div class="text-sm text-gray-300 font-semibold">
+        <div class="text-sm text-gray-300 font-semibold" data-test-comment-created-at>
           {{displayCreatedAt}}
         </div>
       </div>

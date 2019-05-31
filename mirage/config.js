@@ -4,7 +4,6 @@ import faker from 'faker';
 export default function() {
   // Enable this to see verbose request logging from mirage:
   // this.logging = true;
-
   this.passthrough('http://api.amplitude.com');
   this.passthrough('https://api.lever.co/v0/postings/percy');
 
@@ -116,6 +115,40 @@ export default function() {
       organizationId: result.id,
     });
     return result;
+  });
+
+  this.post('/comments', function(schema) {
+    const attrs = this.normalizedRequestAttrs('comment');
+    const currentUser = schema.users.findBy({_currentLoginInTest: true});
+
+    let commentThread;
+    if (attrs.commentThreadId) {
+      commentThread = schema.commentThreads.findBy({id: attrs.commentThreadId});
+    } else {
+      commentThread = schema.commentThreads.create({
+        type: attrs.threadType,
+        snapshotId: attrs.snapshotId,
+        createdAt: new Date(),
+      });
+    }
+
+    const newComment = schema.comments.create({
+      commentThread: commentThread,
+      body: attrs.body,
+      author: currentUser,
+    });
+
+    return newComment;
+  });
+
+  this.patch('/comment-threads/:id', function(schema) {
+    let attrs = this.normalizedRequestAttrs('comment-thread');
+    let currentUser = schema.users.findBy({_currentLoginInTest: true});
+    attrs.closedBy = currentUser;
+
+    let commentThread = schema.commentThreads.findBy({id: attrs.id});
+    commentThread.update(attrs);
+    return commentThread;
   });
 
   this.post('/organizations/:id/projects', function(schema, request) {

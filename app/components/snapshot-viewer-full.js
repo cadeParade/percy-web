@@ -1,20 +1,18 @@
 import {computed} from '@ember/object';
-import {alias} from '@ember/object/computed';
+import {alias, filterBy, notEmpty, readOnly} from '@ember/object/computed';
 import Component from '@ember/component';
 import filteredComparisons from 'percy-web/lib/filtered-comparisons';
+import {EKMixin, keyUp} from 'ember-keyboard';
+import {on} from '@ember/object/evented';
 
 const KEYS = {
-  DOWN_ARROW: 40,
-  UP_ARROW: 38,
-  LEFT_ARROW: 37,
   RIGHT_ARROW: 39,
-  ESC: 27,
 };
 
 const GALLERY_MAP = ['base', 'diff', 'head'];
 
-export default Component.extend({
-  classNames: ['SnapshotViewerFull'],
+export default Component.extend(EKMixin, {
+  classNames: ['SnapshotViewerFull', 'overflow-y-scroll'],
   attributeBindings: ['data-test-snapshot-viewer-full'],
   'data-test-snapshot-viewer-full': true,
 
@@ -28,7 +26,9 @@ export default Component.extend({
   snapshotSelectedWidth: null,
   activeBrowser: null,
 
-  isCommentPanelShowing: false,
+  commentThreads: readOnly('snapshot.commentThreads'),
+  openCommentThreads: filterBy('commentThreads', 'isOpen'),
+  isCommentPanelShowing: notEmpty('openCommentThreads'),
 
   filteredComparisons: computed('snapshot', 'activeBrowser', 'snapshotSelectedWidth', function() {
     return filteredComparisons.create({
@@ -45,12 +45,9 @@ export default Component.extend({
     return this.get('galleryMap').indexOf(this.get('comparisonMode'));
   }),
 
-  didRender() {
+  init() {
     this._super(...arguments);
-
-    // Autofocus component for keyboard navigation
-    this.$().attr({tabindex: 1});
-    this.$().focus();
+    this.set('keyboardActivated', true);
   },
 
   actions: {
@@ -74,23 +71,22 @@ export default Component.extend({
     },
   },
 
-  keyDown(event) {
-    if (event.keyCode === KEYS.ESC) {
-      this.get('closeSnapshotFullModal')();
-    }
+  onEscKeyPress: on(keyUp('Escape'), function() {
+    this.get('closeSnapshotFullModal')();
+  }),
 
-    if (event.keyCode === KEYS.RIGHT_ARROW || event.keyCode === KEYS.LEFT_ARROW) {
-      if (!this.get('selectedComparison') || this.get('selectedComparison.wasAdded')) {
-        return;
-      }
-      this.send('cycleComparisonMode', event.keyCode);
+  onLeftRightArrowPress: on(keyUp('ArrowRight'), keyUp('ArrowLeft'), function(event) {
+    if (!this.get('selectedComparison') || this.get('selectedComparison.wasAdded')) {
+      return;
     }
+    this.send('cycleComparisonMode', event.keyCode);
+  }),
 
-    if (event.keyCode === KEYS.UP_ARROW) {
-      this.get('updateSnapshotId')({isNext: false});
-    }
-    if (event.keyCode === KEYS.DOWN_ARROW) {
-      this.get('updateSnapshotId')({isNext: true});
-    }
-  },
+  onUpArrowPress: on(keyUp('ArrowUp'), function() {
+    this.get('updateSnapshotId')({isNext: false});
+  }),
+
+  onDownArrowPress: on(keyUp('ArrowDown'), function() {
+    this.get('updateSnapshotId')({isNext: true});
+  }),
 });

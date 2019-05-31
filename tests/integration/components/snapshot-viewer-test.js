@@ -2,16 +2,19 @@
 /* eslint-disable no-unused-expressions */
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
-import {it, describe, beforeEach} from 'mocha';
+import {it, describe, beforeEach, afterEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
-import {make} from 'ember-data-factory-guy';
+import {make, makeList} from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import SnapshotViewer from 'percy-web/tests/pages/components/snapshot-viewer';
 import {resolve} from 'rsvp';
 import {SNAPSHOT_APPROVED_STATE, SNAPSHOT_UNAPPROVED_STATE} from 'percy-web/models/snapshot';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
+import {
+  enableFlag,
+  disableFlag,
+} from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
 
 describe('Integration: SnapshotViewer', function() {
   setupRenderingTest('snapshot-viewer', {
@@ -296,34 +299,102 @@ describe('Integration: SnapshotViewer', function() {
 
   describe('commenting', function() {
     beforeEach(async function() {
-      withVariation(this.owner, 'comments', true);
+      enableFlag(this, 'comments');
+    });
+
+    afterEach(function() {
+      disableFlag(this, 'comments');
     });
 
     describe('panel toggling', function() {
-      beforeEach(async function() {
-        await this.render(hbs`{{snapshot-viewer
-          snapshot=snapshot
-          build=build
-          showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-          userSelectedWidth=userSelectedWidth
-          createReview=createReview
-          activeBrowser=browser
-          isBuildApprovable=isBuildApprovable
-          updateActiveSnapshotBlockId=stub
-        }}`);
+      describe('when there are no comments', function() {
+        beforeEach(async function() {
+          await this.render(hbs`{{snapshot-viewer
+            snapshot=snapshot
+            build=build
+            showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+            userSelectedWidth=userSelectedWidth
+            createReview=createReview
+            activeBrowser=browser
+            isBuildApprovable=isBuildApprovable
+            updateActiveSnapshotBlockId=stub
+            createCommentThread=stub
+          }}`);
+        });
+
+        it('does not show panel by default', async function() {
+          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
+        });
+
+        it('opens and closes sidebar when toggle button is clicked', async function() {
+          await SnapshotViewer.header.toggleCommentSidebar();
+          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
+          await percySnapshot(this.test);
+
+          await SnapshotViewer.header.toggleCommentSidebar();
+          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
+        });
       });
 
-      it('does not show panel by default', async function() {
-        expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
+      describe('when there are open comments', function() {
+        beforeEach(async function() {
+          makeList('comment-thread', 2, 'withTwoComments', {snapshot});
+          await this.render(hbs`{{snapshot-viewer
+            snapshot=snapshot
+            build=build
+            showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+            userSelectedWidth=userSelectedWidth
+            createReview=createReview
+            activeBrowser=browser
+            isBuildApprovable=isBuildApprovable
+            updateActiveSnapshotBlockId=stub
+            createCommentThread=stub
+          }}`);
+        });
+
+        it('shows panel by default', async function() {
+          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
+        });
+
+        it('opens and closes sidebar when toggle button is clicked', async function() {
+          await SnapshotViewer.header.toggleCommentSidebar();
+          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
+          await percySnapshot(this.test);
+
+          await SnapshotViewer.header.toggleCommentSidebar();
+          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
+        });
       });
 
-      it('opens and closes sidebar when toggle button is clicked', async function() {
-        await SnapshotViewer.header.toggleCommentSidebar();
-        expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
-        await percySnapshot(this.test);
+      describe('when there are only closed comments', function() {
+        beforeEach(async function() {
+          make('comment-thread', 'withTwoComments', 'closed', {snapshot});
+          make('comment-thread', 'withTwoComments', 'closed', 'note', {snapshot});
+          await this.render(hbs`{{snapshot-viewer
+            snapshot=snapshot
+            build=build
+            showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+            userSelectedWidth=userSelectedWidth
+            createReview=createReview
+            activeBrowser=browser
+            isBuildApprovable=isBuildApprovable
+            updateActiveSnapshotBlockId=stub
+            createCommentThread=stub
+          }}`);
+        });
 
-        await SnapshotViewer.header.toggleCommentSidebar();
-        expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
+        it('does not show panel by default', async function() {
+          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
+        });
+
+        it('opens and closes sidebar when toggle button is clicked', async function() {
+          await SnapshotViewer.header.toggleCommentSidebar();
+          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
+          await percySnapshot(this.test);
+
+          await SnapshotViewer.header.toggleCommentSidebar();
+          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
+        });
       });
     });
   });

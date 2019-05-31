@@ -3,6 +3,7 @@ import Application from '../../app';
 import config from '../../config/environment';
 import registerPowerSelectHelpers from 'ember-power-select/test-support/helpers';
 import registerBasicDropdownHelpers from 'ember-basic-dropdown/test-support/helpers';
+import keyboardRegisterTestHelpers from './ember-keyboard/register-test-helpers';
 
 // This import registers Percy's async test helpers for all acceptance tests.
 import './percy/register-helpers';
@@ -16,6 +17,7 @@ export default function startApp(attrs) {
 
   return run(() => {
     let application = Application.create(attributes);
+    keyboardRegisterTestHelpers();
     application.setupForTesting();
     application.injectTestHelpers();
     return application;

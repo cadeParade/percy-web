@@ -32,7 +32,7 @@ describe('Integration: CommentThread', function() {
         }}`);
 
         expect(CommentThread.comments.length).to.equal(1);
-        expect(CommentThread.isReplyVisible).to.equal(true);
+        expect(CommentThread.reply.isVisible).to.equal(true);
         await percySnapshot(this.test);
       });
 
@@ -44,7 +44,7 @@ describe('Integration: CommentThread', function() {
         }}`);
 
         expect(CommentThread.comments.length).to.equal(2);
-        expect(CommentThread.isReplyVisible).to.equal(true);
+        expect(CommentThread.reply.isVisible).to.equal(true);
         await percySnapshot(this.test);
       });
 
@@ -71,14 +71,14 @@ describe('Integration: CommentThread', function() {
       it('displays correctly', async function() {
         expect(CommentThread.comments.length).to.equal(3);
         expect(CommentThread.expandComments.collapsedCommentCount).to.include(7);
-        expect(CommentThread.isReplyVisible).to.equal(true);
+        expect(CommentThread.reply.isVisible).to.equal(true);
         await percySnapshot(this.test);
       });
 
       it('expands collapsed comments when "Show additional comments" is clicked', async function() {
         await CommentThread.expandComments.click();
         expect(CommentThread.comments.length).to.equal(10);
-        expect(CommentThread.isReplyVisible).to.equal(true);
+        expect(CommentThread.reply.isVisible).to.equal(true);
       });
     });
   });
@@ -93,7 +93,7 @@ describe('Integration: CommentThread', function() {
         }}`);
 
         expect(CommentThread.comments.length).to.equal(1);
-        expect(CommentThread.isReplyVisible).to.equal(false);
+        expect(CommentThread.reply.isVisible).to.equal(false);
         await percySnapshot(this.test);
       });
 
@@ -105,7 +105,7 @@ describe('Integration: CommentThread', function() {
         }}`);
 
         expect(CommentThread.comments.length).to.equal(2);
-        expect(CommentThread.isReplyVisible).to.equal(false);
+        expect(CommentThread.reply.isVisible).to.equal(false);
         await percySnapshot(this.test);
       });
     });
@@ -122,14 +122,14 @@ describe('Integration: CommentThread', function() {
       it('displays correctly', async function() {
         expect(CommentThread.comments.length).to.equal(3);
         expect(CommentThread.expandComments.collapsedCommentCount).to.include('View conversation');
-        expect(CommentThread.isReplyVisible).to.equal(false);
+        expect(CommentThread.reply.isVisible).to.equal(false);
         await percySnapshot(this.test);
       });
 
       it('expands collapsed comments when "View conversation" is clicked', async function() {
         await CommentThread.expandComments.click();
         expect(CommentThread.comments.length).to.equal(10);
-        expect(CommentThread.isReplyVisible).to.equal(false);
+        expect(CommentThread.reply.isVisible).to.equal(false);
       });
     });
   });

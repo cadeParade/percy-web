@@ -16,6 +16,7 @@
     updateActiveBrowser=updateActiveBrowser
     isBuildApprovable=isBuildApprovable
     index=index
+    openCommentThreads=openCommentThreads
   }}
 
   {{#if isExpanded}}
@@ -36,7 +37,11 @@
         }}
         {{#if isCommentPanelShowing}}
           {{collaboration/collaboration-panel
+            commentThreads=commentThreads
             showCollaborationPanel=isShowingCollaborationPanel
+            createCommentThread=(action createCommentThread snapshot.id)
+            createComment=createComment
+            closeCommentThread=closeCommentThread
           }}
         {{/if}}
       </div>

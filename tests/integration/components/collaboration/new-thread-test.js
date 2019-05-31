@@ -29,7 +29,7 @@ describe('Integration: CollaborationNewThread', function() {
 
       await this.render(hbs`{{collaboration/new-thread
         currentUser=user
-        saveNewComment=saveStub
+        createCommentThread=saveStub
         shouldShowNewCommentInput=true
       }}`);
     });
@@ -51,7 +51,6 @@ describe('Integration: CollaborationNewThread', function() {
       await CollaborationNewThread.submitNewThread();
 
       expect(saveStub).to.have.been.calledWith({
-        author: user,
         commentBody: commentText,
         areChangesRequested: false,
       });
@@ -64,7 +63,6 @@ describe('Integration: CollaborationNewThread', function() {
       await CollaborationNewThread.submitNewThread();
 
       expect(saveStub).to.have.been.calledWith({
-        author: user,
         commentBody: commentText,
         areChangesRequested: true,
       });
@@ -74,6 +72,37 @@ describe('Integration: CollaborationNewThread', function() {
       await CollaborationNewThread.cancelNewThread();
       expect(CollaborationNewThread.isNewThreadButtonVisible).to.equal(true);
       expect(CollaborationNewThread.isNewThreadContainerVisible).to.equal(false);
+    });
+
+    it('resets form after comment thread is saved successfully', async function() {
+      saveStub.returns({isSuccessful: true});
+      const commentText = 'What do we say to the god of death? Not today.';
+      await CollaborationNewThread.typeNewComment(commentText);
+      await CollaborationNewThread.checkRequestChangesBox();
+      await CollaborationNewThread.submitNewThread();
+
+      expect(CollaborationNewThread.isNewThreadButtonVisible).to.equal(true);
+      await CollaborationNewThread.clickNewThreadButton();
+
+      expect(CollaborationNewThread.isRequestChangesChecked).to.equal(false);
+      expect(CollaborationNewThread.textareaValue).to.equal('');
+    });
+
+    it('shows flash message after comment thread save errors', async function() {
+      saveStub.returns({isSuccessful: false});
+      const flashMessageService = this.owner
+        .lookup('service:flash-messages')
+        .registerTypes(['danger']);
+      sinon.stub(flashMessageService, 'danger');
+
+      const commentText = 'What do we say to the god of death? Not today.';
+      await CollaborationNewThread.typeNewComment(commentText);
+      await CollaborationNewThread.checkRequestChangesBox();
+      await CollaborationNewThread.submitNewThread();
+
+      expect(flashMessageService.danger).to.have.been.called;
+      expect(CollaborationNewThread.textareaValue).to.equal(commentText);
+      expect(CollaborationNewThread.isRequestChangesChecked).to.equal(true);
     });
   });
 

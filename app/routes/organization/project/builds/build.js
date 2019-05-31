@@ -2,6 +2,8 @@ import Route from '@ember/routing/route';
 import {inject as service} from '@ember/service';
 import isUserMemberPromise from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
+import {REVIEW_COMMENT_TYPE, NOTE_COMMENT_TYPE} from 'percy-web/models/comment-thread';
+import {task} from 'ember-concurrency';
 
 export default Route.extend({
   snapshotQuery: service(),
@@ -93,7 +95,47 @@ export default Route.extend({
       const build = this._getBuild();
       return this.get('reviews').createApprovalReview(build, snapshots, eventData);
     },
+
+    createCommentThread(snapshotId, {commentBody, areChangesRequested}) {
+      return this._createCommentThread.perform(snapshotId, {commentBody, areChangesRequested});
+    },
+
+    createComment({commentThread, commentBody}) {
+      return this._createComment.perform({commentThread, commentBody});
+    },
+
+    closeCommentThread({commentThread}) {
+      return this._closeCommentThread.perform({commentThread});
+    },
   },
+
+  _createComment: task(function*({commentThread, commentBody}) {
+    const newComment = this.store.createRecord('comment', {
+      commentThread: commentThread,
+      body: commentBody,
+    });
+    return yield newComment.save().catch(() => {
+      newComment.rollbackAttributes();
+    });
+  }),
+
+  _createCommentThread: task(function*(snapshotId, {commentBody, areChangesRequested}) {
+    const newComment = this.store.createRecord('comment', {
+      snapshotId,
+      body: commentBody,
+      threadType: areChangesRequested ? REVIEW_COMMENT_TYPE : NOTE_COMMENT_TYPE,
+    });
+    return yield newComment.save().catch(() => {
+      newComment.rollbackAttributes();
+    });
+  }),
+
+  _closeCommentThread: task(function*({commentThread}) {
+    commentThread.set('closedAt', new Date());
+    return yield commentThread.save().catch(() => {
+      commentThread.rollbackAttributes();
+    });
+  }),
 
   // Use this instead of `modelFor(this.routeName)` because it returns a resolved build object
   // rather than a PromiseObject.

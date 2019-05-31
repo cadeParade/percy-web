@@ -8,7 +8,7 @@ import SlackIntegrationPage from 'percy-web/tests/pages/organizations/slack-inte
 import SlackPermissionsWarning from 'percy-web/tests/pages/components/organizations/slack-permissions-warning'; // eslint-disable-line
 import SlackConfigForm from 'percy-web/tests/pages/components/forms/slack-config';
 import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
-import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
+import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Acceptance: Slack Integration', function() {
   setupAcceptance();

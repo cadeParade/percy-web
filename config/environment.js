@@ -35,6 +35,8 @@ module.exports = function(environment) {
         logout: '/api/auth/logout',
 
         builds: '/api/v1/builds',
+        comments: '/api/v1/comments',
+        commentThreads: '/api/v1/comment-threads/%@',
         githubIntegrationRequest: '/api/v1/organizations/%@/github-integration-request',
         passwordChangeRequest: '/api/v1/user/identities/%@/password-change-request',
         identities: '/api/v1/user/identities',

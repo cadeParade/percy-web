@@ -1,8 +1,12 @@
 import {equal, reads} from '@ember/object/computed';
 import Component from '@ember/component';
 
+const KEYS = {
+  RIGHT_ARROW: 39,
+};
+
 export default Component.extend({
-  classNames: ['ComparisonViewerFull', 'w-full', 'overflow-y-scroll'],
+  classNames: ['ComparisonViewerFull', 'w-full'],
   comparison: null,
   isBase: equal('comparisonMode', 'base'),
   isHead: equal('comparisonMode', 'head'),
@@ -14,6 +18,6 @@ export default Component.extend({
     if (!this.get('comparison') || this.get('comparison.wasAdded')) {
       return;
     }
-    this.get('cycleComparisonMode')(39);
+    this.get('cycleComparisonMode')(KEYS.RIGHT_ARROW);
   },
 });

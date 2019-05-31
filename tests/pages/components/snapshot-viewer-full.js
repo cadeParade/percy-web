@@ -1,12 +1,8 @@
-import {create, attribute, isVisible, triggerable, clickable} from 'ember-cli-page-object';
+import {create, attribute, isVisible, clickable} from 'ember-cli-page-object';
 import {SnapshotViewerHeader} from 'percy-web/tests/pages/components/snapshot-viewer-header';
 import {alias} from 'ember-cli-page-object/macros';
-
-const LEFT_ARROW_KEY = 37;
-const RIGHT_ARROW_KEY = 39;
-const ESCAPE_KEY = 27;
-const DOWN_ARROW = 40;
-const UP_ARROW = 38;
+import {collaborationPanel} from 'percy-web/tests/pages/components/collaboration/collaboration-panel'; // eslint-disable-line
+import {triggerKeyEvent} from '@ember/test-helpers';
 
 const SELECTORS = {
   SNAPSHOT_VIEWER_FULL: '[data-test-snapshot-viewer-full]',
@@ -39,21 +35,21 @@ export const SnapshotViewerFull = {
   clickNextSnapshot: clickable(SELECTORS.NEXT_SNAPSHOT),
   clickPreviousSnapshot: clickable(SELECTORS.PREV_SNAPSHOT),
 
-  typeLeftArrow: triggerable('keydown', '', {
-    eventProperties: {keyCode: LEFT_ARROW_KEY},
-  }),
-  typeRightArrow: triggerable('keydown', '', {
-    eventProperties: {keyCode: RIGHT_ARROW_KEY},
-  }),
-  typeEscape: triggerable('keydown', '', {
-    eventProperties: {keyCode: ESCAPE_KEY},
-  }),
-  typeUpArrow: triggerable('keydown', '', {
-    eventProperties: {keyCode: UP_ARROW},
-  }),
-  typeDownArrow: triggerable('keydown', '', {
-    eventProperties: {keyCode: DOWN_ARROW},
-  }),
+  async typeDownArrow() {
+    return await triggerKeyEvent('button', 'keyup', 'ArrowDown');
+  },
+  async typeUpArrow() {
+    return await triggerKeyEvent('button', 'keyup', 'ArrowUp');
+  },
+  async typeLeftArrow() {
+    return await triggerKeyEvent('button', 'keyup', 'ArrowLeft');
+  },
+  async typeRightArrow() {
+    return await triggerKeyEvent('button', 'keyup', 'ArrowRight');
+  },
+  async typeEscape() {
+    return await triggerKeyEvent('button', 'keyup', 'Escape');
+  },
 
   clickComparisonViewer: clickable(SELECTORS.COMPARISON_VIEWER),
 
@@ -65,6 +61,9 @@ export const SnapshotViewerFull = {
   clickApprove: alias('header.clickApprove'),
 
   isPublicBuildNoticeVisible: isVisible(SELECTORS.PUBLIC_BUILD_NOTICE),
+
+  collaborationPanel,
+  commentThreads: alias('collaborationPanel.commentThreads'),
 };
 
 export default create(SnapshotViewerFull);

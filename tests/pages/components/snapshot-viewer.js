@@ -45,6 +45,7 @@ export const SnapshotViewer = {
   isLazyRenderHeaderVisible: isVisible(SELECTORS.LAZY_RENDER_HEADER),
 
   collaborationPanel,
+  commentThreads: alias('collaborationPanel.commentThreads'),
 };
 
 export default create(SnapshotViewer);

@@ -23,6 +23,9 @@ FactoryGuy.define('comment-thread', {
       closedBy: FactoryGuy.belongsTo('user'),
       closedAt: () => moment().subtract(11, 'minutes'),
     },
+    old: {
+      comments: FactoryGuy.hasMany('comment', 2, {createdAt: moment().subtract(100, 'days')}),
+    },
     review: {
       type: REVIEW_COMMENT_TYPE,
     },

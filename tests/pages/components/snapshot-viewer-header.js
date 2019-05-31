@@ -30,6 +30,7 @@ const SELECTORS = {
   DROPDOWN_TOGGLE_WIDTHS_OPTION: '[data-test-toggle-widths-option]',
   APPROVAL_BUTTON_SCOPE: '[data-test-snapshot-approval-button]',
   TOGGLE_COMMENT_SIDEBAR: '[data-test-toggle-comment-sidebar]',
+  OPEN_COMMENT_THREAD_COUNT: '[data-test-comment-thread-count]',
 };
 
 export const SnapshotViewerHeader = {
@@ -106,7 +107,9 @@ export const SnapshotViewerHeader = {
   _isComparisonModeSwitcherPresent: isPresent(SELECTORS.COMPARISON_MODE_SWITCHER),
   _isComparisonModeSwitcherInvisible: hasClass('is-invisible', SELECTORS.COMPARISON_MODE_SWITCHER),
 
+  isToggleCommentSidebarVisible: isVisible(SELECTORS.TOGGLE_COMMENT_SIDEBAR),
   toggleCommentSidebar: clickable(SELECTORS.TOGGLE_COMMENT_SIDEBAR),
+  numOpenCommentThreads: text(SELECTORS.OPEN_COMMENT_THREAD_COUNT),
 };
 
 export default create(SnapshotViewerHeader);

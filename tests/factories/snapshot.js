@@ -20,6 +20,9 @@ FactoryGuy.define('snapshot', {
     reviewState: SNAPSHOT_UNAPPROVED_STATE,
   },
   traits: {
+    withFinishedBuild: {
+      build: FactoryGuy.belongsTo('build', 'finished'),
+    },
     approved: {
       reviewState: SNAPSHOT_APPROVED_STATE,
       reviewStateReason: SNAPSHOT_REVIEW_STATE_REASONS.USER_APPROVED,

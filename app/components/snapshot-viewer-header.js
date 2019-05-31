@@ -8,11 +8,13 @@ import filteredComparisons from 'percy-web/lib/filtered-comparisons';
 export default Component.extend({
   // required params
   flashMessages: service(),
+  launchDarkly: service(),
   selectedWidth: null,
   selectedComparison: null,
   snapshot: null,
   snapshotSelectedWidth: null,
   activeBrowser: null,
+  openCommentThreads: null, // set by init
 
   // optional params
   fullscreen: false,
@@ -27,6 +29,8 @@ export default Component.extend({
   expandSnapshot() {},
   registerChild() {},
   updateComparisonMode() {},
+
+  unresolvedCommentThreadCount: readOnly('openCommentThreads.length'),
 
   filteredComparisons: computed('snapshot', 'activeBrowser', 'snapshotSelectedWidth', function() {
     return filteredComparisons.create({
@@ -74,5 +78,10 @@ export default Component.extend({
 
       utils.replaceWindowLocation(url);
     },
+  },
+
+  init() {
+    this._super(...arguments);
+    this.openCommentThreads = this.openCommentThreads || [];
   },
 });

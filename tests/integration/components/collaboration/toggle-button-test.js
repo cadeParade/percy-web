@@ -22,7 +22,7 @@ describe('Integration: CollaborationToggleButton', function() {
 
   it('displays purple bubble with count when there are unresolved comments', async function() {
     await this.render(hbs`{{collaboration/toggle-button
-      unresolvedCommentAmount=100
+      unresolvedCommentThreadCount=100
       toggleCollaborationPanel=toggleCollaborationPanelStub
     }}`);
     await percySnapshot(this.test);

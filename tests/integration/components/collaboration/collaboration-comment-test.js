@@ -75,20 +75,54 @@ describe('Integration: CollaborationComment', function() {
     });
 
     describe('closing a comment', function() {
-      it('calls closeComment with review comment thread', async function() {
-        const comment = make('comment', 'fromReviewThread');
-        this.setProperties({comment});
+      describe('when comment is from a "request changes" thread', function() {
+        let comment;
+        beforeEach(async function() {
+          comment = make('comment', 'fromReviewThread');
+          this.setProperties({comment});
+        });
 
-        await CollaborationComment.resolveButton.click();
-        expect(closeCommentThreadStub).to.have.been.calledWith(comment.commentThread);
+        it('sends close action with correct args', async function() {
+          await CollaborationComment.resolveButton.click();
+          expect(closeCommentThreadStub).to.have.been.calledWith({
+            commentThread: comment.commentThread,
+          });
+        });
+
+        it('shows flash message if save fails', async function() {
+          closeCommentThreadStub.returns({isSuccessful: false});
+          const flashMessageService = this.owner
+            .lookup('service:flash-messages')
+            .registerTypes(['danger']);
+          sinon.stub(flashMessageService, 'danger');
+          await CollaborationComment.resolveButton.click();
+          expect(flashMessageService.danger).to.have.been.called;
+        });
       });
 
-      it('calls closeComment with note comment thread', async function() {
-        const comment = make('comment', 'fromNoteThread');
-        this.setProperties({comment});
+      describe('when comment is from a "note" thread', function() {
+        let comment;
+        beforeEach(async function() {
+          comment = make('comment', 'fromNoteThread');
+          this.setProperties({comment});
+        });
 
-        await CollaborationComment.archiveButton.click();
-        expect(closeCommentThreadStub).to.have.been.calledWith(comment.commentThread);
+        it('sends close action with correct args', async function() {
+          await CollaborationComment.archiveButton.click();
+          expect(closeCommentThreadStub).to.have.been.calledWith({
+            commentThread: comment.commentThread,
+          });
+        });
+
+        it('shows flash message if save fails', async function() {
+          closeCommentThreadStub.returns({isSuccessful: false});
+          const flashMessageService = this.owner
+            .lookup('service:flash-messages')
+            .registerTypes(['danger']);
+          sinon.stub(flashMessageService, 'danger');
+          await CollaborationComment.archiveButton.click();
+          expect(flashMessageService.danger).to.have.been.called;
+        });
       });
     });
   });

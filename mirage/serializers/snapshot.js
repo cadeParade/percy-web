@@ -1,7 +1,7 @@
 import {JSONAPISerializer} from 'ember-cli-mirage';
 
 export default JSONAPISerializer.extend({
-  include: [
+  include: Object.freeze([
     'comparisons',
     'comparisons.baseScreenshot',
     'comparisons.baseScreenshot.image',
@@ -12,8 +12,9 @@ export default JSONAPISerializer.extend({
     'comparisons.baseSnapshot',
     'comparisons.headSnapshot',
     'comparisons.diffImage',
+    'commentThreads.comments',
     // Builds are not fully included by API, but it does send the resource linkage info,
     // and this is the best way to mimick that in Mirage for now.
     'build',
-  ],
+  ]),
 });

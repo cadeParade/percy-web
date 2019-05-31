@@ -7,9 +7,12 @@ export default Component.extend({
   isExpanded: false,
   commentBody: '',
   commentThread: null,
+  createComment: null,
 
   session: service(),
+  flashMessages: service(),
   currentUser: readOnly('session.currentUser'),
+  isCommentSaving: readOnly('commentSaveTask.isRunning'),
 
   actions: {
     expandReply() {
@@ -20,11 +23,24 @@ export default Component.extend({
       this.set('isExpanded', false);
     },
 
-    saveReply() {
-      this.saveReply({
-        commentBody: this.commentBody,
+    async saveReply() {
+      const commentBody = this.commentBody;
+      const task = this.createComment({
+        commentBody: commentBody,
         commentThread: this.commentThread,
       });
+
+      this.set('commentSaveTask', task);
+      await task;
+
+      if (task.isSuccessful) {
+        this.set('isExpanded', false);
+        this.set('commentBody', '');
+      } else {
+        this.set('isExpanded', true);
+        this.set('commentBody', commentBody);
+        this.flashMessages.danger('Something went wrong with saving your comment.');
+      }
     },
   },
 });

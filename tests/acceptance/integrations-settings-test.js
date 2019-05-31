@@ -3,7 +3,7 @@ import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page
 import {beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import {currentRouteName} from '@ember/test-helpers';
-import {withVariation} from 'ember-launch-darkly/test-support/helpers/with-variation';
+import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Acceptance: Integrations Settings Page', function() {
   setupAcceptance();

@@ -1,14 +1,17 @@
-<div class="collaboration-panel" data-test-collaboration-panel>
+<div class="collaboration-panel p-2 lg:p-0" data-test-collaboration-panel>
   <div class="collaboration-container">
 
     {{collaboration/new-thread
       shouldShowNewCommentInput=(not hasCommentThreads)
       currentUser=currentUser
+      createCommentThread=createCommentThread
     }}
 
-    {{#each commentThreads as |thread|}}
+    {{#each orderedCommentThreads as |thread|}}
       {{collaboration/comment-thread
         commentThread=thread
+        createComment=createComment
+        closeCommentThread=closeCommentThread
       }}
     {{/each}}
 

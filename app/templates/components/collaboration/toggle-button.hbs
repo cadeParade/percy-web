@@ -1,6 +1,6 @@
 <button type="button" class="btn btn-square collaboration-toggle relative" {{action toggleCollaborationPanel}} data-test-toggle-comment-sidebar>
   <figure class="svg-container">
-    {{#if unresolvedCommentAmount}}
+    {{#if unresolvedCommentThreadCount}}
       {{inline-svg "conversation-icon-purple"}}
     {{else if isResolved}}
       {{inline-svg "conversation-icon-resolved"}}
@@ -9,9 +9,9 @@
     {{/if}}
   </figure>
 
-  {{#if unresolvedCommentAmount}}
-    <div class="collaboration-conversation-count">
-      {{unresolvedCommentAmount}}
+  {{#if unresolvedCommentThreadCount}}
+    <div class="collaboration-conversation-count" data-test-comment-thread-count>
+      {{unresolvedCommentThreadCount}}
     </div>
   {{/if}}
 </button>

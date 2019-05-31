@@ -8,4 +8,5 @@ export default Model.extend({
   build: belongsTo('build'),
   screenshots: hasMany('screenshot'),
   comparisons: hasMany('comparison'),
+  commentThreads: hasMany('commentThread'),
 });

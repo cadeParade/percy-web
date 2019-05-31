@@ -18,11 +18,12 @@
     updateActiveBrowser=updateActiveBrowser
     isBuildApprovable=isBuildApprovable
     updateSnapshotId=updateSnapshotId
+    openCommentThreads=openCommentThreads
   }}
 </div>
 
 
-<div class="flex flex-col flex-col-reverse lg:flex-row bg-gray-000 h-full">
+<div class="flex flex-col flex-col-reverse lg:flex-row bg-gray-000">
   {{#if selectedComparison}}
     {{comparison-viewer-full
       comparison=selectedComparison
@@ -33,7 +34,11 @@
     }}
     {{#if isCommentPanelShowing}}
       {{collaboration/collaboration-panel
+        commentThreads=commentThreads
         showCollaborationPanel=isShowingCollaborationPanel
+        createCommentThread=(action createCommentThread snapshot.id)
+        createComment=createComment
+        closeCommentThread=closeCommentThread
       }}
     {{/if}}
   {{else}}
