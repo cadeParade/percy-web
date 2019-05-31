@@ -90,7 +90,58 @@ describe('snapshot-sort', function() {
       ]);
     });
 
-    it('returns snapshots with diffs at widest widths before snapshots with no diffs at widest width', function() { // eslint-disable-line
+    it('sorts snapshots with diffs before snapshots with commentThreads and no diffs', function() {
+      const snapshotWithCommentThreads = {
+        commentThreads: [{}, {}],
+        comparisons: [wideComparisonWithNoDiff],
+      };
+      const snapshotWithDiffs = {
+        comparisons: [wideComparisonWithLowDiff],
+      };
+      const unorderedSnapshots = [snapshotWithDiffs, snapshotWithCommentThreads];
+
+      expect(snapshotSort(unorderedSnapshots, firefoxBrowser)).to.eql([
+        snapshotWithDiffs,
+        snapshotWithCommentThreads,
+      ]);
+    });
+
+    it('returns snapshots with more commentThreads first', function() {
+      const snapshotWithOneCommentThread = {
+        commentThreads: [{}],
+        comparisons: [wideComparisonWithLowDiff],
+      };
+      const snapshotWithTwoCommentThreads = {
+        commentThreads: [{}, {}],
+        comparisons: [wideComparisonWithLowDiff],
+      };
+      const unorderedSnapshots = [snapshotWithOneCommentThread, snapshotWithTwoCommentThreads];
+
+      expect(snapshotSort(unorderedSnapshots, firefoxBrowser)).to.eql([
+        snapshotWithTwoCommentThreads,
+        snapshotWithOneCommentThread,
+      ]);
+    });
+
+    it('sorts snapshots with comments before snapshots diffs at wider widths', function() {
+      const snapshotWithCommentThreads = {
+        maxComparisonWidth: narrowWidth,
+        commentThreads: [{}, {}],
+        comparisons: [wideComparisonWithHighDiff],
+      };
+      const snapshotWithWideDiff = {
+        maxComparisonWidth: wideWidth,
+        comparisons: [wideComparisonWithHighDiff],
+      };
+
+      const unorderedSnapshots = [snapshotWithWideDiff, snapshotWithCommentThreads];
+      expect(snapshotSort(unorderedSnapshots, firefoxBrowser)).to.eql([
+        snapshotWithCommentThreads,
+        snapshotWithWideDiff,
+      ]);
+    });
+
+    it('returns snapshots with diffs at widest widths before snapshots with no diffs at widest width', function() {  // eslint-disable-line
       const snapshotWithWideDiff = {
         maxComparisonWidth: wideWidth,
         comparisons: [wideComparisonWithHighDiff],

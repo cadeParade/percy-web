@@ -23,7 +23,12 @@ export default function(snapshots, browser) {
     } else if (bHasDiffs && aHasNoDiffs) {
       return 1;
     }
-
+    // Next prioritize snapshots with more comment-threads
+    const aCommentThreadsCount = get(a, 'commentThreads.length') || 0;
+    const bCommentThreadsCount = get(b, 'commentThreads.length') || 0;
+    if (aCommentThreadsCount || bCommentThreadsCount) {
+      return aCommentThreadsCount > bCommentThreadsCount ? -1 : 1;
+    }
     // Next prioritize snapshots with comparisons at the current width
     let comparisonForA = comparisonForWidth(browserComparisonsForA, width);
     let comparisonForB = comparisonForWidth(browserComparisonsForB, width);
