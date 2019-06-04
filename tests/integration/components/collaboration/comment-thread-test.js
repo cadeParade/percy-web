@@ -57,6 +57,16 @@ describe('Integration: CommentThread', function() {
         await CommentThread.focusReply();
         await percySnapshot(this.test);
       });
+
+      it('does not display reply box when `isCommentingAllowed` is false', async function() {
+        const commentThread = make('comment-thread', 'withOneComment');
+        this.setProperties({commentThread});
+        await this.render(hbs`{{collaboration/comment-thread
+          commentThread=commentThread
+          isCommentingAllowed=false
+        }}`);
+        expect(CommentThread.reply.isVisible).to.equal(false);
+      });
     });
 
     describe('when there are more than four comments in thread', function() {

@@ -326,22 +326,27 @@ describe('Acceptance: Build', function() {
 
     it('can close comment threads', async function() {
       const firstSnapshot = BuildPage.snapshots[0];
-      const reviewThread = firstSnapshot.commentThreads[0];
-      const noteThread = firstSnapshot.commentThreads[2];
+      const collabPanel = firstSnapshot.collaborationPanel;
 
       expect(firstSnapshot.header.numOpenCommentThreads).to.equal('3');
-      expect(reviewThread.isResolved, 'review thread should open').to.equal(false);
-      expect(noteThread.isArchived, 'note thread should be open').to.equal(false);
+      expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
+      expect(collabPanel.reviewThreads[1].isResolved).to.equal(false);
+      expect(collabPanel.noteThreads[0].isArchived).to.equal(false);
 
-      await reviewThread.close();
+      await collabPanel.reviewThreads[0].close();
+
+      // Comment threads are ordered with open threads first and closed threads second.
+      // Since we have just closed one of the open threads, it has moved under the open threads.
       expect(firstSnapshot.header.numOpenCommentThreads).to.equal('2');
-      expect(reviewThread.isResolved, 'review thread should be resolved').to.equal(true);
-      expect(noteThread.isArchived, 'note thread should be open').to.equal(false);
+      expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
+      expect(collabPanel.reviewThreads[1].isResolved).to.equal(true);
+      expect(collabPanel.noteThreads[0].isArchived).to.equal(false);
 
-      await noteThread.close();
+      await collabPanel.noteThreads[0].close();
       expect(firstSnapshot.header.numOpenCommentThreads).to.equal('1');
-      expect(reviewThread.isResolved, 'review thread should be resolved').to.equal(true);
-      expect(noteThread.isArchived, 'note thread should be archived').to.equal(true);
+      expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
+      expect(collabPanel.reviewThreads[1].isResolved).to.equal(true);
+      expect(collabPanel.noteThreads[0].isArchived).to.equal(true);
 
       await percySnapshot(this.test);
     });
@@ -735,22 +740,27 @@ describe('Acceptance: Fullscreen Snapshot', function() {
 
     it('can close comment threads', async function() {
       const snapshot = BuildPage.snapshotFullscreen;
-      const reviewThread = snapshot.commentThreads[0];
-      const noteThread = snapshot.commentThreads[2];
+      const collabPanel = snapshot.collaborationPanel;
 
       expect(snapshot.header.numOpenCommentThreads).to.equal('3');
-      expect(reviewThread.isResolved, 'review thread should open').to.equal(false);
-      expect(noteThread.isArchived, 'note thread should be open').to.equal(false);
+      expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
+      expect(collabPanel.reviewThreads[1].isResolved).to.equal(false);
+      expect(collabPanel.noteThreads[0].isArchived).to.equal(false);
 
-      await reviewThread.close();
+      await collabPanel.reviewThreads[0].close();
+
+      // Comment threads are ordered with open threads first and closed threads second.
+      // Since we have just closed one of the open threads, it has moved under the open threads.
       expect(snapshot.header.numOpenCommentThreads).to.equal('2');
-      expect(reviewThread.isResolved, 'review thread should be resolved').to.equal(true);
-      expect(noteThread.isArchived, 'note thread should be open').to.equal(false);
+      expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
+      expect(collabPanel.reviewThreads[1].isResolved).to.equal(true);
+      expect(collabPanel.noteThreads[0].isArchived).to.equal(false);
 
-      await noteThread.close();
+      await collabPanel.noteThreads[0].close();
       expect(snapshot.header.numOpenCommentThreads).to.equal('1');
-      expect(reviewThread.isResolved, 'review thread should be resolved').to.equal(true);
-      expect(noteThread.isArchived, 'note thread should be archived').to.equal(true);
+      expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
+      expect(collabPanel.reviewThreads[1].isResolved).to.equal(true);
+      expect(collabPanel.noteThreads[0].isArchived).to.equal(true);
 
       await percySnapshot(this.test);
     });

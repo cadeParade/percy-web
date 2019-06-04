@@ -39,9 +39,11 @@
           {{collaboration/collaboration-panel
             commentThreads=commentThreads
             showCollaborationPanel=isShowingCollaborationPanel
-            createCommentThread=(action createCommentThread snapshot.id)
+            createCommentThread=createCommentThread
             createComment=createComment
             closeCommentThread=closeCommentThread
+            isCommentingAllowed=isBuildApprovable
+            snapshot=snapshot
           }}
         {{/if}}
       </div>

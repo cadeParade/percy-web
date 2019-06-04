@@ -17,7 +17,13 @@
             class="percy-input collaboration-new-thread relative pb-5"
           }}
 
-          <div class="absolute pin-r pin-b pin-l bg-white border-t p-1-1/2 m-px rounded-b font-semibold text-sm text-gray-400 leading-none">
+          <div
+            class="
+              absolute pin-r pin-b pin-l bg-white border-t p-1-1/2
+              m-px rounded-b font-semibold text-sm text-gray-400 leading-none
+              {{if isRequestChangesDisabled "hint--left hint--rounded hint--bounce"}}"
+            aria-label="{{if isRequestChangesDisabled "You can't request changes on this snapshot beacause the snapshot is already approved."}}"
+          >
             <label class="flex items-center justify-end m-0 -mr-1">
               <span>Request changes</span>
               {{input
@@ -25,6 +31,7 @@
                 type="checkbox"
                 name="isRequestChanges"
                 checked=areChangesRequested
+                disabled=isRequestChangesDisabled
                 class="ml-1"
               }}
             </label>

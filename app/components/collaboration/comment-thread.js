@@ -1,10 +1,11 @@
 import Component from '@ember/component';
-import {filterBy, gt, readOnly} from '@ember/object/computed';
+import {and, filterBy, gt, readOnly} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
 
 export default Component.extend({
   tagName: '',
+  isCommentingAllowed: true,
 
   session: service(),
   currentUser: readOnly('session.currentUser'),
@@ -12,6 +13,7 @@ export default Component.extend({
   commentThread: null,
   comments: readOnly('commentThread.comments'),
   filteredComments: filterBy('comments', 'isSaving', false),
+  shouldShowThreadReplyInput: and('commentThread.isOpen', 'isCommentingAllowed'),
 
   areCommentsCollapsed: gt('comments.length', 3),
   numCollapsedComments: computed('comments.length', function() {

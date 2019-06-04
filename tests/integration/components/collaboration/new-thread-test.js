@@ -21,16 +21,20 @@ describe('Integration: CollaborationNewThread', function() {
   describe('when shouldShowNewCommentInput is true', function() {
     let user;
     let saveStub;
+    let snapshot;
 
     beforeEach(async function() {
       user = make('user');
+      snapshot = make('snapshot');
       saveStub = sinon.stub();
-      this.setProperties({user, saveStub});
+
+      this.setProperties({user, saveStub, snapshot});
 
       await this.render(hbs`{{collaboration/new-thread
         currentUser=user
         createCommentThread=saveStub
         shouldShowNewCommentInput=true
+        snapshot=snapshot
       }}`);
     });
 
@@ -51,6 +55,7 @@ describe('Integration: CollaborationNewThread', function() {
       await CollaborationNewThread.submitNewThread();
 
       expect(saveStub).to.have.been.calledWith({
+        snapshotId: snapshot.id,
         commentBody: commentText,
         areChangesRequested: false,
       });
@@ -63,9 +68,18 @@ describe('Integration: CollaborationNewThread', function() {
       await CollaborationNewThread.submitNewThread();
 
       expect(saveStub).to.have.been.calledWith({
+        snapshotId: snapshot.id,
         commentBody: commentText,
         areChangesRequested: true,
       });
+    });
+
+    it('disables "Request changes" checkbox when snapshot is approved', async function() {
+      const snapshot = make('snapshot', 'approved');
+      this.setProperties({snapshot});
+      expect(CollaborationNewThread.isRequestChangesDisabled).to.equal(true);
+      await CollaborationNewThread.checkRequestChangesBox();
+      expect(CollaborationNewThread.isRequestChangesChecked).to.equal(false);
     });
 
     it('can back out of comment adding', async function() {

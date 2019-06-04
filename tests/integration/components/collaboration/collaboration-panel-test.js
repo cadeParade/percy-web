@@ -3,7 +3,7 @@ import {expect} from 'chai';
 import {it, describe, beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
-import {make} from 'ember-data-factory-guy';
+import {make, makeList} from 'ember-data-factory-guy';
 import CollaborationPanel from 'percy-web/tests/pages/components/collaboration/collaboration-panel';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import moment from 'moment';
@@ -28,10 +28,12 @@ describe('Integration: CollaborationPanel', function() {
     beforeEach(async function() {
       user = make('user');
       const commentThreads = [];
-      this.setProperties({commentThreads, user, saveStub});
+      const isCommentingAllowed = true;
+      this.setProperties({commentThreads, user, saveStub, isCommentingAllowed});
 
       await this.render(hbs`{{collaboration/collaboration-panel
         commentThreads=commentThreads
+        isCommentingAllowed=isCommentingAllowed
       }}`);
     });
 
@@ -42,18 +44,33 @@ describe('Integration: CollaborationPanel', function() {
       expect(CollaborationPanel.commentThreads.length).to.equal(0);
       await percySnapshot(this.test);
     });
+
+    it('does not show "New Comment" textarea when isCommentingAllowed is false', async function() {
+      this.set('isCommentingAllowed', false);
+      expect(CollaborationPanel.newComment.isNewThreadButtonVisible).to.equal(false);
+      expect(CollaborationPanel.newComment.isNewThreadContainerVisible).to.equal(false);
+      expect(CollaborationPanel.commentThreads.length).to.equal(0);
+    });
   });
 
   describe('when there are comment threads', function() {
     it('displays comment threads in correct order', async function() {
-      const oldCommentThread = make('comment-thread', 'old', {
-        createdAt: moment().subtract(100, 'days'),
+      const oldOpenCommentThread = make('comment-thread', 'old');
+      const newOpenCommentThread = make('comment-thread', 'withTwoComments', {
+        createdAt: moment().subtract(1, 'hours'),
       });
-      const newCommentThread = make('comment-thread', 'withTwoComments', {
+      const oldClosedCommentThread = make('comment-thread', 'old', 'closed');
+      const newClosedCommentThread = make('comment-thread', 'withTwoComments', 'closed', {
         createdAt: moment().subtract(1, 'hours'),
       });
 
-      const commentThreads = [oldCommentThread, newCommentThread];
+      const commentThreads = [
+        oldClosedCommentThread,
+        oldOpenCommentThread,
+        newClosedCommentThread,
+        newOpenCommentThread,
+      ];
+
       this.setProperties({commentThreads});
       await this.render(hbs`{{collaboration/collaboration-panel
         commentThreads=commentThreads
@@ -61,8 +78,26 @@ describe('Integration: CollaborationPanel', function() {
 
       expect(CollaborationPanel.newComment.isNewThreadButtonVisible).to.equal(true);
       expect(CollaborationPanel.newComment.isNewThreadContainerVisible).to.equal(false);
-      expect(CollaborationPanel.commentThreads.length).to.equal(2);
+      expect(CollaborationPanel.commentThreads.length).to.equal(4);
+
       expect(CollaborationPanel.commentThreads[0].comments[0].createdAt).to.equal('a day ago');
+      expect(CollaborationPanel.commentThreads[0].isClosed).to.equal(false);
+
+      expect(CollaborationPanel.commentThreads[2].comments[0].createdAt).to.equal('a day ago');
+      expect(CollaborationPanel.commentThreads[2].isClosed).to.equal(true);
+      await percySnapshot(this.test);
+    });
+
+    it('does not show "New Comment" button when isCommentingAllowed is false', async function() {
+      this.set('commentThreads', makeList('comment-thread', 2, 'withOneComment'));
+      await this.render(hbs`{{collaboration/collaboration-panel
+        commentThreads=commentThreads
+        isCommentingAllowed=false
+      }}`);
+
+      expect(CollaborationPanel.newComment.isNewThreadButtonVisible).to.equal(false);
+      expect(CollaborationPanel.newComment.isNewThreadContainerVisible).to.equal(false);
+      expect(CollaborationPanel.commentThreads.length).to.equal(2);
     });
   });
 });

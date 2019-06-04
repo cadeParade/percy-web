@@ -10,7 +10,9 @@ export default Component.extend({
   areChangesRequested: false,
   commentBody: '',
   createCommentThread: null,
+  snapshot: null,
   isThreadSaving: readOnly('threadSaveTask.isRunning'),
+  isRequestChangesDisabled: readOnly('snapshot.isApproved'),
 
   _resetForm() {
     this.set('shouldShowNewCommentInput', false);
@@ -27,6 +29,7 @@ export default Component.extend({
       const task = this.createCommentThread({
         commentBody: this.commentBody,
         areChangesRequested: this.areChangesRequested,
+        snapshotId: this.snapshot.id,
       });
 
       this.set('threadSaveTask', task);

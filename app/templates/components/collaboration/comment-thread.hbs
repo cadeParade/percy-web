@@ -1,4 +1,4 @@
- <div class="collaboration pr-2 lg:pr-0 {{if (gt commentThread.comments.length 1)  'collaboration-comment-replied'}}" data-test-comment-thread>
+ <div class="collaboration pr-2 lg:pr-0 {{if (gt commentThread.comments.length 1)  'collaboration-comment-replied'}}" data-test-comment-thread data-test-thread-type={{commentThread.type}}>
 
     {{#if areCommentsCollapsed}}
       {{collaboration/collaboration-comment
@@ -31,7 +31,7 @@
       {{/each}}
     {{/if}}
 
-    {{#unless commentThread.isClosed}}
+    {{#if shouldShowThreadReplyInput}}
       {{collaboration/collaboration-comment-reply commentThread=commentThread createComment=createComment}}
-    {{/unless}}
+    {{/if}}
   </div>

@@ -96,8 +96,8 @@ export default Route.extend({
       return this.get('reviews').createApprovalReview(build, snapshots, eventData);
     },
 
-    createCommentThread(snapshotId, {commentBody, areChangesRequested}) {
-      return this._createCommentThread.perform(snapshotId, {commentBody, areChangesRequested});
+    createCommentThread({snapshotId, commentBody, areChangesRequested}) {
+      return this._createCommentThread.perform({snapshotId, commentBody, areChangesRequested});
     },
 
     createComment({commentThread, commentBody}) {
@@ -119,7 +119,7 @@ export default Route.extend({
     });
   }),
 
-  _createCommentThread: task(function*(snapshotId, {commentBody, areChangesRequested}) {
+  _createCommentThread: task(function*({snapshotId, commentBody, areChangesRequested}) {
     const newComment = this.store.createRecord('comment', {
       snapshotId,
       body: commentBody,
