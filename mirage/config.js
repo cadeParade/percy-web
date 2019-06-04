@@ -338,11 +338,24 @@ export default function() {
     return schema.browserFamilies.find(['1', '2']);
   });
 
+  this.post('/reviews', function(schema) {
+    const attrs = this.normalizedRequestAttrs();
+    const snapshots = schema.snapshots.find(attrs.snapshotIds);
+    snapshots.models.forEach(snapshot => {
+      snapshot.update({reviewState: 'approved', reviewStateReason: 'user_approved'});
+    });
+
+    return schema.reviews.create({
+      buildId: attrs.buildId,
+      snapshotIds: attrs.snapshotIds,
+      action: 'approve',
+    });
+  });
+
   this.get('/snapshots/:id');
   this.get('/builds/:id');
   this.get('/builds/:build_id/comparisons');
   this.get('/repos/:id');
-  this.post('/reviews');
 
   // Slack
   this.post('/organizations/:organization_id/slack-integrations', function(schema) {

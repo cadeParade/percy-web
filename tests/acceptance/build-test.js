@@ -221,6 +221,19 @@ describe('Acceptance: Build', function() {
       expect(BuildPage.snapshots.objectAt(0).name).to.equal(twoWidthsSnapshot.name);
       expect(BuildPage.snapshots.objectAt(1).name).to.equal(defaultSnapshot.name);
     });
+
+    it('approves all snapshots when "Approve build" button is clicked', async function() {
+      server.createList('snapshot', 2, 'withDiffInOneBrowser', {build});
+      await BuildPage.visitBuild(urlParams);
+      expect(BuildPage.browserSwitcher.chromeButton.diffCount).to.equal('3');
+      expect(BuildPage.browserSwitcher.firefoxButton.diffCount).to.equal('5');
+
+      await BuildPage.browserSwitcher.switchBrowser();
+      await BuildPage.buildApprovalButton.clickButton();
+
+      expect(BuildPage.browserSwitcher.chromeButton.isAllApproved).to.equal(true);
+      expect(BuildPage.browserSwitcher.firefoxButton.isAllApproved).to.equal(true);
+    });
   });
 
   describe('interacting with a snapshot group', function() {

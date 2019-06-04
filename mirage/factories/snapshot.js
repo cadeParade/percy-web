@@ -56,6 +56,15 @@ export default Factory.extend({
     }),
   ),
 
+  withDiffInOneBrowser: trait(
+    Object.assign({}, _unreviewedProps, {
+      afterCreate(snapshot, server) {
+        _addComparisonIds(server.create('comparison'), snapshot);
+        _addComparisonIds(server.create('comparison', 'forChrome', 'same'), snapshot);
+      },
+    }),
+  ),
+
   withMobile: trait(
     Object.assign({}, _unreviewedProps, {
       afterCreate(snapshot, server) {

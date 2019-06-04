@@ -57,6 +57,7 @@ export default Controller.extend({
     this.setProperties({
       allChangedBrowserSnapshotsSorted: orderedBrowserSnapshots,
       isSnapshotsLoading: false,
+      allApprovableSnapshots: buildSnapshotsWithDiffs,
     });
   },
 

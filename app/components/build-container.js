@@ -20,6 +20,7 @@ export default Component.extend(PollingMixin, {
   updateActiveBrowser: null,
   isUnchangedSnapshotsVisible: false,
   isBuildApprovable: true,
+  allApprovableSnapshots: null,
 
   snapshotsChanged: computed('allChangedBrowserSnapshotsSorted', 'activeBrowser.id', function() {
     if (!this.get('allChangedBrowserSnapshotsSorted')) return;
@@ -100,6 +101,10 @@ export default Component.extend(PollingMixin, {
     this.set('isUnchangedSnapshotsVisible', false);
   },
 
+  init() {
+    this._super(...arguments);
+    this.allApprovableSnapshots = this.allApprovableSnapshots || [];
+  },
   actions: {
     showSnapshotFullModalTriggered(snapshotId, snapshotSelectedWidth, activeBrowser) {
       this.get('openSnapshotFullModal')(snapshotId, snapshotSelectedWidth, activeBrowser);
