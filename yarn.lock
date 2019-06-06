@@ -5594,10 +5594,10 @@ ember-changeset-validations@^2.1.0:
     ember-get-config "^0.2.4"
     ember-validators "^2.0.0"
 
-ember-changeset@^2.0.0, ember-changeset@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/ember-changeset/-/ember-changeset-2.0.1.tgz#670c8f9925ae1dbc75df05de171b4212004d420f"
-  integrity sha512-FgxWG2qaI2koCX9hc2+2qewBBwOJTm+l0cop9S5hc9PbF33OVAK9l/0l6oVtv3bJeyUVQ83opgK9aocOqao41w==
+ember-changeset@^2.0.0, ember-changeset@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/ember-changeset/-/ember-changeset-2.1.2.tgz#8313db829905299e78fe2c5e3df1563551a4c81d"
+  integrity sha512-zUp9cx/jggV5/HH58AnsoYHvxd9Lea0gPcf98gIYKEJb/yoA034eWUxnL5gMZ9cW0wZg+GxdF3I592K8GBpYoQ==
   dependencies:
     ember-cli-babel "^6.16.0"
     ember-deep-set "^0.2.0"
