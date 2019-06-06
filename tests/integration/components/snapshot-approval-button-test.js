@@ -112,4 +112,28 @@ describe('Integration: SnapshotApprovalButton', function() {
     await SnapshotApprovalButton.clickButton();
     expect(createReview).to.not.have.been.called;
   });
+
+  it('shows approvalBadge when createReview returns true', async function() {
+    this.set('createReview', sinon.stub().returns(resolve(true)));
+    await this.render(hbs`{{snapshot-approval-button
+      snapshot=snapshot
+      createReview=createReview
+      hasDiffsInBrowser=hasDiffsInBrowser
+    }}`);
+
+    await SnapshotApprovalButton.clickButton();
+    expect(SnapshotApprovalButton.isApproved).to.equal(true);
+  });
+
+  it('does not show approval badge when createReview returns false', async function() {
+    this.set('createReview', sinon.stub().returns(resolve(false)));
+    await this.render(hbs`{{snapshot-approval-button
+      snapshot=snapshot
+      createReview=createReview
+      hasDiffsInBrowser=hasDiffsInBrowser
+    }}`);
+
+    await SnapshotApprovalButton.clickButton();
+    expect(SnapshotApprovalButton.isApproved).to.equal(false);
+  });
 });

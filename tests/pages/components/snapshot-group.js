@@ -49,11 +49,22 @@ export const snapshotGroup = {
 
   isNoDiffBoxVisible: alias('comparisonViewer.SELECTORS.isNoDiffBoxVisible'),
 
+  approveButton: alias('header.groupApprovalButton'),
+
   header: {
     scope: SELECTORS.HEADER,
     name: text(SELECTORS.NAME),
     expandGroup: clickable(),
-    groupApprovalButton,
+
+    // We are setting scope here because this component doesn't have a tag
+    // and therefore cannot set its own scope.
+    groupApprovalButton: Object.assign(
+      {
+        scope: SELECTORS.APPROVAL_BUTTON_SCOPE,
+      },
+      groupApprovalButton,
+    ),
+
     isApproved: alias('groupApprovalButton.isApproved'),
     clickApprove: alias('groupApprovalButton.clickButton'),
     widthSwitcher: {

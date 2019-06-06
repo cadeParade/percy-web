@@ -13,6 +13,7 @@ export const groupApprovalButton = {
   isUnapproved: isVisible(SELECTORS.BUTTON),
   isDisabled: is(':disabled', SELECTORS.BUTTON),
   isButtonLoading: hasClass('is-loading', SELECTORS.BUTTON),
+  isLoading: hasClass('is-loading', SELECTORS.BUTTON),
 
   buttonText: text(SELECTORS.BUTTON),
   approvedText: text(SELECTORS.APPROVED_PILL),

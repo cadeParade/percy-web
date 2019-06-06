@@ -4,10 +4,12 @@ import isUserMemberPromise from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
 import {REVIEW_COMMENT_TYPE, NOTE_COMMENT_TYPE} from 'percy-web/models/comment-thread';
 import {task} from 'ember-concurrency';
+import {pluralize} from 'ember-inflector';
 
 export default Route.extend({
   snapshotQuery: service(),
   reviews: service(),
+  confirm: service(),
 
   model(params) {
     const org = this.modelFor('organization');
@@ -91,9 +93,8 @@ export default Route.extend({
       this.transitionTo('organization.project.builds.build', build.get('id'));
     },
 
-    createReview(snapshots, eventData) {
-      const build = this._getBuild();
-      return this.get('reviews').createApprovalReview(build, snapshots, eventData);
+    async createReview(snapshots, eventData) {
+      return this._createReview.perform({snapshots, eventData});
     },
 
     createCommentThread({snapshotId, commentBody, areChangesRequested}) {
@@ -108,6 +109,20 @@ export default Route.extend({
       return this._closeCommentThread.perform({commentThread});
     },
   },
+
+  _createReview: task(function*({snapshots, eventData}) {
+    const build = this._getBuild();
+
+    if (this._snapshotsHaveOpenReviewThreads(snapshots)) {
+      const result = yield this.confirm.ask({
+        message: this._reviewConfirmMessage(snapshots, this._openReviewThreads(snapshots)),
+      });
+
+      return result ? yield this.reviews.createApprovalReview(build, snapshots, eventData) : false;
+    } else {
+      return yield this.reviews.createApprovalReview(build, snapshots, eventData);
+    }
+  }),
 
   _createComment: task(function*({commentThread, commentBody}) {
     const newComment = this.store.createRecord('comment', {
@@ -136,6 +151,27 @@ export default Route.extend({
       commentThread.rollbackAttributes();
     });
   }),
+
+  _openReviewThreads(snapshots) {
+    return snapshots.filterBy('isUnreviewed').reduce((acc, snapshot) => {
+      return acc.concat(snapshot.commentThreads.filterBy('isResolvable')).toArray();
+    }, []);
+  },
+
+  _snapshotsHaveOpenReviewThreads(snapshots) {
+    return this._openReviewThreads(snapshots).length > 0;
+  },
+
+  _reviewConfirmMessage(snapshots, openReviewThreads) {
+    const numSnapshotsToApprove = snapshots.length;
+    const numOpenReviewThreads = openReviewThreads.length;
+    const snapshotString = pluralize(numSnapshotsToApprove, 'snapshot', {withoutCount: true});
+    const possessionString = numSnapshotsToApprove > 1 ? 'have' : 'has';
+    const commentString = pluralize(numOpenReviewThreads, 'comment', {withoutCount: true});
+
+    return `The ${snapshotString} you want to approve ${possessionString}
+      unresolved ${commentString} requesting changes. Do you want to approve anyway?`;
+  },
 
   // Use this instead of `modelFor(this.routeName)` because it returns a resolved build object
   // rather than a PromiseObject.

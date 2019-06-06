@@ -7,6 +7,7 @@ import {BuildInfoDropdown} from 'percy-web/tests/pages/components/build-info-dro
 import {BrowserSwitcher} from 'percy-web/tests/pages/components/browser-switcher';
 import {BuildToolbar} from 'percy-web/tests/pages/components/build-toolbar';
 import {DemoTooltip} from 'percy-web/tests/pages/components/demo-tooltip';
+import {confirmDialog} from 'percy-web/tests/pages/components/confirm-dialog';
 import {getter} from 'ember-cli-page-object/macros';
 
 const SELECTORS = {
@@ -30,6 +31,8 @@ const BuildPage = {
 
   isUnchangedPanelVisible: alias('snapshotList.isNoDiffsBatchVisible'),
   clickToggleNoDiffsSection: alias('snapshotList.clickToggleNoDiffsSection'),
+
+  confirmDialog,
 
   snapshotList: SnapshotList,
   snapshots: alias('snapshotList.snapshots'),

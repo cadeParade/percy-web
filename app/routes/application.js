@@ -11,6 +11,7 @@ import {resolve, reject} from 'rsvp';
 
 export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
   session: service(),
+  confirm: service(),
   flashMessages: service(),
   raven: service(),
   currentUser: alias('session.currentUser'),

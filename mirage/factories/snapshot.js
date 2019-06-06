@@ -90,6 +90,14 @@ export default Factory.extend({
       },
     }),
   ),
+
+  withComments: trait(
+    Object.assign({}, _unreviewedProps, {
+      afterCreate(snapshot, server) {
+        server.createList('commentThread', 2, 'withTwoComments', {snapshot});
+      },
+    }),
+  ),
 });
 
 function _addComparisonIds(comparison, snapshot) {

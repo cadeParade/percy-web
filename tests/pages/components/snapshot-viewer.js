@@ -41,6 +41,7 @@ export const SnapshotViewer = {
   isUnchangedComparisonsVisible: isVisible(SELECTORS.SHOW_UNCHANGED_COMPARISONS),
 
   clickApprove: alias('header.clickApprove'),
+  approveButton: alias('header.snapshotApprovalButton.button'),
 
   isLazyRenderHeaderVisible: isVisible(SELECTORS.LAZY_RENDER_HEADER),
 

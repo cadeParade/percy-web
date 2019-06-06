@@ -8,6 +8,10 @@ const SELECTORS = {
 
 export const SnapshotApprovalButton = {
   clickButton: clickable(SELECTORS.BUTTON),
+  button: {
+    scope: SELECTORS.BUTTON,
+    isLoading: hasClass('is-loading'),
+  },
 
   isApproved: isVisible(SELECTORS.APPROVED_PILL),
   isUnapproved: isVisible(SELECTORS.BUTTON),

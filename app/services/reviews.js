@@ -12,7 +12,7 @@ export default Service.extend({
       action: 'approve',
     });
     return review.save().then(() => {
-      build.reload().then(build => {
+      return build.reload().then(build => {
         build.get('snapshots').reload();
 
         if (eventData && eventData.title) {
@@ -22,6 +22,7 @@ export default Service.extend({
             eventData.properties,
           );
         }
+        return true;
       });
     });
   },
