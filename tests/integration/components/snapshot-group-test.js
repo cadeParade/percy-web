@@ -60,7 +60,8 @@ describe('Integration: SnapshotGroup', function() {
       });
     });
 
-    it('shows widest width with diff as active by default when some comparisons have diffs', async function() { // eslint-disable-line
+    // eslint-disable-next-line
+    it('shows widest width with diff as active by default when some comparisons have diffs', async function() {
       await this.render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
@@ -164,7 +165,8 @@ describe('Integration: SnapshotGroup', function() {
       expect(SnapshotGroup.isExpanded).to.equal(true);
     });
 
-    it("is expanded when activeSnapshotBlockId is equal to the group's fingerprint",async function() { //eslint-disable-line
+    //eslint-disable-next-line
+    it("is expanded when activeSnapshotBlockId is equal to the group's fingerprint", async function() {
       this.set('snapshots', approvedSnapshots);
       this.set('activeSnapshotBlockId', snapshots.get('firstObject.fingerprint'));
       expect(SnapshotGroup.isExpanded).to.equal(true);
@@ -293,6 +295,34 @@ describe('Integration: SnapshotGroup', function() {
         await SnapshotGroup.toggleShowAllSnapshots();
         expect(SnapshotGroup.isDiffImageVisible).to.equal(false);
       });
+    });
+  });
+
+  describe('when multiple snapshots in the group have comments', function() {
+    beforeEach(async function() {
+      const snapshotsWithComments = makeList('snapshot', 2, 'withComparisons', 'withComments', {
+        fingerprint: 'fingerprint',
+      });
+      const snapshotsWithNoComments = makeList('snapshot', 3, 'withComparisons', {
+        fingerprint: 'fingerprint',
+      });
+      const snapshots = snapshotsWithNoComments.concat(snapshotsWithComments);
+      this.setProperties({snapshots});
+
+      await this.render(hbs`{{snapshot-group
+        snapshots=snapshots
+        build=build
+        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+        createReview=createReview
+        updateActiveSnapshotBlockId=stub
+        activeBrowser=browser
+        isBuildApprovable=isBuildApprovable
+      }}`);
+    });
+
+    it('shows multiple snapshots as "cover" snapshots', async function() {
+      expect(SnapshotGroup.snapshots.length).to.equal(2);
+      await percySnapshot(this.test);
     });
   });
 });

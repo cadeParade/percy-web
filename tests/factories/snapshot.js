@@ -1,5 +1,5 @@
 import FactoryGuy from 'ember-data-factory-guy';
-import {make} from 'ember-data-factory-guy';
+import {make, makeList} from 'ember-data-factory-guy';
 import {
   SNAPSHOT_APPROVED_STATE,
   SNAPSHOT_UNAPPROVED_STATE,
@@ -70,5 +70,11 @@ FactoryGuy.define('snapshot', {
     },
     withScreenshots: {},
     completeExample: {},
+
+    withComments: {
+      commentThreads: () => {
+        return makeList('comment-thread', 2, 'withTwoComments');
+      },
+    },
   },
 });

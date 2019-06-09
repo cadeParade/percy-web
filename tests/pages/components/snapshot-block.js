@@ -14,7 +14,7 @@ export const snapshotBlock = {
   snapshotGroup: snapshotGroup,
   snapshotViewer: SnapshotViewer,
   _block: getter(function() {
-    return this.isSnapshot ? this.snapshotViewer : this.snapshotGroup;
+    return this.isGroup ? this.snapshotGroup : this.snapshotViewer;
   }),
 
   isGroup: getter(function() {

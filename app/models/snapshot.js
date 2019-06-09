@@ -1,5 +1,5 @@
 import DS from 'ember-data';
-import {equal, mapBy, max, not, or} from '@ember/object/computed';
+import {equal, mapBy, max, not, or, notEmpty, filterBy} from '@ember/object/computed';
 
 export const SNAPSHOT_APPROVED_STATE = 'approved';
 export const SNAPSHOT_UNAPPROVED_STATE = 'unreviewed';
@@ -27,6 +27,8 @@ export default DS.Model.extend({
   }),
 
   commentThreads: DS.hasMany('commentThreads', {async: false}),
+  openCommentThreads: filterBy('commentThreads', 'isOpen'),
+  hasOpenCommentThreads: notEmpty('openCommentThreads'),
 
   name: DS.attr(),
   build: DS.belongsTo('build', {async: true}),
