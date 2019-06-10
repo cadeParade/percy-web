@@ -3,7 +3,7 @@ import {computed, get, set} from '@ember/object';
 import Component from '@ember/component';
 import {inject as service} from '@ember/service';
 import groupSnapshots from 'percy-web/lib/group-snapshots';
-import {EKMixin, keyUp} from 'ember-keyboard';
+import {EKMixin, keyDown} from 'ember-keyboard';
 import {on} from '@ember/object/evented';
 
 export default Component.extend(EKMixin, {
@@ -80,21 +80,21 @@ export default Component.extend(EKMixin, {
     this.set('keyboardActivated', true);
   },
 
-  onDKeyPress: on(keyUp('KeyD'), function() {
+  onDKeyPress: on(keyDown('KeyD'), function() {
     if (this.isKeyboardNavEnabled) {
       get(this, 'toggleAllDiffs')({trackSource: 'keypress'});
       this._trackKeyPress();
     }
   }),
 
-  onUpKeyPress: on(keyUp('ArrowUp'), function() {
+  onUpKeyPress: on(keyDown('ArrowUp'), function() {
     if (this.isKeyboardNavEnabled) {
       set(this, 'activeSnapshotBlockId', this._calculateNewActiveSnapshotBlockId({isNext: false}));
       this._trackKeyPress();
     }
   }),
 
-  onDownKeyPress: on(keyUp('ArrowDown'), function() {
+  onDownKeyPress: on(keyDown('ArrowDown'), function() {
     if (this.isKeyboardNavEnabled) {
       set(this, 'activeSnapshotBlockId', this._calculateNewActiveSnapshotBlockId({isNext: true}));
       this._trackKeyPress();

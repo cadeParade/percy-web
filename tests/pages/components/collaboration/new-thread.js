@@ -1,4 +1,5 @@
 import {clickable, create, fillable, is, isVisible, value} from 'ember-cli-page-object';
+import {percyTextarea} from 'percy-web/tests/pages/components/percy-textarea';
 
 const SELECTORS = {
   SCOPE: '[data-test-new-comment]',
@@ -29,6 +30,7 @@ export const collaborationNewThread = {
   isSubmitDisabled: is(':disabled', SELECTORS.SAVE_COMMENT),
 
   cancelNewThread: clickable(SELECTORS.CANCEL_COMMENT_BUTTON),
+  percyTextarea,
 };
 
 export default create(collaborationNewThread);

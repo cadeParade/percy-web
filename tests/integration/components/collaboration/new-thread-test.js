@@ -26,7 +26,7 @@ describe('Integration: CollaborationNewThread', function() {
     beforeEach(async function() {
       user = make('user');
       snapshot = make('snapshot');
-      saveStub = sinon.stub();
+      saveStub = sinon.stub().returns({isSuccessful: true});
 
       this.setProperties({user, saveStub, snapshot});
 
@@ -74,6 +74,18 @@ describe('Integration: CollaborationNewThread', function() {
       });
     });
 
+    it('sends save action with correct args when cmd+Enter is pressed', async function() {
+      const commentText = 'What happened the white horse?';
+      await CollaborationNewThread.typeNewComment(commentText);
+      await CollaborationNewThread.checkRequestChangesBox();
+      await CollaborationNewThread.percyTextarea.cmdEnter();
+      expect(saveStub).to.have.been.calledWith({
+        snapshotId: snapshot.id,
+        commentBody: commentText,
+        areChangesRequested: true,
+      });
+    });
+
     it('disables "Request changes" checkbox when snapshot is approved', async function() {
       const snapshot = make('snapshot', 'approved');
       this.setProperties({snapshot});
@@ -82,8 +94,14 @@ describe('Integration: CollaborationNewThread', function() {
       expect(CollaborationNewThread.isRequestChangesChecked).to.equal(false);
     });
 
-    it('can back out of comment adding', async function() {
+    it('can back out of comment adding by clicking "Cancel"', async function() {
       await CollaborationNewThread.cancelNewThread();
+      expect(CollaborationNewThread.isNewThreadButtonVisible).to.equal(true);
+      expect(CollaborationNewThread.isNewThreadContainerVisible).to.equal(false);
+    });
+
+    it('can back out of comment adding by typing "Escape"', async function() {
+      await CollaborationNewThread.percyTextarea.escape();
       expect(CollaborationNewThread.isNewThreadButtonVisible).to.equal(true);
       expect(CollaborationNewThread.isNewThreadContainerVisible).to.equal(false);
     });

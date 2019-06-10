@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import {readOnly} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
+import {isEmpty} from '@ember/utils';
 
 export default Component.extend({
   flashMessages: service(),
@@ -26,6 +27,8 @@ export default Component.extend({
     },
 
     async saveComment() {
+      if (isEmpty(this.commentBody)) return;
+
       const task = this.createCommentThread({
         commentBody: this.commentBody,
         areChangesRequested: this.areChangesRequested,

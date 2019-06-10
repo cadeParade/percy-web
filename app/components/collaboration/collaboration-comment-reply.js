@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import {inject as service} from '@ember/service';
 import {readOnly} from '@ember/object/computed';
+import {isEmpty} from '@ember/utils';
 
 export default Component.extend({
   tagName: '',
@@ -24,6 +25,8 @@ export default Component.extend({
     },
 
     async saveReply() {
+      if (isEmpty(this.commentBody)) return;
+
       const commentBody = this.commentBody;
       const task = this.createComment({
         commentBody: commentBody,

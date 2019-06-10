@@ -2,7 +2,7 @@ import {computed} from '@ember/object';
 import {alias, filterBy, notEmpty, readOnly} from '@ember/object/computed';
 import Component from '@ember/component';
 import filteredComparisons from 'percy-web/lib/filtered-comparisons';
-import {EKMixin, keyUp} from 'ember-keyboard';
+import {EKMixin, keyDown} from 'ember-keyboard';
 import {on} from '@ember/object/evented';
 
 const KEYS = {
@@ -71,22 +71,22 @@ export default Component.extend(EKMixin, {
     },
   },
 
-  onEscKeyPress: on(keyUp('Escape'), function() {
+  onEscKeyPress: on(keyDown('Escape'), function() {
     this.get('closeSnapshotFullModal')();
   }),
 
-  onLeftRightArrowPress: on(keyUp('ArrowRight'), keyUp('ArrowLeft'), function(event) {
+  onLeftRightArrowPress: on(keyDown('ArrowRight'), keyDown('ArrowLeft'), function(event) {
     if (!this.get('selectedComparison') || this.get('selectedComparison.wasAdded')) {
       return;
     }
     this.send('cycleComparisonMode', event.keyCode);
   }),
 
-  onUpArrowPress: on(keyUp('ArrowUp'), function() {
+  onUpArrowPress: on(keyDown('ArrowUp'), function() {
     this.get('updateSnapshotId')({isNext: false});
   }),
 
-  onDownArrowPress: on(keyUp('ArrowDown'), function() {
+  onDownArrowPress: on(keyDown('ArrowDown'), function() {
     this.get('updateSnapshotId')({isNext: true});
   }),
 });

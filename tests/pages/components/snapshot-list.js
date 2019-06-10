@@ -2,7 +2,7 @@ import {create, collection, clickable, isVisible} from 'ember-cli-page-object';
 import {SnapshotViewer} from 'percy-web/tests/pages/components/snapshot-viewer';
 import {snapshotBlock} from 'percy-web/tests/pages/components/snapshot-block';
 import {getter} from 'ember-cli-page-object/macros';
-import {triggerKeyUp} from 'ember-keyboard';
+import {keyDown} from 'ember-keyboard/test-support/test-helpers';
 
 const SELECTORS = {
   SNAPSHOT_LIST: '[data-test-snapshot-list]',
@@ -37,14 +37,14 @@ export const SnapshotList = {
     });
   }),
 
-  typeDownArrow() {
-    triggerKeyUp('ArrowDown');
+  async typeDownArrow() {
+    await keyDown('ArrowDown');
   },
-  typeUpArrow() {
-    triggerKeyUp('ArrowUp');
+  async typeUpArrow() {
+    await keyDown('ArrowUp');
   },
-  typeDiffToggleKey() {
-    triggerKeyUp('KeyD');
+  async typeDiffToggleKey() {
+    await keyDown('KeyD');
   },
 };
 

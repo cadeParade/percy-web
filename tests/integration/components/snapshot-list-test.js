@@ -9,7 +9,7 @@ import sinon from 'sinon';
 import {percySnapshot} from 'ember-percy';
 import SnapshotList from 'percy-web/tests/pages/components/snapshot-list';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {initialize as emberKeyboardInitialize} from 'ember-keyboard';
+import {initialize as initializeEmberKeyboard} from 'ember-keyboard';
 
 describe('Integration: SnapshotList', function() {
   setupRenderingTest('snapshot-list', {
@@ -63,7 +63,7 @@ describe('Integration: SnapshotList', function() {
 
   describe('keyboard nav behavior', function() {
     beforeEach(async function() {
-      emberKeyboardInitialize();
+      initializeEmberKeyboard();
       const stub = sinon.stub();
       const build = make('build', 'finished');
       const browser = make('browser');

@@ -8,6 +8,7 @@ import CommentReply from 'percy-web/tests/pages/components/collaboration/collabo
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import Service from '@ember/service';
 import sinon from 'sinon';
+import {initialize as initializeEmberKeyboard} from 'ember-keyboard';
 
 describe('Integration: CollaborationCommentReply', function() {
   setupRenderingTest('collaboration-comment-reply', {
@@ -45,8 +46,9 @@ describe('Integration: CollaborationCommentReply', function() {
     let commentThread;
     let submitStub;
     beforeEach(async function() {
+      initializeEmberKeyboard();
       commentThread = make('comment-thread');
-      submitStub = sinon.stub();
+      submitStub = sinon.stub().returns({isSuccessful: true});
 
       this.setProperties({commentThread, submitStub});
       await this.render(hbs`{{collaboration/collaboration-comment-reply
@@ -74,11 +76,27 @@ describe('Integration: CollaborationCommentReply', function() {
       expect(CommentReply.isCollapsed).to.equal(true);
     });
 
+    it('collapses reply when Escape is pressed', async function() {
+      expect(CommentReply.isCollapsed).to.equal(false);
+      await CommentReply.percyTextarea.escape();
+      expect(CommentReply.isCollapsed).to.equal(true);
+    });
+
     it('sends `saveReply` with correct args when sumit is clicked', async function() {
       const commentText = 'When you play the game of thrones, you win or you die';
       await CommentReply.typeComment(commentText);
       await CommentReply.submit.click();
 
+      expect(submitStub).to.have.been.calledWith({
+        commentThread,
+        commentBody: commentText,
+      });
+    });
+
+    it('sends `saveReply` with correct args when cmd+Enter is pressed', async function() {
+      const commentText = 'hello there';
+      await CommentReply.typeComment(commentText);
+      await CommentReply.percyTextarea.cmdEnter();
       expect(submitStub).to.have.been.calledWith({
         commentThread,
         commentBody: commentText,

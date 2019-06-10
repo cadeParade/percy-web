@@ -2,7 +2,7 @@ import {create, attribute, isVisible, clickable} from 'ember-cli-page-object';
 import {SnapshotViewerHeader} from 'percy-web/tests/pages/components/snapshot-viewer-header';
 import {alias} from 'ember-cli-page-object/macros';
 import {collaborationPanel} from 'percy-web/tests/pages/components/collaboration/collaboration-panel'; // eslint-disable-line
-import {triggerKeyEvent} from '@ember/test-helpers';
+import {keyDown} from 'ember-keyboard/test-support/test-helpers';
 
 const SELECTORS = {
   SNAPSHOT_VIEWER_FULL: '[data-test-snapshot-viewer-full]',
@@ -36,19 +36,19 @@ export const SnapshotViewerFull = {
   clickPreviousSnapshot: clickable(SELECTORS.PREV_SNAPSHOT),
 
   async typeDownArrow() {
-    return await triggerKeyEvent('button', 'keyup', 'ArrowDown');
+    return await keyDown('ArrowDown');
   },
   async typeUpArrow() {
-    return await triggerKeyEvent('button', 'keyup', 'ArrowUp');
+    return await keyDown('ArrowUp');
   },
   async typeLeftArrow() {
-    return await triggerKeyEvent('button', 'keyup', 'ArrowLeft');
+    return await keyDown('ArrowLeft');
   },
   async typeRightArrow() {
-    return await triggerKeyEvent('button', 'keyup', 'ArrowRight');
+    return await keyDown('ArrowRight');
   },
   async typeEscape() {
-    return await triggerKeyEvent('button', 'keyup', 'Escape');
+    return await keyDown('Escape');
   },
 
   clickComparisonViewer: clickable(SELECTORS.COMPARISON_VIEWER),
