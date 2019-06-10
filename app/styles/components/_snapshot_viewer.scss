@@ -29,6 +29,7 @@
 }
 
 .SnapshotViewer-header-full {
+  min-width: 680px;
   z-index: 1;
   grid-template-columns: 1fr auto 1fr;
 }

@@ -896,7 +896,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expect(fullscreenSnapshot.collaborationPanel.isVisible).to.equal(true);
       expect(fullscreenSnapshot.commentThreads.length).to.equal(3);
       expect(fullscreenSnapshot.header.numOpenCommentThreads).to.equal('3');
-      await percySnapshot(this.test);
+      await percySnapshot(this.test, {widths: [1280, 850, 375]});
     });
 
     it('can create a new comment reply', async function() {
