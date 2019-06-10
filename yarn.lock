@@ -6436,7 +6436,7 @@ ember-in-element-polyfill@^0.1.2:
     ember-cli-version-checker "^2.1.0"
     ember-wormhole "^0.5.4"
 
-ember-in-viewport@^3.1.0, ember-in-viewport@~3.2.2:
+ember-in-viewport@~3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/ember-in-viewport/-/ember-in-viewport-3.2.2.tgz#81110e04076cf693f29d19e58daf5a3a5b8da60e"
   integrity sha512-EGQ7hwSlDsjaV80Adxc9zdTpXGCtZgO05ZIlEHE4C2oUNO+aS3jVgYRgqR8AzQwx3bmC8xAB4qpcLrvKVQJKWg==
