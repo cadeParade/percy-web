@@ -949,6 +949,29 @@ describe('Acceptance: Fullscreen Snapshot', function() {
 
       await percySnapshot(this.test);
     });
+
+    it('blocks approval of snapshot if there are open review threads on snapshot', async function() { // eslint-disable-line
+      const snapshot = BuildPage.snapshotFullscreen;
+      await snapshot.clickApprove();
+      expect(BuildPage.confirmDialog.isVisible).to.equal(true);
+      expect(snapshot.approveButton.isLoading).to.equal(true);
+      expect(snapshot.approveButton.isVisible).to.equal(true);
+      await percySnapshot(this.test);
+
+      // it acts correctly when you click "Cancel"
+      await BuildPage.confirmDialog.cancel.click();
+      expect(snapshot.isApproved).to.equal(false);
+      expect(BuildPage.confirmDialog.isVisible).to.equal(false);
+      expect(snapshot.approveButton.isLoading).to.equal(false);
+      expect(snapshot.approveButton.isVisible).to.equal(true);
+
+      // it acts correctly when you click "Confirm"
+      await snapshot.clickApprove();
+      await BuildPage.confirmDialog.confirm.click();
+      expect(BuildPage.confirmDialog.isVisible).to.equal(false);
+      expect(snapshot.approveButton.isVisible).to.equal(false);
+      expect(snapshot.isApproved).to.equal(true);
+    });
   });
 });
 

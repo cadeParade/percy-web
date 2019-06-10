@@ -3,14 +3,7 @@
 {{outlet}}
 
 {{#if confirm.showPrompt}}
-  <div class="confirm-container bg-white rounded border z-top flex flex-col shadow-purple-lg" data-test-confirm-dialog>
-    <div class="flex items-center justify-center bg-purple-200 px-2 py-1">{{confirm.title}}</div>
-    <div class="flex items-center px-2 py-1">{{confirm.message}}</div>
-    <div class="flex items-center px-2 py-1 justify-end">
-      {{#percy-btn class="mr-1" handleClick=(action "cancel" target=this.confirm) testLabel="cancelConfirm"}}Cancel{{/percy-btn}}
-      {{#percy-btn isPrimaryButton=true handleClick=(action "confirm" target=this.confirm) testLabel="goAhead"}}Continue{{/percy-btn}}
-    </div>
-  </div>
+  {{confirm-dialog}}
 {{/if}}
 
 {{#if flashMessages.queue}}

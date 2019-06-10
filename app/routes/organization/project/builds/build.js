@@ -50,6 +50,13 @@ export default Route.extend({
   },
 
   actions: {
+    // Do not allow route transitions while the confirm dialog is open.
+    willTransition(transition) {
+      if (this.confirm.showPrompt) {
+        transition.abort();
+      }
+    },
+
     updateIsHidingBuildContainer(isHidingBuildContainer) {
       const controller = this.controllerFor(this.routeName);
       controller.set('isHidingBuildContainer', isHidingBuildContainer);

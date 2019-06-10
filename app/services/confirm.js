@@ -20,23 +20,31 @@ export default Service.extend({
     return this._deferred.promise;
   },
 
+  confirm() {
+    this._deferred.resolve(true);
+
+    setProperties(this, {
+      showPrompt: false,
+      _deferred: null,
+    });
+  },
+
+  cancel() {
+    this._deferred.resolve(false);
+
+    setProperties(this, {
+      showPrompt: false,
+      _deferred: null,
+    });
+  },
+
   actions: {
     confirm() {
-      this._deferred.resolve(true);
-
-      setProperties(this, {
-        showPrompt: false,
-        _deferred: null,
-      });
+      this.confirm();
     },
 
     cancel() {
-      this._deferred.resolve(false);
-
-      setProperties(this, {
-        showPrompt: false,
-        _deferred: null,
-      });
+      this.cancel();
     },
   },
 });
