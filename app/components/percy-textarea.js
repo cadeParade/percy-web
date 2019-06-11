@@ -8,6 +8,7 @@ export default TextArea.extend(EKMixin, {
   handleCmdEnter: on(keyDown('cmd+Enter'), function() {
     if (this.onCmdEnter) {
       this.onCmdEnter();
+      this.element.blur();
     }
   }),
 
@@ -15,5 +16,6 @@ export default TextArea.extend(EKMixin, {
     if (this.onEscape) {
       this.onEscape();
     }
+    this.element.blur();
   }),
 });

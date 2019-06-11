@@ -1,4 +1,4 @@
-import {alias, filterBy, gt, readOnly} from '@ember/object/computed';
+import {alias, filter, filterBy, gt, readOnly} from '@ember/object/computed';
 import {computed, get, set} from '@ember/object';
 import Component from '@ember/component';
 import {inject as service} from '@ember/service';
@@ -33,27 +33,56 @@ export default Component.extend(EKMixin, {
 
   _singleSnapshotsChanged: readOnly('_snapshotGroups.singles'),
   _unapprovedSingleSnapshots: filterBy('_singleSnapshotsChanged', 'isApproved', false),
+  _unapprovedSingleSnapshotsWithComments: filterBy(
+    '_unapprovedSingleSnapshots',
+    'hasOpenCommentThreads',
+    true,
+  ),
+  _unapprovedSingleSnapshotsWithoutComments: filterBy(
+    '_unapprovedSingleSnapshots',
+    'hasOpenCommentThreads',
+    false,
+  ),
+
+  _approvedSingleSnapshotsWithComments: filterBy(
+    '_approvedSingleSnapshots',
+    'hasOpenCommentThreads',
+    true,
+  ),
+
+  _approvedSingleSnapshotsWithoutComments: filterBy(
+    '_approvedSingleSnapshots',
+    'hasOpenCommentThreads',
+    false,
+  ),
+
   _approvedSingleSnapshots: filterBy('_singleSnapshotsChanged', 'isApproved', true),
 
   _groupedSnapshotsChanged: readOnly('_snapshotGroups.groups'),
 
   numSnapshotsUnchanged: computed('build.totalSnapshots', 'snapshotsChanged.length', function() {
-    return get(this, 'build.totalSnapshots') - get(this, 'snapshotsChanged.length');
+    return this.build.totalSnapshots - this.snapshotsChanged.length;
   }),
 
   _snapshotGroups: computed('snapshotsChanged.@each.fingerprint', function() {
-    return groupSnapshots(get(this, 'snapshotsChanged'));
+    return groupSnapshots(this.snapshotsChanged);
   }),
 
   _unapprovedGroups: computed('_groupedSnapshotsChanged.[]', function() {
-    return get(this, '_groupedSnapshotsChanged').filter(group => {
-      return group.any(snapshot => get(snapshot, 'isUnreviewed'));
+    return this._groupedSnapshotsChanged.filter(group => {
+      return group.any(snapshot => snapshot.isUnreviewed);
     });
   }),
 
+  _unapprovedGroupsWithComments: filter('_unapprovedGroups', findGroupWithComments),
+  _unapprovedGroupsWithoutComments: filter('_unapprovedGroups', rejectGroupWithComments),
+
+  _approvedGroupsWithComments: filter('_approvedGroups', findGroupWithComments),
+  _approvedGroupsWithoutComments: filter('_approvedGroups', rejectGroupWithComments),
+
   _approvedGroups: computed('_groupedSnapshotsChanged.[]', function() {
-    return get(this, '_groupedSnapshotsChanged').filter(group => {
-      return group.every(snapshot => get(snapshot, 'isApproved'));
+    return this._groupedSnapshotsChanged.filter(group => {
+      return group.every(snapshot => snapshot.isApproved);
     });
   }),
 
@@ -62,10 +91,14 @@ export default Component.extend(EKMixin, {
   // want snapshots to change order until the page is refreshed.
   // Unless the browser changes, then we want it to be in the new order for the browser.
   snapshotBlocks: computed('activeBrowser', function() {
-    return get(this, '_unapprovedGroups').concat(
-      get(this, '_unapprovedSingleSnapshots'),
-      get(this, '_approvedGroups'),
-      get(this, '_approvedSingleSnapshots'),
+    return this._unapprovedGroupsWithComments.concat(
+      this._unapprovedSingleSnapshotsWithComments,
+      this._unapprovedGroupsWithoutComments,
+      this._unapprovedSingleSnapshotsWithoutComments,
+      this._approvedGroupsWithComments,
+      this._approvedSingleSnapshotsWithComments,
+      this._approvedGroupsWithoutComments,
+      this._approvedSingleSnapshotsWithoutComments,
     );
   }),
 
@@ -82,7 +115,7 @@ export default Component.extend(EKMixin, {
 
   onDKeyPress: on(keyDown('KeyD'), function() {
     if (this.isKeyboardNavEnabled) {
-      get(this, 'toggleAllDiffs')({trackSource: 'keypress'});
+      this.toggleAllDiffs({trackSource: 'keypress'});
       this._trackKeyPress();
     }
   }),
@@ -102,10 +135,10 @@ export default Component.extend(EKMixin, {
   }),
 
   _trackKeyPress() {
-    this.get('analytics').track('Snapshot List Navigated', this.get('build.project.organization'), {
+    this.analytics.track('Snapshot List Navigated', get(this, 'build.project.organization'), {
       type: 'keyboard',
-      project_id: this.get('build.project.id'),
-      build_id: this.get('build.id'),
+      project_id: get(this, 'build.project.id'),
+      build_id: get(this, 'build.id'),
     });
   },
 
@@ -114,32 +147,40 @@ export default Component.extend(EKMixin, {
     'snapshotsUnchanged.[]',
     'isUnchangedSnapshotsVisible',
     function() {
-      if (get(this, 'isUnchangedSnapshotsVisible')) {
-        return [].concat(get(this, 'snapshotBlocks'), get(this, 'snapshotsUnchanged'));
+      if (this.isUnchangedSnapshotsVisible) {
+        return [].concat(this.snapshotBlocks, this.snapshotsUnchanged);
       } else {
-        return get(this, 'snapshotBlocks');
+        return this.snapshotBlocks;
       }
     },
   ),
 
   _snapshotBlockIds: computed('_allVisibleSnapshotBlocks.@each.id', function() {
-    return get(this, '_allVisibleSnapshotBlocks').map(block => {
-      return get(block, 'id') || get(block, 'firstObject.fingerprint');
+    return this._allVisibleSnapshotBlocks.map(block => {
+      return block.id || block.firstObject.fingerprint;
     });
   }),
   _numSnapshotBlocks: alias('_allVisibleSnapshotBlocks.length'),
   _calculateNewActiveSnapshotBlockId({isNext = true} = {}) {
-    let currentIndex = get(this, '_snapshotBlockIds').indexOf(get(this, 'activeSnapshotBlockId'));
+    let currentIndex = this._snapshotBlockIds.indexOf(this.activeSnapshotBlockId);
 
     // if we are moving forward and are on the last snapshot, wrap to beginning of list
-    if (isNext && currentIndex === get(this, '_numSnapshotBlocks') - 1) {
+    if (isNext && currentIndex === this._numSnapshotBlocks - 1) {
       currentIndex = -1;
     } else if (!isNext && currentIndex === 0) {
       // if we are moving backward and are on the first snapshot, wrap to end of list
-      currentIndex = get(this, '_numSnapshotBlocks');
+      currentIndex = this._numSnapshotBlocks;
     }
 
     const newIndex = isNext ? currentIndex + 1 : currentIndex - 1;
-    return get(this, '_snapshotBlockIds')[newIndex];
+    return this._snapshotBlockIds[newIndex];
   },
 });
+
+function findGroupWithComments(group) {
+  return group.any(snapshot => snapshot.hasOpenCommentThreads);
+}
+
+function rejectGroupWithComments(group) {
+  return !findGroupWithComments(group);
+}

@@ -11,7 +11,9 @@ export default Component.extend(EKMixin, {
     this.set('keyboardActivated', true);
   },
 
-  onEnterDown: on(keyDown('Enter'), function() {
+  onEnterDown: on(keyDown('Enter'), function(e) {
+    e.preventDefault();
+    e.stopPropagation();
     this.confirm.confirm();
   }),
   onEscDown: on(keyDown('Escape'), function() {

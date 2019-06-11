@@ -224,65 +224,161 @@ describe('Integration: SnapshotList', function() {
     });
   });
 
-  describe('snapshot groups', function() {
-    describe('ordering', function() {
-      beforeEach(async function() {
-        const stub = sinon.stub();
-        const build = make('build', 'finished', {totalSnapshots: 11});
-        const browser = make('browser');
+  describe('ordering', function() {
+    const unapprovedSingleSnapshotsWithCommentsTitle = 'unapproved single snapshot with comments';
+    const unapprovedSingleSnapshotsWithoutCommentsTitle =
+      'unapproved single snapshot without comments';
+    const approvedSingleSnapshotsWithCommentsTitle = 'approved single snapshot with comments';
+    const approvedSingleSnapshotsWithoutCommentsTitle = 'approved single snapshot without comments';
 
-        const approvedGroup = makeList('snapshot', 5, 'approved', 'withComparisons', {
+    beforeEach(async function() {
+      const stub = sinon.stub();
+      const build = make('build', 'finished', {totalSnapshots: 11});
+      const browser = make('browser');
+
+      const approvedGroupWithComments = makeList(
+        'snapshot',
+        2,
+        'approved',
+        'withComparisons',
+        'withComments',
+        {
           build,
-          fingerprint: 'approvedGroup',
-        });
+          fingerprint: 'approvedGroupWithComments',
+        },
+      );
 
-        const unapprovedGroup = makeList('snapshot', 3, 'withComparisons', {
-          build,
-          fingerprint: 'unapprovedGroup',
-        });
-
-        const singleSnapshots = makeList(
-          'snapshot',
-          ['withComparisons', 'approved', {build}],
-          ['withComparisons', 'approved', {build}],
-          ['withComparisons', {build}],
-        );
-
-        const snapshotsChanged = singleSnapshots.concat(approvedGroup, unapprovedGroup);
-
-        this.setProperties({snapshotsChanged, build, stub, browser, numSnapshotsUnchanged: 0});
-
-        await this.render(hbs`{{snapshot-list
-          snapshotsChanged=snapshotsChanged
-          snapshotsUnchanged=snapshotsUnchanged
-          build=build
-          createReview=stub
-          showSnapshotFullModalTriggered=stub
-          activeBrowser=browser
-          toggleUnchangedSnapshotsVisible=stub
-          isBuildApprovable=true
-        }}`);
+      const approvedGroupWithoutComments = makeList('snapshot', 3, 'approved', 'withComparisons', {
+        build,
+        fingerprint: 'approvedGroupWithoutComments',
       });
 
-      it('orders individual and grouped snapshots correctly', async function() {
-        expect(SnapshotList.snapshotBlocks.length).to.equal(5);
+      const unapprovedGroupWithComments = makeList(
+        'snapshot',
+        4,
+        'withComparisons',
+        'withComments',
+        {
+          build,
+          fingerprint: 'unapprovedGroupWithComments',
+        },
+      );
 
-        expect(SnapshotList.snapshotBlocks[0].isGroup).to.equal(true);
-        expect(SnapshotList.snapshotBlocks[0].isApproved).to.equal(false);
-
-        expect(SnapshotList.snapshotBlocks[1].isSnapshot).to.equal(true);
-        expect(SnapshotList.snapshotBlocks[1].isApproved).to.equal(false);
-
-        expect(SnapshotList.snapshotBlocks[2].isGroup).to.equal(true);
-        expect(SnapshotList.snapshotBlocks[2].isApproved).to.equal(true);
-
-        expect(SnapshotList.snapshotBlocks[3].isSnapshot).to.equal(true);
-        expect(SnapshotList.snapshotBlocks[3].isApproved).to.equal(true);
-
-        expect(SnapshotList.snapshotBlocks[4].isSnapshot).to.equal(true);
-        expect(SnapshotList.snapshotBlocks[4].isApproved).to.equal(true);
-        await percySnapshot(this.test);
+      const unapprovedGroupWithoutComments = makeList('snapshot', 5, 'withComparisons', {
+        build,
+        fingerprint: 'unapprovedGroupWithoutComments',
       });
+
+      const unapprovedSingleSnapshotsWithComments = makeList(
+        'snapshot',
+        1,
+        'withComparisons',
+        'withComments',
+        {build, name: unapprovedSingleSnapshotsWithCommentsTitle},
+      );
+
+      const unapprovedSingleSnapshotsWithoutComments = makeList('snapshot', 1, 'withComparisons', {
+        build,
+        name: unapprovedSingleSnapshotsWithoutCommentsTitle,
+      });
+
+      const approvedSingleSnapshotsWithComments = makeList(
+        'snapshot',
+        1,
+        'approved',
+        'withComparisons',
+        'withComments',
+        {build, name: approvedSingleSnapshotsWithCommentsTitle},
+      );
+
+      const approvedSingleSnapshotsWithoutComments = makeList(
+        'snapshot',
+        1,
+        'approved',
+        'withComparisons',
+        {build, name: approvedSingleSnapshotsWithoutCommentsTitle},
+      );
+
+      const snapshotsChanged = unapprovedSingleSnapshotsWithoutComments.concat(
+        approvedSingleSnapshotsWithoutComments,
+        approvedSingleSnapshotsWithComments,
+        unapprovedSingleSnapshotsWithComments,
+        approvedGroupWithoutComments,
+        unapprovedGroupWithoutComments,
+        approvedGroupWithComments,
+        unapprovedGroupWithComments,
+      );
+
+      this.setProperties({snapshotsChanged, build, stub, browser, numSnapshotsUnchanged: 0});
+
+      await this.render(hbs`{{snapshot-list
+        snapshotsChanged=snapshotsChanged
+        snapshotsUnchanged=snapshotsUnchanged
+        build=build
+        createReview=stub
+        showSnapshotFullModalTriggered=stub
+        activeBrowser=browser
+        toggleUnchangedSnapshotsVisible=stub
+        isBuildApprovable=true
+      }}`);
+    });
+
+    it('orders individual and grouped snapshots correctly', async function() {
+      function expectIsGroup(block) {
+        expect(block.isGroup).to.equal(true);
+      }
+
+      function expectIsSnapshot(block) {
+        expect(block.isSnapshot).to.equal(true);
+      }
+
+      function expectSnapshotName(block, name) {
+        expect(block.snapshotViewer.name).to.equal(name);
+      }
+
+      function expectGroupSnapshotCount(block, count) {
+        if (block.isApproved) {
+          expect(block.snapshotGroup.header.groupApprovalButton.approvedText).to.include(count);
+        } else {
+          expect(block.snapshotGroup.approveButton.buttonText).to.include(count);
+        }
+      }
+
+      expect(SnapshotList.snapshotBlocks.length).to.equal(8);
+
+      const firstBlock = SnapshotList.snapshotBlocks[0];
+      expectIsGroup(firstBlock);
+      expectGroupSnapshotCount(firstBlock, '4');
+
+      const secondBlock = SnapshotList.snapshotBlocks[1];
+      expectIsSnapshot(secondBlock);
+      expectSnapshotName(secondBlock, unapprovedSingleSnapshotsWithCommentsTitle);
+
+      const thirdBlock = SnapshotList.snapshotBlocks[2];
+      expectIsGroup(thirdBlock);
+      expectGroupSnapshotCount(thirdBlock, '5');
+
+      const fourthBlock = SnapshotList.snapshotBlocks[3];
+      expectIsSnapshot(fourthBlock);
+      expectSnapshotName(fourthBlock, unapprovedSingleSnapshotsWithoutCommentsTitle);
+
+      const fifthBlock = SnapshotList.snapshotBlocks[4];
+      expectIsGroup(fifthBlock);
+      expectGroupSnapshotCount(fifthBlock, '2');
+
+      const sixthBlock = SnapshotList.snapshotBlocks[5];
+      expectIsSnapshot(sixthBlock);
+      expectSnapshotName(sixthBlock, approvedSingleSnapshotsWithCommentsTitle);
+
+      const seventhBlock = SnapshotList.snapshotBlocks[6];
+      expectIsGroup(seventhBlock);
+      expectGroupSnapshotCount(seventhBlock, '3');
+
+      const eighthBlock = SnapshotList.snapshotBlocks[7];
+      expectIsSnapshot(eighthBlock);
+      expectSnapshotName(eighthBlock, approvedSingleSnapshotsWithoutCommentsTitle);
+
+      await percySnapshot(this.test);
     });
   });
 });
