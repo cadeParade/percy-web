@@ -122,7 +122,7 @@ export default Route.extend({
 
     if (this._snapshotsHaveOpenReviewThreads(snapshots)) {
       const result = yield this.confirm.ask({
-        message: this._reviewConfirmMessage(snapshots, this._openReviewThreads(snapshots)),
+        message: this._reviewConfirmMessage(snapshots),
       });
 
       return result ? yield this.reviews.createApprovalReview(build, snapshots, eventData) : false;
@@ -169,15 +169,13 @@ export default Route.extend({
     return this._openReviewThreads(snapshots).length > 0;
   },
 
-  _reviewConfirmMessage(snapshots, openReviewThreads) {
+  _reviewConfirmMessage(snapshots) {
     const numSnapshotsToApprove = snapshots.length;
-    const numOpenReviewThreads = openReviewThreads.length;
     const snapshotString = pluralize(numSnapshotsToApprove, 'snapshot', {withoutCount: true});
     const possessionString = numSnapshotsToApprove > 1 ? 'have' : 'has';
-    const commentString = pluralize(numOpenReviewThreads, 'comment', {withoutCount: true});
 
     return `The ${snapshotString} you want to approve ${possessionString}
-      unresolved ${commentString} requesting changes. Do you want to approve anyway?`;
+      unresolved comments requesting changes. Do you want to approve anyway?`;
   },
 
   // Use this instead of `modelFor(this.routeName)` because it returns a resolved build object

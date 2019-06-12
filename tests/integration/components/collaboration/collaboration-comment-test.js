@@ -26,31 +26,55 @@ describe('Integration: CollaborationComment', function() {
         isFirstComment: true,
         comment: {}, // to be set below
         closeCommentThreadStub,
+        isCommentingAllowed: true,
       });
       await this.render(hbs`{{collaboration/collaboration-comment
         comment=comment
         isFirstComment=isFirstComment
         closeCommentThread=closeCommentThreadStub
+        isCommentingAllowed=isCommentingAllowed
       }}`);
     });
 
     describe('when the comment thread is open', function() {
-      it('shows "Resolve" button when isResolvable is true', async function() {
-        const comment = make('comment', 'fromReviewThread');
-        this.setProperties({comment});
+      describe('when isResolvable is true', function() {
+        beforeEach(function() {
+          const comment = make('comment', 'fromReviewThread');
+          this.setProperties({comment});
+        });
 
-        expect(CollaborationComment.resolveButton.isVisible).to.equal(true);
-        expect(CollaborationComment.archiveButton.isVisible).to.equal(false);
-        await percySnapshot(this.test);
+        it('shows "Resolve" button when isResolvable is true', async function() {
+          expect(CollaborationComment.resolveButton.isVisible).to.equal(true);
+          expect(CollaborationComment.archiveButton.isVisible).to.equal(false);
+          await percySnapshot(this.test);
+        });
+
+        it('does not show "Resolve" button when isCommentingAllowed is false', async function() {
+          this.setProperties({isCommentingAllowed: false});
+
+          expect(CollaborationComment.resolveButton.isVisible).to.equal(false);
+          expect(CollaborationComment.archiveButton.isVisible).to.equal(false);
+        });
       });
 
-      it('shows "Archive" button when isResolvable is false', async function() {
-        const comment = make('comment', 'fromNoteThread');
-        this.setProperties({comment});
+      describe('when isResolvable is false', function() {
+        beforeEach(function() {
+          const comment = make('comment', 'fromNoteThread');
+          this.setProperties({comment});
+        });
 
-        expect(CollaborationComment.resolveButton.isVisible).to.equal(false);
-        expect(CollaborationComment.archiveButton.isVisible).to.equal(true);
-        await percySnapshot(this.test);
+        it('shows "Archive" button when isResolvable is false', async function() {
+          expect(CollaborationComment.resolveButton.isVisible).to.equal(false);
+          expect(CollaborationComment.archiveButton.isVisible).to.equal(true);
+          await percySnapshot(this.test);
+        });
+
+        it('does not show "Resolve" button when isCommentingAllowed is false', async function() {
+          this.setProperties({isCommentingAllowed: false});
+
+          expect(CollaborationComment.resolveButton.isVisible).to.equal(false);
+          expect(CollaborationComment.archiveButton.isVisible).to.equal(false);
+        });
       });
     });
 

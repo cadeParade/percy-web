@@ -16,6 +16,7 @@
             onEscape=(action "toggleShouldShowNewCommentInput")
             placeholder="Add comment..."
             value=commentBody
+            maxlength=6000
             class="percy-input collaboration-new-thread relative pb-5"
           }}
 
@@ -34,6 +35,7 @@
                 name="isRequestChanges"
                 checked=areChangesRequested
                 disabled=isRequestChangesDisabled
+                maxlength=6000
                 class="ml-1"
               }}
             </label>

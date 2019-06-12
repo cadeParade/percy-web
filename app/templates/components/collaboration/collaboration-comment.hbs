@@ -12,45 +12,47 @@
       </div>
     </div>
     {{#if isFirstComment}}
-      {{#if isReview}}
-        {{#if isClosed}}
-          <div class="flex items-center text-green-500 font-semibold text-sm leading-none" data-test-resolved>
-            <div class="mr-sm">
-              {{inline-svg "check-green-icon" class="scale-3/4"}}
+      {{#if isCommentingAllowed}}
+        {{#if isReview}}
+          {{#if isClosed}}
+            <div class="flex items-center text-green-500 font-semibold text-sm leading-none" data-test-resolved>
+              <div class="mr-sm">
+                {{inline-svg "check-green-icon" class="scale-3/4"}}
+              </div>
+              <div>Resolved</div>
             </div>
-            <div>Resolved</div>
-          </div>
+          {{else}}
+            {{#percy-btn
+              handleClick=(action "closeCommentThread")
+              isPrimaryButton=true
+              isSmallButton=true
+              testLabel="commentResolve"
+            }}
+              Resolve
+            {{/percy-btn}}
+          {{/if}}
         {{else}}
-          {{#percy-btn
-            handleClick=(action "closeCommentThread")
-            isPrimaryButton=true
-            isSmallButton=true
-            testLabel="commentResolve"
-          }}
-            Resolve
-          {{/percy-btn}}
-        {{/if}}
-      {{else}}
-        {{#if isClosed}}
-          <div class="flex items-center" data-test-archived>
-            <div class="text-purple-600 font-semibold text-sm leading-none">
-              Archived
+          {{#if isClosed}}
+            <div class="flex items-center" data-test-archived>
+              <div class="text-purple-600 font-semibold text-sm leading-none">
+                Archived
+              </div>
             </div>
-          </div>
-        {{else}}
-          {{#percy-btn
-            handleClick=(action "closeCommentThread")
-            isSecondaryButton=true
-            isSmallButton=true
-            testLabel="commentArchive"
-          }}
-            Archive
-          {{/percy-btn}}
+          {{else}}
+            {{#percy-btn
+              handleClick=(action "closeCommentThread")
+              isSecondaryButton=true
+              isSmallButton=true
+              testLabel="commentArchive"
+            }}
+              Archive
+            {{/percy-btn}}
+          {{/if}}
         {{/if}}
       {{/if}}
     {{/if}}
   </header>
-  <p class="collaboration-content-inset">
+  <p class="collaboration-content-inset break-words">
     {{comment.body}}
   </p>
 </div>

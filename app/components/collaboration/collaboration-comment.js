@@ -9,6 +9,7 @@ export default Component.extend({
   flashMessages: service(),
   comment: null,
   isFirstComment: false,
+  isCommentingAllowed: true,
   closeCommentThread() {},
 
   commentThread: readOnly('comment.commentThread'),

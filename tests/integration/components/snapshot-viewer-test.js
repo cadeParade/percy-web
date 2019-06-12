@@ -15,6 +15,7 @@ import {
   enableFlag,
   disableFlag,
 } from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
+import faker from 'faker';
 
 describe('Integration: SnapshotViewer', function() {
   setupRenderingTest('snapshot-viewer', {
@@ -304,6 +305,31 @@ describe('Integration: SnapshotViewer', function() {
 
     afterEach(function() {
       disableFlag(this, 'comments');
+    });
+
+    describe('when there is a long comment', function() {
+      beforeEach(async function() {
+        const commentThread = make('comment-thread', {snapshot});
+        make('comment', {
+          body: 'sssssssssssssssssssssssssssssssssssssssssssssssssss' + faker.lorem.paragraph(50),
+          commentThread,
+        });
+        await this.render(hbs`{{snapshot-viewer
+          snapshot=snapshot
+          build=build
+          showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+          userSelectedWidth=userSelectedWidth
+          createReview=createReview
+          activeBrowser=browser
+          isBuildApprovable=isBuildApprovable
+          updateActiveSnapshotBlockId=stub
+          createCommentThread=stub
+        }}`);
+      });
+
+      it('displays correctly', async function() {
+        await percySnapshot(this.test);
+      });
     });
 
     describe('panel toggling', function() {
