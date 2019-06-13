@@ -299,8 +299,9 @@ describe('Integration: SnapshotGroup', function() {
   });
 
   describe('when multiple snapshots in the group have comments', function() {
+    let snapshotsWithComments;
     beforeEach(async function() {
-      const snapshotsWithComments = makeList('snapshot', 2, 'withComparisons', 'withComments', {
+      snapshotsWithComments = makeList('snapshot', 2, 'withComparisons', 'withComments', {
         fingerprint: 'fingerprint',
       });
       const snapshotsWithNoComments = makeList('snapshot', 3, 'withComparisons', {
@@ -308,6 +309,31 @@ describe('Integration: SnapshotGroup', function() {
       });
       const snapshots = snapshotsWithNoComments.concat(snapshotsWithComments);
       this.setProperties({snapshots});
+    });
+
+    it('shows multiple snapshots as "cover" snapshots', async function() {
+      await this.render(hbs`{{snapshot-group
+        snapshots=snapshots
+        build=build
+        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+        createReview=createReview
+        updateActiveSnapshotBlockId=stub
+        activeBrowser=browser
+        isBuildApprovable=isBuildApprovable
+      }}`);
+
+      expect(SnapshotGroup.snapshots.length).to.equal(2);
+      await percySnapshot(this.test);
+    });
+
+    // eslint-disable-next-line
+    it('shows unreviewed snapshot without comment before approved snapshot with open comment', async function() {
+      snapshotsWithComments.forEach(snapshot => {
+        snapshot.setProperties({
+          reviewState: 'approved',
+          reviewStateReason: 'user_approved',
+        });
+      });
 
       await this.render(hbs`{{snapshot-group
         snapshots=snapshots
@@ -318,10 +344,7 @@ describe('Integration: SnapshotGroup', function() {
         activeBrowser=browser
         isBuildApprovable=isBuildApprovable
       }}`);
-    });
 
-    it('shows multiple snapshots as "cover" snapshots', async function() {
-      expect(SnapshotGroup.snapshots.length).to.equal(2);
       await percySnapshot(this.test);
     });
   });

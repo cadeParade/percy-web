@@ -21,21 +21,27 @@ export default SnapshotListItem.extend({
   _unapprovedSnapshots: filterBy('snapshots', 'isUnreviewed'),
   numUnapprovedSnapshots: readOnly('_unapprovedSnapshots.length'),
   _isApproved: readOnly('isGroupApproved'),
-  snapshotsWithOpenCommentThreads: filterBy('snapshots', 'hasOpenCommentThreads'),
-  hasSnapshotsWithOpenCommentThreads: notEmpty('snapshotsWithOpenCommentThreads'),
-  noSnapshotsWithOpenCommentThreads: not('hasSnapshotsWithOpenCommentThreads'),
+
   displaySingleSnapshotGroupCover: and('isGroupCollapsed', 'noSnapshotsWithOpenCommentThreads'),
+  noSnapshotsWithOpenCommentThreads: not('hasUnreviewedSnapshotsWithOpenCommentThreads'),
+  hasUnreviewedSnapshotsWithOpenCommentThreads: notEmpty(
+    'unreviewedSnapshotsWithOpenCommentThreads',
+  ),
+  unreviewedSnapshotsWithOpenCommentThreads: filterBy(
+    '_unapprovedSnapshots',
+    'hasOpenCommentThreads',
+  ),
   displayCommentedSnapshsotsGroupCover: and(
     'isGroupCollapsed',
-    'hasSnapshotsWithOpenCommentThreads',
+    'hasUnreviewedSnapshotsWithOpenCommentThreads',
   ),
   snapshotsToDisplay: computed(
     'snapshots',
-    'snapshotsWithOpenCommentThreads',
-    'areAllSnapshotsExpanded',
+    'unreviewedSnapshotsWithOpenCommentThreads',
+    'displayCommentedSnapshsotsGroupCover',
     function() {
       if (this.get('displayCommentedSnapshsotsGroupCover')) {
-        return this.get('snapshotsWithOpenCommentThreads');
+        return this.get('unreviewedSnapshotsWithOpenCommentThreads');
       } else {
         return this.get('snapshots');
       }
