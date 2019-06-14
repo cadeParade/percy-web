@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-expressions */
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
-import {it, describe, beforeEach} from 'mocha';
+import {it, describe, beforeEach, afterEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
@@ -11,6 +11,10 @@ import SnapshotGroup from 'percy-web/tests/pages/components/snapshot-group';
 import {resolve} from 'rsvp';
 import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {
+  enableFlag,
+  disableFlag,
+} from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
 
 describe('Integration: SnapshotGroup', function() {
   setupRenderingTest('snapshot-group', {
@@ -301,6 +305,7 @@ describe('Integration: SnapshotGroup', function() {
   describe('when multiple snapshots in the group have comments', function() {
     let snapshotsWithComments;
     beforeEach(async function() {
+      enableFlag(this, 'comments');
       snapshotsWithComments = makeList('snapshot', 2, 'withComparisons', 'withComments', {
         fingerprint: 'fingerprint',
       });
@@ -309,6 +314,10 @@ describe('Integration: SnapshotGroup', function() {
       });
       const snapshots = snapshotsWithNoComments.concat(snapshotsWithComments);
       this.setProperties({snapshots});
+    });
+
+    afterEach(function() {
+      disableFlag(this, 'comments');
     });
 
     it('shows multiple snapshots as "cover" snapshots', async function() {

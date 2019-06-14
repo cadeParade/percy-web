@@ -35,7 +35,8 @@
           toggleOverlay=(action "toggleSnapshotOverlay")
           class="flex-1"
         }}
-        {{#if isCommentPanelShowing}}
+
+        {{#if (and (variation "comments") isCommentPanelShowing)}}
           {{collaboration/collaboration-panel
             commentThreads=commentThreads
             showCollaborationPanel=isShowingCollaborationPanel

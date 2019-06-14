@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-expressions */
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
-import {it, describe, beforeEach} from 'mocha';
+import {it, describe, beforeEach, afterEach} from 'mocha';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
 import sinon from 'sinon';
@@ -10,6 +10,10 @@ import {percySnapshot} from 'ember-percy';
 import SnapshotList from 'percy-web/tests/pages/components/snapshot-list';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {initialize as initializeEmberKeyboard} from 'ember-keyboard';
+import {
+  enableFlag,
+  disableFlag,
+} from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
 
 describe('Integration: SnapshotList', function() {
   setupRenderingTest('snapshot-list', {
@@ -232,6 +236,7 @@ describe('Integration: SnapshotList', function() {
     const approvedSingleSnapshotsWithoutCommentsTitle = 'approved single snapshot without comments';
 
     beforeEach(async function() {
+      enableFlag(this, 'comments');
       const stub = sinon.stub();
       const build = make('build', 'finished', {totalSnapshots: 11});
       const browser = make('browser');
@@ -321,6 +326,10 @@ describe('Integration: SnapshotList', function() {
         toggleUnchangedSnapshotsVisible=stub
         isBuildApprovable=true
       }}`);
+    });
+
+    afterEach(function() {
+      disableFlag(this, 'comments');
     });
 
     it('orders individual and grouped snapshots correctly', async function() {
