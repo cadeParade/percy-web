@@ -15,29 +15,54 @@ export default SessionService.extend({
   // set by load method
   currentUser: null,
 
-  loadCurrentUser() {
+  async loadCurrentUser() {
     if (this.get('isAuthenticated')) {
-      return (
-        this.forceReloadUser()
-          .then(async user => {
-            this.set('currentUser', user);
-            await this._setupThirdPartyUserContexts(user);
-          })
-          // This catch will be triggered if the queryRecord or set currentUser
-          // fails. If we don't have a user, the site will be very broken
-          // so kick them out.
-          .catch(e => {
-            this.invalidateAndLogout();
-
-            this._clearThirdPartyUserContext();
-            return reject(e);
-          })
-      );
+      return await this._loadAndSetCurrentUser();
     } else {
+      return this._trySilentAuth();
+    }
+  },
+
+  async _trySilentAuth() {
+    // If we are not authenticated according to the FE, we try to fetch the user from the API.
+    // If we find one, but the ember-simple-auth session is not informed,
+    // silently authenticate the user so we're all the way logged in.
+    try {
+      // Get the user from the API
+      const user = await this.forceReloadUser();
+      // If there is a user but we're not authenticated, try silent auth
+      if (user && !this.get('isAuthenticated')) {
+        try {
+          return await this.authenticate('authenticator:auth0-silent-auth');
+        } catch (e) {
+          // If there's a problem with silent auth, log us all the way out.
+          this.invalidateAndLogout();
+        }
+      }
+    } catch (e) {
+      // If there's a problem with getting the user (most likely a 403
+      // if there is no logged in user) return a resolved promise.
       // This needs to return a resolved promise because beforeModel in
       // ember-simple-auth application route mixin needs a resolved promise.
       return resolve();
     }
+  },
+
+  async _loadAndSetCurrentUser() {
+    return (
+      this.forceReloadUser()
+        .then(async user => {
+          this.set('currentUser', user);
+          await this._setupThirdPartyUserContexts(user);
+        })
+        // This catch will be triggered if the queryRecord or set currentUser
+        // fails. If we don't have a user, the site will be very broken
+        // so kick them out.
+        .catch(e => {
+          this.invalidateAndLogout();
+          return reject(e);
+        })
+    );
   },
 
   invalidateAndLogout() {
@@ -47,8 +72,8 @@ export default SessionService.extend({
     });
   },
 
-  forceReloadUser() {
-    return this.get('store').queryRecord('user', {});
+  async forceReloadUser() {
+    return await this.get('store').queryRecord('user', {});
   },
 
   _setupThirdPartyUserContexts(user) {
@@ -63,9 +88,9 @@ export default SessionService.extend({
         this._setupAnalytics(user);
         this._setupIntercom(user);
         await this._setupLaunchDarkly(user);
-        resolve();
+        return resolve();
       } catch (_) {
-        resolve();
+        return resolve();
       }
     });
   },

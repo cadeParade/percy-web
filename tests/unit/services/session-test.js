@@ -18,17 +18,49 @@ describe('SessionService', function() {
     let store = null;
     let user;
 
+    let windowStub;
     beforeEach(function() {
       subject = this.owner.lookup('service:session');
       store = this.owner.lookup('service:store');
       setupFactoryGuy(this);
 
       user = make('user', 'withOrganizations', {id: 'foo'});
+      windowStub = sinon.stub(utils, 'replaceWindowLocation');
+    });
+
+    afterEach(function() {
+      windowStub.restore();
     });
 
     describe('when isAuthenticated is false', function() {
-      it('returns a resolved promise ', function() {
+      beforeEach(function() {
         subject.set('isAuthenticated', false);
+      });
+
+      it('tries to silently authenticate when API returns a user', async function() {
+        store.queryRecord = sinon.stub().returns(user);
+        const authenticateStub = sinon.stub(subject, 'authenticate');
+        const promise = subject.loadCurrentUser();
+
+        return promise.then(() => {
+          expect(authenticateStub).to.have.been.calledWith('authenticator:auth0-silent-auth');
+        });
+      });
+
+      it('invalidates session and logs out when silent auth errors', async function() {
+        const invalidateStub = sinon.stub(subject, 'invalidate').returns(resolve());
+        store.queryRecord = sinon.stub().returns(user);
+        sinon.stub(subject, 'authenticate').returns(reject());
+
+        const promise = subject.loadCurrentUser();
+
+        return promise.then(() => {
+          expect(invalidateStub).to.have.been.called;
+        });
+      });
+
+      it('returns a resolved promise when forceReloadUser errors', function() {
+        store.queryRecord = sinon.stub().returns(reject());
         const promise = subject.loadCurrentUser();
 
         expect(promise).to.be.fulfilled;
@@ -103,15 +135,9 @@ describe('SessionService', function() {
     });
 
     describe('when isAuthenticated is true and the user query fails', function() {
-      let windowStub;
       beforeEach(function() {
         subject.set('isAuthenticated', true);
         store.queryRecord = sinon.stub().returns(reject());
-        windowStub = sinon.stub(utils, 'replaceWindowLocation');
-      });
-
-      afterEach(function() {
-        windowStub.restore();
       });
 
       it('invalidates the session', function() {

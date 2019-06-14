@@ -5,9 +5,9 @@ import {inject as service} from '@ember/service';
 export default Route.extend(AuthenticatedRouteMixin, {
   session: service(),
 
-  beforeModel() {
+  async beforeModel() {
     // If we don't force reload user on this page,
     // we don't get the associated Identities
-    return this.get('session').forceReloadUser();
+    return await this.get('session').forceReloadUser();
   },
 });
