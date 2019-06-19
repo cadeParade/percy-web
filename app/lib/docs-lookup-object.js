@@ -5,6 +5,11 @@ export default {
   javascript: {
     name: 'Javascript',
     frameworks: {
+      percyscript: {
+        name: 'PercyScript',
+        docLink: 'https://docs.percy.io/docs/percyscript',
+        exampleLink: 'https://github.com/percy/example-percyscript',
+      },
       ember: {
         name: 'Ember',
         docLink: 'https://docs.percy.io/docs/ember',
@@ -119,6 +124,11 @@ export default {
         name: 'Percy CLI',
         docLink: 'https://docs.percy.io/docs/command-line-client',
         exampleLink: '',
+      },
+      jekyll: {
+        name: 'Jekyll',
+        docLink: 'https://docs.percy.io/docs/jekyll',
+        exampleLink: 'https://github.com/percy/example-percy-jekyll',
       },
       other: {
         name: 'Other',
