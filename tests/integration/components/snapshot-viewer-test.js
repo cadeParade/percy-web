@@ -298,7 +298,7 @@ describe('Integration: SnapshotViewer', function() {
     });
   });
 
-  describe.skip('commenting', function() {
+  describe('commenting', function() {
     beforeEach(async function() {
       enableFlag(this, 'comments');
     });

@@ -35,6 +35,18 @@
           toggleOverlay=(action "toggleSnapshotOverlay")
           class="flex-1"
         }}
+
+        {{#if (and (variation "comments") isCommentPanelShowing)}}
+          {{collaboration/collaboration-panel
+            commentThreads=commentThreads
+            showCollaborationPanel=isShowingCollaborationPanel
+            createCommentThread=createCommentThread
+            createComment=createComment
+            closeCommentThread=closeCommentThread
+            isCommentingAllowed=isBuildApprovable
+            snapshot=snapshot
+          }}
+        {{/if}}
       </div>
     {{else}}
       <div class="p-2 text-center bg-gray-000 border-b" data-test-SnapshotViewer-noComparison>

@@ -149,6 +149,14 @@
           }}
         {{/if}}
 
+        {{#if (and isBuildApprovable (variation "comments"))}}
+          {{collaboration/toggle-button
+            toggleCollaborationPanel=toggleCollaborationPanel
+            isResolved=false
+            unresolvedCommentThreadCount=unresolvedCommentThreadCount
+          }}
+        {{/if}}
+
         <div class="btn-group" data-test-snapshot-approval-button>
           {{demo-tooltip
             build=snapshot.build

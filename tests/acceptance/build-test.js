@@ -240,7 +240,7 @@ describe('Acceptance: Build', function() {
     });
   });
 
-  describe.skip('commenting', function() {
+  describe('commenting', function() {
     beforeEach(async function() {
       withVariation(this.owner, 'comments', true);
       server.create('commentThread', 'withTwoComments', {
@@ -426,7 +426,7 @@ describe('Acceptance: Build', function() {
       );
     });
 
-    describe.skip('commenting', function() {
+    describe('commenting', function() {
       beforeEach(async function() {
         withVariation(this.owner, 'comments', true);
         let commentedSnapshot = unapprovedSnapshots[1];
@@ -877,7 +877,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     expect(findAll('.flash-message.flash-message-danger')).to.have.length(1);
   });
 
-  describe.skip('commenting', function() {
+  describe('commenting', function() {
     beforeEach(async function() {
       withVariation(this.owner, 'comments', true);
       server.create('commentThread', 'withTwoComments', {snapshot});
