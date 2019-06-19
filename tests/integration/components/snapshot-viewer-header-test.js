@@ -385,7 +385,7 @@ describe('Integration: SnapshotViewerHeader', function() {
     });
   });
 
-  describe('comment button', function() {
+  describe.skip('comment button', function() {
     beforeEach(async function() {
       enableFlag(this, 'comments');
     });
