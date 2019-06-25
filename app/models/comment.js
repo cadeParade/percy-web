@@ -10,4 +10,5 @@ export default DS.Model.extend({
   // Not actual fields - but needed for creating comment threads in the same request as comments.
   snapshotId: DS.attr('string'),
   threadType: DS.attr('string'),
+  taggedUsers: DS.hasMany('user'),
 });

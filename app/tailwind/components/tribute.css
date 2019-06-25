@@ -1,0 +1,20 @@
+.tribute-container {
+  @apply py-1-1/2 mt-1;
+  @apply bg-white;
+  @apply border border-gray-100 rounded;
+  box-shadow: 0px 4px 12px rgba(63, 58, 64, 0.06);
+  z-index: 1 !important;
+}
+
+.tribute-container ul {
+  @apply bg-white;
+  @apply m-0;
+}
+
+.tribute-container li {
+  @apply pl-2 pr-6 py-sm mb-0;
+}
+
+.tribute-container li.highlight {
+  @apply bg-purple-200;
+}

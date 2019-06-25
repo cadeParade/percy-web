@@ -2,6 +2,7 @@ import {clickable, fillable, hasClass, create, is, value} from 'ember-cli-page-o
 import {collaborationComment} from 'percy-web/tests/pages/components/collaboration/collaboration-comment'; // eslint-disable-line
 import {getter} from 'ember-cli-page-object/macros';
 import {percyTextarea} from 'percy-web/tests/pages/components/percy-textarea';
+import {mentionableTextarea} from 'percy-web/tests/pages/components/mentionable-textarea';
 
 const SELECTORS = {
   SCOPE: '[data-test-comment-reply]',
@@ -31,6 +32,7 @@ export const collaborationCommentReply = {
   }),
 
   percyTextarea,
+  mentionableTextarea,
 };
 
 export default create(collaborationCommentReply);

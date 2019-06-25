@@ -9,16 +9,20 @@
       {{/if}}
     </div>
     <div class="flex-1 {{if isExpanded 'collaboration-content-inset'}}" {{action "expandReply"}} data-test-comment-reply-textarea-container>
-      {{percy-textarea
-        data-test-comment-reply-textarea
-        onCmdEnter=(action "saveReply")
-        onEscape=(action "collapseReply")
-        placeholder="Add reply..."
-        value=commentBody
-        classNameBindings="isExpanded:h-24:collaboration-collapsed-comment-reply"
-        maxlength=6000
-        class="percy-input"
+      {{#mentionable-textarea
+        tributeConfigs=tributeConfigs
+        handleItemSelected=(action "handleAtMentionUser")
       }}
+        {{percy-textarea
+          data-test-comment-reply-textarea
+          onCmdEnter=(action "saveReply")
+          onEscape=(action "collapseReply")
+          placeholder="Add reply..."
+          value=commentBody
+          classNameBindings="isExpanded:h-24:collaboration-collapsed-comment-reply"
+          class="percy-input"
+        }}
+      {{/mentionable-textarea}}
     </div>
   </div>
 

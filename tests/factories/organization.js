@@ -148,5 +148,8 @@ FactoryGuy.define('organization', {
     withNoPaymentMethod: {
       subscription: () => make('subscription', 'withEnterprisePlan', 'withNoPaymentMethod'),
     },
+    withUsers: {
+      organizationUsers: () => makeList('organization-user', 5),
+    },
   },
 });

@@ -9,6 +9,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import Service from '@ember/service';
 import sinon from 'sinon';
 import {initialize as initializeEmberKeyboard} from 'ember-keyboard';
+import {fillIn} from '@ember/test-helpers';
 
 describe('Integration: CollaborationCommentReply', function() {
   setupRenderingTest('collaboration-comment-reply', {
@@ -47,10 +48,14 @@ describe('Integration: CollaborationCommentReply', function() {
     let submitStub;
     beforeEach(async function() {
       initializeEmberKeyboard();
-      commentThread = make('comment-thread');
+      const organization = make('organization', 'withUsers');
+      const project = make('project', {organization});
+      const build = make('build', {project});
+      const snapshot = make('snapshot', {build});
+      commentThread = make('comment-thread', {snapshot});
       submitStub = sinon.stub().returns({isSuccessful: true});
 
-      this.setProperties({commentThread, submitStub});
+      this.setProperties({commentThread, submitStub, organization});
       await this.render(hbs`{{collaboration/collaboration-comment-reply
         commentThread=commentThread
         createComment=submitStub
@@ -82,7 +87,7 @@ describe('Integration: CollaborationCommentReply', function() {
       expect(CommentReply.isCollapsed).to.equal(true);
     });
 
-    it('sends `saveReply` with correct args when sumit is clicked', async function() {
+    it('sends `saveReply` with correct args when submit is clicked', async function() {
       const commentText = 'When you play the game of thrones, you win or you die';
       await CommentReply.typeComment(commentText);
       await CommentReply.submit.click();
@@ -90,6 +95,7 @@ describe('Integration: CollaborationCommentReply', function() {
       expect(submitStub).to.have.been.calledWith({
         commentThread,
         commentBody: commentText,
+        mentionedUsers: [],
       });
     });
 
@@ -100,6 +106,42 @@ describe('Integration: CollaborationCommentReply', function() {
       expect(submitStub).to.have.been.calledWith({
         commentThread,
         commentBody: commentText,
+        mentionedUsers: [],
+      });
+    });
+
+    it('sends `saveReply` with correct args when @mentioning users', async function() {
+      const orgUsers = this.organization.organizationUsers.mapBy('user');
+      const commentText = 'hello there';
+      await CommentReply.typeComment(commentText);
+      await CommentReply.mentionableTextarea.selectFirstUser();
+      await CommentReply.mentionableTextarea.selectSecondUser();
+      await CommentReply.percyTextarea.cmdEnter();
+
+      expect(submitStub).to.have.been.calledWith({
+        commentThread,
+        commentBody: `${commentText}@${orgUsers[0].name} @${orgUsers[1].name} `,
+        mentionedUsers: [orgUsers[0], orgUsers[1]],
+      });
+    });
+
+    // eslint-disable-next-line
+    it('sends `saveReply` with correct args when @mentioning users and they are removed', async function() {
+      // This test @mentions two users, then overwrites the text in the input with something else.
+      // In this case, since the users are no longer present in the text of the comment, we would
+      // not want the user data to actually be sent with the payload of the request.
+      const commentText = 'hello there';
+      await CommentReply.typeComment(commentText);
+      await CommentReply.mentionableTextarea.selectFirstUser();
+      await CommentReply.mentionableTextarea.selectSecondUser();
+
+      await fillIn('textarea', commentText);
+      await CommentReply.percyTextarea.cmdEnter();
+
+      expect(submitStub).to.have.been.calledWith({
+        commentThread,
+        commentBody: commentText,
+        mentionedUsers: [],
       });
     });
 

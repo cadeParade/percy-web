@@ -6,7 +6,7 @@ const KEYS = {
 };
 
 export default Component.extend({
-  classNames: ['ComparisonViewerFull', 'w-full'],
+  classNames: ['ComparisonViewerFull', 'w-full', 'p-2'],
   comparison: null,
   isBase: equal('comparisonMode', 'base'),
   isHead: equal('comparisonMode', 'head'),

@@ -2,8 +2,10 @@ import Component from '@ember/component';
 import {readOnly} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
 import {isEmpty} from '@ember/utils';
+import {computed, get} from '@ember/object';
 
 export default Component.extend({
+  mentionables: service(),
   flashMessages: service(),
   tagName: '',
   shouldShowNewCommentInput: false,
@@ -12,6 +14,7 @@ export default Component.extend({
   commentBody: '',
   createCommentThread: null,
   snapshot: null,
+  mentionedUsers: null,
   isThreadSaving: readOnly('threadSaveTask.isRunning'),
   isRequestChangesDisabled: readOnly('snapshot.isApproved'),
 
@@ -21,18 +24,28 @@ export default Component.extend({
     this.set('areChangesRequested', false);
   },
 
+  // Setup @mentions
+  tributeConfigs: computed(function() {
+    const org = get(this, 'snapshot.build.project.organization');
+    return [this.mentionables.generateOrgUserConfig(org)];
+  }),
+
   actions: {
     toggleShouldShowNewCommentInput() {
       this.toggleProperty('shouldShowNewCommentInput');
     },
 
+    handleAtMentionUser(user) {
+      this.mentionedUsers.pushObject(user);
+    },
+
     async saveComment() {
       if (isEmpty(this.commentBody)) return;
-
       const task = this.createCommentThread({
         commentBody: this.commentBody,
         areChangesRequested: this.areChangesRequested,
         snapshotId: this.snapshot.id,
+        mentionedUsers: this.mentionables.verifyMentions(this.mentionedUsers, this.commentBody),
       });
 
       this.set('threadSaveTask', task);
@@ -44,5 +57,10 @@ export default Component.extend({
         this.flashMessages.danger('Something went wrong with saving your comment.');
       }
     },
+  },
+
+  init() {
+    this._super(...arguments);
+    this.mentionedUsers = this.mentionedUsers || [];
   },
 });

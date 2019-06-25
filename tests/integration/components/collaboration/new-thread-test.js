@@ -7,6 +7,7 @@ import {make} from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import CollaborationNewThread from 'percy-web/tests/pages/components/collaboration/new-thread';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {fillIn} from '@ember/test-helpers';
 
 describe('Integration: CollaborationNewThread', function() {
   setupRenderingTest('collaboration-new-thread', {
@@ -24,11 +25,14 @@ describe('Integration: CollaborationNewThread', function() {
     let snapshot;
 
     beforeEach(async function() {
+      const organization = make('organization', 'withUsers');
+      const project = make('project', {organization});
+      const build = make('build', {project});
+      snapshot = make('snapshot', {build});
       user = make('user');
-      snapshot = make('snapshot');
       saveStub = sinon.stub().returns({isSuccessful: true});
 
-      this.setProperties({user, saveStub, snapshot});
+      this.setProperties({user, saveStub, snapshot, organization});
 
       await this.render(hbs`{{collaboration/new-thread
         currentUser=user
@@ -58,6 +62,7 @@ describe('Integration: CollaborationNewThread', function() {
         snapshotId: snapshot.id,
         commentBody: commentText,
         areChangesRequested: false,
+        mentionedUsers: [],
       });
     });
 
@@ -71,6 +76,44 @@ describe('Integration: CollaborationNewThread', function() {
         snapshotId: snapshot.id,
         commentBody: commentText,
         areChangesRequested: true,
+        mentionedUsers: [],
+      });
+    });
+
+    it('sends save action with correct args when @mentioning users', async function() {
+      const orgUsers = this.organization.organizationUsers.mapBy('user');
+      const commentText = 'hello there';
+      await CollaborationNewThread.typeNewComment(commentText);
+      await CollaborationNewThread.mentionableTextarea.selectFirstUser();
+      await CollaborationNewThread.mentionableTextarea.selectSecondUser();
+      await CollaborationNewThread.percyTextarea.cmdEnter();
+
+      expect(saveStub).to.have.been.calledWith({
+        snapshotId: snapshot.id,
+        areChangesRequested: false,
+        commentBody: `${commentText}@${orgUsers[0].name} @${orgUsers[1].name} `,
+        mentionedUsers: [orgUsers[0], orgUsers[1]],
+      });
+    });
+
+    // eslint-disable-next-line
+    it('sends save action with correct args when @mentioning users and they are removed', async function() {
+      // This test @mentions two users, then overwrites the text in the input with something else.
+      // In this case, since the users are no longer present in the text of the comment, we would
+      // not want the user data to actually be sent with the payload of the request.
+      const commentText = 'hello there';
+      await CollaborationNewThread.typeNewComment(commentText);
+      await CollaborationNewThread.mentionableTextarea.selectFirstUser();
+      await CollaborationNewThread.mentionableTextarea.selectSecondUser();
+
+      await fillIn('textarea', commentText);
+      await CollaborationNewThread.percyTextarea.cmdEnter();
+
+      expect(saveStub).to.have.been.calledWith({
+        snapshotId: snapshot.id,
+        areChangesRequested: false,
+        commentBody: commentText,
+        mentionedUsers: [],
       });
     });
 
@@ -83,6 +126,7 @@ describe('Integration: CollaborationNewThread', function() {
         snapshotId: snapshot.id,
         commentBody: commentText,
         areChangesRequested: true,
+        mentionedUsers: [],
       });
     });
 

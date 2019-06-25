@@ -9,17 +9,20 @@
       </div>
       <div class="flex-1 collaboration-content-inset">
         <div class="relative">
-          {{percy-textarea
-            data-test-new-comment-thread-textarea
-            autofocus=true
-            onCmdEnter=(action "saveComment")
-            onEscape=(action "toggleShouldShowNewCommentInput")
-            placeholder="Add comment..."
-            value=commentBody
-            maxlength=6000
-            class="percy-input collaboration-new-thread relative pb-5"
+          {{#mentionable-textarea
+            tributeConfigs=tributeConfigs
+            handleItemSelected=(action "handleAtMentionUser")
           }}
-
+            {{percy-textarea
+              data-test-new-comment-thread-textarea
+              autofocus=true
+              onCmdEnter=(action "saveComment")
+              onEscape=(action "toggleShouldShowNewCommentInput")
+              placeholder="Add comment..."
+              value=commentBody
+              class="percy-input collaboration-new-thread relative pb-5"
+            }}
+          {{/mentionable-textarea}}
           <div
             class="
               absolute pin-r pin-b pin-l bg-white border-t p-1-1/2
@@ -43,7 +46,6 @@
         </div>
       </div>
     </div>
-
     <div class="flex justify-end mt-1">
       {{#percy-btn
         handleClick=(action "toggleShouldShowNewCommentInput")

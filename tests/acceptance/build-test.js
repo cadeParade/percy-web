@@ -269,10 +269,21 @@ describe('Acceptance: Build', function() {
 
       await secondSnapshot.header.toggleCommentSidebar();
       await secondSnapshot.collaborationPanel.newComment.typeNewComment('wow, what a great thread');
+      await secondSnapshot.collaborationPanel.newComment.mentionableTextarea.selectFirstUser(
+        `${secondSnapshot.collaborationPanel.newComment.scope} textarea`,
+      );
+
       await secondSnapshot.collaborationPanel.newComment.submitNewThread();
 
       expect(secondSnapshot.commentThreads.length).to.equal(1);
       expect(secondSnapshot.header.numOpenCommentThreads).to.equal('1');
+
+      let request = server.pretender.handledRequests.find(request => {
+        return request.url.includes('comments');
+      });
+      const taggedUser = JSON.parse(request.requestBody).data.relationships['tagged-users'].data[0];
+      expect(taggedUser.id).to.equal('1');
+
       await percySnapshot(this.test);
     });
 

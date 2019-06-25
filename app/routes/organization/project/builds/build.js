@@ -36,7 +36,7 @@ export default Route.extend({
     }
   },
 
-  setupController(controller, model) {
+  async setupController(controller, model) {
     this._super(...arguments);
     controller.set('build', model.build);
     controller.set('isBuildApprovable', model.isUserMember);
@@ -104,12 +104,17 @@ export default Route.extend({
       return this._createReview.perform({snapshots, eventData});
     },
 
-    createCommentThread({snapshotId, commentBody, areChangesRequested}) {
-      return this._createCommentThread.perform({snapshotId, commentBody, areChangesRequested});
+    createCommentThread({snapshotId, commentBody, areChangesRequested, mentionedUsers}) {
+      return this._createCommentThread.perform({
+        snapshotId,
+        commentBody,
+        areChangesRequested,
+        mentionedUsers,
+      });
     },
 
-    createComment({commentThread, commentBody}) {
-      return this._createComment.perform({commentThread, commentBody});
+    createComment({commentThread, commentBody, mentionedUsers}) {
+      return this._createComment.perform({commentThread, commentBody, mentionedUsers});
     },
 
     closeCommentThread({commentThread}) {
@@ -131,21 +136,28 @@ export default Route.extend({
     }
   }),
 
-  _createComment: task(function*({commentThread, commentBody}) {
+  _createComment: task(function*({commentThread, commentBody, mentionedUsers}) {
     const newComment = this.store.createRecord('comment', {
       commentThread: commentThread,
       body: commentBody,
+      taggedUsers: mentionedUsers,
     });
     return yield newComment.save().catch(() => {
       newComment.rollbackAttributes();
     });
   }),
 
-  _createCommentThread: task(function*({snapshotId, commentBody, areChangesRequested}) {
+  _createCommentThread: task(function*({
+    snapshotId,
+    commentBody,
+    areChangesRequested,
+    mentionedUsers,
+  }) {
     const newComment = this.store.createRecord('comment', {
       snapshotId,
       body: commentBody,
       threadType: areChangesRequested ? REVIEW_COMMENT_TYPE : NOTE_COMMENT_TYPE,
+      taggedUsers: mentionedUsers,
     });
     return yield newComment.save().catch(() => {
       newComment.rollbackAttributes();
