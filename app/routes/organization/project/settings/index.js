@@ -2,7 +2,6 @@ import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import {hash} from 'rsvp';
 import {inject as service} from '@ember/service';
-import utils from 'percy-web/lib/utils';
 
 export default Route.extend(AuthenticatedRouteMixin, {
   flashMessages: service(),
@@ -12,9 +11,8 @@ export default Route.extend(AuthenticatedRouteMixin, {
   model() {
     const project = this.modelFor('organization.project');
     const browserFamilies = this.get('store').findAll('browserFamily');
-    const webhookConfigs = project.get('webhookConfigs');
 
-    return hash({project, browserFamilies, webhookConfigs});
+    return hash({project, browserFamilies});
   },
 
   setupController(controller, model) {
@@ -39,17 +37,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
   },
 
   actions: {
-    deleteWebhookConfig(webhookConfig, confirmationMessage) {
-      if (confirmationMessage && !utils.confirmMessage(confirmationMessage)) {
-        return;
-      }
-
-      return webhookConfig.destroyRecord().then(() => {
-        this.get('flashMessages').success('Successfully deleted webhook');
-        this.refresh();
-      });
-    },
-
     removeProjectBrowserTargetForFamily(familyToRemove, project) {
       const projectBrowserTargetForFamily = project
         .get('projectBrowserTargets')

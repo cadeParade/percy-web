@@ -133,7 +133,7 @@ describe('Acceptance: Project', function() {
     });
   });
 
-  describe('settings', function() {
+  describe('settings and integrations', function() {
     let organization;
     let enabledProject;
     let versionControlIntegration;
@@ -151,169 +151,175 @@ describe('Acceptance: Project', function() {
       });
     });
 
-    it('displays github integration select menu', async function() {
-      organization.update({versionControlIntegrations: [versionControlIntegration], repos});
-
-      await ProjectSettingsPage.visitProjectSettings({
-        orgSlug: organization.slug,
-        projectSlug: enabledProject.slug,
-      });
-      await percySnapshot(this.test);
-    });
-
-    it('displays Auto-Approve Branches setting', async function() {
-      await ProjectSettingsPage.visitProjectSettings({
-        orgSlug: organization.slug,
-        projectSlug: enabledProject.slug,
-      });
-      await percySnapshot(this.test);
-
-      expect(ProjectSettingsPage.isAutoApproveBranchesVisible).to.equal(true);
-    });
-
-    it('displays webhook configs', async function() {
-      enabledProject.update({webhookConfigs: [webhookConfig]});
-
-      await ProjectSettingsPage.visitProjectSettings({
-        orgSlug: organization.slug,
-        projectSlug: enabledProject.slug,
-      });
-
-      await percySnapshot(this.test);
-
-      expect(ProjectSettingsPage.webhookConfigList.webhookConfigs.objectAt(0).url).to.equal(
-        webhookConfig.url,
-      );
-    });
-
-    it('transitions to webhook config form', async function() {
-      window.crypto.getRandomValues = sinon.fake.returns(new Uint8Array(32));
-
-      await ProjectSettingsPage.visitProjectSettings({
-        orgSlug: organization.slug,
-        projectSlug: enabledProject.slug,
-      });
-
-      await ProjectSettingsPage.webhookConfigList.newWebhookConfig();
-
-      await percySnapshot(this.test);
-
-      expect(currentRouteName()).to.equal(
-        'organization.project.settings.integrations.webhooks.webhook-config',
-      );
-    });
-
-    it('displays the Slack section', async function() {
-      withVariation(this.owner, 'slack-integration', true);
-
-      await ProjectSettingsPage.visitProjectSettings({
-        orgSlug: organization.slug,
-        projectSlug: enabledProject.slug,
-      });
-      expect(ProjectSettingsPage.slackInfo.isVisible).to.equal(true);
-      await percySnapshot(this.test);
-
-      await ProjectSettingsPage.slackIntegrationsLink.click();
-      expect(IntegrationsIndexPage.isVisible).to.equal(true);
-      await percySnapshot(this.test);
-
-      withVariation(this.owner, 'slack-integration', false);
-    });
-
-    describe('browser toggling', function() {
-      let deleteStub;
-      let createStub;
-      let projectWithBothBrowsers;
-      let projectWithFirefoxOnly;
-
-      const createData = {
-        data: {
-          relationships: {
-            'browser-family': {data: {type: 'browser-families', id: '2'}},
-            project: {data: {type: 'projects', id: '2'}},
-          },
-          type: 'project-browser-targets',
-        },
-      };
-
-      beforeEach(function() {
-        deleteStub = sinon.stub();
-        createStub = sinon.stub();
-        projectWithBothBrowsers = enabledProject;
-        projectWithFirefoxOnly = server.create('project', 'withFirefox', {organization});
-
-        server.del('/project-browser-targets/:id', (schema, request) => {
-          deleteStub(request.url);
-        });
-
-        server.post('/project-browser-targets', () => {
-          createStub(createData);
-          // This response object is not used for testing,
-          // it is only used to make mirage think it has recieved a valid response.
-          return server.create('projectBrowserTarget', {
-            project: projectWithFirefoxOnly,
-            browserTarget: server.create('browserTarget', 'withChromeBrowserFamily'),
-          });
-        });
-      });
-
-      it('calls correct endpoint when removing a browser', async function() {
-        await ProjectSettingsPage.visitProjectSettings({
-          orgSlug: organization.slug,
-          projectSlug: projectWithBothBrowsers.slug,
-        });
-        await ProjectSettingsPage.browserSelector.chromeButton.click();
-        await percySnapshot(this.test);
-
-        expect(deleteStub).to.have.been.calledWith('/api/v1/project-browser-targets/2');
-      });
-
-      it('calls correct endpoint when adding a browser', async function() {
-        await ProjectSettingsPage.visitProjectSettings({
-          orgSlug: organization.slug,
-          projectSlug: projectWithFirefoxOnly.slug,
-        });
-
-        await ProjectSettingsPage.browserSelector.chromeButton.click();
-        await percySnapshot(this.test);
-
-        expect(createStub).to.have.been.calledWith(createData);
-      });
-    });
-
-    describe('updating project settings', function() {
-      it('sends correct data', async function() {
-        const stub = sinon.stub();
-        server.patch('/projects/:full_slug', function(schema, request) {
-          const fullSlug = decodeURIComponent(request.params.full_slug);
-          const attrs = this.normalizedRequestAttrs('project');
-          const project = schema.projects.findBy({fullSlug: fullSlug});
-          project.update(
-            Object.assign(attrs, {fullSlug: 'my_organization_that_i_love_and_cherish_0/new-slug'}),
-          );
-          stub(attrs);
-          server.create('project', attrs);
-          return project;
-        });
-
+    describe('settings', function() {
+      it('displays Auto-Approve Branches setting', async function() {
         await ProjectSettingsPage.visitProjectSettings({
           orgSlug: organization.slug,
           projectSlug: enabledProject.slug,
         });
+        await percySnapshot(this.test);
 
-        await ProjectSettingsPage.projectEditForm.togglePublicCheckbox();
-        await ProjectSettingsPage.projectEditForm.fillInProjectName('new-name');
-        await ProjectSettingsPage.projectEditForm.fillInProjectSlug('new-slug');
-        await ProjectSettingsPage.projectEditForm.clickSave();
+        expect(ProjectSettingsPage.isAutoApproveBranchesVisible).to.equal(true);
+      });
 
-        expect(stub).to.have.been.called;
-        expect(stub.args[0][0]).to.include({
-          name: 'new-name',
-          slug: 'new-slug',
-          publiclyReadable: true,
+      describe('browser toggling', function() {
+        let deleteStub;
+        let createStub;
+        let projectWithBothBrowsers;
+        let projectWithFirefoxOnly;
+
+        const createData = {
+          data: {
+            relationships: {
+              'browser-family': {data: {type: 'browser-families', id: '2'}},
+              project: {data: {type: 'projects', id: '2'}},
+            },
+            type: 'project-browser-targets',
+          },
+        };
+
+        beforeEach(function() {
+          deleteStub = sinon.stub();
+          createStub = sinon.stub();
+          projectWithBothBrowsers = enabledProject;
+          projectWithFirefoxOnly = server.create('project', 'withFirefox', {organization});
+
+          server.del('/project-browser-targets/:id', (schema, request) => {
+            deleteStub(request.url);
+          });
+
+          server.post('/project-browser-targets', () => {
+            createStub(createData);
+            // This response object is not used for testing,
+            // it is only used to make mirage think it has recieved a valid response.
+            return server.create('projectBrowserTarget', {
+              project: projectWithFirefoxOnly,
+              browserTarget: server.create('browserTarget', 'withChromeBrowserFamily'),
+            });
+          });
         });
 
-        expect(currentRouteName()).to.equal('organization.project.settings.index');
+        it('calls correct endpoint when removing a browser', async function() {
+          await ProjectSettingsPage.visitProjectSettings({
+            orgSlug: organization.slug,
+            projectSlug: projectWithBothBrowsers.slug,
+          });
+          await ProjectSettingsPage.browserSelector.chromeButton.click();
+          await percySnapshot(this.test);
+
+          expect(deleteStub).to.have.been.calledWith('/api/v1/project-browser-targets/2');
+        });
+
+        it('calls correct endpoint when adding a browser', async function() {
+          await ProjectSettingsPage.visitProjectSettings({
+            orgSlug: organization.slug,
+            projectSlug: projectWithFirefoxOnly.slug,
+          });
+
+          await ProjectSettingsPage.browserSelector.chromeButton.click();
+          await percySnapshot(this.test);
+
+          expect(createStub).to.have.been.calledWith(createData);
+        });
+      });
+
+      describe('updating project settings', function() {
+        it('sends correct data', async function() {
+          const stub = sinon.stub();
+          server.patch('/projects/:full_slug', function(schema, request) {
+            const fullSlug = decodeURIComponent(request.params.full_slug);
+            const attrs = this.normalizedRequestAttrs('project');
+            const project = schema.projects.findBy({fullSlug: fullSlug});
+            project.update(
+              Object.assign(attrs, {
+                fullSlug: 'my_organization_that_i_love_and_cherish_0/new-slug',
+              }),
+            );
+            stub(attrs);
+            server.create('project', attrs);
+            return project;
+          });
+
+          await ProjectSettingsPage.visitProjectSettings({
+            orgSlug: organization.slug,
+            projectSlug: enabledProject.slug,
+          });
+
+          await ProjectSettingsPage.projectEditForm.togglePublicCheckbox();
+          await ProjectSettingsPage.projectEditForm.fillInProjectName('new-name');
+          await ProjectSettingsPage.projectEditForm.fillInProjectSlug('new-slug');
+          await ProjectSettingsPage.projectEditForm.clickSave();
+
+          expect(stub).to.have.been.called;
+          expect(stub.args[0][0]).to.include({
+            name: 'new-name',
+            slug: 'new-slug',
+            publiclyReadable: true,
+          });
+
+          expect(currentRouteName()).to.equal('organization.project.settings.index');
+        });
+      });
+    });
+
+    describe('integrations', function() {
+      it('displays github integration select menu', async function() {
+        organization.update({versionControlIntegrations: [versionControlIntegration], repos});
+
+        await ProjectSettingsPage.visitProjectIntegrations({
+          orgSlug: organization.slug,
+          projectSlug: enabledProject.slug,
+        });
+        await percySnapshot(this.test);
+      });
+
+      it('displays webhook configs', async function() {
+        enabledProject.update({webhookConfigs: [webhookConfig]});
+
+        await ProjectSettingsPage.visitProjectIntegrations({
+          orgSlug: organization.slug,
+          projectSlug: enabledProject.slug,
+        });
+
+        await percySnapshot(this.test);
+
+        expect(ProjectSettingsPage.webhookConfigList.webhookConfigs.objectAt(0).url).to.equal(
+          webhookConfig.url,
+        );
+      });
+
+      it('transitions to webhook config form', async function() {
+        window.crypto.getRandomValues = sinon.fake.returns(new Uint8Array(32));
+
+        await ProjectSettingsPage.visitProjectIntegrations({
+          orgSlug: organization.slug,
+          projectSlug: enabledProject.slug,
+        });
+
+        await ProjectSettingsPage.webhookConfigList.newWebhookConfig();
+
+        await percySnapshot(this.test);
+
+        expect(currentRouteName()).to.equal(
+          'organization.project.integrations.webhooks.webhook-config',
+        );
+      });
+
+      it('displays the Slack section', async function() {
+        withVariation(this.owner, 'slack-integration', true);
+
+        await ProjectSettingsPage.visitProjectIntegrations({
+          orgSlug: organization.slug,
+          projectSlug: enabledProject.slug,
+        });
+        expect(ProjectSettingsPage.slackInfo.isVisible).to.equal(true);
+        await percySnapshot(this.test);
+
+        await ProjectSettingsPage.slackIntegrationsLink.click();
+        expect(IntegrationsIndexPage.isVisible).to.equal(true);
+        await percySnapshot(this.test);
+
+        withVariation(this.owner, 'slack-integration', false);
       });
     });
   });
@@ -538,7 +544,16 @@ describe('Acceptance: Project', function() {
         expect(editForm.isPublicCheckboxDisabled).to.equal(true);
         await editForm.togglePublicCheckbox();
         expect(editForm.isPublicCheckboxChecked).to.equal(false);
+        await percySnapshot(this.test.fullTitle());
+      });
+    });
 
+    describe('project integrations page', function() {
+      beforeEach(async function() {
+        await ProjectSettingsPage.visitProjectIntegrations(urlParams);
+      });
+
+      it('everything is disabled', async function() {
         expect(ProjectSettingsPage.envVarText).to.equal(
           'PERCY_TOKEN=[This is a demo project. Create your own project to get a PERCY_TOKEN]',
         );
@@ -551,12 +566,13 @@ describe('Acceptance: Project', function() {
           true,
         );
         await ProjectSettingsPage.webhookConfigList.newWebhookConfig();
-        expect(currentRouteName()).to.equal('organization.project.settings.index');
+        expect(currentRouteName()).to.equal('organization.project.integrations.index');
 
         await percySnapshot(this.test.fullTitle());
 
         await ProjectSettingsPage.repoIntegrator.clickDemoLink();
         expect(currentRouteName()).to.equal('organizations.organization.projects.new');
+        await percySnapshot(this.test.fullTitle());
       });
     });
   });

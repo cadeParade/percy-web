@@ -13,6 +13,7 @@ const SELECTORS = {
 
 export const ProjectSettingsPage = {
   visitProjectSettings: visitable('/:orgSlug/:projectSlug/settings'),
+  visitProjectIntegrations: visitable('/:orgSlug/:projectSlug/integrations'),
 
   projectEditForm: ProjectEdit,
 
