@@ -58,6 +58,17 @@ export default SnapshotListItem.extend({
     return `${get(this, 'snapshots.length')} matching changes`;
   }),
 
+  _toggleAreAllSnapshotsExpanded() {
+    const build = get(this, 'build');
+    this.toggleProperty('areAllSnapshotsExpanded');
+    this.set('shouldOpenFirstCommentPanel', false);
+    this.get('analytics').track('Group Toggled', get(build, 'project.organization'), {
+      project_id: get(build, 'project.id'),
+      build_id: get(build, 'id'),
+      toggledTo: get(this, 'areAllSnapshotsExpanded') ? 'Open' : 'Collapsed',
+    });
+  },
+
   actions: {
     toggleGroupOverlay() {
       this.toggleProperty('isGroupShowingDiffOverlay');
@@ -65,13 +76,13 @@ export default SnapshotListItem.extend({
     },
 
     toggleAreAllSnapshotsExpanded() {
-      const build = get(this, 'build');
-      this.toggleProperty('areAllSnapshotsExpanded');
-      this.get('analytics').track('Group Toggled', get(build, 'project.organization'), {
-        project_id: get(build, 'project.id'),
-        build_id: get(build, 'id'),
-        toggledTo: get(this, 'areAllSnapshotsExpanded') ? 'Open' : 'Collapsed',
-      });
+      this._toggleAreAllSnapshotsExpanded();
+    },
+    handleCommentClick() {
+      if (!this.areAllSnapshotsExpanded) {
+        this._toggleAreAllSnapshotsExpanded();
+      }
+      this.toggleProperty('shouldOpenFirstCommentPanel');
     },
   },
 });

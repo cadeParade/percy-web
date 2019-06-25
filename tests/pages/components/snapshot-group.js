@@ -22,6 +22,7 @@ const SELECTORS = {
   HEADER: '[data-test-snapshot-group-header]',
   SHOW_ALL_SNAPSHOTS_TOGGLE: '[data-test-show-group-snapshots]',
   LAZY_RENDER_HEADER: '[data-test-snapshot-viewer-lazy-header]',
+  COMMENT_BUTTON: '[data-test-group-comment-btn]',
 };
 
 export const snapshotGroup = {
@@ -77,6 +78,7 @@ export const snapshotGroup = {
     clickToggleFullscreen: clickable(SELECTORS.FULL_SCREEN_TOGGLE),
     isFullScreenToggleVisible: isVisible(SELECTORS.FULL_SCREEN_TOGGLE),
     toggleShowAllSnapshots: clickable(SELECTORS.SHOW_ALL_SNAPSHOTS_TOGGLE),
+    clickCommentButton: clickable(SELECTORS.COMMENT_BUTTON),
   },
 };
 

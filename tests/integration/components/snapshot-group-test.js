@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-expressions */
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
-import {it, describe, beforeEach, afterEach} from 'mocha';
+import {it, describe, beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
@@ -11,10 +11,7 @@ import SnapshotGroup from 'percy-web/tests/pages/components/snapshot-group';
 import {resolve} from 'rsvp';
 import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {
-  enableFlag,
-  disableFlag,
-} from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
+import {enableFlag} from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
 
 describe('Integration: SnapshotGroup', function() {
   setupRenderingTest('snapshot-group', {
@@ -29,6 +26,7 @@ describe('Integration: SnapshotGroup', function() {
   beforeEach(function() {
     setupFactoryGuy(this);
     SnapshotGroup.setContext(this);
+    enableFlag(this, 'comments');
 
     showSnapshotFullModalTriggeredStub = sinon.stub();
     createReviewStub = sinon.stub().returns(resolve());
@@ -305,7 +303,6 @@ describe('Integration: SnapshotGroup', function() {
   describe('when multiple snapshots in the group have comments', function() {
     let snapshotsWithComments;
     beforeEach(async function() {
-      enableFlag(this, 'comments');
       snapshotsWithComments = makeList('snapshot', 2, 'withComparisons', 'withComments', {
         fingerprint: 'fingerprint',
       });
@@ -314,10 +311,6 @@ describe('Integration: SnapshotGroup', function() {
       });
       const snapshots = snapshotsWithNoComments.concat(snapshotsWithComments);
       this.setProperties({snapshots});
-    });
-
-    afterEach(function() {
-      disableFlag(this, 'comments');
     });
 
     it('shows multiple snapshots as "cover" snapshots', async function() {
@@ -355,6 +348,50 @@ describe('Integration: SnapshotGroup', function() {
       }}`);
 
       await percySnapshot(this.test);
+    });
+  });
+
+  describe('comment button', function() {
+    beforeEach(async function() {
+      await this.render(hbs`{{snapshot-group
+        snapshots=snapshots
+        build=build
+        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+        userSelectedWidth=userSelectedWidth
+        createReview=createReview
+        activeSnapshotBlockId=activeSnapshotBlockId
+        updateActiveSnapshotBlockId=stub
+        activeBrowser=browser
+        isBuildApprovable=isBuildApprovable
+      }}`);
+    });
+
+    it('expands all snapshots and shows comment panel on first snapshot', async function() {
+      await SnapshotGroup.header.clickCommentButton();
+      const firstSnapshot = SnapshotGroup.snapshots[0];
+      const secondSnapshot = SnapshotGroup.snapshots[1];
+
+      expect(SnapshotGroup.snapshots.length).to.equal(5);
+      expect(firstSnapshot.collaborationPanel.isVisible).to.equal(true);
+      expect(secondSnapshot.collaborationPanel.isVisible).to.equal(false);
+      await percySnapshot(this.test);
+    });
+
+    it('allows collaboration panel toggle on first snapshot', async function() {
+      await SnapshotGroup.header.clickCommentButton();
+      const firstSnapshot = SnapshotGroup.snapshots[0];
+      expect(firstSnapshot.collaborationPanel.isVisible).to.equal(true);
+      await firstSnapshot.header.toggleCommentSidebar();
+      expect(firstSnapshot.collaborationPanel.isVisible).to.equal(false);
+    });
+
+    it('allows comment panel toggle after all snapshots expanded', async function() {
+      await SnapshotGroup.header.toggleShowAllSnapshots();
+      const firstSnapshot = SnapshotGroup.snapshots[0];
+
+      expect(firstSnapshot.collaborationPanel.isVisible).to.equal(false);
+      await SnapshotGroup.header.clickCommentButton();
+      expect(firstSnapshot.collaborationPanel.isVisible).to.equal(true);
     });
   });
 });

@@ -47,14 +47,19 @@
         {{/if}}
 
         <div class="btn-toolbar">
-          <div class="btn-group">
-            <button class="percy-btn" {{action "toggleAreAllSnapshotsExpanded"}} data-test-show-group-snapshots>
+          <div class="percy-btn-group">
+            <button class="btn" {{action "toggleAreAllSnapshotsExpanded"}} data-test-show-group-snapshots>
               {{#if isGroupCollapsed}}
                 Expand matches
               {{else}}
                 Collapse matches
               {{/if}}
             </button>
+            {{#if noSnapshotsWithOpenCommentThreads}}
+              <button class="btn btn-square flex items-center" {{action "handleCommentClick"}} data-test-group-comment-btn>
+                <figure class="svg-container">{{inline-svg "conversation-icon-add"}}</figure>
+              </button>
+            {{/if}}
           </div>
           <div class="btn-group">
             {{demo-tooltip
@@ -121,7 +126,7 @@
       {{else}}
         <div class="relative pt-2 bg-gray-000">
           <div style="left: 28px;" class="snapshot-group-indent-line"></div>
-          {{#each snapshotsToDisplay as |snapshot|}}
+          {{#each snapshotsToDisplay as |snapshot index|}}
             <div class="flex bg-gray-000">
               <div style="padding: 11px 16px 10px;" class="mb-2">
                 <div style="top: 132px;" class="sticky">
@@ -137,6 +142,7 @@
               {{snapshot-viewer
                 build=build
                 snapshot=snapshot
+                externalIsCommentPanelShowing=(if (and shouldOpenFirstCommentPanel (eq index 0)) true false)
                 allDiffsShown=allDiffsShown
                 activeSnapshotBlockId=activeSnapshotBlockId
                 shouldDeferRendering=shouldDeferRendering

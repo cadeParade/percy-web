@@ -4,10 +4,11 @@ import SnapshotListItem from 'percy-web/components/snapshot-list-item';
 import {inject as service} from '@ember/service';
 
 export default SnapshotListItem.extend({
+  launchDarkly: service(),
   snapshot: null,
   showSnapshotFullModalTriggered: null,
   createReview: null,
-  launchDarkly: service(),
+  externalIsCommentPanelShowing: false,
 
   attributeBindings: ['data-test-snapshot-viewer'],
   'data-test-snapshot-viewer': true,
@@ -17,7 +18,8 @@ export default SnapshotListItem.extend({
   _isApproved: readOnly('snapshot.isApproved'),
   isUnchangedSnapshotExpanded: or('isFocus', 'isExpanded'),
 
-  isCommentPanelShowing: notEmpty('openCommentThreads'),
+  _internalIsCommentPanelShowing: notEmpty('openCommentThreads'),
+  isCommentPanelShowing: or('_internalIsCommentPanelShowing', 'externalIsCommentPanelShowing'),
 
   commentThreads: readOnly('snapshot.commentThreads'),
   openCommentThreads: filterBy('commentThreads', 'isOpen'),
