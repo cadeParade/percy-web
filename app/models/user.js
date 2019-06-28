@@ -8,6 +8,7 @@ export default DS.Model.extend({
   avatarUrl: DS.attr(),
   unverifiedEmail: DS.attr(),
 
+  userNotificationSetting: DS.belongsTo('userNotificationSetting', {async: false}),
   identities: DS.hasMany('identities'),
 
   hasGithubIdentity: computed('identities.@each.provider', function() {

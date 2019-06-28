@@ -11,8 +11,9 @@ export default Component.extend({
 
   actions: {
     handleClick() {
-      if (this.get('handleClick')) {
-        this.get('handleClick')();
+      // Only call the action if there is one and the button is not disabled.
+      if (this.handleClick && !this.isDisabled) {
+        this.handleClick();
       }
     },
   },

@@ -4,6 +4,7 @@
   type="{{if type type "button"}}"
   name="button"
   disabled={{isDisabled}}
+  onclick={{action "handleClick"}}
   class="
     percy-btn
     {{class}}
@@ -11,9 +12,9 @@
     {{if isSecondaryButton "percy-btn-secondary"}}
     {{if isNoShadow "shadow-none"}}
     {{if isNoAnimate "animate-none"}}
-    {{if isSaving 'is-loading'}}
+    {{if isSaving "is-loading"}}
     {{if isSmallButton "percy-btn-sm"}}
   "
-  {{action "handleClick"}}>
+>
   {{yield}}
 </button>

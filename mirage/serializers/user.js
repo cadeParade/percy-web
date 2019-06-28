@@ -1,6 +1,7 @@
 import {JSONAPISerializer} from 'ember-cli-mirage';
 
 export default JSONAPISerializer.extend({
+  include: Object.freeze(['identities', 'userNotificationSetting']),
   links() {
     return {
       organizations: {

@@ -1,0 +1,13 @@
+{{yield (hash
+  group=(component 'percy-form/group')
+  label=(component 'percy-form/label')
+  input=(component 'percy-form/input' class="form-control")
+  checkbox=(component 'percy-form/checkbox')
+  submit=(component
+    'percy-btn'
+    type="submit"
+    isPrimaryButton=true
+    isSaving=submitTask.isRunning
+    isDisabled=submitTask.isRunning
+  )
+)}}

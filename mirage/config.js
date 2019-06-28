@@ -356,6 +356,8 @@ export default function() {
   this.get('/builds/:id');
   this.get('/builds/:build_id/comparisons');
   this.get('/repos/:id');
+  this.post('/user-notification-setting');
+  this.patch('/user-notification-setting/:id');
 
   // Slack
   this.post('/organizations/:organization_id/slack-integrations', function(schema) {

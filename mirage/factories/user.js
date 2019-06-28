@@ -1,4 +1,4 @@
-import {Factory, trait} from 'ember-cli-mirage';
+import {Factory, trait, association} from 'ember-cli-mirage';
 import moment from 'moment';
 
 export default Factory.extend({
@@ -25,5 +25,9 @@ export default Factory.extend({
     afterCreate(user, server) {
       server.create('identity', 'auth0Identity', {user});
     },
+  }),
+
+  withUserNotificationSetting: trait({
+    userNotificationSetting: association(),
   }),
 });
