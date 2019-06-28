@@ -27,7 +27,7 @@ export default Component.extend({
 
     try {
       yield this.userNotificationSetting.save();
-      this.set('_origNotifTypes', this.userNotificationSetting.notificationTypes);
+      this.set('_origNotifTypes', this.userNotificationSetting.notificationTypes.slice(0));
     } catch (e) {
       this._rollbackChanges();
       this.flashMessages.danger('Something went wrong. Please try again.');

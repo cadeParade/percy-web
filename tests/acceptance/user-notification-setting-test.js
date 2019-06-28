@@ -30,7 +30,6 @@ describe('Acceptance: User notification settings', function() {
 
       await NotifSettings.submit.click();
       expect(dbSettingObjects().length, 'do not fire POST when form has not changed').to.equal(0);
-
       await NotifSettings.commentEmailReply.click();
       expect(NotifSettings.commentEmailReply.isChecked).to.equal(false);
 
@@ -73,6 +72,11 @@ describe('Acceptance: User notification settings', function() {
       expect(dbSettingObjects()[0].notificationTypes).to.eql(['comment_mention_created_email']);
       expect(NotifSettings.commentEmailReply.isChecked).to.equal(false);
       expect(NotifSettings.commentEmailMention.isChecked).to.equal(true);
+
+      await NotifSettings.commentEmailMention.click();
+      await NotifSettings.submit.click();
+      expect(dbSettingObjects().length, 'existing record should be updated').to.equal(1);
+      expect(dbSettingObjects()[0].notificationTypes).to.eql([]);
     });
   });
 
