@@ -111,7 +111,7 @@ describe('Integration: CollaborationCommentReply', function() {
     });
 
     it('sends `saveReply` with correct args when @mentioning users', async function() {
-      const orgUsers = this.organization.organizationUsers.mapBy('user');
+      const orgUsers = this.organization.organizationUsers.mapBy('user').sortBy('name');
       const commentText = 'hello there';
       await CommentReply.typeComment(commentText);
       await CommentReply.mentionableTextarea.selectFirstUser();

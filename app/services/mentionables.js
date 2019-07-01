@@ -7,7 +7,8 @@ export default Service.extend({
   generateOrgUserConfig(organization) {
     const fetchFn = async (text, cb) => {
       const users = await this._getOrgUsers.perform(organization);
-      cb(users);
+      const sortedUsers = users.sortBy('name');
+      cb(sortedUsers);
     };
 
     return generateTributeUserConfig(fetchFn);

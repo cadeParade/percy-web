@@ -81,7 +81,7 @@ describe('Integration: CollaborationNewThread', function() {
     });
 
     it('sends save action with correct args when @mentioning users', async function() {
-      const orgUsers = this.organization.organizationUsers.mapBy('user');
+      const orgUsers = this.organization.organizationUsers.mapBy('user').sortBy('name');
       const commentText = 'hello there';
       await CollaborationNewThread.typeNewComment(commentText);
       await CollaborationNewThread.mentionableTextarea.selectFirstUser();
