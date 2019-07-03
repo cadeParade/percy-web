@@ -32,9 +32,8 @@ export default Component.extend(PollingMixin, {
     if (!snapshots) {
       return;
     }
-
-    const browserWithmostDiffsId = _browserWithMostDiffsId(snapshots);
-    return this.get('_browsers').findBy('id', browserWithmostDiffsId);
+    const browserWithMostDiffsId = _browserWithMostUnreviewedDiffsId(snapshots);
+    return this.get('_browsers').findBy('id', browserWithMostDiffsId);
   }),
 
   _browsers: alias('build.browsers'),
@@ -147,13 +146,16 @@ export default Component.extend(PollingMixin, {
   },
 });
 
-function _browserWithMostDiffsId(allChangedBrowserSnapshotsSorted) {
+function _browserWithMostUnreviewedDiffsId(allChangedBrowserSnapshotsSorted) {
   // need to convert the object of arrays to an array of objects
   // [{browserId: foo, len: int1}, {browserId: bar, len: int2}]
   const browserCounts = Object.keys(allChangedBrowserSnapshotsSorted).map(browserId => {
+    const unreviewedSnapshotsForBrowser = allChangedBrowserSnapshotsSorted[browserId].filterBy(
+      'isUnreviewed',
+    );
     return {
       browserId: browserId,
-      len: allChangedBrowserSnapshotsSorted[browserId].length,
+      len: unreviewedSnapshotsForBrowser.length,
     };
   });
 

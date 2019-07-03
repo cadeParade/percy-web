@@ -279,6 +279,16 @@ describe('Integration: BuildContainer', function() {
       expect(BuildPage.browserSwitcher.chromeButton.isActive).to.equal(true);
       expect(BuildPage.browserSwitcher.firefoxButton.isActive).to.equal(false);
     });
+
+    it('selects browser with most unreviewed diffs by default', async function() {
+      this.set('allChangedBrowserSnapshotsSorted', {
+        'chrome-id': [{isUnreviewed: true}],
+        'firefox-id': [{isUnreviewed: false}, {isUnreviewed: false}],
+      });
+
+      expect(BuildPage.browserSwitcher.chromeButton.isActive).to.equal(true);
+      expect(BuildPage.browserSwitcher.firefoxButton.isActive).to.equal(false);
+    });
   });
 
   describe('when isBuildApprovable is false', function() {
