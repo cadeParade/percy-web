@@ -5,6 +5,7 @@ export default Contentful.extend({
   contentType: 'pricingTableRow',
 
   rowTitle: DS.attr(),
+  xsmallCell: DS.attr(),
   smallCell: DS.attr(),
   mediumCell: DS.attr(),
   largeCell: DS.attr(),

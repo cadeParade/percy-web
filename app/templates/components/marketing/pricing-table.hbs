@@ -4,6 +4,12 @@
       <th class="sticky bg-white py-1">{{tableHeader.rowTitle}}</th>
 
       <th class="sticky bg-white py-1 text-lg text-purple-600">
+        {{#if tableHeader.xsmallCell}}
+          {{tableHeader.xsmallCell}}
+        {{/if}}
+      </th>
+
+      <th class="sticky bg-white py-1 text-lg text-purple-600">
         {{#if tableHeader.smallCell}}
           {{tableHeader.smallCell}}
         {{/if}}
