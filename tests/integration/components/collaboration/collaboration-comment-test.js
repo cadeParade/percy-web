@@ -193,5 +193,18 @@ describe('Integration: CollaborationComment', function() {
       expect(CollaborationComment.isResolved).to.equal(false);
       expect(CollaborationComment.isArchived).to.equal(false);
     });
+
+    it('preserves new lines', async function() {
+      const comment = make('comment', {
+        body: `hello
+
+            new lines
+
+            new lines again.`,
+      });
+      this.setProperties({comment});
+
+      await percySnapshot(this.test);
+    });
   });
 });
