@@ -130,7 +130,7 @@ describe('Integration: CurrentPlan', function() {
       }}`);
 
       expect(CurrentPlan.isSnapshotsIncludedVisible).to.equal(true);
-      expect(CurrentPlan.isUserLimitVisible).to.equal(false);
+      expect(CurrentPlan.isUserLimitVisible).to.equal(true);
       expect(CurrentPlan.isMonthlyCostVisible).to.equal(true);
       expect(CurrentPlan.isOveragesVisible).to.equal(true);
       expect(CurrentPlan.isUsageStatsVisible).to.equal(true);

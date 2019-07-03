@@ -12,9 +12,13 @@
           <div>
             <strong data-test-snapshots-included>{{format-number plan.usageIncluded}} snapshots/month included.</strong>
 
-            {{#if plan.userLimit}}
-              <span data-test-user-limit>{{plan.userLimit}} team members.</span>
-            {{/if}}
+            <span data-test-user-limit>
+              {{#if plan.userLimit}}
+                {{plan.userLimit}} team members.
+              {{else}}
+                Unlimited team members.
+              {{/if}}
+            </span>
           </div>
 
           <div>

@@ -3,7 +3,7 @@ import {computed, get, set} from '@ember/object';
 import {or, readOnly} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
 
-const EXTRA_FEATURES = ['Dynamic concurrent renderers', 'Unlimited projects'];
+const EXTRA_FEATURES = ['Unlimited projects', 'Dynamic concurrent renderers'];
 const ESSENTIAL_PLAN_SLIDER_SETUP = {
   maxRange: 150000, // This is how many snapshots it takes to get slightly over $849
   step: 5000, // arbitrary

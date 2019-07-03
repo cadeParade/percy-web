@@ -42,7 +42,7 @@ export default Service.extend({
       amount: 29,
       usageIncluded: 10000,
       overageUnitCost: 0.006,
-      numTeamMembersTitle: '10 team members',
+      numTeamMembersTitle: 'Unlimited team members',
       historyLimitTitle: '1 year history',
     },
     {
@@ -51,7 +51,7 @@ export default Service.extend({
       amount: 349,
       usageIncluded: 80000,
       overageUnitCost: 0.006,
-      numTeamMembersTitle: '15 team members',
+      numTeamMembersTitle: 'Unlimited team members',
       historyLimitTitle: '1 year history',
     },
     {
@@ -60,7 +60,7 @@ export default Service.extend({
       amount: 849,
       usageIncluded: 200000,
       overageUnitCost: 0.006,
-      numTeamMembersTitle: '20 team members',
+      numTeamMembersTitle: 'Unlimited team members',
       historyLimitTitle: '1 year history',
     },
   ],
