@@ -194,13 +194,15 @@ describe('Integration: CollaborationComment', function() {
       expect(CollaborationComment.isArchived).to.equal(false);
     });
 
-    it('preserves new lines', async function() {
+    it('preserves new lines and html', async function() {
       const comment = make('comment', {
         body: `hello
 
             new lines
 
-            new lines again.`,
+            new lines again.
+            <a href="some html"></a>
+           `,
       });
       this.setProperties({comment});
 

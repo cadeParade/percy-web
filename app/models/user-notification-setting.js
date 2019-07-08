@@ -6,7 +6,7 @@ export const USER_NOTIFICATION_SETTING_OPTIONS = [
     label: 'Snapshot email notifications',
     value: 'comment_created_email',
     path: 'isCommentCreatedEmailOn',
-    description: "Receive an email notification when someone adds a comment to a snapshot you've commented on.", // eslint-disable-line
+    description: "Receive an email notification when someone adds a comment to a snapshot you have an open comment on.", // eslint-disable-line
   },
   {
     label: 'Mention email notifications',
