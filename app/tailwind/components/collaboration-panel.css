@@ -5,10 +5,6 @@
   @apply py-1;
 }
 
-.collaboration-panel textarea {
-  resize: none;
-}
-
 .collaboration-panel textarea::placeholder {
   @apply text-gray-300;
   opacity: 1;
