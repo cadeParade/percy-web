@@ -11,6 +11,6 @@ setApplication(Application.create(config.APP));
 loadEmberExam();
 
 mocha.setup({
-  timeout: 10000,
-  slow: 2000,
+  timeout: 10055500,
+  slow: 2055500,
 });

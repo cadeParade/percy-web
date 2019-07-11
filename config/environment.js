@@ -107,6 +107,11 @@ module.exports = function(environment) {
     usePreviewApi: false,
   };
 
+  ENV.PUSHER_APP_ID = '820726';
+  ENV.PUSHER_APP_KEY = 'da3feee6f55f787ee8d4';
+  ENV.PUSHER_APP_SECRET = '21aaa7a3ac3416e48f61';
+  ENV.PUSHER_APP_CLUSTER = 'us2';
+
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
@@ -139,6 +144,8 @@ module.exports = function(environment) {
     ENV.APP.AMPLITUDE_ORGANIZATIONS_INSTANCE_NAME = 'Organizations';
     ENV.APP.AMPLITUDE_ORGANIZATIONS_PROJECT_ID = '89f8fae9aab3fccc0740237f17e43745';
     ENV.APP.SEGMENT_WRITE_KEY = 'ypNsNdxRnWaHy0WsIbOa8koEZxBRTvA5';
+    ENV.APP.PUSHER_LOG = true;
+    ENV.APP.PUSHER_ENCRYPT = false;
 
     ENV.sentry = {
       dsn: 'https://9745b9952dd74a14bf9ff4fd2cf154a3@sentry.io/1216596',
@@ -212,6 +219,8 @@ module.exports = function(environment) {
         'redirect_uri=https%3A%2F%2Fhipster-porcupine-2ctplnao.ngrok.io%2Fapi%2Fbitbucket_cloud' +
         '%2F%@%2Fsetup_redirect',
     };
+    ENV.APP.PUSHER_LOG = true;
+    ENV.APP.PUSHER_ENCRYPT = false;
   }
 
   if (environment === 'production') {
@@ -226,6 +235,8 @@ module.exports = function(environment) {
     ENV.APP.AMPLITUDE_ORGANIZATIONS_INSTANCE_NAME = 'Organizations';
     ENV.APP.AMPLITUDE_ORGANIZATIONS_PROJECT_ID = '43ed24c6891251bbbdddc310a5371afd';
     ENV.APP.SEGMENT_WRITE_KEY = 'E4wLYeCSYiNWdIGEbLPwMHkQataZAe4j';
+    ENV.APP.PUSHER_LOG = false;
+    ENV.APP.PUSHER_ENCRYPT = true;
 
     ENV.sentry = {
       dsn: 'https://4c28a8c59c934d729d261b988d6187c3@sentry.io/235025',

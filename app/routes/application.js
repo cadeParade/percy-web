@@ -18,6 +18,7 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
   launchDarkly: service(),
   redirects: service(),
   intercom: service(),
+  pusher: service(),
 
   beforeModel(transition) {
     this._super(...arguments);
@@ -151,6 +152,15 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
 
   activate() {
     this.get('flashMessages').displayLocalStorageMessages();
+    this._listenToPusherEvents();
+  },
+
+  _listenToPusherEvents() {
+    const user = this.get('currentUser');
+
+    if (user) {
+      this.get('pusher').listenToUser(user);
+    }
   },
 
   _showLoginFailedFlashMessage() {
