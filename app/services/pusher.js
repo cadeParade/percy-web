@@ -14,7 +14,7 @@ export default Service.extend({
       return;
     }
 
-    this.subscribe(`everyone`, 'objectUpdated', data => {
+    this.subscribe('everyone', 'objectUpdated', data => {
       // this.subscribe(`User-${user.get('id')}`, 'objectUpdated', data => {
       run.scheduleOnce('afterRender', this, this._pushPayload, data);
     });
