@@ -159,7 +159,7 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
     const user = this.get('currentUser');
 
     if (user) {
-      this.get('pusher').listenToUser(user);
+      this.get('pusher').subscribeToUser(user);
     }
   },
 

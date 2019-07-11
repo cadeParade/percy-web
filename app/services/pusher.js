@@ -10,7 +10,7 @@ export default Service.extend({
   currentUser: alias('session.currentUser'),
   flashMessages: service(),
 
-  listenToUser(user) {
+  subscribeToUser(user) {
     if (this.get('hasSubscribedToUser')) {
       return;
     }
@@ -23,6 +23,13 @@ export default Service.extend({
     });
 
     this.set('hasSubscribedToUser', true);
+  },
+
+  subscribeToOrganization(organization) {
+    console.log('subscribeToOrganization', organization),
+      this.subscribe(`Organization-${organization.get('id')}`, 'objectUpdated', data => {
+        run.scheduleOnce('afterRender', this, this._pushPayload, data);
+      });
   },
 
   subscribe(channelName, event, callback) {
