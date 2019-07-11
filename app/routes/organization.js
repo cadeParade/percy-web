@@ -11,6 +11,7 @@ export default Route.extend({
   session: service(),
   store: service(),
   currentUser: alias('session.currentUser'),
+  pusher: service(),
 
   async beforeModel() {
     const currentUser = this.get('currentUser');
@@ -32,12 +33,19 @@ export default Route.extend({
 
   afterModel(model) {
     this._setupIntercom(model);
+    this._setupPusher(model);
     this._setLastOrganizationSlug(model);
   },
 
   async _setupIntercom(organization) {
     if (await isUserMemberPromise(organization)) {
       this.get('intercom').associateWithCompany(this.get('currentUser'), organization);
+    }
+  },
+
+  async _setupPusher(organization) {
+    if (await isUserMemberPromise(organization)) {
+      this.get('pusher').subscribeToOrganization(organization);
     }
   },
 

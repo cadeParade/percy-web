@@ -7,11 +7,9 @@ export default Route.extend(AuthenticatedRouteMixin, {
   intercom: service(),
   session: service(),
   currentUser: alias('session.currentUser'),
-  pusher: service(),
 
   afterModel(model) {
     this.get('intercom').associateWithCompany(this.get('currentUser'), model);
-    this.get('pusher').subscribeToOrganization(model);
 
     // Proactively load the currentUserMembership object and return to block rendering until it
     // exists, since we use it to determine what parts of the organization settings the current

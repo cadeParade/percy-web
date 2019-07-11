@@ -26,10 +26,9 @@ export default Service.extend({
   },
 
   subscribeToOrganization(organization) {
-    console.log('subscribeToOrganization', organization),
-      this.subscribe(`Organization-${organization.get('id')}`, 'objectUpdated', data => {
-        run.scheduleOnce('afterRender', this, this._pushPayload, data);
-      });
+    this.subscribe(`Organization-${organization.get('id')}`, 'objectUpdated', data => {
+      run.scheduleOnce('afterRender', this, this._pushPayload, data);
+    });
   },
 
   subscribe(channelName, event, callback) {
