@@ -6,6 +6,7 @@
   {{/each}}
 
   <div class="flex items-end absolute" style="top: 30px; right: 4px; bottom: 0; left: 72px;">
+    {{log dayStatsFormatted}}
     {{#each dayStatsFormatted as |stat|}}
       <div class="bar-item relative flex items-end flex-1 h-full mr-sm {{if (eq (moment-format stat.date 'D') (moment-format (utc) 'D')) 'bar-item-today'}}"
         data-label="{{moment-format stat.date 'D'}}">

@@ -123,6 +123,7 @@ Router.map(function() {
     this.route('index', {path: '/'});
     this.route('project', {path: '/:project_id'}, function() {
       this.route('settings', {}, function() {});
+      this.route('insights');
       this.route('integrations', {}, function() {
         this.route('webhooks', {}, function() {
           this.route('webhook-config', {path: '/:webhook_config_id'});
