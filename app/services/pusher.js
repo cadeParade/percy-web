@@ -8,14 +8,17 @@ export default Service.extend({
   store: service(),
   session: service(),
   currentUser: alias('session.currentUser'),
+  flashMessages: service(),
 
   listenToUser(user) {
     if (this.get('hasSubscribedToUser')) {
       return;
     }
 
+    this.subscribe(`User-${user.get('id')}`, 'userNotification', notification => {
+      run.scheduleOnce('afterRender', this, this._flashNotify, notification);
+    });
     this.subscribe('everyone', 'objectUpdated', data => {
-      // this.subscribe(`User-${user.get('id')}`, 'objectUpdated', data => {
       run.scheduleOnce('afterRender', this, this._pushPayload, data);
     });
 
@@ -28,9 +31,12 @@ export default Service.extend({
   },
 
   _pushPayload(data) {
-    console.log('got some data');
-    console.log(data);
     this.get('store').pushPayload(data);
+  },
+
+  _flashNotify(notification) {
+    // this.get('flashMessages').info(notification);
+    this.get('flashMessages').info(notification.message);
   },
 
   _client: computed(function() {
