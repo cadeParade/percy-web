@@ -6,7 +6,8 @@
     "hint.css": "^2.5.0",
     "moment": "2.13.0",
     "moment-timezone": "0.5.4",
-    "Faker": "^4.1.0"
+    "Faker": "^4.1.0",
+    "countUp.js": "1.7.1"
   },
   "devDependencies": {
     "sinon-chai": "^2.14.0",
