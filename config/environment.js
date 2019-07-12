@@ -200,7 +200,6 @@ module.exports = function(environment) {
     };
     ENV.launchDarkly.local = true;
     ENV.launchDarkly.localFeatureFlags = {
-      'slack-integration': false,
       comments: false,
       'bitbucket-cloud-integration': false,
     };

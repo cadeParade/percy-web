@@ -14,8 +14,8 @@ import {
 import DS from 'ember-data';
 import {
   INTEGRATION_TYPES,
-  SLACK_INTEGRATION_TYPE,
   BITBUCKET_CLOUD_INTEGRATION_TYPE,
+  SLACK_INTEGRATION_TYPE,
 } from 'percy-web/lib/integration-types';
 import {inject as service} from '@ember/service';
 
@@ -99,9 +99,6 @@ export default DS.Model.extend({
   isIntegrated: or('isVersionControlIntegrated', 'isSlackIntegrated'),
   isSlackIntegrated: gt('slackIntegrations.length', 0),
   isNotSlackIntegrated: not('isSlackIntegrated'),
-  isSlackAllowed: computed(function() {
-    return this.get('launchDarkly').variation('slack-integration');
-  }),
   isBitbucketCloudAllowed: computed(function() {
     return this.get('launchDarkly').variation('bitbucket-cloud-integration');
   }),
@@ -109,10 +106,10 @@ export default DS.Model.extend({
     let integrations = [];
     for (const key of Object.keys(INTEGRATION_TYPES)) {
       let item = INTEGRATION_TYPES[key];
-      if (key == SLACK_INTEGRATION_TYPE) {
+      if (key == BITBUCKET_CLOUD_INTEGRATION_TYPE && !this.get('isBitbucketCloudAllowed')) {
         continue;
       }
-      if (key == BITBUCKET_CLOUD_INTEGRATION_TYPE && !this.get('isBitbucketCloudAllowed')) {
+      if (key == SLACK_INTEGRATION_TYPE) {
         continue;
       }
       if (this.get(`${item.organizationIntegrationStatus}`) != true) {

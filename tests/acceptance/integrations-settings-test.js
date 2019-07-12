@@ -9,7 +9,6 @@ describe('Acceptance: Integrations Settings Page', function() {
   setupAcceptance();
 
   beforeEach(function() {
-    withVariation(this.owner, 'slack-integration', true);
     withVariation(this.owner, 'bitbucket-cloud-integration', true);
   });
 
@@ -62,6 +61,7 @@ describe('Acceptance: Integrations Settings Page', function() {
         'withGithubIntegration',
         'withGitlabIntegration',
         'withGitlabSelfHostedIntegration',
+        'withSlackIntegration',
         'withAdminUser',
       );
     });

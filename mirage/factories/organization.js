@@ -89,4 +89,10 @@ export default Factory.extend({
       server.create('versionControlIntegration', 'gitlabSelfHosted', {organization});
     },
   }),
+
+  withSlackIntegration: trait({
+    afterCreate(organization, server) {
+      server.create('slackIntegration', {organization});
+    },
+  }),
 });

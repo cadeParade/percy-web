@@ -13,7 +13,6 @@ import UserMenu from 'percy-web/tests/pages/components/user-menu';
 import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
 import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
 import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
-import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Acceptance: Project', function() {
   setupAcceptance();
@@ -306,8 +305,6 @@ describe('Acceptance: Project', function() {
       });
 
       it('displays the Slack section', async function() {
-        withVariation(this.owner, 'slack-integration', true);
-
         await ProjectSettingsPage.visitProjectIntegrations({
           orgSlug: organization.slug,
           projectSlug: enabledProject.slug,
@@ -318,8 +315,6 @@ describe('Acceptance: Project', function() {
         await ProjectSettingsPage.slackIntegrationsLink.click();
         expect(IntegrationsIndexPage.isVisible).to.equal(true);
         await percySnapshot(this.test);
-
-        withVariation(this.owner, 'slack-integration', false);
       });
     });
   });
