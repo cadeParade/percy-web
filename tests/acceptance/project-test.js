@@ -161,6 +161,23 @@ describe('Acceptance: Project', function() {
         expect(ProjectSettingsPage.isAutoApproveBranchesVisible).to.equal(true);
       });
 
+      it('navigates to SCM integration setups', async function() {
+        async function visitProjectIntegrations() {
+          return await ProjectSettingsPage.visitProjectIntegrations({
+            orgSlug: organization.slug,
+            projectSlug: enabledProject.slug,
+          });
+        }
+
+        await visitProjectIntegrations();
+        await ProjectSettingsPage.repoIntegrator.clickGithub();
+        expect(currentRouteName()).to.equal('organizations.organization.integrations.github');
+
+        await visitProjectIntegrations();
+        await ProjectSettingsPage.repoIntegrator.clickGitlab();
+        expect(currentRouteName()).to.equal('organizations.organization.integrations.gitlab');
+      });
+
       describe('browser toggling', function() {
         let deleteStub;
         let createStub;
