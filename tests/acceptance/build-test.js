@@ -366,6 +366,33 @@ describe('Acceptance: Build', function() {
     });
   });
 
+  describe('when a build is in a public project', function() {
+    let publicOrg;
+    let publicProject;
+    let publicBuild;
+
+    beforeEach(async function() {
+      withVariation(this.owner, 'comments', true);
+      publicOrg = server.create('organization');
+      publicProject = server.create('project', 'publiclyReadable', {organization: publicOrg});
+      publicBuild = server.create('build', 'withSnapshots', {project: publicProject});
+      server.create('commentThread', 'withTwoComments', {
+        snapshot: publicBuild.snapshots.models[0],
+      });
+    });
+
+    it('does not display comment reply boxes', async function() {
+      await BuildPage.visitBuild({
+        orgSlug: publicOrg.slug,
+        projectSlug: publicProject.slug,
+        buildId: publicBuild.id,
+      });
+
+      expect(BuildPage.snapshots[0].commentThreads[0].reply.isVisible).to.equal(false);
+      await percySnapshot(this.test.fullTitle());
+    });
+  });
+
   describe('when a build has more than one browser', function() {
     beforeEach(function() {
       // Add a second browser to the build and each snapshot.
@@ -982,6 +1009,39 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expect(BuildPage.confirmDialog.isVisible).to.equal(false);
       expect(snapshot.approveButton.isVisible).to.equal(false);
       expect(snapshot.isApproved).to.equal(true);
+    });
+  });
+
+  describe('when a build is in a public project', function() {
+    let publicOrg;
+    let publicProject;
+    let publicBuild;
+
+    beforeEach(async function() {
+      withVariation(this.owner, 'comments', true);
+      publicOrg = server.create('organization');
+      publicProject = server.create('project', 'publiclyReadable', {organization: publicOrg});
+      publicBuild = server.create('build', 'withSnapshots', {project: publicProject});
+      server.create('commentThread', 'withTwoComments', {
+        snapshot: publicBuild.snapshots.models[0],
+      });
+    });
+
+    it('does not display comment reply boxes', async function() {
+      const snapshot = publicBuild.snapshots.models[0];
+      const urlParams = {
+        orgSlug: publicOrg.slug,
+        projectSlug: publicProject.slug,
+        buildId: publicBuild.id,
+        snapshotId: snapshot.id,
+        width: snapshot.comparisons.models[0].width,
+        mode: 'diff',
+        browser: 'firefox',
+      };
+      await BuildPage.visitFullPageSnapshot(urlParams);
+
+      expect(BuildPage.snapshotFullscreen.commentThreads[0].reply.isVisible).to.equal(false);
+      await percySnapshot(this.test.fullTitle());
     });
   });
 });
