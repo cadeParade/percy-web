@@ -13,6 +13,8 @@ const SELECTORS = {
   INFINITY_LOADER: '.infinity-loader', // only one possible per page
   PROJECT_SETTINGS_ICON: '[data-test-settings-icon]',
   BRANCH_FILTER_DROPDOWN: '[data-test-project-container-branch-filter]',
+  INTEGRATION_PROMPT: '[data-test-integration-prompt]',
+  ADD_INTEGRATION: '[data-test-add-integration]',
 };
 
 export const ProjectContainer = {
@@ -26,7 +28,6 @@ export const ProjectContainer = {
   },
 
   repoLinked: {
-    resetScope: true,
     scope: SELECTORS.REPO_LINKED,
     githubLogo: {
       scope: SELECTORS.GITHUB_LOGO,
@@ -36,6 +37,11 @@ export const ProjectContainer = {
       scope: SELECTORS.GITLAB_LOGO,
       isVisible: isVisible(),
     },
+  },
+
+  integrationPrompt: {
+    scope: SELECTORS.INTEGRATION_PROMPT,
+    addIntegration: clickable(SELECTORS.ADD_INTEGRATION),
   },
 
   finishedBuilds: getter(function() {

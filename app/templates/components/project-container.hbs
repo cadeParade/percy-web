@@ -20,10 +20,20 @@
         {{branch}}
       {{/power-select}}
     </div>
+  {{else if (not project.organization.isVersionControlIntegrated)}}
+    <div class="flex items-center p-1 pl-2 border bg-gray-000 rounded font-semibold text-sm" data-test-integration-prompt>
+      <div class="flex items-center">
+        {{inline-svg "github-icon" class="mr-1"}}
+        {{inline-svg "gitlab-icon" class="mr-1"}}
+        {{inline-svg "bitbucket-icon" class="mr-1"}}
+      </div>
+      <div>Integrate your SCM for repo features</div>
+      {{#link-to data-test-add-integration "organizations.organization.integrations" project.organization.slug class="percy-btn percy-btn-primary percy-btn-sm leading-normal ml-2"}}Add integration{{/link-to}}
+    </div>
   {{/if}}
 {{/projects/project-header}}
 
-<main class="project-container flex-1 pb-8 bg-gray-000" data-test-project-container>
+<main class="project-container flex-1 pb-8 bg-gray-000">
   {{#if (and builds.isPending (not isRefreshing))}}
     {{loading-page}}
   {{else}}

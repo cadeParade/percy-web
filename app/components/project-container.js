@@ -11,6 +11,7 @@ const allBranchesString = 'All branches';
 
 export default Component.extend(PollingMixin, {
   store: service(),
+  'data-test-project-container': true,
 
   project: null,
   showQuickstart: false,

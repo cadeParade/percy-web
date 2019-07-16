@@ -42,23 +42,20 @@ describe('Integration: ProjectContainer', function() {
       }}`);
     });
 
-    it('shows no logo', async function() {
+    it('shows integration prompt banner', async function() {
       await percySnapshot(this.test.fullTitle());
       const project = this.get('project');
       expect(ProjectContainer.builds.length).to.equal(1);
       expect(project.get('isRepoConnected')).to.equal(false);
-      expect(ProjectContainer.repoLinked.githubLogo.isVisible, 'github logo is visible').to.equal(
-        false,
-      );
-      expect(ProjectContainer.repoLinked.gitlabLogo.isVisible, 'gitlab logo is visible').to.equal(
-        false,
-      );
+
+      expect(ProjectContainer.integrationPrompt.isVisible).to.equal(true);
     });
   });
 
   describe('with an empty repo source', function() {
     beforeEach(async function() {
-      const project = make('project', 'withRepo');
+      const organization = make('organization', 'withGithubIntegration');
+      const project = make('project', 'withRepo', {organization});
       const builds = makeList('build', 1, 'withRepo', 'hasPullRequest', {buildNumber: 1});
       const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const stub = sinon.stub();
@@ -93,7 +90,8 @@ describe('Integration: ProjectContainer', function() {
 
   describe('with a github repo', function() {
     beforeEach(async function() {
-      const project = make('project', 'withGithubRepo');
+      const organization = make('organization', 'withGithubIntegration');
+      const project = make('project', 'withGithubRepo', {organization});
       const builds = makeList('build', 1, 'withGithubRepo', 'hasPullRequest', {buildNumber: 1});
       const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const stub = sinon.stub();
@@ -129,7 +127,8 @@ describe('Integration: ProjectContainer', function() {
 
   describe('with a github enterprise repo', function() {
     beforeEach(async function() {
-      const project = make('project', 'withGithubEnterpriseRepo');
+      const organization = make('organization', 'withGithubEnterpriseIntegration');
+      const project = make('project', 'withGithubEnterpriseRepo', {organization});
       const builds = makeList('build', 1, 'withGithubEnterpriseRepo', 'hasPullRequest', {
         buildNumber: 1,
       });
@@ -157,17 +156,19 @@ describe('Integration: ProjectContainer', function() {
       expect(ProjectContainer.builds.length).to.equal(1);
       expect(
         ProjectContainer.repoLinked.githubLogo.isVisible,
-        'github logo is not visible',
+        'github logo should be visible',
       ).to.equal(true);
-      expect(ProjectContainer.repoLinked.gitlabLogo.isVisible, 'gitlab logo is visible').to.equal(
-        false,
-      );
+      expect(
+        ProjectContainer.repoLinked.gitlabLogo.isVisible,
+        'gitlab logo should not be visible',
+      ).to.equal(false);
     });
   });
 
   describe('with a gitlab repo', function() {
     beforeEach(async function() {
-      const project = make('project', 'withGitlabRepo');
+      const organization = make('organization', 'withGitlabIntegration');
+      const project = make('project', 'withGitlabRepo', {organization});
       const builds = makeList('build', 1, 'withGitlabRepo', 'hasPullRequest', {buildNumber: 1});
       const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const stub = sinon.stub();
@@ -203,7 +204,8 @@ describe('Integration: ProjectContainer', function() {
 
   describe('when user is not member of org', function() {
     beforeEach(async function() {
-      const project = make('project', 'withGithubRepo');
+      const organization = make('organization', 'withGithubIntegration');
+      const project = make('project', 'withGithubRepo', {organization});
       const builds = makeList('build', 1);
       const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const stub = sinon.stub();
