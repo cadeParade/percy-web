@@ -117,7 +117,7 @@
     "stylelint": "^10.1.0",
     "stylelint-config-standard": "^18.3.0",
     "stylelint-order": "3.0.0",
-    "stylelint-scss": "^3.8.0",
+    "stylelint-scss": "^3.9.2",
     "tributejs": "^3.7.1"
   },
   "engines": {
