@@ -6,6 +6,8 @@ export function repoLogo([repo]) {
       return 'github-icon';
     } else if (repo.get('isGitlabRepoFamily')) {
       return 'gitlab-icon';
+    } else if (repo.get('isBitbucketCloudRepo')) {
+      return 'bitbucket-icon';
     }
   }
 }
