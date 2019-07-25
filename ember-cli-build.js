@@ -39,6 +39,13 @@ module.exports = function(defaults) {
     sourcemaps: {
       enabled: true,
     },
+    autoImport: {
+      webpack: {
+        node: {
+          path: true,
+        },
+      },
+    },
   });
 
   app.import('bower_components/accounting.js/accounting.js');
