@@ -11,7 +11,6 @@ import SnapshotGroup from 'percy-web/tests/pages/components/snapshot-group';
 import {resolve} from 'rsvp';
 import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {enableFlag} from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
 
 describe('Integration: SnapshotGroup', function() {
   setupRenderingTest('snapshot-group', {
@@ -26,7 +25,6 @@ describe('Integration: SnapshotGroup', function() {
   beforeEach(function() {
     setupFactoryGuy(this);
     SnapshotGroup.setContext(this);
-    enableFlag(this, 'comments');
 
     showSnapshotFullModalTriggeredStub = sinon.stub();
     createReviewStub = sinon.stub().returns(resolve());

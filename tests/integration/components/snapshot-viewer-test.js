@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-expressions */
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
-import {it, describe, beforeEach, afterEach} from 'mocha';
+import {it, describe, beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
@@ -11,10 +11,6 @@ import SnapshotViewer from 'percy-web/tests/pages/components/snapshot-viewer';
 import {resolve} from 'rsvp';
 import {SNAPSHOT_APPROVED_STATE, SNAPSHOT_UNAPPROVED_STATE} from 'percy-web/models/snapshot';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {
-  enableFlag,
-  disableFlag,
-} from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
 import faker from 'faker';
 
 describe('Integration: SnapshotViewer', function() {
@@ -299,14 +295,6 @@ describe('Integration: SnapshotViewer', function() {
   });
 
   describe('commenting', function() {
-    beforeEach(async function() {
-      enableFlag(this, 'comments');
-    });
-
-    afterEach(function() {
-      disableFlag(this, 'comments');
-    });
-
     describe('when there is a long comment', function() {
       beforeEach(async function() {
         const commentThread = make('comment-thread', {snapshot});

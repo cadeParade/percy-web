@@ -3,13 +3,12 @@ import freezeMoment from '../helpers/freeze-moment';
 import {currentRouteName, currentURL, findAll} from '@ember/test-helpers';
 import {isVisible as attacherIsVisible} from 'ember-attacher';
 import {percySnapshot} from 'ember-percy';
-import {beforeEach, afterEach} from 'mocha';
+import {beforeEach} from 'mocha';
 import moment from 'moment';
 import sinon from 'sinon';
 import {TEST_IMAGE_URLS} from 'percy-web/mirage/factories/screenshot';
 import {BUILD_STATES} from 'percy-web/models/build';
 import {SNAPSHOT_APPROVED_STATE, SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
-import withVariation from 'percy-web/tests/helpers/with-variation';
 import BuildPage from 'percy-web/tests/pages/build-page';
 import ProjectPage from 'percy-web/tests/pages/project-page';
 
@@ -242,7 +241,6 @@ describe('Acceptance: Build', function() {
 
   describe('commenting', function() {
     beforeEach(async function() {
-      withVariation(this.owner, 'comments', true);
       server.create('commentThread', 'withTwoComments', {
         snapshot: defaultSnapshot,
       });
@@ -254,10 +252,6 @@ describe('Acceptance: Build', function() {
       });
 
       await BuildPage.visitBuild(urlParams);
-    });
-
-    afterEach(function() {
-      withVariation(this.owner, 'comments', false);
     });
 
     displaysCommentsOnFirstSnapshot();
@@ -372,7 +366,6 @@ describe('Acceptance: Build', function() {
     let publicBuild;
 
     beforeEach(async function() {
-      withVariation(this.owner, 'comments', true);
       publicOrg = server.create('organization');
       publicProject = server.create('project', 'publiclyReadable', {organization: publicOrg});
       publicBuild = server.create('build', 'withSnapshots', {project: publicProject});
@@ -466,7 +459,6 @@ describe('Acceptance: Build', function() {
 
     describe('commenting', function() {
       beforeEach(async function() {
-        withVariation(this.owner, 'comments', true);
         let commentedSnapshot = unapprovedSnapshots[1];
         server.create('commentThread', 'withTwoComments', {
           snapshot: commentedSnapshot,
@@ -479,10 +471,6 @@ describe('Acceptance: Build', function() {
         });
 
         await BuildPage.visitBuild(urlParams);
-      });
-
-      afterEach(function() {
-        withVariation(this.owner, 'comments', false);
       });
 
       displaysCommentsOnFirstSnapshot();
@@ -917,16 +905,11 @@ describe('Acceptance: Fullscreen Snapshot', function() {
 
   describe('commenting', function() {
     beforeEach(async function() {
-      withVariation(this.owner, 'comments', true);
       server.create('commentThread', 'withTwoComments', {snapshot});
       server.create('commentThread', 'withOneComment', {snapshot});
       server.create('commentThread', 'withTenComments', 'note', {snapshot});
 
       await BuildPage.visitFullPageSnapshot(urlParams);
-    });
-
-    afterEach(function() {
-      withVariation(this.owner, 'comments', false);
     });
 
     it('displays correctly with many comments', async function() {
@@ -1018,7 +1001,6 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     let publicBuild;
 
     beforeEach(async function() {
-      withVariation(this.owner, 'comments', true);
       publicOrg = server.create('organization');
       publicProject = server.create('project', 'publiclyReadable', {organization: publicOrg});
       publicBuild = server.create('build', 'withSnapshots', {project: publicProject});

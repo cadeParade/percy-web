@@ -55,7 +55,7 @@
                 Collapse matches
               {{/if}}
             </button>
-            {{#if (and noSnapshotsWithOpenCommentThreads (variation "comments"))}}
+            {{#if noSnapshotsWithOpenCommentThreads}}
               <button class="btn btn-square flex items-center" {{action "handleCommentClick"}} data-test-group-comment-btn>
                 <figure class="svg-container">{{inline-svg "conversation-icon-add"}}</figure>
               </button>

@@ -149,7 +149,7 @@
           }}
         {{/if}}
 
-        {{#if (and isBuildApprovable (variation "comments"))}}
+        {{#if isBuildApprovable}}
           {{collaboration/toggle-button
             toggleCollaborationPanel=toggleCollaborationPanel
             isResolved=false

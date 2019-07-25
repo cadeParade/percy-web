@@ -1,7 +1,7 @@
 /* jshint expr:true */
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
-import {it, describe, beforeEach, afterEach} from 'mocha';
+import {it, describe, beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
@@ -9,10 +9,6 @@ import sinon from 'sinon';
 import {resolve} from 'rsvp';
 import FullSnapshotPage from 'percy-web/tests/pages/components/snapshot-viewer-full';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {
-  enableFlag,
-  disableFlag,
-} from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
 
 describe('Integration: SnapshotViewerFull', function() {
   setupRenderingTest('snapshot-viewer-full', {
@@ -185,14 +181,6 @@ describe('Integration: SnapshotViewerFull', function() {
   });
 
   describe('commenting', function() {
-    beforeEach(async function() {
-      enableFlag(this, 'comments');
-    });
-
-    afterEach(function() {
-      disableFlag(this, 'comments');
-    });
-
     describe('panel toggling', function() {
       describe('when there are no comments', function() {
         it('does not show panel by default', async function() {
