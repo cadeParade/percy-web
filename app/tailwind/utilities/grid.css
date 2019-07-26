@@ -45,3 +45,21 @@
   grid-template-columns: auto;
   grid-auto-flow: column;
 }
+
+
+/* loader */
+
+@keyframes walkanim {
+  to { background-position: 100% 0; }
+}
+
+.walk {
+	position: absolute;
+	top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("/images/loader-sequence.svg");
+  background-repeat: no-repeat;
+  animation: walkanim 1s infinite steps(23);
+}
