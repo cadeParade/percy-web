@@ -7,7 +7,7 @@
     Approved
   {{else}}
     {{#if build.hasDiffs}}
-      {{pluralize build.totalSnapshotsUnreviewed "visual change"}}
+      {{pluralize build.totalSnapshotsUnapproved "visual change"}}
     {{else}}
       No visual diffs
     {{/if}}

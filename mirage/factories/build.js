@@ -23,6 +23,13 @@ export default Factory.extend({
     build.update('browsers', [browser]);
   },
 
+  rejected: trait({
+    state: BUILD_STATES.FINISHED,
+    reviewState: 'rejected',
+    reviewStateReason: 'rejected_snapshot',
+    totalSnapshotsRejected: 2,
+  }),
+
   approved: trait({
     state: BUILD_STATES.FINISHED,
     reviewState: 'approved',

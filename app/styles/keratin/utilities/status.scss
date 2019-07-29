@@ -16,6 +16,12 @@
   --status-background-color: var(--purple-300) !important;
 }
 
+.is-rejected {
+  --status-color: var(--purple-600) !important;
+  --status-text-color: var(--purple-600) !important;
+  --status-background-color: var(--purple-300) !important;
+}
+
 .is-approved {
   --status-color: var(--green-500) !important;
   --status-text-color: var(--green-500) !important;

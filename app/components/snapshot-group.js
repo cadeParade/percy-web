@@ -17,8 +17,8 @@ export default SnapshotListItem.extend({
   isGroupShowingDiffOverlay: true,
   id: readOnly('snapshots.firstObject.fingerprint'),
   coverSnapshot: readOnly('snapshots.firstObject'),
-  approvableSnapshots: filterBy('snapshots', 'isUnreviewed'),
-  _unapprovedSnapshots: filterBy('snapshots', 'isUnreviewed'),
+  approvableSnapshots: filterBy('snapshots', 'isApproved', false),
+  _unapprovedSnapshots: filterBy('snapshots', 'isApproved', false),
   numUnapprovedSnapshots: readOnly('_unapprovedSnapshots.length'),
   _isApproved: readOnly('isGroupApproved'),
 

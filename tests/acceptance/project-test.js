@@ -435,7 +435,14 @@ describe('Acceptance: Project', function() {
         createdAt: _timeAgo(10, 'seconds'),
         buildNumber: 12,
       });
-
+      server.create('build', 'withSnapshots', 'rejected', {
+        totalSnapshotsUnreviewed: 3,
+        totalSnapshotsRejected: 2,
+        totalSnapshots: 10,
+        project,
+        createdAt: _timeAgo(5, 'seconds'),
+        buildNumber: 13,
+      });
       this.project = project;
     });
 
@@ -449,7 +456,7 @@ describe('Acceptance: Project', function() {
       await ProjectPage.visitProject(urlParams);
 
       expect(ProjectPage.infinityLoader.isPresent).to.equal(false);
-      expect(ProjectPage.builds.length).to.equal(12);
+      expect(ProjectPage.builds.length).to.equal(13);
     });
 
     it('shows builds with identical build numbers', async function() {
@@ -460,7 +467,7 @@ describe('Acceptance: Project', function() {
       });
 
       await ProjectPage.visitProject(urlParams);
-      expect(ProjectPage.builds.length).to.equal(13);
+      expect(ProjectPage.builds.length).to.equal(14);
     });
 
     it('shows the loader when there are more than 50 builds', async function() {
@@ -476,9 +483,8 @@ describe('Acceptance: Project', function() {
     it('navigates to build page after clicking build', async function() {
       await ProjectPage.visitProject(urlParams);
       expect(currentRouteName()).to.equal('organization.project.index');
-      await ProjectPage.finishedBuilds.objectAt(4).click();
+      await ProjectPage.finishedBuilds.objectAt(5).click();
       expect(currentRouteName()).to.equal('organization.project.builds.build.index');
-
       await percySnapshot(this.test.fullTitle());
     });
 

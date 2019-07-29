@@ -32,5 +32,10 @@ FactoryGuy.define('comment-thread', {
     note: {
       type: NOTE_COMMENT_TYPE,
     },
+
+    autoReview: {
+      type: REVIEW_COMMENT_TYPE,
+      comments: FactoryGuy.hasMany('comment', 1, {body: ''}),
+    },
   },
 });

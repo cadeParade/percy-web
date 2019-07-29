@@ -73,7 +73,9 @@ export default DS.Model.extend({
   // Review state, aggregated across all reviews. This will only be set for finished builds.
   reviewState: DS.attr(),
   isUnreviewed: equal('reviewState', 'unreviewed'),
+  isUnapproved: or('isUnreviewed', 'isRejected'),
   isApproved: equal('reviewState', 'approved'),
+  isRejected: equal('reviewState', 'rejected'),
 
   // reviewStateReason provides disambiguation for how reviewState was set, such as when a
   // build was approved automatically by the system when there are no diffs vs. when it is
@@ -87,6 +89,8 @@ export default DS.Model.extend({
   // - 'approved' --> 'no_diffs': All snapshots were automatically approved because there were no
   //    visual differences when compared with the baseline.
   // - 'approved' --> 'auto_approved_branch': Automatically approved based on branch name
+  // - 'rejected' --> rejected_snapshot: snapshot(s) rejected by user in this build
+  // - 'rejected' --> rejected_snapshot_previously: snapshot(s) rejected in previous build
   reviewStateReason: DS.attr(),
 
   // Aggregate numbers for snapshots and comparisons. These will only be set for finished builds.
@@ -94,6 +98,18 @@ export default DS.Model.extend({
   // Each comparison represents a single individual rendering at a width and browser.
   totalSnapshots: DS.attr('number'),
   totalSnapshotsUnreviewed: DS.attr('number'),
+  totalSnapshotsRejected: DS.attr('number'),
+  totalSnapshotsUnapproved: computed(
+    'totalSnapshotsUnreviewed',
+    'totalSnapshotsRejected',
+    function() {
+      if (this.totalSnapshotsRejected) {
+        return this.totalSnapshotsUnreviewed + this.totalSnapshotsRejected;
+      } else {
+        return this.totalSnapshotsUnreviewed;
+      }
+    },
+  ),
 
   totalComparisons: DS.attr('number'),
   totalComparisonsFinished: DS.attr('number'),
@@ -137,7 +153,7 @@ export default DS.Model.extend({
         } else {
           return APPROVED_LABEL;
         }
-      } else if (this.get('isUnreviewed')) {
+      } else if (this.get('isUnapproved')) {
         return UNREVIEWED_LABEL;
       }
     } else if (this.get('isFailed')) {

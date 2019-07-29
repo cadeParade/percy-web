@@ -98,7 +98,7 @@ describe('Acceptance: Build', function() {
       build,
       name: 'No Diffs snapshot',
     });
-    twoWidthsSnapshot = server.create('snapshot', 'withComparison', 'withMobile', {
+    twoWidthsSnapshot = server.create('snapshot', 'rejected', 'withComparison', 'withMobile', {
       build,
       name: 'Two widths snapshot',
     });

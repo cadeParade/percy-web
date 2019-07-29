@@ -17,7 +17,7 @@
           No changes to review
         {{/if}}
       {{else}}
-        {{pluralize build.totalSnapshotsUnreviewed "unreviewed change"}}
+        {{pluralize build.totalSnapshotsUnapproved "unreviewed change"}}
       {{/if}}
     {{else if build.isFailed}}
       This build has failed

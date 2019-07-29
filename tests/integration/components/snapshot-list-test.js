@@ -277,10 +277,16 @@ describe('Integration: SnapshotList', function() {
         {build, name: unapprovedSingleSnapshotsWithCommentsTitle},
       );
 
-      const unapprovedSingleSnapshotsWithoutComments = makeList('snapshot', 1, 'withComparisons', {
-        build,
-        name: unapprovedSingleSnapshotsWithoutCommentsTitle,
-      });
+      const unapprovedSingleSnapshotsWithoutComments = makeList(
+        'snapshot',
+        1,
+        'withComparisons',
+        'rejected',
+        {
+          build,
+          name: unapprovedSingleSnapshotsWithoutCommentsTitle,
+        },
+      );
 
       const approvedSingleSnapshotsWithComments = makeList(
         'snapshot',
