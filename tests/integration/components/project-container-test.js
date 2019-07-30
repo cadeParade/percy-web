@@ -243,9 +243,9 @@ describe('Integration: ProjectContainer', function() {
   describe('branch filter with github repo', function() {
     beforeEach(async function() {
       const project = make('project', 'withGithubRepo');
-      const branch1Builds = makeList('build', 4, 'finished', {branch: 'branch-1'});
-      const branch2Builds = makeList('build', 5, 'finished', {branch: 'branch-2'});
-      const branch3Builds = makeList('build', 6, 'finished', {branch: 'branch-3'});
+      const branch1Builds = makeList('build', 4, 'finished', 'unreviewed', {branch: 'branch-1'});
+      const branch2Builds = makeList('build', 5, 'finished', 'unreviewed', {branch: 'branch-2'});
+      const branch3Builds = makeList('build', 6, 'finished', 'unreviewed', {branch: 'branch-3'});
       const allBuilds = branch1Builds.concat(branch2Builds).concat(branch3Builds);
       const infinityBuilds = Object.assign(allBuilds, INFINITY_MODEL_STUB);
       infinityBuilds.reachedInfinity = false;
@@ -278,9 +278,9 @@ describe('Integration: ProjectContainer', function() {
   describe('branch filter without github repo', function() {
     beforeEach(async function() {
       const project = make('project');
-      const branch1Builds = makeList('build', 4, 'finished', {branch: 'branch-1'});
-      const branch2Builds = makeList('build', 5, 'finished', {branch: 'branch-2'});
-      const branch3Builds = makeList('build', 6, 'finished', {branch: 'branch-3'});
+      const branch1Builds = makeList('build', 4, 'finished', 'unreviewed', {branch: 'branch-1'});
+      const branch2Builds = makeList('build', 5, 'finished', 'unreviewed', {branch: 'branch-2'});
+      const branch3Builds = makeList('build', 6, 'finished', 'unreviewed', {branch: 'branch-3'});
       const allBuilds = branch1Builds.concat(branch2Builds).concat(branch3Builds);
       const infinityBuilds = Object.assign(allBuilds, INFINITY_MODEL_STUB);
       infinityBuilds.reachedInfinity = false;
@@ -313,7 +313,7 @@ describe('Integration: ProjectContainer', function() {
   describe('branch filter on a project with only 1 branch', function() {
     beforeEach(async function() {
       const project = make('project');
-      const branch1Builds = makeList('build', 4, 'finished', {branch: 'branch-1'});
+      const branch1Builds = makeList('build', 4, 'finished', 'unreviewed', {branch: 'branch-1'});
       const infinityBuilds = Object.assign(branch1Builds, INFINITY_MODEL_STUB);
       infinityBuilds.reachedInfinity = true;
       const stub = sinon.stub();

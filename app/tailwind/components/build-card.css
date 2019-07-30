@@ -1,5 +1,9 @@
 .build-card-placeholder {
-  @apply flex justify-center items-center border-b px-4;
+  @apply flex;
+  @apply justify-center;
+  @apply items-center;
+  @apply border-b;
+  @apply px-4;
   height: 98px;
   background: url("/images/build-card-placeholder.jpg");
   @apply bg-cover;
@@ -14,7 +18,8 @@
 }
 
 .build-card {
-  @apply grid items-center;
+  @apply grid;
+  @apply items-center;
   @apply py-3;
   @apply border-b;
   @apply cursor-pointer;
@@ -24,9 +29,11 @@
     "details"
     "diffs"
     "status";
+}
 
-  @media screen and (min-width: 768px) {
+@media screen and (min-width: 768px) {
+  .build-card {
     grid-template-areas: "build details diffs status";
-    grid-template-columns: 108px 4fr 180px 108px;
+    grid-template-columns: 108px 4fr 180px 138px;
   }
 }

@@ -55,14 +55,24 @@
           {{#if build.hasDiffs}}
             {{#unless build.isApproved}}
               <div class="whitespace-no-wrap">
-                <strong>{{build.totalSnapshotsUnapproved}}</strong>
-                <span class="text-sm text-gray-400 font-semibold">unreviewed</span>
+                {{#if build.isUnreviewed}}
+                  <strong>{{build.totalSnapshotsUnreviewed}}</strong>
+                  <span class="text-sm text-gray-400 font-semibold">unreviewed</span>
+                {{else}}
+                  <strong>{{build.totalSnapshotsRejected}}</strong>
+                  <span class="text-sm text-gray-400 font-semibold">requested changes</span>
+                {{/if}}
               </div>
             {{/unless}}
           {{/if}}
           <div class="whitespace-no-wrap">
-            <strong>{{build.totalSnapshots}}</strong>
-            <span class="text-sm text-gray-400 font-semibold">{{pluralize build.totalSnapshots "total snapshot" without-count=true}}</span>
+            {{#if build.isRejected}}
+              <strong>{{build.totalSnapshotsUnreviewed}}</strong>
+              <span class="text-sm text-gray-400 font-semibold">{{pluralize build.totalSnapshotsUnreviewed "unreviewed snapshot" without-count=true}}</span>
+            {{else}}
+              <strong>{{build.totalSnapshots}}</strong>
+              <span class="text-sm text-gray-400 font-semibold">{{pluralize build.totalSnapshots "total snapshot" without-count=true}}</span>
+            {{/if}}
           </div>
         {{/if}}
       </div>

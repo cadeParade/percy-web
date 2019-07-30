@@ -13,12 +13,22 @@
 
     <div class="flex items-center overflow-hidden">
       <figure class="snapshot-icon svg-container mr-1" data-test-SnapshotViewer-comparisonIcon>
-        {{#if noComparisonsHaveDiffs}}
+        {{#if snapshot.isRejected}}
+          {{inline-svg "comparison-icon-requested-changes"}}
+        {{else if noComparisonsHaveDiffs}}
           {{inline-svg "no-comparison-icon"}}
         {{else}}
           {{inline-svg "comparison-icon"}}
         {{/if}}
       </figure>
+
+      {{#if snapshot.isRejected}}
+        <div class="mr-1">
+          <div class="px-1 py-sm tracking-px rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{if (eq snapshot.reviewStateReason 'user_rejected_previously') 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}">
+            Changes requested
+          </div>
+        </div>
+      {{/if}}
 
       <div class="Viewer-header-title SnapshotViewer-title cursor-default font-bold truncate" title="{{snapshot.name}}" data-test-SnapshotViewer-title>
         {{snapshot.name}}
@@ -156,6 +166,7 @@
             unresolvedCommentThreadCount=unresolvedCommentThreadCount
           }}
         {{/if}}
+
 
         <div class="btn-group" data-test-snapshot-approval-button>
           {{demo-tooltip

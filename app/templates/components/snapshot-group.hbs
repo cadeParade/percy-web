@@ -6,12 +6,21 @@
     <div style="min-width: 0;" class="flex items-center">
       <div class="Viewer-header-title SnapshotViewer-title flex items-center overflow-hidden cursor-default font-bold" title="{{snapshots.length}} matching changes" data-test-snapshot-group-name>
         <figure class="svg-container mr-1">
-          {{#if isGroupApproved}}
+          {{#if isGroupRejected}}
+            {{inline-svg "comparison-icon-requested-changes"}}
+          {{else if isGroupApproved}}
             {{inline-svg "comparison-icon-group-approved"}}
           {{else}}
             {{inline-svg "comparison-icon-group"}}
           {{/if}}
         </figure>
+
+        {{#if isGroupRejected}}
+          <div class="mr-1">
+            <div class="px-1 py-sm tracking-px rounded bg-orange-500 text-xs tect-center uppercase font-bold text-white whitespace-no-wrap" data-test-group-rejected-badge>Changes requested</div>
+          </div>
+        {{/if}}
+
         <div class="truncate">
           {{groupTitle}}
         </div>

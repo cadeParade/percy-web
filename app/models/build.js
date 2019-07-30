@@ -22,6 +22,7 @@ const NO_DIFFS_LABEL = 'No Changes';
 const PENDING_LABEL = 'Receiving';
 const PROCESSING_LABEL = 'Processing';
 const UNREVIEWED_LABEL = 'Unreviewed';
+const REJECTED_LABEL = 'Changes requested';
 
 export default DS.Model.extend({
   project: DS.belongsTo('project', {async: false}),
@@ -99,17 +100,6 @@ export default DS.Model.extend({
   totalSnapshots: DS.attr('number'),
   totalSnapshotsUnreviewed: DS.attr('number'),
   totalSnapshotsRejected: DS.attr('number'),
-  totalSnapshotsUnapproved: computed(
-    'totalSnapshotsUnreviewed',
-    'totalSnapshotsRejected',
-    function() {
-      if (this.totalSnapshotsRejected) {
-        return this.totalSnapshotsUnreviewed + this.totalSnapshotsRejected;
-      } else {
-        return this.totalSnapshotsUnreviewed;
-      }
-    },
-  ),
 
   totalComparisons: DS.attr('number'),
   totalComparisonsFinished: DS.attr('number'),
@@ -153,8 +143,10 @@ export default DS.Model.extend({
         } else {
           return APPROVED_LABEL;
         }
-      } else if (this.get('isUnapproved')) {
+      } else if (this.get('isUnreviewed')) {
         return UNREVIEWED_LABEL;
+      } else if (this.get('isRejected')) {
+        return REJECTED_LABEL;
       }
     } else if (this.get('isFailed')) {
       return FAILED_LABEL;

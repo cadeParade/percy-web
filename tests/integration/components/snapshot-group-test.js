@@ -392,4 +392,50 @@ describe('Integration: SnapshotGroup', function() {
       expect(firstSnapshot.collaborationPanel.isVisible).to.equal(true);
     });
   });
+
+  describe('group state', function() {
+    beforeEach(async function() {
+      await this.render(hbs`{{snapshot-group
+        snapshots=snapshots
+        build=build
+        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+        userSelectedWidth=userSelectedWidth
+        createReview=createReview
+        activeSnapshotBlockId=activeSnapshotBlockId
+        updateActiveSnapshotBlockId=stub
+        activeBrowser=browser
+        isBuildApprovable=isBuildApprovable
+      }}`);
+    });
+
+    it('is unreviewed by default', async function() {
+      const snapshots = makeList('snapshot', 2, 'withComparisons', {fingerprint: 'unreviewed'});
+      this.setProperties({snapshots});
+      expect(SnapshotGroup.approveButton.isUnapproved).to.equal(true);
+      expect(SnapshotGroup.header.rejectedBadge.isVisible).to.equal(false);
+      await percySnapshot(this.test);
+    });
+
+    it('shows approved when all snapshots are approved', async function() {
+      const snapshots = makeList('snapshot', 2, 'withComparisons', 'approved', {
+        fingerprint: 'approved',
+      });
+      this.setProperties({snapshots});
+      expect(SnapshotGroup.approveButton.isApproved).to.equal(true);
+      expect(SnapshotGroup.header.rejectedBadge.isVisible).to.equal(false);
+      await percySnapshot(this.test);
+    });
+
+    it('shows rejected when one snapshot is rejected', async function() {
+      const rejectedSnapshots = makeList('snapshot', 1, 'withComparisons', 'rejected', {
+        fingerprint: 'mixed',
+      });
+      const unreviewedSnapshots = makeList('snapshot', 2, 'withComparisons', {
+        fingerprint: 'mixed',
+      });
+      this.setProperties({snapshots: rejectedSnapshots.concat(unreviewedSnapshots)});
+      expect(SnapshotGroup.approveButton.isUnapproved).to.equal(true);
+      expect(SnapshotGroup.header.rejectedBadge.isVisible).to.equal(true);
+    });
+  });
 });

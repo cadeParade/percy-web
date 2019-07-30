@@ -54,6 +54,14 @@ export default SnapshotListItem.extend({
     });
   }),
 
+  isGroupRejected: computed('snapshots.@each.isRejected', function() {
+    return this.snapshots.any(snapshot => snapshot.isRejected);
+  }),
+
+  isGroupUnreviewed: computed('isGroupApproved', 'isGroupRejected', function() {
+    return !this.isGroupApproved && !this.isGroupRejected;
+  }),
+
   groupTitle: computed('snapshots.length', function() {
     return `${get(this, 'snapshots.length')} matching changes`;
   }),

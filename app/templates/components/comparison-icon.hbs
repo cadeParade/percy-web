@@ -3,6 +3,8 @@
     {{inline-svg "loader-icon"}}
   {{else if build.isFailed}}
     {{inline-svg "null-comparison-icon"}}
+  {{else if build.isRejected}}
+    {{inline-svg "comparison-icon-requested-changes"}}
   {{else if build.hasNoDiffs}}
     {{inline-svg "no-comparison-icon"}}
   {{else if build.isApproved}}

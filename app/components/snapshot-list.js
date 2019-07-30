@@ -32,7 +32,7 @@ export default Component.extend(EKMixin, {
   shouldDeferRendering: gt('snapshotBlocks.length', 75),
 
   _singleSnapshotsChanged: readOnly('_snapshotGroups.singles'),
-  _unapprovedSingleSnapshots: filterBy('_singleSnapshotsChanged', 'isApproved', false),
+  _unapprovedSingleSnapshots: filterBy('_singleSnapshotsChanged', 'isUnreviewed', true),
   _unapprovedSingleSnapshotsWithComments: filterBy(
     '_unapprovedSingleSnapshots',
     'hasOpenCommentThreads',
@@ -56,6 +56,8 @@ export default Component.extend(EKMixin, {
     false,
   ),
 
+  _rejectedSingleSnapshots: filterBy('_singleSnapshotsChanged', 'isRejected', true),
+
   _approvedSingleSnapshots: filterBy('_singleSnapshotsChanged', 'isApproved', true),
 
   _groupedSnapshotsChanged: readOnly('_snapshotGroups.groups'),
@@ -68,9 +70,17 @@ export default Component.extend(EKMixin, {
     return groupSnapshots(this.snapshotsChanged);
   }),
 
+  _rejectedGroups: computed('_groupedSnapshotsChanged.[]', function() {
+    return this._groupedSnapshotsChanged.filter(group => {
+      return group.any(snapshot => snapshot.isRejected);
+    });
+  }),
+
   _unapprovedGroups: computed('_groupedSnapshotsChanged.[]', function() {
     return this._groupedSnapshotsChanged.filter(group => {
-      return group.any(snapshot => snapshot.isUnreviewed);
+      const areAllApproved = group.every(snapshot => snapshot.isApproved);
+      const areAnyRejected = group.any(snapshot => snapshot.isRejected);
+      return !areAllApproved && !areAnyRejected;
     });
   }),
 
@@ -91,7 +101,9 @@ export default Component.extend(EKMixin, {
   // want snapshots to change order until the page is refreshed.
   // Unless the browser changes, then we want it to be in the new order for the browser.
   snapshotBlocks: computed('activeBrowser', function() {
-    return this._unapprovedGroupsWithComments.concat(
+    return this._rejectedGroups.concat(
+      this._rejectedSingleSnapshots,
+      this._unapprovedGroupsWithComments,
       this._unapprovedSingleSnapshotsWithComments,
       this._unapprovedGroupsWithoutComments,
       this._unapprovedSingleSnapshotsWithoutComments,

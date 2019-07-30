@@ -47,9 +47,11 @@ export default Controller.extend({
       const snapshotsWithDiffs = snapshotsWithDiffForBrowser(buildSnapshotsWithDiffs, browser);
       const sortedSnapshotsWithDiffs = snapshotSort(snapshotsWithDiffs.toArray(), browser);
       const approvedSnapshots = sortedSnapshotsWithDiffs.filterBy('isApprovedWithChanges');
-      const unapprovedSnapshots = sortedSnapshotsWithDiffs.filterBy('isApproved', false);
+      const unreviewedSnapshots = sortedSnapshotsWithDiffs.filterBy('isUnreviewed');
+      const rejectedSnapshots = sortedSnapshotsWithDiffs.filterBy('isRejected');
       orderedBrowserSnapshots[browser.get('id')] = [].concat(
-        unapprovedSnapshots,
+        rejectedSnapshots,
+        unreviewedSnapshots,
         approvedSnapshots,
       );
     });
