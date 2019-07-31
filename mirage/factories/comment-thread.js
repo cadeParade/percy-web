@@ -1,11 +1,14 @@
 import {Factory, trait, association} from 'ember-cli-mirage';
 import {REVIEW_COMMENT_TYPE, NOTE_COMMENT_TYPE} from 'percy-web/models/comment-thread';
 import moment from 'moment';
+import faker from 'faker';
 
 export default Factory.extend({
   type: REVIEW_COMMENT_TYPE,
   createdAt: () => moment().subtract(22, 'hours'),
   snapshot: association(),
+  originatingSnapshotId: () => faker.random.number(),
+  originatingBuildNumber: () => faker.random.number(),
 
   withOneComment: trait({
     afterCreate(commentThread, server) {

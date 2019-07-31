@@ -34,10 +34,10 @@ export const commentThread = {
 
   close: alias('firstComment.close'),
 
-  isResolved: alias('firstComment.isResolved'),
   isArchived: alias('firstComment.isArchived'),
+  isResolved: alias('firstComment.isResolved'),
   isClosed: getter(function() {
-    return this.isResolved || this.isArchived;
+    return this.isArchived;
   }),
 
   _type: attribute('data-test-thread-type'),
@@ -48,6 +48,10 @@ export const commentThread = {
   isNoteThread: getter(function() {
     return this._type === NOTE_COMMENT_TYPE;
   }),
+
+  isRejectBadgeVisible: alias('firstComment.requestChangesBadge.isVisible'),
+  wasRejectedPreviously: alias('firstComment.requestChangesBadge.isRequestedPreviously'),
+  previousBuildHref: alias('firstComment.requestChangesBadge.previousBuildLinkHref'),
 };
 
 export default create(commentThread);

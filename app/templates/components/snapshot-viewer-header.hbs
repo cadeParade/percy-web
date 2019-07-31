@@ -24,7 +24,7 @@
 
       {{#if snapshot.isRejected}}
         <div class="mr-1">
-          <div class="px-1 py-sm tracking-px rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{if (eq snapshot.reviewStateReason 'user_rejected_previously') 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}">
+          <div class="px-1 py-sm tracking-px rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{if (eq snapshot.reviewStateReason 'user_rejected_previously') 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}" data-test-request-changes-badge>
             Changes requested
           </div>
         </div>

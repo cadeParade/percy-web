@@ -33,6 +33,7 @@ const SELECTORS = {
   TOGGLE_COMMENT_SIDEBAR: '[data-test-toggle-comment-sidebar]',
   OPEN_COMMENT_THREAD_COUNT: '[data-test-comment-thread-count]',
   SNAPSHOT_REJECT_BUTTON: '[data-test-snapshot-reject-button]',
+  REQUEST_CHANGES_BADGE: '[data-test-request-changes-badge]',
 };
 
 export const SnapshotViewerHeader = {
@@ -103,6 +104,7 @@ export const SnapshotViewerHeader = {
   clickReject: clickable(SELECTORS.SNAPSHOT_REJECT_BUTTON),
   isRejectButtonPresent: isPresent(SELECTORS.SNAPSHOT_REJECT_BUTTON),
   isRejectButtonDisabled: is(':disabled', SELECTORS.SNAPSHOT_REJECT_BUTTON),
+  isRejected: isVisible(SELECTORS.REQUEST_CHANGES_BADGE),
 
   isBaseComparisonModeButtonVisible: isVisible(SELECTORS.COMPARISON_MODE_SWITCHER_BASE),
   isDiffComparisonModeButtonVisible: isVisible(SELECTORS.COMPARISON_MODE_SWITCHER_DIFF),

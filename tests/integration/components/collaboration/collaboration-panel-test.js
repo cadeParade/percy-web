@@ -8,6 +8,7 @@ import CollaborationPanel from 'percy-web/tests/pages/components/collaboration/c
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import moment from 'moment';
 import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
+import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Integration: CollaborationPanel', function() {
   freezeMoment('2018-12-17');
@@ -19,6 +20,7 @@ describe('Integration: CollaborationPanel', function() {
   beforeEach(async function() {
     setupFactoryGuy(this);
     CollaborationPanel.setContext(this);
+    withVariation(this.owner, 'request-changes', false);
   });
 
   describe('when there are no comment threads', function() {
@@ -55,6 +57,7 @@ describe('Integration: CollaborationPanel', function() {
 
   describe('when there are comment threads', function() {
     it('displays comment threads in correct order', async function() {
+      withVariation(this.owner, 'request-changes', true);
       const oldOpenCommentThread = make('comment-thread', 'old');
       const newOpenCommentThread = make('comment-thread', 'withTwoComments', {
         createdAt: moment().subtract(1, 'hours'),

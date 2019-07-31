@@ -13,7 +13,7 @@
     </div>
     {{#if isFirstComment}}
       {{#if isCommentingAllowed}}
-        {{#if isReview}}
+        {{#if (and isReview (not (variation "request-changes")))}}
           {{#if isClosed}}
             <div class="flex items-center text-green-500 font-semibold text-sm leading-none" data-test-resolved>
               <div class="mr-sm">
@@ -52,5 +52,17 @@
       {{/if}}
     {{/if}}
   </header>
+
+ {{#if (and isFirstComment isReview (variation "request-changes"))}}
+    <div class="collaboration-content-inset py-sm">
+      <div class="px-1 py-sm tracking-px rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{if isOnOriginatingSnapshot 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}" data-test-request-changes-badge>
+        Changes requested
+        {{#if isOnOriginatingSnapshot}}
+          from <a href={{commentThread.originatingSnapshotPartialUrl}} class="font-mono">{{commentThread.originatingBuildNumber}}</a>
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
+
   <p class="collaboration-content-inset break-words whitespace-pre-line">{{comment.body}}</p>
 </div>

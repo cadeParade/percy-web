@@ -31,6 +31,7 @@ FactoryGuy.define('snapshot', {
     rejected: {
       reviewState: SNAPSHOT_REJECTED_STATE,
       reviewStateReason: SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED,
+      commentThreads: FactoryGuy.hasMany('comment-thread', 1, 'autoReview'),
     },
 
     withBuild: {

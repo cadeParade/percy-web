@@ -1,5 +1,7 @@
 import Mirage from 'ember-cli-mirage';
 import faker from 'faker';
+import {REVIEW_COMMENT_TYPE} from 'percy-web/models/comment-thread';
+import {SNAPSHOT_REJECTED_STATE, SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 
 export default function() {
   // Enable this to see verbose request logging from mirage:
@@ -130,6 +132,14 @@ export default function() {
         snapshotId: attrs.snapshotId,
         createdAt: new Date(),
       });
+
+      if (attrs.threadType === REVIEW_COMMENT_TYPE) {
+        const snapshot = schema.snapshots.find(attrs.snapshotId);
+        snapshot.update({
+          reviewState: SNAPSHOT_REJECTED_STATE,
+          reviewStateReason: SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED,
+        });
+      }
     }
 
     const newComment = schema.comments.create({
@@ -346,6 +356,22 @@ export default function() {
     snapshots.models.forEach(snapshot => {
       snapshot.update({reviewState, reviewStateReason});
     });
+
+    if (attrs.action === 'rejected') {
+      const currentUser = schema.users.findBy({_currentLoginInTest: true});
+      snapshots.models.forEach(snapshot => {
+        const commentThread = schema.commentThreads.create({
+          type: REVIEW_COMMENT_TYPE,
+          snapshotId: snapshot.id,
+          createdAt: new Date(),
+        });
+        schema.comments.create({
+          commentThread: commentThread,
+          body: '',
+          author: currentUser,
+        });
+      });
+    }
 
     return schema.reviews.create({
       buildId: attrs.buildId,

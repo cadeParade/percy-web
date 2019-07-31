@@ -25,7 +25,7 @@ describe('Integration: CommentThread', function() {
   describe('when thread is open', function() {
     describe('when there are less than 4 comments in thread', function() {
       it('displays correctly with one comment', async function() {
-        const commentThread = make('comment-thread', 'withOneComment');
+        const commentThread = make('comment-thread', 'note', 'withOneComment');
         this.setProperties({commentThread});
         await this.render(hbs`{{collaboration/comment-thread
           commentThread=commentThread
@@ -37,7 +37,7 @@ describe('Integration: CommentThread', function() {
       });
 
       it('displays correctly with two comments', async function() {
-        const commentThread = make('comment-thread', 'withTwoComments');
+        const commentThread = make('comment-thread', 'note', 'withTwoComments');
         this.setProperties({commentThread});
         await this.render(hbs`{{collaboration/comment-thread
           commentThread=commentThread
@@ -49,7 +49,7 @@ describe('Integration: CommentThread', function() {
       });
 
       it('expands reply input when clicked', async function() {
-        const commentThread = make('comment-thread', 'withOneComment');
+        const commentThread = make('comment-thread', 'note', 'withOneComment');
         this.setProperties({commentThread});
         await this.render(hbs`{{collaboration/comment-thread
           commentThread=commentThread
@@ -59,7 +59,7 @@ describe('Integration: CommentThread', function() {
       });
 
       it('does not display reply box when `isCommentingAllowed` is false', async function() {
-        const commentThread = make('comment-thread', 'withOneComment');
+        const commentThread = make('comment-thread', 'note', 'withOneComment');
         this.setProperties({commentThread});
         await this.render(hbs`{{collaboration/comment-thread
           commentThread=commentThread
@@ -71,7 +71,7 @@ describe('Integration: CommentThread', function() {
 
     describe('when there are more than four comments in thread', function() {
       beforeEach(async function() {
-        const commentThread = make('comment-thread', 'withTenComments');
+        const commentThread = make('comment-thread', 'note', 'withTenComments');
         this.setProperties({commentThread});
         await this.render(hbs`{{collaboration/comment-thread
           commentThread=commentThread

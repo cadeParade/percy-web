@@ -22,6 +22,7 @@ export const SnapshotViewer = {
   isApproved: alias('header.isApproved'),
   isUnapproved: alias('header.isUnapproved'),
   isUnchanged: alias('header.isUnchanged'),
+  isRejected: alias('header.isRejected'),
 
   isCollapsed: hasClass('SnapshotViewer--collapsed'),
   isExpanded: notHasClass('SnapshotViewer--collapsed'),

@@ -8,7 +8,11 @@ import moment from 'moment';
 import sinon from 'sinon';
 import {TEST_IMAGE_URLS} from 'percy-web/mirage/factories/screenshot';
 import {BUILD_STATES} from 'percy-web/models/build';
-import {SNAPSHOT_APPROVED_STATE, SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
+import {
+  SNAPSHOT_APPROVED_STATE,
+  SNAPSHOT_REJECTED_STATE,
+  SNAPSHOT_REVIEW_STATE_REASONS,
+} from 'percy-web/models/snapshot';
 import BuildPage from 'percy-web/tests/pages/build-page';
 import ProjectPage from 'percy-web/tests/pages/project-page';
 import withVariation from 'percy-web/tests/helpers/with-variation';
@@ -16,60 +20,53 @@ import withVariation from 'percy-web/tests/helpers/with-variation';
 describe('Acceptance: Build', function() {
   freezeMoment('2018-05-22');
 
-  function displaysCommentsOnFirstSnapshot() {
-    it('displays correctly with many comments', async function() {
-      const firstSnapshot = BuildPage.snapshots[0];
-      expect(firstSnapshot.collaborationPanel.isVisible).to.equal(true);
-      expect(firstSnapshot.commentThreads.length).to.equal(3);
-      expect(firstSnapshot.header.numOpenCommentThreads).to.equal('3');
-      await percySnapshot(this.test);
-    });
+  async function displaysCommentsOnFirstSnapshot(context) {
+    const firstSnapshot = BuildPage.snapshots[0];
+    expect(firstSnapshot.collaborationPanel.isVisible).to.equal(true);
+    expect(firstSnapshot.commentThreads.length).to.equal(3);
+    expect(firstSnapshot.header.numOpenCommentThreads).to.equal('3');
+    await percySnapshot(context.test);
   }
 
-  function createsCommentReplyOnFirstSnapshot() {
-    it('can create a new comment reply', async function() {
-      // Because we don't show all replies in long comment threads,
-      // it's helpful to test this on a thread with two or fewer comments on it
+  async function createsCommentReplyOnFirstSnapshot() {
+    // Because we don't show all replies in long comment threads,
+    // it's helpful to test this on a thread with two or fewer comments on it
 
-      const firstSnapshot = BuildPage.snapshots[0];
-      const secondThread = firstSnapshot.commentThreads[1];
-      expect(secondThread.comments.length).to.equal(1);
+    const firstSnapshot = BuildPage.snapshots[0];
+    const secondThread = firstSnapshot.commentThreads[1];
+    expect(secondThread.comments.length).to.equal(1);
 
-      await secondThread.focusReply();
-      await secondThread.typeReply('what a great reply');
-      await secondThread.submitReply();
+    await secondThread.focusReply();
+    await secondThread.typeReply('what a great reply');
+    await secondThread.submitReply();
 
-      expect(secondThread.comments.length).to.equal(2);
-    });
+    expect(secondThread.comments.length).to.equal(2);
   }
 
-  function closesCommentThreadOnFirstSnapshot() {
-    it('can close comment threads', async function() {
-      const firstSnapshot = BuildPage.snapshots[0];
-      const collabPanel = firstSnapshot.collaborationPanel;
+  async function closesCommentThreadOnFirstSnapshot(context) {
+    const firstSnapshot = BuildPage.snapshots[0];
+    const collabPanel = firstSnapshot.collaborationPanel;
+    expect(firstSnapshot.header.numOpenCommentThreads).to.equal('3');
+    expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
+    expect(collabPanel.reviewThreads[1].isResolved).to.equal(false);
+    expect(collabPanel.noteThreads[0].isArchived).to.equal(false);
 
-      expect(firstSnapshot.header.numOpenCommentThreads).to.equal('3');
-      expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
-      expect(collabPanel.reviewThreads[1].isResolved).to.equal(false);
-      expect(collabPanel.noteThreads[0].isArchived).to.equal(false);
+    await collabPanel.reviewThreads[0].close();
 
-      await collabPanel.reviewThreads[0].close();
+    // Comment threads are ordered with open threads first and closed threads second.
+    // Since we have just closed one of the open threads, it has moved under the open threads.
+    expect(firstSnapshot.header.numOpenCommentThreads).to.equal('2');
+    expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
+    expect(collabPanel.reviewThreads[1].isResolved).to.equal(true);
+    expect(collabPanel.noteThreads[0].isArchived).to.equal(false);
 
-      // Comment threads are ordered with open threads first and closed threads second.
-      // Since we have just closed one of the open threads, it has moved under the open threads.
-      expect(firstSnapshot.header.numOpenCommentThreads).to.equal('2');
-      expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
-      expect(collabPanel.reviewThreads[1].isResolved).to.equal(true);
-      expect(collabPanel.noteThreads[0].isArchived).to.equal(false);
+    await collabPanel.noteThreads[0].close();
+    expect(firstSnapshot.header.numOpenCommentThreads).to.equal('1');
+    expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
+    expect(collabPanel.reviewThreads[1].isResolved).to.equal(true);
+    expect(collabPanel.noteThreads[0].isArchived).to.equal(true);
 
-      await collabPanel.noteThreads[0].close();
-      expect(firstSnapshot.header.numOpenCommentThreads).to.equal('1');
-      expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
-      expect(collabPanel.reviewThreads[1].isResolved).to.equal(true);
-      expect(collabPanel.noteThreads[0].isArchived).to.equal(true);
-
-      await percySnapshot(this.test);
-    });
+    await percySnapshot(context.test);
   }
 
   function _expectConfirmDialogShowingAndSideEffects(button) {
@@ -263,61 +260,71 @@ describe('Acceptance: Build', function() {
       server.create('commentThread', 'withTenComments', 'note', {
         snapshot: defaultSnapshot,
       });
-
-      await BuildPage.visitBuild(urlParams);
     });
 
-    displaysCommentsOnFirstSnapshot();
-    createsCommentReplyOnFirstSnapshot();
-    closesCommentThreadOnFirstSnapshot();
+    it('displays correctly with many comments', async function() {
+      await BuildPage.visitBuild(urlParams);
+      await displaysCommentsOnFirstSnapshot(this);
+    });
+    it('can create a new comment reply', async function() {
+      await BuildPage.visitBuild(urlParams);
+      await createsCommentReplyOnFirstSnapshot();
+    });
+    it('can close comment threads', async function() {
+      await BuildPage.visitBuild(urlParams);
+      await closesCommentThreadOnFirstSnapshot(this);
+    });
 
     it('can create a new comment thread', async function() {
+      withVariation(this.owner, 'request-changes', true);
+      await BuildPage.visitBuild(urlParams);
       const secondSnapshot = BuildPage.snapshots[1];
-
       await secondSnapshot.header.toggleCommentSidebar();
       await secondSnapshot.collaborationPanel.newComment.typeNewComment('wow, what a great thread');
       await secondSnapshot.collaborationPanel.newComment.mentionableTextarea.selectFirstUser(
         `${secondSnapshot.collaborationPanel.newComment.scope} textarea`,
       );
+      await secondSnapshot.collaborationPanel.newComment.checkRequestChangesBox();
 
       await secondSnapshot.collaborationPanel.newComment.submitNewThread();
 
       expect(secondSnapshot.commentThreads.length).to.equal(1);
       expect(secondSnapshot.header.numOpenCommentThreads).to.equal('1');
+      expect(secondSnapshot.collaborationPanel.commentThreads[0].isRejectBadgeVisible).to.equal(
+        true,
+      );
+      expect(secondSnapshot.collaborationPanel.commentThreads[0].wasRejectedPreviously).to.equal(
+        false,
+      );
+      expect(secondSnapshot.isRejected).to.equal(true);
 
       let request = server.pretender.handledRequests.find(request => {
         return request.url.includes('comments');
       });
       const taggedUser = JSON.parse(request.requestBody).data.relationships['tagged-users'].data[0];
       expect(taggedUser.id).to.equal('1');
+      expect(server.db.snapshots.find(twoWidthsSnapshot.id).reviewState).to.equal(
+        SNAPSHOT_REJECTED_STATE,
+      );
 
       await percySnapshot(this.test);
     });
 
-    it('can close comment threads', async function() {
+    it('displays previously rejected comment threads', async function() {
+      const originatingSnapshotPartialUrl = 'the/best/url';
+
+      withVariation(this.owner, 'request-changes', true);
+      server.create('commentThread', 'withTwoComments', {
+        snapshot: twoWidthsSnapshot,
+        originatingSnapshotPartialUrl,
+      });
       await BuildPage.visitBuild(urlParams);
-      const firstSnapshot = BuildPage.snapshots[0];
-      const collabPanel = firstSnapshot.collaborationPanel;
 
-      expect(firstSnapshot.header.numOpenCommentThreads).to.equal('3');
-      expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
-      expect(collabPanel.reviewThreads[1].isResolved).to.equal(false);
-      expect(collabPanel.noteThreads[0].isArchived).to.equal(false);
-
-      await collabPanel.reviewThreads[0].close();
-
-      // Comment threads are ordered with open threads first and closed threads second.
-      // Since we have just closed one of the open threads, it has moved under the open threads.
-      expect(firstSnapshot.header.numOpenCommentThreads).to.equal('2');
-      expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
-      expect(collabPanel.reviewThreads[1].isResolved).to.equal(true);
-      expect(collabPanel.noteThreads[0].isArchived).to.equal(false);
-
-      await collabPanel.noteThreads[0].close();
-      expect(firstSnapshot.header.numOpenCommentThreads).to.equal('1');
-      expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
-      expect(collabPanel.reviewThreads[1].isResolved).to.equal(true);
-      expect(collabPanel.noteThreads[0].isArchived).to.equal(true);
+      const secondSnapshot = BuildPage.snapshots[1];
+      const firstCommentThread = secondSnapshot.collaborationPanel.commentThreads[0];
+      expect(firstCommentThread.isRejectBadgeVisible).to.equal(true);
+      expect(firstCommentThread.wasRejectedPreviously).to.equal(true);
+      expect(firstCommentThread.previousBuildHref).to.equal(originatingSnapshotPartialUrl);
 
       await percySnapshot(this.test);
     });
@@ -495,9 +502,15 @@ describe('Acceptance: Build', function() {
         await BuildPage.visitBuild(urlParams);
       });
 
-      displaysCommentsOnFirstSnapshot();
-      createsCommentReplyOnFirstSnapshot();
-      closesCommentThreadOnFirstSnapshot();
+      it('displays correctly with many comments', async function() {
+        await displaysCommentsOnFirstSnapshot(this);
+      });
+      it('can create a new comment reply', async function() {
+        await createsCommentReplyOnFirstSnapshot();
+      });
+      it('can close comment threads', async function() {
+        await closesCommentThreadOnFirstSnapshot(this);
+      });
 
       it('can create a new comment thread', async function() {
         const firstSnapshot = BuildPage.snapshots[0];
@@ -618,7 +631,6 @@ describe('Acceptance: Build', function() {
     });
   });
 
-  // TODO: test number of snapshots, expanded, actionable status for all
   it('shows build overview info dropdown', async function() {
     await BuildPage.visitBuild(urlParams);
     await BuildPage.toggleBuildInfoDropdown();
@@ -787,12 +799,15 @@ describe('Acceptance: Build', function() {
     const firstSnapshot = BuildPage.snapshots.objectAt(0);
 
     expect(server.db.reviews.length).to.equal(0);
+    expect(firstSnapshot.commentThreads.length).to.equal(0);
     await firstSnapshot.clickReject();
 
     const snapshotReview = server.db.reviews.find(1);
     expect(snapshotReview.action).to.equal('rejected');
     expect(snapshotReview.buildId).to.equal(build.id);
     expect(snapshotReview.snapshotIds).to.eql([defaultSnapshot.id]);
+
+    expect(firstSnapshot.commentThreads.length).to.equal(1);
     await percySnapshot(this.test);
   });
 
@@ -1037,6 +1052,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     withVariation(this.owner, 'request-changes', true);
     await BuildPage.visitFullPageSnapshot(urlParams);
     expect(server.db.reviews.length).to.equal(0);
+    expect(BuildPage.snapshotFullscreen.commentThreads.length).to.equal(0);
 
     await BuildPage.snapshotFullscreen.clickReject();
     expect(server.db.reviews.length).to.equal(1);
@@ -1048,6 +1064,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
 
     expect(snapshot.reviewState).to.equal('rejected');
     expect(snapshot.reviewStateReason).to.equal('user_rejected');
+    expect(BuildPage.snapshotFullscreen.commentThreads.length).to.equal(1);
     await percySnapshot(this.test);
   });
 

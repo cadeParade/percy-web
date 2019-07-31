@@ -21,6 +21,17 @@ export default Component.extend({
     return moment(this.comment.createdAt).fromNow();
   }),
 
+  isOnOriginatingSnapshot: computed(
+    'commentThread.{originatingSnapshotId,snapshot.id}',
+    function() {
+      const threadSnapshot = this.commentThread.snapshot;
+      const originatingSnapshotId = this.commentThread.originatingSnapshotId;
+      if (threadSnapshot.id && originatingSnapshotId) {
+        return originatingSnapshotId.toString() !== threadSnapshot.id;
+      }
+    },
+  ),
+
   actions: {
     async closeCommentThread() {
       const commentThread = this.comment.commentThread;
