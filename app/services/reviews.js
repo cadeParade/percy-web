@@ -1,9 +1,11 @@
 import Service from '@ember/service';
 import {inject as service} from '@ember/service';
+import {Promise} from 'rsvp';
 
 export default Service.extend({
   store: service(),
   analytics: service(),
+  snapshotQuery: service(),
 
   async createApprovalReview(build, snapshots, eventData) {
     const review = this.get('store').createRecord('review', {
@@ -26,8 +28,11 @@ export default Service.extend({
 
   async _saveReview(review, build, eventData) {
     await review.save();
-    const refreshedBuild = await build.reload();
-    await refreshedBuild.get('snapshots').reload();
+
+    const refreshedBuild = build.reload();
+    const refreshedSnapshots = this.snapshotQuery.getChangedSnapshots(build);
+
+    await Promise.all([refreshedBuild, refreshedSnapshots]);
 
     if (eventData && eventData.title) {
       this._trackEventData(eventData, build);
