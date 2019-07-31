@@ -169,6 +169,13 @@
 
 
         <div class="btn-group" data-test-snapshot-approval-button>
+          {{#if (and (variation 'request-changes') snapshot.isUnreviewed)}}
+            {{snapshot-reject-button
+              snapshots=(array snapshot)
+              isDisabled=(not isBuildApprovable)
+            }}
+          {{/if}}
+
           {{demo-tooltip
             build=snapshot.build
             isFirstInstance=(eq index 0)

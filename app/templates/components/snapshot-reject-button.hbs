@@ -1,0 +1,8 @@
+<button
+  class="btn mr-1 text-orange-500 {{if isLoading is-loading}}"
+  {{action 'rejectSnapshots'}}
+  disabled="{{if isDisabled "disabled"}}"
+  data-test-snapshot-reject-button
+>
+  Request changes
+</button>

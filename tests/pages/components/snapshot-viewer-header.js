@@ -1,6 +1,7 @@
 import {
   create,
   clickable,
+  is,
   isVisible,
   hasClass,
   text,
@@ -31,6 +32,7 @@ const SELECTORS = {
   APPROVAL_BUTTON_SCOPE: '[data-test-snapshot-approval-button]',
   TOGGLE_COMMENT_SIDEBAR: '[data-test-toggle-comment-sidebar]',
   OPEN_COMMENT_THREAD_COUNT: '[data-test-comment-thread-count]',
+  SNAPSHOT_REJECT_BUTTON: '[data-test-snapshot-reject-button]',
 };
 
 export const SnapshotViewerHeader = {
@@ -97,6 +99,10 @@ export const SnapshotViewerHeader = {
   isApproved: alias('snapshotApprovalButton.isApproved'),
   isUnapproved: alias('snapshotApprovalButton.isUnapproved'),
   isUnchanged: alias('snapshotApprovalButton.isUnchanged'),
+
+  clickReject: clickable(SELECTORS.SNAPSHOT_REJECT_BUTTON),
+  isRejectButtonPresent: isPresent(SELECTORS.SNAPSHOT_REJECT_BUTTON),
+  isRejectButtonDisabled: is(':disabled', SELECTORS.SNAPSHOT_REJECT_BUTTON),
 
   isBaseComparisonModeButtonVisible: isVisible(SELECTORS.COMPARISON_MODE_SWITCHER_BASE),
   isDiffComparisonModeButtonVisible: isVisible(SELECTORS.COMPARISON_MODE_SWITCHER_DIFF),

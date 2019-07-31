@@ -341,14 +341,16 @@ export default function() {
   this.post('/reviews', function(schema) {
     const attrs = this.normalizedRequestAttrs();
     const snapshots = schema.snapshots.find(attrs.snapshotIds);
+    const reviewState = attrs.action === 'approve' ? 'approved' : 'rejected';
+    const reviewStateReason = attrs.action === 'approve' ? 'user_approved' : 'user_rejected';
     snapshots.models.forEach(snapshot => {
-      snapshot.update({reviewState: 'approved', reviewStateReason: 'user_approved'});
+      snapshot.update({reviewState, reviewStateReason});
     });
 
     return schema.reviews.create({
       buildId: attrs.buildId,
       snapshotIds: attrs.snapshotIds,
-      action: 'approve',
+      action: attrs.action,
     });
   });
 

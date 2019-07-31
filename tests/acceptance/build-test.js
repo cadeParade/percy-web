@@ -11,6 +11,7 @@ import {BUILD_STATES} from 'percy-web/models/build';
 import {SNAPSHOT_APPROVED_STATE, SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 import BuildPage from 'percy-web/tests/pages/build-page';
 import ProjectPage from 'percy-web/tests/pages/project-page';
+import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Acceptance: Build', function() {
   freezeMoment('2018-05-22');
@@ -71,6 +72,16 @@ describe('Acceptance: Build', function() {
     });
   }
 
+  function _expectConfirmDialogShowingAndSideEffects(button) {
+    expect(BuildPage.isConfirmDialogVisible).to.equal(true);
+    expect(button['isLoading']).to.equal(true);
+  }
+
+  function _expectConfirmDialogHiddenAndSideEffects(button) {
+    expect(BuildPage.isConfirmDialogVisible).to.equal(false);
+    expect(button['isLoading']).to.equal(false);
+  }
+
   setupAcceptance();
 
   let project;
@@ -82,6 +93,8 @@ describe('Acceptance: Build', function() {
   let urlParams;
 
   setupSession(function(server) {
+    withVariation(this.owner, 'request-changes', false);
+
     const organization = server.create('organization', 'withUser');
     project = server.create('project', {name: 'project-with-finished-build', organization});
     build = server.create('build', {
@@ -315,23 +328,19 @@ describe('Acceptance: Build', function() {
       const firstSnapshot = BuildPage.snapshots[0];
 
       await firstSnapshot.clickApprove();
-      expect(BuildPage.confirmDialog.isVisible).to.equal(true);
-      expect(firstSnapshot.approveButton.isLoading).to.equal(true);
-      expect(firstSnapshot.approveButton.isVisible).to.equal(true);
+      _expectConfirmDialogShowingAndSideEffects(firstSnapshot.approveButton);
+      expect(firstSnapshot.isApproved).to.equal(false);
       await percySnapshot(this.test);
 
       // it acts correctly when you click "Cancel"
       await BuildPage.confirmDialog.cancel.click();
+      _expectConfirmDialogHiddenAndSideEffects(firstSnapshot.approveButton);
       expect(firstSnapshot.isApproved).to.equal(false);
-      expect(BuildPage.confirmDialog.isVisible).to.equal(false);
-      expect(firstSnapshot.approveButton.isLoading).to.equal(false);
-      expect(firstSnapshot.approveButton.isVisible).to.equal(true);
 
       // it acts correctly when you click "Confirm"
       await firstSnapshot.clickApprove();
       await BuildPage.confirmDialog.confirm.click();
-      expect(BuildPage.confirmDialog.isVisible).to.equal(false);
-      expect(firstSnapshot.approveButton.isVisible).to.equal(false);
+      expect(BuildPage.isConfirmDialogVisible).to.equal(false);
       expect(firstSnapshot.isApproved).to.equal(true);
     });
 
@@ -340,27 +349,25 @@ describe('Acceptance: Build', function() {
       await BuildPage.visitBuild(urlParams);
 
       await BuildPage.buildApprovalButton.clickButton();
-      expect(BuildPage.confirmDialog.isVisible).to.equal(true);
-      expect(BuildPage.buildApprovalButton.isLoading).to.equal(true);
+      _expectConfirmDialogShowingAndSideEffects(BuildPage.buildApprovalButton);
       expect(BuildPage.buildApprovalButton.isApproved).to.equal(false);
 
       // it acts correctly when you click "Cancel"
       await BuildPage.confirmDialog.cancel.click();
-      expect(BuildPage.confirmDialog.isVisible).to.equal(false);
-      expect(BuildPage.buildApprovalButton.isLoading).to.equal(false);
+      _expectConfirmDialogHiddenAndSideEffects(BuildPage.buildApprovalButton);
       expect(BuildPage.buildApprovalButton.isApproved).to.equal(false);
 
       // it acts correctly when you click "Confirm"
       await BuildPage.buildApprovalButton.clickButton();
       await BuildPage.confirmDialog.confirm.click();
-      expect(BuildPage.confirmDialog.isVisible).to.equal(false);
+      _expectConfirmDialogHiddenAndSideEffects(BuildPage.buildApprovalButton);
       BuildPage.snapshots.forEach(snapshot => {
         expect(snapshot.isApproved).to.equal(true);
       });
     });
   });
 
-  describe('when a build is in a public project', function() {
+  describe('when a build is in a public project and user is not a member', function() {
     let publicOrg;
     let publicProject;
     let publicBuild;
@@ -374,14 +381,29 @@ describe('Acceptance: Build', function() {
       });
     });
 
-    it('does not display comment reply boxes', async function() {
+    it('disables appropriate elements', async function() {
+      withVariation(this.owner, 'request-changes', true);
       await BuildPage.visitBuild({
         orgSlug: publicOrg.slug,
         projectSlug: publicProject.slug,
         buildId: publicBuild.id,
       });
 
+      // Does not show comment reply textareas.
       expect(BuildPage.snapshots[0].commentThreads[0].reply.isVisible).to.equal(false);
+
+      // Disables "Request changes" buttons
+      expect(
+        BuildPage.snapshots.toArray().every(snapshot => snapshot.header.isRejectButtonDisabled),
+      ).to.equal(true);
+
+      // Disables "Approve" buttons
+      expect(
+        BuildPage.snapshots
+          .toArray()
+          .every(snapshot => snapshot.header.snapshotApprovalButton.isDisabled),
+      ).to.equal(true);
+
       await percySnapshot(this.test.fullTitle());
     });
   });
@@ -529,6 +551,49 @@ describe('Acceptance: Build', function() {
         expect(BuildPage.confirmDialog.isVisible).to.equal(false);
         expect(firstGroup.isApproved).to.equal(true);
       });
+    });
+
+    it('rejects all snapshots in a group', async function() {
+      withVariation(this.owner, 'request-changes', true);
+      await BuildPage.visitBuild(urlParams);
+      const firstGroup = BuildPage.snapshotBlocks[0].snapshotGroup;
+      expect(server.db.reviews.length).to.equal(0);
+
+      await firstGroup.reject();
+
+      const review = server.db.reviews.firstObject;
+      expect(server.db.reviews.length).to.equal(1);
+      expect(review.action).to.equal('rejected');
+      expect(review.snapshotIds.length).to.equal(3);
+      expect(review.snapshotIds).to.eql(unapprovedSnapshots.mapBy('id'));
+
+      await percySnapshot(this.test);
+    });
+
+    it('blocks approval of group when any of its snapshots are rejected', async function() {
+      withVariation(this.owner, 'request-changes', true);
+      await BuildPage.visitBuild(urlParams);
+      const firstGroup = BuildPage.snapshotBlocks[0].snapshotGroup;
+
+      // Reject a snapshot so we can approve the group.
+      await firstGroup.header.toggleShowAllSnapshots();
+      await BuildPage.rejectFirstSnapshot();
+      expect(server.db.reviews.length).to.equal(1);
+
+      await firstGroup.approve();
+      _expectConfirmDialogShowingAndSideEffects(firstGroup.approveButton);
+
+      // it acts correctly when you click "Cancel"
+      await BuildPage.cancelConfirm();
+      expect(firstGroup.isApproved).to.equal(false);
+      _expectConfirmDialogHiddenAndSideEffects(firstGroup.approveButton);
+      expect(server.db.reviews.length).to.equal(1);
+
+      // it acts correctly when you click "Confirm"
+      await firstGroup.approve();
+      await BuildPage.continueConfirm();
+      expect(firstGroup.isApproved).to.equal(true);
+      expect(server.db.reviews.length).to.equal(2);
     });
 
     it('shows first snapshot in fullscreen view', async function() {
@@ -716,6 +781,74 @@ describe('Acceptance: Build', function() {
     ]);
   });
 
+  it('creates a rejected review object when clicking "Request changes"', async function() {
+    withVariation(this.owner, 'request-changes', true);
+    await BuildPage.visitBuild(urlParams);
+    const firstSnapshot = BuildPage.snapshots.objectAt(0);
+
+    expect(server.db.reviews.length).to.equal(0);
+    await firstSnapshot.clickReject();
+
+    const snapshotReview = server.db.reviews.find(1);
+    expect(snapshotReview.action).to.equal('rejected');
+    expect(snapshotReview.buildId).to.equal(build.id);
+    expect(snapshotReview.snapshotIds).to.eql([defaultSnapshot.id]);
+    await percySnapshot(this.test);
+  });
+
+  it('blocks approval of snapshot when snapshot is rejected', async function() {
+    withVariation(this.owner, 'request-changes', true);
+    await BuildPage.visitBuild(urlParams);
+    const firstSnapshot = BuildPage.snapshots[0];
+
+    // Reject a snapshot so we can approve it.
+    await BuildPage.rejectFirstSnapshot();
+    expect(server.db.reviews.length).to.equal(1);
+
+    await BuildPage.approveFirstSnapshot();
+    _expectConfirmDialogShowingAndSideEffects(firstSnapshot.approveButton);
+
+    // it acts correctly when you click "Cancel"
+    await BuildPage.cancelConfirm();
+    expect(BuildPage.isFirstSnapshotApproved).to.equal(false);
+    _expectConfirmDialogHiddenAndSideEffects(firstSnapshot.approveButton);
+    expect(server.db.reviews.length).to.equal(1);
+
+    // it acts correctly when you click "Confirm"
+    await BuildPage.approveFirstSnapshot();
+    await BuildPage.continueConfirm();
+    expect(BuildPage.isConfirmDialogVisible).to.equal(false);
+    expect(BuildPage.isFirstSnapshotApproved).to.equal(true);
+    expect(server.db.reviews.length).to.equal(2);
+  });
+
+  it('blocks approval of build when any of its snapshots are rejected', async function() {
+    withVariation(this.owner, 'request-changes', true);
+    await BuildPage.visitBuild(urlParams);
+    const secondSnapshot = BuildPage.snapshots.objectAt(1);
+
+    // Reject some snapshots so we can approve the build.
+    await BuildPage.rejectFirstSnapshot();
+    expect(server.db.reviews.length).to.equal(1);
+    await secondSnapshot.clickReject();
+    expect(server.db.reviews.length).to.equal(2);
+
+    await BuildPage.approve();
+    _expectConfirmDialogShowingAndSideEffects(BuildPage.buildApprovalButton);
+
+    // it acts correctly when you click "Cancel"
+    await BuildPage.cancelConfirm();
+    expect(BuildPage.isFirstSnapshotApproved).to.equal(false);
+    _expectConfirmDialogHiddenAndSideEffects(BuildPage.buildApprovalButton);
+    expect(server.db.reviews.length).to.equal(2);
+
+    // it acts correctly when you click "Confirm"
+    await BuildPage.approve();
+    await BuildPage.continueConfirm();
+    _expectConfirmDialogHiddenAndSideEffects(BuildPage.buildApprovalButton);
+    expect(server.db.reviews.length).to.equal(3);
+  });
+
   it('reloads snapshots after build approval', async function() {
     const stub = sinon.stub();
 
@@ -744,6 +877,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   let build;
 
   setupSession(function(server) {
+    withVariation(this.owner, 'request-changes', false);
     const organization = server.create('organization', 'withUser');
     project = server.create('project', {name: 'project-with-finished-build', organization});
     build = server.create('build', {
@@ -894,6 +1028,27 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     expect(snapshotReview.action).to.equal('approve');
     expect(snapshotReview.buildId).to.equal(build.id);
     expect(snapshotReview.snapshotIds).to.eql([snapshot.id]);
+
+    expect(snapshot.reviewState).to.equal('approved');
+    expect(snapshot.reviewStateReason).to.equal('user_approved');
+  });
+
+  it('creates a rejected review object when clicking "Request changes"', async function() {
+    withVariation(this.owner, 'request-changes', true);
+    await BuildPage.visitFullPageSnapshot(urlParams);
+    expect(server.db.reviews.length).to.equal(0);
+
+    await BuildPage.snapshotFullscreen.clickReject();
+    expect(server.db.reviews.length).to.equal(1);
+
+    const snapshotReview = server.db.reviews.find(1);
+    expect(snapshotReview.action).to.equal('rejected');
+    expect(snapshotReview.buildId).to.equal(build.id);
+    expect(snapshotReview.snapshotIds).to.eql([snapshot.id]);
+
+    expect(snapshot.reviewState).to.equal('rejected');
+    expect(snapshot.reviewStateReason).to.equal('user_rejected');
+    await percySnapshot(this.test);
   });
 
   it('redirects to allowed browser when a browser query param is incorrect', async function() {
@@ -995,7 +1150,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     });
   });
 
-  describe('when a build is in a public project', function() {
+  describe('when a build is in a public project and user is not a member', function() {
     let publicOrg;
     let publicProject;
     let publicBuild;
@@ -1009,7 +1164,9 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       });
     });
 
-    it('does not display comment reply boxes', async function() {
+    it('disables appropriate elements', async function() {
+      withVariation(this.owner, 'request-changes', true);
+
       const snapshot = publicBuild.snapshots.models[0];
       const urlParams = {
         orgSlug: publicOrg.slug,
@@ -1023,6 +1180,8 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       await BuildPage.visitFullPageSnapshot(urlParams);
 
       expect(BuildPage.snapshotFullscreen.commentThreads[0].reply.isVisible).to.equal(false);
+      expect(BuildPage.snapshotFullscreen.header.isRejectButtonDisabled).to.equal(true);
+      expect(BuildPage.snapshotFullscreen.header.snapshotApprovalButton.isDisabled).to.equal(true);
       await percySnapshot(this.test.fullTitle());
     });
   });

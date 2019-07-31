@@ -5,25 +5,42 @@ export default Service.extend({
   store: service(),
   analytics: service(),
 
-  createApprovalReview(build, snapshots, eventData) {
+  async createApprovalReview(build, snapshots, eventData) {
     const review = this.get('store').createRecord('review', {
       build,
       snapshots,
       action: 'approve',
     });
-    return review.save().then(() => {
-      return build.reload().then(build => {
-        build.get('snapshots').reload();
+    return await this._saveReview(review, build, eventData);
+  },
 
-        if (eventData && eventData.title) {
-          this.get('analytics').track(
-            eventData.title,
-            build.get('project.organization'),
-            eventData.properties,
-          );
-        }
-        return true;
-      });
+  async createRejectReview(build, snapshots, eventData) {
+    const review = this.get('store').createRecord('review', {
+      build,
+      snapshots,
+      action: 'rejected',
     });
+
+    return await this._saveReview(review, build, eventData);
+  },
+
+  async _saveReview(review, build, eventData) {
+    await review.save();
+    const refreshedBuild = await build.reload();
+    await refreshedBuild.get('snapshots').reload();
+
+    if (eventData && eventData.title) {
+      this._trackEventData(eventData, build);
+    }
+
+    return true;
+  },
+
+  _trackEventData(eventData, build) {
+    this.get('analytics').track(
+      eventData.title,
+      build.get('project.organization'),
+      eventData.properties,
+    );
   },
 });

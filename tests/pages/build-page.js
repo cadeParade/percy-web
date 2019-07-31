@@ -25,6 +25,7 @@ const BuildPage = {
 
   browserSwitcher: BrowserSwitcher,
   buildApprovalButton: BuildApprovalButton,
+  approve: alias('buildApprovalButton.clickButton'),
   buildInfoDropdown: BuildInfoDropdown,
 
   toggleBuildInfoDropdown: alias('buildInfoDropdown.toggleBuildInfoDropdown'),
@@ -33,10 +34,25 @@ const BuildPage = {
   clickToggleNoDiffsSection: alias('snapshotList.clickToggleNoDiffsSection'),
 
   confirmDialog,
+  isConfirmDialogVisible: alias('confirmDialog.isVisible'),
+  cancelConfirm: alias('confirmDialog.cancel.click'),
+  continueConfirm: alias('confirmDialog.confirm.click'),
 
   snapshotList: SnapshotList,
   snapshots: alias('snapshotList.snapshots'),
   snapshotBlocks: alias('snapshotList.snapshotBlocks'),
+
+  isFirstSnapshotApproved: getter(function() {
+    return this.snapshots[0].isApproved;
+  }),
+
+  async approveFirstSnapshot() {
+    return await this.snapshots[0].clickApprove();
+  },
+
+  async rejectFirstSnapshot() {
+    return await this.snapshots[0].clickReject();
+  },
 
   snapshotTitles: getter(function() {
     return this.snapshots.map(snapshot => snapshot.name);
