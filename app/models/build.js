@@ -104,6 +104,7 @@ export default DS.Model.extend({
   totalComparisons: DS.attr('number'),
   totalComparisonsFinished: DS.attr('number'),
   totalComparisonsDiff: DS.attr('number'),
+  totalOpenComments: DS.attr('number'),
   buildCompletionPercent: computed(
     'totalComparisons',
     'totalComparisonsFinished',

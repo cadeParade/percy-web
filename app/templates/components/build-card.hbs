@@ -77,6 +77,18 @@
         {{/if}}
       </div>
     </div>
+    <div class="flex items-center justify-center">
+      {{#if (gt build.totalOpenComments 0)}}
+        <div class="relative">
+          <figure class="svg-container">
+            {{inline-svg "conversation-icon-purple"}}
+          </figure>
+          <div class="collaboration-conversation-count">
+            {{build.totalOpenComments}}
+          </div>
+        </div>
+      {{/if}}
+    </div>
     <div class="status-pill is-{{dasherize build.state}} is-{{if build.isFinished (dasherize build.reviewState)}} {{if (eq build.reviewStateReason 'no_diffs') 'is-unchanged'}}" data-test-build-state>{{build.buildStatusLabel}}</div>
   </div>
 </div>

@@ -11,6 +11,8 @@ export default Factory.extend({
   totalSnapshotsUnreviewed: 3,
   totalComparisonsDiff: 8,
   totalComparisonsFinished: 12,
+  totalOpenComments: 0,
+
   createdAt() {
     return moment();
   },

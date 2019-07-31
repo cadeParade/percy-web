@@ -377,6 +377,7 @@ describe('Acceptance: Project', function() {
         project,
         createdAt: _timeAgo(60, 'days'),
         buildNumber: 1,
+        totalOpenComments: 4,
       });
       server.create('build', 'expired', {
         project,
@@ -418,6 +419,7 @@ describe('Acceptance: Project', function() {
         project,
         createdAt: _timeAgo(4, 'minutes'),
         buildNumber: 9,
+        totalOpenComments: 10,
       });
       server.create('build', 'approvedWithNoDiffs', {
         project,

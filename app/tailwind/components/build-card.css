@@ -28,12 +28,13 @@
     "build"
     "details"
     "diffs"
+    "comments"
     "status";
 }
 
 @media screen and (min-width: 768px) {
   .build-card {
-    grid-template-areas: "build details diffs status";
-    grid-template-columns: 108px 4fr 180px 138px;
+    grid-template-areas: "build details diffs comments status";
+    grid-template-columns: 108px 5fr 158px 22px 130px;
   }
 }
