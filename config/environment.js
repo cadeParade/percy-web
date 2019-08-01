@@ -200,7 +200,6 @@ module.exports = function(environment) {
     };
     ENV.launchDarkly.local = true;
     ENV.launchDarkly.localFeatureFlags = {
-      'bitbucket-cloud-integration': false,
       'request-changes': false,
     };
 

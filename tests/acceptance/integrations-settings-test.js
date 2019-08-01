@@ -3,14 +3,9 @@ import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page
 import {beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import {currentRouteName} from '@ember/test-helpers';
-import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Acceptance: Integrations Settings Page', function() {
   setupAcceptance();
-
-  beforeEach(function() {
-    withVariation(this.owner, 'bitbucket-cloud-integration', true);
-  });
 
   describe('with a non-admin user', function() {
     let organization;

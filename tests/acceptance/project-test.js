@@ -13,7 +13,6 @@ import UserMenu from 'percy-web/tests/pages/components/user-menu';
 import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
 import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
 import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
-import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Acceptance: Project', function() {
   setupAcceptance();
@@ -163,7 +162,6 @@ describe('Acceptance: Project', function() {
       });
 
       it('navigates to SCM integration setups', async function() {
-        withVariation(this.owner, 'bitbucket-cloud-integration', true);
         async function visitProjectIntegrations() {
           return await ProjectSettingsPage.visitProjectIntegrations({
             orgSlug: organization.slug,

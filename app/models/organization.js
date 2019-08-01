@@ -12,11 +12,7 @@ import {
   uniq,
 } from '@ember/object/computed';
 import DS from 'ember-data';
-import {
-  INTEGRATION_TYPES,
-  BITBUCKET_CLOUD_INTEGRATION_TYPE,
-  SLACK_INTEGRATION_TYPE,
-} from 'percy-web/lib/integration-types';
+import {INTEGRATION_TYPES, SLACK_INTEGRATION_TYPE} from 'percy-web/lib/integration-types';
 import {inject as service} from '@ember/service';
 
 const DISPLAY_NAMES = {
@@ -99,16 +95,10 @@ export default DS.Model.extend({
   isIntegrated: or('isVersionControlIntegrated', 'isSlackIntegrated'),
   isSlackIntegrated: gt('slackIntegrations.length', 0),
   isNotSlackIntegrated: not('isSlackIntegrated'),
-  isBitbucketCloudAllowed: computed(function() {
-    return this.get('launchDarkly').variation('bitbucket-cloud-integration');
-  }),
   availableIntegrations: computed('versionControlIntegrations.[]', function() {
     let integrations = [];
     for (const key of Object.keys(INTEGRATION_TYPES)) {
       let item = INTEGRATION_TYPES[key];
-      if (key == BITBUCKET_CLOUD_INTEGRATION_TYPE && !this.get('isBitbucketCloudAllowed')) {
-        continue;
-      }
       if (key == SLACK_INTEGRATION_TYPE) {
         continue;
       }
