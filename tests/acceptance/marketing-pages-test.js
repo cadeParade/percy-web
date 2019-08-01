@@ -74,7 +74,7 @@ describe('Acceptance: Marketing pages', function() {
       });
       it('can select enterprise plan', async function() {
         await click(cardCtas[1]);
-        expect(currentRouteName()).to.equal('schedule-demo');
+        expect(currentRouteName()).to.equal('enterprise');
       });
     });
 
