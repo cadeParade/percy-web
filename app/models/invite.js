@@ -18,6 +18,6 @@ export default DS.Model.extend({
   // Only for creation:
   emails: DS.attr(),
   roleTitle: computed('role', function() {
-    return ROLE_ID_TO_TITLE[this.get('role')];
+    return ROLE_ID_TO_TITLE[this.role];
   }),
 });

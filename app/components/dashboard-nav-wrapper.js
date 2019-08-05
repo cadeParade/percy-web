@@ -10,6 +10,6 @@ export default Component.extend({
     // hide the button if the url contains 'organizations'
     // that means we are not in the <org>/<project> namespace, we are
     // in the org settings and the 'new project' button should not show
-    return !this.get('router.currentURL').includes('organizations') && this.get('showMemberLinks');
+    return !this.router.currentURL.includes('organizations') && this.showMemberLinks;
   }),
 });

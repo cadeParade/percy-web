@@ -52,7 +52,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
       slackIntegrationConfig
         .destroyRecord()
         .then(() => {
-          this.get('flashMessages').success(
+          this.flashMessages.success(
             `Successfully removed project configuration from your ${
               slackIntegration.channelName
             } Slack integration`,
@@ -63,7 +63,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
           );
         })
         .catch(() => {
-          this.get('flashMessages').danger(
+          this.flashMessages.danger(
             'There was a problem deleting this integration.' +
               ' Please try again or contact customer support.',
           );

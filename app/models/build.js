@@ -40,7 +40,7 @@ export default DS.Model.extend({
 
   buildNumber: DS.attr('number'),
   buildTitle: computed('buildNumber', function() {
-    return `Build #${this.get('buildNumber')}`;
+    return `Build #${this.buildNumber}`;
   }),
   branch: DS.attr(),
   browsers: DS.hasMany('browser', {async: false}),
@@ -55,7 +55,7 @@ export default DS.Model.extend({
   isExpired: equal('state', BUILD_STATES.EXPIRED),
   failureReason: DS.attr(),
   failureReasonHumanized: computed('failureReason', function() {
-    let failureReason = this.get('failureReason');
+    let failureReason = this.failureReason;
     if (failureReason === 'missing_resources') {
       return 'Missing resources';
     } else if (failureReason === 'no_snapshots') {
@@ -110,36 +110,36 @@ export default DS.Model.extend({
     'totalComparisonsFinished',
     'isProcessing',
     function() {
-      const totalComparisons = this.get('totalComparisons') || 0;
+      const totalComparisons = this.totalComparisons || 0;
 
       // Make sure that if totalComparisons returns 0 that we're not dividing against it
-      if (!this.get('isProcessing') || totalComparisons === 0) {
+      if (!this.isProcessing || totalComparisons === 0) {
         return 0;
       }
 
-      const totalComparisonsFinished = this.get('totalComparisonsFinished') || 0;
+      const totalComparisonsFinished = this.totalComparisonsFinished || 0;
       return (totalComparisonsFinished / totalComparisons) * 100;
     },
   ),
   hasDiffs: computed('totalComparisonsDiff', 'isFinished', function() {
     // Only have the chance to return true if the build is finished.
-    if (!this.get('isFinished')) {
+    if (!this.isFinished) {
       return false;
     }
 
-    return this.get('totalComparisonsDiff') > 0;
+    return this.totalComparisonsDiff > 0;
   }),
 
   buildStatusLabel: computed('state', 'reviewState', function() {
-    if (this.get('isPending')) {
+    if (this.isPending) {
       return PENDING_LABEL;
-    } else if (this.get('isProcessing')) {
+    } else if (this.isProcessing) {
       return PROCESSING_LABEL;
-    } else if (this.get('isFinished')) {
-      if (this.get('isApproved')) {
-        if (this.get('reviewStateReason') === 'no_diffs') {
+    } else if (this.isFinished) {
+      if (this.isApproved) {
+        if (this.reviewStateReason === 'no_diffs') {
           return NO_DIFFS_LABEL;
-        } else if (this.get('reviewStateReason') === 'auto_approved_branch') {
+        } else if (this.reviewStateReason === 'auto_approved_branch') {
           return AUTO_APPROVED_BRANCH_LABEL;
         } else {
           return APPROVED_LABEL;
@@ -149,9 +149,9 @@ export default DS.Model.extend({
       } else if (this.get('isRejected')) {
         return REJECTED_LABEL;
       }
-    } else if (this.get('isFailed')) {
+    } else if (this.isFailed) {
       return FAILED_LABEL;
-    } else if (this.get('isExpired')) {
+    } else if (this.isExpired) {
       return EXPIRED_LABEL;
     }
   }),
@@ -161,7 +161,7 @@ export default DS.Model.extend({
   snapshots: DS.hasMany('snapshot', {async: true}),
 
   comparisons: computed('snapshots', function() {
-    return this.get('snapshots').reduce((acc, snapshot) => {
+    return this.snapshots.reduce((acc, snapshot) => {
       return acc.concat(snapshot.get('comparisons').toArray());
     }, []);
   }),
@@ -189,32 +189,32 @@ export default DS.Model.extend({
   userAgent: DS.attr(),
 
   duration: computed('finishedAt', 'createdAt', function() {
-    var finished = this.get('finishedAt');
+    var finished = this.finishedAt;
     if (!finished) {
       finished = moment();
     }
-    var started = this.get('createdAt');
+    var started = this.createdAt;
     var milliseconds = moment(finished).diff(started);
     return moment.duration(milliseconds);
   }),
 
   // Convenience methods for accessing common methods in templates.
   durationHours: computed('duration', function() {
-    return this.get('duration').hours();
+    return this.duration.hours();
   }),
   durationMinutes: computed('duration', function() {
-    return this.get('duration').minutes();
+    return this.duration.minutes();
   }),
   durationSeconds: computed('duration', function() {
-    return this.get('duration').seconds();
+    return this.duration.seconds();
   }),
 
   reloadAll() {
-    return this.store.findRecord('build', this.get('id'), {reload: true});
+    return this.store.findRecord('build', this.id, {reload: true});
   },
 
   browsersUpgraded: computed('browsers.[]', 'baseBuild.browsers.[]', function() {
-    const headBuildBrowsers = this.get('browsers') || [];
+    const headBuildBrowsers = this.browsers || [];
     const baseBuildBrowsers = this.get('baseBuild.browsers') || [];
     const browsersUpgraded = [];
     headBuildBrowsers.forEach(headBrowser => {
@@ -231,9 +231,7 @@ export default DS.Model.extend({
 
   loadedSnapshots: computed('snapshots.@each.build', function() {
     // Get snapshots without making new request
-    return this.get('store')
-      .peekAll('snapshot')
-      .filterBy('build.id', this.get('id'));
+    return this.store.peekAll('snapshot').filterBy('build.id', this.id);
   }),
 
   // Returns Ember Object with a property for each browser for the build,
@@ -244,14 +242,14 @@ export default DS.Model.extend({
     'loadedSnapshots.@each.{isUnreviewed,isUnchanged}',
     'browsers.[]',
     function() {
-      const loadedSnapshotsForBuild = this.get('loadedSnapshots');
+      const loadedSnapshotsForBuild = this.loadedSnapshots;
       const unreviewedSnapshotsWithDiffs = loadedSnapshotsForBuild.reduce((acc, snapshot) => {
         if (snapshot.get('isUnreviewed') && !snapshot.get('isUnchanged')) {
           acc.push(snapshot);
         }
         return acc;
       }, []);
-      return countDiffsWithSnapshotsPerBrowser(unreviewedSnapshotsWithDiffs, this.get('browsers'));
+      return countDiffsWithSnapshotsPerBrowser(unreviewedSnapshotsWithDiffs, this.browsers);
     },
   ),
 });

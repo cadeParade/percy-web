@@ -20,7 +20,7 @@ export default Component.extend({
 
   canDisplayTooltip: or('cannotAddSeats', 'isMember'),
   tooltipText: computed('cannotAddSeats', 'isMember', function() {
-    if (this.get('isMember')) {
+    if (this.isMember) {
       return 'Only admins can invite new users';
     } else {
       return 'No seats remaining';
@@ -29,7 +29,7 @@ export default Component.extend({
 
   actions: {
     showSupport() {
-      this.get('intercom').showIntercom();
+      this.intercom.showIntercom();
     },
   },
 });

@@ -18,15 +18,15 @@ export default Component.extend({
   },
 
   matchingComparison: computed('comparisons', 'width', function() {
-    let comparisons = this.get('comparisons') || [];
-    return comparisons.findBy('width', this.get('width'));
+    let comparisons = this.comparisons || [];
+    return comparisons.findBy('width', this.width);
   }),
 
   isSelected: computed('selectedWidth', 'width', function() {
-    return parseInt(this.get('selectedWidth'), 10) === this.get('width');
+    return parseInt(this.selectedWidth, 10) === this.width;
   }),
 
   click() {
-    this.get('updateSelectedWidth')(this.get('width'));
+    this.updateSelectedWidth(this.width);
   },
 });

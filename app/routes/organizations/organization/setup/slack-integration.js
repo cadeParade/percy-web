@@ -21,20 +21,15 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
     // The 'access_denied' error happens if someone cancels out of authorizing Slack
     if (params.error === 'access_denied') {
-      return this.replaceWith(
-        'organizations.organization.integrations.slack',
-        organization.get('slug'),
-      );
+      return this.replaceWith('organizations.organization.integrations.slack', organization.slug);
     }
     // This handles any other error
     if (params.error) {
-      this.replaceWith('organizations.organization.integrations.slack', organization.get('slug'));
-      return this.get('flashMessages').danger(
-        `There was a problem connecting to Slack: ${params.error}`,
-      );
+      this.replaceWith('organizations.organization.integrations.slack', organization.slug);
+      return this.flashMessages.danger(`There was a problem connecting to Slack: ${params.error}`);
     }
 
-    const newIntegration = this.get('store').createRecord('slack-integration', {
+    const newIntegration = this.store.createRecord('slack-integration', {
       code: params.code,
       state: params.state,
       organization: organization,
@@ -44,7 +39,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
         organization.reload().then(() => {
           this.replaceWith(
             'organizations.organization.integrations.slack.slack-config',
-            organization.get('slug'),
+            organization.slug,
             newIntegration.id,
             'new',
           );
@@ -52,8 +47,8 @@ export default Route.extend(AuthenticatedRouteMixin, {
       },
       error => {
         newIntegration.rollbackAttributes();
-        this.replaceWith('organizations.organization.integrations.slack', organization.get('slug'));
-        this.get('flashMessages').danger(`There was a problem connecting to Slack: ${error}`);
+        this.replaceWith('organizations.organization.integrations.slack', organization.slug);
+        this.flashMessages.danger(`There was a problem connecting to Slack: ${error}`);
       },
     );
   },

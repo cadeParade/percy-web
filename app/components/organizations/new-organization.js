@@ -17,21 +17,21 @@ export default Component.extend(EnsureStatefulLogin, {
 
   currentUser: computed.alias('session.currentUser'),
   githubIdentity: computed('userIdentities.@each.isGithubIdentity', function() {
-    return this.get('userIdentities').findBy('isGithubIdentity');
+    return this.userIdentities.findBy('isGithubIdentity');
   }),
   hasGithubIdentity: bool('githubIdentity'),
   isGithubPurchase: equal('newOrganization.billingProvider', 'github_marketplace'),
 
   needsGithubIdentity: computed('isGithubPurchase', 'hasGithubIdentity', function() {
     // false if not guthub purchase or github purchase without connected github account
-    return this.get('isGithubPurchase') && !this.get('hasGithubIdentity');
+    return this.isGithubPurchase && !this.hasGithubIdentity;
   }),
 
   isFirstOrganization: empty('organizationsForUser'),
 
   actions: {
     connectGithub() {
-      this.showConnectToGithubPurchaseModal(this.get('githubMarketplacePlanId'));
+      this.showConnectToGithubPurchaseModal(this.githubMarketplacePlanId);
     },
   },
 });

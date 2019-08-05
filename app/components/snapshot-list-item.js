@@ -118,7 +118,7 @@ export default Component.extend(InViewportMixin, {
       state: isDiffOverlayShowing ? 'on' : 'off',
       source: 'clicked_overlay',
     };
-    this.get('analytics').track('Diff Toggled', organization, eventProperties);
+    this.analytics.track('Diff Toggled', organization, eventProperties);
   },
 
   actions: {

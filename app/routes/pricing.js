@@ -3,7 +3,7 @@ import metaTagLookup from 'percy-web/lib/meta-tags';
 
 export default Route.extend({
   model() {
-    return this.get('store').queryRecord('marketing-page', {
+    return this.store.queryRecord('marketing-page', {
       'fields.pageName': 'Pricing-v2',
     });
   },

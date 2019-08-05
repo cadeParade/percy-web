@@ -22,29 +22,29 @@ export default BaseFormComponent.extend({
 
   slackNotificationOptions: SLACK_NOTIFICATION_OPTIONS,
   selectedProject: computed('projectOptions', 'changeset.projectId', function() {
-    return selectedProjectOption(this.get('projectOptions'), this.get('changeset.projectId'));
+    return selectedProjectOption(this.projectOptions, this.get('changeset.projectId'));
   }),
 
   willDestroyElement() {
     // Don't leave an unsaved new project model in the store.
-    this.get('model').rollbackAttributes();
+    this.model.rollbackAttributes();
   },
 
   actions: {
     selectProject(project) {
-      this.get('changeset').set('projectId', project.id);
+      this.changeset.set('projectId', project.id);
     },
 
     customSave() {
-      const changeset = this.get('changeset');
+      const changeset = this.changeset;
       if (changeset.get('projectId') === ALL_PROJECTS_ID) {
-        this.get('changeset').set('projectId', null);
+        this.changeset.set('projectId', null);
       }
       this.send('save');
     },
 
     deleteSlackIntegrationConfig() {
-      this.get('deleteSlackIntegrationConfig')(this.get('slackIntegrationConfig'));
+      this.deleteSlackIntegrationConfig(this.slackIntegrationConfig);
     },
   },
 });

@@ -18,35 +18,35 @@ export default Component.extend({
 
   actions: {
     next() {
-      this.get('carosel').next();
+      this.carosel.next();
       this._setCurrentSlide();
       this._clearInterval();
     },
 
     previous() {
-      this.get('carosel').prev();
+      this.carosel.prev();
       this._setCurrentSlide();
       this._clearInterval();
     },
 
     switchToSlide(index) {
-      this.get('carosel').goTo(index);
+      this.carosel.goTo(index);
       this._setCurrentSlide();
       this._clearInterval();
     },
   },
 
   _setCurrentSlide() {
-    this.set('currentSlide', this.get('carosel').currentSlide);
+    this.set('currentSlide', this.carosel.currentSlide);
   },
 
   _autoAdvanceSlide() {
-    const intervalId = setInterval(() => this.get('carosel').next(), 10000);
+    const intervalId = setInterval(() => this.carosel.next(), 10000);
     this.set('intervalId', intervalId);
   },
 
   _clearInterval() {
-    clearInterval(this.get('intervalId'));
+    clearInterval(this.intervalId);
   },
 
   willDestroyElement() {

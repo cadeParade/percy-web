@@ -13,10 +13,10 @@ export default Component.extend({
   isAdmin: readOnly('organization.currentUserIsAdmin'),
   actions: {
     onCopyInviteUrlToClipboard() {
-      this.get('flashMessages').success('Invite URL was copied to your clipboard');
+      this.flashMessages.success('Invite URL was copied to your clipboard');
     },
     cancelInvite() {
-      const invite = this.get('invite');
+      const invite = this.invite;
       const orgId = this.get('organization.id');
       const confirmationMessage = `Are you sure you want to cancel the invitation to
         ${invite.email}?`;
@@ -27,16 +27,16 @@ export default Component.extend({
       invite
         .destroyRecord()
         .then(() => {
-          this.get('flashMessages').success(`The invitation to ${invite.email} has been cancelled`);
+          this.flashMessages.success(`The invitation to ${invite.email} has been cancelled`);
         })
         .catch(() => {
-          this.get('flashMessages').danger(
+          this.flashMessages.danger(
             `There was a problem cancelling the invitation to ${invite.email}.` +
               ' Please try again or contact customer support.',
           );
         })
         .finally(() => {
-          this.get('store').findRecord('organization', orgId, {reload: true});
+          this.store.findRecord('organization', orgId, {reload: true});
         });
     },
   },

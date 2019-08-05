@@ -38,7 +38,7 @@ export default Route.extend(AuthenticatedRouteMixin, ResetScrollMixin, {
         webhookConfig.id,
       );
 
-      this.get('flashMessages').success('Webhook configuration saved');
+      this.flashMessages.success('Webhook configuration saved');
     },
 
     willTransition() {

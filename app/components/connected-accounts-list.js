@@ -10,10 +10,10 @@ export default Component.extend(EnsureStatefulLogin, {
     accountCreated() {
       this.set('showCreateAccount', false);
 
-      this.get('flashMessages').success('You may now login using this account.', {
+      this.flashMessages.success('You may now login using this account.', {
         title: 'Email/password account created!',
       });
-      this.get('identities').reload();
+      this.identities.reload();
     },
     addIdentity(providerName) {
       if (providerName === 'auth0') {
@@ -23,7 +23,7 @@ export default Component.extend(EnsureStatefulLogin, {
       }
     },
     deleteIdentity(identityId) {
-      const identity = this.get('store').peekRecord('identity', identityId);
+      const identity = this.store.peekRecord('identity', identityId);
 
       let identityProvider = identity.get('provider');
       if (identityProvider === 'auth0') {
@@ -40,12 +40,12 @@ export default Component.extend(EnsureStatefulLogin, {
       identity
         .destroyRecord()
         .then(() => {
-          this.get('flashMessages').success(
+          this.flashMessages.success(
             `Your ${identityProvider} account has been disconnected from Percy`,
           );
         })
         .catch(() => {
-          this.get('flashMessages').danger(
+          this.flashMessages.danger(
             'There was a problem disconnecting your account.' +
               ' Please try again or contact customer support.',
           );

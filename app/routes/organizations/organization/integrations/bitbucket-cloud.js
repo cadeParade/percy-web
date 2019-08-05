@@ -10,12 +10,12 @@ export default Route.extend(AuthenticatedRouteMixin, {
   async beforeModel() {
     // If we don't force reload user on this page,
     // we don't get the associated Identities
-    return await this.get('session').forceReloadUser();
+    return await this.session.forceReloadUser();
   },
 
   actions: {
     deleteBitbucketCloud(bitbucketCloudIntegration) {
-      let store = this.get('store');
+      let store = this.store;
       const confirmMessage = 'Are you sure you want to remove the Bitbucket Cloud integration?';
       if (utils.confirmMessage(confirmMessage)) {
         // Delete the record on the server

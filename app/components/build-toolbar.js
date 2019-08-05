@@ -9,11 +9,11 @@ export default Component.extend({
 
   actions: {
     toggleOverlay() {
-      this.get('toggleAllDiffs')({trackSource: 'clicked_toggle'});
+      this.toggleAllDiffs({trackSource: 'clicked_toggle'});
     },
     switchBrowsers(newBrowser) {
       window.scrollTo(0, 0);
-      this.get('updateActiveBrowser')(newBrowser);
+      this.updateActiveBrowser(newBrowser);
     },
   },
 });

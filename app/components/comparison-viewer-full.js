@@ -15,9 +15,9 @@ export default Component.extend({
   diffImage: reads('comparison.diffImage'),
   baseImage: reads('comparison.baseScreenshot.image'),
   click() {
-    if (!this.get('comparison') || this.get('comparison.wasAdded')) {
+    if (!this.comparison || this.comparison.wasAdded) {
       return;
     }
-    this.get('cycleComparisonMode')(KEYS.RIGHT_ARROW);
+    this.cycleComparisonMode(KEYS.RIGHT_ARROW);
   },
 });

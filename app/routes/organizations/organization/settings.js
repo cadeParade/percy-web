@@ -24,12 +24,12 @@ export default Route.extend(AuthenticatedRouteMixin, {
     organizationUpdated(organization) {
       // If an organization slug changes, reload the entire application
       // to prevent odd bugs, since we rely on the org slug for basically everything.
-      const destinationUrl = this.get('router').urlFor('organization', organization.get('slug'));
+      const destinationUrl = this.router.urlFor('organization', organization.get('slug'));
       window.location.href = destinationUrl;
     },
 
     redirectToRecentProjectSettings() {
-      this.get('redirects').redirectToRecentProjectForOrg(this.modelFor(this.routeName), {
+      this.redirects.redirectToRecentProjectForOrg(this.modelFor(this.routeName), {
         goToSettings: true,
       });
     },

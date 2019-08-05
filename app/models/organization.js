@@ -40,27 +40,27 @@ export default DS.Model.extend({
   bitbucketCloudIntegration: computed(
     'versionControlIntegrations.@each.bitbucketCloudIntegrationId',
     function() {
-      return this.get('versionControlIntegrations').findBy('isBitbucketCloudIntegration');
+      return this.versionControlIntegrations.findBy('isBitbucketCloudIntegration');
     },
   ),
 
   githubIntegration: computed('versionControlIntegrations.@each.githubIntegrationId', function() {
-    return this.get('versionControlIntegrations').findBy('isGithubIntegration');
+    return this.versionControlIntegrations.findBy('isGithubIntegration');
   }),
 
   githubEnterpriseIntegration: computed(
     'versionControlIntegrations.@each.githubEnterpriseIntegrationId',
     function() {
-      return this.get('versionControlIntegrations').findBy('githubEnterpriseIntegrationId');
+      return this.versionControlIntegrations.findBy('githubEnterpriseIntegrationId');
     },
   ),
 
   gitlabIntegration: computed('versionControlIntegrations.@each.gitlabIntegrationId', function() {
-    return this.get('versionControlIntegrations').findBy('gitlabIntegrationId');
+    return this.versionControlIntegrations.findBy('gitlabIntegrationId');
   }),
 
   gitlabSelfHostedIntegration: computed('versionControlIntegrations.@each.gitlabHost', function() {
-    return this.get('versionControlIntegrations').findBy('gitlabHost');
+    return this.versionControlIntegrations.findBy('gitlabHost');
   }),
 
   githubIntegrationRequest: DS.belongsTo('github-integration-request', {
@@ -110,7 +110,7 @@ export default DS.Model.extend({
   }),
 
   githubAuthMechanism: computed('githubIntegration', function() {
-    if (this.get('githubIntegration')) {
+    if (this.githubIntegration) {
       return 'github-integration';
     }
     return 'no-access';
@@ -149,7 +149,7 @@ export default DS.Model.extend({
     'uniqueRepoSources.[]',
     function() {
       const groups = [];
-      this.get('uniqueRepoSources').forEach(source => {
+      this.uniqueRepoSources.forEach(source => {
         if (source) {
           const displayName = source.camelize();
           const reposForGroup = this.get(`${displayName}Repos`);

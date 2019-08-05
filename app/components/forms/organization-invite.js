@@ -14,10 +14,10 @@ export default BaseFormComponent.extend({
   // Due to how invites work, we need to reset the model manually after each submission so
   // that we don't get stuck trying to update an old model (which is just a dumb response wrapper).
   newModel() {
-    return this.get('store').createRecord('invite', {
+    return this.store.createRecord('invite', {
       emails: '',
       role: null,
-      organization: this.get('organization'),
+      organization: this.organization,
     });
   },
   model: computed('organization', 'store', function() {
@@ -34,8 +34,8 @@ export default BaseFormComponent.extend({
       this.set('errorMessage', null);
       promise.then(
         () => {
-          this.get('store').query('invite', {organization: this.get('organization')});
-          this.get('router').transitionTo(
+          this.store.query('invite', {organization: this.organization});
+          this.router.transitionTo(
             'organizations.organization.users',
             this.get('organization.slug'),
           );

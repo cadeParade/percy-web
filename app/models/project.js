@@ -31,6 +31,6 @@ export default DS.Model.extend({
   projectBrowserTargets: DS.hasMany('projectBrowserTargets', {async: false}),
 
   writeOnlyToken: computed('tokens', function() {
-    return this.get('tokens').findBy('role', 'write_only');
+    return this.tokens.findBy('role', 'write_only');
   }),
 });

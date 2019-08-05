@@ -71,9 +71,9 @@ export default Route.extend(ResetScrollMixin, {
       this._super.apply(this, arguments);
 
       // show the query param regardless of how the route was navigated to
-      this.controller.set('noBuilds', this.get('hasNoBuilds'));
+      this.controller.set('noBuilds', this.hasNoBuilds);
 
-      if (window.Intercom && this.get('hasNoBuilds')) {
+      if (window.Intercom && this.hasNoBuilds) {
         // Wait a tick for the window's location to be updated with noBuilds=true param
         // then update Intercom with the new location so we can show pop-ups for no builds.
         next(() => {

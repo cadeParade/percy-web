@@ -34,7 +34,7 @@ export default Component.extend(PollingMixin, {
   },
 
   builds: computed('project.id', 'isRefreshing', 'infinityBuilds._loadingMore', function() {
-    const builds = this.get('store').peekAll('build');
+    const builds = this.store.peekAll('build');
 
     const filteredBuilds = builds.filter(item => {
       return item.get('project.id') === this.get('project.id');
@@ -45,7 +45,7 @@ export default Component.extend(PollingMixin, {
 
   selectedBranch: allBranchesString,
   projectBranches: computed('builds.@each.branch', function() {
-    const allBranches = this.get('builds').mapBy('branch');
+    const allBranches = this.builds.mapBy('branch');
     const uniqueBranches = Array.from(new Set(allBranches));
     return [allBranchesString].concat(uniqueBranches);
   }),
@@ -55,10 +55,10 @@ export default Component.extend(PollingMixin, {
     'selectedBranch',
     'projectBranches.[]',
     function() {
-      if (this.get('selectedBranch') === allBranchesString) {
-        return this.get('builds');
+      if (this.selectedBranch === allBranchesString) {
+        return this.builds;
       }
-      return this.get('builds').filterBy('branch', this.get('selectedBranch'));
+      return this.builds.filterBy('branch', this.selectedBranch);
     },
   ),
 
@@ -70,12 +70,12 @@ export default Component.extend(PollingMixin, {
 
   async _refresh() {
     this.set('isRefreshing', true);
-    const project = await this.get('project').reload();
-    const buildCount = this.get('buildsLimit');
+    const project = await this.project.reload();
+    const buildCount = this.buildsLimit;
 
     // reload the builds by querying the api with a limit, otherwise running
     // builds.reload() here hits the api without a limit and returns 100 builds
-    await this.get('store').query('build', {project: project, 'page[limit]': buildCount});
+    await this.store.query('build', {project: project, 'page[limit]': buildCount});
 
     if (!this.isDestroyed) {
       this.set('isRefreshing', false);

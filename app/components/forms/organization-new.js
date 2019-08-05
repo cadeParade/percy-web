@@ -26,17 +26,17 @@ export default BaseFormComponent.extend({
     'isEmailInvalid',
     'hasOnlyGithubIdentity',
     function() {
-      const hasOnlyGithubIdentity = this.get('hasOnlyGithubIdentity');
-      if (this.get('isFirstOrganization') && hasOnlyGithubIdentity) {
-        return this.get('isOrgInvalid') || this.get('isEmailInvalid');
+      const hasOnlyGithubIdentity = this.hasOnlyGithubIdentity;
+      if (this.isFirstOrganization && hasOnlyGithubIdentity) {
+        return this.isOrgInvalid || this.isEmailInvalid;
       } else {
-        return this.get('isOrgInvalid');
+        return this.isOrgInvalid;
       }
     },
   ),
 
   hasOnlyGithubIdentity: computed('userIdentities.@each.provider', function() {
-    const userIdentities = this.get('userIdentities');
+    const userIdentities = this.userIdentities;
     const githubIdentity = userIdentities.findBy('isGithubIdentity');
     const auth0Identity = userIdentities.findBy('isAuth0Identity');
     return !!(githubIdentity && !auth0Identity);
@@ -49,7 +49,7 @@ export default BaseFormComponent.extend({
     const validator = UserEmailValidations;
     // Set this to nothing temporarily so we can get a new email address from them.
     this.set('currentUser.email', ''); // eslint-disable-line
-    return new Changeset(this.get('currentUser'), lookupValidator(validator), validator);
+    return new Changeset(this.currentUser, lookupValidator(validator), validator);
   }),
 
   _lastButtonClicked: null,
@@ -67,13 +67,13 @@ export default BaseFormComponent.extend({
     // This calls save on forms/base.js, which this component inherits from.
     this.send('save', {isDemoRequest});
     // If there's an email field, also save that.
-    if (this.get('isFirstOrganization')) {
+    if (this.isFirstOrganization) {
       try {
         const newEmail = this.get('userChangeset.email');
-        await this.get('userChangeset').save();
-        this.get('flashMessages').success(`Check ${newEmail} to verify it!`);
+        await this.userChangeset.save();
+        this.flashMessages.success(`Check ${newEmail} to verify it!`);
       } catch (e) {
-        this.get('flashMessages').danger(`There was a problem updating your email: ${e}`);
+        this.flashMessages.danger(`There was a problem updating your email: ${e}`);
       }
     }
   },

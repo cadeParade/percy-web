@@ -13,16 +13,14 @@ export default Auth0UrlHash.extend({
     // and frontend sessions stay in sync, we explicitly logout to prevent viewing a page in a mixed
     // state where the frontend ember-simple-auth session has expired but the API session has not.
     return this._super(...arguments).catch(error => {
-      this.get('raven').captureException(error);
+      this.raven.captureException(error);
 
       // replace the default code with duplicate code that adds query params for logging
       // this.get('session').invalidateAndLogout()
-      this.get('session')
-        .invalidate()
-        .then(() => {
-          this.get('session')._clearThirdPartyUserContext();
-          utils.replaceWindowLocation('/api/auth/logout?inconsistent-auth-state=true');
-        });
+      this.session.invalidate().then(() => {
+        this.session._clearThirdPartyUserContext();
+        utils.replaceWindowLocation('/api/auth/logout?inconsistent-auth-state=true');
+      });
 
       return reject();
     });

@@ -18,17 +18,17 @@ export default Component.extend({
   classNames: ['FormFieldsCheckboxSet'],
 
   propertyValue: computed('changeset.isPristine', function() {
-    return this.get(`changeset.${this.get('property')}`);
+    return this.get(`changeset.${this.property}`);
   }),
 
   fieldErrors: computed('changeset.error', function() {
-    return get(this.get('changeset.error'), this.get('property'));
+    return get(this.get('changeset.error'), this.property);
   }),
 
   actions: {
     updateValue(event) {
-      let property = `changeset.${this.get('property')}`;
-      let oldValue = this.changeset.get(this.get('property'));
+      let property = `changeset.${this.property}`;
+      let oldValue = this.changeset.get(this.property);
       let newValue;
 
       if (event.target.checked) {

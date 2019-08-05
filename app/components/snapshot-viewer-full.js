@@ -32,9 +32,9 @@ export default Component.extend(EKMixin, {
 
   filteredComparisons: computed('snapshot', 'activeBrowser', 'snapshotSelectedWidth', function() {
     return filteredComparisons.create({
-      snapshot: this.get('snapshot'),
-      activeBrowser: this.get('activeBrowser'),
-      snapshotSelectedWidth: this.get('snapshotSelectedWidth'),
+      snapshot: this.snapshot,
+      activeBrowser: this.activeBrowser,
+      snapshotSelectedWidth: this.snapshotSelectedWidth,
     });
   }),
   selectedComparison: alias('filteredComparisons.selectedComparison'),
@@ -42,7 +42,7 @@ export default Component.extend(EKMixin, {
   galleryMap: GALLERY_MAP,
 
   galleryIndex: computed('comparisonMode', function() {
-    return this.get('galleryMap').indexOf(this.get('comparisonMode'));
+    return this.galleryMap.indexOf(this.comparisonMode);
   }),
 
   init() {
@@ -53,17 +53,17 @@ export default Component.extend(EKMixin, {
   actions: {
     updateSelectedWidth(newWidth) {
       this.set('snapshotSelectedWidth', newWidth);
-      this.get('transitionRouteToWidth')(newWidth);
+      this.transitionRouteToWidth(newWidth);
     },
 
     cycleComparisonMode(keyCode) {
-      let galleryMap = this.get('galleryMap');
+      let galleryMap = this.galleryMap;
       let galleryLength = this.get('galleryMap.length');
       let directional = keyCode === KEYS.RIGHT_ARROW ? 1 : -1;
-      let galleryIndex = this.get('galleryIndex');
+      let galleryIndex = this.galleryIndex;
       let newIndex =
         (((galleryIndex + directional) % galleryLength) + galleryLength) % galleryLength;
-      this.get('updateComparisonMode')(galleryMap[newIndex]);
+      this.updateComparisonMode(galleryMap[newIndex]);
     },
 
     toggleCollaborationPanel() {
@@ -72,21 +72,21 @@ export default Component.extend(EKMixin, {
   },
 
   onEscKeyPress: on(keyDown('Escape'), function() {
-    this.get('closeSnapshotFullModal')();
+    this.closeSnapshotFullModal();
   }),
 
   onLeftRightArrowPress: on(keyDown('ArrowRight'), keyDown('ArrowLeft'), function(event) {
-    if (!this.get('selectedComparison') || this.get('selectedComparison.wasAdded')) {
+    if (!this.selectedComparison || this.get('selectedComparison.wasAdded')) {
       return;
     }
     this.send('cycleComparisonMode', event.keyCode);
   }),
 
   onUpArrowPress: on(keyDown('ArrowUp'), function() {
-    this.get('updateSnapshotId')({isNext: false});
+    this.updateSnapshotId({isNext: false});
   }),
 
   onDownArrowPress: on(keyDown('ArrowDown'), function() {
-    this.get('updateSnapshotId')({isNext: true});
+    this.updateSnapshotId({isNext: true});
   }),
 });

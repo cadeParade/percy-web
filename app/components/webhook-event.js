@@ -39,7 +39,7 @@ export default Component.extend({
 
   actions: {
     toggleOpen: function() {
-      this.set('isOpen', !this.get('isOpen'));
+      this.set('isOpen', !this.isOpen);
     },
 
     openTab: function(tab) {

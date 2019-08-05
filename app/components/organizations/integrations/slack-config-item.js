@@ -10,13 +10,13 @@ export default Component.extend({
 
   notificationTypes: alias('slackIntegrationConfig.notificationTypes'),
   notificationLabels: computed('notificationTypes', function() {
-    return this.get('notificationTypes').map(function(setting) {
+    return this.notificationTypes.map(function(setting) {
       return SLACK_NOTIFICATION_OPTIONS.findBy('value', setting).label;
     });
   }),
   projectName: computed('projectOptions', 'slackIntegrationConfig.projectId', function() {
     const selectedProject = selectedProjectOption(
-      this.get('projectOptions'),
+      this.projectOptions,
       this.get('slackIntegrationConfig.projectId'),
     );
     return selectedProject && selectedProject.name;

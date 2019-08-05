@@ -17,7 +17,7 @@ export default Component.extend({
   isAdmin: readOnly('organizationUser.organization.currentUserIsAdmin'),
 
   deleteNameText: computed(function() {
-    if (this.get('isCurrentUser')) {
+    if (this.isCurrentUser) {
       return 'yourself';
     } else {
       return this.get('organizationUser.user.name');
@@ -29,20 +29,20 @@ export default Component.extend({
 
   actions: {
     removeUser() {
-      const name = this.get('deleteNameText');
+      const name = this.deleteNameText;
       const organizationName = this.get('organizationUser.organization.name');
       const confirmationMessage = `Are you sure you want to remove ${name} from
         the ${organizationName} organization?`;
       if (!utils.confirmMessage(confirmationMessage)) {
         return;
       }
-      this.get('organizationUser').destroyRecord();
-      if (this.get('isCurrentUser')) {
-        this.get('router').transitionTo('default-org');
+      this.organizationUser.destroyRecord();
+      if (this.isCurrentUser) {
+        this.router.transitionTo('default-org');
       }
     },
     setRole(value) {
-      const organizationUser = this.get('organizationUser');
+      const organizationUser = this.organizationUser;
       organizationUser.set('role', value);
       organizationUser.save();
     },

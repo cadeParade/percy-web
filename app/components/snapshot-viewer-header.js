@@ -34,9 +34,9 @@ export default Component.extend({
 
   filteredComparisons: computed('snapshot', 'activeBrowser', 'snapshotSelectedWidth', function() {
     return filteredComparisons.create({
-      snapshot: this.get('snapshot'),
-      activeBrowser: this.get('activeBrowser'),
-      snapshotSelectedWidth: this.get('snapshotSelectedWidth'),
+      snapshot: this.snapshot,
+      activeBrowser: this.activeBrowser,
+      snapshotSelectedWidth: this.snapshotSelectedWidth,
     });
   }),
 
@@ -58,7 +58,7 @@ export default Component.extend({
 
   actions: {
     onCopySnapshotUrlToClipboard() {
-      this.get('flashMessages').success('Snapshot URL was copied to your clipboard');
+      this.flashMessages.success('Snapshot URL was copied to your clipboard');
     },
 
     toggleFilteredComparisons() {

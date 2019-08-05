@@ -11,7 +11,7 @@ export default Component.extend({
   session: service(),
   currentUser: alias('session.currentUser'),
   showWhenIntegrationEnabled: computed('isGithubEnterpriseIntegrated', function() {
-    return htmlSafe(!this.get('isGithubEnterpriseIntegrated') ? '' : 'display: none');
+    return htmlSafe(!this.isGithubEnterpriseIntegrated ? '' : 'display: none');
   }),
   isGithubEnterpriseIntegrated: alias('organization.isGithubEnterpriseIntegrated'),
 });

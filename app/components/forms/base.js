@@ -20,8 +20,8 @@ export default Component.extend({
 
   store: service(),
   changeset: computed('model', 'validator', function() {
-    let model = this.get('model');
-    let validator = this.get('validator') || {};
+    let model = this.model;
+    let validator = this.validator || {};
 
     return new Changeset(model, lookupValidator(validator), validator);
   }),
@@ -44,7 +44,7 @@ export default Component.extend({
           this.set('isSaveSuccessful', true);
           later(() => {
             trySet(this, 'isSaveSuccessful', null);
-          }, this.get('_successIndicatorTimeout'));
+          }, this._successIndicatorTimeout);
         },
         errors => {
           this.set('isSaving', false);
@@ -66,8 +66,8 @@ export default Component.extend({
     },
 
     save(options) {
-      let model = this.get('model');
-      let changeset = this.get('changeset');
+      let model = this.model;
+      let changeset = this.changeset;
 
       changeset.validate();
 
@@ -78,7 +78,7 @@ export default Component.extend({
         savingPromise
           .then(model => {
             // Bubble the successfully saved model upward, so the route can react to it.
-            this.get('saveSuccess')(model, options);
+            this.saveSuccess(model, options);
             changeset.rollback();
           })
           .catch(() => {
@@ -96,9 +96,9 @@ export default Component.extend({
       }
     },
     delete(confirmationMessage) {
-      let model = this.get('model');
-      let store = this.get('store');
-      let afterDeleteCallback = this.get('afterDelete');
+      let model = this.model;
+      let store = this.store;
+      let afterDeleteCallback = this.afterDelete;
       // Delete the record on the server
       // and remove the associated record from the store
       if (confirmationMessage && !utils.confirmMessage(confirmationMessage)) {

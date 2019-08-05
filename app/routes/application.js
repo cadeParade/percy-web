@@ -52,7 +52,7 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
   async _loadLaunchDarkly() {
     const anonUser = {key: 'anon', anonymous: true};
     try {
-      return this.get('launchDarkly').initialize(anonUser);
+      return this.launchDarkly.initialize(anonUser);
     } catch (e) {
       // If anything goes wrong with the launch darkly identification, don't crash the app,
       // just return a resolved promise so the app can keep loading.
@@ -71,18 +71,16 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
   },
 
   _loadCurrentUser() {
-    return this.get('session')
-      .loadCurrentUser()
-      .catch(() => {
-        return this._showLoginFailedFlashMessage();
-      });
+    return this.session.loadCurrentUser().catch(() => {
+      return this._showLoginFailedFlashMessage();
+    });
   },
 
   actions: {
     showSupport() {
       // This is necessary for some controller templates and the error template, but otherwise,
       // please import use the service locally.
-      this.get('intercom').showIntercom();
+      this.intercom.showIntercom();
     },
 
     showLoginModal() {
@@ -90,7 +88,7 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
     },
 
     logout() {
-      this.get('session').invalidateAndLogout();
+      this.session.invalidateAndLogout();
     },
 
     transitionTo(path) {
@@ -117,7 +115,7 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
     // See: https://github.com/damiencaselli/ember-cli-sentry/issues/105
     error(error) {
       if (this.get('raven.isRavenUsable')) {
-        this.get('raven').captureException(error);
+        this.raven.captureException(error);
       }
       return true; // Let the route above this handle the error.
     },
@@ -139,22 +137,22 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
     });
     if (redirectAddress) {
       if (redirectAddress === '/') {
-        this.get('redirects').redirectToDefaultOrganization();
+        this.redirects.redirectToDefaultOrganization();
       } else {
         localStorageProxy.removeItem(AUTH_REDIRECT_LOCALSTORAGE_KEY, {useSessionStorage: true});
         this.transitionTo(redirectAddress);
       }
     } else {
-      this.get('redirects').redirectToDefaultOrganization();
+      this.redirects.redirectToDefaultOrganization();
     }
   },
 
   activate() {
-    this.get('flashMessages').displayLocalStorageMessages();
+    this.flashMessages.displayLocalStorageMessages();
   },
 
   _showLoginFailedFlashMessage() {
-    this.get('flashMessages').createPersistentFlashMessage(
+    this.flashMessages.createPersistentFlashMessage(
       {
         type: 'danger',
         message:

@@ -15,7 +15,7 @@ export default Component.extend({
 
       // VERY IMPORTANT: pass the build id rather than the build object
       // in order to always activate the model hook in org.project.builds.build route
-      this.get('router').transitionTo(
+      this.router.transitionTo(
         'organization.project.builds.build',
         organizationSlug,
         projectSlug,

@@ -19,7 +19,7 @@ export default Component.extend(PollingMixin, {
       .then(orgs => {
         // Attempt to get the organization that matches the installationId
         // This may fail if we haven't received the webhook yet, or a fake param is used
-        let installationId = this.get('installationId');
+        let installationId = this.installationId;
         let organization = orgs.find(org => {
           return areInstallationIdsEqual(
             org.get('githubIntegration.githubInstallationId'),
@@ -28,7 +28,7 @@ export default Component.extend(PollingMixin, {
         });
 
         if (organization) {
-          this.get('afterAppInstalled')(organization);
+          this.afterAppInstalled(organization);
         }
       });
   },

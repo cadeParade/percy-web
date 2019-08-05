@@ -23,9 +23,9 @@ export default Route.extend(ResetScrollMixin, {
 
   setupController(controller, model) {
     this._super(...arguments);
-    const params = this.get('params');
+    const params = this.params;
     const build = this.modelFor('organization.project.builds.build').build;
-    const activeBrowser = this.get('store')
+    const activeBrowser = this.store
       .peekAll('browser')
       .findBy('familySlug', params.activeBrowserFamilySlug);
 
@@ -49,9 +49,9 @@ export default Route.extend(ResetScrollMixin, {
     if (!browser || !isBrowserForBuild) {
       const allowedBrowser = build.get('browsers.firstObject');
       this._updateActiveBrowser(allowedBrowser);
-      this.get('flashMessages').danger(
+      this.flashMessages.danger(
         `There are no comparisons for "${
-          this.get('params').activeBrowserFamilySlug
+          this.params.activeBrowserFamilySlug
         }" browser. Displaying comparisons for ${allowedBrowser.get('familyName')}.`,
       );
     } else {
@@ -74,7 +74,7 @@ export default Route.extend(ResetScrollMixin, {
       project_id: build.get('project.id'),
       project_slug: build.get('project.slug'),
       build_id: build.get('id'),
-      snapshot_id: this.get('params').snapshot_id,
+      snapshot_id: this.params.snapshot_id,
     };
     const organization = build.get('project.organization');
 
@@ -160,9 +160,9 @@ export default Route.extend(ResetScrollMixin, {
   _updateQueryParams(params) {
     const controller = this.controllerFor(this.routeName);
     const snapshot = this.modelFor(this.routeName).snapshot;
-    const comparisonMode = params.comparisonMode || controller.get('comparisonMode');
+    const comparisonMode = params.comparisonMode || controller.comparisonMode;
     const browser = params.newBrowserSlug || controller.get('activeBrowser.familySlug');
-    const width = params.newWidth || controller.get('snapshotSelectedWidth') || this.params.width;
+    const width = params.newWidth || controller.snapshotSelectedWidth || this.params.width;
 
     this.transitionTo(
       'organization.project.builds.build.snapshot',
@@ -182,7 +182,7 @@ export default Route.extend(ResetScrollMixin, {
     // This would happen when both (a) A user navigates directly to fullscreen view (via url) of an
     // unchanged snapshot AND (b) the build has NO changed snapshots.
     if (snapshots.length === 0) {
-      this.get('flashMessages').info(
+      this.flashMessages.info(
         "There's no other snapshots to navigate through." +
           'Try closing this screen (top right corner) and viewing the full build.',
       );
@@ -195,11 +195,11 @@ export default Route.extend(ResetScrollMixin, {
     // A user has navigated past the last snapshot
     if (nextSnapshotIndex > snapshots.length - 1 && isNext) {
       nextSnapshotIndex = 0;
-      this.get('flashMessages').info("You're now at the beginning.");
+      this.flashMessages.info("You're now at the beginning.");
       // A user has navigated to before the last snapshot
     } else if (nextSnapshotIndex < 0 && !isNext) {
       nextSnapshotIndex = snapshots.length - 1;
-      this.get('flashMessages').info("You're now at the end.");
+      this.flashMessages.info("You're now at the end.");
     }
 
     const nextSnapshot = snapshots[nextSnapshotIndex];

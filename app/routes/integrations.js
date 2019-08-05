@@ -5,7 +5,7 @@ export default Route.extend({
   headTags: metaTagLookup('integrations'),
 
   model() {
-    return this.get('store').queryRecord('marketing-page', {
+    return this.store.queryRecord('marketing-page', {
       'fields.pageName': 'Integrations',
     });
   },

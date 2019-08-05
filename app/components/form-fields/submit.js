@@ -13,11 +13,11 @@ export default Component.extend({
   classNames: ['FormFieldsSubmit'],
   actions: {
     perform() {
-      let confirmationMessage = this.get('confirmationMessage');
+      let confirmationMessage = this.confirmationMessage;
       if (confirmationMessage && !confirm(confirmationMessage)) {
         return;
       }
-      this.get('submit')();
+      this.submit();
     },
   },
 });

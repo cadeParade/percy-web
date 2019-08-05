@@ -12,7 +12,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
     connectSlackChannel() {
       const isAdmin = this.modelFor(this.routeName).get('currentUserIsAdmin');
       if (!isAdmin) {
-        return this.get('flashMessages').danger(
+        return this.flashMessages.danger(
           'Configuring Slack requires organization admin permissions.',
         );
       }
@@ -31,7 +31,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
           });
         })
         .fail(() => {
-          this.get('flashMessages').danger(
+          this.flashMessages.danger(
             'There was a problem starting the process of authenticating with Slack.' +
               ' Please try again or contact customer support.',
           );

@@ -4,7 +4,7 @@ import metaTagLookup from 'percy-web/lib/meta-tags';
 export default Route.extend({
   headTags: metaTagLookup('scheduleDemo'),
   model() {
-    return this.get('store').queryRecord('marketing-page', {
+    return this.store.queryRecord('marketing-page', {
       'fields.pageName': 'ScheduleDemo',
     });
   },

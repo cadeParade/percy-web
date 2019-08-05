@@ -8,12 +8,12 @@ export default Route.extend({
   beforeModel() {
     let message = utils.getQueryParam('message');
     if (message === 'duplicate_email') {
-      this.get('flashMessages').danger(
+      this.flashMessages.danger(
         'There was a problem with logging in. \
           The email you provided already exists.',
       );
     } else {
-      this.get('flashMessages').danger(
+      this.flashMessages.danger(
         'There was a problem with logging in. \
           Please try again or contact us if the issue does not resolve.',
       );

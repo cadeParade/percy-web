@@ -16,7 +16,7 @@ export default DS.Model.extend({
   }),
 
   hasEmailPasswordIdentity: computed('identities.@each.provider', function() {
-    return this.get('emailPasswordIdentity');
+    return this.emailPasswordIdentity;
   }),
 
   emailPasswordIdentity: computed('identities.@each.provider', function() {
@@ -33,7 +33,7 @@ export default DS.Model.extend({
 
   _hasIdentityType(provider) {
     return DS.PromiseObject.create({
-      promise: this.get('identities').then(identities => {
+      promise: this.identities.then(identities => {
         return identities.findBy('provider', provider);
       }),
     });

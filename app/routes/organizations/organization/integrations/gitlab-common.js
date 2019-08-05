@@ -53,7 +53,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
   _getIntegrationModelAttribute() {
     // returns the model attibute of the current integration type
-    const integrationInfo = INTEGRATION_TYPES[this.get('currentIntegrationType')];
+    const integrationInfo = INTEGRATION_TYPES[this.currentIntegrationType];
 
     return integrationInfo.organizationModelAttribute;
   },
@@ -66,7 +66,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
       currentGitlabIntegration = model.gitlabIntegration;
     } else {
       currentGitlabIntegration = this.store.createRecord('version-control-integration', {
-        integrationType: this.get('currentIntegrationType'),
+        integrationType: this.currentIntegrationType,
         organization: model.organization,
       });
     }

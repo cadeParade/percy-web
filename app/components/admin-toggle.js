@@ -14,7 +14,7 @@ export default Component.extend({
     toggleAdmin() {
       this.toggleProperty('isAdminEnabled');
 
-      if (this.get('isAdminEnabled')) {
+      if (this.isAdminEnabled) {
         AdminMode.setAdminMode();
       } else {
         AdminMode.clear();

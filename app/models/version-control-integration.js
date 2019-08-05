@@ -40,7 +40,7 @@ export default DS.Model.extend({
   isGitlabIntegration: equal('integrationType', GITLAB_INTEGRATION_TYPE),
   isGitlabSelfHostedIntegration: equal('integrationType', GITLAB_SELF_HOSTED_INTEGRATION_TYPE),
   friendlyName: computed('integrationType', function() {
-    let integrationType = this.get('integrationType');
+    let integrationType = this.integrationType;
     if (integrationType) {
       let integrationItem = INTEGRATION_TYPES[integrationType];
       if (integrationItem) {

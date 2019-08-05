@@ -17,15 +17,15 @@ export default BaseFormComponent.extend(EnsureStatefulLogin, {
 
   changeset: computed('model', 'validator', function() {
     // Model is not actually used as we have a custom save method
-    let model = this.get('model');
-    let validator = this.get('validator') || {};
+    let model = this.model;
+    let validator = this.validator || {};
 
     return new Changeset(model, lookupValidator(validator), validator);
   }),
 
   actions: {
     save() {
-      let changeset = this.get('changeset');
+      let changeset = this.changeset;
 
       changeset.validate();
 
@@ -46,7 +46,7 @@ export default BaseFormComponent.extend(EnsureStatefulLogin, {
             run(() => {
               this.set('isSaveSuccessful', true);
               this.set('isSaving', false);
-              this.get('saveSuccess')();
+              this.saveSuccess();
             });
           })
           .fail(response => {

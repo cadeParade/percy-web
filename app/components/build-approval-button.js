@@ -18,7 +18,7 @@ export default Component.extend({
 
   click() {
     if (this.get('build.isApproved')) {
-      this.get('flashMessages').info('This build was already approved');
+      this.flashMessages.info('This build was already approved');
       return;
     }
 
@@ -27,7 +27,7 @@ export default Component.extend({
     }
 
     this.set('isLoading', true);
-    this.get('createReview')(this.get('approvableSnapshots')).finally(() => {
+    this.createReview(this.approvableSnapshots).finally(() => {
       this.set('isLoading', false);
     });
   },

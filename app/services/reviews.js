@@ -8,7 +8,7 @@ export default Service.extend({
   snapshotQuery: service(),
 
   async createApprovalReview(build, snapshots, eventData) {
-    const review = this.get('store').createRecord('review', {
+    const review = this.store.createRecord('review', {
       build,
       snapshots,
       action: 'approve',

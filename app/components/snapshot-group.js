@@ -40,10 +40,10 @@ export default SnapshotListItem.extend({
     'unreviewedSnapshotsWithOpenCommentThreads',
     'displayCommentedSnapshsotsGroupCover',
     function() {
-      if (this.get('displayCommentedSnapshsotsGroupCover')) {
-        return this.get('unreviewedSnapshotsWithOpenCommentThreads');
+      if (this.displayCommentedSnapshsotsGroupCover) {
+        return this.unreviewedSnapshotsWithOpenCommentThreads;
       } else {
-        return this.get('snapshots');
+        return this.snapshots;
       }
     },
   ),
@@ -70,7 +70,7 @@ export default SnapshotListItem.extend({
     const build = get(this, 'build');
     this.toggleProperty('areAllSnapshotsExpanded');
     this.set('shouldOpenFirstCommentPanel', false);
-    this.get('analytics').track('Group Toggled', get(build, 'project.organization'), {
+    this.analytics.track('Group Toggled', get(build, 'project.organization'), {
       project_id: get(build, 'project.id'),
       build_id: get(build, 'id'),
       toggledTo: get(this, 'areAllSnapshotsExpanded') ? 'Open' : 'Collapsed',

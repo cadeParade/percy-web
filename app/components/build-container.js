@@ -23,24 +23,24 @@ export default Component.extend(PollingMixin, {
   allApprovableSnapshots: null,
 
   snapshotsChanged: computed('allChangedBrowserSnapshotsSorted', 'activeBrowser.id', function() {
-    if (!this.get('allChangedBrowserSnapshotsSorted')) return;
-    return this.get('allChangedBrowserSnapshotsSorted')[this.get('activeBrowser.id')];
+    if (!this.allChangedBrowserSnapshotsSorted) return;
+    return this.allChangedBrowserSnapshotsSorted[this.get('activeBrowser.id')];
   }),
 
   browserWithMostDiffs: computed('_browsers', 'allChangedBrowserSnapshotsSorted.[]', function() {
-    const snapshots = this.get('allChangedBrowserSnapshotsSorted');
+    const snapshots = this.allChangedBrowserSnapshotsSorted;
     if (!snapshots) {
       return;
     }
     const browserWithMostDiffsId = _browserWithMostUnreviewedDiffsId(snapshots);
-    return this.get('_browsers').findBy('id', browserWithMostDiffsId);
+    return this._browsers.findBy('id', browserWithMostDiffsId);
   }),
 
   _browsers: alias('build.browsers'),
 
   defaultBrowser: computed('_browsers', 'browserWithMostDiffs', function() {
-    const chromeBrowser = this.get('_browsers').findBy('familySlug', 'chrome');
-    const browserWithMostDiffs = this.get('browserWithMostDiffs');
+    const chromeBrowser = this._browsers.findBy('familySlug', 'chrome');
+    const browserWithMostDiffs = this.browserWithMostDiffs;
     if (browserWithMostDiffs) {
       return browserWithMostDiffs;
     } else if (chromeBrowser) {
@@ -56,43 +56,39 @@ export default Component.extend(PollingMixin, {
   shouldPollForUpdates: or('build.isPending', 'build.isProcessing'),
 
   pollRefresh() {
-    this.get('build')
-      .reload()
-      .then(build => {
-        if (build.get('isFinished')) {
-          this.set('isSnapshotsLoading', true);
-          const changedSnapshots = this.get('snapshotQuery').getChangedSnapshots(build);
-          changedSnapshots.then(() => {
-            this.get('initializeSnapshotOrdering')();
-          });
-        }
-      });
+    this.build.reload().then(build => {
+      if (build.get('isFinished')) {
+        this.set('isSnapshotsLoading', true);
+        const changedSnapshots = this.snapshotQuery.getChangedSnapshots(build);
+        changedSnapshots.then(() => {
+          this.initializeSnapshotOrdering();
+        });
+      }
+    });
   },
 
   _getLoadedSnapshots() {
     // Get snapshots without making new request
-    return this.get('store')
-      .peekAll('snapshot')
-      .filterBy('build.id', this.get('build.id'));
+    return this.store.peekAll('snapshot').filterBy('build.id', this.get('build.id'));
   },
 
   isUnchangedSnapshotsLoading: readOnly('_toggleUnchangedSnapshotsVisible.isRunning'),
 
   _toggleUnchangedSnapshotsVisible: task(function*() {
     let loadedSnapshots = this._getLoadedSnapshots();
-    yield this.get('snapshotQuery').getUnchangedSnapshots(this.get('build'));
+    yield this.snapshotQuery.getUnchangedSnapshots(this.build);
     loadedSnapshots = this._getLoadedSnapshots();
 
     const alreadyLoadedSnapshotsWithNoDiff = yield snapshotsWithNoDiffForBrowser(
       loadedSnapshots,
-      this.get('activeBrowser'),
+      this.activeBrowser,
     ).sortBy('isUnchanged');
 
     this.set('snapshotsUnchanged', alreadyLoadedSnapshotsWithNoDiff);
     this.toggleProperty('isUnchangedSnapshotsVisible');
     // Update property available from fullscreen snapshot route that there are some unchanged
     // snapshots in the store.
-    this.get('notifyOfUnchangedSnapshots')(alreadyLoadedSnapshotsWithNoDiff);
+    this.notifyOfUnchangedSnapshots(alreadyLoadedSnapshotsWithNoDiff);
   }),
 
   _resetUnchangedSnapshots() {
@@ -106,7 +102,7 @@ export default Component.extend(PollingMixin, {
   },
   actions: {
     showSnapshotFullModalTriggered(snapshotId, snapshotSelectedWidth, activeBrowser) {
-      this.get('openSnapshotFullModal')(snapshotId, snapshotSelectedWidth, activeBrowser);
+      this.openSnapshotFullModal(snapshotId, snapshotSelectedWidth, activeBrowser);
     },
 
     updateActiveBrowser(newBrowser) {
@@ -118,11 +114,11 @@ export default Component.extend(PollingMixin, {
         browser_family_slug: newBrowser.get('browserFamily.slug'),
         build_id: this.get('build.id'),
       };
-      this.get('analytics').track('Browser Switched', organization, eventProperties);
+      this.analytics.track('Browser Switched', organization, eventProperties);
     },
 
     toggleUnchangedSnapshotsVisible() {
-      this.get('_toggleUnchangedSnapshotsVisible').perform();
+      this._toggleUnchangedSnapshotsVisible.perform();
     },
 
     toggleAllDiffs(options = {}) {
@@ -132,16 +128,16 @@ export default Component.extend(PollingMixin, {
       const trackSource = options.trackSource;
       assert('invalid trackSource', ['clicked_toggle', 'keypress'].includes(trackSource));
 
-      const build = this.get('build');
+      const build = this.build;
       const organization = build.get('project.organization');
       const eventProperties = {
         project_id: build.get('project.id'),
         project_slug: build.get('project.slug'),
         build_id: build.get('id'),
-        state: this.get('allDiffsShown') ? 'on' : 'off',
+        state: this.allDiffsShown ? 'on' : 'off',
         source: trackSource,
       };
-      this.get('analytics').track('All Diffs Toggled', organization, eventProperties);
+      this.analytics.track('All Diffs Toggled', organization, eventProperties);
     },
   },
 });

@@ -1,4 +1,3 @@
-import {get} from '@ember/object';
 import {filterBy, notEmpty, or, readOnly} from '@ember/object/computed';
 import SnapshotListItem from 'percy-web/components/snapshot-list-item';
 import {inject as service} from '@ember/service';
@@ -28,7 +27,7 @@ export default SnapshotListItem.extend({
   actions: {
     toggleSnapshotOverlay() {
       this.toggleProperty('isSnapshotShowingDiffOverlay');
-      this.trackToggleOverlay(get(this, 'isSnapshotShowingDiffOverlay'));
+      this.trackToggleOverlay(this.isSnapshotShowingDiffOverlay);
     },
 
     toggleCollaborationPanel() {

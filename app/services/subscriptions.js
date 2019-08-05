@@ -8,7 +8,7 @@ export default Service.extend({
   changeSubscription(organization, planId, token) {
     // Always create a new POST request to change subscription, don't modify the subscription
     // object directly unless just changing attributes.
-    let subscription = this.get('store').createRecord('subscription', {
+    let subscription = this.store.createRecord('subscription', {
       organization: organization,
       billingEmail: organization.get('subscription.billingEmail'),
       plan: this._get_or_create_plan(planId),
@@ -28,7 +28,7 @@ export default Service.extend({
       const generalError =
         'A Stripe error occurred! Your card may have been declined. Please ' +
         'try again or contact us at support@percy.io and we will help you get set up.';
-      this.get('flashMessages').createPersistentFlashMessage(
+      this.flashMessages.createPersistentFlashMessage(
         {
           message: isQuotaError ? quotaError : generalError,
           type: 'danger',
@@ -40,9 +40,9 @@ export default Service.extend({
   }),
 
   _get_or_create_plan(planId) {
-    let plan = this.get('store').peekRecord('plan', planId);
+    let plan = this.store.peekRecord('plan', planId);
     if (!plan) {
-      plan = this.get('store').push({
+      plan = this.store.push({
         data: {
           id: planId,
           type: 'plan',

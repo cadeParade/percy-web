@@ -29,11 +29,9 @@ export default Route.extend({
     if (build && build.get('isFinished')) {
       controller.set('isSnapshotsLoading', true);
 
-      this.get('snapshotQuery')
-        .getChangedSnapshots(build)
-        .then(() => {
-          return this._initializeSnapshotOrdering();
-        });
+      this.snapshotQuery.getChangedSnapshots(build).then(() => {
+        return this._initializeSnapshotOrdering();
+      });
     }
   },
 
@@ -219,6 +217,6 @@ export default Route.extend({
   // rather than a PromiseObject.
   _getBuild() {
     const controller = this.controllerFor(this.routeName);
-    return controller.get('build');
+    return controller.build;
   },
 });

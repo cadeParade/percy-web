@@ -5,6 +5,6 @@ export default Component.extend({
   hash: null,
 
   isVisible: computed('hash', function() {
-    return '#' + this.get('hash') === location.hash;
+    return '#' + this.hash === location.hash;
   }),
 });

@@ -7,7 +7,7 @@ export default Component.extend({
   'data-test-browser-switcher': true,
   browsers: null,
   sortedBrowsers: computed('browsers.@each.familySlug', function() {
-    const browsers = this.get('browsers');
+    const browsers = this.browsers;
     const chromeBrowser = browsers.findBy('familySlug', 'chrome');
     const notChromeBrowsers = browsers.rejectBy('familySlug', 'chrome');
     return [chromeBrowser].concat(notChromeBrowsers);

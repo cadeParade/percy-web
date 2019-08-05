@@ -21,7 +21,7 @@ var EnsureStatefulLogin = Mixin.create({
 
   // Use this instead of calling `this.get('session').authenticate...` from your routes
   showLoginModalEnsuringState({onCloseDestinationRoute = null} = {}) {
-    if (this.get('_hasOpenedLoginModal')) {
+    if (this._hasOpenedLoginModal) {
       return resolve();
     }
     return this._getStateToken().then(stateToken => {
@@ -52,9 +52,9 @@ var EnsureStatefulLogin = Mixin.create({
     return new Promise((resolve, reject) => {
       // Despite the name of the method,
       // getAuth0LockInstance actually _creates_ an instance
-      const lock = this.get('auth0').getAuth0LockInstance(lockOptions);
+      const lock = this.auth0.getAuth0LockInstance(lockOptions);
 
-      this.get('auth0')._setupLock(lock, resolve, reject);
+      this.auth0._setupLock(lock, resolve, reject);
       this.set('session.lockInstance', lock);
 
       // all possible valid event hooks are listed here: http://bit.ly/2Btihk6
@@ -82,7 +82,7 @@ var EnsureStatefulLogin = Mixin.create({
   },
 
   _onPasswordResetSubmit() {
-    this.get('flashMessages').success("We've sent an email to the address you've entered.");
+    this.flashMessages.success("We've sent an email to the address you've entered.");
   },
 
   showSignUpModal({onCloseDestinationRoute = null} = {}) {
