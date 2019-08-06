@@ -28,7 +28,7 @@ export default Component.extend(EKMixin, {
 
   commentThreads: readOnly('snapshot.commentThreads'),
   openCommentThreads: filterBy('commentThreads', 'isOpen'),
-  isCommentPanelShowing: notEmpty('openCommentThreads'),
+  isCommentPanelShowing: notEmpty('commentThreads'),
 
   filteredComparisons: computed('snapshot', 'activeBrowser', 'snapshotSelectedWidth', function() {
     return filteredComparisons.create({

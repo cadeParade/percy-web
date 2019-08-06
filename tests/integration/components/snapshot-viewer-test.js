@@ -321,6 +321,15 @@ describe('Integration: SnapshotViewer', function() {
     });
 
     describe('panel toggling', function() {
+      async function expectToggleWorks({isOpenByDefault = true, context} = {}) {
+        await SnapshotViewer.header.toggleCommentSidebar();
+        expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(!isOpenByDefault);
+        await percySnapshot(context.test);
+
+        await SnapshotViewer.header.toggleCommentSidebar();
+        expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(isOpenByDefault);
+      }
+
       describe('when there are no comments', function() {
         beforeEach(async function() {
           await this.render(hbs`{{snapshot-viewer
@@ -341,12 +350,7 @@ describe('Integration: SnapshotViewer', function() {
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function() {
-          await SnapshotViewer.header.toggleCommentSidebar();
-          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
-          await percySnapshot(this.test);
-
-          await SnapshotViewer.header.toggleCommentSidebar();
-          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
+          expectToggleWorks({isOpenByDefault: false, context: this});
         });
       });
 
@@ -371,12 +375,7 @@ describe('Integration: SnapshotViewer', function() {
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function() {
-          await SnapshotViewer.header.toggleCommentSidebar();
-          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
-          await percySnapshot(this.test);
-
-          await SnapshotViewer.header.toggleCommentSidebar();
-          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
+          expectToggleWorks({isOpenByDefault: true, context: this});
         });
       });
 
@@ -397,17 +396,12 @@ describe('Integration: SnapshotViewer', function() {
           }}`);
         });
 
-        it('does not show panel by default', async function() {
-          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
+        it('shows panel by default', async function() {
+          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function() {
-          await SnapshotViewer.header.toggleCommentSidebar();
-          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
-          await percySnapshot(this.test);
-
-          await SnapshotViewer.header.toggleCommentSidebar();
-          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
+          expectToggleWorks({isOpenByDefault: true, context: this});
         });
       });
     });

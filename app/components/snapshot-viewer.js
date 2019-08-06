@@ -17,7 +17,7 @@ export default SnapshotListItem.extend({
   _isApproved: readOnly('snapshot.isApproved'),
   isUnchangedSnapshotExpanded: or('isFocus', 'isExpanded'),
 
-  _internalIsCommentPanelShowing: notEmpty('openCommentThreads'),
+  _internalIsCommentPanelShowing: notEmpty('commentThreads'),
   isCommentPanelShowing: or('_internalIsCommentPanelShowing', 'externalIsCommentPanelShowing'),
 
   commentThreads: readOnly('snapshot.commentThreads'),
