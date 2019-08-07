@@ -22,16 +22,16 @@ export default Service.extend({
       snapshots,
       action: 'rejected',
     });
-
     return await this._saveReview(review, build, eventData);
   },
 
   async _saveReview(review, build, eventData) {
     await review.save();
-
-    const refreshedBuild = build.reload();
-    const refreshedSnapshots = this.snapshotQuery.getChangedSnapshots(build);
-
+    const refreshedBuild = this.store.findRecord('build', build.get('id'), {
+      reload: true,
+      include: 'approved-by',
+    });
+    const refreshedSnapshots = this.snapshotQuery.getChangedSnapshotsWithComments(build);
     await Promise.all([refreshedBuild, refreshedSnapshots]);
 
     if (eventData && eventData.title) {

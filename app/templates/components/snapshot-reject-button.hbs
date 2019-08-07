@@ -1,5 +1,5 @@
 <button
-  class="btn mr-1 text-orange-500 {{if isLoading is-loading}}"
+  class="btn mr-1 text-orange-500 snapshot-reject-button {{if isLoading "is-loading"}}"
   {{action 'rejectSnapshots'}}
   disabled="{{if isDisabled "disabled"}}"
   data-test-snapshot-reject-button

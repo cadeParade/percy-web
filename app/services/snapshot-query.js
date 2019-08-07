@@ -20,4 +20,14 @@ export default Service.extend({
       },
     });
   },
+
+  getChangedSnapshotsWithComments(build) {
+    return this.get('store').query('snapshot', {
+      filter: {
+        build: build.get('id'),
+        'review-state-reason': DIFF_REVIEW_STATE_REASONS.join(','),
+      },
+      include: 'comment-threads.comments.author',
+    });
+  },
 });
