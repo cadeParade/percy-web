@@ -6,6 +6,7 @@ import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import BuildCard from 'percy-web/tests/pages/components/build-card';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: BuildCard', function() {
   setupRenderingTest('build-card', {
@@ -22,7 +23,7 @@ describe('Integration: BuildCard', function() {
       const build = make('build', 'withRepo', 'hasPullRequest', {buildNumber: 1});
       this.setProperties({build});
 
-      await this.render(hbs`{{build-card
+      await render(hbs`{{build-card
         build=build
       }}`);
     });
@@ -50,7 +51,7 @@ describe('Integration: BuildCard', function() {
       const build = make('build', 'withGithubRepo', 'withLongHeadCommitMessage', {buildNumber: 1});
       this.setProperties({build});
 
-      await this.render(hbs`{{build-card
+      await render(hbs`{{build-card
         build=build
       }}`);
     });
@@ -65,7 +66,7 @@ describe('Integration: BuildCard', function() {
       const build = make('build', 'withGithubRepo', 'hasPullRequest', {buildNumber: 1});
       this.setProperties({build});
 
-      await this.render(hbs`{{build-card
+      await render(hbs`{{build-card
         build=build
       }}`);
     });
@@ -95,7 +96,7 @@ describe('Integration: BuildCard', function() {
 
       this.setProperties({build});
 
-      await this.render(hbs`{{build-card
+      await render(hbs`{{build-card
         build=build
       }}`);
     });
@@ -125,7 +126,7 @@ describe('Integration: BuildCard', function() {
 
       this.setProperties({build});
 
-      await this.render(hbs`{{build-card
+      await render(hbs`{{build-card
         build=build
       }}`);
     });
@@ -154,7 +155,7 @@ describe('Integration: BuildCard', function() {
       const build = make('build', 'withGitlabSelfHostedRepo', 'hasMergeRequest', {buildNumber: 1});
       this.setProperties({build});
 
-      await this.render(hbs`{{build-card
+      await render(hbs`{{build-card
         build=build
       }}`);
     });

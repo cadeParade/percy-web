@@ -9,6 +9,7 @@ import AdminMode from 'percy-web/lib/admin-mode';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import IntegrationItem from 'percy-web/tests/pages/components/integration-item';
 import mockIntercomService from 'percy-web/tests/helpers/mock-intercom-service';
+import {render} from '@ember/test-helpers';
 
 describe('Integration | Component | organizations/integrations/integration-item', function() {
   setupRenderingTest('organizations/integrations/integration-item', {
@@ -28,7 +29,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
     });
 
     it('shows the intall button for github', async function() {
-      await this.render(hbs`{{organizations/integrations/integration-item
+      await render(hbs`{{organizations/integrations/integration-item
         integrationName="github"
         organization=organization}}`);
 
@@ -37,7 +38,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
     });
 
     it('shows the contact us button for github enterprise', async function() {
-      await this.render(hbs`{{organizations/integrations/integration-item
+      await render(hbs`{{organizations/integrations/integration-item
         integrationName="github_enterprise"
         organization=organization}}`);
 
@@ -46,7 +47,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
     });
 
     it('shows the install button for gitlab', async function() {
-      await this.render(hbs`{{organizations/integrations/integration-item
+      await render(hbs`{{organizations/integrations/integration-item
         integrationName="gitlab"
         organization=organization}}`);
 
@@ -55,7 +56,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
     });
 
     it('shows the contact us button for gitlab self-hosted', async function() {
-      await this.render(hbs`{{organizations/integrations/integration-item
+      await render(hbs`{{organizations/integrations/integration-item
         integrationName="gitlab_self_hosted"
         organization=organization}}`);
 
@@ -67,7 +68,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
     it('links to the github enterprise form', async function() {
       const formLink = 'https://docs.percy.io/docs/github-enterprise';
 
-      await this.render(hbs`{{organizations/integrations/integration-item
+      await render(hbs`{{organizations/integrations/integration-item
         integrationName="github_enterprise"
         organization=organization}}`);
 
@@ -75,7 +76,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
     });
 
     it('does not show the beta badge for github', async function() {
-      await this.render(hbs`{{organizations/integrations/integration-item
+      await render(hbs`{{organizations/integrations/integration-item
         integrationName="github"
         organization=organization}}`);
 
@@ -83,7 +84,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
     });
 
     it('does not show the beta badge for github enterprise', async function() {
-      await this.render(hbs`{{organizations/integrations/integration-item
+      await render(hbs`{{organizations/integrations/integration-item
         integrationName="github_enterprise"
         organization=organization}}`);
 
@@ -91,7 +92,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
     });
 
     it('shows the Connect button for Slack', async function() {
-      await this.render(hbs`{{organizations/integrations/integration-item
+      await render(hbs`{{organizations/integrations/integration-item
           integrationName="slack"
           organization=organization}}`);
 
@@ -105,7 +106,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
       const organization = make('organization', 'withGithubIntegration');
       this.set('organization', organization);
 
-      await this.render(hbs`{{organizations/integrations/integration-item
+      await render(hbs`{{organizations/integrations/integration-item
         integrationName="github"
         organization=organization}}`);
     });
@@ -121,7 +122,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
       const organization = make('organization', 'withGithubEnterpriseIntegration');
       this.set('organization', organization);
 
-      await this.render(hbs`{{organizations/integrations/integration-item
+      await render(hbs`{{organizations/integrations/integration-item
         integrationName="github_enterprise"
         organization=organization}}`);
     });
@@ -144,7 +145,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
       const organization = make('organization', 'withGitlabIntegration');
       this.set('organization', organization);
 
-      await this.render(hbs`{{organizations/integrations/integration-item
+      await render(hbs`{{organizations/integrations/integration-item
         integrationName="gitlab"
         organization=organization}}`);
     });
@@ -160,7 +161,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
       const organization = make('organization', 'withSlackIntegration');
       this.set('organization', organization);
 
-      await this.render(hbs`{{organizations/integrations/integration-item
+      await render(hbs`{{organizations/integrations/integration-item
         integrationName="slack"
         organization=organization}}`);
     });
@@ -176,7 +177,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
       const organization = make('organization', 'withUnauthorizedGitlabIntegration');
       this.set('organization', organization);
 
-      await this.render(hbs`{{organizations/integrations/integration-item
+      await render(hbs`{{organizations/integrations/integration-item
         integrationName="gitlab"
         integrationStatus="unauthorized"
         organization=organization}}`);
@@ -193,7 +194,7 @@ describe('Integration | Component | organizations/integrations/integration-item'
       const organization = make('organization', 'withInvalidHostnameGitlabSelfHostedIntegration');
       this.set('organization', organization);
 
-      await this.render(hbs`{{organizations/integrations/integration-item
+      await render(hbs`{{organizations/integrations/integration-item
         integrationName="gitlab_self_hosted"
         integrationStatus="invalid_hostname"
         organization=organization}}`);

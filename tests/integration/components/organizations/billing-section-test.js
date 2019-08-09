@@ -8,6 +8,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {percySnapshot} from 'ember-percy';
 import mockStripeService from 'percy-web/tests/helpers/mock-stripe-service';
 import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage-sandbox';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: BillingSection', function() {
   SetupLocalStorageSandbox();
@@ -33,7 +34,7 @@ describe('Integration: BillingSection', function() {
     });
 
     it('renders the admin view', async function() {
-      await this.render(hbs`{{organizations/billing-section
+      await render(hbs`{{organizations/billing-section
         organization=organization}}`);
 
       expect(BillingSection.memberView.isVisible).to.equal(false);
@@ -140,7 +141,7 @@ describe('Integration: BillingSection', function() {
     });
 
     it('renders the member view', async function() {
-      await this.render(hbs`{{organizations/billing-section
+      await render(hbs`{{organizations/billing-section
         organization=organization
        }}`);
 

@@ -6,6 +6,7 @@ import {setupRenderingTest} from 'ember-mocha';
 import {make} from 'ember-data-factory-guy';
 import {percySnapshot} from 'ember-percy';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: RepoLinkerList', function() {
   setupRenderingTest('repo-linker-list', {
@@ -22,7 +23,7 @@ describe('Integration: RepoLinkerList', function() {
     const organization = make('organization', {projects: [linkedProject, unlinkedProject]});
     this.set('organization', organization);
 
-    await this.render(hbs`{{organizations/integrations/repo-linker-list
+    await render(hbs`{{organizations/integrations/repo-linker-list
       organization=organization
     }}`);
   });

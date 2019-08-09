@@ -5,6 +5,7 @@ import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
 import GithubEnterpriseSettings from 'percy-web/tests/pages/components/github-enterprise-settings';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: GithubEnterpriseSettings', function() {
   setupRenderingTest('github-enterprise-settings', {
@@ -27,7 +28,7 @@ describe('Integration: GithubEnterpriseSettings', function() {
     it('renders', async function() {
       const isIntegrated = this.get('organization.isGithubEnterpriseIntegrated');
       expect(isIntegrated).to.equal(true);
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/integrations/github-enterprise-settings
         currentUser=user
         organization=organization

@@ -10,6 +10,7 @@ import sinon from 'sinon';
 import {resolve, defer} from 'rsvp';
 import SnapshotApprovalButton from 'percy-web/tests/pages/components/snapshot-approval-button';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: SnapshotApprovalButton', function() {
   setupRenderingTest('snapshot-approval-button', {
@@ -30,7 +31,7 @@ describe('Integration: SnapshotApprovalButton', function() {
   });
 
   it('displays correctly when snapshot is not approved and has diffs in active browser', async function() {  //eslint-disable-line
-    await this.render(hbs`{{snapshot-approval-button
+    await render(hbs`{{snapshot-approval-button
       snapshot=snapshot
       createReview=createReview
       activeBrowser=activeBrowser
@@ -41,7 +42,7 @@ describe('Integration: SnapshotApprovalButton', function() {
 
   it('displays correctly when snapshot is not approved does not have diffs in active browser ', async function() {  //eslint-disable-line
     this.set('hasDiffsInBrowser', false);
-    await this.render(hbs`{{snapshot-approval-button
+    await render(hbs`{{snapshot-approval-button
       snapshot=snapshot
       createReview=createReview
       activeBrowser=activeBrowser
@@ -52,7 +53,7 @@ describe('Integration: SnapshotApprovalButton', function() {
   });
 
   it('displays correctly when snapshot is approved', async function() {
-    await this.render(hbs`{{snapshot-approval-button
+    await render(hbs`{{snapshot-approval-button
       snapshot=snapshot
       createReview=createReview
       activeBrowser=activeBrowser
@@ -63,7 +64,7 @@ describe('Integration: SnapshotApprovalButton', function() {
   });
 
   it('calls createReview with correct args when clicked', async function() {
-    await this.render(hbs`{{snapshot-approval-button
+    await render(hbs`{{snapshot-approval-button
       snapshot=snapshot
       createReview=createReview
       hasDiffsInBrowser=hasDiffsInBrowser
@@ -77,7 +78,7 @@ describe('Integration: SnapshotApprovalButton', function() {
     const deferred = defer();
     const createReview = sinon.stub().returns(deferred.promise);
     this.set('createReview', createReview);
-    await this.render(hbs`{{snapshot-approval-button
+    await render(hbs`{{snapshot-approval-button
       snapshot=snapshot
       createReview=(action createReview)
       hasDiffsInBrowser=hasDiffsInBrowser
@@ -88,7 +89,7 @@ describe('Integration: SnapshotApprovalButton', function() {
   });
 
   it('is enabled when isDisabled is false', async function() {
-    await this.render(hbs`{{snapshot-approval-button
+    await render(hbs`{{snapshot-approval-button
       snapshot=snapshot
       createReview=createReview
       activeBrowser=activeBrowser
@@ -101,7 +102,7 @@ describe('Integration: SnapshotApprovalButton', function() {
   });
 
   it('is disabled when isDisabled is true', async function() {
-    await this.render(hbs`{{snapshot-approval-button
+    await render(hbs`{{snapshot-approval-button
       snapshot=snapshot
       createReview=createReview
       activeBrowser=activeBrowser
@@ -115,7 +116,7 @@ describe('Integration: SnapshotApprovalButton', function() {
 
   it('shows approvalBadge when createReview returns true', async function() {
     this.set('createReview', sinon.stub().returns(resolve(true)));
-    await this.render(hbs`{{snapshot-approval-button
+    await render(hbs`{{snapshot-approval-button
       snapshot=snapshot
       createReview=createReview
       hasDiffsInBrowser=hasDiffsInBrowser
@@ -127,7 +128,7 @@ describe('Integration: SnapshotApprovalButton', function() {
 
   it('does not show approval badge when createReview returns false', async function() {
     this.set('createReview', sinon.stub().returns(resolve(false)));
-    await this.render(hbs`{{snapshot-approval-button
+    await render(hbs`{{snapshot-approval-button
       snapshot=snapshot
       createReview=createReview
       hasDiffsInBrowser=hasDiffsInBrowser

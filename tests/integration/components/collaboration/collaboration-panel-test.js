@@ -9,6 +9,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import moment from 'moment';
 import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
 import withVariation from 'percy-web/tests/helpers/with-variation';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: CollaborationPanel', function() {
   freezeMoment('2018-12-17');
@@ -33,7 +34,7 @@ describe('Integration: CollaborationPanel', function() {
       const isCommentingAllowed = true;
       this.setProperties({commentThreads, user, saveStub, isCommentingAllowed});
 
-      await this.render(hbs`{{collaboration/collaboration-panel
+      await render(hbs`{{collaboration/collaboration-panel
         commentThreads=commentThreads
         isCommentingAllowed=isCommentingAllowed
       }}`);
@@ -75,7 +76,7 @@ describe('Integration: CollaborationPanel', function() {
       ];
 
       this.setProperties({commentThreads});
-      await this.render(hbs`{{collaboration/collaboration-panel
+      await render(hbs`{{collaboration/collaboration-panel
         commentThreads=commentThreads
       }}`);
 
@@ -93,7 +94,7 @@ describe('Integration: CollaborationPanel', function() {
 
     it('does not show "New Comment" button when isCommentingAllowed is false', async function() {
       this.set('commentThreads', makeList('comment-thread', 2, 'withOneComment'));
-      await this.render(hbs`{{collaboration/collaboration-panel
+      await render(hbs`{{collaboration/collaboration-panel
         commentThreads=commentThreads
         isCommentingAllowed=false
       }}`);

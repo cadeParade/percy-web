@@ -6,6 +6,7 @@ import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import SlackIntegrationItem from 'percy-web/tests/pages/components/organizations/slack-integration-item'; // eslint-disable-line
 import sinon from 'sinon';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: SlackIntegrationItem', function() {
   setupRenderingTest('slack-integration-item', {
@@ -37,7 +38,7 @@ describe('Integration: SlackIntegrationItem', function() {
         slackIntegration,
         deleteSlackIntegrationStub,
       });
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/integrations/slack-integration-item
         projectOptions=projectOptions
         slackIntegration=slackIntegration
@@ -80,7 +81,7 @@ describe('Integration: SlackIntegrationItem', function() {
     });
 
     it('renders the integration correctly for All Projects', async function() {
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/integrations/slack-integration-item
         projectOptions=projectOptions
         slackIntegration=slackIntegration
@@ -97,7 +98,7 @@ describe('Integration: SlackIntegrationItem', function() {
         slackIntegration,
         projectId: project.id,
       });
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/integrations/slack-integration-item
         projectOptions=projectOptions
         slackIntegration=slackIntegration

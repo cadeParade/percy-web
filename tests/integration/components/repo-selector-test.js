@@ -8,6 +8,7 @@ import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import repoRefreshServiceStub from 'percy-web/tests/helpers/mock-repo-refresh-service';
 import moment from 'moment';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: RepoSelectorComponent', function() {
   setupRenderingTest('repo-selector', {
@@ -31,7 +32,7 @@ describe('Integration: RepoSelectorComponent', function() {
 
       this.setProperties({project});
       repoRefreshServiceStub(this, null, null);
-      await this.render(hbs`{{repo-selector project=project}}`);
+      await render(hbs`{{repo-selector project=project}}`);
     });
 
     it('renders powerselect closed', async function() {
@@ -57,7 +58,7 @@ describe('Integration: RepoSelectorComponent', function() {
 
       this.setProperties({project});
       repoRefreshServiceStub(this, null, null);
-      await this.render(hbs`{{repo-selector project=project}}`);
+      await render(hbs`{{repo-selector project=project}}`);
     });
 
     it('renders powerselect closed', async function() {
@@ -87,7 +88,7 @@ describe('Integration: RepoSelectorComponent', function() {
 
       this.setProperties({project});
       repoRefreshServiceStub(this, null, null);
-      await this.render(hbs`{{repo-selector project=project}}`);
+      await render(hbs`{{repo-selector project=project}}`);
     });
 
     it('renders powerselect closed', async function() {
@@ -116,7 +117,7 @@ describe('Integration: RepoSelectorComponent', function() {
       project.set('organization', organization);
       this.setProperties({project});
       repoRefreshServiceStub(this, null, null);
-      await this.render(hbs`{{repo-selector project=project}}`);
+      await render(hbs`{{repo-selector project=project}}`);
     });
 
     it('renders powerselect closed', async function() {
@@ -141,7 +142,7 @@ describe('Integration: RepoSelectorComponent', function() {
       project.set('organization', organization);
       this.setProperties({project});
       repoRefreshServiceStub(this, null, null);
-      await this.render(hbs`{{repo-selector project=project}}`);
+      await render(hbs`{{repo-selector project=project}}`);
     });
 
     it('renders powerselect closed', async function() {
@@ -178,7 +179,7 @@ describe('Integration: RepoSelectorComponent', function() {
       oldRepos = organization.get('repos');
       oldUpdatedAt = organization.get('lastSyncedAt');
       repoRefreshServiceStub(this, oldRepos, oldUpdatedAt);
-      await this.render(hbs`{{repo-selector project=project}}`);
+      await render(hbs`{{repo-selector project=project}}`);
       await clickTrigger();
       expect(RepoSelector.dropdown.isSelectorOpen).to.eq(true);
       expect(RepoSelector.repoFreshness.message).to.eq('Last updated: 20 minutes ago');
@@ -190,7 +191,7 @@ describe('Integration: RepoSelectorComponent', function() {
       const newRepos = makeList('repo', expectedRepoCount, 'githubEnterprise');
       const newUpdatedAt = moment().subtract(1, 'minutes');
       repoRefreshServiceStub(this, newRepos, newUpdatedAt);
-      await this.render(hbs`{{repo-selector project=project}}`);
+      await render(hbs`{{repo-selector project=project}}`);
       await clickTrigger();
       expect(RepoSelector.dropdown.isSelectorOpen).to.eq(true);
       expect(RepoSelector.dropdown.options.count).to.eq(expectedRepoCount);

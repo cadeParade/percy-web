@@ -9,6 +9,7 @@ import {percySnapshot} from 'ember-percy';
 import sinon from 'sinon';
 import {defer, resolve} from 'rsvp';
 import mockStripeService from 'percy-web/tests/helpers/mock-stripe-service';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: BillingSettings', function() {
   setupRenderingTest('billing-settings', {
@@ -25,7 +26,7 @@ describe('Integration: BillingSettings', function() {
     it('it shows existing email address and card when they are both present', async function() {
       const organization = make('organization', 'withPaidPlan');
       this.setProperties({organization});
-      await this.render(hbs`{{organizations/billing-settings
+      await render(hbs`{{organizations/billing-settings
           organization=organization
         }}
       `);
@@ -40,7 +41,7 @@ describe('Integration: BillingSettings', function() {
       beforeEach(async function() {
         const organization = make('organization', 'withEnterprisePlan', 'withNoPaymentMethod');
         this.setProperties({organization});
-        await this.render(hbs`{{organizations/billing-settings
+        await render(hbs`{{organizations/billing-settings
             organization=organization
           }}
         `);
@@ -68,7 +69,7 @@ describe('Integration: BillingSettings', function() {
     beforeEach(async function() {
       organization = make('organization', 'withPaidPlan');
       this.setProperties({organization});
-      await this.render(hbs`{{organizations/billing-settings
+      await render(hbs`{{organizations/billing-settings
           organization=organization
         }}
       `);
@@ -128,7 +129,7 @@ describe('Integration: BillingSettings', function() {
     beforeEach(async function() {
       const organization = make('organization', 'withPaidPlan');
       this.setProperties({organization});
-      await this.render(hbs`{{organizations/billing-settings
+      await render(hbs`{{organizations/billing-settings
           organization=organization
         }}
       `);

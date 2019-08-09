@@ -5,6 +5,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {make} from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import browserSwitcher from 'percy-web/tests/pages/components/browser-switcher';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: BrowserSwitcher', function() {
   setupRenderingTest('browser-switcher', {
@@ -37,7 +38,7 @@ describe('Integration: BrowserSwitcher', function() {
       updateActiveBrowser: updateActiveBrowserStub,
     });
 
-    await this.render(hbs`{{browser-switcher
+    await render(hbs`{{browser-switcher
       browsers=browsers
       activeBrowser=activeBrowser
       updateActiveBrowser=updateActiveBrowser

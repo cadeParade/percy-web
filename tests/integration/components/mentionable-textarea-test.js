@@ -3,7 +3,7 @@ import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {makeList} from 'ember-data-factory-guy';
-import {click, typeIn, findAll} from '@ember/test-helpers';
+import {click, typeIn, findAll, render} from '@ember/test-helpers';
 import MentionableTextarea from 'percy-web/tests/pages/components/mentionable-textarea';
 import {percySnapshot} from 'ember-percy';
 import sinon from 'sinon';
@@ -31,7 +31,7 @@ describe('Integration: MentionableTextarea', function() {
       handleItemSelected: handleItemSelectedStub,
     });
 
-    await this.render(hbs`
+    await render(hbs`
       {{#mentionable-textarea
         tributeConfigs=tributeConfigs
         handleItemSelected=(action handleItemSelected)

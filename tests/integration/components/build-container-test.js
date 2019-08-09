@@ -10,6 +10,7 @@ import {defer} from 'rsvp';
 import BuildPage from 'percy-web/tests/pages/build-page';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import mockSnapshotQueryService from 'percy-web/tests/helpers/mock-snapshot-query-service';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: BuildContainer', function() {
   setupRenderingTest('build-container', {
@@ -33,7 +34,7 @@ describe('Integration: BuildContainer', function() {
 
       // Override the pollRefresh method for the test. This does not happen IRL,
       // but we can't have the component make requests in this integration test
-      await this.render(hbs`{{build-container
+      await render(hbs`{{build-container
         build=build
         createReview=stub
         pollRefresh=stub
@@ -81,7 +82,7 @@ describe('Integration: BuildContainer', function() {
 
     this.setProperties({build, allChangedBrowserSnapshotsSorted});
 
-    await this.render(hbs`{{build-container
+    await render(hbs`{{build-container
       build=build
       isSnapshotsLoading=true
       createReview=stub
@@ -104,7 +105,7 @@ describe('Integration: BuildContainer', function() {
       allChangedBrowserSnapshotsSorted,
     });
 
-    await this.render(hbs`{{build-container
+    await render(hbs`{{build-container
       build=build
       allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
       createReview=stub
@@ -130,7 +131,7 @@ describe('Integration: BuildContainer', function() {
       stub,
     });
 
-    await this.render(hbs`{{build-container
+    await render(hbs`{{build-container
       build=build
       allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
       createReview=stub
@@ -156,7 +157,7 @@ describe('Integration: BuildContainer', function() {
       stub,
     });
 
-    await this.render(hbs`{{build-container
+    await render(hbs`{{build-container
       build=build
       allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
       createReview=stub
@@ -225,7 +226,7 @@ describe('Integration: BuildContainer', function() {
         snapshotWithDiffInBothBrowsers,
         analyticsStub,
       });
-      await this.render(hbs`{{build-container
+      await render(hbs`{{build-container
         build=build
         allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
         createReview=stub
@@ -305,7 +306,7 @@ describe('Integration: BuildContainer', function() {
         isBuildApprovable,
       });
 
-      await this.render(hbs`{{build-container
+      await render(hbs`{{build-container
         build=build
         allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
         createReview=stub
@@ -333,7 +334,7 @@ describe('Integration: BuildContainer', function() {
         allChangedBrowserSnapshotsSorted,
       });
 
-      await this.render(hbs`{{build-container
+      await render(hbs`{{build-container
         build=build
         allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
         createReview=stub

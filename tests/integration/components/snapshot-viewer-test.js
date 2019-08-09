@@ -12,6 +12,7 @@ import {resolve} from 'rsvp';
 import {SNAPSHOT_APPROVED_STATE, SNAPSHOT_UNAPPROVED_STATE} from 'percy-web/models/snapshot';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import faker from 'faker';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: SnapshotViewer', function() {
   setupRenderingTest('snapshot-viewer', {
@@ -49,7 +50,7 @@ describe('Integration: SnapshotViewer', function() {
   });
 
   it('displays snapshot name', async function() {
-    await this.render(hbs`{{snapshot-viewer
+    await render(hbs`{{snapshot-viewer
       snapshot=snapshot
       build=build
       showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -65,7 +66,7 @@ describe('Integration: SnapshotViewer', function() {
   });
 
   it('compares visually to previous screenshot', async function() {
-    await this.render(hbs`{{snapshot-viewer
+    await render(hbs`{{snapshot-viewer
       snapshot=snapshot
       build=build
       showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -80,7 +81,7 @@ describe('Integration: SnapshotViewer', function() {
 
   describe('comparison mode switcher', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -109,7 +110,7 @@ describe('Integration: SnapshotViewer', function() {
 
     it('shows widest width with diff as active by default when some comparisons have diffs', async function() { // eslint-disable-line
 
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -127,7 +128,7 @@ describe('Integration: SnapshotViewer', function() {
       const snapshot = make('snapshot', 'withNoDiffs');
       this.set('snapshot', snapshot);
 
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -143,7 +144,7 @@ describe('Integration: SnapshotViewer', function() {
     });
 
     it('updates active button when clicked', async function() {
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -174,7 +175,7 @@ describe('Integration: SnapshotViewer', function() {
 
   describe('full screen toggle button', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -206,7 +207,7 @@ describe('Integration: SnapshotViewer', function() {
     beforeEach(async function() {
       this.set('activeSnapshotBlockId', null);
 
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -252,7 +253,7 @@ describe('Integration: SnapshotViewer', function() {
 
   describe('approve snapshot button', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -276,7 +277,7 @@ describe('Integration: SnapshotViewer', function() {
 
   describe('diff toggling', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -302,7 +303,7 @@ describe('Integration: SnapshotViewer', function() {
           body: 'sssssssssssssssssssssssssssssssssssssssssssssssssss' + faker.lorem.paragraph(50),
           commentThread,
         });
-        await this.render(hbs`{{snapshot-viewer
+        await render(hbs`{{snapshot-viewer
           snapshot=snapshot
           build=build
           showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -332,7 +333,7 @@ describe('Integration: SnapshotViewer', function() {
 
       describe('when there are no comments', function() {
         beforeEach(async function() {
-          await this.render(hbs`{{snapshot-viewer
+          await render(hbs`{{snapshot-viewer
             snapshot=snapshot
             build=build
             showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -357,7 +358,7 @@ describe('Integration: SnapshotViewer', function() {
       describe('when there are open comments', function() {
         beforeEach(async function() {
           makeList('comment-thread', 2, 'withTwoComments', {snapshot});
-          await this.render(hbs`{{snapshot-viewer
+          await render(hbs`{{snapshot-viewer
             snapshot=snapshot
             build=build
             showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -383,7 +384,7 @@ describe('Integration: SnapshotViewer', function() {
         beforeEach(async function() {
           make('comment-thread', 'withTwoComments', 'closed', {snapshot});
           make('comment-thread', 'withTwoComments', 'closed', 'note', {snapshot});
-          await this.render(hbs`{{snapshot-viewer
+          await render(hbs`{{snapshot-viewer
             snapshot=snapshot
             build=build
             showSnapshotFullModalTriggered=showSnapshotFullModalTriggered

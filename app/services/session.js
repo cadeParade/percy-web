@@ -60,7 +60,7 @@ export default SessionService.extend({
         // so kick them out.
         .catch(e => {
           this.invalidateAndLogout();
-          return reject(e);
+          reject(e);
         })
     );
   },

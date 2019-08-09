@@ -7,6 +7,7 @@ import BuildHeader from 'percy-web/tests/pages/components/build-header';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import sinon from 'sinon';
 import mockIntercomService from 'percy-web/tests/helpers/mock-intercom-service';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: BuildHeader', function() {
   setupRenderingTest('build-header', {
@@ -41,7 +42,7 @@ describe('Integration: BuildHeader', function() {
       const build = make.apply(this, ['build'].concat(state));
       this.setProperties({build});
 
-      await this.render(hbs`{{
+      await render(hbs`{{
         build-header
         build=build
         isBuildApprovable=true
@@ -57,7 +58,7 @@ describe('Integration: BuildHeader', function() {
 
       const build = make('build', 'withBaseBuild', 'failed', 'renderTimeout');
       this.setProperties({build});
-      await this.render(hbs`{{build-header
+      await render(hbs`{{build-header
         build=build
         isBuildApprovable=true
       }}`);
@@ -72,7 +73,7 @@ describe('Integration: BuildHeader', function() {
 
       const build = make('build', 'withBaseBuild', 'failed', 'missingParallelBuilds');
       this.setProperties({build});
-      await this.render(hbs`{{build-header
+      await render(hbs`{{build-header
         build=build
         isBuildApprovable=true
       }}`);

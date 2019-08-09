@@ -4,7 +4,7 @@ import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {make} from 'ember-data-factory-guy';
 import sinon from 'sinon';
-import {settled} from '@ember/test-helpers';
+import {render, settled} from '@ember/test-helpers';
 
 import BrowserFamilySelector from 'percy-web/tests/pages/components/projects/browser-family-selector'; // eslint-disable-line
 
@@ -44,7 +44,7 @@ describe('Integration: BrowserFamilySelector', function() {
         browserTarget: chromeBrowserTarget,
       });
 
-      await this.render(hbs`{{projects/browser-family-selector
+      await render(hbs`{{projects/browser-family-selector
         allBrowserFamilies=allBrowserFamilies
         project=project
         removeProjectBrowserTargetForFamily=stub
@@ -61,7 +61,7 @@ describe('Integration: BrowserFamilySelector', function() {
         browserTarget: firefoxBrowserTarget,
       });
 
-      await this.render(hbs`{{projects/browser-family-selector
+      await render(hbs`{{projects/browser-family-selector
         allBrowserFamilies=allBrowserFamilies
         project=project
         removeProjectBrowserTargetForFamily=stub
@@ -81,7 +81,7 @@ describe('Integration: BrowserFamilySelector', function() {
         project,
         browserTarget: firefoxBrowserTarget,
       });
-      await this.render(hbs`{{projects/browser-family-selector
+      await render(hbs`{{projects/browser-family-selector
         allBrowserFamilies=allBrowserFamilies
         project=project
         removeProjectBrowserTargetForFamily=stub
@@ -137,7 +137,7 @@ describe('Integration: BrowserFamilySelector', function() {
         browserTarget: firefoxBrowserTarget,
       });
 
-      await this.render(hbs`{{projects/browser-family-selector
+      await render(hbs`{{projects/browser-family-selector
         allBrowserFamilies=allBrowserFamilies
         project=project
         removeProjectBrowserTargetForFamily=removeProjectBrowserTargetForFamilyStub
@@ -158,7 +158,7 @@ describe('Integration: BrowserFamilySelector', function() {
         browserTarget: chromeBrowserTarget,
       });
 
-      await this.render(hbs`{{projects/browser-family-selector
+      await render(hbs`{{projects/browser-family-selector
         allBrowserFamilies=allBrowserFamilies
         project=project
         removeProjectBrowserTargetForFamily=removeProjectBrowserTargetForFamilyStub
@@ -184,7 +184,7 @@ describe('Integration: BrowserFamilySelector', function() {
         browserTarget: firefoxBrowserTarget,
       });
 
-      await this.render(hbs`{{projects/browser-family-selector
+      await render(hbs`{{projects/browser-family-selector
         allBrowserFamilies=allBrowserFamilies
         project=project
         removeProjectBrowserTargetForFamily=removeProjectBrowserTargetForFamilyStub

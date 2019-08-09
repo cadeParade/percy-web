@@ -10,6 +10,7 @@ import {percySnapshot} from 'ember-percy';
 import SnapshotList from 'percy-web/tests/pages/components/snapshot-list';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {initialize as initializeEmberKeyboard} from 'ember-keyboard';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: SnapshotList', function() {
   setupRenderingTest('snapshot-list', {
@@ -40,7 +41,7 @@ describe('Integration: SnapshotList', function() {
         shouldDeferRendering: true,
       });
 
-      await this.render(hbs`{{snapshot-list
+      await render(hbs`{{snapshot-list
         snapshotsChanged=snapshotsChanged
         build=build
         createReview=stub
@@ -99,7 +100,7 @@ describe('Integration: SnapshotList', function() {
         isUnchangedSnapshotsVisible: false,
       });
 
-      await this.render(hbs`{{snapshot-list
+      await render(hbs`{{snapshot-list
         snapshotsChanged=snapshotsChanged
         build=build
         createReview=stub
@@ -329,7 +330,7 @@ describe('Integration: SnapshotList', function() {
 
       this.setProperties({snapshotsChanged, build, stub, browser, numSnapshotsUnchanged: 0});
 
-      await this.render(hbs`{{snapshot-list
+      await render(hbs`{{snapshot-list
         snapshotsChanged=snapshotsChanged
         snapshotsUnchanged=snapshotsUnchanged
         build=build

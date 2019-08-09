@@ -7,7 +7,7 @@ import {make} from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import CollaborationNewThread from 'percy-web/tests/pages/components/collaboration/new-thread';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {fillIn} from '@ember/test-helpers';
+import {render, fillIn} from '@ember/test-helpers';
 
 describe('Integration: CollaborationNewThread', function() {
   setupRenderingTest('collaboration-new-thread', {
@@ -34,7 +34,7 @@ describe('Integration: CollaborationNewThread', function() {
 
       this.setProperties({user, saveStub, snapshot, organization});
 
-      await this.render(hbs`{{collaboration/new-thread
+      await render(hbs`{{collaboration/new-thread
         currentUser=user
         createCommentThread=saveStub
         shouldShowNewCommentInput=true
@@ -185,7 +185,7 @@ describe('Integration: CollaborationNewThread', function() {
   describe('when shouldShowNewCommentInput is false', function() {
     beforeEach(async function() {
       this.setProperties({user: make('user')});
-      await this.render(hbs`{{collaboration/new-thread
+      await render(hbs`{{collaboration/new-thread
         currentUser=user
         shouldShowNewCommentInput=false
       }}`);

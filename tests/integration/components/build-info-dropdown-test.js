@@ -7,6 +7,7 @@ import {make} from 'ember-data-factory-guy';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import BuildInfoDropdown from 'percy-web/tests/pages/components/build-info-dropdown';
 import AdminMode from 'percy-web/lib/admin-mode';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: BuildInfoDropdownComponent', function() {
   setupRenderingTest('build-info-dropdown', {
@@ -42,7 +43,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
       let build = make.apply(this, ['build'].concat(state));
       this.set('build', build);
 
-      await this.render(hbs`{{build-info-dropdown
+      await render(hbs`{{build-info-dropdown
         build=build
         isShowingModal=true
         renderInPlace=true
@@ -57,7 +58,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
     const build = make('build', 'finished');
     this.set('build', build);
 
-    await this.render(hbs`{{build-info-dropdown
+    await render(hbs`{{build-info-dropdown
       build=build
       isShowingModal=true
       renderInPlace=true
@@ -75,7 +76,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
 
     AdminMode.setAdminMode();
 
-    await this.render(hbs`{{build-info-dropdown
+    await render(hbs`{{build-info-dropdown
        build=build
        isShowingModal=true
        renderInPlace=true
@@ -91,7 +92,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
       const build = make('build', 'withGitlabSelfHostedRepo', 'hasMergeRequest', {buildNumber: 1});
       this.setProperties({build});
 
-      await this.render(hbs`{{build-info-dropdown
+      await render(hbs`{{build-info-dropdown
         build=build
         isShowingModal=true
         renderInPlace=true
@@ -112,7 +113,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
       const build = make('build', 'withGithubRepo', 'hasPullRequest', {buildNumber: 1});
       this.setProperties({build});
 
-      await this.render(hbs`{{build-info-dropdown
+      await render(hbs`{{build-info-dropdown
         build=build
         isShowingModal=true
         renderInPlace=true

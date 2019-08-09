@@ -8,6 +8,7 @@ import sinon from 'sinon';
 import {percySnapshot} from 'ember-percy';
 import Service from '@ember/service';
 import {defer} from 'rsvp';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: OrganizationNewForm', function() {
   setupRenderingTest('forms/organization-new', {
@@ -37,7 +38,7 @@ describe('Integration: OrganizationNewForm', function() {
 
   describe('when isFirstOrganization is false', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{forms/organization-new
+      await render(hbs`{{forms/organization-new
         model=newOrganization
         isFirstOrganization=isFirstOrganization
         userIdentities=identities
@@ -107,7 +108,7 @@ describe('Integration: OrganizationNewForm', function() {
         const identities = [emailPasswordIdentity];
         this.setProperties({identities});
 
-        await this.render(hbs`{{forms/organization-new
+        await render(hbs`{{forms/organization-new
           model=newOrganization
           isFirstOrganization=isFirstOrganization
           userIdentities=identities
@@ -135,7 +136,7 @@ describe('Integration: OrganizationNewForm', function() {
 
         this.setProperties({currentUser, identities});
 
-        await this.render(hbs`{{forms/organization-new
+        await render(hbs`{{forms/organization-new
           model=newOrganization
           isFirstOrganization=isFirstOrganization
           userIdentities=identities

@@ -3,6 +3,7 @@ import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import PricingCardBlock from 'percy-web/tests/pages/components/marketing/pricing-card-block';
 import {percySnapshot} from 'ember-percy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: Marketing/PricingCardBlock', function() {
   setupRenderingTest('marketing/pricingCardBlock', {
@@ -11,7 +12,7 @@ describe('Integration: Marketing/PricingCardBlock', function() {
 
   beforeEach(async function() {
     PricingCardBlock.setContext(this);
-    await this.render(hbs`{{marketing/pricing-card-block}}`);
+    await render(hbs`{{marketing/pricing-card-block}}`);
   });
 
   it('displays correct initial values', async function() {

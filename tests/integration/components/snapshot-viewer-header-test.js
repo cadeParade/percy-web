@@ -7,6 +7,7 @@ import {make, makeList} from 'ember-data-factory-guy';
 import SnapshotViewerHeaderPO from 'percy-web/tests/pages/components/snapshot-viewer-header';
 import sinon from 'sinon';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: SnapshotViewerHeader', function() {
   setupRenderingTest('snapshot-viewer-header', {
@@ -26,7 +27,7 @@ describe('Integration: SnapshotViewerHeader', function() {
     });
 
     it('shows dropdown toggle', async function() {
-      await this.render(hbs`{{snapshot-viewer-header
+      await render(hbs`{{snapshot-viewer-header
         snapshot=snapshot
         toggleViewMode=stub
         updateSelectedWidth=stub
@@ -38,7 +39,7 @@ describe('Integration: SnapshotViewerHeader', function() {
     });
 
     it('toggles dropdown pane when dropdown toggle is clicked', async function() {
-      await this.render(hbs`{{snapshot-viewer-header
+      await render(hbs`{{snapshot-viewer-header
         snapshot=snapshot
         toggleViewMode=stub
         updateSelectedWidth=stub
@@ -53,7 +54,7 @@ describe('Integration: SnapshotViewerHeader', function() {
     });
 
     it('shows copy url option', async function() {
-      await this.render(hbs`{{snapshot-viewer-header
+      await render(hbs`{{snapshot-viewer-header
         snapshot=snapshot
         toggleViewMode=stub
         updateSelectedWidth=stub
@@ -76,7 +77,7 @@ describe('Integration: SnapshotViewerHeader', function() {
         this.set('comparison', comparison);
         this.set('snapshot', make('snapshot'));
 
-        await this.render(hbs`{{snapshot-viewer-header
+        await render(hbs`{{snapshot-viewer-header
           snapshot=snapshot
           toggleViewMode=stub
           updateSelectedWidth=stub
@@ -125,7 +126,7 @@ describe('Integration: SnapshotViewerHeader', function() {
           this.set('comparison.baseSnapshot', baseSnapshot);
           this.set('comparison.headSnapshot', headSnapshot);
 
-          await this.render(hbs`{{snapshot-viewer-header
+          await render(hbs`{{snapshot-viewer-header
             snapshot=snapshot
             toggleViewMode=stub
             updateSelectedWidth=stub
@@ -154,7 +155,7 @@ describe('Integration: SnapshotViewerHeader', function() {
           this.set('comparison.baseSnapshot', headSnapshot);
           this.set('comparison.headSnapshot', headSnapshot);
 
-          await this.render(hbs`{{snapshot-viewer-header
+          await render(hbs`{{snapshot-viewer-header
             snapshot=snapshot
             toggleViewMode=stub
             updateSelectedWidth=stub
@@ -180,7 +181,7 @@ describe('Integration: SnapshotViewerHeader', function() {
           this.set('snapshot', headSnapshot);
           this.set('comparison.headSnapshot', headSnapshot);
 
-          await this.render(hbs`{{snapshot-viewer-header
+          await render(hbs`{{snapshot-viewer-header
             snapshot=snapshot
             toggleViewMode=stub
             updateSelectedWidth=stub
@@ -206,7 +207,7 @@ describe('Integration: SnapshotViewerHeader', function() {
         const snapshot = make('snapshot', 'withComparisons');
         this.set('stub', sinon.stub());
         this.set('snapshot', snapshot);
-        await this.render(hbs`{{snapshot-viewer-header
+        await render(hbs`{{snapshot-viewer-header
           snapshot=snapshot
           toggleViewMode=stub
           updateSelectedWidth=stub
@@ -248,7 +249,7 @@ describe('Integration: SnapshotViewerHeader', function() {
 
         this.set('stub', sinon.stub());
         this.set('snapshot', snapshot);
-        await this.render(hbs`{{snapshot-viewer-header
+        await render(hbs`{{snapshot-viewer-header
           snapshot=snapshot
           toggleViewMode=stub
           updateSelectedWidth=stub
@@ -296,7 +297,7 @@ describe('Integration: SnapshotViewerHeader', function() {
 
         this.set('stub', sinon.stub());
         this.set('snapshot', snapshot);
-        await this.render(hbs`{{snapshot-viewer-header
+        await render(hbs`{{snapshot-viewer-header
           snapshot=snapshot
           toggleViewMode=stub
           updateSelectedWidth=stub
@@ -349,7 +350,7 @@ describe('Integration: SnapshotViewerHeader', function() {
     it('displays "No Changes in [browser]" when there are changes in a different browser', async function() { // eslint-disable-line
       const browser = make('browser', 'chrome');
       this.set('browser', browser);
-      await this.render(hbs`{{snapshot-viewer-header
+      await render(hbs`{{snapshot-viewer-header
         snapshot=snapshot
         toggleViewMode=stub
         updateSelectedWidth=stub
@@ -366,7 +367,7 @@ describe('Integration: SnapshotViewerHeader', function() {
     it('displays "Approve" button when there are changes in the active browser', async function() {
       const browser = make('browser');
       this.set('browser', browser);
-      await this.render(hbs`{{snapshot-viewer-header
+      await render(hbs`{{snapshot-viewer-header
         snapshot=snapshot
         toggleViewMode=stub
         updateSelectedWidth=stub
@@ -389,7 +390,7 @@ describe('Integration: SnapshotViewerHeader', function() {
 
       this.setProperties({snapshot, stub, openCommentThreads});
 
-      await this.render(hbs`{{snapshot-viewer-header
+      await render(hbs`{{snapshot-viewer-header
         snapshot=snapshot
         toggleViewMode=stub
         updateSelectedWidth=stub

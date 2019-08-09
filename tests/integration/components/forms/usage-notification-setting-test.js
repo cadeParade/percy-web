@@ -5,6 +5,7 @@ import {make} from 'ember-data-factory-guy';
 import UsageNotificationSettingForm from 'percy-web/tests/pages/components/forms/usage-notification-setting'; // eslint-disable-line
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {percySnapshot} from 'ember-percy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: UsageNotificationSettingForm', function() {
   setupRenderingTest('forms/usage-notification-setting', {
@@ -26,7 +27,7 @@ describe('Integration: UsageNotificationSettingForm', function() {
       setting.set('thresholds', {'snapshot-count': ['1', '20', '33000']});
       this.set('organization', organization);
       this.set('setting', setting);
-      await this.render(hbs`{{forms/usage-notification-setting
+      await render(hbs`{{forms/usage-notification-setting
         organization=organization
         setting=setting}}`);
     });
@@ -45,7 +46,7 @@ describe('Integration: UsageNotificationSettingForm', function() {
     beforeEach(async function() {
       organization = make('organization');
       this.set('organization', organization);
-      await this.render(hbs`{{forms/usage-notification-setting organization=organization}}`);
+      await render(hbs`{{forms/usage-notification-setting organization=organization}}`);
     });
 
     it('renders', async function() {

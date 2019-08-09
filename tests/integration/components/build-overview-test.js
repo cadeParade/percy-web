@@ -5,6 +5,7 @@ import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: BuildOverviewComponent', function() {
   setupRenderingTest('build-overview', {
@@ -33,7 +34,7 @@ describe('Integration: BuildOverviewComponent', function() {
       const build = make.apply(this, ['build'].concat(state));
       this.set('build', build);
 
-      await this.render(hbs`{{build-overview build=build}}`);
+      await render(hbs`{{build-overview build=build}}`);
       await percySnapshot(this.test);
     });
   });

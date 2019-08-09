@@ -5,6 +5,7 @@ import ProjectEditForm from 'percy-web/tests/pages/components/forms/project-edit
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {percySnapshot} from 'ember-percy';
 import {setupRenderingTest} from 'ember-mocha';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: ProjectEditForm', function() {
   setupRenderingTest('forms/project-edit', {
@@ -21,7 +22,7 @@ describe('Integration: ProjectEditForm', function() {
     beforeEach(async function() {
       project = make('project');
       this.setProperties({project});
-      await this.render(hbs`{{forms/project-edit
+      await render(hbs`{{forms/project-edit
         project=project
       }}`);
     });

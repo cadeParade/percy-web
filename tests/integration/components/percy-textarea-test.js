@@ -4,6 +4,7 @@ import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 import {initialize as initializeEmberKeyboard} from 'ember-keyboard';
 import PercyTextarea from 'percy-web/tests/pages/components/percy-textarea';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: PercyTextarea', function() {
   setupRenderingTest('percy-textarea', {
@@ -21,7 +22,7 @@ describe('Integration: PercyTextarea', function() {
 
     this.setProperties({onCmdEnterStub, onEscStub});
 
-    await this.render(hbs`{{percy-textarea
+    await render(hbs`{{percy-textarea
         onCmdEnter=onCmdEnterStub
         onEscape=onEscStub
       }}`);

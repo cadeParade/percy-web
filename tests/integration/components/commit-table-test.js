@@ -5,6 +5,7 @@ import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import CommitTable from 'percy-web/tests/pages/components/commit-table';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: CommitTable', function() {
   setupRenderingTest('commit-table', {
@@ -20,7 +21,7 @@ describe('Integration: CommitTable', function() {
       build = make('build', 'withGithubRepo');
       this.setProperties({build});
 
-      await this.render(hbs`{{
+      await render(hbs`{{
         commit-table
         build=build
         commit=build.commit
@@ -65,7 +66,7 @@ describe('Integration: CommitTable', function() {
       build = make('build', 'withGithubEnterpriseRepo');
       this.setProperties({build});
 
-      await this.render(hbs`{{
+      await render(hbs`{{
         commit-table
         build=build
         commit=build.commit
@@ -110,7 +111,7 @@ describe('Integration: CommitTable', function() {
       build = make('build', 'withGitlabRepo');
       this.setProperties({build});
 
-      await this.render(hbs`{{
+      await render(hbs`{{
         commit-table
         build=build
         commit=build.commit
@@ -155,7 +156,7 @@ describe('Integration: CommitTable', function() {
       build = make('build', 'withGitlabSelfHostedRepo');
       this.setProperties({build});
 
-      await this.render(hbs`{{
+      await render(hbs`{{
         commit-table
         build=build
         commit=build.commit
@@ -200,7 +201,7 @@ describe('Integration: CommitTable', function() {
       build = make('build', 'withBitbucketRepo');
       this.setProperties({build});
 
-      await this.render(hbs`{{
+      await render(hbs`{{
         commit-table
         build=build
         commit=build.commit

@@ -8,6 +8,7 @@ import sinon from 'sinon';
 import CollaborationComment from 'percy-web/tests/pages/components/collaboration/collaboration-comment'; // eslint-disable-line
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import withVariation from 'percy-web/tests/helpers/with-variation';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: CollaborationComment', function() {
   setupRenderingTest('collaboration-comment', {
@@ -32,7 +33,7 @@ describe('Integration: CollaborationComment', function() {
         closeCommentThreadStub,
         isCommentingAllowed: true,
       });
-      await this.render(hbs`{{collaboration/collaboration-comment
+      await render(hbs`{{collaboration/collaboration-comment
         comment=comment
         isFirstComment=isFirstComment
         closeCommentThread=closeCommentThreadStub
@@ -119,7 +120,7 @@ describe('Integration: CollaborationComment', function() {
   describe('when `isFirstComment` is false', function() {
     beforeEach(async function() {
       this.setProperties({isFirstComment: false, comment: {}});
-      await this.render(hbs`{{collaboration/collaboration-comment
+      await render(hbs`{{collaboration/collaboration-comment
         comment=comment
         isFirstComment=isFirstComment
       }}`);

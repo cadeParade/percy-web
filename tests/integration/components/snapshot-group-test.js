@@ -11,6 +11,7 @@ import SnapshotGroup from 'percy-web/tests/pages/components/snapshot-group';
 import {resolve} from 'rsvp';
 import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: SnapshotGroup', function() {
   setupRenderingTest('snapshot-group', {
@@ -62,7 +63,7 @@ describe('Integration: SnapshotGroup', function() {
 
     // eslint-disable-next-line
     it('shows widest width with diff as active by default when some comparisons have diffs', async function() {
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -78,7 +79,7 @@ describe('Integration: SnapshotGroup', function() {
     });
 
     it('updates active button when clicked', async function() {
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -98,7 +99,7 @@ describe('Integration: SnapshotGroup', function() {
 
   describe('full screen toggle button', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -130,7 +131,7 @@ describe('Integration: SnapshotGroup', function() {
     beforeEach(async function() {
       this.set('activeSnapshotBlockId', null);
 
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -190,7 +191,7 @@ describe('Integration: SnapshotGroup', function() {
       let snapshots = unapprovedSnapshots.concat(approvedSnapshots);
       this.set('snapshots', snapshots);
 
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -229,7 +230,7 @@ describe('Integration: SnapshotGroup', function() {
 
   describe('approve snapshot button', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -248,7 +249,7 @@ describe('Integration: SnapshotGroup', function() {
 
   describe('diff toggling', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -312,7 +313,7 @@ describe('Integration: SnapshotGroup', function() {
     });
 
     it('shows multiple snapshots as "cover" snapshots', async function() {
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -335,7 +336,7 @@ describe('Integration: SnapshotGroup', function() {
         });
       });
 
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -351,7 +352,7 @@ describe('Integration: SnapshotGroup', function() {
 
   describe('comment button', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -395,7 +396,7 @@ describe('Integration: SnapshotGroup', function() {
 
   describe('group state', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered

@@ -6,10 +6,7 @@ import {visit, click, currentRouteName, fillIn, findAll} from '@ember/test-helpe
 import Response from 'ember-cli-mirage/response';
 import ProjectPage from 'percy-web/tests/pages/project-page';
 import NewOrganization from 'percy-web/tests/pages/components/new-organization';
-import setupAcceptance, {
-  setupSession,
-  renderAdapterErrorsAsPage,
-} from '../helpers/setup-acceptance';
+import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import UserMenu from 'percy-web/tests/pages/components/user-menu';
 
 describe('Acceptance: Organization', function() {
@@ -228,11 +225,9 @@ describe('Acceptance: Organization', function() {
       expect(currentRouteName()).to.equal('organizations.organization.settings');
 
       await percySnapshot(this.test);
-      await renderAdapterErrorsAsPage(async () => {
-        await fillIn('[data-test-form-input=org-slug]', 'invalid/slug');
-        await click('[data-test-edit-org-form] [data-test-org-save-button]');
-        return percySnapshot(this.test.fullTitle() + ' | Error when invalid slug');
-      });
+      await fillIn('[data-test-form-input=org-slug]', 'invalid/slug');
+      await click('[data-test-edit-org-form] [data-test-org-save-button]');
+      await percySnapshot(this.test.fullTitle() + ' | Error when invalid slug');
       await click('.data-test-dashboard-nav-org-users');
       expect(currentRouteName()).to.equal('organizations.organization.users.index');
 

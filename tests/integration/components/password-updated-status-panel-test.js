@@ -3,7 +3,7 @@ import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import {percySnapshot} from 'ember-percy';
 import PasswordStatusPanel from 'percy-web/tests/pages/components/password-updated-status-panel';
-import {getRootElement} from '@ember/test-helpers';
+import {getRootElement, render} from '@ember/test-helpers';
 
 describe('Integration: PasswordUpdatedStatusPanel;', function() {
   setupRenderingTest('password-updated-status-panel', {
@@ -17,7 +17,7 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
   describe('when success is true', function() {
     it('renders success panel', async function() {
       this.set('success', 'true');
-      await this.render(hbs`{{password-updated-status-panel
+      await render(hbs`{{password-updated-status-panel
         success=success
       }}`);
 
@@ -34,7 +34,7 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
     it('renders "Continue to Profile" button when user is logged in', async function() {
       this.set('success', 'true');
       this.set('currentUser', 'something is present');
-      await this.render(hbs`{{password-updated-status-panel
+      await render(hbs`{{password-updated-status-panel
         success=success
         currentUser=currentUser
       }}`);
@@ -48,7 +48,7 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
     it('renders "Sign in" button when user is not logged in', async function() {
       this.set('success', 'true');
       this.set('currentUser', null);
-      await this.render(hbs`{{password-updated-status-panel
+      await render(hbs`{{password-updated-status-panel
         success=success
         currentUser=currentUser
       }}`);
@@ -62,7 +62,7 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
   describe('when success is false', function() {
     it('renders failure panel', async function() {
       this.set('success', 'false');
-      await this.render(hbs`{{password-updated-status-panel success=success}}`);
+      await render(hbs`{{password-updated-status-panel success=success}}`);
 
       expect(
         PasswordStatusPanel.isSuccessIconPresent,
@@ -78,7 +78,7 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
     it('renders "Continue to Profile" button when user is logged in', async function() {
       this.set('success', 'false');
       this.set('currentUser', 'something is present');
-      await this.render(hbs`{{password-updated-status-panel
+      await render(hbs`{{password-updated-status-panel
         success=success
         currentUser=currentUser
       }}`);
@@ -92,7 +92,7 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
     it('renders "Sign in" button when user is not logged in', async function() {
       this.set('success', 'false');
       this.set('currentUser', null);
-      await this.render(hbs`{{password-updated-status-panel
+      await render(hbs`{{password-updated-status-panel
         success=success
         currentUser=currentUser
       }}`);

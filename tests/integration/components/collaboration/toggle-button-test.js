@@ -2,7 +2,7 @@ import {it, describe, beforeEach} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
-import {click} from '@ember/test-helpers';
+import {render, click} from '@ember/test-helpers';
 import {percySnapshot} from 'ember-percy';
 
 describe('Integration: CollaborationToggleButton', function() {
@@ -21,7 +21,7 @@ describe('Integration: CollaborationToggleButton', function() {
   });
 
   it('displays purple bubble with count when there are unresolved comments', async function() {
-    await this.render(hbs`{{collaboration/toggle-button
+    await render(hbs`{{collaboration/toggle-button
       unresolvedCommentThreadCount=100
       toggleCollaborationPanel=toggleCollaborationPanelStub
     }}`);
@@ -29,7 +29,7 @@ describe('Integration: CollaborationToggleButton', function() {
   });
 
   it('displays green check when isResolved is true', async function() {
-    await this.render(hbs`{{collaboration/toggle-button
+    await render(hbs`{{collaboration/toggle-button
       isResolved=true
       toggleCollaborationPanel=toggleCollaborationPanelStub
     }}`);
@@ -37,7 +37,7 @@ describe('Integration: CollaborationToggleButton', function() {
   });
 
   it('displays grey icon with plus button when isResolved is false and there are no comments', async function() { // eslint-disable-line
-    await this.render(hbs`{{collaboration/toggle-button
+    await render(hbs`{{collaboration/toggle-button
       isResolved=false
       toggleCollaborationPanel=toggleCollaborationPanelStub
     }}`);
@@ -45,7 +45,7 @@ describe('Integration: CollaborationToggleButton', function() {
   });
 
   it('calls toggle action when clicked', async function() {
-    await this.render(hbs`{{collaboration/toggle-button
+    await render(hbs`{{collaboration/toggle-button
       toggleCollaborationPanel=toggleCollaborationPanelStub
     }}`);
     await click('[data-test-toggle-comment-sidebar]');

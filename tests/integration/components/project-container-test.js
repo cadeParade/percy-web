@@ -8,6 +8,7 @@ import ProjectContainer from 'percy-web/tests/pages/components/project-container
 import sinon from 'sinon';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {selectChoose} from 'ember-power-select/test-support/helpers';
+import {render} from '@ember/test-helpers';
 
 const INFINITY_MODEL_STUB = {
   reachedInfinity: true,
@@ -33,7 +34,7 @@ describe('Integration: ProjectContainer', function() {
       const stub = sinon.stub();
       this.setProperties({project, infinityBuilds, stub});
 
-      await this.render(hbs`{{project-container
+      await render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
@@ -61,7 +62,7 @@ describe('Integration: ProjectContainer', function() {
       const stub = sinon.stub();
       this.setProperties({project, infinityBuilds, stub});
 
-      await this.render(hbs`{{project-container
+      await render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
@@ -97,7 +98,7 @@ describe('Integration: ProjectContainer', function() {
       const stub = sinon.stub();
       this.setProperties({project, infinityBuilds, stub});
 
-      await this.render(hbs`{{project-container
+      await render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
@@ -136,7 +137,7 @@ describe('Integration: ProjectContainer', function() {
       const stub = sinon.stub();
       this.setProperties({project, infinityBuilds, stub});
 
-      await this.render(hbs`{{project-container
+      await render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
@@ -174,7 +175,7 @@ describe('Integration: ProjectContainer', function() {
       const stub = sinon.stub();
       this.setProperties({project, infinityBuilds, stub});
 
-      await this.render(hbs`{{project-container
+      await render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
@@ -211,7 +212,7 @@ describe('Integration: ProjectContainer', function() {
       const stub = sinon.stub();
       this.setProperties({project, infinityBuilds, stub});
 
-      await this.render(hbs`{{project-container
+      await render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
@@ -252,7 +253,7 @@ describe('Integration: ProjectContainer', function() {
       const stub = sinon.stub();
       this.setProperties({project, infinityBuilds, stub});
 
-      await this.render(hbs`{{project-container
+      await render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
@@ -287,7 +288,7 @@ describe('Integration: ProjectContainer', function() {
       const stub = sinon.stub();
       this.setProperties({project, infinityBuilds, stub});
 
-      await this.render(hbs`{{project-container
+      await render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds
@@ -319,7 +320,7 @@ describe('Integration: ProjectContainer', function() {
       const stub = sinon.stub();
       this.setProperties({project, infinityBuilds, stub});
 
-      await this.render(hbs`{{project-container
+      await render(hbs`{{project-container
         project=project
         builds=infinityBuilds
         infinityBuilds=infinityBuilds

@@ -7,6 +7,7 @@ import hbs from 'htmlbars-inline-precompile';
 import moment from 'moment';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import ManageUsersList from 'percy-web/tests/pages/components/organizations/manage-users-list';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: ManageUsersList', function() {
   freezeMoment('2018-12-17');
@@ -27,7 +28,7 @@ describe('Integration: ManageUsersList', function() {
   function rendersAnInviteCorrectly({isAdmin = true}) {
     it('renders an invite correctly', async function() {
       organization.set('currentUserIsAdmin', isAdmin);
-      await this.render(
+      await render(
         hbs`{{organizations/manage-users-list
           organization=organization
           organizationUsers=organizationUsers}}`,
@@ -76,7 +77,7 @@ describe('Integration: ManageUsersList', function() {
 
   describe('when there are no invites', function() {
     beforeEach(async function() {
-      await this.render(
+      await render(
         hbs`{{organizations/manage-users-list
           organization=organization
           organizationUsers=organizationUsers}}`,
@@ -112,7 +113,7 @@ describe('Integration: ManageUsersList', function() {
         organization: organization,
       });
       this.setProperties({invites});
-      await this.render(
+      await render(
         hbs`{{organizations/manage-users-list
           organization=organization
           organizationUsers=organizationUsers}}`,

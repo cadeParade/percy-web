@@ -6,6 +6,7 @@ import UsageNotificationSettingForm from 'percy-web/tests/pages/components/forms
 import UsageSection from 'percy-web/tests/pages/components/organizations/usage-section';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {percySnapshot} from 'ember-percy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: UsageSection', function() {
   setupRenderingTest('usage-section', {
@@ -21,7 +22,7 @@ describe('Integration: UsageSection', function() {
     it('displays', async function() {
       const organization = make('organization', 'withPaidPlan');
       this.set('organization', organization);
-      await this.render(hbs`{{organizations/usage-section
+      await render(hbs`{{organizations/usage-section
         organization=organization}}`);
 
       expect(UsageSection.usageGraphContainer.isVisible).to.equal(true);
@@ -43,7 +44,7 @@ describe('Integration: UsageSection', function() {
       it('displays when plan is paid', async function() {
         const organization = make('organization', 'withPaidPlan');
         this.set('organization', organization);
-        await this.render(hbs`{{organizations/usage-section
+        await render(hbs`{{organizations/usage-section
           organization=organization}}`);
 
         expect(UsageSection.usageNotificationSettingForm.isVisible).to.equal(true);
@@ -71,7 +72,7 @@ describe('Integration: UsageSection', function() {
           thresholds: {'snapshot-count': ['1', '20', '33000']},
         });
         this.setProperties({setting, organization});
-        await this.render(hbs`{{organizations/usage-section
+        await render(hbs`{{organizations/usage-section
           organization=organization
           usageNotificationSetting=setting}}`);
       });

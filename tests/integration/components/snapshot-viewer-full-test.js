@@ -9,6 +9,7 @@ import sinon from 'sinon';
 import {resolve} from 'rsvp';
 import FullSnapshotPage from 'percy-web/tests/pages/components/snapshot-viewer-full';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: SnapshotViewerFull', function() {
   setupRenderingTest('snapshot-viewer-full', {
@@ -58,7 +59,7 @@ describe('Integration: SnapshotViewerFull', function() {
       stub: sinon.stub(),
     });
 
-    await this.render(hbs`{{snapshot-viewer-full
+    await render(hbs`{{snapshot-viewer-full
       snapshot=snapshot
       snapshotSelectedWidth=snapshotSelectedWidth
       comparisonMode=comparisonMode

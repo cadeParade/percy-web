@@ -10,6 +10,7 @@ import sinon from 'sinon';
 import {resolve, defer} from 'rsvp';
 import BuildApprovalButton from 'percy-web/tests/pages/components/build-approval-button';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: BuildApprovalButton', function() {
   setupRenderingTest('build-approval-button', {
@@ -27,7 +28,7 @@ describe('Integration: BuildApprovalButton', function() {
   });
 
   it('displays correctly when build is not approved ', async function() {
-    await this.render(hbs`{{build-approval-button
+    await render(hbs`{{build-approval-button
       build=build
       createReview=stub
     }}`);
@@ -35,7 +36,7 @@ describe('Integration: BuildApprovalButton', function() {
   });
 
   it('displays correctly when build is approved', async function() {
-    await this.render(hbs`{{build-approval-button
+    await render(hbs`{{build-approval-button
       build=build
       createReview=stub
     }}`);
@@ -52,7 +53,7 @@ describe('Integration: BuildApprovalButton', function() {
       approvableSnapshots: build.get('snapshots'),
     });
 
-    await this.render(hbs`{{build-approval-button
+    await render(hbs`{{build-approval-button
       build=build
       createReview=createReviewStub
       approvableSnapshots=approvableSnapshots
@@ -73,7 +74,7 @@ describe('Integration: BuildApprovalButton', function() {
       approvableSnapshots: build.get('snapshots'),
     });
 
-    await this.render(hbs`{{build-approval-button
+    await render(hbs`{{build-approval-button
       build=build
       createReview=createReviewStub
       approvableSnapshots=approvableSnapshots
@@ -91,7 +92,7 @@ describe('Integration: BuildApprovalButton', function() {
       approvableSnapshots: [],
     });
 
-    await this.render(hbs`{{build-approval-button
+    await render(hbs`{{build-approval-button
       build=build
       createReview=createReviewStub
       approvableSnapshots=approvableSnapshots
@@ -105,7 +106,7 @@ describe('Integration: BuildApprovalButton', function() {
     const deferred = defer();
     const createReviewStub = sinon.stub().returns(deferred.promise);
     this.set('createReviewStub', createReviewStub);
-    await this.render(hbs`{{build-approval-button
+    await render(hbs`{{build-approval-button
       build=build
       createReview=createReviewStub
     }}`);
@@ -117,7 +118,7 @@ describe('Integration: BuildApprovalButton', function() {
   it('is enabled when isDisabled is false', async function() {
     let createReviewStub = sinon.stub().returns(resolve({then: sinon.stub()}));
     this.set('createReviewStub', createReviewStub);
-    await this.render(hbs`{{build-approval-button
+    await render(hbs`{{build-approval-button
       build=build
       createReview=createReviewStub
       isDisabled=false
@@ -131,7 +132,7 @@ describe('Integration: BuildApprovalButton', function() {
   it('is disabled when isDisabled is true', async function() {
     let createReviewStub = sinon.stub().returns(resolve({then: sinon.stub()}));
     this.set('createReview', createReviewStub);
-    await this.render(hbs`{{build-approval-button
+    await render(hbs`{{build-approval-button
       build=build
       createReview=createReviewStub
       isDisabled=true
