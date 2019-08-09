@@ -1,0 +1,9 @@
+<button
+  class="btn mr-1 text-purple-600 snapshot-unreject-button {{if isLoading "is-loading"}}"
+  {{action 'unreviewSnapshots'}}
+  disabled="{{if isDisabled "disabled"}}"
+  data-test-snapshot-unreview-button
+>
+{{log 'button???'}}
+  Reset snapshot
+</button>

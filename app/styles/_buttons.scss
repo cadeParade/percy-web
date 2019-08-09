@@ -345,6 +345,21 @@ button,
   }
 }
 
+.snapshot-unreject-button {
+  &.is-loading {
+    background-image: linear-gradient(-45deg, #f6edfa 25%, #fdfafe 25%, #fdfafe 50%, #f6edfa 50%, #f6edfa 75%, #fdfafe 75%, #ffefe6);
+    background-size: 20px 20px;
+    animation: loading 4s linear infinite;
+  }
+
+  &:hover,
+  &:focus,
+  &:focus:active {
+    color: var(--purple-600);
+    background-color: var(--purple-100);
+  }
+}
+
 .btn-alt-success {
   color: var(--green);
   background: none;

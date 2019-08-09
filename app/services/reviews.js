@@ -8,25 +8,25 @@ export default Service.extend({
   snapshotQuery: service(),
 
   async createApprovalReview(build, snapshots, eventData) {
-    const review = this.store.createRecord('review', {
-      build,
-      snapshots,
-      action: 'approve',
-    });
-    return await this._saveReview(review, build, eventData);
+    return await this._saveReview('approve', build, snapshots, eventData);
   },
 
   async createRejectReview(build, snapshots, eventData) {
+    return await this._saveReview('rejected', build, snapshots, eventData);
+  },
+
+  async createUnreviewReview(build, snapshots, eventData) {
+    return await this._saveReview('unreview', build, snapshots, eventData);
+  },
+
+  async _saveReview(action, build, snapshots, eventData) {
     const review = this.get('store').createRecord('review', {
       build,
       snapshots,
-      action: 'rejected',
+      action,
     });
-    return await this._saveReview(review, build, eventData);
-  },
-
-  async _saveReview(review, build, eventData) {
     await review.save();
+
     const refreshedBuild = this.store.findRecord('build', build.get('id'), {
       reload: true,
       include: 'approved-by',

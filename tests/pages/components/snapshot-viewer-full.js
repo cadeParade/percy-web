@@ -60,6 +60,7 @@ export const SnapshotViewerFull = {
 
   clickApprove: alias('header.clickApprove'),
   clickReject: alias('header.clickReject'),
+  clickUnreview: alias('header.clickUnreview'),
   approveButton: alias('header.snapshotApprovalButton.button'),
   isApproved: alias('header.isApproved'),
 

@@ -811,6 +811,24 @@ describe('Acceptance: Build', function() {
     await percySnapshot(this.test);
   });
 
+  it('creates a unreview review object when clicking "Mark unreviewed"', async function() {
+    withVariation(this.owner, 'request-changes', true);
+    await BuildPage.visitBuild(urlParams);
+    const firstSnapshot = BuildPage.snapshots.objectAt(0);
+    expect(server.db.reviews.length).to.equal(0);
+    expect(firstSnapshot.commentThreads.length).to.equal(0);
+    await firstSnapshot.clickReject();
+    await firstSnapshot.clickUnreview();
+
+    expect(server.db.reviews.length).to.equal(2);
+    const snapshotReview = server.db.reviews.find(2);
+    expect(snapshotReview.action).to.equal('unreview');
+    expect(snapshotReview.buildId).to.equal(build.id);
+    expect(snapshotReview.snapshotIds).to.eql([defaultSnapshot.id]);
+
+    await percySnapshot(this.test);
+  });
+
   it('blocks approval of snapshot when snapshot is rejected', async function() {
     withVariation(this.owner, 'request-changes', true);
     await BuildPage.visitBuild(urlParams);
@@ -1065,6 +1083,21 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     expect(snapshot.reviewState).to.equal('rejected');
     expect(snapshot.reviewStateReason).to.equal('user_rejected');
     expect(BuildPage.snapshotFullscreen.commentThreads.length).to.equal(1);
+    await percySnapshot(this.test);
+  });
+
+  it('creates a unreview review object when clicking "Mark unreviewed"', async function() {
+    withVariation(this.owner, 'request-changes', true);
+    await BuildPage.visitFullPageSnapshot(urlParams);
+    expect(server.db.reviews.length).to.equal(0);
+    await BuildPage.snapshotFullscreen.clickReject();
+    await BuildPage.snapshotFullscreen.clickUnreview();
+
+    expect(server.db.reviews.length).to.equal(2);
+    const snapshotReview = server.db.reviews.find(2);
+    expect(snapshotReview.action).to.equal('unreview');
+    expect(snapshotReview.buildId).to.equal(build.id);
+
     await percySnapshot(this.test);
   });
 

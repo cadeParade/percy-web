@@ -349,10 +349,15 @@ export default function() {
   });
 
   this.post('/reviews', function(schema) {
+    const actionsToStates = {
+      approve: {reviewState: 'approved', reviewStateReason: 'user_approved'},
+      rejected: {reviewState: 'rejected', reviewStateReason: 'user_rejected'},
+      unreview: {reviewState: 'unreviewed', reviewStateReason: 'unreviewed_snapshots'},
+    };
     const attrs = this.normalizedRequestAttrs();
     const snapshots = schema.snapshots.find(attrs.snapshotIds);
-    const reviewState = attrs.action === 'approve' ? 'approved' : 'rejected';
-    const reviewStateReason = attrs.action === 'approve' ? 'user_approved' : 'user_rejected';
+    const reviewState = actionsToStates[attrs.action].reviewState;
+    const reviewStateReason = actionsToStates[attrs.action].reviewStateReason;
     snapshots.models.forEach(snapshot => {
       snapshot.update({reviewState, reviewStateReason});
     });

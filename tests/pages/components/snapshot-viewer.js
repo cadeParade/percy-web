@@ -43,6 +43,7 @@ export const SnapshotViewer = {
 
   clickApprove: alias('header.clickApprove'),
   clickReject: alias('header.clickReject'),
+  clickUnreview: alias('header.clickUnreview'),
   approveButton: alias('header.snapshotApprovalButton.button'),
 
   isLazyRenderHeaderVisible: isVisible(SELECTORS.LAZY_RENDER_HEADER),
