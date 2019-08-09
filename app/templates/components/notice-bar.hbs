@@ -1,50 +1,51 @@
 {{#if showNoticeBar}}
-  {{#notice-bar-container organization=organization as |bar|}}
+  <div class="hidden sm:block flex-no-shrink mr-4">
+    {{#notice-bar-container organization=organization as |bar|}}
+      {{#if shouldShowNewProjectPrompt}}
+        {{#bar.body}}Get started with your own project.{{/bar.body}}
+        {{#bar.button
+          linkRoute="organizations.organization.projects.new"}}Create project
+        {{/bar.button}}
 
-    {{#if shouldShowNewProjectPrompt}}
-      {{#bar.body}}Get started with your own project.{{/bar.body}}
-      {{#bar.button
-        linkRoute="organizations.organization.projects.new"}}Create project
-      {{/bar.button}}
+      {{else if isSubscriptionFree}}
 
-    {{else if isSubscriptionFree}}
+        {{#if hasRemainingSnapshots}}
+          {{#bar.body classes="notice-bar-black-on-white"}}
+            You have used <strong data-test-percentage>{{currentUsagePercentage}}%</strong> of your free snapshots this month.
+          {{/bar.body}}
+          {{#bar.button
+            buttonClasses="notice-bar-button-gray border border-gray-100"
+            linkClasses="text-blue-500"
+          }}
+            More Info
+          {{/bar.button}}
+        {{else}}
 
-      {{#if hasRemainingSnapshots}}
-        {{#bar.body classes="notice-bar-black-on-white"}}
-          You have used <strong data-test-percentage>{{currentUsagePercentage}}%</strong> of your free snapshots this month.
+          {{#bar.body}}
+            You have used <span data-test-percentage>all</span> of your free snapshots this month.
+          {{/bar.body}}
+          {{#bar.button}}
+            Upgrade Plan
+          {{/bar.button}}
+        {{/if}}
+
+      {{else if isSubscriptionTrial}}
+
+        {{#bar.body classes="notice-bar-black-on-gray"}}
+          {{#if isTrialEndingToday}}
+            Your trial ends today!
+          {{else}}
+            You have <strong>{{pluralize trialDaysRemaining "day"}}</strong> left in your trial.
+          {{/if}}
         {{/bar.body}}
         {{#bar.button
-          buttonClasses="notice-bar-button-gray border border-gray-100"
+          buttonClasses="notice-bar-button-gray"
           linkClasses="text-blue-500"
         }}
-          More Info
+          See plans
         {{/bar.button}}
-      {{else}}
 
-        {{#bar.body}}
-          You have used <span data-test-percentage>all</span> of your free snapshots this month.
-        {{/bar.body}}
-        {{#bar.button}}
-          Upgrade Plan
-        {{/bar.button}}
       {{/if}}
-
-    {{else if isSubscriptionTrial}}
-
-      {{#bar.body classes="notice-bar-black-on-gray"}}
-        {{#if isTrialEndingToday}}
-          Your trial ends today!
-        {{else}}
-          You have <strong>{{pluralize trialDaysRemaining "day"}}</strong> left in your trial.
-        {{/if}}
-      {{/bar.body}}
-      {{#bar.button
-        buttonClasses="notice-bar-button-gray"
-        linkClasses="text-blue-500"
-      }}
-        See plans
-      {{/bar.button}}
-
-    {{/if}}
-  {{/notice-bar-container}}
+    {{/notice-bar-container}}
+  </div>
 {{/if}}

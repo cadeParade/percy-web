@@ -1,6 +1,6 @@
 <div class="Header flex items-center px-2 border-b bg-gray-000" data-test-fixed-top-header>
   <div class="container-xl flex justify-between items-center">
-    <div class="flex items-center">
+    <div class="flex items-center truncate">
       {{#if session.isAuthenticated}}
         {{#link-to "index"}}
           <figure class="svg-container">
@@ -9,26 +9,31 @@
         {{/link-to}}
       {{else}}
         {{#link-to "index"}}
-          <figure class="svg-container">
+          <figure class="sm:hidden svg-container">
+            {{inline-svg "percy-logo-on-light" class="mr-3"}}
+          </figure>
+          <figure class="hidden sm:block svg-container">
             {{inline-svg "percy-full-horizontal-on-light" class="mr-3"}}
           </figure>
         {{/link-to}}
       {{/if}}
 
       {{#if session.isAuthenticated}}
-        <div class="flex items-center mr-3">
-          {{#if currentOrganization}}
-            <div class="text-lg">
-              {{#link-to "organization" currentOrganization.slug class="inline-block link-purple truncate truncate-target data-test-organization-dashboard-link"}}{{currentOrganization.name}}{{/link-to}}
-              {{#if project}}
-                <span class="font-semibold text-gray-700 mx-px">/</span>
-                {{#link-to "organization.project" currentOrganization.slug project class="inline-block link-purple truncate truncate-target"}}
-                  {{project.name}}
-                {{/link-to}}
-              {{/if}}
-            </div>
-          {{/if}}
-        </div>
+        {{#if currentOrganization}}
+          <div class="flex items-center text-lg mr-3 truncate">
+            <span class="truncate">
+              {{#link-to "organization" currentOrganization.slug class="link-purple data-test-organization-dashboard-link"}}
+                {{currentOrganization.name}}
+              {{/link-to}}
+            </span>
+            {{#if project}}
+              <span class="font-semibold text-gray-700 mx-sm">/</span>
+              {{#link-to "organization.project" currentOrganization.slug project class="link-purple truncate"}}
+                {{project.name}}
+              {{/link-to}}
+            {{/if}}
+          </div>
+        {{/if}}
       {{/if}}
     </div>
 
