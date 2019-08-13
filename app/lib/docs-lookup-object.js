@@ -17,17 +17,17 @@ export default {
       },
       react: {
         name: 'React',
-        docLink: 'https://docs.percy.io/docs/storybook-for-react',
-        exampleLink: 'https://github.com/percy/example-storybook-for-react',
+        docLink: 'https://docs.percy.io/docs/storybook',
+        exampleLink: '',
       },
       vue: {
         name: 'Vue',
-        docLink: 'https://docs.percy.io/docs/storybook-for-vue',
+        docLink: 'https://docs.percy.io/docs/storybook',
         exampleLink: '',
       },
       angular: {
         name: 'Angular',
-        docLink: 'https://docs.percy.io/docs/storybook-for-angular',
+        docLink: 'https://docs.percy.io/docs/storybook',
         exampleLink: '',
       },
       webdriverio: {
