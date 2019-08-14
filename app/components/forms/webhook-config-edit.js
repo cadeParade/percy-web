@@ -23,6 +23,16 @@ const SUBSCRIBABLE_EVENTS = [
     value: 'build_finished',
     description: 'A build has finished',
   },
+  {
+    label: 'build_rejected',
+    value: 'build_rejected',
+    description: 'A build has changes requested',
+  },
+  {
+    label: 'build_unreviewed',
+    value: 'build_unreviewed',
+    description: 'A build no longer has changes requested',
+  },
 ];
 
 const FORM_FIELD_LABELS = {
