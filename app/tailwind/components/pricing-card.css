@@ -17,3 +17,10 @@
   @apply mb-0;
   @apply text-xl;
 }
+
+.pricing-card-container-short {
+  height: 350px;
+  @media screen and (max-width: 850px) {
+    height: 450px;
+  }
+}

@@ -19,14 +19,14 @@ describe('Integration: Marketing/PricingCardBlock', function() {
     expect(PricingCardBlock.slider.value).to.equal('10000');
     expect(PricingCardBlock.snapshotCount).to.equal('10,000 snapshots / month');
     expect(PricingCardBlock.calculatedPrice).to.equal('$29');
-    expect(PricingCardBlock.priceText.includes('Starting at')).to.equal(true);
+    expect(PricingCardBlock.priceText.includes('Your price')).to.equal(true);
     await percySnapshot(this.test);
   });
 
   it('updates values correctly', async function() {
     await PricingCardBlock.slider.setValue(80000);
     expect(PricingCardBlock.snapshotCount).to.equal('80,000 snapshots / month');
-    expect(PricingCardBlock.calculatedPrice).to.equal('$449');
+    expect(PricingCardBlock.calculatedPrice).to.equal('$349');
     expect(PricingCardBlock.priceText.includes('Your price')).to.equal(true);
     await percySnapshot(this.test);
   });

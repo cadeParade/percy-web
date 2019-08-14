@@ -1,12 +1,25 @@
 import Component from '@ember/component';
-import {computed, get, set} from '@ember/object';
-import {or, readOnly} from '@ember/object/computed';
+import {computed} from '@ember/object';
+import {equal, or} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
+import {PLAN_DATA} from 'percy-web/services/subscription-data';
 
-const EXTRA_FEATURES = ['Unlimited projects', 'Dynamic concurrent renderers'];
 const ESSENTIAL_PLAN_SLIDER_SETUP = {
-  maxRange: 150000, // This is how many snapshots it takes to get slightly over $849
-  step: 5000, // arbitrary
+  minRange: 10000,
+  maxRange: 310000,
+  step: 5000,
+};
+
+const freePlan = PLAN_DATA.PLANS[0];
+const smallPlan = PLAN_DATA.PLANS[1];
+const mediumPlan = PLAN_DATA.PLANS[2];
+const largePlan = PLAN_DATA.PLANS[3];
+
+const planBreaks = {
+  // Number of snapshots when price of next tier is cheaper
+  small: {maxSnapshots: 60000},
+  medium: {maxSnapshots: 160000},
+  large: {maxSnapshots: 300000},
 };
 
 // Slider settings
@@ -24,43 +37,49 @@ export default Component.extend({
   attributeBindings: ['data-test-pricing-card-block'],
   'data-test-pricing-card-block': true,
 
-  essentialPlanSliderSetup: ESSENTIAL_PLAN_SLIDER_SETUP,
+  sliderSetup: ESSENTIAL_PLAN_SLIDER_SETUP,
 
   _sliderSnapshotCount: null,
 
-  displaySnapshotCount: or('_sliderSnapshotCount', 'initialSnapshotCount'),
-  initialSnapshotCount: readOnly('essentialPlan.usageIncluded'),
+  displaySnapshotCount: or('_sliderSnapshotCount', 'sliderSetup.minRange'),
 
-  essentialPlan: computed('subscriptionData', function() {
-    return this._getPlanAndAddFeatures('Essential');
+  freePlan,
+  smallPlan,
+  mediumPlan,
+  largePlan,
+
+  isEnterpriseSelected: equal('selectedPlanRange', 'Enterprise'),
+
+  priceText: computed('sliderCalculatedPrice', 'selectedPlanRange', function() {
+    if (this.selectedPlanRange === 'Enterprise') {
+      return 'Reach out to learn more about enterprise pricing.';
+    }
+
+    return 'Your price';
   }),
 
-  businessPlan: computed('subscriptionData', function() {
-    return this._getPlanAndAddFeatures('Business');
+  selectedPlanRange: computed('displaySnapshotCount', function() {
+    const snapshotCount = this.displaySnapshotCount;
+    if (snapshotCount <= planBreaks.small.maxSnapshots) {
+      return 'Small';
+    } else if (snapshotCount <= planBreaks.medium.maxSnapshots) {
+      return 'Medium';
+    } else if (snapshotCount <= planBreaks.large.maxSnapshots) {
+      return 'Large';
+    } else if (snapshotCount > planBreaks.large.maxSnapshots) {
+      return 'Enterprise';
+    }
   }),
-
-  _getPlanAndAddFeatures(planName) {
-    const plan = get(this, 'subscriptionData.PLANS').findBy('name', planName);
-    const features = [get(plan, 'numTeamMembersTitle')].concat(EXTRA_FEATURES);
-    set(plan, 'features', features);
-    return plan;
-  },
 
   sliderCalculatedPrice: computed('displaySnapshotCount', function() {
-    return _calculatePrice({
-      basePrice: get(this, 'essentialPlan.amount'),
-      baseSnapshots: get(this, 'essentialPlan.usageIncluded'),
-      snapshotCount: get(this, 'displaySnapshotCount'),
-      overageUnitCost: get(this, 'essentialPlan.overageUnitCost'),
-    });
-  }),
-
-  priceText: computed('sliderCalculatedPrice', 'essentialPlan.amount', function() {
-    const price = get(this, 'sliderCalculatedPrice');
-    if (price <= get(this, 'essentialPlan.amount')) {
-      return 'Starting at';
-    } else {
-      return 'Your price';
+    const plan = this.subscriptionData.PLANS.findBy('name', this.selectedPlanRange);
+    if (plan) {
+      return _calculatePrice({
+        basePrice: plan.amount,
+        baseSnapshots: plan.usageIncluded,
+        snapshotCount: this.displaySnapshotCount,
+        overageUnitCost: plan.overageUnitCost,
+      });
     }
   }),
 

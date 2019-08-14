@@ -7,7 +7,7 @@ import Service from '@ember/service';
 
 export const DEFAULT_PLAN_ID = 'v3-small';
 
-export default Service.extend({
+export const PLAN_DATA = {
   PLAN_IDS: ['free', 'v3-small', 'v3-medium', 'v3-large'],
   UPGRADEABLE_PLAN_IDS: [
     'free',
@@ -38,7 +38,7 @@ export default Service.extend({
     },
     {
       id: 'v3-small',
-      name: 'Essential',
+      name: 'Small',
       amount: 29,
       usageIncluded: 10000,
       overageUnitCost: 0.006,
@@ -47,7 +47,7 @@ export default Service.extend({
     },
     {
       id: 'v3-medium',
-      name: 'Professional',
+      name: 'Medium',
       amount: 349,
       usageIncluded: 80000,
       overageUnitCost: 0.006,
@@ -56,7 +56,7 @@ export default Service.extend({
     },
     {
       id: 'v3-large',
-      name: 'Business',
+      name: 'Large',
       amount: 849,
       usageIncluded: 200000,
       overageUnitCost: 0.006,
@@ -64,4 +64,6 @@ export default Service.extend({
       historyLimitTitle: '1 year history',
     },
   ],
-});
+};
+
+export default Service.extend(PLAN_DATA);
