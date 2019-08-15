@@ -1143,7 +1143,8 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       await percySnapshot(this.test);
     });
 
-    it('blocks approval of snapshot if there are open review threads on snapshot', async function() { // eslint-disable-line
+    // eslint-disable-next-line
+    it('blocks approval of snapshot if there are open review threads on snapshot', async function() {
       const snapshot = BuildPage.snapshotFullscreen;
       await snapshot.clickApprove();
       expect(BuildPage.confirmDialog.isVisible).to.equal(true);
@@ -1204,7 +1205,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   });
 });
 
-describe('Acceptance: Auto-Approved Branch Build', function() {
+describe('Acceptance: Auto-approved Branch Build', function() {
   freezeMoment('2018-05-22');
   setupAcceptance();
 

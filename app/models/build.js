@@ -15,10 +15,10 @@ export const BUILD_STATES = {
 export const INFINITY_SCROLL_LIMIT = 50;
 
 const APPROVED_LABEL = 'Approved';
-const AUTO_APPROVED_BRANCH_LABEL = 'Auto-Approved';
+const AUTO_APPROVED_BRANCH_LABEL = 'Auto-approved';
 const EXPIRED_LABEL = 'Expired';
 const FAILED_LABEL = 'Failed';
-const NO_DIFFS_LABEL = 'No Changes';
+const NO_DIFFS_LABEL = 'No changes';
 const PENDING_LABEL = 'Receiving';
 const PROCESSING_LABEL = 'Processing';
 const UNREVIEWED_LABEL = 'Unreviewed';

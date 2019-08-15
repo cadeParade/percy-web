@@ -16,7 +16,7 @@ export const SLACK_NOTIFICATION_OPTIONS = [
     description: 'Builds with no visual changes',
   },
   {
-    label: 'Auto-Approved',
+    label: 'Auto-approved',
     value: 'finished_auto_approved_branch',
     description: 'Builds auto-approved from your auto-approved branches',
   },

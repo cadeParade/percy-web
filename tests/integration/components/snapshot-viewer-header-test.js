@@ -347,7 +347,8 @@ describe('Integration: SnapshotViewerHeader', function() {
       });
     });
 
-    it('displays "No Changes in [browser]" when there are changes in a different browser', async function() { // eslint-disable-line
+    // eslint-disable-next-line
+    it('displays "No changes in [browser]" when there are changes in a different browser', async function() {
       const browser = make('browser', 'chrome');
       this.set('browser', browser);
       await render(hbs`{{snapshot-viewer-header
