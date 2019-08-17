@@ -24,8 +24,8 @@ const SUBSCRIBABLE_EVENTS = [
     description: 'A build has finished',
   },
   {
-    label: 'build_rejected',
-    value: 'build_rejected',
+    label: 'build_changes_requested',
+    value: 'build_changes_requested',
     description: 'A build has changes requested',
   },
   {
