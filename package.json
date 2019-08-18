@@ -70,7 +70,7 @@
     "ember-data": "~3.11.4",
     "ember-data-contentful": "^0.2.4",
     "ember-data-factory-guy": "^3.9.4",
-    "ember-exam": "2.1.5",
+    "ember-exam": "4.0.0",
     "ember-export-application-global": "^2.0.0",
     "ember-fakerjs": "^0.2.0",
     "ember-fetch": "6.7.0",
