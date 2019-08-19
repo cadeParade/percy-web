@@ -1,12 +1,39 @@
 .build-card-placeholder {
+  @apply relative;
   @apply flex;
   @apply justify-center;
   @apply items-center;
-  @apply border-b;
   @apply px-4;
   height: 98px;
-  background: url("/images/build-card-placeholder.jpg");
-  @apply bg-cover;
+}
+
+.line-loader-container {
+  @apply absolute;
+  @apply pin-b;
+  @apply w-full;
+  @apply bg-gray-100;
+  @apply overflow-hidden;
+  height: 1px;
+}
+
+.line-loader {
+  @apply absolute;
+  @apply pin-t;
+  @apply pin-l;
+  @apply bg-purple-600;
+  width: 50%;
+  height: 1px;
+  animation: line-loading 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes line-loading {
+  0% {
+    transform: translateX(-85%);
+  }
+
+  100% {
+    transform: translateX(185%);
+  }
 }
 
 .build-card-container {

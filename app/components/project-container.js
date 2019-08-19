@@ -16,6 +16,7 @@ export default Component.extend(PollingMixin, {
   project: null,
   showQuickstart: false,
   shouldPollForUpdates: true,
+  showUnixBash: true,
 
   POLLING_INTERVAL_SECONDS: 10,
 
@@ -65,6 +66,10 @@ export default Component.extend(PollingMixin, {
   actions: {
     chooseBranch(newBranch) {
       this.set('selectedBranch', newBranch);
+    },
+
+    switchBashSyntax() {
+      this.toggleProperty('showUnixBash');
     },
   },
 

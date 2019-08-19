@@ -2,8 +2,33 @@
 // in the empty state of the project container
 
 export default {
-  javascript: {
-    name: 'Javascript',
+  popular: {
+    name: 'Popular',
+    frameworks: {
+      percyscript: {
+        name: 'PercyScript',
+        docLink: 'https://docs.percy.io/docs/percyscript',
+        exampleLink: 'https://github.com/percy/example-percyscript',
+      },
+      cypress: {
+        name: 'Cypress',
+        docLink: 'https://docs.percy.io/docs/cypress',
+        exampleLink: 'https://github.com/percy/example-percy-cypress',
+      },
+      capybara: {
+        name: 'Capybara',
+        docLink: 'https://docs.percy.io/docs/rails',
+        exampleLink: 'https://github.com/percy/example-rails',
+      },
+      storybook: {
+        name: 'Storybook',
+        docLink: 'https://docs.percy.io/docs/storybook',
+        exampleLink: '',
+      },
+    },
+  },
+  web: {
+    name: 'Web',
     frameworks: {
       percyscript: {
         name: 'PercyScript',
@@ -15,61 +40,6 @@ export default {
         docLink: 'https://docs.percy.io/docs/ember',
         exampleLink: 'https://github.com/percy/example-ember',
       },
-      react: {
-        name: 'React',
-        docLink: 'https://docs.percy.io/docs/storybook',
-        exampleLink: '',
-      },
-      vue: {
-        name: 'Vue',
-        docLink: 'https://docs.percy.io/docs/storybook',
-        exampleLink: '',
-      },
-      angular: {
-        name: 'Angular',
-        docLink: 'https://docs.percy.io/docs/storybook',
-        exampleLink: '',
-      },
-      webdriverio: {
-        name: 'WebdriverIO',
-        docLink: 'https://docs.percy.io/docs/webdriverio',
-        exampleLink: 'https://github.com/percy/example-webdriverio',
-      },
-      cypress: {
-        name: 'Cypress',
-        docLink: 'https://docs.percy.io/docs/cypress',
-        exampleLink: 'https://github.com/percy/example-percy-cypress',
-      },
-      nightmare: {
-        name: 'NightmareJS',
-        docLink: 'https://docs.percy.io/docs/nightmare',
-        exampleLink: 'https://github.com/percy/example-percy-nightmare',
-      },
-      puppeteer: {
-        name: 'Puppeteer',
-        docLink: 'https://docs.percy.io/docs/puppeteer',
-        exampleLink: 'https://github.com/percy/example-percy-puppeteer',
-      },
-      protractor: {
-        name: 'Protractor',
-        docLink: 'https://docs.percy.io/docs/protractor',
-        exampleLink: 'https://github.com/percy/example-percy-protractor',
-      },
-      nightwatch: {
-        name: 'Nightwatch',
-        docLink: 'https://docs.percy.io/docs/nightwatch',
-        exampleLink: 'https://github.com/percy/example-percy-nightwatch',
-      },
-      other: {
-        name: 'Other',
-        docLink: '',
-        exampleLink: '',
-      },
-    },
-  },
-  ruby: {
-    name: 'Ruby',
-    frameworks: {
       rails: {
         name: 'Rails',
         docLink: 'https://docs.percy.io/docs/rails',
@@ -80,16 +50,6 @@ export default {
         docLink: 'https://docs.percy.io/docs/rails',
         exampleLink: 'https://github.com/percy/example-rails',
       },
-      other: {
-        name: 'Other',
-        docLink: '',
-        exampleLink: '',
-      },
-    },
-  },
-  python: {
-    name: 'Python',
-    frameworks: {
       selenium: {
         name: 'Selenium',
         docLink: 'https://docs.percy.io/docs/python-selenium',
@@ -102,19 +62,69 @@ export default {
       },
     },
   },
-  java: {
-    name: 'Java',
+  components: {
+    name: 'Components',
     frameworks: {
+      storybook: {
+        name: 'Storybook',
+        docLink: 'https://docs.percy.io/docs/storybook',
+        exampleLink: '',
+      },
+      other: {
+        name: 'Other',
+        docLink: '',
+        exampleLink: '',
+      },
+    },
+  },
+  e2e: {
+    name: 'E2E',
+    frameworks: {
+      cypress: {
+        name: 'Cypress',
+        docLink: 'https://docs.percy.io/docs/cypress',
+        exampleLink: 'https://github.com/percy/example-percy-cypress',
+      },
+      puppeteer: {
+        name: 'Puppeteer',
+        docLink: 'https://docs.percy.io/docs/puppeteer',
+        exampleLink: 'https://github.com/percy/example-percy-puppeteer',
+      },
+      webdriverio: {
+        name: 'WebdriverIO',
+        docLink: 'https://docs.percy.io/docs/webdriverio',
+        exampleLink: 'https://github.com/percy/example-webdriverio',
+      },
+      nightmare: {
+        name: 'NightmareJS',
+        docLink: 'https://docs.percy.io/docs/nightmare',
+        exampleLink: 'https://github.com/percy/example-percy-nightmare',
+      },
+      nightwatch: {
+        name: 'Nightwatch',
+        docLink: 'https://docs.percy.io/docs/nightwatch',
+        exampleLink: 'https://github.com/percy/example-percy-nightwatch',
+      },
+      protractor: {
+        name: 'Protractor',
+        docLink: 'https://docs.percy.io/docs/protractor',
+        exampleLink: 'https://github.com/percy/example-percy-protractor',
+      },
       selenium: {
         name: 'Selenium',
+        docLink: 'https://docs.percy.io/docs/python-selenium',
+        exampleLink: 'https://github.com/percy/example-django-selenium',
+      },
+      java: {
+        name: 'Java',
         docLink: 'https://docs.percy.io/docs/java-selenium',
         exampleLink: 'https://github.com/percy/example-percy-java-selenium',
       },
-    },
-    other: {
-      name: 'Other',
-      docLink: '',
-      exampleLink: '',
+      other: {
+        name: 'Other',
+        docLink: '',
+        exampleLink: '',
+      },
     },
   },
   static: {

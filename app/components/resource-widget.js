@@ -5,7 +5,7 @@ import {isEmpty} from '@ember/utils';
 
 export default Component.extend({
   tagName: '',
-  selectedLanguage: 'javascript',
+  selectedLanguage: 'popular',
   selectedFramework: null,
   requestedFramework: '',
 

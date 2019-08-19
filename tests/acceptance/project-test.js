@@ -86,6 +86,7 @@ describe('Acceptance: Project', function() {
       expect(ProjectPage.isFrameworkDocsButtonVisible).to.equal(true);
       await percySnapshot(this.test.fullTitle() + ' | framework links are visible');
 
+      await ProjectPage.frameworkCategories[1].click();
       await ProjectPage.lastFramework.click();
 
       expect(ProjectPage.isSdkRequestFieldVisible).to.equal(true);
