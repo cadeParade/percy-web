@@ -1363,7 +1363,7 @@ describe('Acceptance: Demo Project Build', function() {
     await BuildPage.visitBuild(urlParams);
 
     const tooltipElement = await findAll('.ember-attacher').firstObject;
-    expect(BuildPage.demoTooltips.length).to.equal(5);
+    expect(BuildPage.demoTooltips.length).to.equal(6);
     // Anchors on snapshot viewers should be visible
     // This line checks that the index param is being passed correctly
     expect(BuildPage.demoTooltips[3].isAnchorVisible).to.equal(true);
@@ -1380,7 +1380,7 @@ describe('Acceptance: Demo Project Build', function() {
     const firstTooltip = tooltipElements[0];
     const secondTooltip = tooltipElements[1];
 
-    expect(BuildPage.demoTooltips.length).to.equal(5);
+    expect(BuildPage.demoTooltips.length).to.equal(6);
     expect(BuildPage.nextableDemoTooltips.length).to.equal(4);
 
     await BuildPage.nextableDemoTooltips.objectAt(0).clickAnchor();
@@ -1396,7 +1396,7 @@ describe('Acceptance: Demo Project Build', function() {
   it('hides all tooltips and all anchors when all are dismissed', async function() {
     await BuildPage.visitBuild(urlParams);
 
-    expect(BuildPage.demoTooltips.length).to.equal(5);
+    expect(BuildPage.demoTooltips.length).to.equal(6);
 
     await BuildPage.demoTooltips.objectAt(0).clickAnchor();
     await BuildPage.demoTooltips.objectAt(0).clickDismissAll();

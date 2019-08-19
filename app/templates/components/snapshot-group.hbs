@@ -72,6 +72,14 @@
           </div>
           <div class="btn-group">
             {{#if (and (variation 'request-changes') isGroupUnreviewed)}}
+              {{demo-tooltip
+                build=build
+                isFirstInstance=(eq index 0)
+                anchorPlacement='left-corner'
+                key="ten"
+                title="Requesting changes"
+                message="If a snapshot is not yet ready to be approved, request changes so your team can follow the status of a build."
+              }}
               {{snapshot-reject-button
                 snapshots=snapshots
                 isDisabled=(not isBuildApprovable)

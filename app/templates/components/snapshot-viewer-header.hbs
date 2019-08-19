@@ -170,6 +170,14 @@
 
         <div class="btn-group" data-test-snapshot-approval-button>
           {{#if (and (variation 'request-changes') snapshot.isUnreviewed)}}
+            {{demo-tooltip
+              build=snapshot.build
+              isFirstInstance=(eq index 0)
+              anchorPlacement='left-corner'
+              key="nine"
+              title="Requesting changes"
+              message="If a snapshot is not yet ready to be approved, request changes so your team can follow the status of a build."
+            }}
             {{snapshot-reject-button
               snapshots=(array snapshot)
               isDisabled=(not isBuildApprovable)
