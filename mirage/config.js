@@ -1,7 +1,12 @@
 import Mirage from 'ember-cli-mirage';
 import faker from 'faker';
 import {REVIEW_COMMENT_TYPE} from 'percy-web/models/comment-thread';
-import {SNAPSHOT_REJECTED_STATE, SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
+import {
+  SNAPSHOT_APPROVED_STATE,
+  SNAPSHOT_REJECTED_STATE,
+  SNAPSHOT_REVIEW_STATE_REASONS,
+} from 'percy-web/models/snapshot';
+import {REVIEW_ACTIONS} from 'percy-web/models/review';
 
 export default function() {
   // Enable this to see verbose request logging from mirage:
@@ -351,13 +356,18 @@ export default function() {
   this.post('/reviews', function(schema) {
     const attrs = this.normalizedRequestAttrs();
     const snapshots = schema.snapshots.find(attrs.snapshotIds);
-    const reviewState = attrs.action === 'approve' ? 'approved' : 'rejected';
-    const reviewStateReason = attrs.action === 'approve' ? 'user_approved' : 'user_rejected';
+    const reviewState =
+      attrs.action === REVIEW_ACTIONS.APPROVE ? SNAPSHOT_APPROVED_STATE : SNAPSHOT_REJECTED_STATE;
+    const reviewStateReason =
+      attrs.action === REVIEW_ACTIONS.APPROVE
+        ? SNAPSHOT_REVIEW_STATE_REASONS.USER_APPROVED
+        : SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED;
+
     snapshots.models.forEach(snapshot => {
       snapshot.update({reviewState, reviewStateReason});
     });
 
-    if (attrs.action === 'rejected') {
+    if (attrs.action === REVIEW_ACTIONS.REJECT) {
       const currentUser = schema.users.findBy({_currentLoginInTest: true});
       snapshots.models.forEach(snapshot => {
         const commentThread = schema.commentThreads.create({

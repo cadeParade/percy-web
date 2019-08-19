@@ -1,6 +1,7 @@
 import Service from '@ember/service';
 import {inject as service} from '@ember/service';
 import {Promise} from 'rsvp';
+import {REVIEW_ACTIONS} from 'percy-web/models/review';
 
 export default Service.extend({
   store: service(),
@@ -11,7 +12,7 @@ export default Service.extend({
     const review = this.store.createRecord('review', {
       build,
       snapshots,
-      action: 'approve',
+      action: REVIEW_ACTIONS.APPROVE,
     });
     return await this._saveReview(review, build, eventData);
   },
@@ -20,7 +21,7 @@ export default Service.extend({
     const review = this.get('store').createRecord('review', {
       build,
       snapshots,
-      action: 'rejected',
+      action: REVIEW_ACTIONS.REJECT,
     });
     return await this._saveReview(review, build, eventData);
   },

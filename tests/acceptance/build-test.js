@@ -576,7 +576,7 @@ describe('Acceptance: Build', function() {
 
       const review = server.db.reviews.firstObject;
       expect(server.db.reviews.length).to.equal(1);
-      expect(review.action).to.equal('rejected');
+      expect(review.action).to.equal('request_changes');
       expect(review.snapshotIds.length).to.equal(3);
       expect(review.snapshotIds).to.eql(unapprovedSnapshots.mapBy('id'));
 
@@ -803,7 +803,7 @@ describe('Acceptance: Build', function() {
     await firstSnapshot.clickReject();
 
     const snapshotReview = server.db.reviews.find(1);
-    expect(snapshotReview.action).to.equal('rejected');
+    expect(snapshotReview.action).to.equal('request_changes');
     expect(snapshotReview.buildId).to.equal(build.id);
     expect(snapshotReview.snapshotIds).to.eql([defaultSnapshot.id]);
 
@@ -1058,12 +1058,12 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     expect(server.db.reviews.length).to.equal(1);
 
     const snapshotReview = server.db.reviews.find(1);
-    expect(snapshotReview.action).to.equal('rejected');
+    expect(snapshotReview.action).to.equal('request_changes');
     expect(snapshotReview.buildId).to.equal(build.id);
     expect(snapshotReview.snapshotIds).to.eql([snapshot.id]);
 
-    expect(snapshot.reviewState).to.equal('rejected');
-    expect(snapshot.reviewStateReason).to.equal('user_rejected');
+    expect(snapshot.reviewState).to.equal('changes_requested');
+    expect(snapshot.reviewStateReason).to.equal('user_requested_changes');
     expect(BuildPage.snapshotFullscreen.commentThreads.length).to.equal(1);
     await percySnapshot(this.test);
   });

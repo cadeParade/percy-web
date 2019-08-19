@@ -59,8 +59,8 @@
                   <strong>{{build.totalSnapshotsUnreviewed}}</strong>
                   <span class="text-sm text-gray-400 font-semibold">unreviewed</span>
                 {{else}}
-                  <strong>{{build.totalSnapshotsRejected}}</strong>
-                  <span class="text-sm text-gray-400 font-semibold">{{pluralize build.totalSnapshotsRejected "requested change" without-count=true}}</span>
+                  <strong>{{build.totalSnapshotsRequestingChanges}}</strong>
+                  <span class="text-sm text-gray-400 font-semibold">{{pluralize build.totalSnapshotsRequestingChanges "requested change" without-count=true}}</span>
                 {{/if}}
               </div>
             {{/unless}}

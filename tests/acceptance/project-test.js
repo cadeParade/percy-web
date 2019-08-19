@@ -438,7 +438,7 @@ describe('Acceptance: Project', function() {
       });
       server.create('build', 'withSnapshots', 'rejected', {
         totalSnapshotsUnreviewed: 3,
-        totalSnapshotsRejected: 2,
+        totalSnapshotsRequestingChanges: 2,
         totalSnapshots: 10,
         project,
         createdAt: _timeAgo(5, 'seconds'),

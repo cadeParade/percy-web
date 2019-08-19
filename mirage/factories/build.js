@@ -1,12 +1,18 @@
 import {Factory, trait} from 'ember-cli-mirage';
 import moment from 'moment';
-import {BUILD_STATES} from 'percy-web/models/build';
+import {
+  BUILD_STATES,
+  BUILD_REVIEW_STATE_REASONS,
+  BUILD_APPROVED_STATE,
+  BUILD_UNREVIEWED_STATE,
+  BUILD_REJECTED_STATE,
+} from 'percy-web/models/build';
 
 export default Factory.extend({
   branch: 'master',
   state: BUILD_STATES.FINISHED,
-  reviewState: 'unreviewed',
-  reviewStateReason: 'unreviewed_snapshots',
+  reviewState: BUILD_UNREVIEWED_STATE,
+  reviewStateReason: BUILD_REVIEW_STATE_REASONS.UNREVIEWED,
   totalSnapshots: 4,
   totalSnapshotsUnreviewed: 3,
   totalComparisonsDiff: 8,
@@ -27,37 +33,37 @@ export default Factory.extend({
 
   rejected: trait({
     state: BUILD_STATES.FINISHED,
-    reviewState: 'rejected',
-    reviewStateReason: 'rejected_snapshot',
-    totalSnapshotsRejected: 2,
+    reviewState: BUILD_REJECTED_STATE,
+    reviewStateReason: BUILD_REVIEW_STATE_REASONS.SNAPSHOT_REJECTED,
+    totalSnapshotsRequestingChanges: 2,
   }),
 
   approved: trait({
     state: BUILD_STATES.FINISHED,
-    reviewState: 'approved',
-    reviewStateReason: 'all_snapshots_approved',
+    reviewState: BUILD_APPROVED_STATE,
+    reviewStateReason: BUILD_REVIEW_STATE_REASONS.ALL_SNAPSHOTS_APPROVED,
     approvedAt: moment(),
   }),
 
   approvedPreviously: trait({
     state: BUILD_STATES.FINISHED,
-    reviewState: 'approved',
-    reviewStateReason: 'all_snapshots_approved_previously',
+    reviewState: BUILD_APPROVED_STATE,
+    reviewStateReason: BUILD_REVIEW_STATE_REASONS.ALL_SNAPSHOTS_APPROVED_PREVIOUSLY,
     approvedAt: moment(),
   }),
 
   approvedWithNoDiffs: trait({
     state: BUILD_STATES.FINISHED,
-    reviewState: 'approved',
-    reviewStateReason: 'no_diffs',
+    reviewState: BUILD_APPROVED_STATE,
+    reviewStateReason: BUILD_REVIEW_STATE_REASONS.NO_DIFFS,
     totalComparisonsDiff: 0,
     approvedAt: moment(),
   }),
 
   approvedAutoBranch: trait({
     state: BUILD_STATES.FINISHED,
-    reviewState: 'approved',
-    reviewStateReason: 'auto_approved_branch',
+    reviewState: BUILD_APPROVED_STATE,
+    reviewStateReason: BUILD_REVIEW_STATE_REASONS.AUTO_APPROVED_BRANCH,
     approvedAt: moment(),
     afterCreate(build, server) {
       server.create('snapshot', 'autoApprovedBranch', {build});

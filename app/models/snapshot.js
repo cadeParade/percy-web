@@ -3,7 +3,7 @@ import {equal, mapBy, max, not, or, notEmpty, filterBy} from '@ember/object/comp
 
 export const SNAPSHOT_APPROVED_STATE = 'approved';
 export const SNAPSHOT_UNAPPROVED_STATE = 'unreviewed';
-export const SNAPSHOT_REJECTED_STATE = 'rejected';
+export const SNAPSHOT_REJECTED_STATE = 'changes_requested';
 
 export const SNAPSHOT_REVIEW_STATE_REASONS = {
   AUTO_APPROVED_BRANCH: 'auto_approved_branch',
@@ -11,8 +11,8 @@ export const SNAPSHOT_REVIEW_STATE_REASONS = {
   UNREVIEWED: 'unreviewed_comparisons',
   USER_APPROVED: 'user_approved',
   USER_APPROVED_PREVIOUSLY: 'user_approved_previously',
-  USER_REJECTED: 'user_rejected',
-  USER_REJECTED_PREVIOUSLY: 'user_rejected_previously',
+  USER_REJECTED: 'user_requested_changes',
+  USER_REJECTED_PREVIOUSLY: 'user_requested_changes_previously',
 };
 
 // These are the possible reviewStateReasons for snapshots that have diffs
@@ -59,8 +59,9 @@ export default DS.Model.extend({
   // - 'approved' --> 'no_diffs': automatically approved because there were no visual differences
   //    when compared the baseline.
   // - 'approved' --> 'auto_approved_branch': Automatically approved based on branch name
-  // - 'rejected' --> 'user_rejected': User clicked "Request changes" button in current build
-  // - 'rejected' --> 'user_rejected_previously':'rejected' status has carried forward
+  // - 'rejected' --> 'user_requested_changes': User clicked "Request changes" button
+  //.   in current build
+  // - 'rejected' --> 'user_requested_changes_previously':'rejected' status has carried forward
   reviewStateReason: DS.attr(),
   isApprovedByUser: equal('reviewStateReason', SNAPSHOT_REVIEW_STATE_REASONS.USER_APPROVED),
   isApprovedByUserPreviously: equal(

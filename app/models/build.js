@@ -4,6 +4,20 @@ import DS from 'ember-data';
 import moment from 'moment';
 import {countDiffsWithSnapshotsPerBrowser} from 'percy-web/lib/filtered-comparisons';
 
+export const BUILD_APPROVED_STATE = 'approved';
+export const BUILD_UNREVIEWED_STATE = 'unreviewed';
+export const BUILD_REJECTED_STATE = 'changes_requested';
+
+export const BUILD_REVIEW_STATE_REASONS = {
+  UNREVIEWED: 'unreviewed_snapshots',
+  ALL_SNAPSHOTS_APPROVED: 'all_snapshots_approved',
+  ALL_SNAPSHOTS_APPROVED_PREVIOUSLY: 'all_snapshots_approved_previously',
+  NO_DIFFS: 'no_diffs',
+  AUTO_APPROVED_BRANCH: 'auto_approved_branch',
+  SNAPSHOT_REJECTED: 'changes_requested_snapshot',
+  SNAPSHOT_REJECTED_PREVIOUSLY: 'changes_requested_snapshot_previously',
+};
+
 export const BUILD_STATES = {
   FINISHED: 'finished',
   PENDING: 'pending',
@@ -73,10 +87,10 @@ export default DS.Model.extend({
 
   // Review state, aggregated across all reviews. This will only be set for finished builds.
   reviewState: DS.attr(),
-  isUnreviewed: equal('reviewState', 'unreviewed'),
+  isUnreviewed: equal('reviewState', BUILD_UNREVIEWED_STATE),
+  isApproved: equal('reviewState', BUILD_APPROVED_STATE),
+  isRejected: equal('reviewState', BUILD_REJECTED_STATE),
   isUnapproved: or('isUnreviewed', 'isRejected'),
-  isApproved: equal('reviewState', 'approved'),
-  isRejected: equal('reviewState', 'rejected'),
 
   // reviewStateReason provides disambiguation for how reviewState was set, such as when a
   // build was approved automatically by the system when there are no diffs vs. when it is
@@ -90,8 +104,10 @@ export default DS.Model.extend({
   // - 'approved' --> 'no_diffs': All snapshots were automatically approved because there were no
   //    visual differences when compared with the baseline.
   // - 'approved' --> 'auto_approved_branch': Automatically approved based on branch name
-  // - 'rejected' --> rejected_snapshot: snapshot(s) rejected by user in this build
-  // - 'rejected' --> rejected_snapshot_previously: snapshot(s) rejected in previous build
+  // - 'changes_requested' --> changes_requested_snapshot: snapshot(s) rejected by user
+  //    in this build
+  // - 'changes_requested' --> changes_requested_snapshot_previously: snapshot(s) rejected
+  //    in previous build
   reviewStateReason: DS.attr(),
 
   // Aggregate numbers for snapshots and comparisons. These will only be set for finished builds.
@@ -99,7 +115,7 @@ export default DS.Model.extend({
   // Each comparison represents a single individual rendering at a width and browser.
   totalSnapshots: DS.attr('number'),
   totalSnapshotsUnreviewed: DS.attr('number'),
-  totalSnapshotsRejected: DS.attr('number'),
+  totalSnapshotsRequestingChanges: DS.attr('number'),
 
   totalComparisons: DS.attr('number'),
   totalComparisonsFinished: DS.attr('number'),

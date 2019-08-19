@@ -17,7 +17,7 @@
           No changes to review
         {{/if}}
       {{else if build.isRejected}}
-        {{pluralize build.totalSnapshotsRejected "requested change"}}
+        {{pluralize build.totalSnapshotsRequestingChanges "requested change"}}
       {{else}}
         {{pluralize build.totalSnapshotsUnreviewed "unreviewed change"}}
       {{/if}}
