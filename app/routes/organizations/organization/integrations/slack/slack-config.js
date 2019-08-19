@@ -43,9 +43,9 @@ export default Route.extend(AuthenticatedRouteMixin, {
   actions: {
     deleteSlackIntegrationConfig(slackIntegrationConfig) {
       const slackIntegration = slackIntegrationConfig.get('slackIntegration');
-      const confirmationMessage = `Are you sure you want remove this project from your ${
-        slackIntegration.channelName
-      } Slack integration?`;
+      const confirmationMessage =
+        'Are you sure you want remove this project' +
+        ` from your ${slackIntegration.channelName} Slack integration?`;
       if (!utils.confirmMessage(confirmationMessage)) {
         return;
       }
@@ -53,9 +53,8 @@ export default Route.extend(AuthenticatedRouteMixin, {
         .destroyRecord()
         .then(() => {
           this.flashMessages.success(
-            `Successfully removed project configuration from your ${
-              slackIntegration.channelName
-            } Slack integration`,
+            'Successfully removed project configuration from' +
+              ` your ${slackIntegration.channelName} Slack integration`,
           );
           this.transitionTo(
             'organizations.organization.integrations.slack',
