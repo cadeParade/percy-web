@@ -26,23 +26,25 @@
     {{/if}}
   </div>
 
-  <div class="flex items-center justify-between pb-2 mb-2 border-b">
-    <div class="leading-none">
-      <div class="mb-sm font-semibold">
-        Percy Demo
+  {{#if (variation "allow-demo-projects")}}
+    <div class="flex items-center justify-between pb-2 mb-2 border-b">
+      <div class="leading-none">
+        <div class="mb-sm font-semibold">
+          Percy Demo
+        </div>
+        <div class="text-gray-400">
+          Check out what Percy is capable of
+        </div>
       </div>
-      <div class="text-gray-400">
-        Check out what Percy is capable of
-      </div>
+      {{form-fields/submit
+        value="Try demo project"
+        classes="percy-btn percy-btn-primary data-test-demo-submit-button"
+        submit=(action "handleSubmit" "demo")
+        isSaving=isDemoSaving
+        disabled=isDemoDisabled
+      }}
     </div>
-    {{form-fields/submit
-      value="Try demo project"
-      classes="percy-btn percy-btn-primary data-test-demo-submit-button"
-      submit=(action "handleSubmit" "demo")
-      isSaving=isDemoSaving
-      disabled=isDemoDisabled
-    }}
-  </div>
+  {{/if}}
 
   <div class="flex items-center justify-between pb-2 mb-2">
     <div class="leading-none">

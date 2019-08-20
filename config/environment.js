@@ -201,6 +201,7 @@ module.exports = function(environment) {
     ENV.launchDarkly.local = true;
     ENV.launchDarkly.localFeatureFlags = {
       'request-changes': false,
+      'allow-demo-projects': true,
     };
 
     ENV.APP.bitbucketCloudUrls = {
