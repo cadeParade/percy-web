@@ -47,24 +47,25 @@ describe('Acceptance: Build', function() {
     const firstSnapshot = BuildPage.snapshots[0];
     const collabPanel = firstSnapshot.collaborationPanel;
     expect(firstSnapshot.header.numOpenCommentThreads).to.equal('3');
+    expect(collabPanel.isShowArchivedCommentsVisible).to.equal(false);
     expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
     expect(collabPanel.reviewThreads[1].isResolved).to.equal(false);
     expect(collabPanel.noteThreads[0].isArchived).to.equal(false);
-
     await collabPanel.reviewThreads[0].close();
 
     // Comment threads are ordered with open threads first and closed threads second.
     // Since we have just closed one of the open threads, it has moved under the open threads.
     expect(firstSnapshot.header.numOpenCommentThreads).to.equal('2');
+    expect(collabPanel.isShowArchivedCommentsVisible).to.equal(true);
     expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
-    expect(collabPanel.reviewThreads[1].isResolved).to.equal(true);
     expect(collabPanel.noteThreads[0].isArchived).to.equal(false);
 
     await collabPanel.noteThreads[0].close();
     expect(firstSnapshot.header.numOpenCommentThreads).to.equal('1');
     expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
-    expect(collabPanel.reviewThreads[1].isResolved).to.equal(true);
-    expect(collabPanel.noteThreads[0].isArchived).to.equal(true);
+
+    await collabPanel.showArchivedComments();
+    expect(collabPanel.commentThreads.length).to.equal(3);
 
     await percySnapshot(context.test);
   }
@@ -1124,6 +1125,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
       expect(collabPanel.reviewThreads[1].isResolved).to.equal(false);
       expect(collabPanel.noteThreads[0].isArchived).to.equal(false);
+      expect(collabPanel.isShowArchivedCommentsVisible).to.equal(false);
 
       await collabPanel.reviewThreads[0].close();
 
@@ -1131,14 +1133,13 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       // Since we have just closed one of the open threads, it has moved under the open threads.
       expect(snapshot.header.numOpenCommentThreads).to.equal('2');
       expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
-      expect(collabPanel.reviewThreads[1].isResolved).to.equal(true);
       expect(collabPanel.noteThreads[0].isArchived).to.equal(false);
+      expect(collabPanel.isShowArchivedCommentsVisible).to.equal(true);
 
       await collabPanel.noteThreads[0].close();
       expect(snapshot.header.numOpenCommentThreads).to.equal('1');
       expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
-      expect(collabPanel.reviewThreads[1].isResolved).to.equal(true);
-      expect(collabPanel.noteThreads[0].isArchived).to.equal(true);
+      expect(collabPanel.isShowArchivedCommentsVisible).to.equal(true);
 
       await percySnapshot(this.test);
     });

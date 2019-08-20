@@ -82,14 +82,17 @@ describe('Integration: CollaborationPanel', function() {
 
       expect(CollaborationPanel.newComment.isNewThreadButtonVisible).to.equal(true);
       expect(CollaborationPanel.newComment.isNewThreadContainerVisible).to.equal(false);
-      expect(CollaborationPanel.commentThreads.length).to.equal(4);
+      expect(CollaborationPanel.commentThreads.length).to.equal(2);
 
       expect(CollaborationPanel.commentThreads[0].comments[0].createdAt).to.equal('a day ago');
       expect(CollaborationPanel.commentThreads[0].isClosed).to.equal(false);
+      await percySnapshot(this.test.fullTitle() + 'before closed threads are expanded');
 
+      await CollaborationPanel.showArchivedComments();
+      expect(CollaborationPanel.commentThreads.length).to.equal(4);
       expect(CollaborationPanel.commentThreads[2].comments[0].createdAt).to.equal('a day ago');
       expect(CollaborationPanel.commentThreads[2].isClosed).to.equal(true);
-      await percySnapshot(this.test);
+      await percySnapshot(this.test.fullTitle() + 'after closed threads are expanded');
     });
 
     it('does not show "New Comment" button when isCommentingAllowed is false', async function() {

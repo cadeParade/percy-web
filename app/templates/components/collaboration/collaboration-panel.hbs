@@ -11,7 +11,7 @@
       }}
     {{/if}}
 
-    {{#each orderedCommentThreads as |thread|}}
+    {{#each openThreads as |thread|}}
       {{collaboration/comment-thread
         commentThread=thread
         createComment=createComment
@@ -19,6 +19,26 @@
         isCommentingAllowed=isCommentingAllowed
       }}
     {{/each}}
+    {{#if hasClosedThreads}}
+      {{#if areClosedThreadsExpanded}}
+        {{#each closedThreads as |thread|}}
+          {{collaboration/comment-thread
+            commentThread=thread
+            createComment=createComment
+            closeCommentThread=closeCommentThread
+            isCommentingAllowed=isCommentingAllowed
+          }}
+        {{/each}}
+      {{else}}
+        {{#percy-btn
+          handleClick=(action "showClosedComments")
+          testLabel="show-archived-comments"
+          class="w-full"
+        }}
+          Show archived comments
+        {{/percy-btn}}
+      {{/if}}
+    {{/if}}
 
   </div>
 </div>
