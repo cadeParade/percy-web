@@ -595,11 +595,11 @@ describe('Acceptance: Project', function() {
         await ProjectSettingsPage.webhookConfigList.newWebhookConfig();
         expect(currentRouteName()).to.equal('organization.project.integrations.index');
 
-        await percySnapshot(this.test.fullTitle());
+        await percySnapshot(`${this.test.fullTitle()} project integration page`);
 
         await ProjectSettingsPage.repoIntegrator.clickDemoLink();
         expect(currentRouteName()).to.equal('organizations.organization.projects.new');
-        await percySnapshot(this.test.fullTitle());
+        await percySnapshot(`${this.test.fullTitle()} new project page`);
       });
     });
   });

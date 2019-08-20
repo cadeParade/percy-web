@@ -66,7 +66,9 @@
             </button>
             {{#if noSnapshotsWithOpenCommentThreads}}
               <button class="btn btn-square flex items-center" {{action "handleCommentClick"}} data-test-group-comment-btn>
-                <figure class="svg-container">{{inline-svg "conversation-icon-add"}}</figure>
+                <figure class="svg-container">
+                  {{inline-svg "conversation-icon-add"}}
+                </figure>
               </button>
             {{/if}}
           </div>
@@ -113,13 +115,15 @@
 
       {{#if displaySingleSnapshotGroupCover}}
         <div class="relative border-b">
-          <div style="left: 28px;" class="snapshot-group-indent-line snapshot-group-indent-line-gradient"></div>
+          <div style="left: 28px;" class="snapshot-group-indent-line {{if isGroupRejected 'snapshot-group-indent-line-changes-requested-gradient' 'snapshot-group-indent-line-gradient'}}"></div>
           <div class="flex bg-gray-000">
             <div style="padding: 22px 16px 10px;" class="mb-2">
               <div style="top: 126px;" class="sticky">
                 <figure class="svg-container">
                   {{#if isGroupApproved}}
-                    {{inline-svg "comparison-icon-group-snapshot-approved"}}
+                    {{inline-svg "comparison-icon-group-approved"}}
+                  {{else if isGroupRejected}}
+                    {{inline-svg "comparison-icon-group-changes-requested"}}
                   {{else}}
                     {{inline-svg "comparison-icon-group-snapshot"}}
                   {{/if}}
@@ -149,14 +153,16 @@
 
       {{else}}
         <div class="relative pt-2 bg-gray-000">
-          <div style="left: 28px;" class="snapshot-group-indent-line"></div>
+          <div style="left: 28px;" class="snapshot-group-indent-line {{if isGroupRejected 'bg-orange-500'}}"></div>
           {{#each snapshotsToDisplay as |snapshot index|}}
             <div class="flex bg-gray-000">
               <div style="padding: 11px 16px 10px;" class="mb-2">
                 <div style="top: 132px;" class="sticky">
                   <figure class="svg-container">
                     {{#if snapshot.isApproved}}
-                      {{inline-svg "comparison-icon-group-snapshot-approved"}}
+                      {{inline-svg "comparison-icon-group-approved"}}
+                    {{else if snapshot.isRejected}}
+                      {{inline-svg "comparison-icon-group-changes-requested"}}
                     {{else}}
                       {{inline-svg "comparison-icon-group-snapshot"}}
                     {{/if}}
