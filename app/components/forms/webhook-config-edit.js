@@ -1,6 +1,7 @@
 import {computed} from '@ember/object';
 import BaseFormComponent from './base';
 import WebhookConfigEditValidations from '../../validations/webhook-config-edit';
+import {inject as service} from '@ember/service';
 
 const SUBSCRIBABLE_EVENTS = [
   {
@@ -22,6 +23,19 @@ const SUBSCRIBABLE_EVENTS = [
     label: 'build_finished',
     value: 'build_finished',
     description: 'A build has finished',
+  },
+];
+
+const REJECTION_EVENTS = [
+  {
+    label: 'build_changes_requested',
+    value: 'build_changes_requested',
+    description: 'A build has changes requested',
+  },
+  {
+    label: 'build_unreviewed',
+    value: 'build_unreviewed',
+    description: 'A build no longer has changes requested',
   },
 ];
 
@@ -59,6 +73,7 @@ const FORM_FIELD_LABELS = {
 };
 
 export default BaseFormComponent.extend({
+  launchDarkly: service(),
   classNames: ['FormsWebhookConfigEdit', 'Form'],
   model: computed.alias('webhookConfig'),
   validator: WebhookConfigEditValidations,
@@ -73,5 +88,12 @@ export default BaseFormComponent.extend({
 
   labels: FORM_FIELD_LABELS,
 
-  allOptions: SUBSCRIBABLE_EVENTS,
+  allOptions: computed(function() {
+    const allowRejection = this.launchDarkly.variation('request-changes');
+    if (allowRejection) {
+      return SUBSCRIBABLE_EVENTS.concat(REJECTION_EVENTS);
+    } else {
+      return SUBSCRIBABLE_EVENTS;
+    }
+  }),
 });

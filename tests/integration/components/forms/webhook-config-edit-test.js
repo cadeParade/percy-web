@@ -6,6 +6,7 @@ import {percySnapshot} from 'ember-percy';
 import WebhookConfigEditForm from 'percy-web/tests/pages/components/forms/webhook-config-edit';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render} from '@ember/test-helpers';
+import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Integration: WebhookConfigEditForm', function() {
   setupRenderingTest('forms/webhook-config-edit', {
@@ -17,6 +18,7 @@ describe('Integration: WebhookConfigEditForm', function() {
   beforeEach(async function() {
     setupFactoryGuy(this);
     WebhookConfigEditForm.setContext(this);
+    withVariation(this.owner, 'request-changes', true);
     webhookConfig = make('webhook-config');
     this.set('webhookConfig', webhookConfig);
     await render(hbs`{{forms/webhook-config-edit webhookConfig=webhookConfig}}`);
@@ -30,6 +32,8 @@ describe('Integration: WebhookConfigEditForm', function() {
     expect(WebhookConfigEditForm.subscribedEvents[1].value).to.equal(false);
     expect(WebhookConfigEditForm.subscribedEvents[2].value).to.equal(false);
     expect(WebhookConfigEditForm.subscribedEvents[3].value).to.equal(false);
+    expect(WebhookConfigEditForm.subscribedEvents[4].value).to.equal(false);
+    expect(WebhookConfigEditForm.subscribedEvents[5].value).to.equal(false);
     expect(WebhookConfigEditForm.sslVerificationEnabled).to.equal('on');
     expect(WebhookConfigEditForm.deliveryEnabled).to.equal('on');
   });
