@@ -1,7 +1,5 @@
 import {computed} from '@ember/object';
-import {readOnly} from '@ember/object/computed';
 import Component from '@ember/component';
-import BaseFormComponent from './base';
 import WebhookConfigEditValidations from '../../validations/webhook-config-edit';
 import {task} from 'ember-concurrency';
 import Changeset from 'ember-changeset';
@@ -86,31 +84,48 @@ export default Component.extend({
   }),
 
   saveText: computed('changeset.isPristine', function() {
+    // use get because changeset is a proxy.
     return `${this.changeset.get('isNew') ? 'Create' : 'Update'} webhook`;
   }),
 
-  isSubmitDisabled: computed('changeset.isValid', function() {
-    return !this.changeset.get('isValid');
+  isSubmitDisabled: computed('changeset.isValid', 'saveWebhookConfig.isRunning', function() {
+    // use get because changeset is a proxy.
+    return !this.changeset.get('isValid') || this.saveWebhookConfig.isRunning;
   }),
 
   changesetErrors: computed('changeset.error', function() {
-    // use this.get because changeset is a proxy.
-    return this.get('changeset.error');
+    // use get because changeset is a proxy.
+    return this.changeset.get('error');
   }),
 
   labels: FORM_FIELD_LABELS,
 
   allOptions: SUBSCRIBABLE_EVENTS,
 
+  actions: {
+    toggleSubscribeEvent(subscribedEventValue, isSelected) {
+      let oldSelectedSubscribedEvents = this.changeset.get('subscribedEvents');
+      let newValue;
+
+      if (isSelected) {
+        // If we're enabling the target, add it to the array
+        newValue = oldSelectedSubscribedEvents.concat([subscribedEventValue]);
+      } else {
+        // If we're disabling the target, remove it from the array
+        newValue = oldSelectedSubscribedEvents.filter(v => v != subscribedEventValue);
+      }
+      // Remove duplicates and save.
+      this.changeset.set('subscribedEvents', [...new Set(newValue)]);
+    },
+  },
+
   saveWebhookConfig: task(function*() {
-    // if (!this._isDirty()) return;
+    if (this.changeset.get('isPristine')) return;
 
     try {
       yield this.changeset.save();
-      // this.set('_origNotifTypes', this.userNotificationSetting.notificationTypes.slice(0));
     } catch (e) {
-      console.log('e', e);
-      this._rollbackChanges();
+      this.changeset.rollback();
       this.flashMessages.danger('Something went wrong. Please try again.');
     }
   }),

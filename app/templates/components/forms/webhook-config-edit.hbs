@@ -34,16 +34,7 @@
         data-test-form-input='webhook-config-url'
         value=changeset.url
       }}
-
-      {{#let (get changesetErrors 'url') as |urlErrors|}}
-        {{#if urlErrors.validation.length}}
-          <ul class="Form-errors">
-            {{#each urlErrors.validation as |validation|}}
-              <li>{{validation}}</li>
-            {{/each}}
-          </ul>
-        {{/if}}
-      {{/let}}
+      {{form.validations messages=(get (get changesetErrors 'url') 'validation')}}
     </label>
 
     <label>
@@ -53,17 +44,7 @@
         data-test-form-input='webhook-config-description'
         value=changeset.description
       }}
-
-
-      {{#let (get changesetErrors 'description') as |urlErrors|}}
-        {{#if urlErrors.validation.length}}
-          <ul class="Form-errors">
-            {{#each urlErrors.validation as |validation|}}
-              <li>{{validation}}</li>
-            {{/each}}
-          </ul>
-        {{/if}}
-      {{/let}}
+      {{form.validations messages=(get (get changesetErrors 'description') 'validation')}}
     </label>
 
     <label>
@@ -73,16 +54,7 @@
         data-test-form-input='webhook-config-auth-token'
         value=changeset.authToken
       }}
-
-      {{#let (get changesetErrors 'authToken') as |urlErrors|}}
-        {{#if urlErrors.validation.length}}
-          <ul class="Form-errors">
-            {{#each urlErrors.validation as |validation|}}
-              <li>{{validation}}</li>
-            {{/each}}
-          </ul>
-        {{/if}}
-      {{/let}}
+      {{form.validations messages=(get (get changesetErrors 'authToken') 'validation')}}
     </label>
 
     <fieldset>
@@ -94,37 +66,21 @@
         <div class="mb-1 text-gray-400">{{labels.subscribedEvents.subtitle}}</div>
       </legend>
 
+      {{log changesetErrors}}
       {{#each allOptions as |subscribeEvent|}}
-        {{!-- {{#each allOptions as |option|}} --}}
-          <label class="flex mb-sm" data-test-checkbox-set-input>
-            {{form.checkbox
-              checked=(contains subscribeEvent.value changeset.subscribedEvents)
-            }}
-  {{!--
-            <input
-              name="{{option.value}}"
-              type="checkbox"
-              checked={{contains option.value propertyValue}}
-              class="mt-sm {{if fieldErrors 'error'}}"
-              onchange={{action "updateValue"}}
-              onblur={{action validateProperty}}
-            > --}}
-            <div>
-              <div class="font-semibold font-mono">{{subscribeEvent.label}}</div>
-              <div class="text-gray-400">{{subscribeEvent.description}}</div>
-            </div>
-          </label>
-        {{/each}}
+        <label class="flex mb-sm" data-test-checkbox-set-input>
+          {{form.checkbox
+            checked=(contains subscribeEvent.value changeset.subscribedEvents)
+            onChange=(action "toggleSubscribeEvent" subscribeEvent.value)
+          }}
+          <div>
+            <div class="font-semibold font-mono">{{subscribeEvent.label}}</div>
+            <div class="text-gray-400">{{subscribeEvent.description}}</div>
+          </div>
+        </label>
+      {{/each}}
 
-        {{#if fieldErrors}}
-          <ul class="Form-errors">
-            {{#each (get fieldErrors "validation") as |message|}}
-              <li>{{message}}</li>
-            {{/each}}
-          </ul>
-        {{/if}}
-      {{!-- {{/each}} --}}
-
+      {{form.validations messages=(get (get changesetErrors 'subscribedEvents') 'validation')}}
     </fieldset>
 
     {{#form.toggle}}
