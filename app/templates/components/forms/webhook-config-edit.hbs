@@ -1,4 +1,129 @@
-<form action="javascript:;" class="mb-0">
+{{#percy-form
+  onSubmit=(perform saveWebhookConfig)
+  classes="Form"
+  as |form|
+}}
+  <div class="flex items-center justify-between mb-2">
+    <div class="flex items-center">
+      <div class="mr-2">
+        <figure class="svg-container">
+          {{inline-svg 'webhook-icon'}}
+        </figure>
+      </div>
+      <div style="min-width: 0;" class="font-mono truncate">
+        {{changeset.url}}
+      </div>
+    </div>
+    <div>
+
+    {{#form.toggle}}
+      {{form.checkbox
+        data-test-checkbox-input="webhook-config-delivery-enabled"
+        checked=changeset.deliveryEnabled
+      }}
+      <span class="font-semibold mr-1">Enabled</span>
+    {{/form.toggle}}
+    </div>
+  </div>
+
+  <div class="p-2 bg-gray-000 rounded border mb-2">
+    <label>
+      <span class="label-body">{{labels.url.title}}</span>
+      <div class="mb-1 text-gray-400">{{labels.url.subtitle}}</div>
+      {{form.input
+        data-test-form-input='webhook-config-url'
+        value=changeset.url
+      }}
+    </label>
+
+    <label>
+      <span class="label-body">{{labels.description.title}}<span class="text-gray-300"> (optional)</span></span>
+      <div class="mb-1 text-gray-400">{{labels.description.subtitle}}</div>
+      {{form.input
+        data-test-form-input='webhook-config-description'
+        value=changeset.description
+      }}
+    </label>
+
+    <label>
+      <span class="label-body">{{labels.authToken.title}}<span class="text-gray-300"> (optional)</span></span>
+      <div class="mb-1 text-gray-400">{{labels.authToken.subtitle}}</div>
+      {{form.input
+        data-test-form-input='webhook-config-auth-token'
+        value=changeset.authToken
+      }}
+    </label>
+
+    <fieldset>
+      <legend>
+        <span class="label-body font-semibold">
+          {{labels.subscribedEvents.title}}
+          <span class="text-gray-300">(choose at least one)</span>
+        </span>
+        <div class="mb-1 text-gray-400">{{labels.subscribedEvents.subtitle}}</div>
+      </legend>
+
+      {{#each allOptions as |subscribeEvent|}}
+        {{!-- {{#each allOptions as |option|}} --}}
+          <label class="flex mb-sm" data-test-checkbox-set-input>
+            {{form.checkbox
+              checked=(contains subscribeEvent.value changeset.subscribedEvents)
+            }}
+  {{!--
+            <input
+              name="{{option.value}}"
+              type="checkbox"
+              checked={{contains option.value propertyValue}}
+              class="mt-sm {{if fieldErrors 'error'}}"
+              onchange={{action "updateValue"}}
+              onblur={{action validateProperty}}
+            > --}}
+            <div>
+              <div class="font-semibold font-mono">{{subscribeEvent.label}}</div>
+              <div class="text-gray-400">{{subscribeEvent.description}}</div>
+            </div>
+          </label>
+        {{/each}}
+
+        {{#if fieldErrors}}
+          <ul class="Form-errors">
+            {{#each (get fieldErrors "validation") as |message|}}
+              <li>{{message}}</li>
+            {{/each}}
+          </ul>
+        {{/if}}
+      {{!-- {{/each}} --}}
+
+    </fieldset>
+
+    {{#form.toggle}}
+      {{form.checkbox
+        data-test-checkbox-input='webhook-config-ssl-verification-enabled'
+        checked=changeset.sslVerificationEnabled
+      }}
+      <span class="font-semibold mr-1">SSL certificate verification</span>
+    {{/form.toggle}}
+
+    {{#unless changeset.sslVerificationEnabled}}
+      <div
+        class="rounded bg-yellow-000 border border-yellow-100 p-2"
+        data-test-ssl-warning
+      >
+        <strong>Warning:</strong>
+        With SSL verification disabled, we will not verify the validity of the
+        certificate presented by your host. This could compromise the security
+        of your data. Disabling certificate verification is not recommended.
+      </div>
+    {{/unless}}
+
+    </div>
+
+  {{#form.submit testLabel='submit' isDisabled=isSubmitDisabled}}
+    {{saveText}}
+  {{/form.submit}}
+{{/percy-form}}
+
+{{!-- <form action="javascript:;" class="mb-0">
   <div class="flex items-center justify-between mb-2">
     <div class="flex items-center">
       <div class="mr-2">
@@ -91,7 +216,7 @@
     {{/unless}}
   </div>
   <div class="flex justify-end">
-    {{#link-to "organization.project.integrations" model.project.slug}}
+    {{#link-to "organization.project.integrations" changeset.project.slug}}
       <button type="button" class="btn btn-secondary">Back</button>
     {{/link-to}}
 
@@ -104,3 +229,4 @@
     }}
   </div>
 </form>
+ --}}

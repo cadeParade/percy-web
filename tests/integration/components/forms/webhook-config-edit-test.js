@@ -32,8 +32,8 @@ describe('Integration: WebhookConfigEditForm', function() {
     expect(WebhookConfigEditForm.subscribedEvents[3].value).to.equal(false);
     expect(WebhookConfigEditForm.subscribedEvents[4].value).to.equal(false);
     expect(WebhookConfigEditForm.subscribedEvents[5].value).to.equal(false);
-    expect(WebhookConfigEditForm.sslVerificationEnabled).to.equal('on');
-    expect(WebhookConfigEditForm.deliveryEnabled).to.equal('on');
+    expect(WebhookConfigEditForm.sslVerificationEnabled).to.equal(true);
+    expect(WebhookConfigEditForm.deliveryEnabled).to.equal(true);
   });
 
   it('allows submission', function() {

@@ -22,7 +22,7 @@ const SELECTORS = {
     '[data-test-checkbox-input=webhook-config-ssl-verification-enabled]',
   DELIVERY_ENABLED_INPUT: '[data-test-checkbox-input=webhook-config-delivery-enabled]',
   SSL_WARNING: '[data-test-ssl-warning]',
-  SUBMIT_BUTTON: '[data-test-form-submit-button]',
+  SUBMIT_BUTTON: '[data-test-percy-btn-label=submit]',
 };
 
 export const WebhookConfigEdit = {
@@ -42,11 +42,11 @@ export const WebhookConfigEdit = {
     click: clickable('input'),
   }),
 
-  sslVerificationEnabled: value(SELECTORS.SSL_VERIFICATION_ENABLED_INPUT),
+  sslVerificationEnabled: is(':checked', SELECTORS.SSL_VERIFICATION_ENABLED_INPUT),
   clickSslVerificationEnabled: clickable(SELECTORS.SSL_VERIFICATION_ENABLED_INPUT),
   sslWarningPresent: isPresent(SELECTORS.SSL_WARNING),
 
-  deliveryEnabled: value(SELECTORS.DELIVERY_ENABLED_INPUT),
+  deliveryEnabled: is(':checked', SELECTORS.DELIVERY_ENABLED_INPUT),
   clickDeliveryEnabled: clickable(SELECTORS.DELIVERY_ENABLED_INPUT),
 
   isSubmitDisabled: property('disabled', SELECTORS.SUBMIT_BUTTON),

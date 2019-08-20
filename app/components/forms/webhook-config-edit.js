@@ -1,6 +1,10 @@
 import {computed} from '@ember/object';
+import Component from '@ember/component';
 import BaseFormComponent from './base';
 import WebhookConfigEditValidations from '../../validations/webhook-config-edit';
+import {task} from 'ember-concurrency';
+import Changeset from 'ember-changeset';
+import lookupValidator from 'ember-changeset-validations';
 
 const SUBSCRIBABLE_EVENTS = [
   {
@@ -68,12 +72,20 @@ const FORM_FIELD_LABELS = {
   },
 };
 
-export default BaseFormComponent.extend({
+export default Component.extend({
   classNames: ['FormsWebhookConfigEdit', 'Form'],
   model: computed.alias('webhookConfig'),
   validator: WebhookConfigEditValidations,
 
+  changeset: computed('model', 'validator', function() {
+    let model = this.model;
+    let validator = this.validator || {};
+
+    return new Changeset(model, lookupValidator(validator), validator);
+  }),
+
   saveText: computed('changeset.isPristine', function() {
+    // return 'save'
     return `${this.changeset.get('isNew') ? 'Create' : 'Update'} webhook`;
   }),
 
@@ -84,4 +96,18 @@ export default BaseFormComponent.extend({
   labels: FORM_FIELD_LABELS,
 
   allOptions: SUBSCRIBABLE_EVENTS,
+
+  saveWebhookConfig: task(function*() {
+    // if (!this._isDirty()) return;
+
+    try {
+      yield this.changeset.save();
+      // this.set('_origNotifTypes', this.userNotificationSetting.notificationTypes.slice(0));
+    } catch (e) {
+      console.log('e', e);
+      this._rollbackChanges();
+      this.flashMessages.danger('Something went wrong. Please try again.');
+    }
+  }),
+
 });
