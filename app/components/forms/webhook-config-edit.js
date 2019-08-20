@@ -1,4 +1,5 @@
 import {computed} from '@ember/object';
+import {readOnly} from '@ember/object/computed';
 import Component from '@ember/component';
 import BaseFormComponent from './base';
 import WebhookConfigEditValidations from '../../validations/webhook-config-edit';
@@ -85,12 +86,16 @@ export default Component.extend({
   }),
 
   saveText: computed('changeset.isPristine', function() {
-    // return 'save'
     return `${this.changeset.get('isNew') ? 'Create' : 'Update'} webhook`;
   }),
 
   isSubmitDisabled: computed('changeset.isValid', function() {
     return !this.changeset.get('isValid');
+  }),
+
+  changesetErrors: computed('changeset.error', function() {
+    // use this.get because changeset is a proxy.
+    return this.get('changeset.error');
   }),
 
   labels: FORM_FIELD_LABELS,
@@ -109,5 +114,4 @@ export default Component.extend({
       this.flashMessages.danger('Something went wrong. Please try again.');
     }
   }),
-
 });
