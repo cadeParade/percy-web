@@ -152,14 +152,14 @@ describe('Acceptance: Project', function() {
     });
 
     describe('settings', function() {
-      it('displays Auto-Approve Branches setting', async function() {
+      it('displays Branch settings section', async function() {
         await ProjectSettingsPage.visitProjectSettings({
           orgSlug: organization.slug,
           projectSlug: enabledProject.slug,
         });
         await percySnapshot(this.test);
 
-        expect(ProjectSettingsPage.isAutoApproveBranchesVisible).to.equal(true);
+        expect(ProjectSettingsPage.isBranchSettingsVisible).to.equal(true);
       });
 
       it('navigates to SCM integration setups', async function() {
@@ -504,7 +504,8 @@ describe('Acceptance: Project', function() {
       expect(ProjectPage.builds.length).to.equal(3);
     });
 
-    it('resets builds when navigating to another project in another org with the same slug', async function() { // eslint-disable-line
+    // eslint-disable-next-line
+    it('resets builds when navigating to another project in another org with the same slug', async function() {
       const otherOrgName = 'doppleganger org';
       const otherOrganization = server.create('organization', {name: otherOrgName});
       server.create('organizationUser', {
@@ -523,7 +524,8 @@ describe('Acceptance: Project', function() {
       expect(ProjectPage.builds.length).to.equal(0);
     });
 
-    it('resets builds when navigating to another project in same org with no scm integration', async function() { // eslint-disable-line
+    // eslint-disable-next-line
+    it('resets builds when navigating to another project in same org with no scm integration', async function() {
       const project1 = server.create('project', {organization});
       server.createList('build', 3, {project: project1});
       const project2 = server.create('project', {organization});

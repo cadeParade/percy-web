@@ -5,6 +5,7 @@ FactoryGuy.define('project', {
   default: {
     name: () => faker.commerce.productName(),
     publiclyReadable: false,
+    defaultBaseBranch: 'master',
     isEnabled: true,
   },
   traits: {

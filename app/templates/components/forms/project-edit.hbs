@@ -8,6 +8,7 @@
         disabled=project.isDemo
         testLabel="data-test-project-edit-name"
     }}
+
     {{form-fields/input
         property="slug"
         title="Slug"
@@ -17,27 +18,33 @@
         testLabel="data-test-project-edit-slug"
     }}
     <div class="rounded bg-yellow-000 border border-yellow-100 p-2">
-      <strong>Reminder:</strong> The slug is used to identify this project in URLs and the Percy API. Old build URLs will break if the slug is changed.
+      <strong>Note:</strong> The slug is used to identify this project in URLs and the Percy API. Old build URLs will break if the slug is changed.
     </div>
   </div>
 
-  <h2 class="text-xl font-semibold mt-3 mb-sm" data-test-auto-approve-branches-header>Auto-approve branches</h2>
-  <p class="text-gray-400 mb-2">
-    Builds with branches that match this filter will be automatically approved and won't require
-    manual approval.
-  </p>
+  <h2 class="text-xl font-semibold mb-1" data-test-branch-settings-header>Branch settings</h2>
   <div class="p-2 bg-gray-000 rounded border mb-2">
     {{form-fields/input
+      property="defaultBaseBranch"
+      title="Default base branch"
+      subtitle="The default branch that’s used as the base build for comparisons. <a href='https://docs.percy.io/docs/baseline-picking-logic#section-overriding-the-default-base-branch'>Learn more in the docs</a>."
+      changeset=changeset
+      validateProperty=(action "validateProperty" changeset "defaultBaseBranch")
+      disabled=project.isDemo
+      testLabel="data-test-project-edit-default-branch"
+    }}
+
+    {{form-fields/input
       property="autoApproveBranchFilter"
-      title="Branch filter pattern"
+      title="Auto-approve branches"
+      subtitle="Builds with branches that match this filter will be automatically approved and won't require manual approval. <br />Separate multiple branches with spaces. You can use <code>*</code> as a wildcard match. Example: <code>master staging-* release-*.*.*</code>"
       changeset=changeset
       disabled=project.isDemo
       testLabel="data-test-project-edit-autoapprove"
     }}
-    Separate multiple branches with spaces. You can use <code>*</code> as a wildcard match. Example: <code>master staging-* release-*.*.*</code>
   </div>
 
-  <h2 class="text-xl font-semibold mt-3 mb-sm">Privacy</h2>
+  <h2 class="text-xl font-semibold mb-1">Privacy</h2>
   <div class="p-2 bg-gray-000 rounded border mb-2">
     <div class="{{if isPlanSponsored "hint hint--top hint--rounded"}}" aria-label={{if isPlanSponsored "This project's organization is sponsored, so the project must be public."}}>
       {{form-fields/checkbox

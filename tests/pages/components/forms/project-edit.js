@@ -2,7 +2,7 @@ import {create, clickable, fillable, is, isVisible, text} from 'ember-cli-page-o
 
 const SELECTORS = {
   PROJECT_EDIT_FORM: '[data-test-project-edit-form]',
-  AUTO_APPROVE_BRANCHES_HEADER: '[data-test-auto-approve-branches-header]',
+  BRANCH_SETTINGS_HEADER: '[data-test-branch-settings-header]',
   PUBLIC_CHECKBOX: '[data-test-checkbox-input="data-test-project-edit-public-checkbox"]',
   PUBLIC_CHECKBOX_LABEL: '[data-test-toggle-checkbox-label]',
   PUBLIC_CHECKBOX_SLIDER: '[data-test-toggle-checkbox-slider]',
@@ -17,11 +17,11 @@ const SELECTORS = {
 export const ProjectEdit = {
   scope: SELECTORS.PROJECT_EDIT_FORM,
 
-  isAutoApproveBranchesVisible: isVisible(SELECTORS.AUTO_APPROVE_BRANCHES_HEADER),
+  isBranchSettingsVisible: isVisible(SELECTORS.BRANCH_SETTINGS_HEADER),
 
   fillInProjectName: fillable(SELECTORS.PROJECT_NAME_INPUT),
   fillInProjectSlug: fillable(SELECTORS.PROJECT_SLUG_INPUT),
-  fillInAutoApproveBranchFilter: fillable(SELECTORS.AUTO_APPROVE_BRANCHES_HEADER),
+  fillInAutoApproveBranchFilter: fillable(SELECTORS.BRANCH_SETTINGS_HEADER),
 
   isPublicCheckboxDisabled: is(':disabled', SELECTORS.PUBLIC_CHECKBOX),
   isPublicCheckboxChecked: is(':checked', SELECTORS.PUBLIC_CHECKBOX),

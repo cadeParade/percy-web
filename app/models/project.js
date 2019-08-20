@@ -7,6 +7,7 @@ export default DS.Model.extend({
   name: DS.attr(),
   slug: DS.attr(),
   fullSlug: DS.attr(),
+  defaultBaseBranch: DS.attr(),
   isEnabled: DS.attr('boolean'),
   isDisabled: not('isEnabled'),
   diffBase: DS.attr(), // Either "automatic" or "manual".

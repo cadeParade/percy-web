@@ -27,6 +27,10 @@ export default Factory.extend({
 
   publiclyReadable: trait({publiclyReadable: true}),
 
+  defaultBaseBranch() {
+    return 'master';
+  },
+
   withChrome: trait({
     afterCreate(project, server) {
       const chromeBrowserTarget = server.create('browserTarget', 'withChromeBrowserFamily');
