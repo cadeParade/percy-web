@@ -1,5 +1,8 @@
 <div class="collaboration-panel p-2 lg:p-0 lg:my-2" data-test-collaboration-panel>
   <div class="collaboration-container">
+    <div class="collaboration-panel-close" {{action toggleCollaborationPanel}}>
+      {{inline-svg "collaboration-close-icon"}}
+    </div>
 
     {{#if isCommentingAllowed}}
       {{collaboration/new-thread
