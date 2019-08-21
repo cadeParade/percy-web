@@ -1,5 +1,4 @@
 .collaboration-panel {
-  @apply relative;
   @apply flex;
   @apply flex-col;
   @apply w-320;
@@ -25,7 +24,6 @@
 }
 
 .collaboration-panel-close {
-  @apply absolute;
   @apply flex;
   @apply items-center;
   @apply justify-center;
@@ -35,8 +33,6 @@
   @apply rounded-full;
   @apply bg-white;
   @apply cursor-pointer;
-  top: -8px;
-  right: 16px;
 }
 
 .collaboration-comment-replied::after {
