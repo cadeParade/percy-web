@@ -55,7 +55,7 @@ describe('Integration: UsersHeader', function() {
 
       describe('when seats are available', function() {
         beforeEach(async function() {
-          organization.set('hasSeatsRemaining', true);
+          organization.set('seatsRemaining', 1);
           await render(hbs`{{organizations/users-header
             organization=organization
             isInviteFormAllowed=isInviteFormAllowed
@@ -73,7 +73,7 @@ describe('Integration: UsersHeader', function() {
 
       describe('when seats are unavailable', function() {
         beforeEach(function() {
-          organization.set('hasSeatsRemaining', false);
+          organization.set('seatsRemaining', 0);
         });
 
         it('form is hidden & button is disabled', async function() {
@@ -118,7 +118,7 @@ describe('Integration: UsersHeader', function() {
 
       describe('when seats are available', function() {
         beforeEach(async function() {
-          organization.set('hasSeatsRemaining', true);
+          organization.set('seatsRemaining', 1);
           await render(hbs`{{organizations/users-header
             organization=organization
             isInviteFormAllowed=isInviteFormAllowed
@@ -182,7 +182,7 @@ describe('Integration: UsersHeader', function() {
     describe('when isInviteFormAllowed=false', function() {
       describe('when seats are available', function() {
         beforeEach(async function() {
-          organization.set('hasSeatsRemaining', true);
+          organization.set('seatsRemaining', 1);
           await render(hbs`{{organizations/users-header
             organization=organization
             isInviteFormAllowed=false
@@ -203,7 +203,7 @@ describe('Integration: UsersHeader', function() {
     describe('when isInviteFormAllowed=true', function() {
       describe('when seats are available', function() {
         beforeEach(async function() {
-          organization.set('hasSeatsRemaining', true);
+          organization.set('seatsRemaining', 1);
           await render(hbs`{{organizations/users-header
             organization=organization
             isInviteFormAllowed=true

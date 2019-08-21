@@ -164,7 +164,7 @@ describe('Integration: SnapshotViewerFull', function() {
     });
 
     it('does not display when build is not finished', function() {
-      this.set('snapshot.build.isFinished', false);
+      this.set('snapshot.build.state', 'pending');
       expect(FullSnapshotPage.header.snapshotApprovalButton.isVisible).to.equal(false);
     });
 

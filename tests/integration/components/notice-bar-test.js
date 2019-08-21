@@ -6,8 +6,12 @@ import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import NoticeBar from 'percy-web/tests/pages/components/notice-bar';
 import {render} from '@ember/test-helpers';
+import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
+import moment from 'moment';
 
 describe('Integration: Notice Bar', function() {
+  freezeMoment('2018-02-14');
+
   setupRenderingTest('notice-bar', {
     integration: true,
   });
@@ -105,7 +109,7 @@ describe('Integration: Notice Bar', function() {
 
     describe('when no trial days are left', function() {
       it('shows "Your trial ends today!" and "See plans"', async function() {
-        organization.subscription.set('trialDaysRemaining', 0);
+        organization.subscription.set('trialEnd', moment());
         await render(hbs`{{notice-bar organization=organization}}`);
 
         expect(NoticeBar.message.text).to.equal('Your trial ends today!');
@@ -117,7 +121,7 @@ describe('Integration: Notice Bar', function() {
 
     describe('when 2 trial days are left', function() {
       it('shows "Your trial ends today!" and "See plans"', async function() {
-        organization.subscription.set('trialDaysRemaining', 2);
+        organization.subscription.set('trialEnd', moment().add(2, 'days'));
 
         await render(hbs`{{notice-bar organization=organization}}`);
 

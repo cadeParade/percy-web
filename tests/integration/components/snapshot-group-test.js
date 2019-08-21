@@ -161,7 +161,7 @@ describe('Integration: SnapshotGroup', function() {
 
     it('is expanded when build is approved', async function() {
       this.set('snapshots', approvedSnapshots);
-      this.set('build.isApproved', true);
+      this.set('build.reviewState', 'approved');
 
       expect(SnapshotGroup.isExpanded).to.equal(true);
     });

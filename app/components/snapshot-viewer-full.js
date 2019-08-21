@@ -25,10 +25,18 @@ export default Component.extend(EKMixin, {
   snapshot: null,
   snapshotSelectedWidth: null,
   activeBrowser: null,
+  userIsCommentPanelShowing: undefined,
 
   commentThreads: readOnly('snapshot.commentThreads'),
   openCommentThreads: filterBy('commentThreads', 'isOpen'),
-  isCommentPanelShowing: notEmpty('commentThreads'),
+  defaultIsCommentPanelShowing: notEmpty('commentThreads'),
+  isCommentPanelShowing: computed('userIsCommentPanelShowing', 'openCommentThreads.[]', function() {
+    if (this.userIsCommentPanelShowing !== undefined) {
+      return this.userIsCommentPanelShowing;
+    } else {
+      return this.defaultIsCommentPanelShowing;
+    }
+  }),
 
   filteredComparisons: computed('snapshot', 'activeBrowser', 'snapshotSelectedWidth', function() {
     return filteredComparisons.create({
@@ -67,7 +75,11 @@ export default Component.extend(EKMixin, {
     },
 
     toggleCollaborationPanel() {
-      this.toggleProperty('isCommentPanelShowing');
+      if (this.userIsCommentPanelShowing === undefined) {
+        this.set('userIsCommentPanelShowing', !this.defaultIsCommentPanelShowing);
+      } else {
+        this.toggleProperty('userIsCommentPanelShowing');
+      }
     },
   },
 

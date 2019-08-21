@@ -232,7 +232,7 @@ describe('Integration: SnapshotViewer', function() {
 
     it('is expanded when build is approved', async function() {
       this.set('snapshot.reviewState', SNAPSHOT_APPROVED_STATE);
-      this.set('build.isApproved', true);
+      this.set('build.reviewState', 'approved');
 
       expect(SnapshotViewer.isExpanded).to.equal(true);
     });

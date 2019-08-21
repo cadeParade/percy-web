@@ -67,7 +67,7 @@ describe('Integration: BuildApprovalButton', function() {
     const flashMessageService = this.owner.lookup('service:flash-messages').registerTypes(['info']);
     sinon.stub(flashMessageService, 'info');
 
-    this.set('build.isApproved', true);
+    this.set('build.reviewState', 'approved');
     let createReviewStub = sinon.stub().returns(resolve({then: sinon.stub()}));
     this.setProperties({
       createReviewStub,
