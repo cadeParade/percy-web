@@ -1,13 +1,12 @@
 import {alias} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
 import Component from '@ember/component';
-import config from 'percy-web/config/environment';
+import utils from 'percy-web/lib/utils';
 import PollingMixin from 'percy-web/mixins/polling';
 
 export default Component.extend(PollingMixin, {
   store: service(),
 
-  githubIntegrationUrl: config.APP.githubUrls.integration,
   organization: null,
   classes: null,
 
@@ -35,14 +34,12 @@ export default Component.extend(PollingMixin, {
     },
 
     triggerInstallation() {
-      let url = this.githubIntegrationUrl;
       let organization = this.organization;
       let githubIntegrationRequest = this.store.createRecord('github-integration-request', {
         _orgForAdapter: organization,
       });
       githubIntegrationRequest.save().then(() => {
-        window.location.href = url;
-        return;
+        utils.replaceWindowLocation(githubIntegrationRequest.setupUrl);
       });
     },
   },
