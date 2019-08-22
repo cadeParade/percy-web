@@ -15,11 +15,10 @@
 */
 
 export default {
-  transparent: 'transparent',
-  translucent: 'rgba(0, 0, 0, 0.5)',
+  
 
      'white': '#ffffff',
-  'gray-000': '#fbfafc',
+  'gray-000': '',
   'gray-100': '#f0eef1',
   'gray-200': '#e1dfe2',
   'gray-300': '#a69fa8',

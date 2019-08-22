@@ -2,6 +2,20 @@
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 const Funnel = require('broccoli-funnel');
 const nodeSass = require('node-sass');
+const {join} = require('path');
+const isProduction = EmberApp.env() === 'production';
+
+const purgeCSS = {
+  module: require('@fullhuman/postcss-purgecss'),
+  options: {
+    content: [
+      // add extra paths here for components/controllers which include tailwind classes
+      join(__dirname, 'app', '**', '*.html'),
+      join(__dirname, 'app', '**', '*.hbs'),
+    ],
+    defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || [],
+  },
+};
 
 module.exports = function(defaults) {
   let app = new EmberApp(defaults, {
@@ -17,6 +31,15 @@ module.exports = function(defaults) {
         compress: {
           collapse_vars: false,
         },
+      },
+    },
+    postcssOptions: {
+      compile: {
+        plugins: [
+          require('postcss-import'),
+          require('tailwindcss')('./app/tailwind/config.js'),
+          ...(isProduction ? [purgeCSS] : []),
+        ],
       },
     },
     sassOptions: {
