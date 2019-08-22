@@ -34,17 +34,17 @@
             <div class="leading-tight flex items-end flex-2 p-1 text-sm font-normal text-gray-300">Snapshots Included</div>
             <div class="leading-tight flex items-end flex-1 p-1 text-sm font-normal text-gray-300">Base price</div>
           </div>
-          <div class="flex rounded {{if (eq selectedPlanRange 'Small') "bg-purple-200 border border-purple-600" "border border-transparent"}}">
+          <div class="flex rounded items-center {{if (eq selectedPlanRange 'Small') "bg-purple-200 border border-purple-600" "border border-transparent"}}">
             <div style="width: 85px; line-height: 1.2;" class="p-1">{{smallPlan.name}}</div>
             <div class="flex-2 p-1">{{format-thousands smallPlan.usageIncluded}}</div>
             <div class="flex-1 p-1">{{format-currency smallPlan.amount (hash precision=0)}}</div>
           </div>
-          <div class="flex rounded {{if (eq selectedPlanRange 'Medium') "bg-purple-200 border border-purple-600" "border border-transparent"}}">
+          <div class="flex rounded items-center {{if (eq selectedPlanRange 'Medium') "bg-purple-200 border border-purple-600" "border border-transparent"}}">
             <div style="width: 85px;" class="p-1">{{mediumPlan.name}}</div>
             <div class="flex-2 p-1">{{format-thousands mediumPlan.usageIncluded}}</div>
             <div class="flex-1 p-1">{{format-currency mediumPlan.amount (hash precision=0)}}</div>
           </div>
-          <div class="flex rounded {{if (eq selectedPlanRange 'Large') "bg-purple-200 border border-purple-600" "border border-transparent"}}">
+          <div class="flex rounded items-center {{if (eq selectedPlanRange 'Large') "bg-purple-200 border border-purple-600" "border border-transparent"}}">
             <div style="width: 85px;" class="p-1">{{largePlan.name}}</div>
             <div class="flex-2 p-1">{{format-thousands largePlan.usageIncluded}}</div>
             <div class="flex-1 p-1">{{format-currency largePlan.amount (hash precision=0)}}</div>
