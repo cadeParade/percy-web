@@ -33,7 +33,6 @@ module.exports = function(environment) {
       // Don't use these directly; use utils.buildApiUrl instead.
       apiUrls: {
         logout: '/api/auth/logout',
-
         builds: '/api/v1/builds',
         comments: '/api/v1/comments',
         commentThreads: '/api/v1/comment-threads/%@',
@@ -61,6 +60,7 @@ module.exports = function(environment) {
         headAsset: '/api/v1/snapshots/%@/assets/head.html',
         buildSnapshots: '/api/v1/builds/%@/snapshots',
         snapshotSourceDiff: '/api/v1/comparisons/%@/diffs/source.diff',
+        websocketsAuth: '/api/v1/websockets/auth',
       },
       githubUrls: {
         integration: 'https://github.com/apps/percy/installations/new',
