@@ -560,6 +560,10 @@ describe('Acceptance: Project', function() {
       it('everything is disabled', async function() {
         const editForm = ProjectSettingsPage.projectEditForm;
 
+        expect(ProjectSettingsPage.envVarText).to.equal(
+          'PERCY_TOKEN=[This is a demo project. Create your own project to get a PERCY_TOKEN]',
+        );
+
         await ProjectSettingsPage.browserSelector.buttons.forEach(async button => {
           expect(button.isDisabled, 'browser button should be disabled').to.equal(true);
           expect(button.isActive, 'browser button should be active').to.equal(true);
@@ -583,10 +587,6 @@ describe('Acceptance: Project', function() {
       });
 
       it('everything is disabled', async function() {
-        expect(ProjectSettingsPage.envVarText).to.equal(
-          'PERCY_TOKEN=[This is a demo project. Create your own project to get a PERCY_TOKEN]',
-        );
-
         expect(
           ProjectSettingsPage.repoIntegrator.demoNotice.text.includes('Set up your own project'),
         ).to.equal(true);

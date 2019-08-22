@@ -15,6 +15,17 @@
     {{/if}}
 
     <div class="bg-white rounded shadow-1 p-2 mb-2">
+      <h2 class="text-xl font-semibold mb-sm">Project token</h2>
+      <p class="text-gray-400 mb-2">See the {{#link-to "docs" class="font-semibold"}}docs{{/link-to}} for how to set up client authentication for your app.</p>
+      <div class="p-2 bg-gray-000 rounded border">
+        {{projects/env-vars project=model.project}}
+        <div class="rounded bg-yellow-000 border border-yellow-100 p-2">
+          <strong>Note:</strong> <code>PERCY_TOKEN</code> is a project-specific, write-only API key that only has access to create builds, snapshots, and upload resources to this project. It should be kept secret.
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded shadow-1 p-2 mb-2">
       <h2 class="text-xl font-semibold mb-1">Browsers</h2>
       <p class="text-gray-400 mb-2">
         This setting lets you change which browser your snapshots are created in. Better yet, you can enable multiple browsers for cross browser testing snapshots! <a href="https://docs.percy.io/docs/cross-browser-visual-testing" target="_blank">See docs</a>
