@@ -15,7 +15,7 @@
   height: 4px;
 }
 
-.bar-item {
+.animated-bar-item {
   max-height: 0;
   animation: bar-height 0.5s ease-out !important;
   animation-fill-mode: forwards !important;
@@ -33,7 +33,9 @@
       }
     }
   }
+}
 
+.bar-item {
   &::after {
     content: attr(data-label);
     position: absolute;
