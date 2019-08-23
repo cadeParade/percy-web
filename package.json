@@ -34,6 +34,7 @@
     "@ember/optional-features": "^0.7.0",
     "@ember/test-helpers": "1.6.0",
     "@fullhuman/postcss-purgecss": "^1.2.0",
+    "autoprefixer": "^9.6.1",
     "broccoli-asset-rev": "^3.0.0",
     "chai-as-promised": "^7.1.1",
     "ember-ajax": "5.0.0",

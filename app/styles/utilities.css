@@ -63,7 +63,7 @@
   transform: scale(1.5);
 }
 
-// These are about to be merged into tailwind - using same conventions here
+/* These are about to be merged into tailwind - using same conventions here */
 .trans {
   transition-timing-function: ease-in-out;
   transition-duration: 250ms;

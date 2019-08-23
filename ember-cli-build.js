@@ -33,19 +33,27 @@ module.exports = function(defaults) {
         },
       },
     },
+    sassOptions: {
+      extension: 'scss',
+      sourceMapEmbed: true,
+      implementation: nodeSass,
+    },
     postcssOptions: {
       compile: {
         plugins: [
           require('postcss-import'),
           require('tailwindcss')('./app/tailwind/config.js'),
-          ...(isProduction ? [purgeCSS] : []),
+          // ...(isProduction ? [purgeCSS] : []),
         ],
       },
     },
-    sassOptions: {
-      extension: 'scss',
-      sourceMapEmbed: true,
-      implementation: nodeSass,
+    outputPaths: {
+      app: {
+        html: 'index.html',
+        css: {
+          app: '/assets/postcss-app.css',
+        },
+      },
     },
     autoprefixer: {
       browsers: ['last 2 versions'],

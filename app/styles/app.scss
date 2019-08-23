@@ -1,13 +1,6 @@
 @charset "UTF-8";
 
-/* Tailwind CSS: https://tailwindcss.com/docs/ */
-@import "tailwindcss/base.css";
-
-@import "tailwindcss/components.css";
-@import "components.css";
-
-@import "tailwindcss/utilities.css";
-@import "utilities.css";
+@import "postcss-app.css";
 
 @import
   "base/base",
