@@ -1,11 +1,10 @@
 import FactoryGuy from 'ember-data-factory-guy';
-import faker from 'faker';
 
 FactoryGuy.define('payment-method', {
   default: {
     cardBrand: 'Visa',
     cardLast4: '1234',
-    cardExpiresAt: () => faker.date.future(),
+    cardExpiresAt: () => new Date('2019-03-01'),
     isCard: true,
   },
   traits: {},
