@@ -285,6 +285,14 @@ describe('Acceptance: Project', function() {
       });
     });
 
+    it('flashes a message for a new comment', async function() {
+      // do something
+
+      expect(findAll('.flash-message.flash-message-success')).to.have.length(1);
+
+      await percySnapshot(this.test);
+    });
+
     describe('integrations', function() {
       it('displays github integration select menu', async function() {
         organization.update({versionControlIntegrations: [versionControlIntegration], repos});

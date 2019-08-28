@@ -5,7 +5,9 @@ import {isVisible as attacherIsVisible} from 'ember-attacher';
 import {percySnapshot} from 'ember-percy';
 import {beforeEach} from 'mocha';
 import moment from 'moment';
+import Pusher from 'pusher-js';
 import sinon from 'sinon';
+import utils from 'percy-web/lib/utils';
 import {TEST_IMAGE_URLS} from 'percy-web/mirage/factories/screenshot';
 import {BUILD_STATES} from 'percy-web/models/build';
 import {
@@ -1166,6 +1168,68 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expect(BuildPage.confirmDialog.isVisible).to.equal(false);
       expect(snapshot.approveButton.isVisible).to.equal(false);
       expect(snapshot.isApproved).to.equal(true);
+    });
+
+    describe('websockets', function() {
+      beforeEach(async function() {
+        server.create('commentThread', 'withOneComment', {snapshot});
+
+        await BuildPage.visitFullPageSnapshot(urlParams);
+      });
+
+      it('displays new comment threads', async function() {
+        const fullscreenSnapshot = BuildPage.snapshotFullscreen;
+        expect(fullscreenSnapshot.collaborationPanel.isVisible).to.equal(true);
+        expect(fullscreenSnapshot.commentThreads.length).to.equal(1);
+
+        // do something
+
+        expect(fullscreenSnapshot.commentThreads.length).to.equal(2);
+        expect(snapshot.header.numOpenCommentThreads).to.equal('2');
+        await percySnapshot(this.test, {widths: [1280, 850, 375]});
+      });
+
+      it('displays new comments', async function() {
+        const snapshot = BuildPage.snapshotFullscreen;
+        const firstThread = snapshot.commentThreads[0];
+        expect(firstThread.comments.length).to.equal(1);
+
+        // do something
+
+        expect(firstThread.comments.length).to.equal(2);
+        await percySnapshot(this.test);
+      });
+
+      it('archives a comment thread', async function() {
+        const snapshot = BuildPage.snapshotFullscreen;
+        const collabPanel = snapshot.collaborationPanel;
+
+        expect(snapshot.header.numOpenCommentThreads).to.equal('1');
+        expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
+        expect(collabPanel.isShowArchivedCommentsVisible).to.equal(false);
+
+        // do something
+
+        expect(snapshot.header.numOpenCommentThreads).to.equal('0');
+        expect(collabPanel.reviewThreads[0].isResolved).to.equal(true);
+        expect(collabPanel.isShowArchivedCommentsVisible).to.equal(true);
+
+        await percySnapshot(this.test);
+      });
+
+      it('flashes a message for a new comment', async function() {
+        const confirmationAlertStub = sinon.stub(utils, 'confirmMessage').returns(true);
+        const message = "Han Solo commented on snapshot Home Page: 'These changes look great!'";
+        const user = server.create('user');
+        server.create('organizationUser', {organization: project.organization, user: user});
+        debugger;
+        Pusher.singleton.trigger(`private-user-${user.id}`, 'userNotification', {message});
+
+        expect(findAll('.flash-message.flash-message-success')).to.have.length(1);
+        await percySnapshot(this.test);
+
+        confirmationAlertStub.restore();
+      });
     });
   });
 
