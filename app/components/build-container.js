@@ -92,13 +92,14 @@ export default Component.extend(PollingMixin, {
   }),
 
   _resetUnchangedSnapshots() {
-    this.set('snapshotsUnchanged', null);
+    this.set('snapshotsUnchanged', []);
     this.set('isUnchangedSnapshotsVisible', false);
   },
 
   init() {
     this._super(...arguments);
     this.allApprovableSnapshots = this.allApprovableSnapshots || [];
+    this.snapshotsUnchanged = this.snapshotsUnchanged || [];
   },
   actions: {
     showSnapshotFullModalTriggered(snapshotId, snapshotSelectedWidth, activeBrowser) {

@@ -1,4 +1,4 @@
-import {alias, filter, filterBy, gt, readOnly} from '@ember/object/computed';
+import {alias, filter, filterBy, readOnly} from '@ember/object/computed';
 import {computed, get, set} from '@ember/object';
 import Component from '@ember/component';
 import {inject as service} from '@ember/service';
@@ -29,7 +29,9 @@ export default Component.extend(EKMixin, {
   // Set internally by actions
   activeSnapshotBlockId: null,
 
-  shouldDeferRendering: gt('snapshotBlocks.length', 75),
+  shouldDeferRendering: computed('snapshotBlocks.length', 'snapshotsUnchanged.length', function() {
+    return this.snapshotBlocks.length + this.snapshotsUnchanged.length > 75;
+  }),
 
   _singleSnapshotsChanged: readOnly('_snapshotGroups.singles'),
   _unapprovedSingleSnapshots: filterBy('_singleSnapshotsChanged', 'isUnreviewed', true),
@@ -123,6 +125,7 @@ export default Component.extend(EKMixin, {
   init() {
     this._super(...arguments);
     this.set('keyboardActivated', true);
+    this.unchangedSnapshots = this.unchangedSnapshots || [];
   },
 
   onDKeyPress: on(keyDown('KeyD'), function() {

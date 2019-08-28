@@ -328,7 +328,14 @@ describe('Integration: SnapshotList', function() {
         unapprovedGroupWithComments,
       );
 
-      this.setProperties({snapshotsChanged, build, stub, browser, numSnapshotsUnchanged: 0});
+      this.setProperties({
+        snapshotsChanged,
+        build,
+        stub,
+        browser,
+        numSnapshotsUnchanged: 0,
+        snapshotsUnchanged: [],
+      });
 
       await render(hbs`{{snapshot-list
         snapshotsChanged=snapshotsChanged
