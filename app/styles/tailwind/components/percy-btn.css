@@ -49,18 +49,19 @@
 .percy-btn-primary:hover,
 .percy-btn-primary:focus,
 .percy-btn-primary:focus:active {
-  @apply border border-transparent;
+  @apply border;
+  @apply border-transparent;
   @apply text-white;
   @apply bg-purple-600;
   @apply shadow-y-lg-purple-600;
   text-shadow: 0 1px 1px rgba(63, 58, 64, 0.2);
+}
 
-  &.is-loading {
-    display: table; /* safari needs a forced repaint to draw the gradient again after loading is finished */
-    background-image: linear-gradient(-45deg, var(--purple-700) 25%, var(--purple-600) 25%, var(--purple-600) 50%, var(--purple-700) 50%, var(--purple-700) 75%, var(--purple-600) 75%, var(--purple-600));
-    background-size: 20px 20px;
-    animation: loading 4s linear infinite;
-  }
+.percy-btn-primary.is-loading {
+  display: table; /* safari needs a forced repaint to draw the gradient again after loading is finished */
+  background-image: linear-gradient(-45deg, var(--purple-700) 25%, var(--purple-600) 25%, var(--purple-600) 50%, var(--purple-700) 50%, var(--purple-700) 75%, var(--purple-600) 75%, var(--purple-600));
+  background-size: 20px 20px;
+  animation: loading 4s linear infinite;
 }
 
 .percy-btn-primary:hover,

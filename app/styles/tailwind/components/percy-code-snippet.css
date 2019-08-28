@@ -16,7 +16,7 @@
   @apply max-w-full;
   @apply p-0;
   @apply m-0;
-  @apply font-mono;
+  @apply font-mono font-normal tracking-sm;
   @apply text-sm;
   @apply leading-loose;
   @apply whitespace-normal;

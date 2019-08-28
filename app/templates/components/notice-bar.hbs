@@ -1,5 +1,5 @@
 {{#if showNoticeBar}}
-  <div class="hidden sm:block flex-no-shrink mr-4">
+  <div class="hidden sm:block flex-shrink-0 mr-4">
     {{#notice-bar-container organization=organization as |bar|}}
       {{#if shouldShowNewProjectPrompt}}
         {{#bar.body}}Get started with your own project.{{/bar.body}}

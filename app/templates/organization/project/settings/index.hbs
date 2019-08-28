@@ -7,7 +7,7 @@
 
   {{#if model.project.isEnabled}}
     {{#if model.project.isDemo}}
-      <div class="bg-blue-100 p-2 border border-gray-100 justify-start items-center sticky pin-t z-10 flex rounded border border-blue-500 mb-3">
+      <div class="bg-blue-100 p-2 border border-gray-100 justify-start items-center sticky top-0 z-10 flex rounded border border-blue-500 mb-3">
         <div class="mr-3">{{inline-svg 'build-info-icon'}}</div>
         <div>This is the settings page for a <strong>demo project</strong>. The demo settings are not editable here, but <strong>{{#link-to 'organizations.organization.projects.new' model.project.organization.slug}} create your own project {{/link-to}}</strong> to start customizing your Percy experience.
         </div>
@@ -55,7 +55,7 @@
             <label>
               <div class="mb-1">Show the world that you're using Percy for visual testing. Place this badge in your README by copying the markdown snippet below:</div>
               <div class="flex justify-between">
-                <textarea readonly=true class="flex-1 font-mono text-sm">{{badgeMarkdown}}</textarea>
+                <textarea readonly=true class="flex-1 font-mono font-normal tracking-sm text-sm">{{badgeMarkdown}}</textarea>
                 {{#copy-button
                   class="percy-btn ml-1"
                   clipboardText=badgeMarkdown

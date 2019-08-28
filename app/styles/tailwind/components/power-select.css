@@ -1,6 +1,12 @@
 .ember-power-select-dropdown {
   @apply relative;
+  @apply border-gray-100;
   @apply z-top;
+}
+
+.ember-power-select-dropdown.ember-basic-dropdown-content--below,
+.ember-power-select-dropdown.ember-basic-dropdown-content--in-place {
+  border: 1px solid theme("colors.gray.100");
 }
 
 .ember-basic-dropdown {
@@ -8,21 +14,33 @@
 }
 
 .ember-power-select-trigger {
-  @apply flex items-center;
+  @apply flex;
+  @apply items-center;
   @apply relative;
   @apply h-11;
   @apply px-1-1/2;
   @apply font-semibold;
-  @apply border rounded;
+  @apply bg-transparent;
+  @apply border;
+  @apply border-gray-100;
+  @apply rounded;
   @apply select-none;
+  @apply min-h-0;
+  @apply leading-normal;
+}
+
+.ember-basic-dropdown-trigger--below.ember-power-select-trigger[aria-expanded="true"],
+.ember-basic-dropdown-trigger--in-place.ember-power-select-trigger[aria-expanded="true"] {
+  @apply rounded;
 }
 
 .ember-power-select-placeholder {
+  @apply ml-0;
   @apply text-gray-300;
 }
 
 .ember-power-select-clear-btn {
-  @apply absolute pin-r px-2 text-xl;
+  @apply absolute right-0 px-2 text-xl;
 }
 
 .ember-basic-dropdown-content {
@@ -41,7 +59,7 @@
 }
 
 .ember-basic-dropdown-content--right {
-  @apply pin-r;
+  @apply right-0;
 }
 
 .ember-power-select-trigger:focus {
@@ -53,7 +71,7 @@
 }
 
 .ember-power-select-search {
-  @apply sticky pin-t;
+  @apply sticky top-0;
   @apply p-1;
   @apply bg-white border-b rounded-t;
 }
@@ -83,9 +101,24 @@
   @apply border-b;
 }
 
+.ember-power-select-group .ember-power-select-group-name {
+  @apply pl-2;
+}
+
+.ember-power-select-group .ember-power-select-option {
+  @apply pl-2;
+}
+
 .ember-power-select-options {
   @apply m-0;
-  @apply list-reset;
+}
+
+.ember-power-select-selected-item {
+  @apply ml-0;
+}
+
+.ember-power-select-options[role="listbox"] {
+  @apply max-h-full;
 }
 
 .ember-power-select-option {
@@ -96,8 +129,10 @@
   @apply truncate;
 }
 
-.ember-power-select-option:hover {
+.ember-power-select-option:hover,
+.ember-power-select-option[aria-current="true"] {
   @apply bg-gray-000;
+  @apply text-gray-600;
 }
 
 .ember-power-select-option--no-matches-message {
@@ -106,10 +141,14 @@
 
 /* component specific styles */
 .ember-power-select-branch-filter-trigger {
-  @apply h-auto !important;
+  @apply h-auto;
   @apply px-1;
-  @apply font-mono text-sm font-normal;
-  @apply bg-gray-100 border-none rounded;
+  @apply font-mono;
+  @apply font-normal;
+  @apply text-sm;
+  @apply bg-gray-100;
+  @apply border-none;
+  @apply rounded;
   @apply truncate;
 }
 
@@ -124,7 +163,7 @@
 }
 
 .ProjectsRepoIntegratorRefreshStatus {
-  @apply sticky pin-b;
+  @apply sticky bottom-0;
   @apply px-2 py-1;
   @apply font-semibold text-sm text-gray-300 leading-none;
   @apply bg-white border-t rounded-b;

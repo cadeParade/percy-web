@@ -58,7 +58,7 @@
       <div class="px-1 py-sm tracking-px rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{if isOnOriginatingSnapshot 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}" data-test-request-changes-badge>
         Changes requested
         {{#if isOnOriginatingSnapshot}}
-          from <a href={{commentThread.originatingSnapshotPartialUrl}} class="font-mono">{{commentThread.originatingBuildNumber}}</a>
+          from <a href={{commentThread.originatingSnapshotPartialUrl}} class="font-mono font-normal tracking-sm">{{commentThread.originatingBuildNumber}}</a>
         {{/if}}
       </div>
     </div>

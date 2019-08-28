@@ -1,7 +1,6 @@
 /* eslint-env node */
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 const Funnel = require('broccoli-funnel');
-const nodeSass = require('node-sass');
 
 module.exports = function(defaults) {
   let app = new EmberApp(defaults, {
@@ -19,10 +18,17 @@ module.exports = function(defaults) {
         },
       },
     },
-    sassOptions: {
-      extension: 'scss',
-      sourceMapEmbed: true,
-      implementation: nodeSass,
+    postcssOptions: {
+      compile: {
+        extension: 'scss',
+        enabled: true,
+        parser: require('postcss-scss'),
+        plugins: [
+          require('@csstools/postcss-sass'),
+          require('postcss-easy-import'),
+          require('tailwindcss')('./tailwind.config.js'),
+        ],
+      },
     },
     autoprefixer: {
       browsers: ['last 2 versions'],

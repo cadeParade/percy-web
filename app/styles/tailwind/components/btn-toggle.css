@@ -38,8 +38,8 @@
   content: "";
   @apply block;
   @apply absolute;
-  @apply pin-t;
-  @apply pin-l;
+  @apply top-0;
+  @apply left-0;
   @apply w-full;
   @apply h-full;
   @apply bg-white;

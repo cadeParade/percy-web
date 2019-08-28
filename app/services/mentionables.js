@@ -45,7 +45,7 @@ export function generateTributeUserConfig(fetchFn) {
           <img
             src=${user.original.avatarUrl}
             class="
-              flex-no-shrink
+              flex-shrink-0
               w-20
               h-20
               rounded-full

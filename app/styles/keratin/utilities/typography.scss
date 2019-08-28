@@ -1,17 +1,3 @@
-.font-mono {
-  font-family: var(--monospace-font) !important;
-  font-weight: 400 !important;
-  letter-spacing: 0.5px !important;
-}
-
-.truncate {
-  max-width: 100%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  vertical-align: top;
-  overflow: hidden;
-}
-
 .truncate-target {
   max-width: 160px;
 }

@@ -2,7 +2,7 @@
   <div class="border-b mb-3 pb-3">
     {{#if emailPasswordIdentity}}
       <div class="flex justify-between items-center mb-1">
-        <div class="font-mono flex items-center">
+        <div class="font-mono font-normal tracking-sm flex items-center">
           {{inline-svg "percy-logo-tiny-on-light" class="mr-1"}}
           {{emailPasswordIdentity.user.name}}
         </div>
@@ -18,7 +18,7 @@
     {{/if}}
     {{#if githubIdentity}}
       <div class="flex justify-between items-center mb-1">
-        <div class="font-mono flex items-center">
+        <div class="font-mono font-normal tracking-sm flex items-center">
           {{inline-svg "github-icon" class="mr-1"}}
           {{#if githubIdentity.nickname}}
             {{githubIdentity.nickname}}

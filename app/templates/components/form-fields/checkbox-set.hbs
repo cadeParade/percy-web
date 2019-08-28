@@ -10,7 +10,7 @@
   </legend>
 
   {{#each allOptions as |option|}}
-    <label class="flex mb-sm" data-test-checkbox-set-input>
+    <label class="flex mb-sm items-start" data-test-checkbox-set-input>
       <input
         name="{{option.value}}"
         type="checkbox"
@@ -20,7 +20,7 @@
         onblur={{action validateProperty}}
       >
       <div>
-        <div class="font-semibold {{labelClasses}}">{{option.label}}</div>
+        <div class="font-medium {{labelClasses}}">{{option.label}}</div>
         <div class="text-gray-400">{{option.description}}</div>
       </div>
     </label>

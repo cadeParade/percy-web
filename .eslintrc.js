@@ -10,6 +10,7 @@ module.exports = {
   },
   plugins: ['prettier'],
   extends: ['prettier', 'eslint:recommended', 'plugin:ember/recommended'],
+  parser: "babel-eslint",
   rules: {
     'prettier/prettier': [
       'error',
@@ -47,6 +48,7 @@ module.exports = {
       files: [
         '.template-lintrc.js',
         'ember-cli-build.js',
+        'tailwind.config.js',
         'testem.js',
         'blueprints/*/index.js',
         'config/**/*.js',

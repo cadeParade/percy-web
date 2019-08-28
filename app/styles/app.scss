@@ -1,7 +1,11 @@
 @charset "UTF-8";
 
-//Tailwind CSS: https://tailwindcss.com/docs/what-is-tailwind/
-@import "tailwind";
+//Tailwind CSS: https://tailwindcss.com/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "tailwind/modules.css";
 
 @import
   "base/base",

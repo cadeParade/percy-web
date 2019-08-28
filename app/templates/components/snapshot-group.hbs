@@ -2,7 +2,7 @@
   shouldFullyRender=shouldFullyRender
   displayTitle=groupTitle
 }}
-  <header class="SnapshotViewer-header sticky pin-t grid gap-4 z-2 px-2 py-1 bg-gray-000 border-b border-t" {{action "expandBlock"}} data-test-snapshot-group-header>
+  <header class="SnapshotViewer-header sticky top-0 grid gap-4 z-2 px-2 py-1 bg-gray-000 border-b border-t" {{action "expandBlock"}} data-test-snapshot-group-header>
     <div style="min-width: 0;" class="flex items-center">
       <div class="Viewer-header-title SnapshotViewer-title flex items-center overflow-hidden cursor-default font-bold" title="{{snapshots.length}} matching changes" data-test-snapshot-group-name>
         <figure class="svg-container mr-1">
@@ -131,7 +131,7 @@
               </div>
             </div>
             <div class="relative flex-1 p-2">
-              <div class="absolute bg-white rounded border pin-t-4 pin-r-4 pin-l pin-b-2 shadow-lg"></div>
+              <div class="absolute bg-white rounded border pin-t-4 pin-r-4 left-0 pin-b-2 shadow-lg"></div>
               <div class="absolute bg-white rounded border pin-t-3 pin-r-3 pin-l-1 pin-b-3 shadow-lg"></div>
               <div class="relative pl-0 pb-2">
                 {{comparison-viewer

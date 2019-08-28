@@ -1,0 +1,95 @@
+.pin-t-1 {
+  top: theme("margin.1");
+}
+
+.pin-t-2 {
+  top: theme("margin.2");
+}
+
+.pin-t-3 {
+  top: theme("margin.3");
+}
+
+.pin-t-4 {
+  top: theme("margin.4");
+}
+
+.pin-t-5 {
+  top: theme("margin.5");
+}
+
+.pin-t-6 {
+  top: theme("margin.6");
+}
+
+.pin-r-1 {
+  right: theme("margin.1");
+}
+
+.pin-r-2 {
+  right: theme("margin.2");
+}
+
+.pin-r-3 {
+  right: theme("margin.3");
+}
+
+.pin-r-4 {
+  right: theme("margin.4");
+}
+
+.pin-r-5 {
+  right: theme("margin.5");
+}
+
+.pin-r-6 {
+  right: theme("margin.6");
+}
+
+.pin-b-1 {
+  bottom: theme("margin.1");
+}
+
+.pin-b-2 {
+  bottom: theme("margin.2");
+}
+
+.pin-b-3 {
+  bottom: theme("margin.3");
+}
+
+.pin-b-4 {
+  bottom: theme("margin.4");
+}
+
+.pin-b-5 {
+  bottom: theme("margin.5");
+}
+
+.pin-b-6 {
+  bottom: theme("margin.6");
+}
+
+.pin-l-1 {
+  left: theme("margin.1");
+}
+
+.pin-l-2 {
+  left: theme("margin.2");
+}
+
+.pin-l-3 {
+  left: theme("margin.3");
+}
+
+.pin-l-4 {
+  left: theme("margin.4");
+}
+
+.pin-l-5 {
+  left: theme("margin.5");
+}
+
+.pin-l-6 {
+  left: theme("margin.6");
+}

@@ -25,7 +25,7 @@
 
 .collaboration-comment-replied::after {
   content: "";
-  @apply absolute pin-b;
+  @apply absolute bottom-0;
   @apply block;
   @apply w-px;
   @apply bg-gray-100;
@@ -73,7 +73,7 @@
 }
 
 .collaboration-conversation-count {
-  @apply absolute pin-t pin-r;
+  @apply absolute top-0 right-0;
   top: -4px;
   right: -4px;
   @apply px-sm;

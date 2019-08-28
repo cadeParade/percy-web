@@ -21,18 +21,18 @@
 
 .snapshot-group-indent-line {
   @apply absolute;
-  @apply pin-t;
+  @apply top-0;
   @apply w-px;
   @apply h-full;
   @apply bg-purple-700;
 }
 
 .snapshot-group-indent-line-gradient {
-  background: linear-gradient(180deg, config("colors.purple-600") 0%, config("colors.gray-100") 100%);
+  background: linear-gradient(180deg, theme("colors.purple.600") 0%, theme("colors.gray.100") 100%);
 }
 
 .snapshot-group-indent-line-changes-requested-gradient {
-  background: linear-gradient(180deg, config("colors.orange-500") 0%, config("colors.gray-100") 100%);
+  background: linear-gradient(180deg, theme("colors.orange.500") 0%, theme("colors.gray.100") 100%);
 }
 
 .snapshot-group-comparison-viewer.ComparisonViewer {

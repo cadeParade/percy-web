@@ -12,6 +12,10 @@ h6 {
 
 /* Body text */
 
+p {
+  margin-bottom: 16px;
+}
+
 small {
   font-size: 90%;
 }
@@ -87,4 +91,9 @@ a {
     color: var(--blue-500);
     text-decoration: underline;
   }
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--gray-400);
 }

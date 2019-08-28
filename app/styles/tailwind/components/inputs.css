@@ -14,7 +14,7 @@ input[type="radio"]:not(:checked) {
 input[type="radio"]:checked + .radio-box::before,
 input[type="radio"]:not(:checked) + .radio-box::before {
   @apply w-full h-full;
-  @apply absolute pin-t pin-l;
+  @apply absolute top-0 left-0;
   @apply border border-purple-600 rounded-full;
   content: "";
 }

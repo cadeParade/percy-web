@@ -44,7 +44,7 @@
           </code>
         </div>
         <div class="text-sm">
-          Build {{#link-to "organization.project.builds.build" build.project.organization.slug build.project.slug build.baseBuild.id class="font-mono"}}{{build.baseBuild.buildNumber}}{{/link-to}}
+          Build {{#link-to "organization.project.builds.build" build.project.organization.slug build.project.slug build.baseBuild.id class="font-mono font-normal tracking-sm"}}{{build.baseBuild.buildNumber}}{{/link-to}}
           -
           {{moment-from-now build.baseBuild.createdAt interval=60000}}
         </div>

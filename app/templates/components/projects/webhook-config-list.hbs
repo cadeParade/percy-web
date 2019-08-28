@@ -20,18 +20,18 @@
             <div class="flex items-center mr-2 truncate">
               {{status-dot status=webhookConfig.status}}
               <div style="min-width: 0;"
-                class="font-mono truncate {{if (not webhookConfig.deliveryEnabled) 'opacity-25'}}"
+                class="font-mono font-normal tracking-sm truncate {{if (not webhookConfig.deliveryEnabled) 'opacity-25'}}"
                 data-test-webhook-config-url
               >
                 {{webhookConfig.url}}
               </div>
               {{#unless webhookConfig.deliveryEnabled}}
-                <div class="ml-1 px-1 rounded bg-gray-100 font-mono text-sm text-gray-500">
+                <div class="ml-1 px-1 rounded bg-gray-100 font-mono font-normal tracking-sm text-sm text-gray-500">
                   disabled
                 </div>
               {{/unless}}
             </div>
-            <div class="flex-no-shrink">
+            <div class="flex-shrink-0">
               <button
                 type="button"
                 class="btn btn-danger"

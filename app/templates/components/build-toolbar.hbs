@@ -1,4 +1,4 @@
-<header class="build-toolbar fixed pin-t w-screen z-3 flex justify-between items-center px-2 bg-gray-000 border-b" data-test-build-toolbar>
+<header class="build-toolbar fixed top-0 w-screen z-3 flex justify-between items-center px-2 bg-gray-000 border-b" data-test-build-toolbar>
   <div class="flex items-center">
     {{#link-to "index"}}
       <figure class="svg-container mr-2">
@@ -8,9 +8,9 @@
 
     <div class="flex items-center mr-1 hide-on-mobile">
       <div class="text-lg font-semibold">
-        {{#link-to "organization" organization class="inline-block link-purple truncate truncate-target hide-on-tablet"}}{{organization.name}}{{/link-to}}
-          <span class="font-semibold text-gray-700 mx-px hide-on-tablet">/</span>
-          {{#link-to "organization.project" organization.slug project class="inline-block link-purple truncate truncate-target" data-test-build-toolbar-project-link=true}}{{project.name}}{{/link-to}}
+        {{#link-to "organization" organization class="inline-block link-purple truncate align-top truncate-target hide-on-tablet"}}{{organization.name}}{{/link-to}}
+        <span class="font-semibold text-gray-700 mx-px hide-on-tablet">/</span>
+        {{#link-to "organization.project" organization.slug project class="inline-block link-purple truncate align-top truncate-target" data-test-build-toolbar-project-link=true}}{{project.name}}{{/link-to}}
       </div>
       {{#if organization.isSponsored}}
         {{fa-icon data-test-build-public-project "globe" class="text-blue-500 ml-sm"}}

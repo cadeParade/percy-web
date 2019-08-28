@@ -2,13 +2,13 @@
   <div>
     <div class="quote-block-headshot relative border rounded-full mx-auto mb-4 sm:mb-0 sm:mr-9" style={{html-safe "background-image: url('" quote.headshot.file.url "');"}}>
       {{#if quote.logo.file.url}}
-        <img src="{{quote.logo.file.url}}" class="quote-logo absolute pin-b p-1 bg-white border rounded-full" alt="{{quote.logo.description}}">
+        <img src="{{quote.logo.file.url}}" class="quote-logo absolute bottom-0 p-1 bg-white border rounded-full" alt="{{quote.logo.description}}">
         {{/if}}
     </div>
   </div>
   <div>
-    <p class="relative font-mono">
-      <div style="left: -40px;" class="hidden absolute pin-t sm:block">
+    <p class="relative font-mono font-normal tracking-sm">
+      <div style="left: -40px;" class="hidden absolute top-0 sm:block">
         {{inline-svg "quotes"}}
       </div>
       {{quote.customerQuote}}

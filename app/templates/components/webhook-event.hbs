@@ -5,7 +5,7 @@
         statusText=webhookEvent.responseStatus
         success=webhookEvent.isSuccess
       }}
-      <div class="font-mono">
+      <div class="font-mono font-normal tracking-sm">
         <div class="flex items-center mb-sm">
           <div class="leading-none mr-1" data-test-delivery-url>
             POST {{webhookEvent.url}}
@@ -96,7 +96,7 @@
       {{!-- style to clip 5th line to suggest scrollability --}}
       <div
         style="max-height: 114px"
-        class="p-2 rounded border bg-gray-000 font-mono word-break-all overflow-scroll"
+        class="p-2 rounded border bg-gray-000 font-mono font-normal tracking-sm word-break-all overflow-scroll"
         data-test-event-payload
       >
         {{#if isRequest}}

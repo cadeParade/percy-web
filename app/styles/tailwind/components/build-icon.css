@@ -20,7 +20,7 @@
   @apply h-full;
   @apply bg-purple-600;
   @apply rounded-sm;
-  box-shadow: 0 0 0 1px config("colors.purple-700");
+  box-shadow: 0 0 0 1px theme("colors.purple.700");
   opacity: var(--cube-opacity);
 }
 

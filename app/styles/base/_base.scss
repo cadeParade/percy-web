@@ -81,10 +81,36 @@ button {
   border-radius: 0; /* Remove border radius added by Chroma macOS */
 }
 
+img,
+svg,
+video,
+canvas,
+iframe {
+  display: inline;
+  vertical-align: baseline;
+}
+
 svg:not(:root) {
   overflow: visible;
 }
 
 img {
   max-width: 100%;
+}
+
+ol,
+ul {
+  margin-top: 0;
+}
+
+ul {
+  list-style-type: disc;
+}
+
+ul ul {
+  list-style-type: circle;
+}
+
+ol {
+  list-style-type: decimal;
 }
