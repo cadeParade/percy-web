@@ -10,7 +10,7 @@ import {REVIEW_ACTIONS} from 'percy-web/models/review';
 
 export default function() {
   // Enable this to see verbose request logging from mirage:
-  // this.logging = true;
+  this.logging = true;
   this.passthrough('http://api.amplitude.com');
   this.passthrough('https://api.lever.co/v0/postings/percy');
 
@@ -435,6 +435,9 @@ export default function() {
   ) {
     schema.slackIntegrationConfigs.find(request.params.id).destroy();
     return new Mirage.Response(204);
+  });
+  this.post('/websockets/auth', function() {
+    return {auth: 'abc123'};
   });
 }
 

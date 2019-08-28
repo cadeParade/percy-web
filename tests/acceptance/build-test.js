@@ -16,6 +16,8 @@ import {
 import BuildPage from 'percy-web/tests/pages/build-page';
 import ProjectPage from 'percy-web/tests/pages/project-page';
 import withVariation from 'percy-web/tests/helpers/with-variation';
+import {PusherMock} from 'pusher-js-mock';
+import {settled} from '@ember/test-helpers';
 
 describe('Acceptance: Build', function() {
   freezeMoment('2018-05-22');
@@ -1166,6 +1168,177 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expect(BuildPage.confirmDialog.isVisible).to.equal(false);
       expect(snapshot.approveButton.isVisible).to.equal(false);
       expect(snapshot.isApproved).to.equal(true);
+    });
+  });
+
+  describe('websockets', function() {
+    let pusherService;
+    let user;
+    let commentThread;
+    let threadReplyString;
+    let archiveThreadString;
+    let newThreadCommentString;
+
+    function createWebhookPayload(commentThreadId, snapshotId, user, closed) {
+      const lastExistingCommentId = server.db.comments.lastObject.id;
+      const newCommentId = Number(lastExistingCommentId) + 1;
+      const closedAt = closed ? `"${moment()}"` : null;
+      const result = `{
+        "data":{
+          "type":"comments",
+          "id":"${newCommentId}",
+          "attributes":{
+            "body":"This is an awesome change!",
+            "created-at":"2019-08-29T16:47:20.000Z",
+            "updated-at":"2019-08-29T16:47:20.000Z"
+          },
+          "links":{
+            "self":"/api/v1/comments/${newCommentId}"
+          },
+          "relationships":{
+            "author":{
+              "data":{
+                "type":"users",
+                "id":"1"
+              }
+            },
+            "comment-thread":{
+              "data":{
+                "type":"comment-threads",
+                "id":"${commentThreadId}"
+              }
+            }
+          }
+        },
+        "included":[
+          {
+            "type":"users",
+            "id":"${user.id}",
+            "attributes":{
+              "name":"${user.name}",
+              "avatar-url":"${user.avatarUrl}"
+            },
+            "links":{
+              "self":"/api/v1/user"
+            }
+          },
+          {
+            "type":"comment-threads",
+            "id":"${commentThreadId}",
+            "attributes":{
+              "type":"note",
+              "closed-at":${closedAt},
+              "created-at": "2019-08-29T02:06:29.000Z"
+            },
+            "links":{
+              "self":"/api/v1/comment-threads/${commentThreadId}"
+            },
+            "relationships":{
+              "snapshot":{
+                "data":{
+                  "type":"snapshots",
+                  "id":"${snapshotId}"
+                }
+              },
+              "comments":{
+                "data":[
+                  {
+                    "type":"comments",
+                    "id":"${newCommentId}"
+                  },
+                  {
+                    "type":"comments",
+                    "id":"${lastExistingCommentId}"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }`;
+      return result;
+    }
+
+    beforeEach(async function() {
+      server.create('commentThread', 'withOneComment', {snapshot});
+      commentThread = server.create('commentThread', 'withOneComment', {snapshot});
+      user = server.create('user');
+
+      pusherService = this.owner.lookup('service:pusher');
+      const pusherMock = new PusherMock();
+      pusherService.set('_client', pusherMock);
+      threadReplyString = createWebhookPayload(commentThread.id, snapshot.id, user, false);
+      archiveThreadString = createWebhookPayload(commentThread.id, snapshot.id, user, true);
+      newThreadCommentString = createWebhookPayload(commentThread.id + 1, snapshot.id, user);
+    });
+
+    it('displays a new comment thread', async function() {
+      await BuildPage.visitFullPageSnapshot(urlParams);
+      const fullscreenSnapshot = BuildPage.snapshotFullscreen;
+      expect(fullscreenSnapshot.collaborationPanel.isVisible).to.equal(true);
+      expect(fullscreenSnapshot.commentThreads.length).to.equal(2);
+      const channel = pusherService._client.channels['private-organization-1'];
+      channel.emit('objectUpdated', JSON.parse(newThreadCommentString));
+      await settled();
+
+      expect(fullscreenSnapshot.commentThreads.length).to.equal(3);
+      expect(fullscreenSnapshot.header.numOpenCommentThreads).to.equal('3');
+      await percySnapshot(this.test);
+    });
+
+    it('displays new comments', async function() {
+      pusherService.subscribeToOrganization(project.organization);
+      await BuildPage.visitFullPageSnapshot(urlParams);
+      const snapshot = BuildPage.snapshotFullscreen;
+      const firstThread = snapshot.commentThreads[0];
+      expect(firstThread.comments.length).to.equal(1);
+
+      const channel = pusherService._client.channels['private-organization-1'];
+      channel.emit('objectUpdated', JSON.parse(threadReplyString));
+      await settled();
+
+      expect(firstThread.comments.length).to.equal(2);
+      await percySnapshot(this.test);
+    });
+
+    it('archives a comment thread', async function() {
+      pusherService.subscribeToOrganization(project.organization);
+      await BuildPage.visitFullPageSnapshot(urlParams);
+      const snapshot = BuildPage.snapshotFullscreen;
+      const collabPanel = snapshot.collaborationPanel;
+      expect(snapshot.header.numOpenCommentThreads).to.equal('2');
+      expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
+      expect(collabPanel.isShowArchivedCommentsVisible).to.equal(false);
+
+      const channel = pusherService._client.channels['private-organization-1'];
+      channel.emit('objectUpdated', JSON.parse(archiveThreadString));
+      await settled();
+
+      expect(snapshot.header.numOpenCommentThreads).to.equal('1');
+      expect(collabPanel.reviewThreads.length).to.equal(1);
+      expect(collabPanel.isShowArchivedCommentsVisible).to.equal(true);
+
+      await percySnapshot(this.test);
+    });
+
+    it('flashes a message for a new comment', async function() {
+      user = server.create('user');
+      const flashMessageService = this.owner
+        .lookup('service:flash-messages')
+        .registerTypes(['info']);
+      const flashMessageInfoStub = sinon.stub(flashMessageService, 'info');
+      pusherService.set('hasSubscribedToUser', null);
+      pusherService.subscribeToUser(user);
+      const message = "Han Solo commented on snapshot Home Page: 'These changes look great!'";
+      server.create('organizationUser', {organization: project.organization, user: user});
+      await BuildPage.visitFullPageSnapshot(urlParams);
+
+      const channel = pusherService._client.channels[`private-user-${user.id}`];
+      channel.emit('userNotification', {message});
+      await settled();
+
+      expect(flashMessageInfoStub).to.have.been.calledWith(message);
+      await percySnapshot(this.test);
     });
   });
 

@@ -150,10 +150,10 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
 
   activate() {
     this.flashMessages.displayLocalStorageMessages();
-    this._listenToPusherEvents();
+    this._subscribeToPusherUserChannel();
   },
 
-  _listenToPusherEvents() {
+  _subscribeToPusherUserChannel() {
     const user = this.get('currentUser');
 
     if (user) {
