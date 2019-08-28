@@ -1,5 +1,6 @@
 import {computed} from '@ember/object';
 import DS from 'ember-data';
+import {equal} from '@ember/object/computed';
 
 export const ROLE_ID_TO_TITLE = {
   admin: 'Administrator',
@@ -17,4 +18,6 @@ export default DS.Model.extend({
   roleTitle: computed('role', function() {
     return ROLE_ID_TO_TITLE[this.role];
   }),
+  isMember: equal('role', 'member'),
+  isAdmin: equal('role', 'admin'),
 });

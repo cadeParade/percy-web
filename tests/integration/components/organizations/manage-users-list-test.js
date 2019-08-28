@@ -8,6 +8,7 @@ import moment from 'moment';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import ManageUsersList from 'percy-web/tests/pages/components/organizations/manage-users-list';
 import {render} from '@ember/test-helpers';
+import stubSession from 'percy-web/tests/helpers/stub-session';
 
 describe('Integration: ManageUsersList', function() {
   freezeMoment('2018-12-17');
@@ -27,7 +28,12 @@ describe('Integration: ManageUsersList', function() {
 
   function rendersAnInviteCorrectly({isAdmin = true}) {
     it('renders an invite correctly', async function() {
-      organization.set('currentUserIsAdmin', isAdmin);
+      const session = this.owner.lookup('service:session');
+      const orgUsers = this.organizationUsers;
+      const currentUser = isAdmin
+        ? orgUsers.findBy('isAdmin').user
+        : orgUsers.findBy('isMember').user;
+      session.setProperties({currentUser});
       await render(
         hbs`{{organizations/manage-users-list
           organization=organization
@@ -56,7 +62,6 @@ describe('Integration: ManageUsersList', function() {
   });
 
   let organization;
-  let organizationUsers;
   let invites;
   const numberOfUsers = 5;
 
@@ -64,15 +69,20 @@ describe('Integration: ManageUsersList', function() {
     setupFactoryGuy(this);
     ManageUsersList.setContext(this);
     organization = make('organization');
-    organizationUsers = makeList('organization-user', numberOfUsers, {
-      organization: organization,
+
+    const memberOrgUsers = makeList('organization-user', numberOfUsers - 1, {organization});
+    const adminOrgUser = make('organization-user', 'adminUser', {organization});
+    memberOrgUsers.forEach(orgUser => {
+      orgUser.user.set('organizationUsers', [orgUser]);
     });
+    adminOrgUser.user.set('organizationUsers', [adminOrgUser]);
+
+    const organizationUsers = memberOrgUsers.concat([adminOrgUser]);
+    stubSession(this, {currentUser: adminOrgUser.user});
     this.setProperties({
       organization,
       organizationUsers,
     });
-    // To prevent an API call and setup for admin tests:
-    organization.set('currentUserIsAdmin', true);
   });
 
   describe('when there are no invites', function() {

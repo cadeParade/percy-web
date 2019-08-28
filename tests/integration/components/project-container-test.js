@@ -21,6 +21,11 @@ describe('Integration: ProjectContainer', function() {
     integration: true,
   });
 
+  function stubPeekAllBuilds(builds, context) {
+    const store = context.owner.lookup('service:store');
+    sinon.stub(store, 'peekAll').returns(builds);
+  }
+
   beforeEach(function() {
     setupFactoryGuy(this);
     ProjectContainer.setContext(this);
@@ -29,14 +34,14 @@ describe('Integration: ProjectContainer', function() {
   describe('without a repo', function() {
     beforeEach(async function() {
       const project = make('project');
-      const builds = makeList('build', 1, {buildNumber: 1});
+      const builds = makeList('build', 1, {buildNumber: 1, project});
+      stubPeekAllBuilds(builds, this);
       const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const stub = sinon.stub();
-      this.setProperties({project, infinityBuilds, stub});
+      this.setProperties({project, stub, infinityBuilds});
 
       await render(hbs`{{project-container
         project=project
-        builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
         isUserMember=true
@@ -57,14 +62,14 @@ describe('Integration: ProjectContainer', function() {
     beforeEach(async function() {
       const organization = make('organization', 'withGithubIntegration');
       const project = make('project', 'withRepo', {organization});
-      const builds = makeList('build', 1, 'withRepo', 'hasPullRequest', {buildNumber: 1});
+      const builds = makeList('build', 1, 'withRepo', 'hasPullRequest', {buildNumber: 1, project});
       const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const stub = sinon.stub();
+      stubPeekAllBuilds(builds, this);
       this.setProperties({project, infinityBuilds, stub});
 
       await render(hbs`{{project-container
         project=project
-        builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
         isUserMember=true
@@ -93,14 +98,17 @@ describe('Integration: ProjectContainer', function() {
     beforeEach(async function() {
       const organization = make('organization', 'withGithubIntegration');
       const project = make('project', 'withGithubRepo', {organization});
-      const builds = makeList('build', 1, 'withGithubRepo', 'hasPullRequest', {buildNumber: 1});
+      const builds = makeList('build', 1, 'withGithubRepo', 'hasPullRequest', {
+        buildNumber: 1,
+        project,
+      });
       const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const stub = sinon.stub();
+      stubPeekAllBuilds(builds, this);
       this.setProperties({project, infinityBuilds, stub});
 
       await render(hbs`{{project-container
         project=project
-        builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
         isUserMember=true
@@ -132,14 +140,15 @@ describe('Integration: ProjectContainer', function() {
       const project = make('project', 'withGithubEnterpriseRepo', {organization});
       const builds = makeList('build', 1, 'withGithubEnterpriseRepo', 'hasPullRequest', {
         buildNumber: 1,
+        project,
       });
       const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const stub = sinon.stub();
+      stubPeekAllBuilds(builds, this);
       this.setProperties({project, infinityBuilds, stub});
 
       await render(hbs`{{project-container
         project=project
-        builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
         isUserMember=true
@@ -170,14 +179,17 @@ describe('Integration: ProjectContainer', function() {
     beforeEach(async function() {
       const organization = make('organization', 'withGitlabIntegration');
       const project = make('project', 'withGitlabRepo', {organization});
-      const builds = makeList('build', 1, 'withGitlabRepo', 'hasPullRequest', {buildNumber: 1});
+      const builds = makeList('build', 1, 'withGitlabRepo', 'hasPullRequest', {
+        buildNumber: 1,
+        project,
+      });
       const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const stub = sinon.stub();
+      stubPeekAllBuilds(builds, this);
       this.setProperties({project, infinityBuilds, stub});
 
       await render(hbs`{{project-container
         project=project
-        builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
         isUserMember=true
@@ -207,14 +219,14 @@ describe('Integration: ProjectContainer', function() {
     beforeEach(async function() {
       const organization = make('organization', 'withGithubIntegration');
       const project = make('project', 'withGithubRepo', {organization});
-      const builds = makeList('build', 1);
+      const builds = makeList('build', 1, {project});
       const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
       const stub = sinon.stub();
+      stubPeekAllBuilds(builds, this);
       this.setProperties({project, infinityBuilds, stub});
 
       await render(hbs`{{project-container
         project=project
-        builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
         isUserMember=false
@@ -227,35 +239,30 @@ describe('Integration: ProjectContainer', function() {
     });
   });
 
-  describe('when a project is public', function() {
-    beforeEach(function() {
-      const project = make('project', 'public');
-      const builds = makeList('build', 1);
-      const infinityBuilds = Object.assign(builds, INFINITY_MODEL_STUB);
-      const stub = sinon.stub();
-      this.setProperties({
-        project,
-        stub,
-        infinityBuilds,
-      });
-    });
-  });
-
   describe('branch filter with github repo', function() {
     beforeEach(async function() {
       const project = make('project', 'withGithubRepo');
-      const branch1Builds = makeList('build', 4, 'finished', 'unreviewed', {branch: 'branch-1'});
-      const branch2Builds = makeList('build', 5, 'finished', 'unreviewed', {branch: 'branch-2'});
-      const branch3Builds = makeList('build', 6, 'finished', 'unreviewed', {branch: 'branch-3'});
+      const branch1Builds = makeList('build', 4, 'finished', 'unreviewed', {
+        branch: 'branch-1',
+        project,
+      });
+      const branch2Builds = makeList('build', 5, 'finished', 'unreviewed', {
+        branch: 'branch-2',
+        project,
+      });
+      const branch3Builds = makeList('build', 6, 'finished', 'unreviewed', {
+        branch: 'branch-3',
+        project,
+      });
       const allBuilds = branch1Builds.concat(branch2Builds).concat(branch3Builds);
       const infinityBuilds = Object.assign(allBuilds, INFINITY_MODEL_STUB);
       infinityBuilds.reachedInfinity = false;
       const stub = sinon.stub();
+      stubPeekAllBuilds(allBuilds, this);
       this.setProperties({project, infinityBuilds, stub});
 
       await render(hbs`{{project-container
         project=project
-        builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
         isUserMember=true
@@ -279,18 +286,27 @@ describe('Integration: ProjectContainer', function() {
   describe('branch filter without github repo', function() {
     beforeEach(async function() {
       const project = make('project');
-      const branch1Builds = makeList('build', 4, 'finished', 'unreviewed', {branch: 'branch-1'});
-      const branch2Builds = makeList('build', 5, 'finished', 'unreviewed', {branch: 'branch-2'});
-      const branch3Builds = makeList('build', 6, 'finished', 'unreviewed', {branch: 'branch-3'});
+      const branch1Builds = makeList('build', 4, 'finished', 'unreviewed', {
+        branch: 'branch-1',
+        project,
+      });
+      const branch2Builds = makeList('build', 5, 'finished', 'unreviewed', {
+        branch: 'branch-2',
+        project,
+      });
+      const branch3Builds = makeList('build', 6, 'finished', 'unreviewed', {
+        branch: 'branch-3',
+        project,
+      });
       const allBuilds = branch1Builds.concat(branch2Builds).concat(branch3Builds);
       const infinityBuilds = Object.assign(allBuilds, INFINITY_MODEL_STUB);
       infinityBuilds.reachedInfinity = false;
       const stub = sinon.stub();
+      stubPeekAllBuilds(allBuilds, this);
       this.setProperties({project, infinityBuilds, stub});
 
       await render(hbs`{{project-container
         project=project
-        builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
         isUserMember=true
@@ -314,15 +330,18 @@ describe('Integration: ProjectContainer', function() {
   describe('branch filter on a project with only 1 branch', function() {
     beforeEach(async function() {
       const project = make('project');
-      const branch1Builds = makeList('build', 4, 'finished', 'unreviewed', {branch: 'branch-1'});
+      const branch1Builds = makeList('build', 4, 'finished', 'unreviewed', {
+        branch: 'branch-1',
+        project,
+      });
       const infinityBuilds = Object.assign(branch1Builds, INFINITY_MODEL_STUB);
       infinityBuilds.reachedInfinity = true;
       const stub = sinon.stub();
+      stubPeekAllBuilds(branch1Builds, this);
       this.setProperties({project, infinityBuilds, stub});
 
       await render(hbs`{{project-container
         project=project
-        builds=infinityBuilds
         infinityBuilds=infinityBuilds
         pollRefresh=stub
         isUserMember=true

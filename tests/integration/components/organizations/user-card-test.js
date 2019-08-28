@@ -7,8 +7,8 @@ import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import utils from 'percy-web/lib/utils';
-import Service from '@ember/service';
 import UserCard from 'percy-web/tests/pages/components/organizations/user-card';
+import stubSession from 'percy-web/tests/helpers/stub-session';
 
 describe('Integration: UserCard', function() {
   setupRenderingTest('organizations/user-card-test', {
@@ -16,10 +16,10 @@ describe('Integration: UserCard', function() {
   });
 
   let organization;
-  let organizationAdminUser;
-  let organizationMemberUser;
-  let organizationOtherAdminUser;
-  let organizationOtherMemberUser;
+  let adminOrganizationUser;
+  let memberOrganizationUser;
+  let otherAdminOrganizationUser;
+  let otherMemberOrganizationUser;
   let adminUser;
   let memberUser;
   let otherAdminUser;
@@ -33,48 +33,44 @@ describe('Integration: UserCard', function() {
     otherAdminUser = make('user');
     memberUser = make('user');
     otherMemberUser = make('user');
-    organizationAdminUser = make('organization-user', 'adminUser', {
+    adminOrganizationUser = make('organization-user', 'adminUser', {
       organization: organization,
       user: adminUser,
     });
-    organizationOtherAdminUser = make('organization-user', 'adminUser', {
+    otherAdminOrganizationUser = make('organization-user', 'adminUser', {
       organization: organization,
       user: otherAdminUser,
     });
-    organizationMemberUser = make('organization-user', {
+    memberOrganizationUser = make('organization-user', {
       organization: organization,
       user: memberUser,
     });
-    organizationOtherMemberUser = make('organization-user', {
+    otherMemberOrganizationUser = make('organization-user', {
       organization: organization,
       user: otherMemberUser,
     });
+    adminUser.set('organizationUsers', [adminOrganizationUser]);
+    otherAdminUser.set('organizationUsers', [otherMemberOrganizationUser]);
+    memberUser.set('organizationUsers', [memberOrganizationUser]);
+    otherMemberUser.set('organizationUsers', [otherMemberOrganizationUser]);
     this.setProperties({
-      adminUser,
-      memberUser,
-      organizationAdminUser,
-      organizationMemberUser,
-      organizationOtherAdminUser,
-      organizationOtherMemberUser,
-      otherAdminUser,
-      otherMemberUser,
+      adminOrganizationUser,
+      memberOrganizationUser,
+      otherAdminOrganizationUser,
+      otherMemberOrganizationUser,
     });
   });
 
   describe('appearance', function() {
     describe('as an admin user', function() {
       beforeEach(function() {
-        const sessionServiceStub = Service.extend({
-          currentUser: adminUser,
-        });
-        this.owner.register('service:session', sessionServiceStub, 'sessionService');
-        organization.set('currentUserIsAdmin', true);
+        stubSession(this, {currentUser: adminUser});
       });
 
       it('renders your Admin user', async function() {
-        await render(hbs`{{organizations/user-card organizationUser=organizationAdminUser}}`);
+        await render(hbs`{{organizations/user-card organizationUser=adminOrganizationUser}}`);
 
-        expect(UserCard.avatarUrl).to.equal(this.organizationAdminUser.user.avatarUrl);
+        expect(UserCard.avatarUrl).to.equal(this.adminOrganizationUser.user.avatarUrl);
         expect(UserCard.userName.isVisible).to.equal(true);
         expect(UserCard.joinDate.isVisible).to.equal(true);
         expect(UserCard.role).to.equal('Administrator');
@@ -87,9 +83,9 @@ describe('Integration: UserCard', function() {
       });
 
       it('renders another Admin user', async function() {
-        await render(hbs`{{organizations/user-card organizationUser=organizationOtherAdminUser}}`);
+        await render(hbs`{{organizations/user-card organizationUser=otherAdminOrganizationUser}}`);
 
-        expect(UserCard.avatarUrl).to.equal(this.organizationOtherAdminUser.user.avatarUrl);
+        expect(UserCard.avatarUrl).to.equal(this.otherAdminOrganizationUser.user.avatarUrl);
         expect(UserCard.userName.isVisible).to.equal(true);
         expect(UserCard.joinDate.isVisible).to.equal(true);
         expect(UserCard.role).to.equal('Administrator');
@@ -103,9 +99,9 @@ describe('Integration: UserCard', function() {
       });
 
       it('renders a Member user', async function() {
-        await render(hbs`{{organizations/user-card organizationUser=organizationMemberUser}}`);
+        await render(hbs`{{organizations/user-card organizationUser=memberOrganizationUser}}`);
 
-        expect(UserCard.avatarUrl).to.equal(this.organizationMemberUser.user.avatarUrl);
+        expect(UserCard.avatarUrl).to.equal(this.memberOrganizationUser.user.avatarUrl);
         expect(UserCard.userName.isVisible).to.equal(true);
         expect(UserCard.joinDate.isVisible).to.equal(true);
         expect(UserCard.role).to.equal('Member');
@@ -121,15 +117,11 @@ describe('Integration: UserCard', function() {
 
     describe('as a member user', async function() {
       beforeEach(function() {
-        const sessionServiceStub = Service.extend({
-          currentUser: memberUser,
-        });
-        this.owner.register('service:session', sessionServiceStub, 'sessionService');
-        organization.set('currentUserIsAdmin', false);
+        stubSession(this, {currentUser: memberUser});
       });
 
       it('renders your user', async function() {
-        await render(hbs`{{organizations/user-card organizationUser=organizationMemberUser}}`);
+        await render(hbs`{{organizations/user-card organizationUser=memberOrganizationUser}}`);
 
         expect(UserCard.userName.isVisible).to.equal(true);
         expect(UserCard.joinDate.isVisible).to.equal(true);
@@ -143,7 +135,7 @@ describe('Integration: UserCard', function() {
       });
 
       it('renders a Admin user', async function() {
-        await render(hbs`{{organizations/user-card organizationUser=organizationOtherAdminUser}}`);
+        await render(hbs`{{organizations/user-card organizationUser=otherAdminOrganizationUser}}`);
 
         expect(UserCard.userName.isVisible).to.equal(true);
         expect(UserCard.joinDate.isVisible).to.equal(true);
@@ -158,7 +150,7 @@ describe('Integration: UserCard', function() {
       });
 
       it('renders a Member user', async function() {
-        await render(hbs`{{organizations/user-card organizationUser=organizationOtherMemberUser}}`);
+        await render(hbs`{{organizations/user-card organizationUser=otherMemberOrganizationUser}}`);
 
         expect(UserCard.userName.isVisible).to.equal(true);
         expect(UserCard.joinDate.isVisible).to.equal(true);
@@ -185,19 +177,17 @@ describe('Integration: UserCard', function() {
 
     describe('as an admin user', function() {
       beforeEach(function() {
-        const sessionServiceStub = Service.extend({
+        stubSession(this, {
           currentUser: adminUser,
         });
-        this.owner.register('service:session', sessionServiceStub, 'sessionService');
-        organization.set('currentUserIsAdmin', true);
       });
 
       describe('Remove', function() {
         it('requests confirmation and calls destroyRecord', async function() {
           await render(
-            hbs`{{organizations/user-card organizationUser=organizationOtherAdminUser}}`,
+            hbs`{{organizations/user-card organizationUser=otherAdminOrganizationUser}}`,
           );
-          const orgUserStub = sinon.stub(organizationOtherAdminUser, 'destroyRecord');
+          const orgUserStub = sinon.stub(otherAdminOrganizationUser, 'destroyRecord');
 
           expect(UserCard.buttons.objectAt(1).text).to.equal('Remove');
           await UserCard.buttons.objectAt(1).click();
@@ -211,9 +201,9 @@ describe('Integration: UserCard', function() {
 
       describe('Make admin', function() {
         it('calls save on the OrganizationUser', async function() {
-          await render(hbs`{{organizations/user-card organizationUser=organizationMemberUser}}`);
-          expect(this.organizationMemberUser.role).to.equal('member');
-          const orgUserStub = sinon.stub(organizationMemberUser, 'save');
+          await render(hbs`{{organizations/user-card organizationUser=memberOrganizationUser}}`);
+          expect(this.memberOrganizationUser.role).to.equal('member');
+          const orgUserStub = sinon.stub(memberOrganizationUser, 'save');
 
           expect(UserCard.buttons.objectAt(0).text).to.equal('Make admin');
           await UserCard.buttons.objectAt(0).click();
@@ -225,11 +215,11 @@ describe('Integration: UserCard', function() {
       describe('Make member', function() {
         it('calls save on the OrganizationUser', async function() {
           await render(
-            hbs`{{organizations/user-card organizationUser=organizationOtherAdminUser}}`,
+            hbs`{{organizations/user-card organizationUser=otherAdminOrganizationUser}}`,
           );
 
-          expect(this.organizationOtherAdminUser.role).to.equal('admin');
-          const orgUserStub = sinon.stub(organizationOtherAdminUser, 'save');
+          expect(this.otherAdminOrganizationUser.role).to.equal('admin');
+          const orgUserStub = sinon.stub(otherAdminOrganizationUser, 'save');
 
           expect(UserCard.buttons.objectAt(0).text).to.equal('Make member');
           await UserCard.buttons.objectAt(0).click();
@@ -241,19 +231,15 @@ describe('Integration: UserCard', function() {
 
     describe('as a member user', function() {
       beforeEach(function() {
-        const sessionServiceStub = Service.extend({
-          currentUser: memberUser,
-        });
-        this.owner.register('service:session', sessionServiceStub, 'sessionService');
-        organization.set('currentUserIsAdmin', false);
+        stubSession(this, {currentUser: memberUser});
       });
 
       describe('Remove', function() {
         it('does nothing', async function() {
           await render(
-            hbs`{{organizations/user-card organizationUser=organizationOtherMemberUser}}`,
+            hbs`{{organizations/user-card organizationUser=otherMemberOrganizationUser}}`,
           );
-          const orgUserStub = sinon.stub(organizationOtherMemberUser, 'destroyRecord');
+          const orgUserStub = sinon.stub(otherMemberOrganizationUser, 'destroyRecord');
 
           expect(UserCard.buttons.objectAt(1).text).to.equal('Remove');
           await UserCard.buttons.objectAt(1).click();
@@ -268,10 +254,10 @@ describe('Integration: UserCard', function() {
       describe('Make admin', function() {
         it('does nothing', async function() {
           await render(
-            hbs`{{organizations/user-card organizationUser=organizationOtherMemberUser}}`,
+            hbs`{{organizations/user-card organizationUser=otherMemberOrganizationUser}}`,
           );
-          expect(this.organizationOtherMemberUser.role).to.equal('member');
-          const orgUserStub = sinon.stub(organizationOtherMemberUser, 'save');
+          expect(this.otherMemberOrganizationUser.role).to.equal('member');
+          const orgUserStub = sinon.stub(otherMemberOrganizationUser, 'save');
 
           expect(UserCard.buttons.objectAt(0).text).to.equal('Make admin');
           await UserCard.buttons.objectAt(0).click();
@@ -285,10 +271,10 @@ describe('Integration: UserCard', function() {
       describe('Make member', function() {
         it('does nothing', async function() {
           await render(
-            hbs`{{organizations/user-card organizationUser=organizationOtherAdminUser}}`,
+            hbs`{{organizations/user-card organizationUser=otherAdminOrganizationUser}}`,
           );
-          expect(this.organizationOtherAdminUser.role).to.equal('admin');
-          const orgUserStub = sinon.stub(organizationOtherAdminUser, 'save');
+          expect(this.otherAdminOrganizationUser.role).to.equal('admin');
+          const orgUserStub = sinon.stub(otherAdminOrganizationUser, 'save');
 
           expect(UserCard.buttons.objectAt(0).text).to.equal('Make member');
           await UserCard.buttons.objectAt(0).click();

@@ -6,31 +6,35 @@ import UsersHeader from 'percy-web/tests/pages/components/organizations/users-he
 import {make} from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
 import {render} from '@ember/test-helpers';
+import stubSession from 'percy-web/tests/helpers/stub-session';
 
 describe('Integration: UsersHeader', function() {
   setupRenderingTest('organizations/users-header-test', {
     integration: true,
   });
 
-  let organization;
   const seatsUsed = 3;
   const seatLimit = 10;
 
   beforeEach(function() {
     setupFactoryGuy(this);
     UsersHeader.setContext(this);
-    organization = make('organization', {
-      name: 'Meow Mediaworks',
-      hasSeatsRemaining: true,
-      seatLimit,
-      seatsUsed,
-    });
-    this.setProperties({isInviteFormAllowed: false, organization});
+    this.setProperties({isInviteFormAllowed: false});
   });
 
   describe('when user is admin', function() {
+    let organization;
     beforeEach(async function() {
-      organization.set('currentUserIsAdmin', true);
+      organization = make('organization', 'withAdminUser', {
+        name: 'Meow Mediaworks',
+        hasSeatsRemaining: true,
+        seatLimit,
+        seatsUsed,
+      });
+      stubSession(this, {
+        currentUser: organization.organizationUsers.firstObject.user,
+      });
+      this.setProperties({organization});
     });
 
     it('displays basic information', async function() {
@@ -174,8 +178,18 @@ describe('Integration: UsersHeader', function() {
   });
 
   describe('when user is member', function() {
+    let organization;
     beforeEach(async function() {
-      organization.set('currentUserIsAdmin', false);
+      organization = make('organization', 'withUsers', {
+        name: 'Meow Mediaworks',
+        hasSeatsRemaining: true,
+        seatLimit,
+        seatsUsed,
+      });
+      stubSession(this, {
+        currentUser: organization.organizationUsers.firstObject.user,
+      });
+      this.setProperties({organization});
     });
     const tooltipText = 'Only admins can invite new users';
 

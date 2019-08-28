@@ -5,6 +5,8 @@ import {inject as service} from '@ember/service';
 import groupSnapshots from 'percy-web/lib/group-snapshots';
 import {EKMixin, keyDown} from 'ember-keyboard';
 import {on} from '@ember/object/evented';
+import config from '../config/environment';
+import {assert} from '@ember/debug';
 
 export default Component.extend(EKMixin, {
   classNames: ['SnapshotList'],
@@ -29,8 +31,14 @@ export default Component.extend(EKMixin, {
   // Set internally by actions
   activeSnapshotBlockId: null,
 
-  shouldDeferRendering: computed('snapshotBlocks.length', 'snapshotsUnchanged.length', function() {
-    return this.snapshotBlocks.length + this.snapshotsUnchanged.length > 75;
+  shouldDeferRendering: computed('snapshotBlocks.length', 'snapshotsUnchanged.length', {
+    get(/*key*/) {
+      return this.snapshotBlocks.length + this.snapshotsUnchanged.length > 75;
+    },
+    set(key, value) {
+      assert('Only set `shouldDeferRendering` for tests.', config.environment === 'test');
+      return value;
+    },
   }),
 
   _singleSnapshotsChanged: readOnly('_snapshotGroups.singles'),

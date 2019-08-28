@@ -81,17 +81,6 @@ describe('SessionService', function() {
         });
       });
 
-      it('sets raven user context', function() {
-        const promise = subject.loadCurrentUser();
-        const raven = subject.get('raven');
-        const callRavenStub = sinon.stub(raven, 'callRaven');
-        raven.set('isRavenUsable', true);
-
-        return promise.then(() => {
-          expect(callRavenStub).to.have.been.calledWith('setUserContext', {id: user.get('id')});
-        });
-      });
-
       it('sends intercom data', function() {
         window.Intercom = sinon.stub();
         const promise = subject.loadCurrentUser();
@@ -148,18 +137,6 @@ describe('SessionService', function() {
         return promise.then(() => {
           expect(invalidateStub).to.have.been.called;
           expect(windowStub).to.have.been.calledWith('/api/auth/logout');
-        });
-      });
-
-      it('clears raven user context', function() {
-        subject.invalidate = sinon.stub().returns(resolve());
-        const promise = subject.loadCurrentUser();
-        const raven = subject.get('raven');
-        const callRavenStub = sinon.stub(raven, 'callRaven');
-        raven.set('isRavenUsable', true);
-
-        return promise.then(() => {
-          expect(callRavenStub).to.have.been.calledWith();
         });
       });
 

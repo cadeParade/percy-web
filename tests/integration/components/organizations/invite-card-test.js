@@ -6,12 +6,12 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import InviteCard from 'percy-web/tests/pages/components/organizations/invite-card';
 import {make} from 'ember-data-factory-guy';
 import moment from 'moment';
-import Service from '@ember/service';
 import utils from 'percy-web/lib/utils';
 import {resolve} from 'rsvp';
 import sinon from 'sinon';
 import {percySnapshot} from 'ember-percy';
 import {render} from '@ember/test-helpers';
+import stubSession from 'percy-web/tests/helpers/stub-session';
 
 describe('Integration: InviteCard', function() {
   freezeMoment('2018-12-17');
@@ -37,8 +37,10 @@ describe('Integration: InviteCard', function() {
     InviteCard.setContext(this);
     invite = make('invite');
     organization = make('organization');
-    adminUser = make('user');
-    memberUser = make('user');
+    const adminOrgUser = make('organization-user', 'adminUser', {user: adminUser, organization});
+    const memberOrgUser = make('organization-user', {user: memberUser, organization});
+    adminUser = make('user', {organizationUsers: [adminOrgUser]});
+    memberUser = make('user', {organizationUsers: [memberOrgUser]});
     this.setProperties({
       invite,
       organization,
@@ -61,11 +63,7 @@ describe('Integration: InviteCard', function() {
 
   describe('as an admin user', function() {
     beforeEach(function() {
-      const sessionServiceStub = Service.extend({
-        currentUser: adminUser,
-      });
-      this.owner.register('service:session', sessionServiceStub, 'sessionService');
-      organization.set('currentUserIsAdmin', true);
+      stubSession(this, {currentUser: adminUser});
     });
 
     it('renders with buttons enabled', async function() {
@@ -103,11 +101,7 @@ describe('Integration: InviteCard', function() {
 
   describe('as a member user', function() {
     beforeEach(function() {
-      const sessionServiceStub = Service.extend({
-        currentUser: memberUser,
-      });
-      this.owner.register('service:session', sessionServiceStub, 'sessionService');
-      organization.set('currentUserIsAdmin', false);
+      stubSession(this, {currentUser: memberUser});
     });
 
     it('renders with buttons disabled', async function() {

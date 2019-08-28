@@ -9,6 +9,7 @@ import {percySnapshot} from 'ember-percy';
 import mockStripeService from 'percy-web/tests/helpers/mock-stripe-service';
 import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage-sandbox';
 import {render} from '@ember/test-helpers';
+import stubSession from 'percy-web/tests/helpers/stub-session';
 
 describe('Integration: BillingSection', function() {
   SetupLocalStorageSandbox();
@@ -26,11 +27,9 @@ describe('Integration: BillingSection', function() {
 
   describe('when currentUser is an Admin', function() {
     beforeEach(async function() {
-      organization = make('organization', 'withPaidPlan');
+      organization = make('organization', 'withPaidPlan', 'withAdminUser');
+      stubSession(this, {currentUser: organization.organizationUsers.firstObject.user});
       this.set('organization', organization);
-
-      // To prevent an API call and setup for admin tests:
-      organization.set('currentUserIsAdmin', true);
     });
 
     it('renders the admin view', async function() {
@@ -49,8 +48,8 @@ describe('Integration: BillingSection', function() {
         planTrait,
         {isVisible = true} = {},
       ) {
-        const organization = make('organization', planTrait);
-        organization.set('currentUserIsAdmin', true);
+        const organization = make('organization', planTrait, 'withAdminUser');
+        stubSession(context, {currentUser: organization.organizationUsers.firstObject.user});
         context.set('organization', organization);
         await context.render(hbs`{{organizations/billing-section
           organization=organization}}`);
@@ -86,13 +85,11 @@ describe('Integration: BillingSection', function() {
       async function _expectBillingSettingsVisibility(
         context,
         planTrait,
-        {isVisible = false, isEmailOrCardSaving = false} = {},
+        {isVisible = false} = {},
       ) {
         organization.set('subscription', make('subscription', planTrait));
-        context.setProperties({isEmailOrCardSaving});
         await context.render(hbs`{{organizations/billing-section
           organization=organization
-          isEmailOrCardSaving=isEmailOrCardSaving
         }}`);
 
         expect(BillingSection.billingSettings.isVisible).to.equal(isVisible);
@@ -121,23 +118,14 @@ describe('Integration: BillingSection', function() {
       it('displays when plan is enterprise', async function() {
         await _expectBillingSettingsVisibility(this, 'withEnterprisePlan', {isVisible: true});
       });
-
-      it('does not display when isEmailOrCardSaving is true', async function() {
-        await _expectBillingSettingsVisibility(this, 'withPaidPlan', {
-          isVisible: false,
-          isEmailOrCardSaving: true,
-        });
-      });
     });
   });
 
   describe('when currentUser is a Member', function() {
     beforeEach(async function() {
-      organization = make('organization', 'withPaidPlan');
-      this.set('organization', organization);
-
-      // To prevent an API call and setup for non-admin tests:
-      organization.set('currentUserIsAdmin', false);
+      organization = make('organization', 'withPaidPlan', 'withUsers');
+      stubSession(this, {currentUser: organization.organizationUsers.firstObject.user});
+      this.setProperties({organization});
     });
 
     it('renders the member view', async function() {
