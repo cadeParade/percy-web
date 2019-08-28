@@ -6,13 +6,17 @@ export default Route.extend(AuthenticatedRouteMixin, {
   intercom: service(),
   redirects: service(),
   router: service(),
+  session: service(),
 
   model() {
     return this.modelFor('organizations.organization');
   },
 
   setupController(controller, model) {
-    controller.set('organization', model);
+    controller.setProperties({
+      organization: model,
+      currentUser: this.session.currentUser,
+    });
   },
 
   actions: {

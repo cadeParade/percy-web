@@ -17,7 +17,7 @@
         </div>
 
         <div data-test-bitbucket-cloud-settings>
-          {{#organizations/require-role role="admin" organization=organization}}
+          {{#organizations/require-role role="admin" user=currentUser organization=organization}}
           <div class="mb-2">
             {{organizations/bitbucket-cloud-integrator organization=organization}}
 

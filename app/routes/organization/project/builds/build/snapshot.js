@@ -1,12 +1,13 @@
 import Route from '@ember/routing/route';
 import ResetScrollMixin from 'percy-web/mixins/reset-scroll';
 import {inject as service} from '@ember/service';
-import isUserMemberPromise from 'percy-web/lib/is-user-member-of-org';
+import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
 
 export default Route.extend(ResetScrollMixin, {
   store: service(),
   flashMessages: service(),
+  session: service(),
   params: null,
   queryParams: {
     comparisonMode: {as: 'mode'},
@@ -17,7 +18,7 @@ export default Route.extend(ResetScrollMixin, {
     const organization = this.modelFor('organization');
     return hash({
       snapshot: this.store.findRecord('snapshot', params.snapshot_id),
-      isUserMember: isUserMemberPromise(organization),
+      isUserMember: isUserMember(this.session.currentUser, organization),
     });
   },
 

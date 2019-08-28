@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import {inject as service} from '@ember/service';
-import isUserMemberPromise from 'percy-web/lib/is-user-member-of-org';
+import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
 import {REVIEW_COMMENT_TYPE, NOTE_COMMENT_TYPE} from 'percy-web/models/comment-thread';
 import {task} from 'ember-concurrency';
@@ -10,6 +10,7 @@ export default Route.extend({
   snapshotQuery: service(),
   reviews: service(),
   confirm: service(),
+  session: service(),
   launchDarkly: service(),
 
   model(params) {
@@ -17,7 +18,7 @@ export default Route.extend({
     return hash({
       // Note: passing {reload: true} here to ensure a full reload including all sideloaded data.
       build: this.store.findRecord('build', params.build_id, {reload: true}),
-      isUserMember: isUserMemberPromise(org),
+      isUserMember: isUserMember(this.session.currentUser, org),
     });
   },
 

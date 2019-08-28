@@ -1,19 +1,9 @@
 import {computed} from '@ember/object';
-import {
-  alias,
-  bool,
-  not,
-  or,
-  equal,
-  filterBy,
-  gt,
-  mapBy,
-  readOnly,
-  uniq,
-} from '@ember/object/computed';
+import {bool, not, or, filterBy, gt, mapBy, readOnly, uniq} from '@ember/object/computed';
 import DS from 'ember-data';
 import {INTEGRATION_TYPES, SLACK_INTEGRATION_TYPE} from 'percy-web/lib/integration-types';
 import {inject as service} from '@ember/service';
+import {isUserAdminOfOrg} from 'percy-web/lib/is-user-member-of-org';
 
 const DISPLAY_NAMES = {
   bitbucketCloud: 'Bitbucket Cloud',
@@ -24,8 +14,7 @@ const DISPLAY_NAMES = {
 };
 
 export default DS.Model.extend({
-  launchDarkly: service(),
-
+  session: service(),
   name: DS.attr(),
   slug: DS.attr(),
   isSyncing: DS.attr(),
@@ -116,16 +105,11 @@ export default DS.Model.extend({
     return 'no-access';
   }),
 
-  // A funky, but efficient, way to query the API for only the current user's membership.
-  // Use `organization.currentUserMembership` to get the current user's OrganizationUser object.
-  currentUserMembership: alias('_filteredOrganizationUsers.firstObject'),
-  _filteredOrganizationUsers: computed(function() {
-    return this.store.query('organization-user', {
-      organization: this,
-      filter: 'current-user-only',
-    });
+  // Not ideal to have computed properties based on a service and relationships,
+  // but better than previous async computed property.
+  currentUserIsAdmin: computed('session.currentUser', function() {
+    return isUserAdminOfOrg(this.session.currentUser, this);
   }),
-  currentUserIsAdmin: equal('currentUserMembership.role', 'admin'),
 
   bitbucketCloudRepos: filterBy('repos', 'source', 'bitbucket_cloud'),
   githubRepos: filterBy('repos', 'source', 'github'),

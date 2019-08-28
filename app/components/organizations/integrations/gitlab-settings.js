@@ -1,5 +1,5 @@
 import {computed} from '@ember/object';
-import {alias} from '@ember/object/computed';
+import {readOnly} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
 import Component from '@ember/component';
 
@@ -11,7 +11,7 @@ export default Component.extend({
   session: service(),
   intercom: service(),
 
-  currentUser: alias('session.currentUser'),
+  currentUser: readOnly('session.currentUser'),
   isNewRecord: computed('currentGitlabIntegration.dirtyType', function() {
     let record = this.currentGitlabIntegration;
     if (record) {

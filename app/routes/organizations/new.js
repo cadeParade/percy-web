@@ -54,9 +54,10 @@ export default Route.extend(AuthenticatedRouteMixin, {
   }),
 
   actions: {
-    organizationCreated(organization, options) {
+    async organizationCreated(organization, options) {
       const {isDemoRequest} = options;
       const orgSlug = organization.get('slug');
+      await this.session.forceReloadUser();
       if (isDemoRequest) {
         this.transitionTo('organizations.organization.projects.new-demo', orgSlug);
       } else {

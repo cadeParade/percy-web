@@ -21,7 +21,7 @@
 
 <section>
   <div data-test-gitlab-settings class="bg-white rounded shadow-1 border-t p-2 mb-2">
-    {{#organizations/require-role role="admin" organization=organization}}
+    {{#organizations/require-role user=currentUser organization=organization}}
       {{forms/gitlab-settings-edit
         organization=organization
         currentGitlabIntegration=currentGitlabIntegration

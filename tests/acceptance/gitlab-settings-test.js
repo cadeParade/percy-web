@@ -131,18 +131,12 @@ describe('Acceptance: GitLab Integration Settings', function() {
     });
 
     describe('without a gitlab self-hosted integration', function() {
-      let organization;
-      setupSession(function(server) {
-        organization = server.create('organization', 'withAdminUser');
-      });
-
       it('allows the integration to be installed', async function() {
         await GitlabSettings.visitSettings(urlParams(organization, 'gitlab-self-hosted'));
 
         expect(currentRouteName()).to.equal(
           'organizations.organization.integrations.gitlab-self-hosted',
         );
-
         expect(
           GitlabSettings.integrationSettings.personalAccessTokenField.inputPlaceholder,
         ).to.equal('Personal access token', 'A personal access token has already been installed');
@@ -158,13 +152,8 @@ describe('Acceptance: GitLab Integration Settings', function() {
     });
 
     describe('with a gitlab self-hosted integration', function() {
-      let organization;
       setupSession(function(server) {
-        organization = server.create(
-          'organization',
-          'withAdminUser',
-          'withGitlabSelfHostedIntegration',
-        );
+        server.create('versionControlIntegration', 'gitlabSelfHosted', {organization});
       });
 
       it('allows editing settings', async function() {
@@ -188,14 +177,9 @@ describe('Acceptance: GitLab Integration Settings', function() {
     });
 
     describe('with a gitlab self-hosted integration', function() {
-      let organization;
       let windowStub;
       setupSession(function(server) {
-        organization = server.create(
-          'organization',
-          'withAdminUser',
-          'withGitlabSelfHostedIntegration',
-        );
+        server.create('versionControlIntegration', 'gitlabSelfHosted', {organization});
         windowStub = sinon.stub(utils, 'confirmMessage').returns(true);
       });
 
@@ -225,13 +209,8 @@ describe('Acceptance: GitLab Integration Settings', function() {
     });
 
     describe('with a gitlab self-hosted integration', function() {
-      let organization;
       setupSession(function(server) {
-        organization = server.create(
-          'organization',
-          'withAdminUser',
-          'withGitlabSelfHostedIntegration',
-        );
+        server.create('versionControlIntegration', 'gitlabSelfHosted', {organization});
       });
 
       it('can return to the index page', async function() {
@@ -246,12 +225,6 @@ describe('Acceptance: GitLab Integration Settings', function() {
     });
 
     describe('without any integrations', function() {
-      let organization;
-
-      setupSession(function(server) {
-        organization = server.create('organization', 'withAdminUser');
-      });
-
       it('allows navigation between integrations', async function() {
         await GitlabSettings.visitSettings(urlParams(organization, 'gitlab-self-hosted'));
         let previouslyWasAdmin = AdminMode.isAdmin();

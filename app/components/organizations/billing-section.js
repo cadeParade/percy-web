@@ -4,6 +4,9 @@ import {inject as service} from '@ember/service';
 
 export default Component.extend({
   subscriptionData: service(),
+  session: service(),
+  currentUser: readOnly('session.currentUser'),
+
   organization: null,
   currentUsageStats: null,
 

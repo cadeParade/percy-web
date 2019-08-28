@@ -10,6 +10,7 @@ export default DS.Model.extend({
 
   userNotificationSetting: DS.belongsTo('userNotificationSetting', {async: false}),
   identities: DS.hasMany('identities', {async: false}),
+  organizationUsers: DS.hasMany('organizationUser', {async: false}),
 
   hasGithubIdentity: computed('identities.@each.provider', function() {
     return this._hasIdentityType('github');

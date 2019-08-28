@@ -9,6 +9,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import sinon from 'sinon';
 import mockIntercomService from 'percy-web/tests/helpers/mock-intercom-service';
 import {render} from '@ember/test-helpers';
+import Service from '@ember/service';
 
 describe('Integration: GitlabSettings', function() {
   setupRenderingTest('gitlab-settings', {
@@ -25,16 +26,15 @@ describe('Integration: GitlabSettings', function() {
 
   describe('with a gitlab integration', function() {
     beforeEach(async function() {
-      const user = make('user');
-      const organization = make('organization', 'withGitlabIntegration');
+      const organization = make('organization', 'withGitlabIntegration', 'withAdminUser');
       const gitlabIntegration = organization.get('gitlabIntegration');
-      const organizationUser = make('organization-user', 'adminUser', {organization, user});
-      organization.set('_filteredOrganizationUsers', [organizationUser]);
-      user.set('organizations', [organization]);
-      this.setProperties({user, organization, gitlabIntegration});
+      const sessionServiceStub = Service.extend({
+        currentUser: organization.organizationUsers.firstObject.user,
+      });
+      this.owner.register('service:session', sessionServiceStub, 'sessionService');
+      this.setProperties({organization, gitlabIntegration});
       await render(hbs`{{
         organizations/integrations/gitlab-settings
-        currentUser=user
         organization=organization
         currentGitlabIntegration=gitlabIntegration
       }}`);
@@ -77,19 +77,16 @@ describe('Integration: GitlabSettings', function() {
 
   describe('without an existing gitlab integration', function() {
     beforeEach(async function() {
-      const user = make('user');
-      const organization = make('organization', 'withNewGitlabIntegration');
+      const organization = make('organization', 'withNewGitlabIntegration', 'withAdminUser');
       const gitlabIntegration = organization.get('gitlabIntegration');
-      const organizationUser = make('organization-user', 'adminUser', {
-        organization: organization,
-        user: user,
+      const sessionServiceStub = Service.extend({
+        currentUser: organization.organizationUsers.firstObject.user,
       });
-      organization.set('_filteredOrganizationUsers', [organizationUser]);
-      user.set('organizations', [organization]);
-      this.setProperties({user, organization, gitlabIntegration});
+      this.owner.register('service:session', sessionServiceStub, 'sessionService');
+
+      this.setProperties({organization, gitlabIntegration});
       await render(hbs`{{
         organizations/integrations/gitlab-settings
-        currentUser=user
         organization=organization
         currentGitlabIntegration=gitlabIntegration
       }}`);
@@ -119,16 +116,16 @@ describe('Integration: GitlabSettings', function() {
 
   describe('with a gitlab self-hosted integration', function() {
     beforeEach(async function() {
-      const user = make('user');
-      const organization = make('organization', 'withGitlabSelfHostedIntegration');
+      const organization = make('organization', 'withGitlabSelfHostedIntegration', 'withAdminUser');
       const gitlabIntegration = organization.get('gitlabSelfHostedIntegration');
-      const organizationUser = make('organization-user', 'adminUser', {organization, user});
-      organization.set('_filteredOrganizationUsers', [organizationUser]);
-      user.set('organizations', [organization]);
-      this.setProperties({user, organization, gitlabIntegration});
+      const sessionServiceStub = Service.extend({
+        currentUser: organization.organizationUsers.firstObject.user,
+      });
+      this.owner.register('service:session', sessionServiceStub, 'sessionService');
+
+      this.setProperties({organization, gitlabIntegration});
       await render(hbs`{{
         organizations/integrations/gitlab-settings
-        currentUser=user
         organization=organization
         currentGitlabIntegration=gitlabIntegration
       }}`);
@@ -193,19 +190,20 @@ describe('Integration: GitlabSettings', function() {
 
   describe('without an existing self-hosted gitlab integration', function() {
     beforeEach(async function() {
-      const user = make('user');
-      const organization = make('organization', 'withNewGitlabSelfHostedIntegration');
+      const organization = make(
+        'organization',
+        'withNewGitlabSelfHostedIntegration',
+        'withAdminUser',
+      );
       const gitlabIntegration = organization.get('gitlabSelfHostedIntegration');
-      const organizationUser = make('organization-user', 'adminUser', {
-        organization: organization,
-        user: user,
+      const sessionServiceStub = Service.extend({
+        currentUser: organization.organizationUsers.firstObject.user,
       });
-      organization.set('_filteredOrganizationUsers', [organizationUser]);
-      user.set('organizations', [organization]);
-      this.setProperties({user, organization, gitlabIntegration});
+      this.owner.register('service:session', sessionServiceStub, 'sessionService');
+
+      this.setProperties({organization, gitlabIntegration});
       await render(hbs`{{
         organizations/integrations/gitlab-settings
-        currentUser=user
         organization=organization
         currentGitlabIntegration=gitlabIntegration
       }}`);

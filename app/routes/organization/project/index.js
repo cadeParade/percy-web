@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import ResetScrollMixin from 'percy-web/mixins/reset-scroll';
-import isUserMemberPromise from 'percy-web/lib/is-user-member-of-org';
+import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import ExtendedInfinityModel from 'percy-web/lib/paginated-ember-infinity-model';
 import {inject as service} from '@ember/service';
 import {next} from '@ember/runloop';
@@ -10,6 +10,7 @@ import {INFINITY_SCROLL_LIMIT} from 'percy-web/models/build';
 
 export default Route.extend(ResetScrollMixin, {
   infinity: service(),
+  session: service(),
 
   hasNoBuilds: null,
 
@@ -34,7 +35,7 @@ export default Route.extend(ResetScrollMixin, {
       },
       ExtendedInfinityModel,
     );
-    const isUserMemberOfOrg = isUserMemberPromise(organization);
+    const isUserMemberOfOrg = isUserMember(this.session.currentUser, organization);
 
     return hash({
       organization,

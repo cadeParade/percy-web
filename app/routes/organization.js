@@ -4,7 +4,7 @@ import Route from '@ember/routing/route';
 import localStorageProxy from 'percy-web/lib/localstorage';
 import {task} from 'ember-concurrency';
 import handleOptionalAuthGetError from 'percy-web/lib/handle-optionally-authenticated-fetch-error';
-import isUserMemberPromise from 'percy-web/lib/is-user-member-of-org';
+import isUserMember from 'percy-web/lib/is-user-member-of-org';
 
 export default Route.extend({
   intercom: service(),
@@ -35,8 +35,8 @@ export default Route.extend({
     this._setLastOrganizationSlug(model);
   },
 
-  async _setupIntercom(organization) {
-    if (await isUserMemberPromise(organization)) {
+  _setupIntercom(organization) {
+    if (isUserMember(this.currentUser, organization)) {
       this.intercom.associateWithCompany(this.currentUser, organization);
     }
   },

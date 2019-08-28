@@ -1,24 +1,20 @@
-import {resolve} from 'rsvp';
-import DS from 'ember-data';
 import AdminMode from 'percy-web/lib/admin-mode';
 
-// This method _always_ returns a promise.
-// Wherever you use this, you must not make any decisions based on the final value
-// until the promise is resolved.
-export default function isUserMemberPromise(org) {
-  return DS.PromiseObject.create({
-    promise: _getOrganizationUsers(org).then(orgUsers => {
-      const isUserMemberOfOrg = orgUsers && !!orgUsers.get('firstObject');
-      const isUserAdminMode = AdminMode.isAdmin();
-      return isUserMemberOfOrg || isUserAdminMode;
-    }),
-  });
+export default function isUserMember(currentUser, org) {
+  if (!currentUser || !org) return false;
+  const isUserMemberOfOrg = !!orgUserForOrg(currentUser, org);
+  const isUserAdminMode = AdminMode.isAdmin();
+  return isUserMemberOfOrg || isUserAdminMode;
 }
 
-async function _getOrganizationUsers(org) {
-  try {
-    return await org.get('_filteredOrganizationUsers');
-  } catch (e) {
-    return resolve(false);
-  }
+export function orgUserForOrg(user, organization) {
+  if (!user || !organization) return false;
+  return user.organizationUsers.findBy('organization.id', organization.id);
+}
+
+export function isUserAdminOfOrg(user, organization) {
+  const orgUser = orgUserForOrg(user, organization);
+  if (!orgUser) return false;
+
+  return orgUser.role === 'admin';
 }

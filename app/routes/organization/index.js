@@ -1,21 +1,21 @@
 import Route from '@ember/routing/route';
-import isUserMemberPromise from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
 import {inject as service} from '@ember/service';
+import isUserMember from 'percy-web/lib/is-user-member-of-org';
 
 export default Route.extend({
   redirects: service(),
   projectQuery: service(),
+  session: service(),
 
   model() {
     const organization = this.modelFor('organization');
     const projects = this.projectQuery.getAllProjects(organization);
-    const isUserMember = isUserMemberPromise(organization);
-
+    const isMember = isUserMember(this.session.currentUser, organization);
     return hash({
       organization,
       projects,
-      isUserMember,
+      isUserMember: isMember,
     });
   },
 

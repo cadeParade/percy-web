@@ -13,6 +13,35 @@ describe('Acceptance: Organization', function() {
   setupAcceptance();
   freezeMoment('2020-01-30');
 
+  describe('when user has no organizations', function() {
+    setupSession(async function(server) {
+      server.create('user', 'withGithubIdentity');
+    });
+
+    it('can create new organization and user email when creating first org', async function() {
+      await visit('/organizations/new/');
+      await NewOrganization.organizationName('New organization');
+      await NewOrganization.fillUserEmail('a@a.com');
+      await percySnapshot(this.test.fullTitle());
+
+      await NewOrganization.clickSubmitNewProject();
+      expect(currentRouteName()).to.equal('organizations.organization.projects.new');
+      expect(findAll('.flash-message.flash-message-success')).to.have.length(1);
+    });
+
+    it('does not show email field after first organization is created', async function() {
+      await visit('/organizations/new/');
+
+      await NewOrganization.organizationName('New organization');
+      await NewOrganization.fillUserEmail('a@a.com');
+      await NewOrganization.clickSubmitNewProject();
+
+      await visit('/organizations/new/');
+      expect(NewOrganization.isOrgNameFieldVisible).to.equal(true);
+      expect(NewOrganization.isUserEmailFieldVisible).to.equal(false);
+    });
+  });
+
   let organization;
   describe('user is member', function() {
     setupSession(function(server) {
@@ -46,36 +75,6 @@ describe('Acceptance: Organization', function() {
       expect(UserMenu.orgLinks.length).to.equal(2);
 
       await percySnapshot(this.test.fullTitle() + ' | setup');
-    });
-
-    it('can create new organization and user email when creating first org', async function() {
-      // simulate the user having no organizations
-      server.db.organizationUsers.remove(1);
-      server.db.organizations.remove(1);
-      await visit('/organizations/new/');
-
-      await NewOrganization.organizationName('New organization');
-      await NewOrganization.fillUserEmail('a@a.com');
-      await percySnapshot(this.test.fullTitle());
-
-      await NewOrganization.clickSubmitNewProject();
-      expect(currentRouteName()).to.equal('organizations.organization.projects.new');
-      expect(findAll('.flash-message.flash-message-success')).to.have.length(1);
-    });
-
-    it('does not show email field after first organization is created', async function() {
-      // simulate the user having no organizations
-      server.db.organizationUsers.remove(1);
-      server.db.organizations.remove(1);
-      await visit('/organizations/new/');
-
-      await NewOrganization.organizationName('New organization');
-      await NewOrganization.fillUserEmail('a@a.com');
-      await NewOrganization.clickSubmitNewProject();
-
-      await visit('/organizations/new/');
-      expect(NewOrganization.isOrgNameFieldVisible).to.equal(true);
-      expect(NewOrganization.isUserEmailFieldVisible).to.equal(false);
     });
 
     describe('creating a new org with demo project', function() {

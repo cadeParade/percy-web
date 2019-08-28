@@ -16,7 +16,7 @@
           <h2 class="text-xl font-semibold m-0">GitHub integration</h2>
         </div>
 
-        {{#organizations/require-role role="admin" organization=organization}}
+        {{#organizations/require-role role="admin" user=currentUser organization=organization}}
         <div class="mb-2">
           {{#if (not (await isEligibleForGithubIntegration))}}
             To install the GitHub integration you first need to {{#link-to 'settings.connected-accounts'}} connect your GitHub account{{/link-to}}.

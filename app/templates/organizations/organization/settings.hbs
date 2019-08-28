@@ -2,7 +2,7 @@
 
 {{#dashboard-nav-wrapper organization=organization showMemberLinks=true}}
   <section class="pt-3">
-    {{#organizations/require-role role="admin" organization=organization}}
+    {{#organizations/require-role role="admin" user=currentUser organization=organization}}
       <div class="bg-white rounded shadow-1 p-2 border-t">
         <h2 class="text-xl font-semibold mb-1">Organization settings</h2>
         {{forms/organization-edit

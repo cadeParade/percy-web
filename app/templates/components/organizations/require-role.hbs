@@ -1,4 +1,4 @@
-{{#if (eq role organization.currentUserMembership.role)}}
+{{#if (is-user-admin user organization)}}
   {{yield}}
 {{else}}
   <div class="px-2">

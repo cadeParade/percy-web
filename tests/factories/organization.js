@@ -151,5 +151,14 @@ FactoryGuy.define('organization', {
     withUsers: {
       organizationUsers: () => makeList('organization-user', 5),
     },
+
+    withAdminUser: {
+      organizationUsers: () => {
+        const orgUsers = makeList('organization-user', 1, 'adminUser');
+        const user = orgUsers.firstObject.user;
+        user.set('organizationUsers', [orgUsers.firstObject]);
+        return orgUsers;
+      },
+    },
   },
 });

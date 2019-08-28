@@ -8,6 +8,7 @@ import NoticeBar from 'percy-web/tests/pages/components/notice-bar';
 import {render} from '@ember/test-helpers';
 import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
 import moment from 'moment';
+import Service from '@ember/service';
 
 describe('Integration: Notice Bar', function() {
   freezeMoment('2018-02-14');
@@ -26,10 +27,14 @@ describe('Integration: Notice Bar', function() {
   describe('New project prompt bar', function() {
     beforeEach(async function() {
       organization = make('organization');
-      organization.set('_filteredOrganizationUsers', [make('user')]);
-      this.setProperties({
-        organization,
+      const orgUser = make('organization-user', {organization});
+      orgUser.user.set('organizationUsers', [orgUser]);
+
+      const sessionServiceStub = Service.extend({
+        currentUser: orgUser.user,
       });
+      this.owner.register('service:session', sessionServiceStub, 'sessionService');
+      this.setProperties({organization});
     });
 
     it('shows new project prompt', async function() {
@@ -47,10 +52,14 @@ describe('Integration: Notice Bar', function() {
   describe('Free Usage Bar', function() {
     beforeEach(function() {
       organization = make('organization', 'withFreePlan');
-      organization.set('_filteredOrganizationUsers', [make('user')]);
-      this.setProperties({
-        organization,
+      const orgUser = make('organization-user', {organization});
+      orgUser.user.set('organizationUsers', [orgUser]);
+
+      const sessionServiceStub = Service.extend({
+        currentUser: orgUser.user,
       });
+      this.owner.register('service:session', sessionServiceStub, 'sessionService');
+      this.setProperties({organization});
     });
 
     describe('when <1% of snapshots have been used', function() {
@@ -101,10 +110,14 @@ describe('Integration: Notice Bar', function() {
   describe('Trial Bar', function() {
     beforeEach(function() {
       organization = make('organization', 'withTrialPlan');
-      organization.set('_filteredOrganizationUsers', [make('user')]);
-      this.setProperties({
-        organization,
+      const orgUser = make('organization-user', {organization});
+      orgUser.user.set('organizationUsers', [orgUser]);
+
+      const sessionServiceStub = Service.extend({
+        currentUser: orgUser.user,
       });
+      this.owner.register('service:session', sessionServiceStub, 'sessionService');
+      this.setProperties({organization});
     });
 
     describe('when no trial days are left', function() {
