@@ -24,10 +24,10 @@ export default Component.extend({
     this.set('areChangesRequested', false);
   },
 
-  // Setup @mentions
+  // Setup @mentions and emoji
   tributeConfigs: computed(function() {
     const org = get(this, 'snapshot.build.project.organization');
-    return [this.mentionables.generateOrgUserConfig(org)];
+    return [this.mentionables.generateOrgUserConfig(org), this.mentionables.generateEmojiConfig()];
   }),
 
   actions: {

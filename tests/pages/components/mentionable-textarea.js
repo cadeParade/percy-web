@@ -11,8 +11,16 @@ const SELECTORS = {
 export const mentionableTextarea = {
   scope: SELECTORS.SCOPE,
 
+  async triggerEmojiList(inputSelector) {
+    await this.triggerMentionableList(':', inputSelector);
+  },
+
   async triggerMentionList(inputSelector) {
-    await typeIn(inputSelector || 'textarea', '@');
+    await this.triggerMentionableList('@', inputSelector);
+  },
+
+  async triggerMentionableList(trigger, inputSelector) {
+    await typeIn(inputSelector || 'textarea', trigger);
     await waitFor(SELECTORS.MENTION_LIST_CONTAINER);
     const tributeContainer = find(SELECTORS.MENTION_LIST_CONTAINER);
     tributeContainer.style.cssText = 'top: 100px; bottom: 0; left:0';

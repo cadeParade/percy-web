@@ -18,10 +18,10 @@ export default Component.extend({
   currentUser: readOnly('session.currentUser'),
   isCommentSaving: readOnly('commentSaveTask.isRunning'),
 
-  // Setup @mentions
+  // Setup @mentions and emoji
   tributeConfigs: computed(function() {
     const org = get(this, 'commentThread.snapshot.build.project.organization');
-    return [this.mentionables.generateOrgUserConfig(org)];
+    return [this.mentionables.generateOrgUserConfig(org), this.mentionables.generateEmojiConfig()];
   }),
 
   actions: {

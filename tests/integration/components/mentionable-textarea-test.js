@@ -7,7 +7,11 @@ import {click, typeIn, findAll, render} from '@ember/test-helpers';
 import MentionableTextarea from 'percy-web/tests/pages/components/mentionable-textarea';
 import {percySnapshot} from 'ember-percy';
 import sinon from 'sinon';
-import {generateTributeUserConfig} from 'percy-web/services/mentionables';
+import {
+  generateTributeUserConfig,
+  generateTributeEmojiConfig,
+} from 'percy-web/services/mentionables';
+import emojis from 'percy-web/lib/emoji';
 
 describe('Integration: MentionableTextarea', function() {
   setupRenderingTest('mentionable-textarea', {
@@ -22,7 +26,10 @@ describe('Integration: MentionableTextarea', function() {
     MentionableTextarea.setContext(this);
 
     const mentionableUsers = makeList('user', numUsers);
-    const collections = [generateTributeUserConfig((text, cb) => cb(mentionableUsers))];
+    const collections = [
+      generateTributeUserConfig((text, cb) => cb(mentionableUsers)),
+      generateTributeEmojiConfig((text, cb) => cb(emojis)),
+    ];
     handleItemSelectedStub = sinon.stub();
 
     this.setProperties({
@@ -46,6 +53,13 @@ describe('Integration: MentionableTextarea', function() {
     await MentionableTextarea.triggerMentionList();
     expect(MentionableTextarea.mentionList.isVisible).to.equal(true);
     expect(MentionableTextarea.mentionableItems.length).to.equal(numUsers);
+    await percySnapshot(this.test);
+  });
+
+  it('displays emoji menu when `:` is typed', async function() {
+    expect(MentionableTextarea.mentionList.isVisible).to.equal(false);
+    await MentionableTextarea.triggerEmojiList();
+    expect(MentionableTextarea.mentionList.isVisible).to.equal(true);
     await percySnapshot(this.test);
   });
 
