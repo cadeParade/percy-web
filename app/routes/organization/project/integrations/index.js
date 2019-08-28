@@ -29,7 +29,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
       }
 
       return webhookConfig.destroyRecord().then(() => {
-        this.get('flashMessages').success('Successfully deleted webhook');
+        this.flashMessages.success('Successfully deleted webhook');
         this.refresh();
       });
     },
@@ -47,6 +47,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
       project_id: this.get('project.id'),
     };
     const allProps = Object.assign({}, extraProps, props);
-    this.get('analytics').track(actionName, organization, allProps);
+    this.analytics.track(actionName, organization, allProps);
   },
 });

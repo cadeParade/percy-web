@@ -1,12 +1,13 @@
-import {create, isVisible, text} from 'ember-cli-page-object';
+import {attribute, create, hasClass, isVisible, text} from 'ember-cli-page-object';
 
 const SELECTORS = {
   SCOPE: '[data-test-collaboration-comment]',
   RESOLVE_BUTTON: '[data-test-percy-btn-label=commentResolve]',
   ARCHIVE_BUTTON: '[data-test-percy-btn-label=commentArchive]',
-  RESOLVED_INDICATOR: '[data-test-resolved]',
   ARCHIVED_INDICATOR: '[data-test-archived]',
+  RESOLVED_INDICATOR: '[data-test-resolved]',
   CREATED_AT: '[data-test-comment-created-at]',
+  REQUEST_CHANGES_BADGE: '[data-test-request-changes-badge]',
 };
 
 export const collaborationComment = {
@@ -20,8 +21,8 @@ export const collaborationComment = {
     scope: SELECTORS.ARCHIVE_BUTTON,
   },
 
-  isResolved: isVisible(SELECTORS.RESOLVED_INDICATOR),
   isArchived: isVisible(SELECTORS.ARCHIVED_INDICATOR),
+  isResolved: isVisible(SELECTORS.RESOLVED_INDICATOR),
 
   createdAt: text(SELECTORS.CREATED_AT),
 
@@ -31,6 +32,12 @@ export const collaborationComment = {
     } else if (this.archiveButton.isVisible) {
       return this.archiveButton.click();
     }
+  },
+
+  requestChangesBadge: {
+    scope: SELECTORS.REQUEST_CHANGES_BADGE,
+    isRequestedPreviously: hasClass('text-orange-500'),
+    previousBuildLinkHref: attribute('href', 'a'),
   },
 };
 

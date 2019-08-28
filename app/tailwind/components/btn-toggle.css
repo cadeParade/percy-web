@@ -1,0 +1,56 @@
+.btn-toggle {
+  @apply relative;
+  @apply grid;
+  @apply col-auto;
+  @apply p-xs;
+  @apply rounded;
+  @apply bg-gray-100;
+  @apply text-sm;
+  @apply font-bold;
+  @apply leading-none;
+}
+
+.btn-toggle-item {
+  @apply relative;
+  @apply px-2;
+  @apply py-1;
+  @apply text-gray-300;
+  @apply select-none;
+  @apply cursor-pointer;
+  z-index: 1;
+  transition: color 250ms;
+}
+
+.btn-toggle-item:hover {
+  @apply text-gray-500;
+}
+
+.btn-toggle-item.is-selected {
+  @apply relative;
+  @apply px-2;
+  @apply py-1;
+  @apply text-gray-700;
+  @apply pointer-events-none;
+  z-index: 1;
+}
+
+.btn-toggle-item::before {
+  content: "";
+  @apply block;
+  @apply absolute;
+  @apply pin-t;
+  @apply pin-l;
+  @apply w-full;
+  @apply h-full;
+  @apply bg-white;
+  @apply rounded-sm;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 250ms, transform 250ms;
+  transform: scale(0.8);
+}
+
+.btn-toggle-item.is-selected::before {
+  opacity: 1;
+  transform: scale(1);
+}

@@ -4,12 +4,13 @@ import isUserMemberPromise from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
 import {REVIEW_COMMENT_TYPE, NOTE_COMMENT_TYPE} from 'percy-web/models/comment-thread';
 import {task} from 'ember-concurrency';
-import {pluralize} from 'ember-inflector';
+import {SNAPSHOT_REJECTED_STATE, SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 
 export default Route.extend({
   snapshotQuery: service(),
   reviews: service(),
   confirm: service(),
+  launchDarkly: service(),
 
   model(params) {
     const org = this.modelFor('organization');
@@ -28,11 +29,9 @@ export default Route.extend({
     if (build && build.get('isFinished')) {
       controller.set('isSnapshotsLoading', true);
 
-      this.get('snapshotQuery')
-        .getChangedSnapshots(build)
-        .then(() => {
-          return this._initializeSnapshotOrdering();
-        });
+      this.snapshotQuery.getChangedSnapshots(build).then(() => {
+        return this._initializeSnapshotOrdering();
+      });
     }
   },
 
@@ -124,11 +123,20 @@ export default Route.extend({
 
   _createReview: task(function*({snapshots, eventData}) {
     const build = this._getBuild();
+    const allowRejection = this.get('launchDarkly').variation('request-changes');
+    const hasOpenReviewThreads = this._snapshotsHaveOpenReviewThreads(snapshots);
+    const hasRejectedSnapshots = snapshots.any(snapshot => snapshot.isRejected);
 
-    if (this._snapshotsHaveOpenReviewThreads(snapshots)) {
-      const result = yield this.confirm.ask({
-        message: this._reviewConfirmMessage(snapshots),
-      });
+    let shouldDisplayModal = false;
+    if (allowRejection) {
+      shouldDisplayModal = hasRejectedSnapshots || hasOpenReviewThreads;
+    } else {
+      shouldDisplayModal = hasOpenReviewThreads;
+    }
+
+    if (shouldDisplayModal) {
+      const reviewConfirmMessage = this._reviewConfirmMessage(snapshots);
+      const result = yield this.confirm.ask({message: reviewConfirmMessage});
 
       return result ? yield this.reviews.createApprovalReview(build, snapshots, eventData) : false;
     } else {
@@ -153,15 +161,29 @@ export default Route.extend({
     areChangesRequested,
     mentionedUsers,
   }) {
+    const snapshot = this.store.peekRecord('snapshot', snapshotId);
     const newComment = this.store.createRecord('comment', {
       snapshotId,
       body: commentBody,
       threadType: areChangesRequested ? REVIEW_COMMENT_TYPE : NOTE_COMMENT_TYPE,
       taggedUsers: mentionedUsers,
     });
-    return yield newComment.save().catch(() => {
-      newComment.rollbackAttributes();
-    });
+
+    const allowRejection = this.get('launchDarkly').variation('request-changes');
+    if (areChangesRequested && allowRejection) {
+      snapshot.set('reviewState', SNAPSHOT_REJECTED_STATE);
+      snapshot.set('reviewStateReason', SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED);
+    }
+
+    return yield newComment
+      .save()
+      .then(() => {
+        snapshot.reload();
+      })
+      .catch(() => {
+        newComment.rollbackAttributes();
+        snapshot.rollbackAttributes();
+      });
   }),
 
   _closeCommentThread: task(function*({commentThread}) {
@@ -172,7 +194,7 @@ export default Route.extend({
   }),
 
   _openReviewThreads(snapshots) {
-    return snapshots.filterBy('isUnreviewed').reduce((acc, snapshot) => {
+    return snapshots.filterBy('isApproved', false).reduce((acc, snapshot) => {
       return acc.concat(snapshot.commentThreads.filterBy('isResolvable')).toArray();
     }, []);
   },
@@ -183,17 +205,18 @@ export default Route.extend({
 
   _reviewConfirmMessage(snapshots) {
     const numSnapshotsToApprove = snapshots.length;
-    const snapshotString = pluralize(numSnapshotsToApprove, 'snapshot', {withoutCount: true});
+    const snapshotString = numSnapshotsToApprove > 1 ? 'snapshots' : 'snapshot';
     const possessionString = numSnapshotsToApprove > 1 ? 'have' : 'has';
+    const directObjectString = numSnapshotsToApprove > 1 ? 'them' : 'it';
 
-    return `The ${snapshotString} you want to approve ${possessionString}
-      unresolved comments requesting changes. Do you want to approve anyway?`;
+    return `The ${snapshotString} you want to approve ${possessionString} changes requested.
+      Are you sure you want to approve ${directObjectString}?`;
   },
 
   // Use this instead of `modelFor(this.routeName)` because it returns a resolved build object
   // rather than a PromiseObject.
   _getBuild() {
     const controller = this.controllerFor(this.routeName);
-    return controller.get('build');
+    return controller.build;
   },
 });

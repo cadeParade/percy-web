@@ -7,6 +7,8 @@ import {make} from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import CollaborationComment from 'percy-web/tests/pages/components/collaboration/collaboration-comment'; // eslint-disable-line
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import withVariation from 'percy-web/tests/helpers/with-variation';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: CollaborationComment', function() {
   setupRenderingTest('collaboration-comment', {
@@ -16,19 +18,22 @@ describe('Integration: CollaborationComment', function() {
   beforeEach(async function() {
     setupFactoryGuy(this);
     CollaborationComment.setContext(this);
+    withVariation(this.owner, 'request-changes', false);
   });
 
   let closeCommentThreadStub;
   describe('when `isFirstComment` is true', function() {
     beforeEach(async function() {
+      withVariation(this.owner, 'request-changes', true);
       closeCommentThreadStub = sinon.stub();
+      const comment = make('comment', 'fromReviewThread');
       this.setProperties({
         isFirstComment: true,
-        comment: {}, // to be set below
+        comment,
         closeCommentThreadStub,
         isCommentingAllowed: true,
       });
-      await this.render(hbs`{{collaboration/collaboration-comment
+      await render(hbs`{{collaboration/collaboration-comment
         comment=comment
         isFirstComment=isFirstComment
         closeCommentThread=closeCommentThreadStub
@@ -37,62 +42,23 @@ describe('Integration: CollaborationComment', function() {
     });
 
     describe('when the comment thread is open', function() {
-      describe('when isResolvable is true', function() {
-        beforeEach(function() {
-          const comment = make('comment', 'fromReviewThread');
-          this.setProperties({comment});
-        });
-
-        it('shows "Resolve" button when isResolvable is true', async function() {
-          expect(CollaborationComment.resolveButton.isVisible).to.equal(true);
-          expect(CollaborationComment.archiveButton.isVisible).to.equal(false);
-          await percySnapshot(this.test);
-        });
-
-        it('does not show "Resolve" button when isCommentingAllowed is false', async function() {
-          this.setProperties({isCommentingAllowed: false});
-
-          expect(CollaborationComment.resolveButton.isVisible).to.equal(false);
-          expect(CollaborationComment.archiveButton.isVisible).to.equal(false);
-        });
+      it('shows "Archive" button', async function() {
+        expect(CollaborationComment.archiveButton.isVisible).to.equal(true);
+        await percySnapshot(this.test);
       });
 
-      describe('when isResolvable is false', function() {
-        beforeEach(function() {
-          const comment = make('comment', 'fromNoteThread');
-          this.setProperties({comment});
-        });
+      it('does not show "Archive" button when isCommentingAllowed is false', async function() {
+        this.setProperties({isCommentingAllowed: false});
 
-        it('shows "Archive" button when isResolvable is false', async function() {
-          expect(CollaborationComment.resolveButton.isVisible).to.equal(false);
-          expect(CollaborationComment.archiveButton.isVisible).to.equal(true);
-          await percySnapshot(this.test);
-        });
-
-        it('does not show "Resolve" button when isCommentingAllowed is false', async function() {
-          this.setProperties({isCommentingAllowed: false});
-
-          expect(CollaborationComment.resolveButton.isVisible).to.equal(false);
-          expect(CollaborationComment.archiveButton.isVisible).to.equal(false);
-        });
+        expect(CollaborationComment.archiveButton.isVisible).to.equal(false);
       });
     });
 
     describe('when the comment thread is closed', function() {
-      it('shows "Resolved" indication when comment thread is resolved', async function() {
-        const comment = make('comment', 'fromResolvedThread');
-        this.setProperties({comment});
-
-        expect(CollaborationComment.isResolved).to.equal(true);
-        expect(CollaborationComment.isArchived).to.equal(false);
-        await percySnapshot(this.test);
-      });
-
       it('shows "Archived" indication when comment thread is closed', async function() {
         const comment = make('comment', 'fromArchivedThread');
         this.setProperties({comment});
 
-        expect(CollaborationComment.isResolved).to.equal(false);
         expect(CollaborationComment.isArchived).to.equal(true);
         await percySnapshot(this.test);
       });
@@ -107,7 +73,7 @@ describe('Integration: CollaborationComment', function() {
         });
 
         it('sends close action with correct args', async function() {
-          await CollaborationComment.resolveButton.click();
+          await CollaborationComment.close();
           expect(closeCommentThreadStub).to.have.been.calledWith({
             commentThread: comment.commentThread,
           });
@@ -119,7 +85,7 @@ describe('Integration: CollaborationComment', function() {
             .lookup('service:flash-messages')
             .registerTypes(['danger']);
           sinon.stub(flashMessageService, 'danger');
-          await CollaborationComment.resolveButton.click();
+          await CollaborationComment.close();
           expect(flashMessageService.danger).to.have.been.called;
         });
       });
@@ -132,7 +98,7 @@ describe('Integration: CollaborationComment', function() {
         });
 
         it('sends close action with correct args', async function() {
-          await CollaborationComment.archiveButton.click();
+          await CollaborationComment.close();
           expect(closeCommentThreadStub).to.have.been.calledWith({
             commentThread: comment.commentThread,
           });
@@ -144,7 +110,7 @@ describe('Integration: CollaborationComment', function() {
             .lookup('service:flash-messages')
             .registerTypes(['danger']);
           sinon.stub(flashMessageService, 'danger');
-          await CollaborationComment.archiveButton.click();
+          await CollaborationComment.close();
           expect(flashMessageService.danger).to.have.been.called;
         });
       });
@@ -154,43 +120,24 @@ describe('Integration: CollaborationComment', function() {
   describe('when `isFirstComment` is false', function() {
     beforeEach(async function() {
       this.setProperties({isFirstComment: false, comment: {}});
-      await this.render(hbs`{{collaboration/collaboration-comment
+      await render(hbs`{{collaboration/collaboration-comment
         comment=comment
         isFirstComment=isFirstComment
       }}`);
-    });
-
-    it('does not show "Resolve" button', async function() {
-      const comment = make('comment', 'fromReviewThread');
-      this.setProperties({comment});
-
-      expect(CollaborationComment.resolveButton.isVisible).to.equal(false);
-      expect(CollaborationComment.archiveButton.isVisible).to.equal(false);
-      await percySnapshot(this.test);
     });
 
     it('does not show "Archive" button', async function() {
       const comment = make('comment', 'fromNoteThread');
       this.setProperties({comment});
 
-      expect(CollaborationComment.resolveButton.isVisible).to.equal(false);
       expect(CollaborationComment.archiveButton.isVisible).to.equal(false);
       await percySnapshot(this.test);
-    });
-
-    it('does not show "Resolved" indicator', async function() {
-      const comment = make('comment', 'fromResolvedThread');
-      this.setProperties({comment});
-
-      expect(CollaborationComment.isResolved).to.equal(false);
-      expect(CollaborationComment.isArchived).to.equal(false);
     });
 
     it('does not show "Archived" indicator', async function() {
       const comment = make('comment', 'fromArchivedThread');
       this.setProperties({comment});
 
-      expect(CollaborationComment.isResolved).to.equal(false);
       expect(CollaborationComment.isArchived).to.equal(false);
     });
 

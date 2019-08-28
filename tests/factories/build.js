@@ -70,6 +70,11 @@ FactoryGuy.define('build', {
       failureReason: 'render_timeout',
       failureDetails: {failed_snapshots: ['The snapshot that failed']},
     },
+    unreviewed: {
+      reviewState: 'unreviewed',
+      reviewStateReason: 'unreviewed_snapshots',
+    },
+
     hasPullRequest: {
       isPullRequest: true,
       pullRequestNumber: 123,

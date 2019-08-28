@@ -8,6 +8,7 @@ import mockStripeService from 'percy-web/tests/helpers/mock-stripe-service';
 import {percySnapshot} from 'ember-percy';
 import sinon from 'sinon';
 import {resolve} from 'rsvp';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: SubscriptionList', function() {
   setupRenderingTest('organizations/subscription-list', {
@@ -34,7 +35,7 @@ describe('Integration: SubscriptionList', function() {
     it('displays info for existing plan', async function() {
       const organization = make('organization', 'withBusinessPlan');
       this.set('organization', organization);
-      await this.render(hbs`{{organizations/subscription-list
+      await render(hbs`{{organizations/subscription-list
         organization=organization
       }}`);
       expect(SubscriptionList.isPlanInfoVisible).to.equal(true);
@@ -47,7 +48,7 @@ describe('Integration: SubscriptionList', function() {
     it('displays info for default plan', async function() {
       const organization = make('organization', 'withLegacyPlan');
       this.set('organization', organization);
-      await this.render(hbs`{{organizations/subscription-list
+      await render(hbs`{{organizations/subscription-list
         organization=organization
       }}`);
       expect(SubscriptionList.isPlanInfoVisible).to.equal(true);
@@ -59,7 +60,7 @@ describe('Integration: SubscriptionList', function() {
     it('selects "Essential" plan by default', async function() {
       const organization = make('organization', planTrait);
       this.setProperties({organization});
-      await this.render(hbs`{{organizations/subscription-list
+      await render(hbs`{{organizations/subscription-list
         organization=organization
       }}`);
 
@@ -74,7 +75,7 @@ describe('Integration: SubscriptionList', function() {
         // we can't interact with the stripe card input in tests, so imitate the
         // card input being valid or not with `_isCardComplete`.
         this.set('_isCardComplete', false);
-        await this.render(hbs`{{organizations/subscription-list
+        await render(hbs`{{organizations/subscription-list
           organization=organization
           _isCardComplete=_isCardComplete
         }}`);
@@ -111,7 +112,7 @@ describe('Integration: SubscriptionList', function() {
         const organization = make('organization', planTrait);
         this.set('organization', organization);
 
-        await this.render(hbs`{{organizations/subscription-list
+        await render(hbs`{{organizations/subscription-list
           organization=organization
         }}`);
       });
@@ -134,7 +135,7 @@ describe('Integration: SubscriptionList', function() {
       const organization = make('organization', planTrait);
       this.set('organization', organization);
 
-      await this.render(hbs`{{organizations/subscription-list
+      await render(hbs`{{organizations/subscription-list
         organization=organization
       }}`);
       expect(SubscriptionList.isCardInputVisible).to.equal(true);
@@ -165,7 +166,7 @@ describe('Integration: SubscriptionList', function() {
 
       describe('performing actions', function() {
         beforeEach(async function() {
-          await this.render(hbs`{{organizations/subscription-list
+          await render(hbs`{{organizations/subscription-list
             organization=organization
             _isCardComplete=_isCardComplete
             updateEmail=updateEmailStub
@@ -220,7 +221,7 @@ describe('Integration: SubscriptionList', function() {
           const emailSaveTask = {isRunning: true};
           const cardSaveTask = {isRunning: true};
           this.setProperties({emailSaveTask, cardSaveTask});
-          await this.render(hbs`{{organizations/subscription-list
+          await render(hbs`{{organizations/subscription-list
             organization=organization
             _isCardComplete=_isCardComplete
             emailSaveTask=emailSaveTask
@@ -234,7 +235,7 @@ describe('Integration: SubscriptionList', function() {
           const emailSaveTask = {isRunning: false};
           const cardSaveTask = {isRunning: true};
           this.setProperties({emailSaveTask, cardSaveTask});
-          await this.render(hbs`{{organizations/subscription-list
+          await render(hbs`{{organizations/subscription-list
             organization=organization
             _isCardComplete=_isCardComplete
             emailSaveTask=emailSaveTask
@@ -247,7 +248,7 @@ describe('Integration: SubscriptionList', function() {
           const emailSaveTask = {isRunning: true};
           const cardSaveTask = {isRunning: false};
           this.setProperties({emailSaveTask, cardSaveTask});
-          await this.render(hbs`{{organizations/subscription-list
+          await render(hbs`{{organizations/subscription-list
             organization=organization
             _isCardComplete=_isCardComplete
             emailSaveTask=emailSaveTask
@@ -266,7 +267,7 @@ describe('Integration: SubscriptionList', function() {
             updateCreditCard: sinon.stub().returns(resolve()),
           });
 
-          await this.render(hbs`{{organizations/subscription-list
+          await render(hbs`{{organizations/subscription-list
             organization=organization
             _isCardComplete=true
             updateEmail=(action "updateEmail")
@@ -287,7 +288,7 @@ describe('Integration: SubscriptionList', function() {
     });
 
     it('should not show credit card and billing email inputs', async function() {
-      await this.render(hbs`{{organizations/subscription-list
+      await render(hbs`{{organizations/subscription-list
         organization=organization
       }}`);
       expect(SubscriptionList.isCardInputVisible).to.equal(false);
@@ -296,7 +297,7 @@ describe('Integration: SubscriptionList', function() {
 
     describe('save button state', function() {
       beforeEach(async function() {
-        await this.render(hbs`{{organizations/subscription-list
+        await render(hbs`{{organizations/subscription-list
           organization=organization
         }}`);
       });
@@ -314,7 +315,7 @@ describe('Integration: SubscriptionList', function() {
 
     describe('plan info', function() {
       beforeEach(async function() {
-        await this.render(hbs`{{organizations/subscription-list
+        await render(hbs`{{organizations/subscription-list
           organization=organization
         }}`);
       });
@@ -347,7 +348,7 @@ describe('Integration: SubscriptionList', function() {
       });
       describe('performing actions', function() {
         beforeEach(async function() {
-          await this.render(hbs`{{organizations/subscription-list
+          await render(hbs`{{organizations/subscription-list
             organization=organization
             updateEmail=updateEmailStub
             updateSubscription=updateSubscriptionStub
@@ -369,7 +370,7 @@ describe('Integration: SubscriptionList', function() {
         beforeEach(async function() {
           const subscriptionSaveTask = {isRunning: true};
           this.setProperties({subscriptionSaveTask});
-          await this.render(hbs`{{organizations/subscription-list
+          await render(hbs`{{organizations/subscription-list
             organization=organization
             subscriptionSaveTask=subscriptionSaveTask
           }}`);
@@ -386,7 +387,7 @@ describe('Integration: SubscriptionList', function() {
           const flashMessageSuccessStub = sinon.stub(flashMessageService, 'success');
           this.set('actions', {updateSubscription: sinon.stub().returns(resolve())});
 
-          await this.render(hbs`{{organizations/subscription-list
+          await render(hbs`{{organizations/subscription-list
             organization=organization
             updateSubscription=(action "updateSubscription")
           }}`);

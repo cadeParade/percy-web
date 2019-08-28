@@ -5,8 +5,13 @@ import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import NoticeBar from 'percy-web/tests/pages/components/notice-bar';
+import {render} from '@ember/test-helpers';
+import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
+import moment from 'moment';
 
 describe('Integration: Notice Bar', function() {
+  freezeMoment('2018-02-14');
+
   setupRenderingTest('notice-bar', {
     integration: true,
   });
@@ -28,7 +33,7 @@ describe('Integration: Notice Bar', function() {
     });
 
     it('shows new project prompt', async function() {
-      await this.render(hbs`{{notice-bar
+      await render(hbs`{{notice-bar
         organization=organization
         shouldShowNewProjectPrompt=true
       }}`);
@@ -54,7 +59,7 @@ describe('Integration: Notice Bar', function() {
       });
 
       it('shows 1% and "More Info" link', async function() {
-        await this.render(hbs`{{notice-bar organization=organization}}`);
+        await render(hbs`{{notice-bar organization=organization}}`);
         expect(NoticeBar.percentage.text).to.equal('1%');
         expect(NoticeBar.buttonLink.text).to.equal('More Info');
 
@@ -68,7 +73,7 @@ describe('Integration: Notice Bar', function() {
       });
 
       it('shows 99% and "More Info" link', async function() {
-        await this.render(hbs`{{notice-bar organization=organization}}`);
+        await render(hbs`{{notice-bar organization=organization}}`);
 
         expect(NoticeBar.percentage.text).to.equal('99%');
         expect(NoticeBar.buttonLink.text).to.equal('More Info');
@@ -83,7 +88,7 @@ describe('Integration: Notice Bar', function() {
       });
 
       it('shows all have been used and "Upgrade Plan" link', async function() {
-        await this.render(hbs`{{notice-bar organization=organization}}`);
+        await render(hbs`{{notice-bar organization=organization}}`);
 
         expect(NoticeBar.percentage.text).to.equal('all');
         expect(NoticeBar.buttonLink.text).to.equal('Upgrade Plan');
@@ -104,8 +109,8 @@ describe('Integration: Notice Bar', function() {
 
     describe('when no trial days are left', function() {
       it('shows "Your trial ends today!" and "See plans"', async function() {
-        organization.subscription.set('trialDaysRemaining', 0);
-        await this.render(hbs`{{notice-bar organization=organization}}`);
+        organization.subscription.set('trialEnd', moment());
+        await render(hbs`{{notice-bar organization=organization}}`);
 
         expect(NoticeBar.message.text).to.equal('Your trial ends today!');
         expect(NoticeBar.buttonLink.text).to.equal('See plans');
@@ -116,9 +121,9 @@ describe('Integration: Notice Bar', function() {
 
     describe('when 2 trial days are left', function() {
       it('shows "Your trial ends today!" and "See plans"', async function() {
-        organization.subscription.set('trialDaysRemaining', 2);
+        organization.subscription.set('trialEnd', moment().add(2, 'days'));
 
-        await this.render(hbs`{{notice-bar organization=organization}}`);
+        await render(hbs`{{notice-bar organization=organization}}`);
 
         expect(NoticeBar.message.text).to.equal('You have 2 days left in your trial.');
         expect(NoticeBar.buttonLink.text).to.equal('See plans');

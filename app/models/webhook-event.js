@@ -18,8 +18,8 @@ export default DS.Model.extend({
   isSuccess: not('isFailure'),
 
   isFailure: computed('failureReason', 'responseStatus', function() {
-    const status = this.get('responseStatus');
+    const status = this.responseStatus;
 
-    return this.get('failureReason') || !(status >= 200 && status < 300);
+    return this.failureReason || !(status >= 200 && status < 300);
   }),
 });

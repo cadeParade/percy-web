@@ -13,7 +13,7 @@ export default Component.extend({
 
   currentUser: alias('session.currentUser'),
   isNewRecord: computed('currentGitlabIntegration.dirtyType', function() {
-    let record = this.get('currentGitlabIntegration');
+    let record = this.currentGitlabIntegration;
     if (record) {
       return record.get('dirtyType') === 'created';
     }
@@ -25,7 +25,7 @@ export default Component.extend({
         "Hi! I'd like to run GitLab Self-Managed behind a firewall." +
         ' Do you have information for me on how to get started?';
 
-      this.get('intercom').showIntercom('showNewMessage', messageText);
+      this.intercom.showIntercom('showNewMessage', messageText);
     },
   },
 });

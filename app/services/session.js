@@ -16,7 +16,7 @@ export default SessionService.extend({
   currentUser: null,
 
   async loadCurrentUser() {
-    if (this.get('isAuthenticated')) {
+    if (this.isAuthenticated) {
       return await this._loadAndSetCurrentUser();
     } else {
       return this._trySilentAuth();
@@ -31,7 +31,7 @@ export default SessionService.extend({
       // Get the user from the API
       const user = await this.forceReloadUser();
       // If there is a user but we're not authenticated, try silent auth
-      if (user && !this.get('isAuthenticated')) {
+      if (user && !this.isAuthenticated) {
         try {
           return await this.authenticate('authenticator:auth0-silent-auth');
         } catch (e) {
@@ -60,7 +60,7 @@ export default SessionService.extend({
         // so kick them out.
         .catch(e => {
           this.invalidateAndLogout();
-          return reject(e);
+          reject(e);
         })
     );
   },
@@ -73,7 +73,7 @@ export default SessionService.extend({
   },
 
   async forceReloadUser() {
-    return await this.get('store').queryRecord('user', {});
+    return await this.store.queryRecord('user', {});
   },
 
   _setupThirdPartyUserContexts(user) {
@@ -104,20 +104,20 @@ export default SessionService.extend({
 
   _setupSentry(user) {
     if (this.get('raven.isRavenUsable')) {
-      this.get('raven').callRaven('setUserContext', {id: user.get('id')});
+      this.raven.callRaven('setUserContext', {id: user.get('id')});
     }
   },
 
   _clearSentry() {
     if (this.get('raven.isRavenUsable')) {
-      this.get('raven').callRaven('setUserContext');
+      this.raven.callRaven('setUserContext');
     }
   },
   _setupAnalytics(user) {
-    this.get('analytics').identifyUser(user);
+    this.analytics.identifyUser(user);
   },
   _clearAnalytics() {
-    this.get('analytics').invalidate();
+    this.analytics.invalidate();
     localStorageProxy.removeKeysWithString('amplitude');
   },
   _setupIntercom(user) {
@@ -146,6 +146,6 @@ export default SessionService.extend({
         organizations: organizations.mapBy('id'),
       },
     };
-    return this.get('launchDarkly').identify(launchDarklyUser);
+    return this.launchDarkly.identify(launchDarklyUser);
   },
 });

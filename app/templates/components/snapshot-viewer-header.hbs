@@ -13,12 +13,22 @@
 
     <div class="flex items-center overflow-hidden">
       <figure class="snapshot-icon svg-container mr-1" data-test-SnapshotViewer-comparisonIcon>
-        {{#if noComparisonsHaveDiffs}}
+        {{#if snapshot.isRejected}}
+          {{inline-svg "comparison-icon-requested-changes"}}
+        {{else if noComparisonsHaveDiffs}}
           {{inline-svg "no-comparison-icon"}}
         {{else}}
           {{inline-svg "comparison-icon"}}
         {{/if}}
       </figure>
+
+      {{#if snapshot.isRejected}}
+        <div class="mr-1">
+          <div class="px-1 py-sm tracking-px rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{if (eq snapshot.reviewStateReason 'user_rejected_previously') 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}" data-test-request-changes-badge>
+            Changes requested
+          </div>
+        </div>
+      {{/if}}
 
       <div class="Viewer-header-title SnapshotViewer-title cursor-default font-bold truncate" title="{{snapshot.name}}" data-test-SnapshotViewer-title>
         {{snapshot.name}}
@@ -149,7 +159,7 @@
           }}
         {{/if}}
 
-        {{#if (and isBuildApprovable (variation "comments"))}}
+        {{#if isBuildApprovable}}
           {{collaboration/toggle-button
             toggleCollaborationPanel=toggleCollaborationPanel
             isResolved=false
@@ -157,7 +167,23 @@
           }}
         {{/if}}
 
-        <div class="btn-group" data-test-snapshot-approval-button>
+
+        <div class="btn-toolbar" data-test-snapshot-approval-button>
+          {{#if (and (variation 'request-changes') snapshot.isUnreviewed)}}
+            {{demo-tooltip
+              build=snapshot.build
+              isFirstInstance=(eq index 0)
+              anchorPlacement='left-corner'
+              key="nine"
+              title="Requesting changes"
+              message="If a snapshot is not yet ready to be approved, request changes so your team can follow the status of a build."
+            }}
+            {{snapshot-reject-button
+              snapshots=(array snapshot)
+              isDisabled=(not isBuildApprovable)
+            }}
+          {{/if}}
+
           {{demo-tooltip
             build=snapshot.build
             isFirstInstance=(eq index 0)

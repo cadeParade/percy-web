@@ -33,8 +33,8 @@ export default Component.extend(PollingMixin, {
       return false;
     }
 
-    const isSyncing = this.get('isSyncing');
-    const lastSyncedAt = this.get('lastSyncedAt');
+    const isSyncing = this.isSyncing;
+    const lastSyncedAt = this.lastSyncedAt;
     if (!lastSyncedAt || isSyncing) {
       return true;
     } else {
@@ -48,13 +48,11 @@ export default Component.extend(PollingMixin, {
 
   triggerRepoRefresh() {
     let self = this;
-    let organization = this.get('organization');
+    let organization = this.organization;
     this.set('isRepoRefreshInProgress', true);
-    this.get('repoRefresh')
-      .getFreshRepos(organization)
-      .finally(() => {
-        self.set('isRepoRefreshInProgress', false);
-      });
+    this.repoRefresh.getFreshRepos(organization).finally(() => {
+      self.set('isRepoRefreshInProgress', false);
+    });
   },
 
   triggerSavingIndicator(promise) {
@@ -73,7 +71,7 @@ export default Component.extend(PollingMixin, {
 
   actions: {
     chooseRepo(repo) {
-      let project = this.get('project');
+      let project = this.project;
       project.set('repo', repo);
 
       // If the project is not saved (ie. we're on the new project screen), don't trigger saving,

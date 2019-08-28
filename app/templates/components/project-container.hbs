@@ -20,10 +20,20 @@
         {{branch}}
       {{/power-select}}
     </div>
+  {{else if (not project.organization.isVersionControlIntegrated)}}
+    <div class="flex items-center p-1 pl-2 border bg-gray-000 rounded font-semibold text-sm" data-test-integration-prompt>
+      <div class="flex items-center">
+        {{inline-svg "github-icon" class="mr-1"}}
+        {{inline-svg "gitlab-icon" class="mr-1"}}
+        {{inline-svg "bitbucket-icon" class="mr-1"}}
+      </div>
+      <div>Integrate your SCM for repo features</div>
+      {{#link-to data-test-add-integration "organizations.organization.integrations" project.organization.slug class="percy-btn percy-btn-primary percy-btn-sm leading-normal ml-2"}}Add integration{{/link-to}}
+    </div>
   {{/if}}
 {{/projects/project-header}}
 
-<main class="project-container flex-1 pb-8 bg-gray-000" data-test-project-container>
+<main class="project-container flex-1 pb-8 bg-gray-000">
   {{#if (and builds.isPending (not isRefreshing))}}
     {{loading-page}}
   {{else}}
@@ -45,9 +55,16 @@
     {{else}}
       {{#if project.isEnabled}}
         {{#if isUserMember}}
-          <div class="build-card-placeholder mb-2">
-            {{inline-svg "comparison-icon" class="mr-1"}}
-            <span class="font-semibold mr-sm">Welcome to your brand new Percy project.</span> Use the resources below to setup Percy and generate your first snapshots.
+          <div class="container-xl mb-3">
+            <div class="build-card-placeholder">
+              <div class="mr-3">
+                {{build-icon}}
+              </div>
+              <span class="text-xl font-semibold mr-sm">Waiting for your first build</span>
+              <div class="line-loader-container">
+                <div class="line-loader"></div>
+              </div>
+            </div>
           </div>
 
           <div class="container-xl">
@@ -55,21 +72,41 @@
               <div class="px-2 py-3 border-b">
                 {{resource-widget project=project}}
               </div>
-              <div class="px-2 py-3 border-b">
-                <h2 class="text-xl font-semibold mb-sm">CI setup</h2>
-                <p class="text-gray-400 mb-2">Configure your local or CI environment with PERCY-TOKEN. This is a project-specific write-only API key that only has access to create builds, snapshots, and upload resources to this project. It should be kept secret.</p>
-                {{projects/env-vars project=project}}
-              </div>
               <div class="px-2 py-3">
-                <h2 class="text-xl font-semibold mb-sm">Repository Integrations</h2>
-                <p class="text-gray-400 mb-2">Connect your GitHub or GitLab repositories to add visual testing to pull/merge requests.</p>
-                <a
-                  href="https://docs.percy.io/docs/supported-scm-integrations"
-                  target="_blank"
-                  class="percy-btn"
-                >
-                  See the docs
-                </a>
+                <h2 class="text-xl font-semibold mb-sm">Project token</h2>
+                <p class="text-gray-400 mb-2">Configure your local or CI environment with PERCY-TOKEN. This is a project-specific write-only API key that only has access to create builds, snapshots, and upload resources to this project. It should be kept secret.</p>
+
+                {{#unless project.isDemo}}
+                  {{#if project.tokens.isPending}}
+                    <div class="percy-code-snippet">
+                      <pre>
+                        <span class="percy-code-comment percy-code-bash">Loading...</span>
+                      </pre>
+                    </div>
+                  {{/if}}
+                  {{#with project.writeOnlyToken.token as |token|}}
+                    <div>
+                      <div class="flex justify-start mb-1">
+                        <div class="btn-toggle">
+                          <div class="btn-toggle-item {{if showUnixBash 'is-selected'}}" {{action "switchBashSyntax"}}>Mac/Linux</div>
+                          <div class="btn-toggle-item {{if (not showUnixBash) 'is-selected'}}" {{action "switchBashSyntax"}}>Windows</div>
+                        </div>
+                      </div>
+                      <div class="percy-code-snippet">
+                        <pre>
+                          <span class="percy-code-bash">{{if showUnixBash "export" "set"}} PERCY_TOKEN={{token}}</span>
+                        </pre>
+                      </div>
+                    </div>
+                  {{/with}}
+                {{else}}
+                  <div class="percy-code-snippet" data-test-env-var-demo>
+                    <pre>
+                      <span class="percy-code-bash">PERCY_TOKEN=[This is a demo project. Create your own project to get a PERCY_TOKEN]</span>
+                    </pre>
+                  </div>
+                {{/unless}}
+                
               </div>
             </div>
           </div>

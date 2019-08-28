@@ -9,7 +9,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import Service from '@ember/service';
 import sinon from 'sinon';
 import {initialize as initializeEmberKeyboard} from 'ember-keyboard';
-import {fillIn} from '@ember/test-helpers';
+import {fillIn, render} from '@ember/test-helpers';
 
 describe('Integration: CollaborationCommentReply', function() {
   setupRenderingTest('collaboration-comment-reply', {
@@ -27,7 +27,7 @@ describe('Integration: CollaborationCommentReply', function() {
 
   describe('when the reply is collapsed', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{collaboration/collaboration-comment-reply}}`);
+      await render(hbs`{{collaboration/collaboration-comment-reply}}`);
     });
 
     it('shows collapsed reply textarea by default', async function() {
@@ -56,7 +56,7 @@ describe('Integration: CollaborationCommentReply', function() {
       submitStub = sinon.stub().returns({isSuccessful: true});
 
       this.setProperties({commentThread, submitStub, organization});
-      await this.render(hbs`{{collaboration/collaboration-comment-reply
+      await render(hbs`{{collaboration/collaboration-comment-reply
         commentThread=commentThread
         createComment=submitStub
       }}`);

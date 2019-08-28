@@ -31,12 +31,12 @@ export default Route.extend(AuthenticatedRouteMixin, {
       slackIntegration
         .destroyRecord()
         .then(() => {
-          this.get('flashMessages').success(
+          this.flashMessages.success(
             `Successfully deleted your ${slackIntegration.channelName} Slack integration`,
           );
         })
         .catch(() => {
-          this.get('flashMessages').danger(
+          this.flashMessages.danger(
             'There was a problem deleting this integration.' +
               ' Please try again or contact customer support.',
           );

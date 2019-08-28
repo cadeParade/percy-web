@@ -3,7 +3,7 @@ import hbs from 'htmlbars-inline-precompile';
 import {it, describe, beforeEach} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
 import {percySnapshot} from 'ember-percy';
-import {find} from '@ember/test-helpers';
+import {render, find} from '@ember/test-helpers';
 
 describe('Integration: Marketing/VideoBlock', function() {
   setupRenderingTest('marketing/video-block', {
@@ -27,7 +27,7 @@ describe('Integration: Marketing/VideoBlock', function() {
   });
 
   it('opens a modal when the image is clicked', async function() {
-    await this.render(hbs`{{marketing/video-block block=videoBlock}}`);
+    await render(hbs`{{marketing/video-block block=videoBlock}}`);
 
     // then click the image
     await VideoBlock.clickImage();

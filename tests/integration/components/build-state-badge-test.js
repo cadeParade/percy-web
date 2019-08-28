@@ -5,6 +5,7 @@ import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: BuildStateBadgeComponent', function() {
   setupRenderingTest('build-state-badge', {
@@ -33,7 +34,7 @@ describe('Integration: BuildStateBadgeComponent', function() {
       let build = make.apply(this, ['build'].concat(state));
       this.set('build', build);
 
-      await this.render(hbs`{{build-state-badge build=build}}`);
+      await render(hbs`{{build-state-badge build=build}}`);
       await percySnapshot(this.test);
     });
   });

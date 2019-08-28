@@ -12,6 +12,6 @@ export default Component.extend({
   classNameBindings: ['classes'],
 
   fieldErrors: computed('changeset.error', function() {
-    return get(this.get('changeset.error'), this.get('property'));
+    return get(this.get('changeset.error'), this.property);
   }),
 });

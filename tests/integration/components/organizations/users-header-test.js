@@ -5,6 +5,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import UsersHeader from 'percy-web/tests/pages/components/organizations/users-header';
 import {make} from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: UsersHeader', function() {
   setupRenderingTest('organizations/users-header-test', {
@@ -33,7 +34,7 @@ describe('Integration: UsersHeader', function() {
     });
 
     it('displays basic information', async function() {
-      await this.render(hbs`{{organizations/users-header
+      await render(hbs`{{organizations/users-header
         organization=organization
         isInviteFormAllowed=isInviteFormAllowed
       }}`);
@@ -54,8 +55,8 @@ describe('Integration: UsersHeader', function() {
 
       describe('when seats are available', function() {
         beforeEach(async function() {
-          organization.set('hasSeatsRemaining', true);
-          await this.render(hbs`{{organizations/users-header
+          organization.set('seatsRemaining', 1);
+          await render(hbs`{{organizations/users-header
             organization=organization
             isInviteFormAllowed=isInviteFormAllowed
           }}`);
@@ -72,11 +73,11 @@ describe('Integration: UsersHeader', function() {
 
       describe('when seats are unavailable', function() {
         beforeEach(function() {
-          organization.set('hasSeatsRemaining', false);
+          organization.set('seatsRemaining', 0);
         });
 
         it('form is hidden & button is disabled', async function() {
-          await this.render(hbs`{{organizations/users-header
+          await render(hbs`{{organizations/users-header
             organization=organization
             isInviteFormAllowed=isInviteFormAllowed
           }}`);
@@ -94,7 +95,7 @@ describe('Integration: UsersHeader', function() {
         it('form and usage text are hidden & button is enabled', async function() {
           organization.set('seatLimit', null);
 
-          await this.render(hbs`{{organizations/users-header
+          await render(hbs`{{organizations/users-header
             organization=organization
             isInviteFormAllowed=isInviteFormAllowed
           }}`);
@@ -117,8 +118,8 @@ describe('Integration: UsersHeader', function() {
 
       describe('when seats are available', function() {
         beforeEach(async function() {
-          organization.set('hasSeatsRemaining', true);
-          await this.render(hbs`{{organizations/users-header
+          organization.set('seatsRemaining', 1);
+          await render(hbs`{{organizations/users-header
             organization=organization
             isInviteFormAllowed=isInviteFormAllowed
           }}`);
@@ -136,7 +137,7 @@ describe('Integration: UsersHeader', function() {
       describe('when seats are unavailable', function() {
         beforeEach(async function() {
           organization.set('seatLimit', 3);
-          await this.render(hbs`{{organizations/users-header
+          await render(hbs`{{organizations/users-header
             organization=organization
             isInviteFormAllowed=isInviteFormAllowed
           }}`);
@@ -157,7 +158,7 @@ describe('Integration: UsersHeader', function() {
         it('button is disabled & form is displayed', async function() {
           organization.set('seatLimit', null);
 
-          await this.render(hbs`{{organizations/users-header
+          await render(hbs`{{organizations/users-header
             organization=organization
             isInviteFormAllowed=isInviteFormAllowed
           }}`);
@@ -181,8 +182,8 @@ describe('Integration: UsersHeader', function() {
     describe('when isInviteFormAllowed=false', function() {
       describe('when seats are available', function() {
         beforeEach(async function() {
-          organization.set('hasSeatsRemaining', true);
-          await this.render(hbs`{{organizations/users-header
+          organization.set('seatsRemaining', 1);
+          await render(hbs`{{organizations/users-header
             organization=organization
             isInviteFormAllowed=false
           }}`);
@@ -202,8 +203,8 @@ describe('Integration: UsersHeader', function() {
     describe('when isInviteFormAllowed=true', function() {
       describe('when seats are available', function() {
         beforeEach(async function() {
-          organization.set('hasSeatsRemaining', true);
-          await this.render(hbs`{{organizations/users-header
+          organization.set('seatsRemaining', 1);
+          await render(hbs`{{organizations/users-header
             organization=organization
             isInviteFormAllowed=true
           }}`);

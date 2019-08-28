@@ -9,8 +9,8 @@ export default Component.extend({
 
   actions: {
     cancelIntegrationRequest() {
-      if (this.get('cancelIntegrationRequest')) {
-        this.get('cancelIntegrationRequest')();
+      if (this.cancelIntegrationRequest) {
+        this.cancelIntegrationRequest();
       }
     },
   },

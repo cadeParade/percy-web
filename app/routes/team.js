@@ -8,7 +8,7 @@ export default Route.extend({
 
   model() {
     return hash({
-      page: this.get('store').queryRecord('marketing-page', {
+      page: this.store.queryRecord('marketing-page', {
         'fields.pageName': 'Team',
       }),
       jobs: this._getJobPosts(),

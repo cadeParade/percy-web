@@ -7,6 +7,7 @@ import Service from '@ember/service';
 import userMenu from 'percy-web/tests/pages/components/user-menu';
 import clickDropdownTrigger from 'percy-web/tests/pages/helpers/click-basic-dropdown-trigger';
 import sinon from 'sinon';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: UserMenu', function() {
   setupRenderingTest('user-menu', {
@@ -28,7 +29,7 @@ describe('Integration: UserMenu', function() {
       });
       this.owner.register('service:session', sessionServiceStub, 'sessionService');
 
-      await this.render(hbs`{{user-menu user=currentUser}}`);
+      await render(hbs`{{user-menu user=currentUser}}`);
     });
 
     it('calls logout', async function() {

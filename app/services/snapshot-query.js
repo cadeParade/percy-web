@@ -4,7 +4,7 @@ import {SNAPSHOT_REVIEW_STATE_REASONS, DIFF_REVIEW_STATE_REASONS} from 'percy-we
 export default Service.extend({
   store: service(),
   getUnchangedSnapshots(build) {
-    return this.get('store').query('snapshot', {
+    return this.store.query('snapshot', {
       filter: {
         build: build.get('id'),
         'review-state-reason': SNAPSHOT_REVIEW_STATE_REASONS.NO_DIFFS,
@@ -13,11 +13,21 @@ export default Service.extend({
   },
 
   getChangedSnapshots(build) {
+    return this.store.query('snapshot', {
+      filter: {
+        build: build.get('id'),
+        'review-state-reason': DIFF_REVIEW_STATE_REASONS.join(','),
+      },
+    });
+  },
+
+  getChangedSnapshotsWithComments(build) {
     return this.get('store').query('snapshot', {
       filter: {
         build: build.get('id'),
         'review-state-reason': DIFF_REVIEW_STATE_REASONS.join(','),
       },
+      include: 'comment-threads.comments.author',
     });
   },
 });

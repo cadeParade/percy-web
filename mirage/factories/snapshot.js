@@ -3,6 +3,7 @@ import {
   SNAPSHOT_APPROVED_STATE,
   SNAPSHOT_UNAPPROVED_STATE,
   SNAPSHOT_REVIEW_STATE_REASONS,
+  SNAPSHOT_REJECTED_STATE,
 } from 'percy-web/models/snapshot';
 
 const _unreviewedProps = {
@@ -26,6 +27,11 @@ const _autoApprovedBranchProps = {
   reviewStateReason: SNAPSHOT_REVIEW_STATE_REASONS.AUTO_APPROVED_BRANCH,
 };
 
+const _rejectedProps = {
+  reviewState: SNAPSHOT_REJECTED_STATE,
+  reviewStateReason: SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED,
+};
+
 export default Factory.extend({
   id(i) {
     return `snapshot-${i}`;
@@ -35,6 +41,7 @@ export default Factory.extend({
   },
 
   unreviewed: trait(_unreviewedProps),
+  rejected: trait(_rejectedProps),
   userApproved: trait(_userApprovedProps),
   userApprovedPreviously: trait(_userApprovedPreviouslyProps),
 

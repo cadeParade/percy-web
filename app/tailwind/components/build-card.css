@@ -1,8 +1,39 @@
 .build-card-placeholder {
-  @apply flex justify-center items-center border-b px-4;
+  @apply relative;
+  @apply flex;
+  @apply justify-center;
+  @apply items-center;
+  @apply px-4;
   height: 98px;
-  background: url("/images/build-card-placeholder.jpg");
-  @apply bg-cover;
+}
+
+.line-loader-container {
+  @apply absolute;
+  @apply pin-b;
+  @apply w-full;
+  @apply bg-gray-100;
+  @apply overflow-hidden;
+  height: 1px;
+}
+
+.line-loader {
+  @apply absolute;
+  @apply pin-t;
+  @apply pin-l;
+  @apply bg-purple-600;
+  width: 50%;
+  height: 1px;
+  animation: line-loading 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes line-loading {
+  0% {
+    transform: translateX(-85%);
+  }
+
+  100% {
+    transform: translateX(185%);
+  }
 }
 
 .build-card-container {
@@ -14,7 +45,8 @@
 }
 
 .build-card {
-  @apply grid items-center;
+  @apply grid;
+  @apply items-center;
   @apply py-3;
   @apply border-b;
   @apply cursor-pointer;
@@ -23,10 +55,13 @@
     "build"
     "details"
     "diffs"
+    "comments"
     "status";
+}
 
-  @media screen and (min-width: 768px) {
-    grid-template-areas: "build details diffs status";
-    grid-template-columns: 108px 4fr 180px 108px;
+@media screen and (min-width: 768px) {
+  .build-card {
+    grid-template-areas: "build details diffs comments status";
+    grid-template-columns: 108px 5fr 158px 22px 130px;
   }
 }

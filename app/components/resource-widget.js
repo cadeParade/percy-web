@@ -5,7 +5,7 @@ import {isEmpty} from '@ember/utils';
 
 export default Component.extend({
   tagName: '',
-  selectedLanguage: 'javascript',
+  selectedLanguage: 'popular',
   selectedFramework: null,
   requestedFramework: '',
 
@@ -15,84 +15,84 @@ export default Component.extend({
   isOtherSelected: computed.equal('selectedFramework', 'other'),
 
   frameworkOptions: computed('selectedLanguage', function() {
-    return ResourceDocs[this.get('selectedLanguage')].frameworks;
+    return ResourceDocs[this.selectedLanguage].frameworks;
   }),
 
   frameworkName: computed('selectedFramework', function() {
-    const frameworks = this.get('frameworkOptions');
-    const currentFramework = this.get('selectedFramework');
+    const frameworks = this.frameworkOptions;
+    const currentFramework = this.selectedFramework;
 
     return frameworks[currentFramework].name;
   }),
 
   docLinkClasses: computed('selectedFramework', function() {
-    if (!this.get('docLink')) {
+    if (!this.docLink) {
       return 'hidden';
     }
   }),
 
   exampleLinkClasses: computed('selectedFramework', function() {
-    if (!this.get('docLink') && this.get('exampleLink')) {
+    if (!this.docLink && this.exampleLink) {
       return 'percy-btn-primary';
-    } else if (!this.get('exampleLink')) {
+    } else if (!this.exampleLink) {
       return 'hidden';
     }
   }),
 
   docLink: computed('selectedFramework', function() {
-    const frameworks = this.get('frameworkOptions');
-    const currentFramework = this.get('selectedFramework');
+    const frameworks = this.frameworkOptions;
+    const currentFramework = this.selectedFramework;
 
     return frameworks[currentFramework].docLink;
   }),
 
   exampleLink: computed('selectedFramework', function() {
-    const frameworks = this.get('frameworkOptions');
-    const currentFramework = this.get('selectedFramework');
+    const frameworks = this.frameworkOptions;
+    const currentFramework = this.selectedFramework;
 
     return frameworks[currentFramework].exampleLink;
   }),
 
   actions: {
     selectLanguage(languageKey) {
-      const organization = this.get('organization');
+      const organization = this.organization;
 
       // reset the framework so other doesn't stay selected
       this.set('selectedFramework', null);
       this.set('selectedLanguage', languageKey);
-      this.get('analytics').track('Language Selected', organization, {languageKey});
+      this.analytics.track('Language Selected', organization, {languageKey});
     },
 
     selectFramework(frameworkKey) {
-      const organization = this.get('organization');
+      const organization = this.organization;
 
       this.set('selectedFramework', frameworkKey);
-      this.get('analytics').track('Framework Selected', organization, {frameworkKey});
+      this.analytics.track('Framework Selected', organization, {frameworkKey});
     },
 
     saveRequest() {
-      const organization = this.get('organization');
-      const frameworkName = this.get('requestedFramework').toLowerCase();
+      const organization = this.organization;
+      const frameworkName = this.requestedFramework.toLowerCase();
 
       if (!isEmpty(frameworkName)) {
-        this.get('analytics').track('New SDK Requested', organization, {frameworkName});
+        this.analytics.track('New SDK Requested', organization, {frameworkName});
         this.set('requestedFramework', '');
         this.set('selectedFramework', null);
       }
     },
 
     trackDocsVisit() {
-      const organization = this.get('organization');
-      const frameworkName = this.get('selectedFramework').toLowerCase();
+      const organization = this.organization;
+      const frameworkName = this.selectedFramework.toLowerCase();
 
-      this.get('analytics').track('Framework Docs Visited', organization, {frameworkName});
+      this.analytics.track('Framework Docs Visited', organization, {frameworkName});
     },
 
     trackDemoVisit() {
-      const organization = this.get('organization');
-      const frameworkName = this.get('selectedFramework').toLowerCase();
+      const organization = this.organization;
+      const frameworkName = this.selectedFramework.toLowerCase();
 
-      this.get('analytics').track('Framework Demo Project Visited', organization, {frameworkName});
+      this.analytics.track('Framework Demo Project Visited', organization, {frameworkName});
     },
   },
 });

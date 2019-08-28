@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-expressions */
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
-import {it, describe, beforeEach, afterEach} from 'mocha';
+import {it, describe, beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
@@ -11,11 +11,8 @@ import SnapshotViewer from 'percy-web/tests/pages/components/snapshot-viewer';
 import {resolve} from 'rsvp';
 import {SNAPSHOT_APPROVED_STATE, SNAPSHOT_UNAPPROVED_STATE} from 'percy-web/models/snapshot';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {
-  enableFlag,
-  disableFlag,
-} from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
 import faker from 'faker';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: SnapshotViewer', function() {
   setupRenderingTest('snapshot-viewer', {
@@ -53,7 +50,7 @@ describe('Integration: SnapshotViewer', function() {
   });
 
   it('displays snapshot name', async function() {
-    await this.render(hbs`{{snapshot-viewer
+    await render(hbs`{{snapshot-viewer
       snapshot=snapshot
       build=build
       showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -69,7 +66,7 @@ describe('Integration: SnapshotViewer', function() {
   });
 
   it('compares visually to previous screenshot', async function() {
-    await this.render(hbs`{{snapshot-viewer
+    await render(hbs`{{snapshot-viewer
       snapshot=snapshot
       build=build
       showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -84,7 +81,7 @@ describe('Integration: SnapshotViewer', function() {
 
   describe('comparison mode switcher', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -113,7 +110,7 @@ describe('Integration: SnapshotViewer', function() {
 
     it('shows widest width with diff as active by default when some comparisons have diffs', async function() { // eslint-disable-line
 
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -131,7 +128,7 @@ describe('Integration: SnapshotViewer', function() {
       const snapshot = make('snapshot', 'withNoDiffs');
       this.set('snapshot', snapshot);
 
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -147,7 +144,7 @@ describe('Integration: SnapshotViewer', function() {
     });
 
     it('updates active button when clicked', async function() {
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -178,7 +175,7 @@ describe('Integration: SnapshotViewer', function() {
 
   describe('full screen toggle button', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -210,7 +207,7 @@ describe('Integration: SnapshotViewer', function() {
     beforeEach(async function() {
       this.set('activeSnapshotBlockId', null);
 
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -235,7 +232,7 @@ describe('Integration: SnapshotViewer', function() {
 
     it('is expanded when build is approved', async function() {
       this.set('snapshot.reviewState', SNAPSHOT_APPROVED_STATE);
-      this.set('build.isApproved', true);
+      this.set('build.reviewState', 'approved');
 
       expect(SnapshotViewer.isExpanded).to.equal(true);
     });
@@ -256,7 +253,7 @@ describe('Integration: SnapshotViewer', function() {
 
   describe('approve snapshot button', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -280,7 +277,7 @@ describe('Integration: SnapshotViewer', function() {
 
   describe('diff toggling', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-viewer
+      await render(hbs`{{snapshot-viewer
         snapshot=snapshot
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -299,14 +296,6 @@ describe('Integration: SnapshotViewer', function() {
   });
 
   describe('commenting', function() {
-    beforeEach(async function() {
-      enableFlag(this, 'comments');
-    });
-
-    afterEach(function() {
-      disableFlag(this, 'comments');
-    });
-
     describe('when there is a long comment', function() {
       beforeEach(async function() {
         const commentThread = make('comment-thread', {snapshot});
@@ -314,7 +303,7 @@ describe('Integration: SnapshotViewer', function() {
           body: 'sssssssssssssssssssssssssssssssssssssssssssssssssss' + faker.lorem.paragraph(50),
           commentThread,
         });
-        await this.render(hbs`{{snapshot-viewer
+        await render(hbs`{{snapshot-viewer
           snapshot=snapshot
           build=build
           showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -333,9 +322,18 @@ describe('Integration: SnapshotViewer', function() {
     });
 
     describe('panel toggling', function() {
+      async function expectToggleWorks({isOpenByDefault = true, context} = {}) {
+        await SnapshotViewer.header.toggleCommentSidebar();
+        expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(!isOpenByDefault);
+        await percySnapshot(context.test);
+
+        await SnapshotViewer.header.toggleCommentSidebar();
+        expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(isOpenByDefault);
+      }
+
       describe('when there are no comments', function() {
         beforeEach(async function() {
-          await this.render(hbs`{{snapshot-viewer
+          await render(hbs`{{snapshot-viewer
             snapshot=snapshot
             build=build
             showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -353,19 +351,14 @@ describe('Integration: SnapshotViewer', function() {
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function() {
-          await SnapshotViewer.header.toggleCommentSidebar();
-          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
-          await percySnapshot(this.test);
-
-          await SnapshotViewer.header.toggleCommentSidebar();
-          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
+          expectToggleWorks({isOpenByDefault: false, context: this});
         });
       });
 
       describe('when there are open comments', function() {
         beforeEach(async function() {
           makeList('comment-thread', 2, 'withTwoComments', {snapshot});
-          await this.render(hbs`{{snapshot-viewer
+          await render(hbs`{{snapshot-viewer
             snapshot=snapshot
             build=build
             showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -383,12 +376,7 @@ describe('Integration: SnapshotViewer', function() {
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function() {
-          await SnapshotViewer.header.toggleCommentSidebar();
-          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
-          await percySnapshot(this.test);
-
-          await SnapshotViewer.header.toggleCommentSidebar();
-          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
+          expectToggleWorks({isOpenByDefault: true, context: this});
         });
       });
 
@@ -396,7 +384,7 @@ describe('Integration: SnapshotViewer', function() {
         beforeEach(async function() {
           make('comment-thread', 'withTwoComments', 'closed', {snapshot});
           make('comment-thread', 'withTwoComments', 'closed', 'note', {snapshot});
-          await this.render(hbs`{{snapshot-viewer
+          await render(hbs`{{snapshot-viewer
             snapshot=snapshot
             build=build
             showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -409,17 +397,12 @@ describe('Integration: SnapshotViewer', function() {
           }}`);
         });
 
-        it('does not show panel by default', async function() {
-          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
+        it('shows panel by default', async function() {
+          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function() {
-          await SnapshotViewer.header.toggleCommentSidebar();
-          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
-          await percySnapshot(this.test);
-
-          await SnapshotViewer.header.toggleCommentSidebar();
-          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
+          expectToggleWorks({isOpenByDefault: true, context: this});
         });
       });
     });

@@ -4,7 +4,7 @@ import DS from 'ember-data';
 export default DS.Model.extend({
   sha: DS.attr(),
   shaShort: computed('sha', function() {
-    var sha = this.get('sha');
+    var sha = this.sha;
     return sha && sha.slice(0, 7);
   }),
 

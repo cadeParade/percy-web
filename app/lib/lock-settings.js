@@ -5,7 +5,7 @@ export default {
   auth: {
     redirect: true,
     redirectUrl: `${window.location.origin}${
-      config['ember-simple-auth'].auth0.silentAuth.options.redirectPath
+      config['ember-simple-auth'].auth0.silentAuth.options.redirectPath //eslint-disable-line
     }`,
     responseType: 'code',
     params: {},

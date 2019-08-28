@@ -3,6 +3,7 @@ import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import QuoteBlock from 'percy-web/tests/pages/components/marketing/customer-quote-block';
 import {percySnapshot} from 'ember-percy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: Marketing/CustomerQuoteBlock', function() {
   setupRenderingTest('marketing/customer-quote-block', {
@@ -38,7 +39,7 @@ describe('Integration: Marketing/CustomerQuoteBlock', function() {
   });
 
   it('switches quotes when dot is clicked', async function() {
-    await this.render(hbs`{{marketing/customer-quote-block
+    await render(hbs`{{marketing/customer-quote-block
       quoteBlock=quoteBlock
     }}`);
 

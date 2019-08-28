@@ -17,11 +17,11 @@ export default Component.extend({
   }),
 
   click(e) {
-    let action = this.get('action');
+    let action = this.action;
     if (action) {
       action();
     }
-    if (!this.get('bubbles')) {
+    if (!this.bubbles) {
       e.stopPropagation();
     }
   },

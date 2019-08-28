@@ -8,6 +8,7 @@ import GitlabSettings from 'percy-web/tests/pages/components/gitlab-settings';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import sinon from 'sinon';
 import mockIntercomService from 'percy-web/tests/helpers/mock-intercom-service';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: GitlabSettings', function() {
   setupRenderingTest('gitlab-settings', {
@@ -31,7 +32,7 @@ describe('Integration: GitlabSettings', function() {
       organization.set('_filteredOrganizationUsers', [organizationUser]);
       user.set('organizations', [organization]);
       this.setProperties({user, organization, gitlabIntegration});
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/integrations/gitlab-settings
         currentUser=user
         organization=organization
@@ -86,7 +87,7 @@ describe('Integration: GitlabSettings', function() {
       organization.set('_filteredOrganizationUsers', [organizationUser]);
       user.set('organizations', [organization]);
       this.setProperties({user, organization, gitlabIntegration});
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/integrations/gitlab-settings
         currentUser=user
         organization=organization
@@ -125,7 +126,7 @@ describe('Integration: GitlabSettings', function() {
       organization.set('_filteredOrganizationUsers', [organizationUser]);
       user.set('organizations', [organization]);
       this.setProperties({user, organization, gitlabIntegration});
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/integrations/gitlab-settings
         currentUser=user
         organization=organization
@@ -202,7 +203,7 @@ describe('Integration: GitlabSettings', function() {
       organization.set('_filteredOrganizationUsers', [organizationUser]);
       user.set('organizations', [organization]);
       this.setProperties({user, organization, gitlabIntegration});
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/integrations/gitlab-settings
         currentUser=user
         organization=organization

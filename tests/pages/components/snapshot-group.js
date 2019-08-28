@@ -23,6 +23,8 @@ const SELECTORS = {
   SHOW_ALL_SNAPSHOTS_TOGGLE: '[data-test-show-group-snapshots]',
   LAZY_RENDER_HEADER: '[data-test-snapshot-viewer-lazy-header]',
   COMMENT_BUTTON: '[data-test-group-comment-btn]',
+  REJECTED_BADGE: '[data-test-group-rejected-badge]',
+  REJECT_BUTTON: '[data-test-snapshot-reject-button]',
 };
 
 export const snapshotGroup = {
@@ -51,6 +53,8 @@ export const snapshotGroup = {
   isNoDiffBoxVisible: alias('comparisonViewer.SELECTORS.isNoDiffBoxVisible'),
 
   approveButton: alias('header.groupApprovalButton'),
+  approve: alias('header.clickApprove'),
+  reject: alias('header.groupRejectButton.click'),
 
   header: {
     scope: SELECTORS.HEADER,
@@ -66,6 +70,10 @@ export const snapshotGroup = {
       groupApprovalButton,
     ),
 
+    groupRejectButton: {
+      scope: SELECTORS.REJECT_BUTTON,
+    },
+
     isApproved: alias('groupApprovalButton.isApproved'),
     clickApprove: alias('groupApprovalButton.clickButton'),
     widthSwitcher: {
@@ -79,6 +87,7 @@ export const snapshotGroup = {
     isFullScreenToggleVisible: isVisible(SELECTORS.FULL_SCREEN_TOGGLE),
     toggleShowAllSnapshots: clickable(SELECTORS.SHOW_ALL_SNAPSHOTS_TOGGLE),
     clickCommentButton: clickable(SELECTORS.COMMENT_BUTTON),
+    rejectedBadge: {scope: SELECTORS.REJECTED_BADGE},
   },
 };
 

@@ -5,6 +5,6 @@ export default Route.extend({
   redirects: service(),
 
   beforeModel() {
-    this.get('redirects').redirectToRecentLocalstorageProject();
+    this.redirects.redirectToRecentLocalstorageProject();
   },
 });

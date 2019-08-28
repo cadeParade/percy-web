@@ -16,7 +16,7 @@ export default Component.extend({
   // This is intentional an observer instead of a computed property. We want to the state of
   // showDiffOverlay loosely coupled to both a local action and the global diff toggle action.
   handleAllDiffsToggle: observer('allDiffsShown', function() { // eslint-disable-line
-    this.set('showDiffOverlay', this.get('allDiffsShown'));
+    this.set('showDiffOverlay', this.allDiffsShown);
   }),
 
   actions: {

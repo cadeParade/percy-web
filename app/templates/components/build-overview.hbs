@@ -16,6 +16,8 @@
         {{else if (eq build.reviewStateReason 'no_diffs')}}
           No changes to review
         {{/if}}
+      {{else if build.isRejected}}
+        {{pluralize build.totalSnapshotsRequestingChanges "requested change"}}
       {{else}}
         {{pluralize build.totalSnapshotsUnreviewed "unreviewed change"}}
       {{/if}}
@@ -42,6 +44,8 @@
         {{#if build.approvedBy}}
           by {{build.approvedBy.name}}
         {{/if}}
+      {{else if build.isRejected}}
+        <span class="text-gray-700">{{build.totalSnapshotsUnreviewed}}</span> unreviewed snapshots
       {{else}}
         in <span class="text-gray-700">{{build.totalSnapshots}}</span> total snapshots
       {{/if}}

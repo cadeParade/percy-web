@@ -14,11 +14,11 @@ export default Route.extend({
   pusher: service(),
 
   async beforeModel() {
-    const currentUser = this.get('currentUser');
+    const currentUser = this.currentUser;
 
     // If we get an organization, it is accessible to whoever's asking for it. Keep going.
     try {
-      const org = await this.get('_getOrganization').perform();
+      const org = await this._getOrganization.perform();
       this.set('_organization', org);
       return this._super(...arguments);
     } catch (e) {
@@ -28,7 +28,7 @@ export default Route.extend({
 
   model() {
     // set by beforeModel, if successful.
-    return this.get('_organization');
+    return this._organization;
   },
 
   afterModel(model) {
@@ -39,7 +39,7 @@ export default Route.extend({
 
   async _setupIntercom(organization) {
     if (await isUserMemberPromise(organization)) {
-      this.get('intercom').associateWithCompany(this.get('currentUser'), organization);
+      this.intercom.associateWithCompany(this.currentUser, organization);
     }
   },
 
@@ -55,13 +55,11 @@ export default Route.extend({
 
   _getOrganization: task(function*() {
     const orgSlug = this.paramsFor(this.routeName).organization_id;
-    const preloadedOrg = this.get('store')
-      .peekAll('organization')
-      .findBy('slug', orgSlug);
+    const preloadedOrg = this.store.peekAll('organization').findBy('slug', orgSlug);
     if (preloadedOrg) {
       return preloadedOrg;
     } else {
-      return yield this.get('store').findRecord('organization', orgSlug);
+      return yield this.store.findRecord('organization', orgSlug);
     }
   }),
 });

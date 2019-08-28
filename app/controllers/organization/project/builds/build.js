@@ -29,7 +29,7 @@ export default Controller.extend({
     const orderedBrowserSnapshots = {};
 
     // Get snapshots without making new request
-    const buildSnapshotsWithDiffs = this.get('store')
+    const buildSnapshotsWithDiffs = this.store
       .peekAll('snapshot')
       .filterBy('build.id', this.get('build.id'))
       .filterBy('isChanged');
@@ -40,7 +40,7 @@ export default Controller.extend({
       // when navigating from projects to builds where build relationships are not fully loaded.
       // Capture information about how often a race condition is happening. TODO: drop this.
       let error = new Error('Missing browsers in initializeSnapshotOrdering');
-      this.get('raven').captureException(error);
+      this.raven.captureException(error);
     }
 
     browsers.forEach(browser => {
@@ -48,7 +48,9 @@ export default Controller.extend({
       const sortedSnapshotsWithDiffs = snapshotSort(snapshotsWithDiffs.toArray(), browser);
       const approvedSnapshots = sortedSnapshotsWithDiffs.filterBy('isApprovedWithChanges');
       const unreviewedSnapshots = sortedSnapshotsWithDiffs.filterBy('isUnreviewed');
+      const rejectedSnapshots = sortedSnapshotsWithDiffs.filterBy('isRejected');
       orderedBrowserSnapshots[browser.get('id')] = [].concat(
+        rejectedSnapshots,
         unreviewedSnapshots,
         approvedSnapshots,
       );

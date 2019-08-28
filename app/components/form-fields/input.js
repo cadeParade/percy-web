@@ -18,12 +18,12 @@ export default Component.extend({
   classNameBindings: ['classes'],
 
   fieldErrors: computed('changeset.error', function() {
-    return get(this.get('changeset.error'), this.get('property'));
+    return get(this.get('changeset.error'), this.property);
   }),
 
   didUpdateAttrs() {
     // if autofocus changes and is true then the input needs to be manually focused
-    if (this.get('autofocus')) {
+    if (this.autofocus) {
       document.getElementsByClassName('form-control')[0].focus();
     }
   },

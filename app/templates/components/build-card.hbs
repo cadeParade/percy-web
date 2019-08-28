@@ -55,17 +55,39 @@
           {{#if build.hasDiffs}}
             {{#unless build.isApproved}}
               <div class="whitespace-no-wrap">
-                <strong>{{build.totalSnapshotsUnreviewed}}</strong>
-                <span class="text-sm text-gray-400 font-semibold">unreviewed</span>
+                {{#if build.isUnreviewed}}
+                  <strong>{{build.totalSnapshotsUnreviewed}}</strong>
+                  <span class="text-sm text-gray-400 font-semibold">unreviewed</span>
+                {{else}}
+                  <strong>{{build.totalSnapshotsRequestingChanges}}</strong>
+                  <span class="text-sm text-gray-400 font-semibold">{{pluralize build.totalSnapshotsRequestingChanges "requested change" without-count=true}}</span>
+                {{/if}}
               </div>
             {{/unless}}
           {{/if}}
           <div class="whitespace-no-wrap">
-            <strong>{{build.totalSnapshots}}</strong>
-            <span class="text-sm text-gray-400 font-semibold">{{pluralize build.totalSnapshots "total snapshot" without-count=true}}</span>
+            {{#if build.isRejected}}
+              <strong>{{build.totalSnapshotsUnreviewed}}</strong>
+              <span class="text-sm text-gray-400 font-semibold">{{pluralize build.totalSnapshotsUnreviewed "unreviewed snapshot" without-count=true}}</span>
+            {{else}}
+              <strong>{{build.totalSnapshots}}</strong>
+              <span class="text-sm text-gray-400 font-semibold">{{pluralize build.totalSnapshots "total snapshot" without-count=true}}</span>
+            {{/if}}
           </div>
         {{/if}}
       </div>
+    </div>
+    <div class="flex items-center justify-center">
+      {{#if (gt build.totalOpenComments 0)}}
+        <div class="relative">
+          <figure class="svg-container">
+            {{inline-svg "conversation-icon-purple"}}
+          </figure>
+          <div class="collaboration-conversation-count">
+            {{build.totalOpenComments}}
+          </div>
+        </div>
+      {{/if}}
     </div>
     <div class="status-pill is-{{dasherize build.state}} is-{{if build.isFinished (dasherize build.reviewState)}} {{if (eq build.reviewStateReason 'no_diffs') 'is-unchanged'}}" data-test-build-state>{{build.buildStatusLabel}}</div>
   </div>

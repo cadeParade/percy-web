@@ -1,0 +1,48 @@
+.percy-code-snippet {
+  @apply p-2;
+  @apply pr-8;
+  @apply bg-gray-700;
+  @apply text-white;
+  @apply rounded;
+  @apply overflow-scroll;
+}
+
+.percy-code-comment {
+  @apply text-gray-300;
+}
+
+.percy-code-snippet pre {
+  @apply relative;
+  @apply max-w-full;
+  @apply p-0;
+  @apply m-0;
+  @apply font-mono;
+  @apply text-sm;
+  @apply leading-loose;
+  @apply whitespace-normal;
+  @apply break-words;
+  min-width: 100px;
+  hyphens: none;
+  word-break: normal;
+  counter-reset: line;
+}
+
+.percy-code-snippet pre span {
+  @apply block;
+  @apply whitespace-pre;
+}
+
+.percy-code-snippet pre span::before {
+  @apply inline-block;
+  @apply mr-3;
+  @apply text-xs;
+  @apply text-right;
+  @apply text-gray-300;
+  content: counter(line);
+  width: 20px;
+  counter-increment: line;
+}
+
+.percy-code-snippet pre span.percy-code-bash::before {
+  content: "$";
+}

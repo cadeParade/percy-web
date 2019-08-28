@@ -33,7 +33,7 @@ export default Component.extend({
   isGHEnterprise: equal('integrationName', GITHUB_ENTERPRISE_INTEGRATION_TYPE),
 
   hasBetaBadge: computed('isBeta', function() {
-    return this.get('isBeta') && !this.get('isGHEnterprise') ? true : false;
+    return this.isBeta && !this.isGHEnterprise ? true : false;
   }),
 
   integrationStatusKey: lookup(
@@ -45,7 +45,7 @@ export default Component.extend({
   integrationItems: INTEGRATIONS_LOOKUP,
 
   isEnabled: computed('integrationName', function() {
-    let isGeneralAvailability = this.get('isGeneralAvailability');
+    let isGeneralAvailability = this.isGeneralAvailability;
     let isAdminModeEnabled = AdminMode.isAdmin();
     if (isAdminModeEnabled || isGeneralAvailability) {
       return true;
@@ -55,24 +55,24 @@ export default Component.extend({
   }),
 
   isInstalled: computed('integrationName', function() {
-    return this.get(`organization.${this.get('integrationStatusKey')}`);
+    return this.get(`organization.${this.integrationStatusKey}`);
   }),
 
   integrationSettingsRoute: computed('integrationName', function() {
-    return `organizations.organization.integrations.${this.get('routeSlug')}`;
+    return `organizations.organization.integrations.${this.routeSlug}`;
   }),
 
   installButtonText: lookup('integrationName', INTEGRATIONS_LOOKUP, 'installButtonText'),
   buttonText: computed('isInstalled', 'installButtonText', function() {
-    if (this.get('isInstalled')) {
+    if (this.isInstalled) {
       return 'Edit Settings';
     } else {
-      return this.get('installButtonText') || 'Install';
+      return this.installButtonText || 'Install';
     }
   }),
 
   buttonClasses: computed('isInstalled', function() {
-    return this.get('isInstalled')
+    return this.isInstalled
       ? 'data-test-integration-button-edit btn text-blue-500'
       : 'data-test-integration-button-install btn btn-primary shadow-purple-lg m-0';
   }),
@@ -80,16 +80,16 @@ export default Component.extend({
   actions: {
     showSupport() {
       const messageText =
-        "Hi! I'd like to edit the details of our " + `${this.get('textName')} integration.`;
+        "Hi! I'd like to edit the details of our " + `${this.textName} integration.`;
 
-      this.get('intercom').showIntercom('showNewMessage', messageText);
+      this.intercom.showIntercom('showNewMessage', messageText);
     },
 
     installButtonAction() {
-      if (this.get('customInstallButtonAction')) {
-        this.get('customInstallButtonAction')();
+      if (this.customInstallButtonAction) {
+        this.customInstallButtonAction();
       } else {
-        this.get('router').transitionTo(this.get('integrationSettingsRoute'), this.get('orgSlug'));
+        this.router.transitionTo(this.integrationSettingsRoute, this.orgSlug);
       }
     },
   },

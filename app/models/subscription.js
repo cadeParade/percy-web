@@ -14,7 +14,7 @@ export default DS.Model.extend({
   currentPeriodStart: DS.attr('date'),
   currentPeriodEnd: DS.attr('date'),
   currentPeriodEndDisplayed: computed('currentPeriodEnd', function() {
-    const currentPeriodEnd = this.get('currentPeriodEnd');
+    const currentPeriodEnd = this.currentPeriodEnd;
     return (
       currentPeriodEnd &&
       moment(currentPeriodEnd)
@@ -37,11 +37,11 @@ export default DS.Model.extend({
 
   subscriptionData: service(),
   trialDaysRemaining: computed('trialEnd', function() {
-    return Math.round(moment(this.get('trialEnd')).diff(moment(), 'days', true));
+    return Math.round(moment(this.trialEnd).diff(moment(), 'days', true));
   }),
   currentUsageRatio: DS.attr(),
   currentUsagePercentage: computed('currentUsageRatio', function() {
-    const percentage = parseFloat(this.get('currentUsageRatio')) * 100;
+    const percentage = parseFloat(this.currentUsageRatio) * 100;
     return percentage < 1 ? Math.ceil(percentage) : Math.floor(percentage);
   }),
   hasIncludedSnapshotsRemaining: lt('currentUsageRatio', 1),

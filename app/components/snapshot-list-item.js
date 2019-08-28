@@ -27,7 +27,7 @@ export default Component.extend(InViewportMixin, {
   snapshot: null,
 
   shouldDeferRendering: false,
-  inViewport: false,
+  _isInViewport: false,
   _shouldScroll: true,
 
   classNames: ['SnapshotViewer mb-2'],
@@ -49,14 +49,14 @@ export default Component.extend(InViewportMixin, {
   isBlockApproved: readOnly('_isApproved'),
 
   shouldRenderImmediately: not('shouldDeferRendering'),
-  shouldFullyRender: or('shouldRenderImmediately', 'inViewport'),
+  shouldFullyRender: or('shouldRenderImmediately', '_isInViewport'),
 
   isActiveSnapshotBlock: computed('activeSnapshotBlockId', 'id', function() {
     return get(this, 'activeSnapshotBlockId') === get(this, 'id');
   }),
 
   didEnterViewport() {
-    set(this, 'inViewport', true);
+    set(this, '_isInViewport', true);
   },
 
   click() {
@@ -118,7 +118,7 @@ export default Component.extend(InViewportMixin, {
       state: isDiffOverlayShowing ? 'on' : 'off',
       source: 'clicked_overlay',
     };
-    this.get('analytics').track('Diff Toggled', organization, eventProperties);
+    this.analytics.track('Diff Toggled', organization, eventProperties);
   },
 
   actions: {

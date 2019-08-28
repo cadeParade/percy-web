@@ -1,7 +1,4 @@
-import setupAcceptance, {
-  setupSession,
-  renderAdapterErrorsAsPage,
-} from '../helpers/setup-acceptance';
+import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import {percySnapshot} from 'ember-percy';
 import {visit, click, currentRouteName} from '@ember/test-helpers';
 
@@ -30,12 +27,10 @@ describe('Acceptance: Join', function() {
   });
 
   it('invalid rejected', async function() {
-    await renderAdapterErrorsAsPage(async () => {
-      await visit('/join/invalid-code');
-      expect(currentRouteName()).to.equal('error');
+    await visit('/join/invalid-code');
+    expect(currentRouteName()).to.equal('error');
 
-      await percySnapshot(this.test);
-    });
+    await percySnapshot(this.test);
   });
 
   it('valid accepted', async function() {

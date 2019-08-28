@@ -8,6 +8,8 @@ import CollaborationPanel from 'percy-web/tests/pages/components/collaboration/c
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import moment from 'moment';
 import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
+import withVariation from 'percy-web/tests/helpers/with-variation';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: CollaborationPanel', function() {
   freezeMoment('2018-12-17');
@@ -19,6 +21,7 @@ describe('Integration: CollaborationPanel', function() {
   beforeEach(async function() {
     setupFactoryGuy(this);
     CollaborationPanel.setContext(this);
+    withVariation(this.owner, 'request-changes', false);
   });
 
   describe('when there are no comment threads', function() {
@@ -31,7 +34,7 @@ describe('Integration: CollaborationPanel', function() {
       const isCommentingAllowed = true;
       this.setProperties({commentThreads, user, saveStub, isCommentingAllowed});
 
-      await this.render(hbs`{{collaboration/collaboration-panel
+      await render(hbs`{{collaboration/collaboration-panel
         commentThreads=commentThreads
         isCommentingAllowed=isCommentingAllowed
       }}`);
@@ -55,6 +58,7 @@ describe('Integration: CollaborationPanel', function() {
 
   describe('when there are comment threads', function() {
     it('displays comment threads in correct order', async function() {
+      withVariation(this.owner, 'request-changes', true);
       const oldOpenCommentThread = make('comment-thread', 'old');
       const newOpenCommentThread = make('comment-thread', 'withTwoComments', {
         createdAt: moment().subtract(1, 'hours'),
@@ -72,25 +76,28 @@ describe('Integration: CollaborationPanel', function() {
       ];
 
       this.setProperties({commentThreads});
-      await this.render(hbs`{{collaboration/collaboration-panel
+      await render(hbs`{{collaboration/collaboration-panel
         commentThreads=commentThreads
       }}`);
 
       expect(CollaborationPanel.newComment.isNewThreadButtonVisible).to.equal(true);
       expect(CollaborationPanel.newComment.isNewThreadContainerVisible).to.equal(false);
-      expect(CollaborationPanel.commentThreads.length).to.equal(4);
+      expect(CollaborationPanel.commentThreads.length).to.equal(2);
 
       expect(CollaborationPanel.commentThreads[0].comments[0].createdAt).to.equal('a day ago');
       expect(CollaborationPanel.commentThreads[0].isClosed).to.equal(false);
+      await percySnapshot(this.test.fullTitle() + 'before closed threads are expanded');
 
+      await CollaborationPanel.showArchivedComments();
+      expect(CollaborationPanel.commentThreads.length).to.equal(4);
       expect(CollaborationPanel.commentThreads[2].comments[0].createdAt).to.equal('a day ago');
       expect(CollaborationPanel.commentThreads[2].isClosed).to.equal(true);
-      await percySnapshot(this.test);
+      await percySnapshot(this.test.fullTitle() + 'after closed threads are expanded');
     });
 
     it('does not show "New Comment" button when isCommentingAllowed is false', async function() {
       this.set('commentThreads', makeList('comment-thread', 2, 'withOneComment'));
-      await this.render(hbs`{{collaboration/collaboration-panel
+      await render(hbs`{{collaboration/collaboration-panel
         commentThreads=commentThreads
         isCommentingAllowed=false
       }}`);

@@ -13,5 +13,6 @@
 export default {
   tight: '-0.05em',
   normal: '0',
+  px: '1px',
   wide: '2px'
 };

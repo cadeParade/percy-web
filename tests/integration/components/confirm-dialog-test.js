@@ -5,6 +5,7 @@ import ConfirmDialog from 'percy-web/tests/pages/components/confirm-dialog';
 import sinon from 'sinon';
 import {defer} from 'rsvp';
 import {initialize as emberKeyboardInitialize} from 'ember-keyboard';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: Confirm Dialog', function() {
   setupRenderingTest('confirm-dialog', {
@@ -37,13 +38,13 @@ describe('Integration: Confirm Dialog', function() {
     }
 
     it('calls confirm action when "Continue" is clicked', async function() {
-      await this.render(hbs`{{confirm-dialog}}`);
+      await render(hbs`{{confirm-dialog}}`);
       await ConfirmDialog.confirm.click();
       expectConfirm(resolveSpy, confirmService);
     });
 
     it('calls confirm action when "Enter" is pressed', async function() {
-      await this.render(hbs`{{confirm-dialog}}`);
+      await render(hbs`{{confirm-dialog}}`);
       await ConfirmDialog.pressEnter();
       expectConfirm(resolveSpy, confirmService);
     });
@@ -56,13 +57,13 @@ describe('Integration: Confirm Dialog', function() {
     }
 
     it('calls cancel action when "Cancel" is clicked', async function() {
-      await this.render(hbs`{{confirm-dialog}}`);
+      await render(hbs`{{confirm-dialog}}`);
       await ConfirmDialog.cancel.click();
       expectCancel(resolveSpy, confirmService);
     });
 
     it('calls cancel action when "Escape" is pressed', async function() {
-      await this.render(hbs`{{confirm-dialog}}`);
+      await render(hbs`{{confirm-dialog}}`);
       await ConfirmDialog.pressEscape();
       expectCancel(resolveSpy, confirmService);
     });

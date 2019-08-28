@@ -12,11 +12,7 @@ import {
   uniq,
 } from '@ember/object/computed';
 import DS from 'ember-data';
-import {
-  INTEGRATION_TYPES,
-  SLACK_INTEGRATION_TYPE,
-  BITBUCKET_CLOUD_INTEGRATION_TYPE,
-} from 'percy-web/lib/integration-types';
+import {INTEGRATION_TYPES, SLACK_INTEGRATION_TYPE} from 'percy-web/lib/integration-types';
 import {inject as service} from '@ember/service';
 
 const DISPLAY_NAMES = {
@@ -44,27 +40,27 @@ export default DS.Model.extend({
   bitbucketCloudIntegration: computed(
     'versionControlIntegrations.@each.bitbucketCloudIntegrationId',
     function() {
-      return this.get('versionControlIntegrations').findBy('isBitbucketCloudIntegration');
+      return this.versionControlIntegrations.findBy('isBitbucketCloudIntegration');
     },
   ),
 
   githubIntegration: computed('versionControlIntegrations.@each.githubIntegrationId', function() {
-    return this.get('versionControlIntegrations').findBy('isGithubIntegration');
+    return this.versionControlIntegrations.findBy('isGithubIntegration');
   }),
 
   githubEnterpriseIntegration: computed(
     'versionControlIntegrations.@each.githubEnterpriseIntegrationId',
     function() {
-      return this.get('versionControlIntegrations').findBy('githubEnterpriseIntegrationId');
+      return this.versionControlIntegrations.findBy('githubEnterpriseIntegrationId');
     },
   ),
 
   gitlabIntegration: computed('versionControlIntegrations.@each.gitlabIntegrationId', function() {
-    return this.get('versionControlIntegrations').findBy('gitlabIntegrationId');
+    return this.versionControlIntegrations.findBy('gitlabIntegrationId');
   }),
 
   gitlabSelfHostedIntegration: computed('versionControlIntegrations.@each.gitlabHost', function() {
-    return this.get('versionControlIntegrations').findBy('gitlabHost');
+    return this.versionControlIntegrations.findBy('gitlabHost');
   }),
 
   githubIntegrationRequest: DS.belongsTo('github-integration-request', {
@@ -99,20 +95,11 @@ export default DS.Model.extend({
   isIntegrated: or('isVersionControlIntegrated', 'isSlackIntegrated'),
   isSlackIntegrated: gt('slackIntegrations.length', 0),
   isNotSlackIntegrated: not('isSlackIntegrated'),
-  isSlackAllowed: computed(function() {
-    return this.get('launchDarkly').variation('slack-integration');
-  }),
-  isBitbucketCloudAllowed: computed(function() {
-    return this.get('launchDarkly').variation('bitbucket-cloud-integration');
-  }),
   availableIntegrations: computed('versionControlIntegrations.[]', function() {
     let integrations = [];
     for (const key of Object.keys(INTEGRATION_TYPES)) {
       let item = INTEGRATION_TYPES[key];
       if (key == SLACK_INTEGRATION_TYPE) {
-        continue;
-      }
-      if (key == BITBUCKET_CLOUD_INTEGRATION_TYPE && !this.get('isBitbucketCloudAllowed')) {
         continue;
       }
       if (this.get(`${item.organizationIntegrationStatus}`) != true) {
@@ -123,7 +110,7 @@ export default DS.Model.extend({
   }),
 
   githubAuthMechanism: computed('githubIntegration', function() {
-    if (this.get('githubIntegration')) {
+    if (this.githubIntegration) {
       return 'github-integration';
     }
     return 'no-access';
@@ -162,7 +149,7 @@ export default DS.Model.extend({
     'uniqueRepoSources.[]',
     function() {
       const groups = [];
-      this.get('uniqueRepoSources').forEach(source => {
+      this.uniqueRepoSources.forEach(source => {
         if (source) {
           const displayName = source.camelize();
           const reposForGroup = this.get(`${displayName}Repos`);

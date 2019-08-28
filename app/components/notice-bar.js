@@ -21,7 +21,7 @@ export default Component.extend({
   isTrialEndingToday: equal('trialDaysRemaining', 0),
 
   _isUserMember: computed('organization', function() {
-    return this.get('_getIsUserMember').perform(this.get('organization'));
+    return this._getIsUserMember.perform(this.organization);
   }),
 
   _getIsUserMember: task(function*(org) {

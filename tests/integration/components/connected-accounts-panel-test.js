@@ -9,6 +9,7 @@ import {make} from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import CAPPageObject from 'percy-web/tests/pages/components/connected-accounts-panel';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: ConnectedAccountsPanel', function() {
   setupRenderingTest('connected-accounts-panel', {
@@ -36,7 +37,7 @@ describe('Integration: ConnectedAccountsPanel', function() {
         addIdentity: addStub,
       });
 
-      await this.render(hbs`{{
+      await render(hbs`{{
         connected-accounts-panel
         identities=identities
         deleteIdentity=(action "deleteIdentity")
@@ -72,7 +73,7 @@ describe('Integration: ConnectedAccountsPanel', function() {
         addIdentity: addStub,
       });
 
-      await this.render(hbs`{{
+      await render(hbs`{{
         connected-accounts-panel
         identities=identities
         deleteIdentity=(action "deleteIdentity")
@@ -110,7 +111,7 @@ describe('Integration: ConnectedAccountsPanel', function() {
         addIdentity: addStub,
       });
 
-      await this.render(hbs`{{
+      await render(hbs`{{
         connected-accounts-panel
         identities=identities
         deleteIdentity=(action "deleteIdentity")

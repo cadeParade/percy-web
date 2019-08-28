@@ -72,9 +72,15 @@ describe('Acceptance: Marketing pages', function() {
         const expectedPath = authenticated ? 'organizations.new' : 'signup';
         expect(currentRouteName()).to.equal(expectedPath);
       });
-      it('can select enterprise plan', async function() {
+      it('can select medium plan', async function() {
+        stubLockModal(this.owner);
         await click(cardCtas[1]);
-        expect(currentRouteName()).to.equal('schedule-demo');
+        const expectedPath = authenticated ? 'organizations.new' : 'signup';
+        expect(currentRouteName()).to.equal(expectedPath);
+      });
+      it('can select enterprise plan', async function() {
+        await click(cardCtas[2]);
+        expect(currentRouteName()).to.equal('enterprise');
       });
     });
 

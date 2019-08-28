@@ -23,7 +23,7 @@ export default Component.extend({
   }),
 
   _isTruthy(plan) {
-    const field = this.get('field');
+    const field = this.field;
     const value = this.get(plan).get(field);
     return value === 'true' || value === true;
   },

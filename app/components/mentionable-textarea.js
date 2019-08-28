@@ -1,7 +1,6 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object';
 import {get} from '@ember/object';
-import {run} from '@ember/runloop';
 import {inject as service} from '@ember/service';
 import Ember from 'ember';
 
@@ -42,11 +41,9 @@ export default Component.extend({
 
   willDestroyElement() {
     this._super(...arguments);
-    run(() => {
-      this.textareaElement.removeEventListener('tribute-replaced', this.boundHandleItemSelected);
-      this.tribute.hideMenu();
-      this.tribute.detach(this.textareaElement);
-    });
+    this.textareaElement.removeEventListener('tribute-replaced', this.boundHandleItemSelected);
+    this.tribute.hideMenu();
+    this.tribute.detach(this.textareaElement);
   },
 });
 

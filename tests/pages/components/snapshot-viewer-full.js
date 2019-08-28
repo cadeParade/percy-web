@@ -59,6 +59,7 @@ export const SnapshotViewerFull = {
   clickToggleFullScreen: alias('header.clickToggleFullscreen'),
 
   clickApprove: alias('header.clickApprove'),
+  clickReject: alias('header.clickReject'),
   approveButton: alias('header.snapshotApprovalButton.button'),
   isApproved: alias('header.isApproved'),
 

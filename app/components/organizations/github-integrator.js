@@ -15,31 +15,29 @@ export default Component.extend(PollingMixin, {
   shouldPollForUpdates: alias('organization.githubIntegrationRequest'),
 
   pollRefresh() {
-    this.get('organization')
-      .reload()
-      .then(organization => {
-        let githubIntegration = organization.get('githubIntegration');
-        let githubIntegrationRequest = organization.get('githubIntegrationRequest');
+    this.organization.reload().then(organization => {
+      let githubIntegration = organization.get('githubIntegration');
+      let githubIntegrationRequest = organization.get('githubIntegrationRequest');
 
-        // If the has been fully installed or uninstalled, stop polling for updates.
-        if (githubIntegration || (!githubIntegration && !githubIntegrationRequest)) {
-          this.get('pollingTask').cancel();
-        }
-      });
+      // If the has been fully installed or uninstalled, stop polling for updates.
+      if (githubIntegration || (!githubIntegration && !githubIntegrationRequest)) {
+        this.pollingTask.cancel();
+      }
+    });
   },
 
   actions: {
     cancelIntegrationRequest() {
       let integrationRequest = this.get('organization.githubIntegrationRequest');
-      integrationRequest.set('_orgForAdapter', this.get('organization'));
+      integrationRequest.set('_orgForAdapter', this.organization);
       integrationRequest.destroyRecord();
-      this.get('pollingTask').cancel();
+      this.pollingTask.cancel();
     },
 
     triggerInstallation() {
-      let url = this.get('githubIntegrationUrl');
-      let organization = this.get('organization');
-      let githubIntegrationRequest = this.get('store').createRecord('github-integration-request', {
+      let url = this.githubIntegrationUrl;
+      let organization = this.organization;
+      let githubIntegrationRequest = this.store.createRecord('github-integration-request', {
         _orgForAdapter: organization,
       });
       githubIntegrationRequest.save().then(() => {

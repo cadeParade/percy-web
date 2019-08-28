@@ -8,6 +8,7 @@ import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 import {resolve, defer} from 'rsvp';
 import GroupApprovalButton from 'percy-web/tests/pages/components/group-approval-button';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: GroupApprovalButton', function() {
   setupRenderingTest('group-approval-button', {
@@ -26,7 +27,7 @@ describe('Integration: GroupApprovalButton', function() {
     const numTotalSnapshots = 'one million';
     beforeEach(async function() {
       this.setProperties({numTotalSnapshots});
-      await this.render(hbs`{{group-approval-button
+      await render(hbs`{{group-approval-button
         isGroupApproved=true
         numTotalSnapshots=numTotalSnapshots
         createReview=createReview
@@ -49,7 +50,7 @@ describe('Integration: GroupApprovalButton', function() {
 
     describe('when isDisabled is true', function() {
       beforeEach(async function() {
-        await this.render(hbs`{{group-approval-button
+        await render(hbs`{{group-approval-button
           isGroupApproved=isGroupApproved
           isDisabled=true
           createReview=createReview
@@ -74,7 +75,7 @@ describe('Integration: GroupApprovalButton', function() {
 
       beforeEach(async function() {
         this.setProperties({approvableSnapshots, numUnapprovedSnapshots});
-        await this.render(hbs`{{group-approval-button
+        await render(hbs`{{group-approval-button
           isGroupApproved=isGroupApproved
           isDisabled=false
           createReview=createReview

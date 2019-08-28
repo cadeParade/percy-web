@@ -1,18 +1,17 @@
-import {setupComponentTest} from 'ember-mocha';
+import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
 import {it, describe, beforeEach} from 'mocha';
 import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import BuildPage from 'percy-web/tests/pages/build-page';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: BuildToolbar', function() {
-  setupComponentTest('build-toolbar', {
-    integration: true,
-  });
+  setupRenderingTest();
 
   beforeEach(function() {
-    setupFactoryGuy(this.container);
+    setupFactoryGuy(this);
     BuildPage.setContext(this);
   });
 
@@ -27,7 +26,7 @@ describe('Integration: BuildToolbar', function() {
         organization,
       });
 
-      this.render(hbs`{{build-toolbar
+      render(hbs`{{build-toolbar
         build=build
         project=project
         organization=organization

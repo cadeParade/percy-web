@@ -1,6 +1,7 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import PasswordChangeRequest from '../pages/components/password-change-request';
 import {percySnapshot} from 'ember-percy';
+import {settled} from '@ember/test-helpers';
 
 describe('Acceptance: PasswordChangeRequest', function() {
   setupAcceptance({authenticate: true});
@@ -21,6 +22,7 @@ describe('Acceptance: PasswordChangeRequest', function() {
   it('shows page with change password sent message', async function() {
     await PasswordChangeRequest.visitUserSettingsPage();
     await PasswordChangeRequest.submitRequest();
+    await settled();
     expect(PasswordChangeRequest.isPasswordChangeMessagePresent).to.equal(true);
     expect(PasswordChangeRequest.changePasswordMessageContains(this.user.email)).to.equal(true);
 

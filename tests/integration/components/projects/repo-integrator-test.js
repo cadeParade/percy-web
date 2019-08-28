@@ -7,6 +7,7 @@ import sinon from 'sinon';
 import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import repoRefreshServiceStub from 'percy-web/tests/helpers/mock-repo-refresh-service';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: RepoIntegratorComponent', function() {
   setupRenderingTest('repo-integrator', {
@@ -25,7 +26,7 @@ describe('Integration: RepoIntegratorComponent', function() {
       project.set('organization', organization);
       this.setProperties({project});
       repoRefreshServiceStub(this, null, null);
-      await this.render(hbs`{{projects/repo-integrator project=project}}`);
+      await render(hbs`{{projects/repo-integrator project=project}}`);
     });
 
     it('renders with the repo selector closed', async function() {
@@ -47,7 +48,7 @@ describe('Integration: RepoIntegratorComponent', function() {
       freshReposStub = sinon.stub();
       repoRefreshServiceStub(this, null, null, freshReposStub);
 
-      await this.render(hbs`{{projects/repo-integrator project=project}}`);
+      await render(hbs`{{projects/repo-integrator project=project}}`);
     });
 
     it('displays no integrations message', async function() {

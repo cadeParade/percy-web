@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import seedFaker from './seed-faker';
 import {authenticateSession} from 'ember-simple-auth/test-support';
 import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage-sandbox';
@@ -30,31 +29,6 @@ export default function setupAcceptance({authenticate = true} = {}) {
     if (server !== undefined) {
       server.shutdown();
     }
-  });
-}
-
-// Helper to render error pages. By default any error raised during test runs
-// aborts the tests. This helper lets you pass those errors to the application
-// so we can verify the error pages rendered.
-// Example:
-//   renderAdapterErrorsAsPage(async () => {
-//     await visit('/join/invalid-code');
-//     expect(currentPath()).to.equal('error');
-//   );
-// See https://github.com/emberjs/ember.js/issues/12791
-export function renderAdapterErrorsAsPage(callbackThatReturnsAPromise) {
-  let adapterException = Ember.Test.adapter.exception;
-  Ember.Test.adapter.exception = error => {
-    if (error.isAdapterError) {
-      Ember.Logger.info('Rendering exception:', error, ' as application error page');
-      return null;
-    } else {
-      return adapterException(error);
-    }
-  };
-  return callbackThatReturnsAPromise().finally(() => {
-    Ember.Test.adapter.exception = adapterException;
-    adapterException = null;
   });
 }
 

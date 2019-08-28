@@ -207,9 +207,8 @@ module.exports = function(environment) {
     };
     ENV.launchDarkly.local = true;
     ENV.launchDarkly.localFeatureFlags = {
-      'slack-integration': false,
-      comments: false,
-      'bitbucket-cloud-integration': false,
+      'request-changes': false,
+      'allow-demo-projects': true,
     };
 
     ENV.APP.bitbucketCloudUrls = {

@@ -38,14 +38,13 @@
           organization=organization
         }}
       {{/each}}
-      {{#if organization.isSlackAllowed}}
-        {{#if organization.isNotSlackIntegrated}}
-          {{organizations/integrations/integration-item
-            integrationName='slack'
-            organization=organization
-            customInstallButtonAction=(route-action "connectSlackChannel")
-          }}
-        {{/if}}
+
+      {{#if organization.isNotSlackIntegrated}}
+        {{organizations/integrations/integration-item
+          integrationName='slack'
+          organization=organization
+          customInstallButtonAction=(route-action "connectSlackChannel")
+        }}
       {{/if}}
     </div>
   </section>

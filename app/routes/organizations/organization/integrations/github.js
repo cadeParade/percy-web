@@ -8,6 +8,6 @@ export default Route.extend(AuthenticatedRouteMixin, {
   async beforeModel() {
     // If we don't force reload user on this page,
     // we don't get the associated Identities
-    return await this.get('session').forceReloadUser();
+    return await this.session.forceReloadUser();
   },
 });

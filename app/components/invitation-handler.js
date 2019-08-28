@@ -12,23 +12,21 @@ export default Component.extend({
   flashMessages: service(),
   actions: {
     logout() {
-      this.get('logout')();
+      this.logout();
     },
     accept() {
       // Invitations are accepted with a PATCH request against the invite endpoint.
-      this.get('invitation')
-        .save()
-        .then(
-          model => {
-            this.get('inviteAccepted')(model);
-          },
-          () => {
-            this.get('flashMessages').danger(
-              'Something went wrong! You might already be in this organization. ' +
-                'Feel free to reach out to hello@percy.io for help.',
-            );
-          },
-        );
+      this.invitation.save().then(
+        model => {
+          this.inviteAccepted(model);
+        },
+        () => {
+          this.flashMessages.danger(
+            'Something went wrong! You might already be in this organization. ' +
+              'Feel free to reach out to hello@percy.io for help.',
+          );
+        },
+      );
     },
   },
 });

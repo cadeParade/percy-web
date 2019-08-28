@@ -1,5 +1,5 @@
-import {get} from '@ember/object';
 import {filterBy, notEmpty, or, readOnly} from '@ember/object/computed';
+import {computed} from '@ember/object';
 import SnapshotListItem from 'percy-web/components/snapshot-list-item';
 import {inject as service} from '@ember/service';
 
@@ -9,6 +9,7 @@ export default SnapshotListItem.extend({
   showSnapshotFullModalTriggered: null,
   createReview: null,
   externalIsCommentPanelShowing: false,
+  userIsCommentPanelShowing: undefined,
 
   attributeBindings: ['data-test-snapshot-viewer'],
   'data-test-snapshot-viewer': true,
@@ -18,9 +19,25 @@ export default SnapshotListItem.extend({
   _isApproved: readOnly('snapshot.isApproved'),
   isUnchangedSnapshotExpanded: or('isFocus', 'isExpanded'),
 
-  _internalIsCommentPanelShowing: notEmpty('openCommentThreads'),
-  isCommentPanelShowing: or('_internalIsCommentPanelShowing', 'externalIsCommentPanelShowing'),
+  _internalIsCommentPanelShowing: notEmpty('commentThreads'),
 
+  isCommentPanelShowing: computed(
+    'userIsCommentPanelShowing',
+    '_internalIsCommentPanelShowing',
+    'externalIsCommentPanelShowing',
+    function() {
+      if (this.userIsCommentPanelShowing !== undefined) {
+        return this.userIsCommentPanelShowing;
+      } else {
+        return this.defaultIsCommentPanelShowing;
+      }
+    },
+  ),
+
+  defaultIsCommentPanelShowing: or(
+    '_internalIsCommentPanelShowing',
+    'externalIsCommentPanelShowing',
+  ),
   commentThreads: readOnly('snapshot.commentThreads'),
   openCommentThreads: filterBy('commentThreads', 'isOpen'),
 
@@ -28,11 +45,15 @@ export default SnapshotListItem.extend({
   actions: {
     toggleSnapshotOverlay() {
       this.toggleProperty('isSnapshotShowingDiffOverlay');
-      this.trackToggleOverlay(get(this, 'isSnapshotShowingDiffOverlay'));
+      this.trackToggleOverlay(this.isSnapshotShowingDiffOverlay);
     },
 
     toggleCollaborationPanel() {
-      this.toggleProperty('isCommentPanelShowing');
+      if (this.userIsCommentPanelShowing === undefined) {
+        this.set('userIsCommentPanelShowing', !this.defaultIsCommentPanelShowing);
+      } else {
+        this.toggleProperty('userIsCommentPanelShowing');
+      }
     },
   },
 });

@@ -41,6 +41,6 @@ export default Contentful.extend({
 
 function lookupContentfulModel(idKey, modelName) {
   return computed(idKey, function() {
-    return this.get('store').peekRecord(modelName, this.get(idKey));
+    return this.store.peekRecord(modelName, this.get(idKey));
   });
 }

@@ -5,6 +5,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {make} from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import browserSwitcher from 'percy-web/tests/pages/components/browser-switcher';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: BrowserSwitcher', function() {
   setupRenderingTest('browser-switcher', {
@@ -14,21 +15,20 @@ describe('Integration: BrowserSwitcher', function() {
   let browsers;
   let updateActiveBrowserStub;
 
-  const unapprovedSnapshotsWithDiffForBrowsers = {
-    'firefox-id': ['diff1', 'diff2'],
-    'chrome-id': ['difffoo'],
-  };
-
   beforeEach(async function() {
     setupFactoryGuy(this);
     browserSwitcher.setContext(this);
+    const store = this.owner.lookup('service:store');
 
     const build = make('build');
-    build.set('unapprovedSnapshotsWithDiffForBrowsers', unapprovedSnapshotsWithDiffForBrowsers);
+    const snapshotWithTwoBrowsers = make('snapshot', 'withTwoBrowsers', {build});
+    const snapshotWithFirefoxOnly = make('snapshot', 'withComparisons', {build});
+    browsers = snapshotWithTwoBrowsers.comparisons.mapBy('browser').uniq();
+    build.setProperties({browsers});
+    sinon.stub(store, 'peekAll').returns([snapshotWithTwoBrowsers, snapshotWithFirefoxOnly]);
 
-    browsers = [make('browser'), make('browser', 'chrome')];
-    const activeBrowser = browsers[1];
     updateActiveBrowserStub = sinon.stub();
+    const activeBrowser = browsers[1];
 
     this.setProperties({
       build,
@@ -37,7 +37,7 @@ describe('Integration: BrowserSwitcher', function() {
       updateActiveBrowser: updateActiveBrowserStub,
     });
 
-    await this.render(hbs`{{browser-switcher
+    await render(hbs`{{browser-switcher
       browsers=browsers
       activeBrowser=activeBrowser
       updateActiveBrowser=updateActiveBrowser

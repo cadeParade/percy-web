@@ -11,8 +11,8 @@ export default Service.extend({
 
   // This method is tested via default-project-test and default-org-test
   redirectToDefaultOrganization({useMostRecentOrg = true} = {}) {
-    const currentUser = this.get('currentUser');
-    const router = this.get('router');
+    const currentUser = this.currentUser;
+    const router = this.router;
     if (!currentUser) {
       return router.replaceWith('/login');
     }
@@ -22,17 +22,15 @@ export default Service.extend({
     if (lastOrganizationSlug && useMostRecentOrg) {
       return router.replaceWith('organization.index', lastOrganizationSlug);
     } else {
-      this.get('store')
-        .query('organization', {user: currentUser})
-        .then(orgs => {
-          let org = orgs.get('firstObject');
-          if (org) {
-            return router.replaceWith('organization.index', org.get('slug'));
-          } else {
-            // User has no organizations.
-            return router.replaceWith('organizations.new');
-          }
-        });
+      this.store.query('organization', {user: currentUser}).then(orgs => {
+        let org = orgs.get('firstObject');
+        if (org) {
+          return router.replaceWith('organization.index', org.get('slug'));
+        } else {
+          // User has no organizations.
+          return router.replaceWith('organizations.new');
+        }
+      });
     }
   },
 
@@ -61,7 +59,7 @@ export default Service.extend({
 
     const recentProjectSlug = recentProjectSlugs[lastOrganizationSlug];
     if (lastOrganizationSlug && recentProjectSlug) {
-      this.get('router').transitionTo(
+      this.router.transitionTo(
         'organization.project.index',
         lastOrganizationSlug,
         recentProjectSlug,
@@ -73,14 +71,14 @@ export default Service.extend({
 
   _transitionToProject(orgSlug, projectSlug, goToSettings) {
     if (goToSettings) {
-      return this.get('router').transitionTo('organization.project.settings', orgSlug, projectSlug);
+      return this.router.transitionTo('organization.project.settings', orgSlug, projectSlug);
     } else {
-      return this.get('router').transitionTo('organization.project.index', orgSlug, projectSlug);
+      return this.router.transitionTo('organization.project.index', orgSlug, projectSlug);
     }
   },
 
   _transitionToNewProject(orgSlug) {
-    return this.get('router').transitionTo('organizations.organization.projects.new', orgSlug);
+    return this.router.transitionTo('organizations.organization.projects.new', orgSlug);
   },
 
   _defaultProjectForOrg(orgProjects) {

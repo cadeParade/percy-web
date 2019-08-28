@@ -17,7 +17,7 @@ export default Component.extend({
 
   actions: {
     deleteSlackIntegration() {
-      this.get('deleteSlackIntegration')(this.get('slackIntegration'));
+      this.deleteSlackIntegration(this.slackIntegration);
     },
   },
 });

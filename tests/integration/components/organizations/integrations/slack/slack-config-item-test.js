@@ -5,6 +5,7 @@ import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import SlackConfigItem from 'percy-web/tests/pages/components/organizations/slack-config-item';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: SlackConfigItem', function() {
   setupRenderingTest('slack-config-item', {
@@ -38,7 +39,7 @@ describe('Integration: SlackConfigItem', function() {
         projectOptions,
         slackIntegrationConfig,
       });
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/integrations/slack-config-item
         projectOptions=projectOptions
         slackIntegrationConfig=slackIntegrationConfig
@@ -73,7 +74,7 @@ describe('Integration: SlackConfigItem', function() {
         projectOptions,
         slackIntegrationConfig,
       });
-      await this.render(hbs`{{
+      await render(hbs`{{
           organizations/integrations/slack-config-item
           projectOptions=projectOptions
           slackIntegrationConfig=slackIntegrationConfig

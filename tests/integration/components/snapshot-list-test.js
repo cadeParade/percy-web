@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-expressions */
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
-import {it, describe, beforeEach, afterEach} from 'mocha';
+import {it, describe, beforeEach} from 'mocha';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
 import sinon from 'sinon';
@@ -10,10 +10,7 @@ import {percySnapshot} from 'ember-percy';
 import SnapshotList from 'percy-web/tests/pages/components/snapshot-list';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {initialize as initializeEmberKeyboard} from 'ember-keyboard';
-import {
-  enableFlag,
-  disableFlag,
-} from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: SnapshotList', function() {
   setupRenderingTest('snapshot-list', {
@@ -44,7 +41,7 @@ describe('Integration: SnapshotList', function() {
         shouldDeferRendering: true,
       });
 
-      await this.render(hbs`{{snapshot-list
+      await render(hbs`{{snapshot-list
         snapshotsChanged=snapshotsChanged
         build=build
         createReview=stub
@@ -103,7 +100,7 @@ describe('Integration: SnapshotList', function() {
         isUnchangedSnapshotsVisible: false,
       });
 
-      await this.render(hbs`{{snapshot-list
+      await render(hbs`{{snapshot-list
         snapshotsChanged=snapshotsChanged
         build=build
         createReview=stub
@@ -234,9 +231,9 @@ describe('Integration: SnapshotList', function() {
       'unapproved single snapshot without comments';
     const approvedSingleSnapshotsWithCommentsTitle = 'approved single snapshot with comments';
     const approvedSingleSnapshotsWithoutCommentsTitle = 'approved single snapshot without comments';
+    const rejectedSingleSnapshotsTitle = 'rejected single snapshot';
 
     beforeEach(async function() {
-      enableFlag(this, 'comments');
       const stub = sinon.stub();
       const build = make('build', 'finished', {totalSnapshots: 11});
       const browser = make('browser');
@@ -267,11 +264,21 @@ describe('Integration: SnapshotList', function() {
           build,
           fingerprint: 'unapprovedGroupWithComments',
         },
+      ).concat(
+        makeList('snapshot', 1, 'withComparisons', 'approved', {
+          build,
+          fingerprint: 'unapprovedGroupWithComments',
+        }),
       );
 
       const unapprovedGroupWithoutComments = makeList('snapshot', 5, 'withComparisons', {
         build,
         fingerprint: 'unapprovedGroupWithoutComments',
+      });
+
+      const rejectedGroup = makeList('snapshot', 2, 'rejected', 'withComparisons', {
+        build,
+        fingerprint: 'rejectedGroup',
       });
 
       const unapprovedSingleSnapshotsWithComments = makeList(
@@ -304,19 +311,26 @@ describe('Integration: SnapshotList', function() {
         {build, name: approvedSingleSnapshotsWithoutCommentsTitle},
       );
 
+      const rejectedSnapshot = makeList('snapshot', 1, 'rejected', 'withComparisons', {
+        build,
+        name: rejectedSingleSnapshotsTitle,
+      });
+
       const snapshotsChanged = unapprovedSingleSnapshotsWithoutComments.concat(
         approvedSingleSnapshotsWithoutComments,
         approvedSingleSnapshotsWithComments,
         unapprovedSingleSnapshotsWithComments,
         approvedGroupWithoutComments,
+        rejectedGroup,
         unapprovedGroupWithoutComments,
+        rejectedSnapshot,
         approvedGroupWithComments,
         unapprovedGroupWithComments,
       );
 
       this.setProperties({snapshotsChanged, build, stub, browser, numSnapshotsUnchanged: 0});
 
-      await this.render(hbs`{{snapshot-list
+      await render(hbs`{{snapshot-list
         snapshotsChanged=snapshotsChanged
         snapshotsUnchanged=snapshotsUnchanged
         build=build
@@ -326,10 +340,6 @@ describe('Integration: SnapshotList', function() {
         toggleUnchangedSnapshotsVisible=stub
         isBuildApprovable=true
       }}`);
-    });
-
-    afterEach(function() {
-      disableFlag(this, 'comments');
     });
 
     it('orders individual and grouped snapshots correctly', async function() {
@@ -353,39 +363,52 @@ describe('Integration: SnapshotList', function() {
         }
       }
 
-      expect(SnapshotList.snapshotBlocks.length).to.equal(8);
+      expect(SnapshotList.snapshotBlocks.length).to.equal(10);
+      const rejectedGroup = SnapshotList.snapshotBlocks[0];
+      expectIsGroup(rejectedGroup);
+      expectGroupSnapshotCount(rejectedGroup, '2');
 
-      const firstBlock = SnapshotList.snapshotBlocks[0];
-      expectIsGroup(firstBlock);
-      expectGroupSnapshotCount(firstBlock, '4');
+      const rejectedSnapshot = SnapshotList.snapshotBlocks[1];
+      expectIsSnapshot(rejectedSnapshot);
+      expectSnapshotName(rejectedSnapshot, rejectedSingleSnapshotsTitle);
 
-      const secondBlock = SnapshotList.snapshotBlocks[1];
-      expectIsSnapshot(secondBlock);
-      expectSnapshotName(secondBlock, unapprovedSingleSnapshotsWithCommentsTitle);
+      const unapprovedGroupWithComments = SnapshotList.snapshotBlocks[2];
+      expectIsGroup(unapprovedGroupWithComments);
+      expectGroupSnapshotCount(unapprovedGroupWithComments, '4');
 
-      const thirdBlock = SnapshotList.snapshotBlocks[2];
-      expectIsGroup(thirdBlock);
-      expectGroupSnapshotCount(thirdBlock, '5');
+      const unapprovedSnapshotWithComments = SnapshotList.snapshotBlocks[3];
+      expectIsSnapshot(unapprovedSnapshotWithComments);
+      expectSnapshotName(
+        unapprovedSnapshotWithComments,
+        unapprovedSingleSnapshotsWithCommentsTitle,
+      );
 
-      const fourthBlock = SnapshotList.snapshotBlocks[3];
-      expectIsSnapshot(fourthBlock);
-      expectSnapshotName(fourthBlock, unapprovedSingleSnapshotsWithoutCommentsTitle);
+      const unapprovedGroupNoComments = SnapshotList.snapshotBlocks[4];
+      expectIsGroup(unapprovedGroupNoComments);
+      expectGroupSnapshotCount(unapprovedGroupNoComments, '5');
 
-      const fifthBlock = SnapshotList.snapshotBlocks[4];
-      expectIsGroup(fifthBlock);
-      expectGroupSnapshotCount(fifthBlock, '2');
+      const unapprovedSnapshotNoComments = SnapshotList.snapshotBlocks[5];
+      expectIsSnapshot(unapprovedSnapshotNoComments);
+      expectSnapshotName(
+        unapprovedSnapshotNoComments,
+        unapprovedSingleSnapshotsWithoutCommentsTitle,
+      );
 
-      const sixthBlock = SnapshotList.snapshotBlocks[5];
-      expectIsSnapshot(sixthBlock);
-      expectSnapshotName(sixthBlock, approvedSingleSnapshotsWithCommentsTitle);
+      const approvedGroupWithComments = SnapshotList.snapshotBlocks[6];
+      expectIsGroup(approvedGroupWithComments);
+      expectGroupSnapshotCount(approvedGroupWithComments, '2');
 
-      const seventhBlock = SnapshotList.snapshotBlocks[6];
-      expectIsGroup(seventhBlock);
-      expectGroupSnapshotCount(seventhBlock, '3');
+      const approvedSnapshotWithComments = SnapshotList.snapshotBlocks[7];
+      expectIsSnapshot(approvedSnapshotWithComments);
+      expectSnapshotName(approvedSnapshotWithComments, approvedSingleSnapshotsWithCommentsTitle);
 
-      const eighthBlock = SnapshotList.snapshotBlocks[7];
-      expectIsSnapshot(eighthBlock);
-      expectSnapshotName(eighthBlock, approvedSingleSnapshotsWithoutCommentsTitle);
+      const approvedGroupNoComments = SnapshotList.snapshotBlocks[8];
+      expectIsGroup(approvedGroupNoComments);
+      expectGroupSnapshotCount(approvedGroupNoComments, '3');
+
+      const approvedSnapshotNoComments = SnapshotList.snapshotBlocks[9];
+      expectIsSnapshot(approvedSnapshotNoComments);
+      expectSnapshotName(approvedSnapshotNoComments, approvedSingleSnapshotsWithoutCommentsTitle);
 
       await percySnapshot(this.test);
     });

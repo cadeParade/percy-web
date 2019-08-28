@@ -7,6 +7,7 @@ import BillingCardUpdater from 'percy-web/tests/pages/components/organizations/b
 import mockStripeService from 'percy-web/tests/helpers/mock-stripe-service';
 import sinon from 'sinon';
 import {resolve} from 'rsvp';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: BillingCardUpdater', function() {
   setupRenderingTest('organizations/billing-card-updater', {
@@ -23,7 +24,7 @@ describe('Integration: BillingCardUpdater', function() {
   });
 
   it('disables "Update Credit Card" button when card is not complete', async function() {
-    await this.render(hbs`{{
+    await render(hbs`{{
       organizations/billing-card-updater
       organization=organization
       _isCardComplete=false
@@ -33,7 +34,7 @@ describe('Integration: BillingCardUpdater', function() {
   });
 
   it('enables "Update Credit Card" button when card is complete', async function() {
-    await this.render(hbs`{{
+    await render(hbs`{{
       organizations/billing-card-updater
       organization=organization
       _isCardComplete=true
@@ -45,7 +46,7 @@ describe('Integration: BillingCardUpdater', function() {
   it('calls hideForm when the cancel button is clicked', async function() {
     const hideFormStub = sinon.stub().returns(resolve());
     this.setProperties({hideFormStub});
-    await this.render(hbs`{{
+    await render(hbs`{{
       organizations/billing-card-updater
       organization=organization
       hideForm=hideFormStub
@@ -65,7 +66,7 @@ describe('Integration: BillingCardUpdater', function() {
     });
 
     it('calls updateCreditCard when submitted', async function() {
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/billing-card-updater
         organization=organization
         updateCreditCard=updateCreditCardStub
@@ -81,7 +82,7 @@ describe('Integration: BillingCardUpdater', function() {
     });
 
     it('calls hideForm after save', async function() {
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/billing-card-updater
         organization=organization
         updateCreditCard=updateCreditCardStub
@@ -99,7 +100,7 @@ describe('Integration: BillingCardUpdater', function() {
         .registerTypes(['success']);
       const flashMessageSuccessStub = sinon.stub(flashMessageService, 'success');
 
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/billing-card-updater
         organization=organization
         updateCreditCard=updateCreditCardStub
@@ -114,7 +115,7 @@ describe('Integration: BillingCardUpdater', function() {
     it('shows button loading state when save task is running', async function() {
       const cardSaveTask = {isRunning: true};
       this.setProperties({cardSaveTask});
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/billing-card-updater
         organization=organization
         cardSaveTask=cardSaveTask

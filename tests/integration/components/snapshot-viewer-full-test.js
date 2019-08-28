@@ -1,7 +1,7 @@
 /* jshint expr:true */
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
-import {it, describe, beforeEach, afterEach} from 'mocha';
+import {it, describe, beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
@@ -9,10 +9,7 @@ import sinon from 'sinon';
 import {resolve} from 'rsvp';
 import FullSnapshotPage from 'percy-web/tests/pages/components/snapshot-viewer-full';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {
-  enableFlag,
-  disableFlag,
-} from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: SnapshotViewerFull', function() {
   setupRenderingTest('snapshot-viewer-full', {
@@ -62,7 +59,7 @@ describe('Integration: SnapshotViewerFull', function() {
       stub: sinon.stub(),
     });
 
-    await this.render(hbs`{{snapshot-viewer-full
+    await render(hbs`{{snapshot-viewer-full
       snapshot=snapshot
       snapshotSelectedWidth=snapshotSelectedWidth
       comparisonMode=comparisonMode
@@ -167,7 +164,7 @@ describe('Integration: SnapshotViewerFull', function() {
     });
 
     it('does not display when build is not finished', function() {
-      this.set('snapshot.build.isFinished', false);
+      this.set('snapshot.build.state', 'pending');
       expect(FullSnapshotPage.header.snapshotApprovalButton.isVisible).to.equal(false);
     });
 
@@ -185,27 +182,23 @@ describe('Integration: SnapshotViewerFull', function() {
   });
 
   describe('commenting', function() {
-    beforeEach(async function() {
-      enableFlag(this, 'comments');
-    });
-
-    afterEach(function() {
-      disableFlag(this, 'comments');
-    });
-
     describe('panel toggling', function() {
+      async function expectToggleWorks({isOpenByDefault = true, context} = {}) {
+        await FullSnapshotPage.header.toggleCommentSidebar();
+        expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(!isOpenByDefault);
+        await percySnapshot(context.test);
+
+        await FullSnapshotPage.header.toggleCommentSidebar();
+        expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(isOpenByDefault);
+      }
+
       describe('when there are no comments', function() {
         it('does not show panel by default', async function() {
           expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(false);
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function() {
-          await FullSnapshotPage.header.toggleCommentSidebar();
-          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(true);
-          await percySnapshot(this.test);
-
-          await FullSnapshotPage.header.toggleCommentSidebar();
-          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(false);
+          await expectToggleWorks({isOpenByDefault: false, context: this});
         });
       });
 
@@ -219,12 +212,7 @@ describe('Integration: SnapshotViewerFull', function() {
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function() {
-          await FullSnapshotPage.header.toggleCommentSidebar();
-          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(false);
-          await percySnapshot(this.test);
-
-          await FullSnapshotPage.header.toggleCommentSidebar();
-          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(true);
+          await expectToggleWorks({isOpenByDefault: true, context: this});
         });
       });
 
@@ -234,17 +222,12 @@ describe('Integration: SnapshotViewerFull', function() {
           make('comment-thread', 'withTwoComments', 'closed', 'note', {snapshot});
         });
 
-        it('does not show panel by default', async function() {
-          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(false);
+        it('shows panel by default', async function() {
+          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(true);
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function() {
-          await FullSnapshotPage.header.toggleCommentSidebar();
-          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(true);
-          await percySnapshot(this.test);
-
-          await FullSnapshotPage.header.toggleCommentSidebar();
-          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(false);
+          await expectToggleWorks({isOpenByDefault: true, context: this});
         });
       });
     });

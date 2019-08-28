@@ -6,7 +6,7 @@ export default Route.extend({
   session: service(),
   beforeModel() {
     if (this.get('session.isAuthenticated')) {
-      return this.get('redirects').redirectToDefaultOrganization();
+      return this.redirects.redirectToDefaultOrganization();
     } else {
       return this._super(...arguments);
     }

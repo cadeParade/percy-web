@@ -5,6 +5,7 @@ import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {make} from 'ember-data-factory-guy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: QuickstartButtonComponent', function() {
   setupRenderingTest('quickstart-button', {
@@ -19,7 +20,7 @@ describe('Integration: QuickstartButtonComponent', function() {
   });
 
   it('renders', async function() {
-    await this.render(hbs`{{quickstart-button}}`);
+    await render(hbs`{{quickstart-button}}`);
     await percySnapshot(this.test);
   });
 });

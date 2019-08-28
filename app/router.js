@@ -29,7 +29,7 @@ const Router = EmberRouter.extend({
 
   notifyAnalytics: on('didTransition', function() {
     if (window.ga) {
-      window.ga('send', 'pageview', {page: this.get('url')});
+      window.ga('send', 'pageview', {page: this.url});
     }
 
     if (window.Intercom) {

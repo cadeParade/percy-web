@@ -1,11 +1,11 @@
 import InfinityModel from 'ember-infinity/lib/infinity-model';
 import utils from 'percy-web/lib/utils';
-import {get, set} from '@ember/object';
+import {set} from '@ember/object';
 
 const ExtendedInfinityModel = InfinityModel.extend({
   buildParams() {
     let params = this._super(...arguments);
-    params['page[cursor]'] = get(this, '_cursor'); // where `this` is the infinityModel instance
+    params['page[cursor]'] = this._cursor; // where `this` is the infinityModel instance
     return params;
   },
 
@@ -21,7 +21,7 @@ const ExtendedInfinityModel = InfinityModel.extend({
     // the store, not just all the ordered builds. That way the front end will ask for the right
     // builds to make scrolling continuous and seamless, not missing any builds.
     const projectId = builds.get('firstObject.project.id');
-    const localBuilds = this.get('store').peekAll('build');
+    const localBuilds = this.store.peekAll('build');
     const filteredBuilds = localBuilds.filter(item => {
       return item.get('project.id') === projectId;
     });

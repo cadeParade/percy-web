@@ -7,6 +7,7 @@ import hbs from 'htmlbars-inline-precompile';
 import NewOrganization from 'percy-web/tests/pages/components/new-organization';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import Service from '@ember/service';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: OrganizationsNewOrganization', function() {
   setupRenderingTest('organizations/new-organization', {
@@ -34,7 +35,7 @@ describe('Integration: OrganizationsNewOrganization', function() {
       const githubIdentity = make('identity', 'githubProvider', {user});
       this.setProperties({newOrganization, userIdentities: [githubIdentity]});
 
-      await this.render(hbs`{{organizations/new-organization
+      await render(hbs`{{organizations/new-organization
         newOrganization=newOrganization
         organizationCreated=organizationCreated
         userIdentities=userIdentities
@@ -54,7 +55,7 @@ describe('Integration: OrganizationsNewOrganization', function() {
       this.setProperties({newOrganization, userIdentities: [auth0Identity]});
       this.set('newOrganization', newOrganization);
 
-      await this.render(hbs`{{organizations/new-organization
+      await render(hbs`{{organizations/new-organization
         newOrganization=newOrganization
         organizationCreated=organizationCreated
         userIdentities=userIdentities
@@ -89,7 +90,7 @@ describe('Integration: OrganizationsNewOrganization', function() {
       this.set('newOrganization', newOrganization);
       this.set('userIdentities', [githubIdentity]);
 
-      await this.render(hbs`{{organizations/new-organization
+      await render(hbs`{{organizations/new-organization
         newOrganization=newOrganization
         organizationCreated=organizationCreated
         userIdentities=userIdentities

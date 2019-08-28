@@ -31,17 +31,14 @@ var Polling = Mixin.create({
   _numPollRequests: 0,
 
   maybeStartPolling: on('init', function() {
-    if (this.get('shouldPollForUpdates')) {
-      this.set('pollingTask', this.get('pollForUpdatesTask').perform());
+    if (this.shouldPollForUpdates) {
+      this.set('pollingTask', this.pollForUpdatesTask.perform());
     }
   }),
 
   pollForUpdatesTask: task(function*() {
     this.set('_numPollRequests', 0);
-    while (
-      this.get('_numPollRequests') < this.get('MAX_UPDATE_POLLING_REQUESTS') &&
-      this.get('shouldPollForUpdates')
-    ) {
+    while (this._numPollRequests < this.MAX_UPDATE_POLLING_REQUESTS && this.shouldPollForUpdates) {
       // don't make requests when the document doesn't have focus
       // but ignore that rule if in testing, since in testing we can't guarantee window focus
       if (document.hasFocus() || Ember.testing) {
@@ -51,10 +48,10 @@ var Polling = Mixin.create({
 
       if (Ember.testing) {
         // Don't poll more than once if in a testing environment
-        return this.get('pollingTask') && this.get('pollingTask').cancel();
+        return this.pollingTask && this.pollingTask.cancel();
       }
 
-      yield timeout(this.get('POLLING_INTERVAL_SECONDS') * 1000);
+      yield timeout(this.POLLING_INTERVAL_SECONDS * 1000);
     }
   }).drop(),
 });

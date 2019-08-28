@@ -15,19 +15,19 @@ export default Component.extend({
   uncheckedValue: null,
 
   shouldBeChecked: computed('changeset.isPristine', 'checkedValue', function() {
-    return this.get('changeset.' + this.get('property')) === this.get('checkedValue');
+    return this.get('changeset.' + this.property) === this.checkedValue;
   }),
 
   fieldErrors: computed('changeset.error', function() {
-    return get(this.get('changeset.error'), this.get('property'));
+    return get(this.get('changeset.error'), this.property);
   }),
   actions: {
     updateValue(event) {
-      if (!this.get('isDisabled')) {
+      if (!this.isDisabled) {
         if (event.target.checked) {
-          this.set(`changeset.${this.get('property')}`, this.get('checkedValue'));
+          this.set(`changeset.${this.property}`, this.checkedValue);
         } else {
-          this.set(`changeset.${this.get('property')}`, this.get('uncheckedValue'));
+          this.set(`changeset.${this.property}`, this.uncheckedValue);
         }
       }
     },

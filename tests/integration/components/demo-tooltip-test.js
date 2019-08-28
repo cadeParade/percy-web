@@ -2,7 +2,7 @@ import {setupRenderingTest} from 'ember-mocha';
 import {beforeEach, it, describe} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import {expect} from 'chai';
-import {find, waitUntil, waitFor, click} from '@ember/test-helpers';
+import {find, waitUntil, waitFor, click, render} from '@ember/test-helpers';
 import {isVisible as attacherIsVisible} from 'ember-attacher';
 import {make, makeList} from 'ember-data-factory-guy';
 import hbs from 'htmlbars-inline-precompile';
@@ -31,7 +31,7 @@ describe('Integration: DemoTooltipComponent', function() {
   describe('for a single tooltip', function() {
     beforeEach(async function() {
       localStorage.clear();
-      await this.render(hbs`
+      await render(hbs`
         <div style="position: absolute; top: 20px; left:20px;">
           {{demo-tooltip
             build=build

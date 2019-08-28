@@ -11,11 +11,11 @@ export default Route.extend({
   currentUser: readOnly('session.currentUser'),
 
   async beforeModel() {
-    const currentUser = this.get('currentUser');
+    const currentUser = this.currentUser;
 
     try {
       // If we get a project, it is accessible to whoever's asking for it. Keep going.
-      const project = await this.get('_getProject').perform();
+      const project = await this._getProject.perform();
       this.set('_project', project);
       return this._super(...arguments);
     } catch (e) {
@@ -25,7 +25,7 @@ export default Route.extend({
 
   model() {
     // set by beforeModel, if successful.
-    return this.get('_project');
+    return this._project;
   },
 
   afterModel(model) {
@@ -38,7 +38,7 @@ export default Route.extend({
     const projectSlug = this.paramsFor(this.routeName).project_id;
     const orgSlug = this.paramsFor('organization').organization_id;
 
-    const preLoadedProject = this.get('store')
+    const preLoadedProject = this.store
       .peekAll('project')
       .filter(project => {
         const isProjectSlugEqual = project.get('slug') === projectSlug;
@@ -50,7 +50,7 @@ export default Route.extend({
     if (preLoadedProject) {
       return preLoadedProject;
     } else {
-      return yield this.get('store').findRecord('project', `${orgSlug}/${projectSlug}`);
+      return yield this.store.findRecord('project', `${orgSlug}/${projectSlug}`);
     }
   }),
 });

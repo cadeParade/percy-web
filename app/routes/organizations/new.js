@@ -13,8 +13,8 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
   model() {
     const organization = this.store.createRecord('organization', {
-      billingProvider: this.get('_billingProvider'),
-      billingProviderData: this.get('_billingProviderData'),
+      billingProvider: this._billingProvider,
+      billingProviderData: this._billingProviderData,
     });
     const identities = this.get('session.currentUser.identities');
     const organizationsForUser = this.store.query('organization', {
@@ -38,14 +38,14 @@ export default Route.extend(AuthenticatedRouteMixin, {
   githubMarketplacePlanId: null,
 
   _billingProvider: computed('marketplaceListingPlanId', function() {
-    let marketplaceListingPlanId = this.get('marketplaceListingPlanId');
+    let marketplaceListingPlanId = this.marketplaceListingPlanId;
     if (marketplaceListingPlanId) {
       return 'github_marketplace';
     }
   }),
 
   _billingProviderData: computed('marketplaceListingPlanId', function() {
-    let marketplaceListingPlanId = this.get('marketplaceListingPlanId');
+    let marketplaceListingPlanId = this.marketplaceListingPlanId;
     if (marketplaceListingPlanId) {
       return JSON.stringify({
         marketplace_listing_plan_id: parseInt(marketplaceListingPlanId),

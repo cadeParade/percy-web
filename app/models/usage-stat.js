@@ -8,7 +8,7 @@ export default DS.Model.extend({
   currentCost: DS.attr(),
 
   dayStatsFormatted: computed('dayStats', function() {
-    const dayStats = this.get('dayStats');
+    const dayStats = this.dayStats;
     if (!dayStats) {
       return;
     }
@@ -18,6 +18,6 @@ export default DS.Model.extend({
 
   // Everything in the API is in cents, but we need to display dollars, so divide by 100.
   currentCostDollars: computed('currentCost', function() {
-    return this.get('currentCost') / 100;
+    return this.currentCost / 100;
   }),
 });

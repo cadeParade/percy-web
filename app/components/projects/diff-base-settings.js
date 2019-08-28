@@ -11,18 +11,16 @@ export default Component.extend({
   saveProject() {
     this.set('isSaving', true);
     this.set('isSaveSuccessful', null);
-    this.get('project')
-      .save()
-      .then(
-        () => {
-          this.set('isSaving', false);
-          this.set('isSaveSuccessful', true);
-        },
-        () => {
-          this.set('isSaving', false);
-          this.set('isSaveSuccessful', false);
-        },
-      );
+    this.project.save().then(
+      () => {
+        this.set('isSaving', false);
+        this.set('isSaveSuccessful', true);
+      },
+      () => {
+        this.set('isSaving', false);
+        this.set('isSaveSuccessful', false);
+      },
+    );
   },
   actions: {
     setAutomatic() {

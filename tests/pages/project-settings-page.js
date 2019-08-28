@@ -17,7 +17,7 @@ export const ProjectSettingsPage = {
 
   projectEditForm: ProjectEdit,
 
-  isAutoApproveBranchesVisible: alias('projectEditForm.isAutoApproveBranchesVisible'),
+  isBranchSettingsVisible: alias('projectEditForm.isBranchSettingsVisible'),
 
   browserSelector: BrowserFamilySelector,
 

@@ -13,7 +13,6 @@ import UserMenu from 'percy-web/tests/pages/components/user-menu';
 import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
 import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
 import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
-import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Acceptance: Project', function() {
   setupAcceptance();
@@ -87,6 +86,7 @@ describe('Acceptance: Project', function() {
       expect(ProjectPage.isFrameworkDocsButtonVisible).to.equal(true);
       await percySnapshot(this.test.fullTitle() + ' | framework links are visible');
 
+      await ProjectPage.frameworkCategories[1].click();
       await ProjectPage.lastFramework.click();
 
       expect(ProjectPage.isSdkRequestFieldVisible).to.equal(true);
@@ -152,14 +152,37 @@ describe('Acceptance: Project', function() {
     });
 
     describe('settings', function() {
-      it('displays Auto-Approve Branches setting', async function() {
+      it('displays Branch settings section', async function() {
         await ProjectSettingsPage.visitProjectSettings({
           orgSlug: organization.slug,
           projectSlug: enabledProject.slug,
         });
         await percySnapshot(this.test);
 
-        expect(ProjectSettingsPage.isAutoApproveBranchesVisible).to.equal(true);
+        expect(ProjectSettingsPage.isBranchSettingsVisible).to.equal(true);
+      });
+
+      it('navigates to SCM integration setups', async function() {
+        async function visitProjectIntegrations() {
+          return await ProjectSettingsPage.visitProjectIntegrations({
+            orgSlug: organization.slug,
+            projectSlug: enabledProject.slug,
+          });
+        }
+
+        await visitProjectIntegrations();
+        await ProjectSettingsPage.repoIntegrator.clickGithub();
+        expect(currentRouteName()).to.equal('organizations.organization.integrations.github');
+
+        await visitProjectIntegrations();
+        await ProjectSettingsPage.repoIntegrator.clickGitlab();
+        expect(currentRouteName()).to.equal('organizations.organization.integrations.gitlab');
+
+        await visitProjectIntegrations();
+        await ProjectSettingsPage.repoIntegrator.clickBitbucket();
+        expect(currentRouteName()).to.equal(
+          'organizations.organization.integrations.bitbucket-cloud',
+        );
       });
 
       describe('browser toggling', function() {
@@ -306,8 +329,6 @@ describe('Acceptance: Project', function() {
       });
 
       it('displays the Slack section', async function() {
-        withVariation(this.owner, 'slack-integration', true);
-
         await ProjectSettingsPage.visitProjectIntegrations({
           orgSlug: organization.slug,
           projectSlug: enabledProject.slug,
@@ -318,8 +339,6 @@ describe('Acceptance: Project', function() {
         await ProjectSettingsPage.slackIntegrationsLink.click();
         expect(IntegrationsIndexPage.isVisible).to.equal(true);
         await percySnapshot(this.test);
-
-        withVariation(this.owner, 'slack-integration', false);
       });
     });
   });
@@ -357,6 +376,7 @@ describe('Acceptance: Project', function() {
         project,
         createdAt: _timeAgo(60, 'days'),
         buildNumber: 1,
+        totalOpenComments: 4,
       });
       server.create('build', 'expired', {
         project,
@@ -398,6 +418,7 @@ describe('Acceptance: Project', function() {
         project,
         createdAt: _timeAgo(4, 'minutes'),
         buildNumber: 9,
+        totalOpenComments: 10,
       });
       server.create('build', 'approvedWithNoDiffs', {
         project,
@@ -415,7 +436,14 @@ describe('Acceptance: Project', function() {
         createdAt: _timeAgo(10, 'seconds'),
         buildNumber: 12,
       });
-
+      server.create('build', 'withSnapshots', 'rejected', {
+        totalSnapshotsUnreviewed: 3,
+        totalSnapshotsRequestingChanges: 2,
+        totalSnapshots: 10,
+        project,
+        createdAt: _timeAgo(5, 'seconds'),
+        buildNumber: 13,
+      });
       this.project = project;
     });
 
@@ -429,7 +457,7 @@ describe('Acceptance: Project', function() {
       await ProjectPage.visitProject(urlParams);
 
       expect(ProjectPage.infinityLoader.isPresent).to.equal(false);
-      expect(ProjectPage.builds.length).to.equal(12);
+      expect(ProjectPage.builds.length).to.equal(13);
     });
 
     it('shows builds with identical build numbers', async function() {
@@ -440,7 +468,7 @@ describe('Acceptance: Project', function() {
       });
 
       await ProjectPage.visitProject(urlParams);
-      expect(ProjectPage.builds.length).to.equal(13);
+      expect(ProjectPage.builds.length).to.equal(14);
     });
 
     it('shows the loader when there are more than 50 builds', async function() {
@@ -456,9 +484,8 @@ describe('Acceptance: Project', function() {
     it('navigates to build page after clicking build', async function() {
       await ProjectPage.visitProject(urlParams);
       expect(currentRouteName()).to.equal('organization.project.index');
-      await ProjectPage.finishedBuilds.objectAt(4).click();
+      await ProjectPage.finishedBuilds.objectAt(5).click();
       expect(currentRouteName()).to.equal('organization.project.builds.build.index');
-
       await percySnapshot(this.test.fullTitle());
     });
 
@@ -477,7 +504,8 @@ describe('Acceptance: Project', function() {
       expect(ProjectPage.builds.length).to.equal(3);
     });
 
-    it('resets builds when navigating to another project in another org with the same slug', async function() { // eslint-disable-line
+    // eslint-disable-next-line
+    it('resets builds when navigating to another project in another org with the same slug', async function() {
       const otherOrgName = 'doppleganger org';
       const otherOrganization = server.create('organization', {name: otherOrgName});
       server.create('organizationUser', {
@@ -496,7 +524,8 @@ describe('Acceptance: Project', function() {
       expect(ProjectPage.builds.length).to.equal(0);
     });
 
-    it('resets builds when navigating to another project in same org with no scm integration', async function() { // eslint-disable-line
+    // eslint-disable-next-line
+    it('resets builds when navigating to another project in same org with no scm integration', async function() {
       const project1 = server.create('project', {organization});
       server.createList('build', 3, {project: project1});
       const project2 = server.create('project', {organization});
@@ -531,6 +560,10 @@ describe('Acceptance: Project', function() {
       it('everything is disabled', async function() {
         const editForm = ProjectSettingsPage.projectEditForm;
 
+        expect(ProjectSettingsPage.envVarText).to.equal(
+          'PERCY_TOKEN=[This is a demo project. Create your own project to get a PERCY_TOKEN]',
+        );
+
         await ProjectSettingsPage.browserSelector.buttons.forEach(async button => {
           expect(button.isDisabled, 'browser button should be disabled').to.equal(true);
           expect(button.isActive, 'browser button should be active').to.equal(true);
@@ -554,10 +587,6 @@ describe('Acceptance: Project', function() {
       });
 
       it('everything is disabled', async function() {
-        expect(ProjectSettingsPage.envVarText).to.equal(
-          'PERCY_TOKEN=[This is a demo project. Create your own project to get a PERCY_TOKEN]',
-        );
-
         expect(
           ProjectSettingsPage.repoIntegrator.demoNotice.text.includes('Set up your own project'),
         ).to.equal(true);
@@ -568,11 +597,11 @@ describe('Acceptance: Project', function() {
         await ProjectSettingsPage.webhookConfigList.newWebhookConfig();
         expect(currentRouteName()).to.equal('organization.project.integrations.index');
 
-        await percySnapshot(this.test.fullTitle());
+        await percySnapshot(`${this.test.fullTitle()} project integration page`);
 
         await ProjectSettingsPage.repoIntegrator.clickDemoLink();
         expect(currentRouteName()).to.equal('organizations.organization.projects.new');
-        await percySnapshot(this.test.fullTitle());
+        await percySnapshot(`${this.test.fullTitle()} new project page`);
       });
     });
   });

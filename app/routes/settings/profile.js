@@ -9,6 +9,6 @@ export default Route.extend(EnsureStatefulLogin, AuthenticatedRouteMixin, {
   model() {
     // If we don't force reload user on this page,
     // we could display stale information about verified email addresses
-    return this.get('session').forceReloadUser();
+    return this.session.forceReloadUser();
   },
 });

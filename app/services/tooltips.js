@@ -6,8 +6,19 @@ import {inject as service} from '@ember/service';
 
 export const TOOLTIP_MASTER_KEY = 'percy_demo_tooltips_hidden';
 
-const GROUP_SEQUENCE = ['one', 'seven', 'three', 'eight', 'five'];
-const NO_GROUP_SEQUENCE = ['one', 'two', 'three', 'four', 'five'];
+// one --> Build overview
+// two --> Snapshot title
+// three --> Diff
+// four --> Snapshot approval button
+// five --> Build approval button
+// six --> ??
+// seven --> Snapshot group
+// eight --> Group approval
+// nine --> Snapshot request changes button
+// ten --> Group request changes button
+
+const GROUP_SEQUENCE = ['one', 'seven', 'three', 'ten', 'eight', 'five'];
+const NO_GROUP_SEQUENCE = ['one', 'two', 'three', 'nine', 'four', 'five'];
 const NO_DIFF_SEQUENCE = ['one', 'two', 'four', 'five'];
 
 export default Service.extend({

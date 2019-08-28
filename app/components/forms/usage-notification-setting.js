@@ -7,11 +7,11 @@ export default BaseFormComponent.extend({
   _setting: readOnly('setting'),
 
   model: computed('_setting', function() {
-    if (this.get('_setting')) {
-      return this.get('_setting');
+    if (this._setting) {
+      return this._setting;
     } else {
       return this.store.createRecord('usageNotificationSetting', {
-        organization: this.get('organization'),
+        organization: this.organization,
         isEnabled: false,
       });
     }
@@ -19,7 +19,7 @@ export default BaseFormComponent.extend({
 
   actions: {
     customSave() {
-      const changeset = this.get('changeset');
+      const changeset = this.changeset;
       changeset.set('emails', changeset.get('displayEmails'));
       changeset.set('thresholds', {'snapshot-count': changeset.get('displayThresholds')});
       this.send('save');

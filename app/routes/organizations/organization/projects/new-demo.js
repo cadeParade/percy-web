@@ -27,14 +27,14 @@ export default Route.extend(AuthenticatedRouteMixin, {
     const projects = model.projects;
 
     if (projects.length === 0) {
-      const demoProject = this.get('store').createRecord('project', {organization, isDemo: true});
+      const demoProject = this.store.createRecord('project', {organization, isDemo: true});
       this.saveProcess(demoProject);
     } else if (projects.length === 1 && projects.lastObject.isNew) {
       this.saveProcess(projects.lastObject);
     } else if (projects.length === 1 && projects.lastObject.isDemo) {
       this.transitionToDemo(projects.lastObject);
     } else {
-      this.get('redirects').redirectToRecentProjectForOrg(organization);
+      this.redirects.redirectToRecentProjectForOrg(organization);
     }
   },
 
@@ -62,7 +62,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
   // only for organization acceptance testing
   _testingCanRefreshOnce: true,
   _testingRefreshOnce() {
-    if (this.get('_testingCanRefreshOnce') === true) {
+    if (this._testingCanRefreshOnce === true) {
       this.set('_testingCanRefreshOnce', false);
       this.refresh();
     }
@@ -71,7 +71,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
   async transitionToDemo(demoProject) {
     const organization = this.modelFor('organizations.organization');
 
-    this.get('tooltips').unhideAll();
+    this.tooltips.unhideAll();
     const builds = await demoProject.get('builds');
     if (builds.get('length') > 2) {
       const secondBuild = builds.findBy('buildNumber', 2);

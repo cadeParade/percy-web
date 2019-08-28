@@ -25,7 +25,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
         'organizations.organization.integrations.bitbucket-cloud',
         organization.get('slug'),
       );
-      return this.get('flashMessages').info('Bitbucket Cloud integration cancelled.');
+      return this.flashMessages.info('Bitbucket Cloud integration cancelled.');
     }
     // This handles any other error
     if (params.error) {
@@ -33,7 +33,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
         'organizations.organization.integrations.bitbucket-cloud',
         organization.get('slug'),
       );
-      return this.get('flashMessages').danger(
+      return this.flashMessages.danger(
         `Error connecting to Bitbucket Cloud: ${params.error}: ${params.error_description}`,
       );
     }
@@ -42,13 +42,13 @@ export default Route.extend(AuthenticatedRouteMixin, {
         'organizations.organization.integrations.bitbucket-cloud',
         organization.get('slug'),
       );
-      return this.get('flashMessages').danger(
+      return this.flashMessages.danger(
         'Error connecting to Bitbucket Cloud: clientKey is missing.',
       );
     }
     let integration = organization.bitbucketCloudIntegration;
     if (!integration) {
-      integration = this.get('store').createRecord('version-control-integration', {
+      integration = this.store.createRecord('version-control-integration', {
         integrationType: 'bitbucket_cloud',
         bitbucketCloudClientKey: params.clientKey,
         organization: organization,
@@ -69,7 +69,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
           'organizations.organization.integrations.bitbucket-cloud',
           organization.get('slug'),
         );
-        this.get('flashMessages').danger(`Error creating Bitbucket Integration. ${error}`);
+        this.flashMessages.danger(`Error creating Bitbucket Integration. ${error}`);
       },
     );
   },

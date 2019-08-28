@@ -21,7 +21,7 @@ export default Route.extend({
 
   redirect(model) {
     if (model.projects.length < 1) {
-      this.get('redirects').redirectToRecentProjectForOrg(model.organization);
+      this.redirects.redirectToRecentProjectForOrg(model.organization);
     }
   },
 

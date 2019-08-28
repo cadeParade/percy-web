@@ -17,8 +17,8 @@ export default SnapshotListItem.extend({
   isGroupShowingDiffOverlay: true,
   id: readOnly('snapshots.firstObject.fingerprint'),
   coverSnapshot: readOnly('snapshots.firstObject'),
-  approvableSnapshots: filterBy('snapshots', 'isUnreviewed'),
-  _unapprovedSnapshots: filterBy('snapshots', 'isUnreviewed'),
+  approvableSnapshots: filterBy('snapshots', 'isApproved', false),
+  _unapprovedSnapshots: filterBy('snapshots', 'isApproved', false),
   numUnapprovedSnapshots: readOnly('_unapprovedSnapshots.length'),
   _isApproved: readOnly('isGroupApproved'),
 
@@ -40,10 +40,10 @@ export default SnapshotListItem.extend({
     'unreviewedSnapshotsWithOpenCommentThreads',
     'displayCommentedSnapshsotsGroupCover',
     function() {
-      if (this.get('displayCommentedSnapshsotsGroupCover')) {
-        return this.get('unreviewedSnapshotsWithOpenCommentThreads');
+      if (this.displayCommentedSnapshsotsGroupCover) {
+        return this.unreviewedSnapshotsWithOpenCommentThreads;
       } else {
-        return this.get('snapshots');
+        return this.snapshots;
       }
     },
   ),
@@ -54,6 +54,14 @@ export default SnapshotListItem.extend({
     });
   }),
 
+  isGroupRejected: computed('snapshots.@each.isRejected', function() {
+    return this.snapshots.any(snapshot => snapshot.isRejected);
+  }),
+
+  isGroupUnreviewed: computed('isGroupApproved', 'isGroupRejected', function() {
+    return !this.isGroupApproved && !this.isGroupRejected;
+  }),
+
   groupTitle: computed('snapshots.length', function() {
     return `${get(this, 'snapshots.length')} matching changes`;
   }),
@@ -62,7 +70,7 @@ export default SnapshotListItem.extend({
     const build = get(this, 'build');
     this.toggleProperty('areAllSnapshotsExpanded');
     this.set('shouldOpenFirstCommentPanel', false);
-    this.get('analytics').track('Group Toggled', get(build, 'project.organization'), {
+    this.analytics.track('Group Toggled', get(build, 'project.organization'), {
       project_id: get(build, 'project.id'),
       build_id: get(build, 'id'),
       toggledTo: get(this, 'areAllSnapshotsExpanded') ? 'Open' : 'Collapsed',

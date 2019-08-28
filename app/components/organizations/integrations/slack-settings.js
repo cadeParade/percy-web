@@ -9,7 +9,7 @@ export default Component.extend({
 
   actions: {
     connectSlackChannel() {
-      this.get('connectSlackChannel')();
+      this.connectSlackChannel();
     },
   },
 });

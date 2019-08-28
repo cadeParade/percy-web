@@ -1,12 +1,16 @@
 import FactoryGuy from 'ember-data-factory-guy';
 import moment from 'moment';
 import {REVIEW_COMMENT_TYPE, NOTE_COMMENT_TYPE} from 'percy-web/models/comment-thread';
+import faker from 'faker';
 
 FactoryGuy.define('comment-thread', {
   polymorphic: false,
   default: {
     type: REVIEW_COMMENT_TYPE,
     createdAt: () => moment().subtract(22, 'hours'),
+    originatingSnapshotId: () => faker.random.number(),
+    originatingBuildNumber: () => faker.random.number(),
+    snapshot: FactoryGuy.belongsTo('snapshot'),
   },
 
   traits: {
@@ -31,6 +35,11 @@ FactoryGuy.define('comment-thread', {
     },
     note: {
       type: NOTE_COMMENT_TYPE,
+    },
+
+    autoReview: {
+      type: REVIEW_COMMENT_TYPE,
+      comments: FactoryGuy.hasMany('comment', 1, {body: ''}),
     },
   },
 });

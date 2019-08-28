@@ -8,12 +8,12 @@ export default Component.extend({
   classNameBindings: ['classes'],
   actions: {
     enable() {
-      let project = this.get('project');
+      let project = this.project;
       project.set('isEnabled', true);
       project.save();
     },
     disable() {
-      let project = this.get('project');
+      let project = this.project;
       project.set('isEnabled', false);
       project.save();
     },

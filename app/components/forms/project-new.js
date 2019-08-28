@@ -10,14 +10,14 @@ export default BaseFormComponent.extend({
   classNameBindings: ['classes'],
 
   model: computed(function() {
-    return this.get('store').createRecord('project', {
-      organization: this.get('organization'),
+    return this.store.createRecord('project', {
+      organization: this.organization,
     });
   }),
   validator: ProjectNewValidations,
 
   willDestroyElement() {
     // Don't leave an unsaved new project model in the store.
-    this.get('model').rollbackAttributes();
+    this.model.rollbackAttributes();
   },
 });

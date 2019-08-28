@@ -35,7 +35,7 @@ export default Component.extend({
 
   actions: {
     showSupport() {
-      this.get('intercom').showIntercom();
+      this.intercom.showIntercom();
     },
   },
 });

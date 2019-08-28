@@ -9,14 +9,14 @@ export default DS.Model.extend({
   unverifiedEmail: DS.attr(),
 
   userNotificationSetting: DS.belongsTo('userNotificationSetting', {async: false}),
-  identities: DS.hasMany('identities'),
+  identities: DS.hasMany('identities', {async: false}),
 
   hasGithubIdentity: computed('identities.@each.provider', function() {
     return this._hasIdentityType('github');
   }),
 
   hasEmailPasswordIdentity: computed('identities.@each.provider', function() {
-    return this.get('emailPasswordIdentity');
+    return this.emailPasswordIdentity;
   }),
 
   emailPasswordIdentity: computed('identities.@each.provider', function() {
@@ -32,10 +32,6 @@ export default DS.Model.extend({
   isVerified: computed.notEmpty('email'),
 
   _hasIdentityType(provider) {
-    return DS.PromiseObject.create({
-      promise: this.get('identities').then(identities => {
-        return identities.findBy('provider', provider);
-      }),
-    });
+    return this.identities.findBy('provider', provider);
   },
 });

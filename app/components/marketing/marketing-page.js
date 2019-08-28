@@ -15,7 +15,7 @@ export default Component.extend({
       if (event.ctrlKey || event.metaKey) {
         return true;
       } else {
-        this.get('transitionTo')(path);
+        this.transitionTo(path);
         return false;
       }
     }

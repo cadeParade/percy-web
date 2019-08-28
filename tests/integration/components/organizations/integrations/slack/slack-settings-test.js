@@ -5,6 +5,7 @@ import {percySnapshot} from 'ember-percy';
 import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import SlackSettings from 'percy-web/tests/pages/components/organizations/slack-settings';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: SlackSettings', function() {
   setupRenderingTest('slack-settings', {
@@ -28,7 +29,7 @@ describe('Integration: SlackSettings', function() {
     beforeEach(async function() {
       const organization = make('organization');
       this.setProperties({organization, projectOptions});
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/integrations/slack-settings
         projectOptions=projectOptions
         organization=organization
@@ -47,7 +48,7 @@ describe('Integration: SlackSettings', function() {
       const organization = make('organization');
       make('slack-integration', {organization});
       this.setProperties({organization, projectOptions});
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/integrations/slack-settings
         projectOptions=projectOptions
         organization=organization
@@ -71,7 +72,7 @@ describe('Integration: SlackSettings', function() {
       const slackIntegration = make('slack-integration', {organization});
       makeList('slack-integration-config', 3, {slackIntegration});
       this.setProperties({organization, projectOptions});
-      await this.render(hbs`{{
+      await render(hbs`{{
         organizations/integrations/slack-settings
         projectOptions=projectOptions
         organization=organization

@@ -13,10 +13,10 @@ export default Component.extend({
   },
 
   githubIdentity: computed('identities.@each.provider', function() {
-    return this.get('identities').findBy('provider', 'github');
+    return this.identities.findBy('provider', 'github');
   }),
   emailPasswordIdentity: computed('identities.@each.provider', function() {
-    return this.get('identities').findBy('provider', 'auth0');
+    return this.identities.findBy('provider', 'auth0');
   }),
   hasAnyIdentities: notEmpty('identities'),
   isDisconnectIdentityEnabled: gt('identities.length', 1),

@@ -71,6 +71,6 @@ export default Component.extend({
 
   _trackTooltipOpen() {
     const tooltipInfo = this.tooltipKey;
-    this.get('analytics').track('Tooltip Opened', null, {tooltipInfo});
+    this.analytics.track('Tooltip Opened', null, {tooltipInfo});
   },
 });

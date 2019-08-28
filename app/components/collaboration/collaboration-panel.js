@@ -1,7 +1,6 @@
 import Component from '@ember/component';
-import {notEmpty, readOnly, sort} from '@ember/object/computed';
+import {filterBy, notEmpty, readOnly, sort} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
-import {computed} from '@ember/object';
 
 export default Component.extend({
   tagName: '',
@@ -12,15 +11,20 @@ export default Component.extend({
   commentThreads: null, // Set by init.
   isCommentingAllowed: true,
   snapshot: null,
-
-  _dateOrderedCommentThreads: sort('commentThreads', commentThreadDateSort),
-  orderedCommentThreads: computed('_dateOrderedCommentThreads.@each.isOpen', function() {
-    const openThreads = this._dateOrderedCommentThreads.filterBy('isOpen');
-    const closedThreads = this._dateOrderedCommentThreads.rejectBy('isOpen');
-    return openThreads.concat(closedThreads);
-  }),
+  areClosedThreadsExpanded: false,
 
   hasCommentThreads: notEmpty('commentThreads'),
+
+  _dateOrderedCommentThreads: sort('commentThreads', commentThreadDateSort),
+  openThreads: filterBy('_dateOrderedCommentThreads', 'isOpen'),
+  closedThreads: filterBy('_dateOrderedCommentThreads', 'isClosed'),
+  hasClosedThreads: notEmpty('closedThreads'),
+
+  actions: {
+    showClosedComments() {
+      this.set('areClosedThreadsExpanded', true);
+    },
+  },
 
   init() {
     this._super(...arguments);

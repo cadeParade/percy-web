@@ -3,7 +3,7 @@ import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import ProfileEditForm from 'percy-web/tests/pages/components/forms/profile-edit';
-
+import {render} from '@ember/test-helpers';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 
 describe('Integration: ProfileEditForm', function() {
@@ -21,7 +21,7 @@ describe('Integration: ProfileEditForm', function() {
   });
 
   it('displays user information in form fields', async function() {
-    await this.render(hbs`{{forms/profile-edit user=user}}`);
+    await render(hbs`{{forms/profile-edit user=user}}`);
     expect(ProfileEditForm.emailInputContains).to.equal(user.get('email'));
     expect(ProfileEditForm.nameInputContains).to.equal(user.get('name'));
     expect(ProfileEditForm.isSubmitDisabled).to.equal(true);
@@ -29,14 +29,14 @@ describe('Integration: ProfileEditForm', function() {
   });
 
   it('enables the submit button when the name has been changed', async function() {
-    await this.render(hbs`{{forms/profile-edit user=user}}`);
+    await render(hbs`{{forms/profile-edit user=user}}`);
     await ProfileEditForm.fillInName('big softie');
 
     expect(ProfileEditForm.isSubmitDisabled).to.equal(false);
   });
 
   it('enables the submit button when the email has been changed', async function() {
-    await this.render(hbs`{{forms/profile-edit user=user}}`);
+    await render(hbs`{{forms/profile-edit user=user}}`);
     await ProfileEditForm.fillInEmail('foo@bar.com');
 
     expect(ProfileEditForm.isSubmitDisabled).to.equal(false);
@@ -46,7 +46,7 @@ describe('Integration: ProfileEditForm', function() {
     const unverifiedEmail = 'lol@rofl.com';
     const unverifiedEmailUser = make('user', {unverifiedEmail: unverifiedEmail});
     this.set('unverifiedEmailUser', unverifiedEmailUser);
-    await this.render(hbs`{{forms/profile-edit user=unverifiedEmailUser}}`);
+    await render(hbs`{{forms/profile-edit user=unverifiedEmailUser}}`);
 
     expect(ProfileEditForm.isUnverifiedEmailMessagePresent).to.equal(true);
     expect(ProfileEditForm.unverifiedEmailMessageContains(unverifiedEmail)).to.equal(true);

@@ -9,8 +9,8 @@ export default Component.extend({
   project: null,
   allBrowserFamilies: null,
   sortedAllBrowserFamilies: computed('allBrowserFamilies.@each.slug', function() {
-    const chromeFamily = this.get('allBrowserFamilies').findBy('slug', 'chrome');
-    const notChromeFamilies = this.get('allBrowserFamilies').rejectBy('slug', 'chrome');
+    const chromeFamily = this.allBrowserFamilies.findBy('slug', 'chrome');
+    const notChromeFamilies = this.allBrowserFamilies.rejectBy('slug', 'chrome');
     if (chromeFamily) {
       return [chromeFamily].concat(notChromeFamilies);
     } else {
@@ -39,7 +39,7 @@ export default Component.extend({
       }
 
       // {<str:browserFamilyId>: <Obj:browserTarget>}
-      const existingBrowserTargetsByFamilyId = this.get('existingBrowserTargets').reduce(
+      const existingBrowserTargetsByFamilyId = this.existingBrowserTargets.reduce(
         (acc, browserTarget) => {
           acc[browserTarget.get('browserFamily.id')] = browserTarget;
           return acc;
@@ -50,13 +50,13 @@ export default Component.extend({
       const projectHasBrowserFamily = targetFamily.get('id') in existingBrowserTargetsByFamilyId;
 
       if (projectHasBrowserFamily) {
-        if (this.get('numExistingBrowserTargets') === 1) {
-          this.get('flashMessages').info('A project must have at least one browser');
+        if (this.numExistingBrowserTargets === 1) {
+          this.flashMessages.info('A project must have at least one browser');
           return;
         }
-        this.removeProjectBrowserTargetForFamily(targetFamily, this.get('project'));
+        this.removeProjectBrowserTargetForFamily(targetFamily, this.project);
       } else {
-        this.addProjectBrowserTargetForFamily(targetFamily, this.get('project'));
+        this.addProjectBrowserTargetForFamily(targetFamily, this.project);
       }
     },
   },

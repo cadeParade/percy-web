@@ -6,6 +6,7 @@ import UsageNotificationSettingForm from 'percy-web/tests/pages/components/forms
 import CurrentPlan from 'percy-web/tests/pages/components/organizations/current-plan';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {percySnapshot} from 'ember-percy';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: CurrentPlan', function() {
   setupRenderingTest('current-plan', {
@@ -49,7 +50,7 @@ describe('Integration: CurrentPlan', function() {
     });
 
     it('renders all combinations', async function() {
-      await this.render(hbs`
+      await render(hbs`
         <div class="m1 font-semibold">Trial plan</div>
         {{organizations/current-plan
           organization=orgWTrialPlan
@@ -86,7 +87,7 @@ describe('Integration: CurrentPlan', function() {
     });
 
     it('displays trial plan correctly', async function() {
-      await this.render(hbs`{{organizations/current-plan
+      await render(hbs`{{organizations/current-plan
         organization=orgWTrialPlan
       }}`);
 
@@ -99,7 +100,7 @@ describe('Integration: CurrentPlan', function() {
     });
 
     it('displays free plan correctly', async function() {
-      await this.render(hbs`{{organizations/current-plan
+      await render(hbs`{{organizations/current-plan
         organization=orgWFreePlan
       }}`);
 
@@ -112,7 +113,7 @@ describe('Integration: CurrentPlan', function() {
     });
 
     it('displays v3 self-serve plan correctly', async function() {
-      await this.render(hbs`{{organizations/current-plan
+      await render(hbs`{{organizations/current-plan
         organization=orgWPaidPlan
       }}`);
 
@@ -125,7 +126,7 @@ describe('Integration: CurrentPlan', function() {
     });
 
     it('displays legacy plan correctly', async function() {
-      await this.render(hbs`{{organizations/current-plan
+      await render(hbs`{{organizations/current-plan
         organization=orgWLegacyPlan
       }}`);
 
@@ -138,7 +139,7 @@ describe('Integration: CurrentPlan', function() {
     });
 
     it('displays sponsored plan correctly', async function() {
-      await this.render(hbs`{{organizations/current-plan
+      await render(hbs`{{organizations/current-plan
         organization=orgWSponsoredPlan
       }}`);
 
@@ -151,7 +152,7 @@ describe('Integration: CurrentPlan', function() {
     });
 
     it('displays enterprise plan correctly', async function() {
-      await this.render(hbs`{{organizations/current-plan
+      await render(hbs`{{organizations/current-plan
         organization=orgWEnterprisePlan
       }}`);
 

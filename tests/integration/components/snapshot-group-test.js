@@ -11,7 +11,7 @@ import SnapshotGroup from 'percy-web/tests/pages/components/snapshot-group';
 import {resolve} from 'rsvp';
 import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {enableFlag} from 'percy-web/tests/helpers/enable-launch-darkly-flag-integration';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: SnapshotGroup', function() {
   setupRenderingTest('snapshot-group', {
@@ -26,7 +26,6 @@ describe('Integration: SnapshotGroup', function() {
   beforeEach(function() {
     setupFactoryGuy(this);
     SnapshotGroup.setContext(this);
-    enableFlag(this, 'comments');
 
     showSnapshotFullModalTriggeredStub = sinon.stub();
     createReviewStub = sinon.stub().returns(resolve());
@@ -64,7 +63,7 @@ describe('Integration: SnapshotGroup', function() {
 
     // eslint-disable-next-line
     it('shows widest width with diff as active by default when some comparisons have diffs', async function() {
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -80,7 +79,7 @@ describe('Integration: SnapshotGroup', function() {
     });
 
     it('updates active button when clicked', async function() {
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -100,7 +99,7 @@ describe('Integration: SnapshotGroup', function() {
 
   describe('full screen toggle button', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -132,7 +131,7 @@ describe('Integration: SnapshotGroup', function() {
     beforeEach(async function() {
       this.set('activeSnapshotBlockId', null);
 
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -162,7 +161,7 @@ describe('Integration: SnapshotGroup', function() {
 
     it('is expanded when build is approved', async function() {
       this.set('snapshots', approvedSnapshots);
-      this.set('build.isApproved', true);
+      this.set('build.reviewState', 'approved');
 
       expect(SnapshotGroup.isExpanded).to.equal(true);
     });
@@ -192,7 +191,7 @@ describe('Integration: SnapshotGroup', function() {
       let snapshots = unapprovedSnapshots.concat(approvedSnapshots);
       this.set('snapshots', snapshots);
 
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -231,7 +230,7 @@ describe('Integration: SnapshotGroup', function() {
 
   describe('approve snapshot button', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -250,7 +249,7 @@ describe('Integration: SnapshotGroup', function() {
 
   describe('diff toggling', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -314,7 +313,7 @@ describe('Integration: SnapshotGroup', function() {
     });
 
     it('shows multiple snapshots as "cover" snapshots', async function() {
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -337,7 +336,7 @@ describe('Integration: SnapshotGroup', function() {
         });
       });
 
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -353,7 +352,7 @@ describe('Integration: SnapshotGroup', function() {
 
   describe('comment button', function() {
     beforeEach(async function() {
-      await this.render(hbs`{{snapshot-group
+      await render(hbs`{{snapshot-group
         snapshots=snapshots
         build=build
         showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
@@ -392,6 +391,52 @@ describe('Integration: SnapshotGroup', function() {
       expect(firstSnapshot.collaborationPanel.isVisible).to.equal(false);
       await SnapshotGroup.header.clickCommentButton();
       expect(firstSnapshot.collaborationPanel.isVisible).to.equal(true);
+    });
+  });
+
+  describe('group state', function() {
+    beforeEach(async function() {
+      await render(hbs`{{snapshot-group
+        snapshots=snapshots
+        build=build
+        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
+        userSelectedWidth=userSelectedWidth
+        createReview=createReview
+        activeSnapshotBlockId=activeSnapshotBlockId
+        updateActiveSnapshotBlockId=stub
+        activeBrowser=browser
+        isBuildApprovable=isBuildApprovable
+      }}`);
+    });
+
+    it('is unreviewed by default', async function() {
+      const snapshots = makeList('snapshot', 2, 'withComparisons', {fingerprint: 'unreviewed'});
+      this.setProperties({snapshots});
+      expect(SnapshotGroup.approveButton.isUnapproved).to.equal(true);
+      expect(SnapshotGroup.header.rejectedBadge.isVisible).to.equal(false);
+      await percySnapshot(this.test);
+    });
+
+    it('shows approved when all snapshots are approved', async function() {
+      const snapshots = makeList('snapshot', 2, 'withComparisons', 'approved', {
+        fingerprint: 'approved',
+      });
+      this.setProperties({snapshots});
+      expect(SnapshotGroup.approveButton.isApproved).to.equal(true);
+      expect(SnapshotGroup.header.rejectedBadge.isVisible).to.equal(false);
+      await percySnapshot(this.test);
+    });
+
+    it('shows rejected when one snapshot is rejected', async function() {
+      const rejectedSnapshots = makeList('snapshot', 1, 'withComparisons', 'rejected', {
+        fingerprint: 'mixed',
+      });
+      const unreviewedSnapshots = makeList('snapshot', 2, 'withComparisons', {
+        fingerprint: 'mixed',
+      });
+      this.setProperties({snapshots: rejectedSnapshots.concat(unreviewedSnapshots)});
+      expect(SnapshotGroup.approveButton.isUnapproved).to.equal(true);
+      expect(SnapshotGroup.header.rejectedBadge.isVisible).to.equal(true);
     });
   });
 });

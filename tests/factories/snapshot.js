@@ -4,6 +4,7 @@ import {
   SNAPSHOT_APPROVED_STATE,
   SNAPSHOT_UNAPPROVED_STATE,
   SNAPSHOT_REVIEW_STATE_REASONS,
+  SNAPSHOT_REJECTED_STATE,
 } from 'percy-web/models/snapshot';
 import {TEST_COMPARISON_WIDTHS} from 'percy-web/tests/factories/comparison';
 
@@ -26,6 +27,11 @@ FactoryGuy.define('snapshot', {
     approved: {
       reviewState: SNAPSHOT_APPROVED_STATE,
       reviewStateReason: SNAPSHOT_REVIEW_STATE_REASONS.USER_APPROVED,
+    },
+    rejected: {
+      reviewState: SNAPSHOT_REJECTED_STATE,
+      reviewStateReason: SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED,
+      commentThreads: FactoryGuy.hasMany('comment-thread', 1, 'autoReview'),
     },
 
     withBuild: {

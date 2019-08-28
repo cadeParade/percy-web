@@ -1,16 +1,15 @@
 import './helpers/flash-message';
 
 import {mocha} from 'mocha';
-import loadEmberExam from 'ember-exam/test-support/load';
-
 import Application from '../app';
 import config from '../config/environment';
 import {setApplication} from '@ember/test-helpers';
-
-setApplication(Application.create(config.APP));
-loadEmberExam();
+import start from 'ember-exam/test-support/start';
 
 mocha.setup({
   timeout: 10055500,
   slow: 2055500,
 });
+
+setApplication(Application.create(config.APP));
+start();

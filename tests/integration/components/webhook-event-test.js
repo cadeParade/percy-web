@@ -6,6 +6,7 @@ import {percySnapshot} from 'ember-percy';
 import WebhookEvent from 'percy-web/tests/pages/components/webhook-event';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
+import {render} from '@ember/test-helpers';
 
 describe('Integration: WebhookEvent', function() {
   setupRenderingTest('webhook-event', {integration: true});
@@ -14,7 +15,7 @@ describe('Integration: WebhookEvent', function() {
   beforeEach(async function() {
     setupFactoryGuy(this);
     WebhookEvent.setContext(this);
-    await this.render(hbs`{{webhook-event webhookEvent=webhookEvent}}`);
+    await render(hbs`{{webhook-event webhookEvent=webhookEvent}}`);
   });
 
   it('displays webhook event data', async function() {

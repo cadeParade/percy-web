@@ -12,6 +12,7 @@ const SELECTORS = {
   GENERIC_DOCS_BUTTON: '[data-test-generic-docs-button]',
   SDK_REQUEST_FIELD: '[data-test-sdk-request-field]',
   PUBLIC_PROJECT_ICON: '[data-test-public-project-icon]',
+  NEW_PROJECT_SIDEBAR_LINK: '[data-test-resource-wiget-sidebar-link]',
 };
 
 const ProjectPage = {
@@ -35,6 +36,7 @@ const ProjectPage = {
   isPublicProjectIconVisible: isVisible(SELECTORS.PUBLIC_PROJECT_ICON),
   clickProjectSettings: alias('projectContainer.clickProjectSettings'),
 
+  frameworkCategories: collection(SELECTORS.NEW_PROJECT_SIDEBAR_LINK),
   frameworks: collection(SELECTORS.FRAMEWORK_ITEMS),
 
   lastFramework: getter(function() {

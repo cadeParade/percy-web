@@ -7,6 +7,7 @@ export default DS.Model.extend({
   name: DS.attr(),
   slug: DS.attr(),
   fullSlug: DS.attr(),
+  defaultBaseBranch: DS.attr(),
   isEnabled: DS.attr('boolean'),
   isDisabled: not('isEnabled'),
   diffBase: DS.attr(), // Either "automatic" or "manual".
@@ -31,6 +32,6 @@ export default DS.Model.extend({
   projectBrowserTargets: DS.hasMany('projectBrowserTargets', {async: false}),
 
   writeOnlyToken: computed('tokens', function() {
-    return this.get('tokens').findBy('role', 'write_only');
+    return this.tokens.findBy('role', 'write_only');
   }),
 });

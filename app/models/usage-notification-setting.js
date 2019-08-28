@@ -13,11 +13,11 @@ export default DS.Model.extend({
 
   // These are needed by the changeset in the form
   displayEmails: computed('emails.[]', function() {
-    return returnString(this.get('emails'));
+    return returnString(this.emails);
   }),
   thresholdSnapshotCount: readOnly('thresholds.snapshot-count'),
   displayThresholds: computed('thresholdSnapshotCount.[]', function() {
-    return returnFormattedThresholds(this.get('thresholdSnapshotCount'));
+    return returnFormattedThresholds(this.thresholdSnapshotCount);
   }),
 });
 

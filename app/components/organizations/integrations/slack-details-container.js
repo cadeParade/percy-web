@@ -38,13 +38,13 @@ export default Component.extend({
 
   fetchedProjects: null,
   _getOrganizationProjects: task(function*() {
-    const fetchedProjects = yield this.get('store').query('project', {
-      organization: this.get('organization'),
+    const fetchedProjects = yield this.store.query('project', {
+      organization: this.organization,
     });
     this.setProperties({fetchedProjects});
   }),
   projectOptions: computed('fetchedProjects.@each.{id,name}', function() {
-    let orgProjects = this.get('fetchedProjects').map(project => {
+    let orgProjects = this.fetchedProjects.map(project => {
       return {id: Number(project.get('id')), name: project.get('name')};
     });
     return [ALL_PROJECTS_OPTION].concat(orgProjects);
@@ -52,8 +52,8 @@ export default Component.extend({
 
   actions: {
     slackConfigSaveSuccess() {
-      this.get('flashMessages').success('Your Slack setting has been saved.');
-      this.get('router').transitionTo(
+      this.flashMessages.success('Your Slack setting has been saved.');
+      this.router.transitionTo(
         'organizations.organization.integrations.slack',
         this.get('slackIntegrationConfig.slackIntegration.organization.slug'),
       );

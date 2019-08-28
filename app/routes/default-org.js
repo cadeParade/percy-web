@@ -5,6 +5,6 @@ export default Route.extend({
   redirects: service(),
 
   beforeModel() {
-    return this.get('redirects').redirectToDefaultOrganization({useMostRecentOrg: false});
+    return this.redirects.redirectToDefaultOrganization({useMostRecentOrg: false});
   },
 });
