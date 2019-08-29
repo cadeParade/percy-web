@@ -19,7 +19,6 @@ import BuildPage from 'percy-web/tests/pages/build-page';
 import ProjectPage from 'percy-web/tests/pages/project-page';
 import withVariation from 'percy-web/tests/helpers/with-variation';
 import {PusherMock} from 'pusher-js-mock';
-import {pauseTest} from '@ember/test-helpers';
 import {settled} from '@ember/test-helpers';
 
 describe('Acceptance: Build', function() {
@@ -1087,7 +1086,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       server.create('commentThread', 'withOneComment', {snapshot});
       server.create('commentThread', 'withTenComments', 'note', {snapshot});
 
-      // await BuildPage.visitFullPageSnapshot(urlParams);
+      await BuildPage.visitFullPageSnapshot(urlParams);
     });
 
     it('displays correctly with many comments', async function() {
@@ -1178,8 +1177,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
 
       // The way this was created was printing `data` in `pusherService._pushPayload` when using the actual app and then using
       // JSON.stringify(data). This allowed me to copy and paste the data into this test file.
-      // It did need to be altered -- the relationship IDs must match objects in the test. It is not quite
-      // right atm because it creates a new comment thread rather than just a comment
+      // It did need to be altered -- the relationship IDs must match objects in the test.
       const newCommentString =
         '{"data":{"type":"comments","id":"54","attributes":{"body":"WEBSOCKET COMMENT THREAD","created-at":"2019-08-29T02:06:29.000Z","updated-at":"2019-08-29T02:06:29.000Z"},"links":{"self":"/api/v1/comments/54"},"relationships":{"author":{"data":{"type":"users","id":"1"}},"comment-thread":{"data":{"type":"comment-threads","id":"35"}}}},"included":[{"type":"users","id":"1","attributes":{"name":"Lindsay","avatar-url":"https://avatars3.githubusercontent.com/u/3179218?v=4"},"links":{"self":"/api/v1/user"}},{"type":"comment-threads","id":"35","attributes":{"type":"note","closed-at":null,"created-at":"2019-08-29T02:06:29.000Z","updated-at":"2019-08-29T02:06:29.000Z","originating-build-number":33,"originating-snapshot-id":1,"originating-snapshot-partial-url":"/hi/hi/builds/1/view/1/1280?mode=diff&browser=firefox&snapshot=100"},"links":{"self":"/api/v1/comment-threads/35"},"relationships":{"closed-by":{"data":null},"comments":{"data":[{"type":"comments","id":"54"}]},"snapshot":{"data":{"type":"snapshots","id":"snapshot-0"}}}}]}';
       beforeEach(async function() {
@@ -1190,13 +1188,15 @@ describe('Acceptance: Fullscreen Snapshot', function() {
 
       it('displays a new comment thread', async function() {
         pusherService.subscribeToOrganization(project.organization);
+        // one thing to note is that we are visiting this page twice -- it is also visited in the
+        // comment beforeEach block.
         await BuildPage.visitFullPageSnapshot(urlParams);
         const fullscreenSnapshot = BuildPage.snapshotFullscreen;
         expect(fullscreenSnapshot.collaborationPanel.isVisible).to.equal(true);
         expect(fullscreenSnapshot.commentThreads.length).to.equal(3);
         const channel = pusherService._client.channels['private-organization-1'];
         channel.emit('objectUpdated', JSON.parse(newCommentString));
-        await settled()
+        await settled();
 
         expect(fullscreenSnapshot.commentThreads.length).to.equal(4);
         expect(fullscreenSnapshot.header.numOpenCommentThreads).to.equal('4');
