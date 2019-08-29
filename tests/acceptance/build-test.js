@@ -1,6 +1,6 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import freezeMoment from '../helpers/freeze-moment';
-import {currentRouteName, currentURL, findAll, pauseTest} from '@ember/test-helpers';
+import {currentRouteName, currentURL, findAll} from '@ember/test-helpers';
 import {isVisible as attacherIsVisible} from 'ember-attacher';
 import {percySnapshot} from 'ember-percy';
 import {beforeEach} from 'mocha';
@@ -1177,35 +1177,12 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     let commentThread;
     let threadReplyString;
     let archiveThreadString;
-
-    // The way this was created was printing `data` in `pusherService._pushPayload` when using the actual app and then using
-    // JSON.stringify(data). This allowed me to copy and paste the data into this test file.
-    // It did need to be altered -- the relationship IDs must match objects in the test.
-    let newThreadCommentString
-    // const newThreadCommentString =
-    //   '{"data":{"type":"comments","id":"54","attributes":{"body":"WEBSOCKET COMMENT THREAD","created-at":"2019-08-29T02:06:29.000Z","updated-at":"2019-08-29T02:06:29.000Z"},"links":{"self":"/api/v1/comments/54"},"relationships":{"author":{"data":{"type":"users","id":"1"}},"comment-thread":{"data":{"type":"comment-threads","id":"35"}}}},"included":[{"type":"users","id":"1","attributes":{"name":"Lindsay","avatar-url":"https://avatars3.githubusercontent.com/u/3179218?v=4"},"links":{"self":"/api/v1/user"}},{"type":"comment-threads","id":"35","attributes":{"type":"note","closed-at":null,"created-at":"2019-08-29T02:06:29.000Z","updated-at":"2019-08-29T02:06:29.000Z","originating-build-number":33,"originating-snapshot-id":1,"originating-snapshot-partial-url":"/hi/hi/builds/1/view/1/1280?mode=diff&browser=firefox&snapshot=100"},"links":{"self":"/api/v1/comment-threads/35"},"relationships":{"closed-by":{"data":null},"comments":{"data":[{"type":"comments","id":"54"}]},"snapshot":{"data":{"type":"snapshots","id":"snapshot-0"}}}}]}';
+    let newThreadCommentString;
 
     function createWebhookPayload(commentThreadId, snapshotId, user, closed) {
       const lastExistingCommentId = server.db.comments.lastObject.id;
       const newCommentId = Number(lastExistingCommentId) + 1;
       const closedAt = closed ? `"${moment()}"` : null;
-      let snapshotRelationship = null;
-      if (snapshotId) {
-        snapshotRelationship = `"snapshot":{
-          "data":{
-            "type":"snapshots",
-            "id":"${snapshotId}"
-          }
-        },`;
-      } else {
-        // any valid unrelated data
-        snapshotRelationship = `"user":{
-          "data":{
-            "type":"users",
-            "id":"${user.id}"
-          }
-        },`;
-      }
       const result = `{
         "data":{
           "type":"comments",
@@ -1279,7 +1256,6 @@ describe('Acceptance: Fullscreen Snapshot', function() {
           }
         ]
       }`;
-      console.log("Here it is: ", result)
       return result;
     }
 
@@ -1289,24 +1265,6 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       pusherService = this.owner.lookup('service:pusher');
       const pusherMock = new PusherMock();
       pusherService.set('_client', pusherMock);
-
-      // threadReplyString = `{"data":{"type":"comments","id":"54","attributes":{"body":"This is an awesome change!","created-at":"2019-08-29T16:47:20.000Z","updated-at":"2019-08-29T16:47:20.000Z"},"links":{"self":"/api/v1/comments/54"},"relationships":{"author":{"data":{"type":"users","id":"1"}},"comment-thread":{"data":{"type":"comment-threads","id":"${
-      //   commentThread.id
-      // }"}}}},"included":[{"type":"users","id":"1","attributes":{"name":"Rylee Keys","avatar-url":"https://avatars1.githubusercontent.com/u/3731273?v=4"},"links":{"self":"/api/v1/user"}},{"type":"comment-threads","id":"${
-      //   commentThread.id
-      // }","attributes":{"type":"note","closed-at":null,"created-at":"2019-08-29T16:47:14.000Z","updated-at":"2019-08-29T16:47:14.000Z","originating-build-number":${
-      //   commentThread.originatingBuildNumber
-      // },"originating-snapshot-id":${
-      //   commentThread.originatingSnapshotId
-      // },"originating-snapshot-partial-url":"/FluffTown/gh_porcopine_check/builds/${
-      //   commentThread.originatingSnapshotId
-      // }/view/1/1280?mode=diff&browser=firefox&snapshot=${
-      //   commentThread.originatingSnapshotId
-      // }"},"links":{"self":"/api/v1/comment-threads/${
-      //   commentThread.id
-      // }"},"relationships":{"closed-by":{"data":null},"comments":{"data":[{"type":"comments","id":"54"},{"type":"comments","id":"${
-      //   commentThread.commentIds[0]
-      // }"}]}}}]}`;
       user = server.create('user');
       threadReplyString = createWebhookPayload(commentThread.id, snapshot.id, user, false);
       archiveThreadString = createWebhookPayload(commentThread.id, snapshot.id, user, true);
@@ -1314,9 +1272,6 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     });
 
     it('displays a new comment thread', async function() {
-      pusherService.subscribeToOrganization(project.organization);
-      // one thing to note is that we are visiting this page twice -- it is also visited in the
-      // comment beforeEach block.
       await BuildPage.visitFullPageSnapshot(urlParams);
       const fullscreenSnapshot = BuildPage.snapshotFullscreen;
       expect(fullscreenSnapshot.collaborationPanel.isVisible).to.equal(true);

@@ -13,8 +13,6 @@ export default Service.extend({
   flashMessages: service(),
 
   subscribeToUser(user) {
-    console.log('subscribeToUser');
-
     if (this.hasSubscribedToUser) {
       return;
     }
@@ -30,8 +28,6 @@ export default Service.extend({
   },
 
   subscribeToOrganization(organization) {
-    console.log('subscribeToOrganization', `private-organization-${organization.id}`);
-
     this.subscribe(`private-organization-${organization.id}`, 'objectUpdated', data => {
       return run.scheduleOnce('afterRender', this, this._pushPayload, data);
     });
@@ -43,15 +39,10 @@ export default Service.extend({
   },
 
   _pushPayload(data) {
-    console.log('pushing some data');
-    console.log('this is the data:', JSON.stringify(data));
-
     this.store.pushPayload(data);
   },
 
   _flashNotify(notification) {
-    console.log('subscribeToOrganization');
-
     this.flashMessages.info(notification.message);
   },
 
