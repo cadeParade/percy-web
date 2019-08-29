@@ -1174,16 +1174,23 @@ describe('Acceptance: Fullscreen Snapshot', function() {
 
     describe('websockets', function() {
       let pusherService;
+      let user;
+      let flashMessageInfoStub;
 
       // The way this was created was printing `data` in `pusherService._pushPayload` when using the actual app and then using
       // JSON.stringify(data). This allowed me to copy and paste the data into this test file.
       // It did need to be altered -- the relationship IDs must match objects in the test.
-      const newCommentString =
+      const newThreadCommenttString =
         '{"data":{"type":"comments","id":"54","attributes":{"body":"WEBSOCKET COMMENT THREAD","created-at":"2019-08-29T02:06:29.000Z","updated-at":"2019-08-29T02:06:29.000Z"},"links":{"self":"/api/v1/comments/54"},"relationships":{"author":{"data":{"type":"users","id":"1"}},"comment-thread":{"data":{"type":"comment-threads","id":"35"}}}},"included":[{"type":"users","id":"1","attributes":{"name":"Lindsay","avatar-url":"https://avatars3.githubusercontent.com/u/3179218?v=4"},"links":{"self":"/api/v1/user"}},{"type":"comment-threads","id":"35","attributes":{"type":"note","closed-at":null,"created-at":"2019-08-29T02:06:29.000Z","updated-at":"2019-08-29T02:06:29.000Z","originating-build-number":33,"originating-snapshot-id":1,"originating-snapshot-partial-url":"/hi/hi/builds/1/view/1/1280?mode=diff&browser=firefox&snapshot=100"},"links":{"self":"/api/v1/comment-threads/35"},"relationships":{"closed-by":{"data":null},"comments":{"data":[{"type":"comments","id":"54"}]},"snapshot":{"data":{"type":"snapshots","id":"snapshot-0"}}}}]}';
+      const threadReplyString =
+        '{"data":{"type":"comments","id":"54","attributes":{"body":"reply to thread","created-at":"2019-08-29T16:47:20.000Z","updated-at":"2019-08-29T16:47:20.000Z"},"links":{"self":"/api/v1/comments/54"},"relationships":{"author":{"data":{"type":"users","id":"1"}},"comment-thread":{"data":{"type":"comment-threads","id":"34"}}}},"included":[{"type":"users","id":"1","attributes":{"name":"Rylee Keys","avatar-url":"https://avatars1.githubusercontent.com/u/3731273?v=4"},"links":{"self":"/api/v1/user"}},{"type":"comment-threads","id":"34","attributes":{"type":"note","closed-at":null,"created-at":"2019-08-29T16:47:14.000Z","updated-at":"2019-08-29T16:47:14.000Z","originating-build-number":33,"originating-snapshot-id":1,"originating-snapshot-partial-url":"/FluffTown/gh_porcopine_check/builds/33/view/1/1280?mode=diff&browser=firefox&snapshot=33"},"links":{"self":"/api/v1/comment-threads/34"},"relationships":{"closed-by":{"data":null},"comments":{"data":[{"type":"comments","id":"54"},{"type":"comments","id":"54"}]}}}]}';
+      const archiveThreadString =
+        '{"data":{"type":"comment-threads","id":"34","attributes":{"type":"note","closed-at":"2019-08-29T16:47:24.000Z","created-at":"2019-08-29T16:47:14.000Z","updated-at":"2019-08-29T16:47:24.000Z","originating-build-number":33,"originating-snapshot-id":1,"originating-snapshot-partial-url":"/FluffTown/gh_porcopine_check/builds/33/view/1/1280?mode=diff&browser=firefox&snapshot=33"},"links":{"self":"/api/v1/comment-threads/34"},"relationships":{"closed-by":{"data":{"type":"users","id":"1"}},"comments":{"data":[{"type":"comments","id":"54"},{"type":"comments","id":"54"}]}}}}';
       beforeEach(async function() {
         pusherService = this.owner.lookup('service:pusher');
         const pusherMock = new PusherMock();
         pusherService.set('_client', pusherMock);
+        user = server.create('user');
       });
 
       it('displays a new comment thread', async function() {
@@ -1195,7 +1202,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
         expect(fullscreenSnapshot.collaborationPanel.isVisible).to.equal(true);
         expect(fullscreenSnapshot.commentThreads.length).to.equal(3);
         const channel = pusherService._client.channels['private-organization-1'];
-        channel.emit('objectUpdated', JSON.parse(newCommentString));
+        channel.emit('objectUpdated', JSON.parse(newThreadCommenttString));
         await settled();
 
         expect(fullscreenSnapshot.commentThreads.length).to.equal(4);
@@ -1203,46 +1210,59 @@ describe('Acceptance: Fullscreen Snapshot', function() {
         await percySnapshot(this.test);
       });
 
-      it.skip('displays new comments', async function() {
+      it('displays new comments', async function() {
+        pusherService.subscribeToOrganization(project.organization);
+        await BuildPage.visitFullPageSnapshot(urlParams);
         const snapshot = BuildPage.snapshotFullscreen;
         const firstThread = snapshot.commentThreads[0];
-        expect(firstThread.comments.length).to.equal(1);
+        console.log(firstThread);
+        expect(firstThread.comments.length).to.equal(3);
 
-        // do something
+        const channel = pusherService._client.channels['private-organization-1'];
+        channel.emit('objectUpdated', JSON.parse(threadReplyString));
+        await settled();
 
-        expect(firstThread.comments.length).to.equal(2);
+        expect(firstThread.comments.length).to.equal(4);
         await percySnapshot(this.test);
       });
 
-      it.skip('archives a comment thread', async function() {
+      it('archives a comment thread', async function() {
+        pusherService.subscribeToOrganization(project.organization);
+        await BuildPage.visitFullPageSnapshot(urlParams);
         const snapshot = BuildPage.snapshotFullscreen;
         const collabPanel = snapshot.collaborationPanel;
-
-        expect(snapshot.header.numOpenCommentThreads).to.equal('1');
+        expect(snapshot.header.numOpenCommentThreads).to.equal('3');
         expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
         expect(collabPanel.isShowArchivedCommentsVisible).to.equal(false);
 
-        // do something
+        const channel = pusherService._client.channels['private-organization-1'];
+        channel.emit('objectUpdated', JSON.parse(archiveThreadString));
+        await settled();
 
-        expect(snapshot.header.numOpenCommentThreads).to.equal('0');
+        expect(snapshot.header.numOpenCommentThreads).to.equal('2');
         expect(collabPanel.reviewThreads[0].isResolved).to.equal(true);
         expect(collabPanel.isShowArchivedCommentsVisible).to.equal(true);
 
         await percySnapshot(this.test);
       });
 
-      it.skip('flashes a message for a new comment', async function() {
-        const confirmationAlertStub = sinon.stub(utils, 'confirmMessage').returns(true);
+      it('flashes a message for a new comment', async function() {
+        const flashMessageService = this.owner
+          .lookup('service:flash-messages')
+          .registerTypes(['info']);
+        flashMessageInfoStub = sinon.stub(flashMessageService, 'info');
+        pusherService.set('hasSubscribedToUser', null);
+        pusherService.subscribeToUser(user);
         const message = "Han Solo commented on snapshot Home Page: 'These changes look great!'";
-        const user = server.create('user');
         server.create('organizationUser', {organization: project.organization, user: user});
-        debugger;
-        Pusher.singleton.trigger(`private-user-${user.id}`, 'userNotification', {message});
+        await BuildPage.visitFullPageSnapshot(urlParams);
 
-        expect(findAll('.flash-message.flash-message-success')).to.have.length(1);
+        const channel = pusherService._client.channels[`private-user-${user.id}`];
+        channel.emit('userNotification', {message});
+        await settled();
+
+        expect(flashMessageInfoStub).to.have.been.calledWith(message);
         await percySnapshot(this.test);
-
-        confirmationAlertStub.restore();
       });
     });
   });

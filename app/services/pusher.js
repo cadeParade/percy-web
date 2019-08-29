@@ -44,7 +44,7 @@ export default Service.extend({
 
   _pushPayload(data) {
     console.log('pushing some data');
-    console.log('this is the data:', data);
+    console.log('this is the data:', JSON.stringify(data));
 
     this.store.pushPayload(data);
   },
