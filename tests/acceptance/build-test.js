@@ -18,6 +18,9 @@ import {
 import BuildPage from 'percy-web/tests/pages/build-page';
 import ProjectPage from 'percy-web/tests/pages/project-page';
 import withVariation from 'percy-web/tests/helpers/with-variation';
+import {PusherMock} from 'pusher-js-mock';
+import {pauseTest} from '@ember/test-helpers';
+import {settled} from '@ember/test-helpers';
 
 describe('Acceptance: Build', function() {
   freezeMoment('2018-05-22');
@@ -1084,7 +1087,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       server.create('commentThread', 'withOneComment', {snapshot});
       server.create('commentThread', 'withTenComments', 'note', {snapshot});
 
-      await BuildPage.visitFullPageSnapshot(urlParams);
+      // await BuildPage.visitFullPageSnapshot(urlParams);
     });
 
     it('displays correctly with many comments', async function() {
@@ -1171,21 +1174,37 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     });
 
     describe('websockets', function() {
-      beforeEach(async function() {
-        server.create('commentThread', 'withOneComment', {snapshot});
+      let pusherMock;
+      let pusherService;
+      let user;
+      let newComment;
 
-        await BuildPage.visitFullPageSnapshot(urlParams);
+      beforeEach(async function() {
+        user = server.create('user');
+        pusherService = this.owner.lookup('service:pusher');
+        pusherMock = new PusherMock();
+        pusherService.set('_client', pusherMock);
+        newComment = server.build('comment-thread', {snapshot: snapshot});
+        console.log('newComment', newComment);
+        // pusherService.set(userChannel = null;
+        // pusherService.lastOrgChannel = null;
       });
 
-      it('displays new comment threads', async function() {
+      it('displays a new comment thread', async function() {
+        pusherService.subscribeToOrganization(project.organization);
+        await BuildPage.visitFullPageSnapshot(urlParams);
         const fullscreenSnapshot = BuildPage.snapshotFullscreen;
         expect(fullscreenSnapshot.collaborationPanel.isVisible).to.equal(true);
-        expect(fullscreenSnapshot.commentThreads.length).to.equal(1);
+        expect(fullscreenSnapshot.commentThreads.length).to.equal(3);
+        const channel = pusherService._client.channels['private-organization-1'];
+        console.log(pusherService._client.channels);
+        channel.emit(newComment);
+        await settled();
+        return pauseTest();
+        console.log('emitted 1');
 
-        // do something
-
-        expect(fullscreenSnapshot.commentThreads.length).to.equal(2);
-        expect(snapshot.header.numOpenCommentThreads).to.equal('2');
+        expect(fullscreenSnapshot.commentThreads.length).to.equal(4);
+        expect(snapshot.header.numOpenCommentThreads).to.equal('4');
         await percySnapshot(this.test, {widths: [1280, 850, 375]});
       });
 

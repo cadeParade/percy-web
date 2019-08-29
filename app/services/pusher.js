@@ -15,11 +15,11 @@ export default Service.extend({
   subscribeToUser(user) {
     console.log('subscribeToUser');
 
-    if (this.get('hasSubscribedToUser')) {
+    if (this.hasSubscribedToUser) {
       return;
     }
 
-    this.subscribe(`private-user-${user.get('id')}`, 'userNotification', notification => {
+    this.subscribe(`private-user-${user.id}`, 'userNotification', notification => {
       run.scheduleOnce('afterRender', this, this._flashNotify, notification);
     });
     this.subscribe('everyone', 'objectUpdated', data => {
@@ -30,39 +30,46 @@ export default Service.extend({
   },
 
   subscribeToOrganization(organization) {
-    console.log('subscribeToOrganization');
+    console.log('subscribeToOrganization', `private-organization-${organization.id}`);
 
-    this.subscribe(`private-organization-${organization.get('id')}`, 'objectUpdated', data => {
-      run.scheduleOnce('afterRender', this, this._pushPayload, data);
+    this.subscribe(`private-organization-${organization.id}`, 'objectUpdated', data => {
+      return run.scheduleOnce('afterRender', this, this._pushPayload, data);
     });
   },
 
   subscribe(channelName, event, callback) {
-    const channel = this.get('_client').subscribe(channelName);
+    const channel = this._client.subscribe(channelName);
     channel.bind(event, callback);
   },
 
   _pushPayload(data) {
-    console.log('subscribeToOrganization');
+    console.log('pushing some data');
+    console.log('this is the data:', data);
 
-    this.get('store').pushPayload(data);
+    this.store.pushPayload(data);
   },
 
   _flashNotify(notification) {
     console.log('subscribeToOrganization');
 
-    this.get('flashMessages').info(notification.message);
+    this.flashMessages.info(notification.message);
   },
 
-  _client: computed(function() {
-    const cookieValue = document.cookie.match(/XSRF-TOKEN=([^;]*)/);
-    const csrfToken = decodeURIComponent(cookieValue[1]);
-    return new Pusher(config.PUSHER_APP_KEY, {
-      cluster: config.PUSHER_APP_CLUSTER,
-      authEndpoint: utils.buildApiUrl('websocketsAuth'),
-      auth: {
-        headers: {'X-CSRF-Token': csrfToken},
-      },
-    });
+  _client: computed({
+    get() {
+      const cookieValue = document.cookie.match(/XSRF-TOKEN=([^;]*)/);
+      const csrfToken = decodeURIComponent(cookieValue[1]);
+      return new Pusher(config.PUSHER_APP_KEY, {
+        cluster: config.PUSHER_APP_CLUSTER,
+        authEndpoint: utils.buildApiUrl('websocketsAuth'),
+        auth: {
+          headers: {'X-CSRF-Token': csrfToken},
+        },
+      });
+    },
+    set(key, value) {
+      //TODO: assert only in tests
+      return value;
+    },
   }),
 });
