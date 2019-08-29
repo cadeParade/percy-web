@@ -52,6 +52,9 @@ module.exports = function(defaults) {
         },
       },
     },
+    minifyCSS: {
+      enabled: false,
+    },
   });
 
   app.import('bower_components/accounting.js/accounting.js');
