@@ -1174,19 +1174,18 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     });
 
     describe('websockets', function() {
-      let pusherMock;
       let pusherService;
-      let user;
 
-      const newCommentString = '{"data":{"type":"comments","id":"51","attributes":{"body":"WEBSOCKET COMMENT","created-at":"2019-08-29T01:09:06.000Z","updated-at":"2019-08-29T01:09:06.000Z"},"links":{"self":"/api/v1/comments/51"},"relationships":{"author":{"data":{"type":"users","id":"1"}},"comment-thread":{"data":{"type":"comment-threads","id":"1"}}}},"included":[{"type":"users","id":"1","attributes":{"name":"Lindsay","avatar-url":"https://avatars3.githubusercontent.com/u/3179218?v=4"},"links":{"self":"/api/v1/user"}},{"type":"comment-threads","id":"1","attributes":{"type":"note","closed-at":null,"created-at":"2019-08-29T00:58:32.000Z","updated-at":"2019-08-29T00:58:32.000Z","originating-build-number":33,"originating-snapshot-id":100,"originating-snapshot-partial-url":"/hi/hi/builds/34/view/100/1280?mode=diff&browser=firefox&snapshot=100"},"links":{"self":"/api/v1/comment-threads/32"},"relationships":{"closed-by":{"data":null},"comments":{"data":[{"type":"comments","id":"51"}]}}}]}';
+      // The way this was created was printing `data` in `pusherService._pushPayload` when using the actual app and then using
+      // JSON.stringify(data). This allowed me to copy and paste the data into this test file.
+      // It did need to be altered -- the relationship IDs must match objects in the test. It is not quite
+      // right atm because it creates a new comment thread rather than just a comment
+      const newCommentString =
+        '{"data":{"type":"comments","id":"54","attributes":{"body":"WEBSOCKET COMMENT THREAD","created-at":"2019-08-29T02:06:29.000Z","updated-at":"2019-08-29T02:06:29.000Z"},"links":{"self":"/api/v1/comments/54"},"relationships":{"author":{"data":{"type":"users","id":"1"}},"comment-thread":{"data":{"type":"comment-threads","id":"35"}}}},"included":[{"type":"users","id":"1","attributes":{"name":"Lindsay","avatar-url":"https://avatars3.githubusercontent.com/u/3179218?v=4"},"links":{"self":"/api/v1/user"}},{"type":"comment-threads","id":"35","attributes":{"type":"note","closed-at":null,"created-at":"2019-08-29T02:06:29.000Z","updated-at":"2019-08-29T02:06:29.000Z","originating-build-number":33,"originating-snapshot-id":1,"originating-snapshot-partial-url":"/hi/hi/builds/1/view/1/1280?mode=diff&browser=firefox&snapshot=100"},"links":{"self":"/api/v1/comment-threads/35"},"relationships":{"closed-by":{"data":null},"comments":{"data":[{"type":"comments","id":"54"}]},"snapshot":{"data":{"type":"snapshots","id":"snapshot-0"}}}}]}';
       beforeEach(async function() {
-        user = server.create('user');
         pusherService = this.owner.lookup('service:pusher');
-        pusherMock = new PusherMock();
+        const pusherMock = new PusherMock();
         pusherService.set('_client', pusherMock);
-        console.log(project.organization.id)
-        // pusherService.set(userChannel = null;
-        // pusherService.lastOrgChannel = null;
       });
 
       it('displays a new comment thread', async function() {
@@ -1196,20 +1195,15 @@ describe('Acceptance: Fullscreen Snapshot', function() {
         expect(fullscreenSnapshot.collaborationPanel.isVisible).to.equal(true);
         expect(fullscreenSnapshot.commentThreads.length).to.equal(3);
         const channel = pusherService._client.channels['private-organization-1'];
-        console.log(pusherService._client.channels);
-        console.log(channel)
-        console.log("BEFORE UPDATE")
         channel.emit('objectUpdated', JSON.parse(newCommentString));
-        await settled();
-        console.log('emitted 1');
-        return pauseTest();
+        await settled()
 
         expect(fullscreenSnapshot.commentThreads.length).to.equal(4);
-        expect(snapshot.header.numOpenCommentThreads).to.equal('4');
-        await percySnapshot(this.test, {widths: [1280, 850, 375]});
+        expect(fullscreenSnapshot.header.numOpenCommentThreads).to.equal('4');
+        await percySnapshot(this.test);
       });
 
-      it('displays new comments', async function() {
+      it.skip('displays new comments', async function() {
         const snapshot = BuildPage.snapshotFullscreen;
         const firstThread = snapshot.commentThreads[0];
         expect(firstThread.comments.length).to.equal(1);
@@ -1220,7 +1214,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
         await percySnapshot(this.test);
       });
 
-      it('archives a comment thread', async function() {
+      it.skip('archives a comment thread', async function() {
         const snapshot = BuildPage.snapshotFullscreen;
         const collabPanel = snapshot.collaborationPanel;
 
@@ -1237,7 +1231,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
         await percySnapshot(this.test);
       });
 
-      it('flashes a message for a new comment', async function() {
+      it.skip('flashes a message for a new comment', async function() {
         const confirmationAlertStub = sinon.stub(utils, 'confirmMessage').returns(true);
         const message = "Han Solo commented on snapshot Home Page: 'These changes look great!'";
         const user = server.create('user');
