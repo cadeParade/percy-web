@@ -1177,15 +1177,14 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       let pusherMock;
       let pusherService;
       let user;
-      let newComment;
 
+      const newCommentString = '{"data":{"type":"comments","id":"51","attributes":{"body":"WEBSOCKET COMMENT","created-at":"2019-08-29T01:09:06.000Z","updated-at":"2019-08-29T01:09:06.000Z"},"links":{"self":"/api/v1/comments/51"},"relationships":{"author":{"data":{"type":"users","id":"1"}},"comment-thread":{"data":{"type":"comment-threads","id":"1"}}}},"included":[{"type":"users","id":"1","attributes":{"name":"Lindsay","avatar-url":"https://avatars3.githubusercontent.com/u/3179218?v=4"},"links":{"self":"/api/v1/user"}},{"type":"comment-threads","id":"1","attributes":{"type":"note","closed-at":null,"created-at":"2019-08-29T00:58:32.000Z","updated-at":"2019-08-29T00:58:32.000Z","originating-build-number":33,"originating-snapshot-id":100,"originating-snapshot-partial-url":"/hi/hi/builds/34/view/100/1280?mode=diff&browser=firefox&snapshot=100"},"links":{"self":"/api/v1/comment-threads/32"},"relationships":{"closed-by":{"data":null},"comments":{"data":[{"type":"comments","id":"51"}]}}}]}';
       beforeEach(async function() {
         user = server.create('user');
         pusherService = this.owner.lookup('service:pusher');
         pusherMock = new PusherMock();
         pusherService.set('_client', pusherMock);
-        newComment = server.build('comment-thread', {snapshot: snapshot});
-        console.log('newComment', newComment);
+        console.log(project.organization.id)
         // pusherService.set(userChannel = null;
         // pusherService.lastOrgChannel = null;
       });
@@ -1198,10 +1197,12 @@ describe('Acceptance: Fullscreen Snapshot', function() {
         expect(fullscreenSnapshot.commentThreads.length).to.equal(3);
         const channel = pusherService._client.channels['private-organization-1'];
         console.log(pusherService._client.channels);
-        channel.emit(newComment);
+        console.log(channel)
+        console.log("BEFORE UPDATE")
+        channel.emit('objectUpdated', JSON.parse(newCommentString));
         await settled();
-        return pauseTest();
         console.log('emitted 1');
+        return pauseTest();
 
         expect(fullscreenSnapshot.commentThreads.length).to.equal(4);
         expect(snapshot.header.numOpenCommentThreads).to.equal('4');
