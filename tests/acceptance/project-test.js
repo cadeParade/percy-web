@@ -5,6 +5,7 @@ import ProjectPage from 'percy-web/tests/pages/project-page';
 import ProjectSettingsPage from 'percy-web/tests/pages/project-settings-page';
 import NewProjectPage from 'percy-web/tests/pages/new-project-page';
 import sinon from 'sinon';
+import utils from 'percy-web/lib/utils';
 import {beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
 import {visit, currentRouteName, currentURL} from '@ember/test-helpers';
@@ -13,6 +14,8 @@ import UserMenu from 'percy-web/tests/pages/components/user-menu';
 import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
 import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
 import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
+import {PusherMock} from 'pusher-js-mock';
+import {settled} from '@ember/test-helpers';
 
 describe('Acceptance: Project', function() {
   setupAcceptance();
@@ -611,6 +614,45 @@ describe('Acceptance: Project', function() {
         expect(currentRouteName()).to.equal('organizations.organization.projects.new');
         await percySnapshot(`${this.test.fullTitle()} new project page`);
       });
+    });
+  });
+
+  describe('websockets', function() {
+    let organization;
+    let user;
+    let pusherService;
+
+    setupSession(function(server) {
+      organization = server.create('organization');
+      user = server.create('user');
+      pusherService = this.owner.lookup('service:pusher');
+      this.organization = organization;
+    });
+
+    beforeEach(async function() {
+      const pusherMock = new PusherMock();
+      pusherService.set('_client', pusherMock);
+    });
+
+    it('flashes a message for a new comment', async function() {
+      //TODO clean this up
+      const flashMessageService = this.owner
+        .lookup('service:flash-messages')
+        .registerTypes(['info']);
+      const flashMessageInfoStub = sinon.stub(flashMessageService, 'info');
+      pusherService.set('hasSubscribedToUser', null);
+      pusherService.subscribeToUser(user);
+      const message = "Han Solo commented on snapshot Home Page: 'These changes look great!'";
+      server.create('organizationUser', {organization: organization, user: user});
+
+      await visit(`/${organization.slug}`);
+
+      const channel = pusherService._client.channels[`private-user-${user.id}`];
+      channel.emit('userNotification', {message});
+      await settled();
+
+      expect(flashMessageInfoStub).to.have.been.calledWith(message);
+      await percySnapshot(this.test);
     });
   });
 });
