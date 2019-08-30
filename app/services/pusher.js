@@ -13,22 +13,23 @@ export default Service.extend({
   flashMessages: service(),
 
   subscribeToUser(user) {
-    if (this.hasSubscribedToUser) {
+    const channelName = `private-user-${user.id}`;
+    if (this._client.channels[channelName]) {
       return;
     }
 
-    this.subscribe(`private-user-${user.id}`, 'userNotification', notification => {
+    this.subscribe(channelName, 'userNotification', notification => {
       run.scheduleOnce('afterRender', this, this._flashNotify, notification);
     });
-    this.subscribe('everyone', 'objectUpdated', data => {
-      run.scheduleOnce('afterRender', this, this._pushPayload, data);
-    });
-
-    this.set('hasSubscribedToUser', true);
   },
 
   subscribeToOrganization(organization) {
-    this.subscribe(`private-organization-${organization.id}`, 'objectUpdated', data => {
+    const channelName = `private-organization-${organization.id}`;
+    if (this._client.channels[channelName]) {
+      return;
+    }
+
+    this.subscribe(channelName, 'objectUpdated', data => {
       return run.scheduleOnce('afterRender', this, this._pushPayload, data);
     });
   },
@@ -59,8 +60,9 @@ export default Service.extend({
       });
     },
     set(key, value) {
-      //TODO: assert only in tests
-      return value;
+      if (config.environment === 'test') {
+        return value;
+      }
     },
   }),
 });

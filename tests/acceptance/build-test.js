@@ -1262,10 +1262,11 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     beforeEach(async function() {
       server.create('commentThread', 'withOneComment', {snapshot});
       commentThread = server.create('commentThread', 'withOneComment', {snapshot});
+      user = server.create('user');
+
       pusherService = this.owner.lookup('service:pusher');
       const pusherMock = new PusherMock();
       pusherService.set('_client', pusherMock);
-      user = server.create('user');
       threadReplyString = createWebhookPayload(commentThread.id, snapshot.id, user, false);
       archiveThreadString = createWebhookPayload(commentThread.id, snapshot.id, user, true);
       newThreadCommentString = createWebhookPayload(commentThread.id + 1, snapshot.id, user);
