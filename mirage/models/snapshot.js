@@ -9,4 +9,5 @@ export default Model.extend({
   screenshots: hasMany('screenshot'),
   comparisons: hasMany('comparison'),
   commentThreads: hasMany('commentThread'),
+  latestChangedAncestor: belongsTo('snapshot'),
 });

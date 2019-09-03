@@ -200,8 +200,9 @@ module.exports = function(environment) {
     };
     ENV.launchDarkly.local = true;
     ENV.launchDarkly.localFeatureFlags = {
-      'request-changes': false,
+      'request-changes': true,
       'allow-demo-projects': true,
+      'snapshot-history': true,
     };
 
     ENV.APP.bitbucketCloudUrls = {

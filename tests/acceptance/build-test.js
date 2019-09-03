@@ -15,7 +15,6 @@ import {
 } from 'percy-web/models/snapshot';
 import BuildPage from 'percy-web/tests/pages/build-page';
 import ProjectPage from 'percy-web/tests/pages/project-page';
-import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Acceptance: Build', function() {
   freezeMoment('2018-05-22');
@@ -91,8 +90,6 @@ describe('Acceptance: Build', function() {
   let urlParams;
 
   setupSession(function(server) {
-    withVariation(this.owner, 'request-changes', false);
-
     const organization = server.create('organization', 'withUser');
     project = server.create('project', {name: 'project-with-finished-build', organization});
     build = server.create('build', {
@@ -277,7 +274,6 @@ describe('Acceptance: Build', function() {
     });
 
     it('can create a new comment thread', async function() {
-      withVariation(this.owner, 'request-changes', true);
       await BuildPage.visitBuild(urlParams);
       const secondSnapshot = BuildPage.snapshots[1];
       await secondSnapshot.header.toggleCommentSidebar();
@@ -314,7 +310,6 @@ describe('Acceptance: Build', function() {
     it('displays previously rejected comment threads', async function() {
       const originatingSnapshotPartialUrl = 'the/best/url';
 
-      withVariation(this.owner, 'request-changes', true);
       server.create('commentThread', 'withTwoComments', {
         snapshot: twoWidthsSnapshot,
         originatingSnapshotPartialUrl,
@@ -390,7 +385,6 @@ describe('Acceptance: Build', function() {
     });
 
     it('disables appropriate elements', async function() {
-      withVariation(this.owner, 'request-changes', true);
       await BuildPage.visitBuild({
         orgSlug: publicOrg.slug,
         projectSlug: publicProject.slug,
@@ -568,7 +562,6 @@ describe('Acceptance: Build', function() {
     });
 
     it('rejects all snapshots in a group', async function() {
-      withVariation(this.owner, 'request-changes', true);
       await BuildPage.visitBuild(urlParams);
       const firstGroup = BuildPage.snapshotBlocks[0].snapshotGroup;
       expect(server.db.reviews.length).to.equal(0);
@@ -585,7 +578,6 @@ describe('Acceptance: Build', function() {
     });
 
     it('blocks approval of group when any of its snapshots are rejected', async function() {
-      withVariation(this.owner, 'request-changes', true);
       await BuildPage.visitBuild(urlParams);
       const firstGroup = BuildPage.snapshotBlocks[0].snapshotGroup;
 
@@ -795,7 +787,6 @@ describe('Acceptance: Build', function() {
   });
 
   it('creates a rejected review object when clicking "Request changes"', async function() {
-    withVariation(this.owner, 'request-changes', true);
     await BuildPage.visitBuild(urlParams);
     const firstSnapshot = BuildPage.snapshots.objectAt(0);
 
@@ -813,7 +804,6 @@ describe('Acceptance: Build', function() {
   });
 
   it('blocks approval of snapshot when snapshot is rejected', async function() {
-    withVariation(this.owner, 'request-changes', true);
     await BuildPage.visitBuild(urlParams);
     const firstSnapshot = BuildPage.snapshots[0];
 
@@ -839,7 +829,6 @@ describe('Acceptance: Build', function() {
   });
 
   it('blocks approval of build when any of its snapshots are rejected', async function() {
-    withVariation(this.owner, 'request-changes', true);
     await BuildPage.visitBuild(urlParams);
     const secondSnapshot = BuildPage.snapshots.objectAt(1);
 
@@ -879,6 +868,75 @@ describe('Acceptance: Build', function() {
     await BuildPage.buildApprovalButton.clickButton();
     expect(stub).to.have.been.calledWith(build.id, build.snapshots.models.mapBy('id'));
   });
+
+  describe('latest changed ancestor', function() {
+    async function clickLatestChangedAncestorLink() {
+      const firstHeader = BuildPage.snapshots[0].header;
+      await firstHeader.clickDropdownToggle();
+      await firstHeader.dropdownOptions[firstHeader.dropdownOptions.length - 1].click();
+    }
+
+    function expectFlashMessage(message) {
+      const flashMessages = findAll('.flash-message.flash-message-info');
+      expect(flashMessages.length).to.equal(1);
+      expect(flashMessages[0].innerText.includes(message)).to.equal(true);
+    }
+
+    function makeErrorEndpoint(statusCode, errors) {
+      server.get(
+        `/snapshots/${defaultSnapshot.id}/latest-changed-ancestor`,
+        () => ({
+          errors: errors,
+        }),
+        statusCode,
+      );
+    }
+
+    it('navigates to latest changed ancestor snapshot', async function() {
+      const parentBuild = server.create('build', 'withSnapshots', {project});
+      server.get(`/snapshots/${defaultSnapshot.id}/latest-changed-ancestor`, () => {
+        const snapshot = parentBuild.snapshots.models.firstObject;
+        const comparison = snapshot.comparisons.models.firstObject;
+        //eslint-disable-next-line
+        snapshot.update({defaultPartialUrl: `/${parentBuild.project.organization.slug}/${parentBuild.project.slug}/builds/${parentBuild.id}/view/${snapshot.id}/${comparison.width}?mode=diff&browser=${comparison.browser.browserFamily.slug}`});
+        return snapshot;
+      });
+
+      await BuildPage.visitBuild(urlParams);
+      await clickLatestChangedAncestorLink();
+
+      expect(currentURL()).to.include(parentBuild.id);
+      expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
+      await percySnapshot(this.test);
+    });
+
+    it("shows error message when latest changed ancestor doesn't exist", async function() {
+      makeErrorEndpoint(404, [{status: 'not_found'}]);
+      await BuildPage.visitBuild(urlParams);
+      await clickLatestChangedAncestorLink();
+
+      expectFlashMessage('This is the earliest change we have on record for this snapshot.');
+    });
+
+    it('shows error message when latest changed ancestor returns other error', async function() {
+      makeErrorEndpoint(401, [{status: 'unauthorized'}]);
+
+      await BuildPage.visitBuild(urlParams);
+      await clickLatestChangedAncestorLink();
+
+      expectFlashMessage('There was a problem fetching the latest changed snapshot.');
+    });
+
+    //eslint-disable-next-line
+    it('shows error message when latest changed ancestor returns incorrectly formatted error', async function() {
+      makeErrorEndpoint(450, 'not a standard error format');
+
+      await BuildPage.visitBuild(urlParams);
+      await clickLatestChangedAncestorLink();
+
+      expectFlashMessage('There was a problem fetching the latest changed snapshot.');
+    });
+  });
 });
 
 describe('Acceptance: Fullscreen Snapshot', function() {
@@ -893,7 +951,6 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   let build;
 
   setupSession(function(server) {
-    withVariation(this.owner, 'request-changes', false);
     const organization = server.create('organization', 'withUser');
     project = server.create('project', {name: 'project-with-finished-build', organization});
     build = server.create('build', {
@@ -1050,7 +1107,6 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   });
 
   it('creates a rejected review object when clicking "Request changes"', async function() {
-    withVariation(this.owner, 'request-changes', true);
     await BuildPage.visitFullPageSnapshot(urlParams);
     expect(server.db.reviews.length).to.equal(0);
     expect(BuildPage.snapshotFullscreen.commentThreads.length).to.equal(0);
@@ -1184,8 +1240,6 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     });
 
     it('disables appropriate elements', async function() {
-      withVariation(this.owner, 'request-changes', true);
-
       const snapshot = publicBuild.snapshots.models[0];
       const urlParams = {
         orgSlug: publicOrg.slug,
@@ -1202,6 +1256,75 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expect(BuildPage.snapshotFullscreen.header.isRejectButtonDisabled).to.equal(true);
       expect(BuildPage.snapshotFullscreen.header.snapshotApprovalButton.isDisabled).to.equal(true);
       await percySnapshot(this.test.fullTitle());
+    });
+  });
+
+  describe('latest changed ancestor', function() {
+    async function clickLatestChangedAncestorLink() {
+      const header = BuildPage.snapshotFullscreen.header;
+      await header.clickDropdownToggle();
+      await header.dropdownOptions[header.dropdownOptions.length - 1].click();
+    }
+
+    function expectFlashMessage(message) {
+      const flashMessages = findAll('.flash-message.flash-message-info');
+      expect(flashMessages.length).to.equal(1);
+      expect(flashMessages[0].innerText.includes(message)).to.equal(true);
+    }
+
+    function makeErrorEndpoint(statusCode, errors) {
+      server.get(
+        `/snapshots/${snapshot.id}/latest-changed-ancestor`,
+        () => ({
+          errors: errors,
+        }),
+        statusCode,
+      );
+    }
+
+    it('navigates to latest changed ancestor snapshot', async function() {
+      const parentBuild = server.create('build', 'withSnapshots', {project});
+      server.get(`/snapshots/${snapshot.id}/latest-changed-ancestor`, () => {
+        const snapshot = parentBuild.snapshots.models.firstObject;
+        const comparison = snapshot.comparisons.models.firstObject;
+        //eslint-disable-next-line
+        snapshot.update({defaultPartialUrl: `/${parentBuild.project.organization.slug}/${parentBuild.project.slug}/builds/${parentBuild.id}/view/${snapshot.id}/${comparison.width}?mode=diff&browser=${comparison.browser.browserFamily.slug}`});
+        return snapshot;
+      });
+
+      await BuildPage.visitFullPageSnapshot(urlParams);
+      await clickLatestChangedAncestorLink();
+
+      expect(currentURL()).to.include(parentBuild.id);
+      expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
+      await percySnapshot(this.test);
+    });
+
+    it("shows error message when latest changed ancestor doesn't exist", async function() {
+      makeErrorEndpoint(404, [{status: 'not_found'}]);
+      await BuildPage.visitFullPageSnapshot(urlParams);
+      await clickLatestChangedAncestorLink();
+
+      expectFlashMessage('This is the earliest change we have on record for this snapshot.');
+    });
+
+    it('shows error message when latest changed ancestor returns other error', async function() {
+      makeErrorEndpoint(401, [{status: 'unauthorized'}]);
+
+      await BuildPage.visitFullPageSnapshot(urlParams);
+      await clickLatestChangedAncestorLink();
+
+      expectFlashMessage('There was a problem fetching the latest changed snapshot.');
+    });
+
+    //eslint-disable-next-line
+    it('shows error message when latest changed ancestor returns incorrectly formatted error', async function() {
+      makeErrorEndpoint(450, 'not a standard error format');
+
+      await BuildPage.visitFullPageSnapshot(urlParams);
+      await clickLatestChangedAncestorLink();
+
+      expectFlashMessage('There was a problem fetching the latest changed snapshot.');
     });
   });
 });

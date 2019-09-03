@@ -7,7 +7,6 @@ import {make} from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import CollaborationComment from 'percy-web/tests/pages/components/collaboration/collaboration-comment'; // eslint-disable-line
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import withVariation from 'percy-web/tests/helpers/with-variation';
 import {render} from '@ember/test-helpers';
 
 describe('Integration: CollaborationComment', function() {
@@ -18,13 +17,11 @@ describe('Integration: CollaborationComment', function() {
   beforeEach(async function() {
     setupFactoryGuy(this);
     CollaborationComment.setContext(this);
-    withVariation(this.owner, 'request-changes', false);
   });
 
   let closeCommentThreadStub;
   describe('when `isFirstComment` is true', function() {
     beforeEach(async function() {
-      withVariation(this.owner, 'request-changes', true);
       closeCommentThreadStub = sinon.stub();
       const comment = make('comment', 'fromReviewThread');
       this.setProperties({

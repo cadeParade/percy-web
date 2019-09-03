@@ -17,4 +17,12 @@ export default JSONAPISerializer.extend({
     // and this is the best way to mimick that in Mirage for now.
     'build',
   ]),
+
+  links(snapshot) {
+    return {
+      latestChangedAncestor: {
+        related: `/api/v1/snapshots/${snapshot.id}/latest-changed-ancestor`,
+      },
+    };
+  },
 });

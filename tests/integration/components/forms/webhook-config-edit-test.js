@@ -6,7 +6,6 @@ import {percySnapshot} from 'ember-percy';
 import WebhookConfigEditForm from 'percy-web/tests/pages/components/forms/webhook-config-edit';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render} from '@ember/test-helpers';
-import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Integration: WebhookConfigEditForm', function() {
   setupRenderingTest('forms/webhook-config-edit', {
@@ -18,7 +17,6 @@ describe('Integration: WebhookConfigEditForm', function() {
   beforeEach(async function() {
     setupFactoryGuy(this);
     WebhookConfigEditForm.setContext(this);
-    withVariation(this.owner, 'request-changes', true);
     webhookConfig = make('webhook-config');
     this.set('webhookConfig', webhookConfig);
     await render(hbs`{{forms/webhook-config-edit webhookConfig=webhookConfig}}`);

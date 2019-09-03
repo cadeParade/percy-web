@@ -9,6 +9,7 @@ export default Component.extend({
   // required params
   flashMessages: service(),
   launchDarkly: service(),
+  router: service(),
   selectedWidth: null,
   selectedComparison: null,
   snapshot: null,
@@ -77,6 +78,24 @@ export default Component.extend({
       const url = utils.buildApiUrl('snapshotSourceDiff', selectedComparison.get('id'), options);
 
       utils.replaceWindowLocation(url);
+    },
+    async goToLastChangedSnapshot() {
+      const latestChangedAncestorRef = this.snapshot.belongsTo('latestChangedAncestor');
+      try {
+        const latestChangedAncestor = await latestChangedAncestorRef.reload();
+        this.router.transitionTo(latestChangedAncestor.defaultPartialUrl);
+      } catch (e) {
+        try {
+          let message = 'There was a problem fetching the latest changed snapshot.';
+          if (e.errors[0].status === 'not_found') {
+            message = 'This is the earliest change we have on record for this snapshot.';
+          }
+          this.flashMessages.info(message);
+        } catch (e) {
+          // If the error is other than 404 or the error did not come back in the right format.
+          this.flashMessages.info('There was a problem fetching the latest changed snapshot.');
+        }
+      }
     },
   },
 
