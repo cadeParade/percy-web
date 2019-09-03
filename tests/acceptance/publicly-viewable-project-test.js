@@ -59,11 +59,20 @@ describe('Acceptance: Publicly viewable projects', function() {
     it('redirects to login if no project is returned', async function() {
       // Imitate a 403 error when asking for this project/build by asking for a project/build
       // that doesn't exist
-      await BuildPage.visitBuild({
-        orgSlug: organization.slug,
-        projectSlug: 'not-public-project',
-        buildId: 'not-a-public-build',
-      });
+      try {
+        await BuildPage.visitBuild({
+          orgSlug: organization.slug,
+          projectSlug: 'not-public-project',
+          buildId: 'not-a-public-build',
+        });
+      } catch (e) {
+        // Remove this catch when this issue is resolved
+        // https://github.com/emberjs/ember-test-helpers/issues/332
+        // https://github.com/emberjs/ember-test-helpers/pull/373
+        if (e.message !== 'TransitionAborted') {
+          throw e;
+        }
+      }
 
       expect(currentRouteName()).to.equal('login');
     });
@@ -202,7 +211,16 @@ describe('Acceptance: Publicly viewable organizations', function() {
     });
 
     it('redirects to login when organization request returns an error', async function() {
-      await visit('/org-that-api-will-not-disclose');
+      try {
+        await visit('/org-that-api-will-not-disclose');
+      } catch (e) {
+        // Remove this catch when this issue is resolved
+        // https://github.com/emberjs/ember-test-helpers/issues/332
+        // https://github.com/emberjs/ember-test-helpers/pull/373
+        if (e.message !== 'TransitionAborted') {
+          throw e;
+        }
+      }
       expect(currentRouteName()).to.equal('login');
     });
   });

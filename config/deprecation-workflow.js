@@ -5,11 +5,12 @@ window.deprecationWorkflow.config = {
     {handler: 'silence', matchId: 'ember-simple-auth.baseAuthorizer'},
     {handler: 'silence', matchId: 'ember-simple-auth-auth0.jwtAuthorizer'},
     {handler: 'silence', matchId: 'ember-font-awesome.no-fa-prefix'},
-    // ember 3.8 upgrade
-    {handler: 'silence', matchId: 'remove-handler-infos'}, // until ember-source 3.9
     // ember-mocha 0.16.0 upgrade until ember-mocha 2.0
     // (caused by ember-page-object https://bit.ly/2KETufx)
     {handler: 'silence', matchId: 'ember-test-helpers.rendering-context.jquery-element'},
+    // ember 3.12 upgrade until ember 4
+    // (caused by ember-modal-dialog -- https://github.com/yapplabs/ember-modal-dialog/issues/275)
+    {handler: 'silence', matchId: 'computed-property.override'},
   ],
 };
 
