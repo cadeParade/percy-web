@@ -1,21 +1,25 @@
 <header class="build-toolbar fixed top-0 w-screen z-3 flex justify-between items-center px-2 bg-gray-000 border-b" data-test-build-toolbar>
-  <div class="flex items-center">
+  <div class="flex items-center truncate">
     {{#link-to "index"}}
       <figure class="svg-container mr-2">
         {{inline-svg "percy-logo-on-light"}}
       </figure>
     {{/link-to}}
 
-    <div class="flex items-center mr-1 hide-on-mobile">
-      <div class="text-lg font-semibold">
-        {{#link-to "organization" organization class="inline-block link-purple truncate align-top truncate-target hide-on-tablet"}}{{organization.name}}{{/link-to}}
-        <span class="font-semibold text-gray-700 mx-px hide-on-tablet">/</span>
-        {{#link-to "organization.project" organization.slug project class="inline-block link-purple truncate align-top truncate-target" data-test-build-toolbar-project-link=true}}{{project.name}}{{/link-to}}
-      </div>
-      {{#if organization.isSponsored}}
-        {{fa-icon data-test-build-public-project "globe" class="text-blue-500 ml-sm"}}
-      {{/if}}
+    <div class="flex items-center text-lg font-semibold mr-3 truncate hide-on-mobile">
+      <span class="truncate">
+        {{#link-to "organization" organization class="link-purple hide-on-tablet"}}
+          {{organization.name}}
+        {{/link-to}}
+      </span>
+      <span class="font-semibold text-gray-700 mx-sm hide-on-tablet">/</span>
+      {{#link-to "organization.project" organization.slug project class="link-purple truncate" data-test-build-toolbar-project-link=true}}
+        {{project.name}}
+      {{/link-to}}
     </div>
+    {{#if organization.isSponsored}}
+      {{fa-icon data-test-build-public-project "globe" class="text-blue-500 ml-sm"}}
+    {{/if}}
   </div>
 
   {{notice-bar organization=organization shouldShowNewProjectPrompt=project.isDemo}}
