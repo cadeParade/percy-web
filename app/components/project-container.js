@@ -1,26 +1,22 @@
 import Component from '@ember/component';
-import PollingMixin from 'percy-web/mixins/polling';
 import utils from 'percy-web/lib/utils';
 import {computed} from '@ember/object';
-import {and, equal, gt, not} from '@ember/object/computed';
+import {and, equal, gt, not, readOnly} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
 
-import {INFINITY_SCROLL_LIMIT} from 'percy-web/models/build';
+// import {INFINITY_SCROLL_LIMIT} from 'percy-web/models/build';
 
 const allBranchesString = 'All branches';
 
-export default Component.extend(PollingMixin, {
+export default Component.extend({
   store: service(),
   'data-test-project-container': true,
 
   project: null,
   showQuickstart: false,
-  shouldPollForUpdates: true,
   showUnixBash: true,
 
-  POLLING_INTERVAL_SECONDS: 10,
-
-  buildsLimit: INFINITY_SCROLL_LIMIT,
+  // buildsLimit: INFINITY_SCROLL_LIMIT,
 
   canLoadMore: computed.not('infinityBuilds.reachedInfinity'),
   shouldLoadMore: and('isAllBranchesSelected', 'canLoadMore'),
@@ -30,11 +26,7 @@ export default Component.extend(PollingMixin, {
   isAllBranchesSelected: equal('selectedBranch', allBranchesString),
   isBranchSelected: not('isAllBranchesSelected'),
 
-  pollRefresh() {
-    return this._refresh();
-  },
-
-  builds: computed('project.id', 'isRefreshing', 'infinityBuilds._loadingMore', function() {
+  builds: computed('project.{id,builds.[]}', 'infinityBuilds._loadingMore', function() {
     const builds = this.store.peekAll('build');
 
     const filteredBuilds = builds.filter(item => {
@@ -73,17 +65,17 @@ export default Component.extend(PollingMixin, {
     },
   },
 
-  async _refresh() {
-    this.set('isRefreshing', true);
-    const project = await this.project.reload();
-    const buildCount = this.buildsLimit;
-
-    // reload the builds by querying the api with a limit, otherwise running
-    // builds.reload() here hits the api without a limit and returns 100 builds
-    await this.store.query('build', {project: project, 'page[limit]': buildCount});
-
-    if (!this.isDestroyed) {
-      this.set('isRefreshing', false);
-    }
-  },
+  // async _refresh() {
+  //   this.set('isRefreshing', true);
+  //   const project = await this.project.reload();
+  //   const buildCount = this.buildsLimit;
+  //
+  //   // reload the builds by querying the api with a limit, otherwise running
+  //   // builds.reload() here hits the api without a limit and returns 100 builds
+  //   await this.store.query('build', {project: project, 'page[limit]': buildCount});
+  //
+  //   if (!this.isDestroyed) {
+  //     this.set('isRefreshing', false);
+  //   }
+  // },
 });

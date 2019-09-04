@@ -29,8 +29,19 @@ export default Service.extend({
       return;
     }
 
-    this.subscribe(channelName, 'objectUpdated', data => {
+    this.subscribe(channelName, 'buildFinished', data => {
+      console.log('buildFinished', data);
       return run.scheduleOnce('afterRender', this, this._pushPayload, data);
+    });
+
+    this.subscribe(channelName, 'buildCreated', data => {
+      console.log('buildCreated', data);
+      return run.scheduleOnce('afterRender', this, this._pushPayload, data);
+    });
+
+    this.subscribe(channelName, 'objectUpdated', data => {
+      console.log('objectUpdated', data);
+      return this.store.pushPayload(data);
     });
   },
 
