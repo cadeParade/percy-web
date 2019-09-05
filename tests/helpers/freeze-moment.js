@@ -1,4 +1,5 @@
 import {beforeEach, afterEach} from 'mocha';
+import moment from 'moment';
 
 // Support for overriding the baseline time used by Moment.js. Accepts ISO formatted timestamps.
 //
@@ -13,23 +14,23 @@ import {beforeEach, afterEach} from 'mocha';
 export default function freezeMoment(momentObj) {
   // If given an ISO date or timestamp, create a moment object from it. Validity is checked below.
   if (typeof momentObj === 'string') {
-    momentObj = window.moment(momentObj);
+    momentObj = moment(momentObj);
   }
   if (!momentObj || typeof momentObj !== 'object' || !momentObj.isValid()) {
     throw 'Invalid moment object given: ' + momentObj.toString();
   }
 
-  let originalMomentNow = window.moment.now;
+  let originalMomentNow = moment.now;
 
   beforeEach(function() {
     // Override the baseline time used by Moment.
-    window.moment.now = function() {
+    moment.now = function() {
       return momentObj.toDate();
     };
   });
 
   afterEach(function() {
     // Restore original moment.now method.
-    window.moment.now = originalMomentNow;
+    moment.now = originalMomentNow;
   });
 }

@@ -59,10 +59,9 @@ module.exports = function(defaults) {
     },
   });
 
-  app.import('bower_components/accounting.js/accounting.js');
-  app.import('bower_components/hint.css/hint.css');
-  app.import('bower_components/sinon-chai/lib/sinon-chai.js', {type: 'test'});
-  app.import('bower_components/seedrandom/seedrandom.js');
+  app.import('node_modules/hint.css/hint.css');
+  app.import('node_modules/sinon-chai/lib/sinon-chai.js', {type: 'test'});
+  app.import('node_modules/seedrandom/seedrandom.js');
   app.import('node_modules/siema/dist/siema.min.js');
   app.import('node_modules/tributejs/dist/tribute.js');
   app.import('node_modules/tributejs/dist/tribute.css');

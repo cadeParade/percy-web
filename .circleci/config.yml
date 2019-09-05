@@ -32,7 +32,7 @@ jobs:
             - v1-deps-
       - run:
           name: Yarn Install
-          command: yarn global add bower && yarn global add @percy/agent && yarn install --non-interactive
+          command: yarn global add @percy/agent && yarn install --non-interactive
       - save_cache:
           key: v1-deps-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
