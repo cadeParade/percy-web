@@ -3,7 +3,7 @@
     <rect id="no-comparison-icon-a" width="16" height="21" x="22" y="14" rx="2.333"/>
   </defs>
   <g fill="none" fill-rule="evenodd" transform="translate(-22 -14)">
-    <use fill="#1D8DDB" fill-opacity=".103" xlink:href="#no-comparison-icon-a"/>
+    <use fill="#1D8DDB" fill-opacity=".103" href="#no-comparison-icon-a"/>
     <rect width="14.75" height="19.75" x="22.625" y="14.625" stroke="#1D8DDB" stroke-width="1.25" rx="2.333"/>
   </g>
 </svg>

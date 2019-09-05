@@ -8,7 +8,7 @@
     </filter>
   </defs>
   <g fill="none" fill-rule="evenodd" transform="translate(-15 -37)">
-    <use fill="#000" filter="url(#flash-success-icon-a)" xlink:href="#flash-success-icon-b"/>
-    <use fill="#FFF" xlink:href="#flash-success-icon-b"/>
+    <use fill="#000" filter="url(#flash-success-icon-a)" href="#flash-success-icon-b"/>
+    <use fill="#FFF" href="#flash-success-icon-b"/>
   </g>
 </svg>

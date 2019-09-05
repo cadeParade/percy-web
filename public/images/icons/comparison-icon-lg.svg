@@ -18,12 +18,12 @@
   </defs>
   <g fill="none" fill-rule="evenodd">
     <g stroke-dasharray=".181 .181 3.438 4.343" stroke-linecap="round" transform="rotate(5 22.408 15.61)">
-      <use fill="#000" filter="url(#comparison-icon-lg-a)" xlink:href="#comparison-icon-lg-b"/>
-      <use fill="#E74E3E" fill-opacity=".1" stroke="#E74E3E" stroke-width="1.995" xlink:href="#comparison-icon-lg-b"/>
+      <use fill="#000" filter="url(#comparison-icon-lg-a)" href="#comparison-icon-lg-b"/>
+      <use fill="#E74E3E" fill-opacity=".1" stroke="#E74E3E" stroke-width="1.995" href="#comparison-icon-lg-b"/>
     </g>
     <g transform="rotate(-5 12.523 24.453)">
-      <use fill="#000" filter="url(#comparison-icon-lg-c)" xlink:href="#comparison-icon-lg-d"/>
-      <use fill="#1D8DDB" fill-opacity=".1" xlink:href="#comparison-icon-lg-d"/>
+      <use fill="#000" filter="url(#comparison-icon-lg-c)" href="#comparison-icon-lg-d"/>
+      <use fill="#1D8DDB" fill-opacity=".1" href="#comparison-icon-lg-d"/>
       <rect width="20.482" height="27.155" x="2.282" y="10.876" stroke="#1D8DDB" stroke-width="1.995" rx="3.191"/>
     </g>
   </g>

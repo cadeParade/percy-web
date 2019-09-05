@@ -6086,7 +6086,7 @@ ember-attacher@^0.15.1:
     ember-truth-helpers "^2.0.0"
     sass "^1.13.2"
 
-ember-auto-import@^1.2.15, ember-auto-import@^1.2.19, ember-auto-import@^1.3.0:
+ember-auto-import@^1.2.15, ember-auto-import@^1.2.19, ember-auto-import@^1.3.0, ember-auto-import@^1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/ember-auto-import/-/ember-auto-import-1.5.2.tgz#e97ed96b600caa6090ffed83e4611c3e7ec9bad7"
   integrity sha512-skVQpfdc6G5OVRsyemDn3vI1nj/iBBgnoqRLRka0ZbDT2GqelmyJ86bp+Bd/ztJe45Le3we+LXbR7T54RU5A9w==
@@ -6957,17 +6957,6 @@ ember-factory-for-polyfill@^1.3.1:
   integrity sha512-y3iG2iCzH96lZMTWQw6LWNLAfOmDC4pXKbZP6FxG8lt7GGaNFkZjwsf+Z5GAe7kxfD7UG4lVkF7x37K82rySGA==
   dependencies:
     ember-cli-version-checker "^2.1.0"
-
-ember-fakerjs@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/ember-fakerjs/-/ember-fakerjs-0.2.0.tgz#8b60efb1a47562fdf309da54fff9f0a3c91a147d"
-  integrity sha512-OYqOKaALtYee+QHWzNB6KvKYsxfENFjZG8FVFn6zyEX1kIXbCBJivX+ccCkb8hKJvh1vie8PCvZ7l4SLBy6KgA==
-  dependencies:
-    broccoli-funnel "^2.0.1"
-    broccoli-merge-trees "^2.0.0"
-    ember-cli-babel "^6.6.0"
-    faker "git+https://github.com/Marak/faker.js.git"
-    resolve "^1.5.0"
 
 ember-fetch@6.7.0, "ember-fetch@^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0":
   version "6.7.0"
@@ -8201,9 +8190,10 @@ fake-xml-http-request@^2.0.0:
   resolved "https://registry.yarnpkg.com/fake-xml-http-request/-/fake-xml-http-request-2.0.0.tgz#41a92f0ca539477700cb1dafd2df251d55dac8ff"
   integrity sha512-UjNnynb6eLAB0lyh2PlTEkjRJORnNsVF1hbzU+PQv89/cyBV9GDRCy7JAcLQgeCLYT+3kaumWWZKEJvbaK74eQ==
 
-"faker@git+https://github.com/Marak/faker.js.git":
+faker@^4.1.0:
   version "4.1.0"
-  resolved "git+https://github.com/Marak/faker.js.git#d3ce6f1a2a9359574e7f31f14d4901648047c45a"
+  resolved "https://registry.yarnpkg.com/faker/-/faker-4.1.0.tgz#1e45bbbecc6774b3c195fad2835109c6d748cc3f"
+  integrity sha1-HkW7vsxndLPBlfrSg1EJxtdIzD8=
 
 fancy-log@^1.3.2:
   version "1.3.3"

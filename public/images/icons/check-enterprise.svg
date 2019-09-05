@@ -2,10 +2,10 @@
 <g id="Canvas" transform="translate(324 -980)">
 <g id="Group 8.3">
 <g id="Oval">
-<use xlink:href="#path0_fill" transform="translate(-324 980)" fill="#9E66BF"/>
+<use href="#path0_fill" transform="translate(-324 980)" fill="#9E66BF"/>
 </g>
 <g id="Path 2">
-<use xlink:href="#path1_stroke" transform="translate(-317 989)" fill="#FFFFFF"/>
+<use href="#path1_stroke" transform="translate(-317 989)" fill="#FFFFFF"/>
 </g>
 </g>
 </g>

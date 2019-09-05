@@ -40,7 +40,9 @@ module.exports = function(defaults) {
     },
     svg: {
       paths: ['public/images/icons', 'public/images/logos', 'public/images/icons/tech'],
-      optimize: false,
+      optimize: {
+        plugins: [{removeEmptyAttrs: false}, {cleanupIDs: {minify: false}}, {mergePaths: false}],
+      },
     },
     sourcemaps: {
       enabled: true,
@@ -58,8 +60,6 @@ module.exports = function(defaults) {
   });
 
   app.import('bower_components/accounting.js/accounting.js');
-  app.import('bower_components/highlightjs/styles/github.css');
-  app.import('bower_components/highlightjs/highlight.pack.js');
   app.import('bower_components/hint.css/hint.css');
   app.import('bower_components/sinon-chai/lib/sinon-chai.js', {type: 'test'});
   app.import('bower_components/seedrandom/seedrandom.js');

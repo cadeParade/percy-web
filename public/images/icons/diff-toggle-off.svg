@@ -5,14 +5,14 @@
 <g id="Group">
 <g id="Group">
 <g id="Vector">
-<use xlink:href="#path0_fill" transform="matrix(0.996277 -0.0862057 0.0881161 0.99611 5170 716.552)" fill="#F0EEF1"/>
-<use xlink:href="#path1_stroke" transform="matrix(0.996277 -0.0862057 0.0881161 0.99611 5170 716.552)" fill="#E1DFE2"/>
+<use href="#path0_fill" transform="matrix(0.996277 -0.0862057 0.0881161 0.99611 5170 716.552)" fill="#F0EEF1"/>
+<use href="#path1_stroke" transform="matrix(0.996277 -0.0862057 0.0881161 0.99611 5170 716.552)" fill="#E1DFE2"/>
 </g>
 </g>
 <g id="Group">
 <g id="Vector">
-<use xlink:href="#path2_fill" transform="matrix(0.996277 0.0862057 -0.0881161 0.99611 5177.4 709)" fill="#F0EEF1" fill-opacity="0.4"/>
-<use xlink:href="#path3_stroke" transform="matrix(0.996277 0.0862057 -0.0881161 0.99611 5177.4 709)" fill="#E1DFE2"/>
+<use href="#path2_fill" transform="matrix(0.996277 0.0862057 -0.0881161 0.99611 5177.4 709)" fill="#F0EEF1" fill-opacity="0.4"/>
+<use href="#path3_stroke" transform="matrix(0.996277 0.0862057 -0.0881161 0.99611 5177.4 709)" fill="#E1DFE2"/>
 </g>
 </g>
 </g>

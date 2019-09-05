@@ -113,58 +113,58 @@
   </defs>
   <g fill="none" fill-rule="evenodd">
     <g fill-rule="nonzero" transform="rotate(20 34.771 27.428)">
-      <use fill="#000" filter="url(#fast-a)" xlink:href="#fast-b"/>
-      <use fill="#9E66BF" fill-rule="evenodd" stroke="#9E66BF" stroke-width=".5" xlink:href="#fast-b"/>
+      <use fill="#000" filter="url(#fast-a)" href="#fast-b"/>
+      <use fill="#9E66BF" fill-rule="evenodd" stroke="#9E66BF" stroke-width=".5" href="#fast-b"/>
     </g>
-    <use fill="#000" filter="url(#fast-c)" xlink:href="#fast-d"/>
-    <use fill="#FBD341" xlink:href="#fast-d"/>
-    <use fill="#000" filter="url(#fast-e)" xlink:href="#fast-f"/>
-    <use fill="#E4D243" xlink:href="#fast-f"/>
-    <use fill="#000" filter="url(#fast-g)" xlink:href="#fast-h"/>
-    <use fill="#C7D146" xlink:href="#fast-h"/>
-    <use fill="#000" filter="url(#fast-i)" xlink:href="#fast-j"/>
-    <use fill="#AFD048" xlink:href="#fast-j"/>
-    <use fill="#000" filter="url(#fast-k)" xlink:href="#fast-l"/>
-    <use fill="#98CF4B" xlink:href="#fast-l"/>
-    <use fill="#000" filter="url(#fast-m)" xlink:href="#fast-n"/>
-    <use fill="#E3503E" xlink:href="#fast-n"/>
-    <use fill="#000" filter="url(#fast-o)" xlink:href="#fast-p"/>
-    <use fill="#81CE4D" xlink:href="#fast-p"/>
-    <use fill="#000" filter="url(#fast-q)" xlink:href="#fast-r"/>
-    <use fill="#E95B3E" xlink:href="#fast-r"/>
-    <use fill="#000" filter="url(#fast-s)" xlink:href="#fast-t"/>
-    <use fill="#6FCD4F" xlink:href="#fast-t"/>
+    <use fill="#000" filter="url(#fast-c)" href="#fast-d"/>
+    <use fill="#FBD341" href="#fast-d"/>
+    <use fill="#000" filter="url(#fast-e)" href="#fast-f"/>
+    <use fill="#E4D243" href="#fast-f"/>
+    <use fill="#000" filter="url(#fast-g)" href="#fast-h"/>
+    <use fill="#C7D146" href="#fast-h"/>
+    <use fill="#000" filter="url(#fast-i)" href="#fast-j"/>
+    <use fill="#AFD048" href="#fast-j"/>
+    <use fill="#000" filter="url(#fast-k)" href="#fast-l"/>
+    <use fill="#98CF4B" href="#fast-l"/>
+    <use fill="#000" filter="url(#fast-m)" href="#fast-n"/>
+    <use fill="#E3503E" href="#fast-n"/>
+    <use fill="#000" filter="url(#fast-o)" href="#fast-p"/>
+    <use fill="#81CE4D" href="#fast-p"/>
+    <use fill="#000" filter="url(#fast-q)" href="#fast-r"/>
+    <use fill="#E95B3E" href="#fast-r"/>
+    <use fill="#000" filter="url(#fast-s)" href="#fast-t"/>
+    <use fill="#6FCD4F" href="#fast-t"/>
     <g>
-      <use fill="#000" filter="url(#fast-u)" xlink:href="#fast-v"/>
-      <use fill="#EB693E" xlink:href="#fast-v"/>
-    </g>
-    <g>
-      <use fill="#000" filter="url(#fast-w)" xlink:href="#fast-x"/>
-      <use fill="#58CC51" xlink:href="#fast-x"/>
+      <use fill="#000" filter="url(#fast-u)" href="#fast-v"/>
+      <use fill="#EB693E" href="#fast-v"/>
     </g>
     <g>
-      <use fill="#000" filter="url(#fast-y)" xlink:href="#fast-z"/>
-      <use fill="#EE7A3F" xlink:href="#fast-z"/>
+      <use fill="#000" filter="url(#fast-w)" href="#fast-x"/>
+      <use fill="#58CC51" href="#fast-x"/>
     </g>
     <g>
-      <use fill="#000" filter="url(#fast-A)" xlink:href="#fast-B"/>
-      <use fill="#4ACB53" xlink:href="#fast-B"/>
+      <use fill="#000" filter="url(#fast-y)" href="#fast-z"/>
+      <use fill="#EE7A3F" href="#fast-z"/>
     </g>
     <g>
-      <use fill="#000" filter="url(#fast-C)" xlink:href="#fast-D"/>
-      <use fill="#F1883F" xlink:href="#fast-D"/>
+      <use fill="#000" filter="url(#fast-A)" href="#fast-B"/>
+      <use fill="#4ACB53" href="#fast-B"/>
     </g>
     <g>
-      <use fill="#000" filter="url(#fast-E)" xlink:href="#fast-F"/>
-      <use fill="#F3983F" xlink:href="#fast-F"/>
+      <use fill="#000" filter="url(#fast-C)" href="#fast-D"/>
+      <use fill="#F1883F" href="#fast-D"/>
     </g>
     <g>
-      <use fill="#000" filter="url(#fast-G)" xlink:href="#fast-H"/>
-      <use fill="#F8AC40" xlink:href="#fast-H"/>
+      <use fill="#000" filter="url(#fast-E)" href="#fast-F"/>
+      <use fill="#F3983F" href="#fast-F"/>
     </g>
     <g>
-      <use fill="#000" filter="url(#fast-I)" xlink:href="#fast-J"/>
-      <use fill="#FBBF40" xlink:href="#fast-J"/>
+      <use fill="#000" filter="url(#fast-G)" href="#fast-H"/>
+      <use fill="#F8AC40" href="#fast-H"/>
+    </g>
+    <g>
+      <use fill="#000" filter="url(#fast-I)" href="#fast-J"/>
+      <use fill="#FBBF40" href="#fast-J"/>
     </g>
   </g>
 </svg>

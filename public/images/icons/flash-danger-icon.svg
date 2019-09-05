@@ -14,11 +14,11 @@
     </filter>
   </defs>
   <g fill="none" fill-rule="evenodd" transform="translate(1)">
-    <use fill="#000" filter="url(#flash-danger-icon-a)" xlink:href="#flash-danger-icon-b"/>
-    <use fill="#FFF" xlink:href="#flash-danger-icon-b"/>
+    <use fill="#000" filter="url(#flash-danger-icon-a)" href="#flash-danger-icon-b"/>
+    <use fill="#FFF" href="#flash-danger-icon-b"/>
     <g fill-rule="nonzero">
-      <use fill="#000" filter="url(#flash-danger-icon-c)" xlink:href="#flash-danger-icon-d"/>
-      <use fill="#FFF" fill-rule="evenodd" xlink:href="#flash-danger-icon-d"/>
+      <use fill="#000" filter="url(#flash-danger-icon-c)" href="#flash-danger-icon-d"/>
+      <use fill="#FFF" fill-rule="evenodd" href="#flash-danger-icon-d"/>
     </g>
   </g>
 </svg>

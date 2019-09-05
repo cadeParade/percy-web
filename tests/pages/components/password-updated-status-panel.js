@@ -1,8 +1,8 @@
 import {clickable, isVisible, isPresent, create} from 'ember-cli-page-object';
 
 const SELECTORS = {
-  SUCCESS_ICON: '#thumbs-up-large-icon-b',
-  FAIL_ICON: '#error-large-icon-b',
+  SUCCESS_ICON: 'svg[data-test-thumbs-up-large-icon]',
+  FAIL_ICON: 'svg[data-test-error-large-icon]',
   SETTINGS_BUTTON: '.test-password-updated-settings-link',
   SIGN_IN_BUTTON: '.test-password-updated-signin-link',
 };

@@ -15,12 +15,12 @@
   </defs>
   <g fill="none" fill-rule="evenodd" transform="rotate(-5 13.5 1.548)">
     <g fill-rule="nonzero">
-      <use fill="#000" filter="url(#approval-icon-a)" xlink:href="#approval-icon-b"/>
-      <use fill="#FFF" fill-rule="evenodd" xlink:href="#approval-icon-b"/>
+      <use fill="#000" filter="url(#approval-icon-a)" href="#approval-icon-b"/>
+      <use fill="#FFF" fill-rule="evenodd" href="#approval-icon-b"/>
     </g>
     <g opacity="0">
-      <use fill="#000" filter="url(#approval-icon-c)" xlink:href="#approval-icon-d"/>
-      <use fill="#FFF" xlink:href="#approval-icon-d"/>
+      <use fill="#000" filter="url(#approval-icon-c)" href="#approval-icon-d"/>
+      <use fill="#FFF" href="#approval-icon-d"/>
     </g>
     <ellipse cx="3.568" cy="16.852" fill="#FFF" rx="1" ry="1"/>
   </g>

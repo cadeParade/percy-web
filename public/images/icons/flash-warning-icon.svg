@@ -20,13 +20,13 @@
     </filter>
   </defs>
   <g fill="none" fill-rule="evenodd" transform="translate(1)">
-    <use fill="#000" filter="url(#flash-warning-icon-a)" xlink:href="#flash-warning-icon-b"/>
-    <use fill="#FFF" xlink:href="#flash-warning-icon-b"/>
-    <use fill="#000" filter="url(#flash-warning-icon-c)" xlink:href="#flash-warning-icon-d"/>
-    <use fill="#FFF" xlink:href="#flash-warning-icon-d"/>
+    <use fill="#000" filter="url(#flash-warning-icon-a)" href="#flash-warning-icon-b"/>
+    <use fill="#FFF" href="#flash-warning-icon-b"/>
+    <use fill="#000" filter="url(#flash-warning-icon-c)" href="#flash-warning-icon-d"/>
+    <use fill="#FFF" href="#flash-warning-icon-d"/>
     <g>
-      <use fill="#000" filter="url(#flash-warning-icon-e)" xlink:href="#flash-warning-icon-f"/>
-      <use fill="#FFF" xlink:href="#flash-warning-icon-f"/>
+      <use fill="#000" filter="url(#flash-warning-icon-e)" href="#flash-warning-icon-f"/>
+      <use fill="#FFF" href="#flash-warning-icon-f"/>
     </g>
   </g>
 </svg>

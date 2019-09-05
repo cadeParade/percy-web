@@ -30,8 +30,8 @@
     <path fill="url(#hero-background-a)" d="M67.6177199,45.5154963 L1087.72109,134.762977 L1049.96461,566.321525 C952.538266,578.191966 784.078695,584.127187 544.585898,584.127187 C305.0931,584.127187 130.849636,578.944783 21.8555077,568.579975 L67.6177199,45.5154963 Z" transform="rotate(-5 554.788 314.821)"/>
     <path fill="url(#hero-background-b)" d="M66.223228,45.4546114 L1086.3266,134.702092 L1051.3591,534.382409 C953.932758,546.252851 785.473187,552.188072 545.98039,552.188072 C306.487592,552.188072 132.244128,547.005668 23.2499996,536.64086 L66.223228,45.4546114 Z" transform="rotate(-5 554.788 298.821)"/>
     <g transform="rotate(-5 554.788 282.821)">
-      <use fill="#000" filter="url(#hero-background-c)" xlink:href="#hero-background-d"/>
-      <use fill="url(#hero-background-e)" xlink:href="#hero-background-d"/>
+      <use fill="#000" filter="url(#hero-background-c)" href="#hero-background-d"/>
+      <use fill="url(#hero-background-e)" href="#hero-background-d"/>
     </g>
   </g>
 </svg>
