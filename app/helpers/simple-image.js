@@ -6,10 +6,11 @@ import Ember from 'ember';
 // and the binding can cause odd image refreshing or resizing.
 export function simpleImageHelper(params, options = {}) {
   let image = options.image;
+  let altText = options.altText;
   let classString = Ember.Handlebars.Utils.escapeExpression(options.classes || '');
   return htmlSafe(
-    `<img class="${classString}" src="${image.get('url')}" ` +
-      `width="${image.get('width')}" height="${image.get('height')}">`,
+    `<img class="${classString}" src="${image.url}" ` +
+      `width="${image.width}" height="${image.height}" alt="${altText}">`,
   );
 }
 

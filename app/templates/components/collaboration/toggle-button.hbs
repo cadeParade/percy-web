@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-square collaboration-toggle relative" {{action toggleCollaborationPanel}} data-test-toggle-comment-sidebar>
+<button type="button" class="btn btn-square collaboration-toggle relative" {{action toggleCollaborationPanel}} aria-label="Add a comment or toggle comment panel" data-test-toggle-comment-sidebar>
   <figure class="svg-container">
     {{#if unresolvedCommentThreadCount}}
       {{inline-svg "conversation-icon-purple"}}

@@ -10,10 +10,14 @@ describe('simple-image helper', function() {
       width: 100,
       height: 200,
     });
-    let html = simpleImageHelper(undefined, {image: image});
-    expect(html.string).to.equal('<img class="" src="/foo" width="100" height="200">');
+    let html = simpleImageHelper(undefined, {image: image, altText: 'alt-text'});
+    expect(html.string).to.equal(
+      '<img class="" src="/foo" width="100" height="200" alt="alt-text">',
+    );
 
-    html = simpleImageHelper(undefined, {image: image, classes: 'bar'});
-    expect(html.string).to.equal('<img class="bar" src="/foo" width="100" height="200">');
+    html = simpleImageHelper(undefined, {image: image, classes: 'bar', altText: 'alt-text'});
+    expect(html.string).to.equal(
+      '<img class="bar" src="/foo" width="100" height="200" alt="alt-text">',
+    );
   });
 });

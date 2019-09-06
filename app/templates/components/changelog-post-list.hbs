@@ -8,7 +8,7 @@
       <h2>{{changelogPost.title}}</h2>
       {{markdown-to-html changelogPost.content}}
       {{#if changelogPost.image}}
-        <img src="{{changelogPost.image.file.url}}">
+        <img src="{{changelogPost.image.file.url}}" alt="{{changelogPost.image.description}}">
       {{/if}}
     {{/changelog-post}}
   {{/each}}

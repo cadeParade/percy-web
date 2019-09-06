@@ -2,10 +2,10 @@
   <div style="min-width: 0;" class="flex items-center">
     {{#if fullscreen}}
       <div class="btn-group mr-2">
-        <button type="button" class="btn btn-square" {{action updateSnapshotId (hash isNext=false)}} data-test-previous-snapshot>
+        <button type="button" class="btn btn-square" {{action updateSnapshotId (hash isNext=false)}} data-test-previous-snapshot aria-label="Navigate to next snapshot">
           {{inline-svg "gray-arrow-up"}}
         </button>
-        <button type="button" class="btn btn-square" {{action updateSnapshotId}} data-test-next-snapshot>
+        <button type="button" class="btn btn-square" {{action updateSnapshotId}} data-test-next-snapshot aria-label="Navigate to previous snapshot">
           {{inline-svg "gray-arrow-down"}}
         </button>
       </div>
@@ -59,7 +59,7 @@
         {{#basic-dropdown horizontalPosition='auto-right' preventScroll=true as |dropdown|}}
           <div class="dropdown {{if dropdown.isOpen 'is-visible'}}">
             {{#dropdown.trigger}}
-              <button type="button" class="btn btn-square dropdown-toggle" data-test-snapshot-header-dropdown-toggle>
+              <button type="button" class="btn btn-square dropdown-toggle" data-test-snapshot-header-dropdown-toggle aria-label="Toggle snapshot options">
                 {{inline-svg "blue-dropdown-icon"}}
               </button>
             {{/dropdown.trigger}}
@@ -149,7 +149,7 @@
 
       <div class="btn-group" role="group" aria-label="Second Group">
         <button type="button" class="ToggleFullViewButton btn btn-square {{if fullscreen 'minimize-snapshot' 'maximize-snapshot'}}"
-          {{action toggleViewMode}} data-test-SnapshotViewer-toggleFullScreen>
+          {{action toggleViewMode}} aria-label="{{if fullscreen "Minimize" "Maximize"}} snapshot" data-test-SnapshotViewer-toggleFullScreen>
           <figure class="svg-container">
             {{#if fullscreen}}
               {{inline-svg "minimize-icon"}}
