@@ -19,7 +19,8 @@
     "test": "ember test",
     "start-production-for-testing": "ember server --environment=production",
     "test:node_debug": "node debug node_modules/ember-cli/bin/ember test --server",
-    "test:parallel": "EMBER_ENV=test percy exec --network-idle-timeout 50 -- ember exam --environment=test --path dist --split=4 --parallel",
+    "test:parallel": "PERCY_PARALLEL_TOTAL=-1 EMBER_ENV=test ember exam --environment=test --path dist --split=4 --parallel && yarn test:finalize",
+    "test:finalize": "PERCY_PARALLEL_TOTAL=-1 yarn percy finalize --all",
     "test:server": "ember test --server"
   },
   "lint-staged": {
@@ -33,6 +34,7 @@
     "@ember/jquery": "^0.6.1",
     "@ember/optional-features": "^0.7.0",
     "@ember/test-helpers": "1.6.1",
+    "@percy/agent": "^0.11.0",
     "accounting": "^0.4.1",
     "babel-eslint": "^10.0.3",
     "broccoli-asset-rev": "^3.0.0",
@@ -86,7 +88,7 @@
     "ember-modal-dialog": "^3.0.0",
     "ember-moment": "^8.0.0",
     "ember-page-title": "5.0.2",
-    "ember-percy": "percy/ember-percy.git#agentified",
+    "ember-percy": "^1.5.0",
     "ember-power-select": "^2.3.5",
     "ember-promise-helpers": "^1.0.9",
     "ember-resolver": "^5.1.3",
