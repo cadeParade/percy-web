@@ -90,6 +90,9 @@ export default Component.extend({
           if (e.errors[0].status === 'not_found') {
             message = 'This is the earliest change we have on record for this snapshot.';
           }
+          if (e.errors[0].status === 'conflict') {
+            message = e.errors[0].detail;
+          }
           this.flashMessages.info(message);
         } catch (e) {
           // If the error is other than 404 or the error did not come back in the right format.
