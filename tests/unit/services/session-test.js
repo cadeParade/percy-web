@@ -132,6 +132,8 @@ describe('SessionService', function() {
       it('invalidates the session', function() {
         const invalidateStub = sinon.stub().returns(resolve());
         subject.invalidate = invalidateStub;
+        subject._clearWebsockets = sinon.stub();
+
         const promise = subject.loadCurrentUser();
 
         return promise.then(() => {
@@ -149,6 +151,17 @@ describe('SessionService', function() {
 
         return promise.then(() => {
           expect(analyticsInvalidateStub).to.have.been.called;
+        });
+      });
+
+      it('disconnects websocket connections', function() {
+        subject.invalidate = sinon.stub().returns(resolve());
+        const websocketsDisconnectStub = sinon.stub();
+        subject.set('websocket.disconnect', websocketsDisconnectStub);
+
+        const promise = subject.loadCurrentUser();
+        return promise.then(() => {
+          expect(websocketsDisconnectStub).to.have.been.called;
         });
       });
     });

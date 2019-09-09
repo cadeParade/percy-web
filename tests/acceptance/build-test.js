@@ -15,6 +15,8 @@ import {
 } from 'percy-web/models/snapshot';
 import BuildPage from 'percy-web/tests/pages/build-page';
 import ProjectPage from 'percy-web/tests/pages/project-page';
+import {PusherMock} from 'pusher-js-mock';
+import {settled} from '@ember/test-helpers';
 
 describe('Acceptance: Build', function() {
   freezeMoment('2018-05-22');
@@ -897,8 +899,10 @@ describe('Acceptance: Build', function() {
       server.get(`/snapshots/${defaultSnapshot.id}/latest-changed-ancestor`, () => {
         const snapshot = parentBuild.snapshots.models.firstObject;
         const comparison = snapshot.comparisons.models.firstObject;
-        //eslint-disable-next-line
-        snapshot.update({defaultPartialUrl: `/${parentBuild.project.organization.slug}/${parentBuild.project.slug}/builds/${parentBuild.id}/view/${snapshot.id}/${comparison.width}?mode=diff&browser=${comparison.browser.browserFamily.slug}`});
+        snapshot.update({
+          //eslint-disable-next-line
+          defaultPartialUrl: `/${parentBuild.project.organization.slug}/${parentBuild.project.slug}/builds/${parentBuild.id}/view/${snapshot.id}/${comparison.width}?mode=diff&browser=${comparison.browser.browserFamily.slug}`,
+        });
         return snapshot;
       });
 
@@ -1225,6 +1229,102 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     });
   });
 
+  describe('websockets', function() {
+    let websocketService;
+    let commentThread;
+    let fullscreenSnapshot;
+    let organizationChannel;
+
+    beforeEach(async function() {
+      // Setup
+      server.create('commentThread', 'withOneComment', {
+        snapshot,
+        createdAt: '2019-09-05T08:18:49-06:00',
+      });
+      commentThread = server.create('commentThread', 'withOneComment', {
+        snapshot,
+        createdAt: '2019-09-06T08:18:49-06:00',
+      });
+      websocketService = this.owner.lookup('service:websocket');
+      const pusherMock = new PusherMock();
+      websocketService.set('_socket', pusherMock);
+      sinon.stub(websocketService, '_isSubscribed').returns(false);
+
+      // Start test and verify initial state
+      await BuildPage.visitFullPageSnapshot(urlParams);
+      organizationChannel =
+        websocketService._socket.channels[`private-organization-${project.organization.id}`];
+      fullscreenSnapshot = BuildPage.snapshotFullscreen;
+      expect(fullscreenSnapshot.collaborationPanel.isVisible).to.equal(true);
+      expect(fullscreenSnapshot.commentThreads.length).to.equal(2);
+    });
+
+    it('displays a new comment thread', async function() {
+      // Build the JSON to receive via a websocket
+      let newCommentThread = server.create('commentThread', {snapshot});
+      let newComment = server.create('comment', {commentThread: newCommentThread});
+      let serializedComment = server.serializerOrRegistry.serialize(newComment, {
+        queryParams: {
+          include: 'comment-thread,comment-thread.snapshot',
+        },
+      });
+
+      // Verify initial app state
+      expect(fullscreenSnapshot.header.numOpenCommentThreads).to.equal('2');
+
+      // Emit a mock-websocket event
+      organizationChannel.emit('objectUpdated', serializedComment);
+
+      await settled();
+      expect(fullscreenSnapshot.commentThreads.length).to.equal(3);
+      expect(fullscreenSnapshot.header.numOpenCommentThreads).to.equal('3');
+      await percySnapshot(this.test);
+    });
+
+    it('displays new comments', async function() {
+      // Build the JSON to receive via a websocket
+      let newComment = server.create('comment', {commentThread: commentThread});
+      let serializedComment = server.serializerOrRegistry.serialize(newComment, {
+        queryParams: {
+          include: 'comment-thread',
+        },
+      });
+
+      // Verify initial app state
+      const firstThread = fullscreenSnapshot.commentThreads[0];
+      expect(firstThread.comments.length).to.equal(1);
+
+      // Emit a mock-websocket event
+      organizationChannel.emit('objectUpdated', serializedComment);
+
+      await settled();
+      expect(firstThread.comments.length).to.equal(2);
+      await percySnapshot(this.test);
+    });
+
+    it('archives a comment thread', async function() {
+      // Build the JSON to receive via a websocket
+      commentThread.update({closedAt: moment().format()});
+      let serializedCommentThread = server.serializerOrRegistry.serialize(commentThread);
+
+      // Verify initial app state
+      const collabPanel = fullscreenSnapshot.collaborationPanel;
+      expect(fullscreenSnapshot.header.numOpenCommentThreads).to.equal('2');
+      expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
+      expect(collabPanel.isShowArchivedCommentsVisible).to.equal(false);
+
+      // Emit a mock-websocket event
+      organizationChannel.emit('objectUpdated', serializedCommentThread);
+
+      await settled();
+      expect(fullscreenSnapshot.header.numOpenCommentThreads).to.equal('1');
+      expect(collabPanel.reviewThreads.length).to.equal(1);
+      expect(collabPanel.isShowArchivedCommentsVisible).to.equal(true);
+
+      await percySnapshot(this.test);
+    });
+  });
+
   describe('when a build is in a public project and user is not a member', function() {
     let publicOrg;
     let publicProject;
@@ -1287,8 +1387,10 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       server.get(`/snapshots/${snapshot.id}/latest-changed-ancestor`, () => {
         const snapshot = parentBuild.snapshots.models.firstObject;
         const comparison = snapshot.comparisons.models.firstObject;
-        //eslint-disable-next-line
-        snapshot.update({defaultPartialUrl: `/${parentBuild.project.organization.slug}/${parentBuild.project.slug}/builds/${parentBuild.id}/view/${snapshot.id}/${comparison.width}?mode=diff&browser=${comparison.browser.browserFamily.slug}`});
+        snapshot.update({
+          //eslint-disable-next-line
+          defaultPartialUrl: `/${parentBuild.project.organization.slug}/${parentBuild.project.slug}/builds/${parentBuild.id}/view/${snapshot.id}/${comparison.width}?mode=diff&browser=${comparison.browser.browserFamily.slug}`,
+        });
         return snapshot;
       });
 

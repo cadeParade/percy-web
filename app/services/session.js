@@ -11,6 +11,7 @@ export default SessionService.extend({
   analytics: service(),
   raven: service(),
   launchDarkly: service(),
+  websocket: service(),
 
   // set by load method
   currentUser: null,
@@ -99,6 +100,7 @@ export default SessionService.extend({
     this._clearSentry();
     this._clearAnalytics();
     this._clearIntercom();
+    this._clearWebsockets();
     AdminMode.clear();
   },
 
@@ -113,13 +115,20 @@ export default SessionService.extend({
       this.raven.callRaven('setUserContext');
     }
   },
+
   _setupAnalytics(user) {
     this.analytics.identifyUser(user);
   },
+
   _clearAnalytics() {
     this.analytics.invalidate();
     localStorageProxy.removeKeysWithString('amplitude');
   },
+
+  _clearWebsockets() {
+    this.websocket.disconnect();
+  },
+
   _setupIntercom(user) {
     if (window.Intercom) {
       window.Intercom('update', {
@@ -131,12 +140,14 @@ export default SessionService.extend({
       });
     }
   },
+
   _clearIntercom() {
     if (window.Intercom) {
       window.Intercom('shutdown');
     }
     localStorageProxy.removeKeysWithString('intercom');
   },
+
   async _setupLaunchDarkly(user) {
     const organizations = await user.get('organizations');
     const launchDarklyUser = {

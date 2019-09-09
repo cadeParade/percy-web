@@ -1,6 +1,6 @@
 import Service from '@ember/service';
 
-export default function mockRepoRefresh(context, stub) {
+export default function mockIntercomService(context, stub) {
   const intercomServiceStub = Service.extend({
     showIntercom() {
       stub();

@@ -436,6 +436,9 @@ export default function() {
     schema.slackIntegrationConfigs.find(request.params.id).destroy();
     return new Mirage.Response(204);
   });
+  this.post('/websockets/auth', function() {
+    return {auth: 'abc123'};
+  });
 }
 
 const _error401 = new Mirage.Response(

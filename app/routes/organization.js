@@ -11,6 +11,7 @@ export default Route.extend({
   session: service(),
   store: service(),
   currentUser: alias('session.currentUser'),
+  websocket: service(),
 
   async beforeModel() {
     const currentUser = this.currentUser;
@@ -32,12 +33,19 @@ export default Route.extend({
 
   afterModel(model) {
     this._setupIntercom(model);
+    this._setupWebsocket(model);
     this._setLastOrganizationSlug(model);
   },
 
   _setupIntercom(organization) {
     if (isUserMember(this.currentUser, organization)) {
       this.intercom.associateWithCompany(this.currentUser, organization);
+    }
+  },
+
+  async _setupWebsocket(organization) {
+    if (isUserMember(this.currentUser, organization)) {
+      this.websocket.subscribeToOrganization(organization);
     }
   },
 

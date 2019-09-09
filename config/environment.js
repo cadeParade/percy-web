@@ -33,7 +33,6 @@ module.exports = function(environment) {
       // Don't use these directly; use utils.buildApiUrl instead.
       apiUrls: {
         logout: '/api/auth/logout',
-
         builds: '/api/v1/builds',
         comments: '/api/v1/comments',
         commentThreads: '/api/v1/comment-threads/%@',
@@ -61,6 +60,7 @@ module.exports = function(environment) {
         headAsset: '/api/v1/snapshots/%@/assets/head.html',
         buildSnapshots: '/api/v1/builds/%@/snapshots',
         snapshotSourceDiff: '/api/v1/comparisons/%@/diffs/source.diff',
+        websocketsAuth: '/api/v1/websockets/auth',
       },
       githubUrls: {
         integration: 'https://github.com/apps/percy/installations/new',
@@ -140,6 +140,9 @@ module.exports = function(environment) {
     ENV.APP.AMPLITUDE_ORGANIZATIONS_PROJECT_ID = '89f8fae9aab3fccc0740237f17e43745';
     ENV.APP.SEGMENT_WRITE_KEY = 'ypNsNdxRnWaHy0WsIbOa8koEZxBRTvA5';
 
+    ENV.APP.PUSHER_APP_KEY = '2fd59995dc5cf524356e';
+    ENV.APP.PUSHER_APP_CLUSTER = 'us3';
+
     ENV.sentry = {
       dsn: 'https://9745b9952dd74a14bf9ff4fd2cf154a3@sentry.io/1216596',
       development: true,
@@ -212,6 +215,9 @@ module.exports = function(environment) {
         'redirect_uri=https%3A%2F%2Fhipster-porcupine-2ctplnao.ngrok.io%2Fapi%2Fbitbucket_cloud' +
         '%2F%@%2Fsetup_redirect',
     };
+
+    ENV.APP.PUSHER_APP_KEY = '2fd59995dc5cf524356e';
+    ENV.APP.PUSHER_APP_CLUSTER = 'us3';
   }
 
   if (environment === 'production') {
@@ -226,6 +232,8 @@ module.exports = function(environment) {
     ENV.APP.AMPLITUDE_ORGANIZATIONS_INSTANCE_NAME = 'Organizations';
     ENV.APP.AMPLITUDE_ORGANIZATIONS_PROJECT_ID = '43ed24c6891251bbbdddc310a5371afd';
     ENV.APP.SEGMENT_WRITE_KEY = 'E4wLYeCSYiNWdIGEbLPwMHkQataZAe4j';
+    ENV.APP.PUSHER_APP_KEY = 'e721c11f34dee0e2c050';
+    ENV.APP.PUSHER_APP_CLUSTER = 'us3';
 
     ENV.sentry = {
       dsn: 'https://4c28a8c59c934d729d261b988d6187c3@sentry.io/235025',

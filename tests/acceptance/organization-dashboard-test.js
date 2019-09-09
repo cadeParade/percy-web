@@ -3,10 +3,33 @@ import {percySnapshot} from 'ember-percy';
 import {visit, currentRouteName} from '@ember/test-helpers';
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import {beforeEach} from 'mocha';
+import sinon from 'sinon';
 import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
+import mockWebsocketService from 'percy-web/tests/helpers/mock-websocket-service';
 
 describe('Acceptance: Organization Dashboard', function() {
   freezeMoment('2020-01-30');
+
+  describe('as a member', function() {
+    setupAcceptance();
+
+    let organization;
+
+    setupSession(function(server) {
+      organization = server.create('organization', 'withAdminUser');
+      server.create('project', {organization});
+    });
+
+    it('subscribes to the organization websocket channel', async function() {
+      const subscribeToOrganizationStub = sinon.stub();
+      mockWebsocketService(this, subscribeToOrganizationStub);
+
+      await visit(`${organization.slug}/`);
+      expect(currentRouteName()).to.equal('organization.index');
+
+      expect(subscribeToOrganizationStub).to.have.been.called;
+    });
+  });
 
   describe('organization has projects', function() {
     setupAcceptance();
@@ -112,6 +135,16 @@ describe('Acceptance: Organization Dashboard', function() {
       expect(OrganizationDashboard.nav.isNewProjectButtonPresent).to.equal(false);
 
       expect(OrganizationDashboard.isToggleArchivedProjectsVisible).to.equal(false);
+    });
+
+    it('does not subscribe to the organization websocket channel', async function() {
+      const subscribeToOrganizationStub = sinon.stub();
+      mockWebsocketService(this, subscribeToOrganizationStub);
+
+      await visit(`${organization.slug}/`);
+      expect(currentRouteName()).to.equal('organization.index');
+
+      expect(subscribeToOrganizationStub).to.not.have.been.called;
     });
   });
 });

@@ -5,7 +5,10 @@ import faker from 'faker';
 
 export default Factory.extend({
   type: REVIEW_COMMENT_TYPE,
-  createdAt: () => moment().subtract(22, 'hours'),
+  createdAt: () =>
+    moment()
+      .subtract(22, 'hours')
+      .format(),
   snapshot: association(),
   originatingSnapshotId: () => faker.random.number(),
   originatingBuildNumber: () => faker.random.number(),
