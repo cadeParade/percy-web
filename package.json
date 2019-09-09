@@ -130,7 +130,7 @@
     "stylelint-order": "3.0.1",
     "stylelint-scss": "^3.10.0",
     "tailwindcss": "^1.1.2",
-    "tributejs": "^3.7.2"
+    "tributejs": "^3.7.3"
   },
   "engines": {
     "node": ">= 6.9.1"
