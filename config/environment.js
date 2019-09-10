@@ -60,7 +60,7 @@ module.exports = function(environment) {
         headAsset: '/api/v1/snapshots/%@/assets/head.html',
         buildSnapshots: '/api/v1/builds/%@/snapshots',
         snapshotSourceDiff: '/api/v1/comparisons/%@/diffs/source.diff',
-        websocketsAuth: '/api/v1/websockets/auth',
+        websocketsAuth: '/api/websockets/auth',
       },
       githubUrls: {
         integration: 'https://github.com/apps/percy/installations/new',
