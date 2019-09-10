@@ -52,5 +52,38 @@ describe('WebsocketService', function() {
       expect(subscribeStub).to.not.have.been.called;
       expect(bindEventsStub).to.not.have.been.called;
     });
+
+    it('does not subscribe if _socket returns null', function() {
+      sinon.stub(subject, '_socket').returns(null);
+
+      subject.subscribeToOrganization(organization);
+
+      expect(subscribeStub).to.not.have.been.called;
+      expect(bindEventsStub).to.not.have.been.called;
+    });
+  });
+
+  describe('_socket', function() {
+    let subject;
+
+    beforeEach(function() {
+      subject = this.owner.lookup('service:websocket');
+      setupFactoryGuy(this);
+    });
+
+    it('returns an instance if one already exists', function() {
+      const existingSocket = 'some placeholder value for an EXISTING socket object';
+      subject.set('_socket_instance', existingSocket);
+
+      expect(subject._socket).to.eq(existingSocket);
+    });
+
+    it('creates an instance if one does not exist', function() {
+      const pusherMock = new PusherMock();
+      subject.set('_socket', pusherMock);
+      subject.set('_socket_instance', null);
+
+      expect(subject._socket).to.be.an.instanceof(PusherMock);
+    });
   });
 });
