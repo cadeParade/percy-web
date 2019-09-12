@@ -6082,7 +6082,7 @@ ember-cli-babel@^6.0.0-beta.4, ember-cli-babel@^6.0.0-beta.7, ember-cli-babel@^6
     ember-cli-version-checker "^2.1.2"
     semver "^5.5.0"
 
-ember-cli-babel@^7.1.0, ember-cli-babel@^7.1.2, ember-cli-babel@^7.10.0, ember-cli-babel@^7.2.0, ember-cli-babel@^7.4.0, ember-cli-babel@^7.4.2, ember-cli-babel@^7.5.0, ember-cli-babel@^7.7.0, ember-cli-babel@^7.7.3, ember-cli-babel@^7.8.0:
+ember-cli-babel@^7.1.0, ember-cli-babel@^7.1.2, ember-cli-babel@^7.10.0, ember-cli-babel@^7.11.0, ember-cli-babel@^7.2.0, ember-cli-babel@^7.4.0, ember-cli-babel@^7.4.2, ember-cli-babel@^7.5.0, ember-cli-babel@^7.7.0, ember-cli-babel@^7.7.3, ember-cli-babel@^7.8.0:
   version "7.11.0"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-7.11.0.tgz#a2f4e4f123a4690968b512b87b4ff4bfa57ec244"
   integrity sha512-ykEsr7XoEPaADCBCJMViycCok1grtBRGvZ1k/atlL/gQYCQ1W4E4OROY/Mm2YBgyLftBv6buH7IZsULyQRZUmg==
@@ -7009,15 +7009,15 @@ ember-page-title@5.1.0:
     ember-cli-htmlbars "^3.0.1"
     ember-copy "^1.0.0"
 
-ember-percy@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/ember-percy/-/ember-percy-1.5.0.tgz#c70d66f7cdcc6078d2b7e18de04e545ac4da9818"
-  integrity sha512-wdGKo4gK40QeLXTcmmymk6kTe+8lpxW3vz46kuZIB6S1TzoyVpopE+4bDa9RyKP94b1kmJA0cepcW5npBH9xKQ==
+ember-percy@1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/ember-percy/-/ember-percy-1.6.0.tgz#b0b7f27a4f60ac8992648337fc6d64404109d325"
+  integrity sha512-E/g1gF55OtEemjWeffHAOujwKLHhiwWMy2EFZ7w9aST8viVP7eI3LKEe/1ZeMBxw46BiE7EJeoUesn9zcnlurQ==
   dependencies:
     body-parser "^1.15.0"
-    ember-cli-babel "^6.10.0"
+    ember-cli-babel "^7.11.0"
     es6-promise-pool "^2.4.1"
-    percy-client "^3.0.0"
+    percy-client "^3.0.13"
     walk "^2.3.9"
 
 ember-popper@^0.10.1:
@@ -12816,7 +12816,7 @@ pend@~1.2.0:
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha1-elfrVQpng/kRUzH89GY9XI4AelA=
 
-percy-client@^3.0.0, percy-client@^3.0.3:
+percy-client@^3.0.13, percy-client@^3.0.3:
   version "3.0.13"
   resolved "https://registry.yarnpkg.com/percy-client/-/percy-client-3.0.13.tgz#86f48ac39bca8474a02917cea1756978d0214b83"
   integrity sha512-XJllub665ccrxK2qLnrweBma1aMSu0Qkj4EYepw6dxsMp1kcE41HMpL3vpjwSnMO7wOvhVYdv7Jx3o5EcMAxLw==
