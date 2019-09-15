@@ -1,11 +1,40 @@
 steps:
-  - label: ":percy::hamster: test"
+  - label: ":percy::hamster: test runner #%n"
     commands:
       - "make build-test"
       - "make test"
+    parallelism: 4
     timeout_in_minutes: 20
+    retry:
+      automatic:
+        - exit_status: -1  # Agent was lost
+          limit: 2
+        - exit_status: 255 # Forced agent shutdown often due to preemptible VMs
+          limit: 2
     artifact_paths:
       - "test.log"
+
+  - wait
+
+  - label: ":percy::hamster: finalize"
+    commands:
+      - "percy finalize --all"
+    plugins:
+      - docker#v3.3.0:
+          image: "percyio/agent"
+          environment:
+            - "PERCY_TOKEN"
+            - "BUILDKITE"
+            - "BUILDKITE_BUILD_ID"
+            - "BUILDKITE_PARALLEL_JOB_COUNT"
+    retry:
+      automatic:
+        - exit_status: -1  # Agent was lost
+          limit: 2
+        - exit_status: 255 # Forced agent shutdown often due to preemptible VMs
+          limit: 2
+        - exit_status: 125 # Error response from Docker daemon
+          limit: 2
 
   - label: ":percy::hamster: publish"
     branches: "master"

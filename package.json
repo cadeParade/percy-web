@@ -19,8 +19,7 @@
     "test": "ember test",
     "start-production-for-testing": "ember server --environment=production",
     "test:node_debug": "node debug node_modules/ember-cli/bin/ember test --server",
-    "test:parallel": "PERCY_PARALLEL_TOTAL=-1 EMBER_ENV=test ember exam --environment=test --path dist --split=4 --parallel && yarn test:finalize",
-    "test:finalize": "PERCY_PARALLEL_TOTAL=-1 yarn percy finalize --all",
+    "test:parallel": "PERCY_PARALLEL_TOTAL=-1 EMBER_ENV=test ember exam --environment=test --path dist --partition=$(($BUILDKITE_PARALLEL_JOB + 1)) --split=4 --parallel",
     "test:server": "ember test --server"
   },
   "lint-staged": {
