@@ -11,6 +11,8 @@ steps:
           limit: 2
         - exit_status: 255 # Forced agent shutdown often due to preemptible VMs
           limit: 2
+        - exit_status: 2 # Observed when docker-compose has a broken connection
+          limit: 2
     artifact_paths:
       - "test.log"
 
@@ -34,6 +36,8 @@ steps:
         - exit_status: 255 # Forced agent shutdown often due to preemptible VMs
           limit: 2
         - exit_status: 125 # Error response from Docker daemon
+          limit: 2
+        - exit_status: 2 # Observed when docker-compose has a broken connection
           limit: 2
 
   - label: ":percy::hamster: publish"
