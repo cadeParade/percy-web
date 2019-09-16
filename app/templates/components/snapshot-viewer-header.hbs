@@ -56,14 +56,14 @@
   <div class="flex justify-end">
     <div class="btn-toolbar">
       <div class="btn-group">
-        {{#basic-dropdown horizontalPosition='auto-right' preventScroll=true as |dropdown|}}
+        <BasicDropdown @horizontalPosition='auto-right' @preventScroll={{true}} as |dropdown|>
           <div class="dropdown {{if dropdown.isOpen 'is-visible'}}">
-            {{#dropdown.trigger}}
+            <dropdown.Trigger>
               <button type="button" class="btn btn-square dropdown-toggle" data-test-snapshot-header-dropdown-toggle aria-label="Toggle snapshot options">
                 {{inline-svg "blue-dropdown-icon"}}
               </button>
-            {{/dropdown.trigger}}
-            {{#dropdown.content}}
+            </dropdown.Trigger>
+            <dropdown.Content>
               <div class="dropdown-menu" data-test-snapshot-header-dropdown-pane>
                 <ul class="mb-0">
                   {{#unless (or allComparisonsHaveDiffs noComparisonsHaveDiffs)}}
@@ -133,9 +133,9 @@
                   {{/if}}
                 </ul>
               </div>
-            {{/dropdown.content}}
+            </dropdown.Content>
           </div>
-        {{/basic-dropdown}}
+        </BasicDropdown>
       </div>
 
       <div class="btn-group btn-group-alt">

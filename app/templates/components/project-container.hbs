@@ -5,20 +5,21 @@
 }}
   {{#if shouldShowBranchFilter}}
     <div class="flex justify-end mt-1" data-test-project-container-branch-filter>
-      {{#power-select
-        triggerClass="ember-power-select-branch-filter-trigger"
-        selected=selectedBranch
-        placeholder="Filter by branch"
-        renderInPlace=true
-        horizontalPosition="right"
-        options=projectBranches
-        searchPlaceholder="Type to filter branches"
-        noMatchesMessage="No branches found"
-        onchange=(action "chooseBranch")
+      <PowerSelect
+        @triggerClass="ember-power-select-branch-filter-trigger"
+        @selected={{selectedBranch}}
+        @placeholder="Filter by branch"
+        @renderInPlace={{true}}
+        @horizontalPosition="right"
+        @options={{projectBranches}}
+        @searchEnabled={{true}}
+        @searchPlaceholder="Type to filter branches"
+        @noMatchesMessage="No branches found"
+        @onChange={{action "chooseBranch"}}
         as |branch|
-      }}
+      >
         {{branch}}
-      {{/power-select}}
+      </PowerSelect>
     </div>
   {{else if (not project.organization.isVersionControlIntegrated)}}
     <div class="flex items-center p-1 pl-2 border bg-gray-000 rounded font-semibold text-sm" data-test-integration-prompt>

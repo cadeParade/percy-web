@@ -34,21 +34,22 @@
         </span>
         <span class="repo-selector flex justify-start flex-1 mb-2">
           <span class="bg-white" data-test-project-box>
-            {{#power-select
-              selected=selectedProject
-              searchField='name'
-              placeholder='Select a project'
-              renderInPlace=true
-              matchTriggerWidth=false
-              options=projectOptions
-              searchPlaceholder='Type to filter projects'
-              noMatchesMessage='No project found'
-              onchange=(action 'selectProject')
-              label='Project'
+            <PowerSelect
+              @selected={{selectedProject}}
+              @searchEnabled={{true}}
+              @searchField='name'
+              @placeholder='Select a project'
+              @renderInPlace={{true}}
+              @matchTriggerWidth={{false}}
+              @options={{projectOptions}}
+              @searchPlaceholder='Type to filter projects'
+              @noMatchesMessage='No project found'
+              @onChange={{action 'selectProject'}}
+              @label='Project'
               as |project|
-            }}
+            >
               {{project.name}}
-            {{/power-select}}
+            </PowerSelect>
           </span>
         </span>
 

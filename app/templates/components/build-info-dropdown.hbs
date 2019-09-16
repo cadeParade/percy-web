@@ -1,17 +1,17 @@
-{{#basic-dropdown
-  horizontalPosition="auto-right"
-  preventScroll=true
-  verticalPosition="below"
+<BasicDropdown
+  @horizontalPosition="auto-right"
+  @preventScroll={{true}}
+  @verticalPosition="below"
   as |dropdown|
-}}
+>
 
-  {{#dropdown.trigger}}
+  <dropdown.Trigger>
     <button data-test-build-info-dropdown-toggle class="flex center btn-icon-only" aria-label="View detailed information about this build">
       {{inline-svg 'build-info-icon'}}
     </button>
-  {{/dropdown.trigger}}
+  </dropdown.Trigger>
 
-  {{#dropdown.content class="BuildInfoDropdown-modal"}}
+  <dropdown.Content class="BuildInfoDropdown-modal">
     {{build-state-badge build=build}}
 
     <h3 class="mb-2 text-l font-bold">{{build.buildTitle}}</h3>
@@ -89,5 +89,5 @@
         </table>
       </div>
     {{/if}}
-  {{/dropdown.content}}
-{{/basic-dropdown}}
+  </dropdown.Content>
+</BasicDropdown>
