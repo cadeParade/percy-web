@@ -1,5 +1,14 @@
 {{#if hasAnyIdentities}}
   <div class="border-b mb-3 pb-3">
+    {{#if oktaIdentity}}
+      <div class="flex justify-between items-center mb-1">
+        <div class="font-mono font-normal tracking-sm flex items-center" data-test-okta-profile-identity>
+          {{inline-svg "okta-sm" class="mr-1"}}
+          {{oktaIdentity.user.email}}
+          <sup class="font-sans hint--top hint--bounce hint--rounded" aria-label="This identity is managed by your Okta administrator.">{{fa-icon "info-circle" class="text-gray-300"}}</sup>
+        </div>
+      </div>
+    {{/if}}
     {{#if emailPasswordIdentity}}
       <div class="flex justify-between items-center mb-1">
         <div class="font-mono font-normal tracking-sm flex items-center">

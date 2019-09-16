@@ -26,7 +26,18 @@ describe('Acceptance: ManageUsers', function() {
     it('renders all users', async function() {
       const numberOfUsers = 5;
       const users = server.createList('user', numberOfUsers);
-      users.forEach(user => {
+      users.forEach((user, i) => {
+        const identityCombos = [
+          ['githubIdentity'],
+          ['auth0Identity'],
+          ['oktaIdentity'],
+          ['githubIdentity', 'oktaIdentity'],
+          ['auth0Identity', 'githubIdentity', 'oktaIdentity'],
+        ];
+        identityCombos[i].forEach(identityTrait => {
+          const identities = [server.create('identity', identityTrait)];
+          user.update({identities: user.identities.models.concat(identities)});
+        });
         server.create('organizationUser', {user, organization});
       });
 

@@ -21,6 +21,33 @@ describe('Integration: ConnectedAccountsPanel', function() {
     CAPPageObject.setContext(this);
   });
 
+  describe('when a user has only an okta identity', function() {
+    beforeEach(async function() {
+      const user = make('user', 'withOktaIdentity', {name: 'harbargle'});
+      const stub = sinon.stub();
+
+      this.setProperties({
+        identities: user.identities,
+        deleteIdentity: stub,
+        addIdentity: stub,
+      });
+
+      await render(hbs`{{
+        connected-accounts-panel
+        identities=identities
+        deleteIdentity=deleteIdentity
+        addIdentity=addIdentity
+      }}`);
+    });
+
+    it('shows okta identity', async function() {
+      await percySnapshot(this.test.fullTitle());
+      expect(CAPPageObject.isOktaIdentityVisible).to.equal(true);
+      expect(CAPPageObject.isAddAuth0IdentityVisible).to.equal(true);
+      expect(CAPPageObject.isAddGithubIdentityVisible).to.equal(true);
+    });
+  });
+
   describe('when a user has only a github identity', function() {
     let deleteStub;
     let addStub;
@@ -130,6 +157,62 @@ describe('Integration: ConnectedAccountsPanel', function() {
     it('calls delete action when delete button is clicked', async function() {
       await CAPPageObject.clickDeleteAuth0Identity();
       expect(deleteStub).to.have.been.calledWith(auth0Identity.get('id'));
+    });
+  });
+
+  describe('when a user has both a SAML identity and a self-serve identity', function() {
+    beforeEach(async function() {
+      const user = make('user', {name: 'wowee zowie'});
+      const auth0Identity = make('identity', 'auth0Provider', {user});
+      const oktaIdentity = make('identity', 'oktaProvider', {user});
+      const stub = sinon.stub();
+
+      this.setProperties({
+        identities: [auth0Identity, oktaIdentity],
+        deleteIdentity: stub,
+        addIdentity: stub,
+      });
+
+      await render(hbs`{{
+        connected-accounts-panel
+        identities=identities
+        deleteIdentity=deleteIdentity
+        addIdentity=addIdentity
+      }}`);
+    });
+
+    it('displays correctly', async function() {
+      await percySnapshot(this.test);
+    });
+  });
+
+  describe('when a user has all identities', function() {
+    beforeEach(async function() {
+      const user = make('user', {name: 'wowee zowie'});
+      const identityTraits = ['auth0Provider', 'githubProvider', 'oktaProvider'];
+      const identities = [];
+      identityTraits.forEach(identityTrait => {
+        const identity = make('identity', identityTrait, {user});
+        identities.push(identity);
+      });
+      const stub = sinon.stub();
+
+      this.setProperties({
+        identities,
+        deleteIdentity: stub,
+        addIdentity: stub,
+      });
+
+      await render(hbs`{{
+        connected-accounts-panel
+        identities=identities
+        deleteIdentity=deleteIdentity
+        addIdentity=addIdentity
+      }}`);
+    });
+
+    it('displays correctly', async function() {
+      await percySnapshot(this.test);
     });
   });
 });

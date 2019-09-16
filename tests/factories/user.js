@@ -1,6 +1,6 @@
 import FactoryGuy from 'ember-data-factory-guy';
 import faker from 'faker';
-import {makeList} from 'ember-data-factory-guy';
+import {make, makeList} from 'ember-data-factory-guy';
 
 FactoryGuy.define('user', {
   default: {
@@ -17,6 +17,11 @@ FactoryGuy.define('user', {
     withOrganizations: {
       organizations: () => {
         return makeList('organization', 5);
+      },
+    },
+    withOktaIdentity: {
+      identities: () => {
+        return [make('identity', 'oktaProvider')];
       },
     },
   },

@@ -12,4 +12,8 @@ export default Factory.extend({
   auth0Identity: trait({
     provider: 'auth0',
   }),
+
+  oktaIdentity: trait({
+    provider: 'samlp',
+  }),
 });

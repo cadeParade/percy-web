@@ -6,10 +6,13 @@ const SELECTORS = {
   ADD_GITHUB_IDENTITY_BUTTON: '[data-test-connected-accounts-panel-add-github-identity]',
   DELETE_GITHUB_IDENTITY_BUTTON: '[data-test-connected-accounts-panel-delete-github-identity]',
   EMAIL_PASSWORD_IDENTITY_FORM: '[data-test-connected-accounts-email-password-form]',
+  OKTA_IDENTITY: '[data-test-okta-profile-identity]',
 };
 
 export const ConnectedAccountsPanel = {
   visitConnectedAccounts: visitable('/settings/connected-accounts'),
+
+  isOktaIdentityVisible: isVisible(SELECTORS.OKTA_IDENTITY),
 
   isAddAuth0IdentityVisible: isVisible(SELECTORS.ADD_EMAIL_PASSWORD_IDENTITY_BUTTON),
   clickAddAuth0Identity: clickable(SELECTORS.ADD_EMAIL_PASSWORD_IDENTITY_BUTTON),

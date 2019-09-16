@@ -9,13 +9,15 @@ FactoryGuy.define('identity', {
 
   traits: {
     githubProvider: {
-      provider: () => {
-        return 'github';
-      },
+      provider: 'github',
     },
     auth0Provider: {
-      provider: () => {
-        return 'auth0';
+      provider: 'auth0',
+    },
+    oktaProvider: {
+      provider: 'samlp',
+      uid: () => {
+        return `okta-${faker.lorem.slug()}`;
       },
     },
   },

@@ -18,6 +18,9 @@ export default Component.extend({
   emailPasswordIdentity: computed('identities.@each.provider', function() {
     return this.identities.findBy('provider', 'auth0');
   }),
+  oktaIdentity: computed('identities.@each.provider', function() {
+    return this.identities.findBy('isOktaIdentity');
+  }),
   hasAnyIdentities: notEmpty('identities'),
   isDisconnectIdentityEnabled: gt('identities.length', 1),
 });
