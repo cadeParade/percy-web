@@ -10,6 +10,7 @@ const SELECTORS = {
   GITLAB_INTEGRATION: '[data-test-integration-name="gitlab"]',
   GITLAB_SELF_HOSTED_INTEGRATION: '[data-test-integration-name="gitlab-self-hosted"]',
   SLACK_INTEGRATION: '[data-test-integration-name="slack"]',
+  OKTA_INTEGRATION: '[data-test-integration-name="okta"]',
 };
 
 export const IntegrationsIndexPage = {
@@ -22,6 +23,7 @@ export const IntegrationsIndexPage = {
     isGitlabIntegration: isVisible(SELECTORS.GITLAB_INTEGRATION),
     isGitlabSelfHostedIntegration: isVisible(SELECTORS.GITLAB_SELF_HOSTED_INTEGRATION),
     isSlackIntegration: isVisible(SELECTORS.SLACK_INTEGRATION),
+    isOktaIntegration: isVisible(SELECTORS.OKTA_INTEGRATION),
     install: clickable(IntegrationItemSelectors.INSTALL_BUTTON),
     edit: clickable(IntegrationItemSelectors.EDIT_BUTTON),
     integrationName: text(IntegrationItemSelectors.INTEGRATION_NAME),
@@ -45,6 +47,10 @@ export const IntegrationsIndexPage = {
 
   slackIntegration: getter(function() {
     return this.integrationItems.toArray().findBy('isSlackIntegration');
+  }),
+
+  oktaIntegration: getter(function() {
+    return this.integrationItems.toArray().findBy('isOktaIntegration');
   }),
 };
 

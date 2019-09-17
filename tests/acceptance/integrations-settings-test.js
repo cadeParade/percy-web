@@ -29,21 +29,33 @@ describe('Acceptance: Integrations Settings Page', function() {
       organization = server.create('organization', 'withAdminUser');
     });
 
-    beforeEach(async function() {
-      await IntegrationsIndexPage.visitIntegrationsPage({orgSlug: organization.slug});
-    });
-
     it('shows integrations page', async function() {
+      await IntegrationsIndexPage.visitIntegrationsPage({orgSlug: organization.slug});
       expect(currentRouteName()).to.equal('organizations.organization.integrations.index');
       await percySnapshot(this.test);
     });
 
     it('navigates to the Bitbucket Cloud settings page when install clicked', async function() {
+      await IntegrationsIndexPage.visitIntegrationsPage({orgSlug: organization.slug});
       expect(currentRouteName()).to.equal('organizations.organization.integrations.index');
       await IntegrationsIndexPage.bitbucketCloudIntegration.install();
       expect(currentRouteName()).to.equal(
         'organizations.organization.integrations.bitbucket-cloud',
       );
+    });
+
+    describe('when there is an okta integration', function() {
+      beforeEach(async function() {
+        server.create('samlIntegration', {organization});
+        await IntegrationsIndexPage.visitIntegrationsPage({orgSlug: organization.slug});
+      });
+
+      it('navigates to the Okta settings page', async function() {
+        expect(currentRouteName()).to.equal('organizations.organization.integrations.index');
+        await percySnapshot(this.test.fullTitle() + 'index page with okta integration');
+        await IntegrationsIndexPage.oktaIntegration.edit();
+        await percySnapshot(this.test.fullTitle() + 'okta settings page');
+      });
     });
   });
 

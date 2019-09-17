@@ -15,6 +15,7 @@ export default JSONAPISerializer.extend({
         'usageNotificationSettings',
         'slackIntegrations',
         'slackIntegrations.slackIntegrationConfigs',
+        'samlIntegration',
       ];
     }
   },

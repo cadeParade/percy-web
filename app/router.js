@@ -100,6 +100,7 @@ Router.map(function() {
       this.route('billing');
       this.route('usage');
       this.route('integrations', function() {
+        this.route('okta');
         this.route('bitbucket-cloud');
         this.route('github-enterprise');
         this.route('github');

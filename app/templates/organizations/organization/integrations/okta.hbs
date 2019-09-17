@@ -1,0 +1,45 @@
+{{title "Okta settings"}}
+
+<div class="container-xl">
+  <section class="mb-9">
+    <div class="bg-white rounded shadow-1 border-t mb-2">
+      <div class="p-2">
+        <div class="flex items-center mb-2">
+          {{inline-svg "okta-icon-lg" class="mr-1"}}
+          <h2 class="text-xl font-semibold m-0">Okta integration</h2>
+        </div>
+
+        {{#organizations/require-role role="admin" user=currentUser organization=organization}}
+        <div class="mb-2">
+          <div class="px-2 pb-1 -mx-2">
+            <div class="mb-2 pt-2">
+              {{organizations/integrations/okta-settings-item
+                settingName='Provider login url'
+                settingValue= samlIntegration.providerLoginUrl
+              }}
+
+              {{organizations/integrations/okta-settings-item
+                settingName='Email domain'
+                settingValue= samlIntegration.emailDomain
+              }}
+            </div>
+          </div>
+        </div>
+
+        <div class="reminder-note">
+          If you would like to update these settings, please <span {{action "showSupport"}} class="link-blue cursor-pointer">contact support</span>.
+        </div>
+        {{/organizations/require-role}}
+      </div>
+      <div class="flex justify-end px-2 pb-2">
+        {{#link-to
+          'organizations.organization.integrations.index'
+          organization.slug
+          class="percy-btn"
+        }}
+          Back
+        {{/link-to}}
+      </div>
+    </div>
+  </section>
+</div>

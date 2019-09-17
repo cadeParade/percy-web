@@ -1,7 +1,11 @@
 import {computed} from '@ember/object';
-import {bool, not, or, filterBy, gt, mapBy, readOnly, uniq} from '@ember/object/computed';
+import {bool, not, notEmpty, or, filterBy, gt, mapBy, readOnly, uniq} from '@ember/object/computed';
 import DS from 'ember-data';
-import {INTEGRATION_TYPES, SLACK_INTEGRATION_TYPE} from 'percy-web/lib/integration-types';
+import {
+  INTEGRATION_TYPES,
+  SLACK_INTEGRATION_TYPE,
+  OKTA_INTEGRATION_TYPE,
+} from 'percy-web/lib/integration-types';
 import {inject as service} from '@ember/service';
 import {isUserAdminOfOrg} from 'percy-web/lib/is-user-member-of-org';
 
@@ -20,9 +24,8 @@ export default DS.Model.extend({
   isSyncing: DS.attr(),
   lastSyncedAt: DS.attr(),
   slackIntegrations: DS.hasMany('slackIntegrations', {async: false}),
-  versionControlIntegrations: DS.hasMany('version-control-integrations', {
-    async: false,
-  }),
+  versionControlIntegrations: DS.hasMany('version-control-integrations', {async: false}),
+  samlIntegration: DS.belongsTo('samlIntegration', {async: false}),
   invites: DS.hasMany('invite'),
   usageNotificationSetting: DS.belongsTo('usageNotificationSetting', {async: false}),
 
@@ -81,14 +84,19 @@ export default DS.Model.extend({
   isGitlabIntegrated: bool('gitlabIntegration'),
   isGitlabSelfHostedIntegrated: bool('gitlabSelfHostedIntegration'),
   isVersionControlIntegrated: bool('versionControlIntegrations.length'),
-  isIntegrated: or('isVersionControlIntegrated', 'isSlackIntegrated'),
+  isIntegrated: or('isVersionControlIntegrated', 'isSlackIntegrated', 'isOktaIntegrated'),
   isSlackIntegrated: gt('slackIntegrations.length', 0),
   isNotSlackIntegrated: not('isSlackIntegrated'),
+  isSamlIntegrated: notEmpty('samlIntegration'),
+  isNotSamlIntegrated: not('isSamlIntegrated'),
+  isOktaIntegrated: readOnly('samlIntegration.isOktaIntegration'),
+  isNotOktaIntegrated: not('isOktaIntegrated'),
+
   availableIntegrations: computed('versionControlIntegrations.[]', function() {
     let integrations = [];
     for (const key of Object.keys(INTEGRATION_TYPES)) {
       let item = INTEGRATION_TYPES[key];
-      if (key == SLACK_INTEGRATION_TYPE) {
+      if (key == SLACK_INTEGRATION_TYPE || key == OKTA_INTEGRATION_TYPE) {
         continue;
       }
       if (this.get(`${item.organizationIntegrationStatus}`) != true) {

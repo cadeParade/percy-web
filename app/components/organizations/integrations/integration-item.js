@@ -25,6 +25,7 @@ export default Component.extend({
   routeSlug: lookup('integrationName', INTEGRATIONS_LOOKUP, 'settingsRouteSlug'),
   iconName: lookup('integrationName', INTEGRATIONS_LOOKUP, 'iconName'),
   betaLink: lookup('integrationName', INTEGRATIONS_LOOKUP, 'betaLink'),
+  editSettingsText: lookup('integrationName', INTEGRATIONS_LOOKUP, 'editSettingsText'),
   isGeneralAvailability: lookup('integrationName', INTEGRATIONS_LOOKUP, 'isGeneralAvailability'),
   isIntegrationUnauthorized: equal('integrationStatus', 'unauthorized'),
   isIntegrationHostnameInvalid: equal('integrationStatus', 'invalid_hostname'),
@@ -65,7 +66,7 @@ export default Component.extend({
   installButtonText: lookup('integrationName', INTEGRATIONS_LOOKUP, 'installButtonText'),
   buttonText: computed('isInstalled', 'installButtonText', function() {
     if (this.isInstalled) {
-      return 'Edit Settings';
+      return this.editSettingsText || 'Edit Settings';
     } else {
       return this.installButtonText || 'Install';
     }

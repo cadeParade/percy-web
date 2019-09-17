@@ -5,8 +5,19 @@ export const GITHUB_INTEGRATION_TYPE = 'github';
 export const GITLAB_INTEGRATION_TYPE = 'gitlab';
 export const GITLAB_SELF_HOSTED_INTEGRATION_TYPE = 'gitlab_self_hosted';
 export const SLACK_INTEGRATION_TYPE = 'slack';
+export const OKTA_INTEGRATION_TYPE = 'okta';
 
 export const INTEGRATION_TYPES = {
+  [OKTA_INTEGRATION_TYPE]: {
+    textName: 'Okta',
+    isBeta: false,
+    isGeneralAvailability: true,
+    iconName: 'okta-icon-lg',
+    organizationIntegrationStatus: 'isOktaIntegrated',
+    organizationModelAttribute: 'oktaIntegration',
+    settingsRouteSlug: 'okta',
+    editSettingsText: 'See settings',
+  },
   [BITBUCKET_CLOUD_INTEGRATION_TYPE]: {
     textName: 'Bitbucket Cloud',
     isBeta: false,

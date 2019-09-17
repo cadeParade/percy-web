@@ -25,6 +25,12 @@
               organization=organization
             }}
           {{/if}}
+          {{#if organization.isOktaIntegrated}}
+            {{organizations/integrations/integration-item
+              integrationName="okta"
+              organization=organization
+            }}
+          {{/if}}
         </div>
       </div>
     </section>
