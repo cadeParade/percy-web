@@ -11,9 +11,28 @@
         {{roleTitle}}
       {{/label-tag}}
     </div>
-    <div data-test-user-join-date class="flex-1 leading-none text-gray-400">
-      {{moment-format organizationUser.createdAt 'MMMM D, Y'}}
+    <div data-test-user-join-date class="flex-1 leading-none text-gray-400" style="min-width: 100px;">
+      {{moment-format organizationUser.createdAt 'MMM D, Y'}}
     </div>
+    {{#if isViewerAdmin}}
+      <div class="flex-1 leading-none">
+        {{#each orderedIdentities as |identity|}}
+          {{#if (eq identity.provider "auth0")}}
+            <span class="hint--top hint--rounded hint--bounce" aria-label="Username/Password identity">
+              {{inline-svg "percy-logo-tiny-on-light" class="mr-1 opacity-50"}}
+            </span>
+          {{else if (eq identity.provider "github")}}
+            <span class="hint--top hint--rounded hint--bounce" aria-label="GitHub identity">
+              {{inline-svg "github-icon" class="mr-1 opacity-50"}}
+            </span>
+          {{else if (eq identity.provider "samlp")}}
+            <span class="hint--top hint--rounded hint--bounce" aria-label="SAML identity">
+              {{inline-svg "okta-sm" class="mr-1 opacity-50"}}
+            </span>
+          {{/if}}
+        {{/each}}
+      </div>
+    {{/if}}
     <div class="user-card-actions flex-1 opacity-0 flex justify-end">
       <div data-test-user-button-toolbar class=" btn-toolbar">
         {{#if isCurrentUser}}
@@ -22,15 +41,15 @@
           {{/percy-btn}}
         {{else}}
           {{#if (eq "member" role)}}
-            {{#percy-btn isDisabled=(unless isAdmin true) handleClick=(action "setRole" "admin")}}
+            {{#percy-btn isDisabled=(not isViewerAdmin) handleClick=(action "setRole" "admin")}}
               Make admin
             {{/percy-btn}}
           {{else}}
-            {{#percy-btn isDisabled=(unless isAdmin true) handleClick=(action "setRole" "member")}}
+            {{#percy-btn isDisabled=(not isViewerAdmin) handleClick=(action "setRole" "member")}}
               Make member
             {{/percy-btn}}
           {{/if}}
-          {{#percy-btn isDisabled=(unless isAdmin true) handleClick=(action "removeUser")}}
+          {{#percy-btn isDisabled=(not isViewerAdmin) handleClick=(action "removeUser")}}
             Remove
           {{/percy-btn}}
         {{/if}}

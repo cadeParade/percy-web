@@ -1,13 +1,7 @@
 <div data-test-manage-users-list>
-  <div data-test-manage-users-column-headers class="bg-white flex px-4 pb-sm border-b z-1 leading-none">
-    <div style="min-width: 200px" class="flex-1 text-sm text-gray-300 font-semibold pr-2">Name</div>
-    <div style="min-width: 100px" class="flex-1 text-sm text-gray-300 font-semibold">Role</div>
-    <div class="flex-1 text-sm text-gray-300 font-semibold">Joined on</div>
-    <div class="flex-1"></div>
-  </div>
   <section class="pb-9">
     {{#if invites}}
-      <div data-test-manage-users-invites-header class="px-4 pt-2 pb-sm text-sm text-gray-300 font-semibold border-b">{{pluralize invites.length "pending invitation"}}</div>
+      <div class="px-4 pt-2 pb-sm text-sm text-gray-300 font-semibold border-b">{{pluralize invites.length "pending invitation"}}</div>
 
       {{#each invites as |invite|}}
         {{organizations/invite-card
@@ -15,12 +9,24 @@
           organization=organization
         }}
       {{/each}}
-
-      <div data-test-manage-users-users-header class="px-4 pt-2 pb-sm text-sm text-gray-300 font-semibold border-b">{{pluralize organizationUsers.length "active member"}}</div>
     {{/if}}
 
+
+    <div class="bg-white flex px-4 pb-sm border-b z-1 leading-none pt-8" data-test-manage-users-users-header>
+      <div style="min-width: 200px" class="flex-1 text-sm text-gray-300 font-semibold pr-2">Name</div>
+      <div style="min-width: 100px" class="flex-1 text-sm text-gray-300 font-semibold">Role</div>
+      <div class="flex-1 text-sm text-gray-300 font-semibold">Joined on</div>
+      {{#if isAdmin}}
+        <div class="flex-1 text-sm text-gray-300 font-semibold">Identities<sup class="hint--left hint--rounded hint--bounce" aria-label="These are the ways in which this user can log in to Percy.&#10;You can manage your own identities on your profile page found via the top right menu.">{{fa-icon "info-circle"}}</sup></div>
+      {{/if}}
+      <div class="flex-1"></div>
+    </div>
+
     {{#each organizationUsers as |organizationUser|}}
-      {{organizations/user-card organizationUser=organizationUser}}
+      {{organizations/user-card
+        organizationUser=organizationUser
+        isViewerAdmin=isAdmin
+      }}
     {{/each}}
   </section>
 </div>

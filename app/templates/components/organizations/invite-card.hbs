@@ -23,6 +23,7 @@
       <div>Invited on <span data-test-invite-date>{{moment-format invite.createdAt 'MMM D, Y'}}</span></div>
       <div class="text-sm text-gray-400 italic truncate">by <span data-test-invite-inviter-name>{{invite.inviterName}}</span></div>
     </div>
+    <div style="min-width: 100px" class="flex-1 leading-none"></div>
     <div class="flex-1 flex justify-end">
       <div data-test-invite-button-toolbar class="btn-toolbar">
         {{#copy-button

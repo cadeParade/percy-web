@@ -8,23 +8,30 @@ export default Component.extend({
   router: service(),
   session: service(),
 
+  isViewerAdmin: null,
   organizationUser: null,
   tagName: '',
 
   currentUser: readOnly('session.currentUser'),
   role: readOnly('organizationUser.role'),
   roleTitle: readOnly('organizationUser.roleTitle'),
-  isAdmin: readOnly('organizationUser.organization.currentUserIsAdmin'),
 
   deleteNameText: computed(function() {
     if (this.isCurrentUser) {
       return 'yourself';
     } else {
-      return this.get('organizationUser.user.name');
+      return this.organizationUser.user.name;
     }
   }),
   isCurrentUser: computed('currentUser.id', 'organizationUser.user.id', function() {
-    return this.get('currentUser.id') === this.get('organizationUser.user.id');
+    return this.currentUser.id === this.organizationUser.user.id;
+  }),
+  _user: readOnly('organizationUser.user'),
+  orderedIdentities: computed('user.identities.[]', function() {
+    const identityOrder = ['samlp', 'github', 'auth0'];
+    return this._user.identities.toArray().sort(function(a, b) {
+      return identityOrder.indexOf(a.provider) - identityOrder.indexOf(b.provider);
+    });
   }),
 
   actions: {

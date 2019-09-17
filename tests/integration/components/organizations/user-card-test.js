@@ -68,7 +68,11 @@ describe('Integration: UserCard', function() {
       });
 
       it('renders your Admin user', async function() {
-        await render(hbs`{{organizations/user-card organizationUser=adminOrganizationUser}}`);
+        await render(hbs`{{
+          organizations/user-card
+          organizationUser=adminOrganizationUser
+          isViewerAdmin=true
+        }}`);
 
         expect(UserCard.avatarUrl).to.equal(this.adminOrganizationUser.user.avatarUrl);
         expect(UserCard.userName.isVisible).to.equal(true);
@@ -83,7 +87,11 @@ describe('Integration: UserCard', function() {
       });
 
       it('renders another Admin user', async function() {
-        await render(hbs`{{organizations/user-card organizationUser=otherAdminOrganizationUser}}`);
+        await render(hbs`{{
+          organizations/user-card
+          organizationUser=otherAdminOrganizationUser
+          isViewerAdmin=true
+        }}`);
 
         expect(UserCard.avatarUrl).to.equal(this.otherAdminOrganizationUser.user.avatarUrl);
         expect(UserCard.userName.isVisible).to.equal(true);
@@ -99,7 +107,11 @@ describe('Integration: UserCard', function() {
       });
 
       it('renders a Member user', async function() {
-        await render(hbs`{{organizations/user-card organizationUser=memberOrganizationUser}}`);
+        await render(hbs`{{
+          organizations/user-card
+          organizationUser=memberOrganizationUser
+          isViewerAdmin=true
+        }}`);
 
         expect(UserCard.avatarUrl).to.equal(this.memberOrganizationUser.user.avatarUrl);
         expect(UserCard.userName.isVisible).to.equal(true);
@@ -185,7 +197,11 @@ describe('Integration: UserCard', function() {
       describe('Remove', function() {
         it('requests confirmation and calls destroyRecord', async function() {
           await render(
-            hbs`{{organizations/user-card organizationUser=otherAdminOrganizationUser}}`,
+            hbs`{{
+              organizations/user-card
+              organizationUser=otherAdminOrganizationUser
+              isViewerAdmin=true
+            }}`,
           );
           const orgUserStub = sinon.stub(otherAdminOrganizationUser, 'destroyRecord');
 
@@ -201,7 +217,11 @@ describe('Integration: UserCard', function() {
 
       describe('Make admin', function() {
         it('calls save on the OrganizationUser', async function() {
-          await render(hbs`{{organizations/user-card organizationUser=memberOrganizationUser}}`);
+          await render(hbs`{{
+            organizations/user-card
+            organizationUser=memberOrganizationUser
+            isViewerAdmin=true
+          }}`);
           expect(this.memberOrganizationUser.role).to.equal('member');
           const orgUserStub = sinon.stub(memberOrganizationUser, 'save');
 
@@ -215,7 +235,11 @@ describe('Integration: UserCard', function() {
       describe('Make member', function() {
         it('calls save on the OrganizationUser', async function() {
           await render(
-            hbs`{{organizations/user-card organizationUser=otherAdminOrganizationUser}}`,
+            hbs`{{
+              organizations/user-card
+              organizationUser=otherAdminOrganizationUser
+              isViewerAdmin=true
+            }}`,
           );
 
           expect(this.otherAdminOrganizationUser.role).to.equal('admin');

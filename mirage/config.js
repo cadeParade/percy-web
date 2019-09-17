@@ -29,6 +29,10 @@ export default function() {
     return new Mirage.Response(200, {}, {success: true});
   });
 
+  this.post('/api/websockets/auth', function() {
+    return {auth: 'abc123'};
+  });
+
   this.namespace = '/api/v1';
 
   this.get('/user', function(schema) {
@@ -435,9 +439,6 @@ export default function() {
   ) {
     schema.slackIntegrationConfigs.find(request.params.id).destroy();
     return new Mirage.Response(204);
-  });
-  this.post('/websockets/auth', function() {
-    return {auth: 'abc123'};
   });
 }
 

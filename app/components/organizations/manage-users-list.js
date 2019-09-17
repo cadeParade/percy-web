@@ -5,6 +5,7 @@ import {inject as service} from '@ember/service';
 
 export default Component.extend({
   store: service(),
+  isAdmin: readOnly('organization.currentUserIsAdmin'),
   orgInvites: readOnly('organization.invites'),
   invites: computed('orgInvites.@each.id', function() {
     return this.store

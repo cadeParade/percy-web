@@ -40,10 +40,10 @@ describe('Acceptance: ManageUsers', function() {
         });
         server.create('organizationUser', {user, organization});
       });
-
       await UsersPage.visitUsersPage({orgSlug: organization.slug});
       expect(currentRouteName()).to.equal('organizations.organization.users.index');
       expect(ManageUsersList.userCards.length).to.equal(numberOfUsers + 1);
+      await percySnapshot(this.test);
     });
 
     it('renders all invites', async function() {

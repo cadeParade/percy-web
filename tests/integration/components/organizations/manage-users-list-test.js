@@ -94,16 +94,8 @@ describe('Integration: ManageUsersList', function() {
       );
     });
 
-    it('renders column headers', function() {
-      expect(ManageUsersList.columnHeaders).to.equal('Name Role Joined on');
-    });
-
-    it('does not render section headers', function() {
-      expect(ManageUsersList.invitesHeader.isVisible).to.equal(false);
-      expect(ManageUsersList.usersHeader.isVisible).to.equal(false);
-    });
-
     it('renders all users', function() {
+      expect(ManageUsersList.usersHeader.text).to.equal('Name Role Joined on Identities');
       expect(ManageUsersList.userCards.length).to.equal(numberOfUsers);
     });
 
@@ -130,16 +122,8 @@ describe('Integration: ManageUsersList', function() {
       );
     });
 
-    it('renders column headers', function() {
-      expect(ManageUsersList.columnHeaders).to.equal('Name Role Joined on');
-    });
-
-    it('renders section headers', function() {
-      expect(ManageUsersList.invitesHeader.text).to.equal(`${numberOfInvites} pending invitations`);
-      expect(ManageUsersList.usersHeader.text).to.equal(`${numberOfUsers} active members`);
-    });
-
     it('renders all users', function() {
+      expect(ManageUsersList.usersHeader.text).to.equal('Name Role Joined on Identities');
       expect(ManageUsersList.userCards.length).to.equal(numberOfUsers);
     });
 
