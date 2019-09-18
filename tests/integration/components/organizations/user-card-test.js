@@ -9,6 +9,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import utils from 'percy-web/lib/utils';
 import UserCard from 'percy-web/tests/pages/components/organizations/user-card';
 import stubSession from 'percy-web/tests/helpers/stub-session';
+import stubService from 'percy-web/tests/helpers/stub-service-integration';
 
 describe('Integration: UserCard', function() {
   setupRenderingTest('organizations/user-card-test', {
@@ -205,13 +206,31 @@ describe('Integration: UserCard', function() {
           );
           const orgUserStub = sinon.stub(otherAdminOrganizationUser, 'destroyRecord');
 
-          expect(UserCard.buttons.objectAt(1).text).to.equal('Remove');
-          await UserCard.buttons.objectAt(1).click();
+          expect(UserCard.buttons[1].text).to.equal('Remove');
+          await UserCard.buttons[1].click();
 
           expect(confirmationAlert).to.have.been.called;
           expect(orgUserStub).to.have.been.called;
 
           orgUserStub.restore;
+        });
+
+        it('disables remove button when user has saml identity', async function() {
+          make('identity', 'oktaProvider', {user: otherAdminOrganizationUser.user});
+          const orgUserStub = sinon.stub(otherAdminOrganizationUser, 'destroyRecord');
+
+          await render(
+            hbs`{{
+              organizations/user-card
+              organizationUser=otherAdminOrganizationUser
+              isViewerAdmin=true
+            }}`,
+          );
+
+          expect(UserCard.buttons.objectAt(1).text).to.equal('Remove');
+          await UserCard.buttons.objectAt(1).click();
+
+          expect(orgUserStub).to.not.have.been.called;
         });
       });
 
@@ -249,6 +268,55 @@ describe('Integration: UserCard', function() {
           await UserCard.buttons.objectAt(0).click();
 
           expect(orgUserStub).to.have.been.called;
+        });
+      });
+
+      describe('Leave organization', function() {
+        let transitionToStub;
+
+        beforeEach(function() {
+          transitionToStub = sinon.stub();
+          stubService(this, 'router', 'router', {
+            transitionTo: transitionToStub,
+          });
+        });
+
+        it('requests confirmation and calls destroyRecord', async function() {
+          await render(
+            hbs`{{
+              organizations/user-card
+              organizationUser=adminOrganizationUser
+              isViewerAdmin=true
+            }}`,
+          );
+          const orgUserStub = sinon.stub(adminOrganizationUser, 'destroyRecord');
+
+          expect(UserCard.buttons[0].text).to.equal('Leave organization');
+          await UserCard.buttons[0].click();
+
+          expect(confirmationAlert).to.have.been.called;
+          expect(orgUserStub).to.have.been.called;
+          expect(transitionToStub).to.have.been.calledWith('default-org');
+
+          orgUserStub.restore;
+        });
+
+        it('disables "leave organization" button when user has saml identity', async function() {
+          make('identity', 'oktaProvider', {user: adminOrganizationUser.user});
+          const orgUserStub = sinon.stub(adminOrganizationUser, 'destroyRecord');
+
+          await render(
+            hbs`{{
+              organizations/user-card
+              organizationUser=adminOrganizationUser
+              isViewerAdmin=true
+            }}`,
+          );
+
+          expect(UserCard.buttons[0].text).to.equal('Leave organization');
+          await UserCard.buttons[0].click();
+
+          expect(orgUserStub).to.not.have.been.called;
         });
       });
     });

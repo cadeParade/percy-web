@@ -36,7 +36,7 @@
     <div class="user-card-actions flex-1 opacity-0 flex justify-end">
       <div data-test-user-button-toolbar class=" btn-toolbar">
         {{#if isCurrentUser}}
-          {{#percy-btn handleClick=(action "removeUser")}}
+          {{#percy-btn isDisabled=userHasSamlIdentity handleClick=(action "removeUser")}}
             Leave organization
           {{/percy-btn}}
         {{else}}
@@ -49,7 +49,7 @@
               Make member
             {{/percy-btn}}
           {{/if}}
-          {{#percy-btn isDisabled=(not isViewerAdmin) handleClick=(action "removeUser")}}
+          {{#percy-btn isDisabled=isRemoveDisabled handleClick=(action "removeUser")}}
             Remove
           {{/percy-btn}}
         {{/if}}

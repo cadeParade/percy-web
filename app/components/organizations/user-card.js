@@ -34,6 +34,14 @@ export default Component.extend({
     });
   }),
 
+  userHasSamlIdentity: computed('orderedIdentities.@each.isSAMLIdentity', function() {
+    return !!this.orderedIdentities.findBy('provider', 'samlp');
+  }),
+
+  isRemoveDisabled: computed('isViewerAdmin', 'userHasSamlIdentity', function() {
+    return this.userHasSamlIdentity || !this.isViewerAdmin;
+  }),
+
   actions: {
     removeUser() {
       const name = this.deleteNameText;
