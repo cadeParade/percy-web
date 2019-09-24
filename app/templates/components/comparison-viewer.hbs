@@ -45,8 +45,10 @@
       <div class="flex" data-test-comaprison-viewer-show-unchanged-comparisons>
         <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--left">
           <div class="ComparisonViewer-snapshotMissing">
-            {{fa-icon "arrows-h"}}
-            <p>No visual changes detected.</p>
+            <div>
+              {{fa-icon "arrows-h"}}
+              <p>No visual changes detected.</p>
+            </div>
           </div>
         </div>
         <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--right">
@@ -65,8 +67,10 @@
     <div class="flex">
       <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--left">
         <div class="ComparisonViewer-snapshotMissing">
-          {{fa-icon "remove" class="LargeXIcon"}}
-          <p>New snapshot,<br>nothing to compare yet.</p>
+          <div>
+            {{fa-icon "remove" class="LargeXIcon"}}
+            <p>New snapshot,<br>nothing to compare yet.</p>
+          </div>
         </div>
       </div>
       <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--right">
