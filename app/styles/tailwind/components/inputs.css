@@ -1,3 +1,27 @@
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+input[type="password"],
+textarea,
+select {
+  @apply bg-white;
+  @apply border;
+  @apply border-gray-200;
+  @apply rounded;
+}
+
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+input[type="password"],
+select {
+  height: 38px;
+}
+
 input[type="radio"]:checked,
 input[type="radio"]:not(:checked) {
   @apply absolute;

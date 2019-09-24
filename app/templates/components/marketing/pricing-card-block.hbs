@@ -7,9 +7,15 @@
         <p>Get started with visual testing for free with access to Percy's core features.</p>
 
         <div class="mb-2">
-          <div class="font-semibold"> {{inline-svg "check-green-icon" class="mr-sm"}}{{freePlan.numTeamMembersTitle}}</div>
-          <div class="font-semibold"> {{inline-svg "check-green-icon" class="mr-sm"}}Demo app and unlimited projects</div>
-          <div class="font-semibold">{{inline-svg "check-green-icon" class="mr-sm"}}{{format-number freePlan.usageIncluded}} snapshots / month</div>
+          <div class="flex items-center font-semibold">
+            {{inline-svg "check-green-icon" class="mr-sm"}}
+            {{freePlan.numTeamMembersTitle}}</div>
+          <div class="flex items-center font-semibold">
+            {{inline-svg "check-green-icon" class="mr-sm"}}
+            Demo app and unlimited projects</div>
+          <div class="flex items-center font-semibold">
+            {{inline-svg "check-green-icon" class="mr-sm"}}
+            {{format-number freePlan.usageIncluded}} snapshots / month</div>
         </div>
       </div>
 

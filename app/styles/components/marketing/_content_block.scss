@@ -2,13 +2,13 @@
 
 .content-block-header,
 .content-block-subheader {
+  @apply mx-auto;
   max-width: 800px;
-  margin: 0 auto;
 }
 
 .content-block-subheader {
   p {
-    font-size: 18px;
+    @apply text-lg;
   }
 }
 
@@ -29,7 +29,7 @@
 
   .content-block-header,
   .content-block-supporting-text-header {
-    color: white;
+    @apply text-white;
   }
 
   .content-block-bodytext,
@@ -44,23 +44,24 @@
 
 .content-block-bodytext {
   p {
-    text-align: center;
+    @apply text-center;
   }
 
   p img {
+    @apply inline;
+    @apply px-1;
+    @apply mb-1;
     max-width: 100px;
     max-height: 100px;
-    padding: 0 8px;
   }
 }
 
 .content-block-bodytext,
 .content-block-supporting-text-body {
   ul {
-    height: 100%;
-    padding-left: 25px;
-    font-size: 16px;
-    list-style: none;
+    @apply mb-3;
+    @apply pl-2;
+    @apply list-none;
 
     li {
       margin-left: 6px;
@@ -68,8 +69,8 @@
 
     li::before {
       content: "";
-      display: block;
-      position: relative;
+      @apply block;
+      @apply relative;
       top: 1em;
       left: -1em;
       width: 0;
@@ -83,7 +84,7 @@
 
 .content-block-supporting-text-body {
   ul {
-    padding-left: 16px;
+    @apply pl-2;
   }
 }
 

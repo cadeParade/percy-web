@@ -13,19 +13,25 @@
     <div class="grid gap-2 text-center col-3" data-test-repo-integrator-no-integrations>
       {{#link-to data-test-github "organizations.organization.integrations.github" organization.slug class="flex justify-center link-dark border rounded p-3 hover:no-underline hover:bg-purple-200 hover:border-purple-600"}}
         <div>
-          {{inline-svg "github-icon-xl"}}
+          <div class="flex justify-center mb-1">
+            {{inline-svg "github-icon-xl"}}
+          </div>
           <div class="font-semibold">Connect to Github</div>
         </div>
       {{/link-to}}
       {{#link-to data-test-gitlab "organizations.organization.integrations.gitlab" organization.slug class="flex justify-center link-dark border rounded p-3 hover:no-underline hover:bg-purple-200 hover:border-purple-600"}}
         <div>
-          {{inline-svg "gitlab-icon-xl"}}
+          <div class="flex justify-center mb-1">
+            {{inline-svg "gitlab-icon-xl"}}
+          </div>
           <div class="font-semibold">Connect to Gitlab</div>
         </div>
       {{/link-to}}
       {{#link-to data-test-bitbucket "organizations.organization.integrations.bitbucket-cloud" organization.slug class="flex justify-center link-dark border rounded p-3 hover:no-underline hover:bg-purple-200 hover:border-purple-600"}}
         <div>
-          {{inline-svg "bitbucket-icon-xl"}}
+          <div class="flex justify-center mb-1">
+            {{inline-svg "bitbucket-icon-xl"}}
+          </div>
           <div class="font-semibold">Connect to Bitbucket</div>
         </div>
       {{/link-to}}

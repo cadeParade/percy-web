@@ -1,4 +1,4 @@
-<fieldset>
+<fieldset class="mb-1">
   <legend>
     <span class="label-body font-semibold">
       {{title}}
@@ -10,17 +10,17 @@
   </legend>
 
   {{#each allOptions as |option|}}
-    <label class="flex mb-sm items-start" data-test-checkbox-set-input>
+    <label class="flex mb-1 items-start" data-test-checkbox-set-input>
       <input
         name="{{option.value}}"
         type="checkbox"
         checked={{contains option.value propertyValue}}
-        class="mt-sm {{if fieldErrors 'error'}}"
+        class="mr-1 {{if fieldErrors 'error'}}"
         onchange={{action "updateValue"}}
         onblur={{action validateProperty}}
       >
       <div>
-        <div class="font-medium {{labelClasses}}">{{option.label}}</div>
+        <div class="pt-xs font-medium leading-none {{labelClasses}}">{{option.label}}</div>
         <div class="text-gray-400">{{option.description}}</div>
       </div>
     </label>

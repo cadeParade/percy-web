@@ -18,7 +18,9 @@
       <h2 class="text-xl font-semibold mb-sm">Project token</h2>
       <p class="text-gray-400 mb-2">See the {{#link-to "docs" class="font-semibold"}}docs{{/link-to}} for how to set up client authentication for your app.</p>
       <div class="p-2 bg-gray-000 rounded border">
-        {{projects/env-vars project=model.project}}
+        <div class="mb-2">
+          {{projects/env-vars project=model.project}}
+        </div>
         <div class="rounded bg-yellow-000 border border-yellow-100 p-2">
           <strong>Note:</strong> <code>PERCY_TOKEN</code> is a project-specific, write-only API key that only has access to create builds, snapshots, and upload resources to this project. It should be kept secret.
         </div>
@@ -55,7 +57,7 @@
             <label>
               <div class="mb-1">Show the world that you're using Percy for visual testing. Place this badge in your README by copying the markdown snippet below:</div>
               <div class="flex justify-between">
-                <textarea readonly=true class="flex-1 font-mono font-normal tracking-sm text-sm">{{badgeMarkdown}}</textarea>
+                <textarea readonly=true class="flex-1 px-1 py-sm font-mono font-normal tracking-sm text-sm">{{badgeMarkdown}}</textarea>
                 {{#copy-button
                   class="percy-btn ml-1"
                   clipboardText=badgeMarkdown

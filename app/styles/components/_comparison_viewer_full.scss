@@ -1,6 +1,8 @@
 .ComparisonViewerFull {
+  @apply flex;
+  @apply justify-center;
+  @apply items-start;
   min-height: 300px;
-  text-align: center;
 
   img {
     box-shadow: 0 0 0 1px var(--very-light-gray);
@@ -11,6 +13,7 @@
   }
 
   .Viewer-pdiffImageBox {
+    @apply w-auto;
     border: 0;
   }
 }

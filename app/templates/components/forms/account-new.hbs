@@ -1,5 +1,5 @@
 <form action="javascript:;" data-test-account-new-form>
-  <label>
+  <label class="block mb-2">
     <span class="label-body">Email</span> - you can change this later in your profile.
     <input type="input" class="form-control" disabled value={{session.currentUser.email}}>
   </label>
@@ -10,6 +10,7 @@
     type="password"
     changeset=changeset
     data-test-account-new-password=true
+    class="mb-2"
   }}
 
   {{form-fields/submit

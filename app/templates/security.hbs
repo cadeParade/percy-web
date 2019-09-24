@@ -1,14 +1,14 @@
 {{title "Security"}}
 {{fixed-top-header}}
 {{#legalese-nav-wrapper}}
-  <h1>Security Policy</h1>
+  <h1 class="text-3xl font-bold">Security Policy</h1>
   <p><i>Last updated: January 7, 2017</i></p>
 
   <p>Security of services and data in Percy is our highest priority. We know that the success of our business depends directly on our customers' trust.</p>
 
   <p>This security policy answers common questions about how your data is stored and used in Percy. If you have any additional questions please feel free to <a href="mailto:security@percy.io">reach out</a>, and see our {{#link-to "terms"}}Terms of Service{{/link-to}} and {{#link-to "privacy"}}Privacy Policy{{/link-to}} for additional information.</p>
 
-  <h3>System infrastructure</h3>
+  <h3 class="text-2xl font-semibold">System infrastructure</h3>
 
   <p>Percy is hosted on Google Cloud Platform, which provides comprehensive security practices for our underlying infrastructure. This includes:</p>
   <ul>
@@ -30,20 +30,20 @@
 
   <p>We reserve the right to change the underlying infrastructure of Percy at any time and without notice, but we will always aim for industry-leading privacy and security practices.</p>
 
-  <h3>Analytics and logging</h3>
+  <h3 class="text-2xl font-semibold">Analytics and logging</h3>
 
   <p>We use metrics and analytics services such as Google Analytics to track visits to our website, as well as third-party monitoring and exception tracking systems. These services help us provide a stable and robust production environment. Our logs can contain data like user IDs and URLs, but we take careful steps to ensure that sensitive data like passwords and tokens never end up in our logging, metrics, or exception tracking systems.</p>
 
-  <h3>Organization infrastructure</h3>
+  <h3 class="text-2xl font-semibold">Organization infrastructure</h3>
 
   <p>Good security practices go far beyond managing underlying technical infrastructure. We employ organization-level security practices to ensure employee access control and audit logs to internal systems, and we enforce domain-wide 2-factor authentication on all employee accounts.
   </p>
 
-  <h3>Credit card data</h3>
+  <h3 class="text-2xl font-semibold">Credit card data</h3>
 
   <p>Percy does not store or receive any credit card data other than reference tokens that allow us to create payments. We use Stripe, a PCI Level 1 certified payments provider, to process payments. See <a href="https://stripe.com/docs/security">https://stripe.com/docs/security</a> for more information.</p>
 
-  <h3>What data does Percy collect?</h3>
+  <h3 class="text-2xl font-semibold">What data does Percy collect?</h3>
 
   <p>Percy is built to render screenshots of pages from web applications. To accomplish this, the primary data collected by Percy is simply web page assets such as HTML, CSS, images, and JavaScript. These assets are then used to render and store screenshots and visual diffs of your web application.</p>
 
@@ -55,17 +55,17 @@
 
   <p><strong>All Percy client libraries that collect data are open source</strong>, so you can see and audit exactly the mechanisms used for collecting and uploading data to Percy. Please see <a href="https://github.com/percy/">https://github.com/percy/</a> for the source code of our client libraries.</p>
 
-  <h3>Who can access my data?</h3>
+  <h3 class="text-2xl font-semibold">Who can access my data?</h3>
 
   <p>We enforce application-level access control for data via our API, so your Percy projects are only accessible to users when you explicitly grant them access. See your organization settings page to see and manage users who have access.</p>
 
   <p>Additionally, Percy engineers provide support and analysis of uploaded data which may occasionally require debugging access to uploaded data, but this analysis is only used to improve the quality and stability of our service. We will never share or sell your data to unauthorized third-parties.</p>
 
-  <h3>Is my data segregated from other users?</h3>
+  <h3 class="text-2xl font-semibold">Is my data segregated from other users?</h3>
 
   <p>In our hosted solution your data is stored in the same underlying databases and storage systems as other customers. If you need strict data separation from other users, please contact us about our Enterprise self-hosted solution.</p>
 
-  <h3>What GitHub data does Percy access?</h3>
+  <h3 class="text-2xl font-semibold">What GitHub data does Percy access?</h3>
 
   <p>When you sign in to Percy via GitHub, we receive an OAuth token that allows us to request data from the GitHub API on your behalf. We encrypt all OAuth tokens using AES-256 before storing them, and also use "key splitting" techniques to ensure that the decryption key is split into multiple layers of our tech stack, so that a compromise of a single layer would not yield the key necessary to decrypt data. Each GitHub OAuth token has permissions that are limited to specific GitHub API scopes. Please review the requested permissions when integrating with GitHub.</p>
 
@@ -85,17 +85,17 @@
     </ul>
   </ul>
 
-  <h3>Removing GitHub access</h3>
+  <h3 class="text-2xl font-semibold">Removing GitHub access</h3>
 
   <p>To remove Percy's access to your GitHub account, simply revoke the token via your GitHub <a href="https://github.com/settings/applications">user settings page</a>. If you have installed the Percy "GitHub App" in your user account or organization account, you can uninstall it via the "Installed integrations" settings page in GitHub.</p>
 
   <p>Percy can be used without any GitHub repository access, but some features may not be available.</p>
 
-  <h3>Disclosure</h3>
+  <h3 class="text-2xl font-semibold">Disclosure</h3>
 
   <p>If you find a vulnerability in Percy, please contact our security team at <a href="mailto:security@percy.io">security@percy.io</a>. We will do everything in our power to respond and fix the problem as quickly as possible. We adhere to industry-standard responsible disclosure practices and ask that you report the vulnerability to us quickly, and work with us to close the vulnerability within a reasonable time period before disclosing it to others.</p>
 
-  <h3>Any questions?</h3>
+  <h3 class="text-2xl font-semibold">Any questions?</h3>
 
   <p>If you have any questions about Percy and security, please email us at <a href="mailto:security@percy.io">security@percy.io</a>.</p>
 {{/legalese-nav-wrapper}}

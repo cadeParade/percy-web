@@ -1,9 +1,10 @@
 .browser-switcher-diff-count {
+  @apply flex;
+  @apply items-center;
   top: 0;
   right: 0;
   min-width: 14px;
   height: 14px;
-  padding-top: 2px;
   font-size: 10px;
   border-radius: 7px;
   transition: box-shadow 250ms, transform 250ms, background 250ms, color 250ms;

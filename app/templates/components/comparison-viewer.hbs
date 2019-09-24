@@ -1,6 +1,6 @@
 {{#if comparison.wasCompared}}
   {{#if comparison.isDifferent}}
-    <div class="row">
+    <div class="flex">
       <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--left">
         {{#with comparison.baseScreenshot.lossyImage as |image|}}
           <div class="Viewer-pdiffImageBox" style={{html-safe "max-width: " image.width "px"}}>
@@ -42,7 +42,7 @@
     {{/unless}}
 
     {{#if isUnchangedSnapshotExpanded}}
-      <div class="row" data-test-comaprison-viewer-show-unchanged-comparisons>
+      <div class="flex" data-test-comaprison-viewer-show-unchanged-comparisons>
         <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--left">
           <div class="ComparisonViewer-snapshotMissing">
             {{fa-icon "arrows-h"}}
@@ -62,7 +62,7 @@
 {{else}}
   {{#if comparison.wasAdded}}
     {{! New snapshot. }}
-    <div class="row">
+    <div class="flex">
       <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--left">
         <div class="ComparisonViewer-snapshotMissing">
           {{fa-icon "remove" class="LargeXIcon"}}

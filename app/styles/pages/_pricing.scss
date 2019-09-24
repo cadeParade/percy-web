@@ -34,4 +34,8 @@
   p {
     margin-bottom: 2px;
   }
+
+  img {
+    @apply mx-auto;
+  }
 }

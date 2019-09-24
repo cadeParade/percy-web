@@ -68,3 +68,9 @@ select {
     border: var(--errorborder);
   }
 }
+
+label > .label-body {
+  @apply inline-block;
+  @apply mb-sm;
+  @apply font-semibold;
+}

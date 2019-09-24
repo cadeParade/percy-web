@@ -39,6 +39,11 @@
   @apply no-underline;
 }
 
+.percy-btn svg {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
 /*
   A nice, beautiful, Percy purp button.
   percy-btn must be before percy-btn-primary in the element's class list

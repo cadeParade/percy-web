@@ -1,12 +1,12 @@
-<div class="Card Card--extraPadded u-text-center">
+<div class="text-center px-4 py-8">
   {{#if invitation.isExpired}}
-    <h3><strong>Whoops!</strong> This invite has expired or already been used</h3>
+    <h3 class="text-2xl font-semibold"><strong>Whoops!</strong> This invite has expired or already been used</h3>
 
     <p>
       Select an organization above, or ask an organization administrator to send you a new invite.
     </p>
   {{else}}
-    <h3>Join <strong>{{invitation.organization.name}}</strong> on Percy</h3>
+    <h3 class="text-2xl font-semibold mb-2">Join <strong>{{invitation.organization.name}}</strong> on Percy</h3>
 
     <p>
       <button class="percy-btn percy-btn-primary" {{action "accept"}} data-test-accept-invitation>Accept invitation</button>
