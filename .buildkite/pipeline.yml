@@ -1,24 +1,45 @@
+retry: &retry
+  manual: false
+  automatic:
+    - exit_status: -1  # Agent was lost
+      limit: 2
+    - exit_status: 2 # Observed when docker has a broken connection
+      limit: 2
+    - exit_status: 125 # Error response from Docker daemon
+      limit: 2
+    - exit_status: 255 # Forced agent shutdown often due to preemptible VMs
+      limit: 2
+
 steps:
   - label: ":percy::hamster: test runner #%n"
-    commands:
-      - "make build-test"
-      - "make test"
+    command:
+      - "yarn install --pure-lockfile"
+      - "yarn run build-test"
+      - "yarn test:parallel"
+    env:
+      - DOCKER=true
+      - BUILDKITE
+      - BUILDKITE_COMMIT
+      - BUILDKITE_BRANCH
+      - BUILDKITE_BUILD_ID
+      - BUILDKITE_PARALLEL_JOB
+      - BUILDKITE_PULL_REQUEST
+      - PERCY_TOKEN
+    plugins:
+      - docker#v3.3.0:
+          image: "circleci/node:8-browsers"
+          workdir: "/home/circleci/percy-web"
+          propagate-environment: true
+          user: "root"
     parallelism: 4
     timeout_in_minutes: 20
-    retry:
-      automatic:
-        - exit_status: -1  # Agent was lost
-          limit: 2
-        - exit_status: 255 # Forced agent shutdown often due to preemptible VMs
-          limit: 2
-        - exit_status: 2 # Observed when docker-compose has a broken connection
-          limit: 2
+    retry: *retry
     artifact_paths:
       - "test.log"
 
   - wait
 
-  - label: ":percy::hamster: finalize"
+  - label: ":percy::checkered_flag: finalize"
     commands:
       - "percy finalize --all"
     plugins:
@@ -29,16 +50,7 @@ steps:
             - "BUILDKITE"
             - "BUILDKITE_BUILD_ID"
             - "BUILDKITE_PARALLEL_JOB_COUNT"
-    retry:
-      automatic:
-        - exit_status: -1  # Agent was lost
-          limit: 2
-        - exit_status: 255 # Forced agent shutdown often due to preemptible VMs
-          limit: 2
-        - exit_status: 125 # Error response from Docker daemon
-          limit: 2
-        - exit_status: 2 # Observed when docker-compose has a broken connection
-          limit: 2
+    retry: *retry
 
   - label: ":percy::hamster: publish"
     branches: "master"
