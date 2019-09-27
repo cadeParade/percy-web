@@ -51,11 +51,15 @@ export default Service.extend({
       return;
     }
 
-    this.userInstance.setUserId(null);
-    this.userInstance.regenerateDeviceId();
+    if (this.userInstance) {
+      this.userInstance.setUserId(null);
+      this.userInstance.regenerateDeviceId();
+    }
 
-    this.organizationInstance.setUserId(null);
-    this.organizationInstance.regenerateDeviceId();
+    if (this.organizationInstance) {
+      this.organizationInstance.setUserId(null);
+      this.organizationInstance.regenerateDeviceId();
+    }
 
     window.analytics.reset();
   },
