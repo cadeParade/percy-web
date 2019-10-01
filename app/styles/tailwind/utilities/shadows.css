@@ -9,3 +9,39 @@
 .shadow-y-lg-purple-600 {
   box-shadow: 0 4px 12px rgba(158, 102, 191, 0.4);
 }
+
+.shadow-1 {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-purple-xl {
+  box-shadow: 0 16px 32px rgba(158, 102, 191, 0.2), 0 4px 8px rgba(158, 102, 191, 0.2) !important;
+}
+
+@media (min-width: 1012px) {
+  .lg\:shadow-purple-xl {
+    box-shadow: 0 16px 32px rgba(158, 102, 191, 0.2), 0 4px 8px rgba(158, 102, 191, 0.2) !important;
+  }
+}
+
+.shadow-green-lg {
+  box-shadow: 0 4px 12px rgba(96, 217, 87, 0.4) !important;
+}
+
+.shadow-orange-lg {
+  box-shadow: 0 4px 12px rgba(255, 123, 47, 0.4) !important;
+}
+
+.shadow-dark-lg {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.shadow-purple-2 {
+  box-shadow: 0 16px 32px rgba(158, 102, 191, 0.2), 0 4px 8px rgba(158, 102, 191, 0.2);
+}
+
+@media (min-width: 1012px) {
+  .lg\:shadow-none {
+    box-shadow: none !important;
+  }
+}

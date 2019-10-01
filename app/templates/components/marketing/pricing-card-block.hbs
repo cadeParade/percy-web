@@ -1,7 +1,7 @@
-<section class="{{if (not (is-test-env)) "animated-pricing-header"}} md:flex container container-lg mb-3">
+<section class="{{if (not (is-test-env)) "animated-pricing-header"}} md:flex w-90vw max-w-lg mx-auto mb-3">
 
   <div class="pricing-card-container pricing-card-container-short md:mx-1 md:mt-3">
-    <div class="pricing-card bg-white-gradient-pattern shadow-purple-2">
+    <div class="pricing-card md:h-full bg-white-gradient-pattern shadow-purple-2">
       <div class="pt-2 px-2">
         <h3 class="pricing-card-name text-green-600">{{freePlan.name}}</h3>
         <p>Get started with visual testing for free with access to Percy's core features.</p>
@@ -26,7 +26,7 @@
   </div>
 
   <div class="pricing-card-container md:mx-1">
-    <div class="pricing-card bg-white-gradient-pattern shadow-purple-2">
+    <div class="pricing-card md:h-full bg-white-gradient-pattern shadow-purple-2">
       <div class="pt-2 px-2">
         <h3 class="pricing-card-name text-purple-600">Professional</h3>
         <p>Scale at your own pace to get the visual coverage your team needs.</p>
@@ -98,16 +98,16 @@
   </div>
 
   <div class="pricing-card-container pricing-card-container-short md:mx-1 md:mt-3">
-    <div class="pricing-card bg-white-gradient-pattern shadow-purple-2">
+    <div class="pricing-card md:h-full bg-white-gradient-pattern shadow-purple-2">
       <div class="pt-2 px-2">
-        <h3 class="pricing-card-name text-gray-500">Enterprise</h3>
+        <h3 class="pricing-card-name">Enterprise</h3>
         <p>Use visual testing to its full potential with a custom Enterprise plan.</p>
 
         <div class="mb-3">
           <div class="text-lg pb-1 inline-block font-semibold">
             World-class support, security, and scale.
           </div>
-          <div class="font-normal leading-normal text-gray-700">
+          <div class="font-normal leading-normal text-gray-400">
             We will work with your team to create a custom plan to fit your business needs.
           </div>
         </div>

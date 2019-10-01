@@ -1,0 +1,99 @@
+/* Headings */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Body text */
+
+p {
+  margin-bottom: 16px;
+}
+
+small {
+  font-size: 90%;
+}
+
+blockquote {
+  margin: 0;
+}
+
+/* Lists */
+
+ul,
+ol {
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+ol ol,
+ul ol {
+  list-style-type: lower-roman;
+}
+
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+dd {
+  margin-left: 0;
+}
+
+/* Code */
+code {
+  @apply font-mono;
+  padding: 0 theme("spacing.1");
+  font-weight: 400 !important;
+  color: var(--text-color);
+  letter-spacing: 0.5px !important;
+  white-space: nowrap;
+  background: var(--gray-100);
+  border-radius: var(--border-radius);
+}
+
+code,
+kbd,
+pre,
+samp {
+  @apply text-sm;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: var(--mono-font);
+  font-weight: 400 !important;
+  letter-spacing: 0.5px;
+}
+
+pre > code {
+  display: block;
+  padding: theme("spacing.1");
+  white-space: pre;
+}
+
+strong {
+  font-weight: var(--semibold);
+}
+
+a {
+  color: var(--blue-500);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--blue-500);
+  text-decoration: underline;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--gray-400);
+}

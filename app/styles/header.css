@@ -1,0 +1,19 @@
+/* stylelint-disable selector-max-specificity */
+
+.Header {
+  position: relative;
+  height: 60px;
+  font-weight: var(--semibold);
+
+  .Button {
+    margin: 0;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.build-toolbar {
+  height: var(--header-height);
+}

@@ -1,5 +1,5 @@
-<header class="marketing-header bg-purple-000 border-b border-purple-300 overflow-hidden lg:overflow-visible {{classes}} {{unless image.file.url "-mb-4 lg:-mb-6"}}">
-  <div class="relative container-xl pb-8">
+<header class="marketing-header overflow-hidden lg:overflow-visible {{classes}} {{unless image.file.url "-mb-4 lg:-mb-6"}}">
+  <div class="relative w-90vw max-w-xl mx-auto pb-8">
     <div style="bottom: -178px; left: -48px;" class="absolute">
       {{inline-svg "marketing/bubbles-1"}}
     </div>
@@ -20,7 +20,7 @@
 </header>
 
 {{#if image.file.url}}
-  <div class="hero-main-image flex items-center relative container-lg">
+  <div class="hero-main-image flex items-center relative w-90vw max-w-lg mx-auto">
     <img src="{{image.file.url}}" alt="{{image.description}}">
   </div>
 {{/if}}

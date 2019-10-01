@@ -1,0 +1,64 @@
+.is-invisible {
+  visibility: hidden;
+}
+
+.bg-purple-light {
+  background: var(--bg-purple-light);
+}
+
+.shadow-l {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 8px 16px 0 rgba(0, 0, 0, 0.1);
+}
+
+.bg-purple-gradient {
+  background: var(--purple-gradient);
+}
+
+.bg-purple-gradient-pattern {
+  background: url("/images/pattern-on-purple.svg"), var(--purple-gradient);
+}
+
+.bg-purple-pattern {
+  background: url("/images/pattern-on-purple.svg"), var(--purple-600);
+}
+
+.bg-white-pattern {
+  background: url("/images/pattern-on-white.svg");
+  @apply bg-white;
+}
+
+.bg-gray-pattern {
+  background: url("/images/pattern-on-gray.svg");
+}
+
+.bg-gradient-pattern {
+  background: linear-gradient(180deg, rgba(254, 252, 254, 0) 0%, rgba(254, 252, 254, 0.6) 100%), url("/images/pattern-on-white.svg");
+  background-color: var(--purple-200);
+}
+
+.bg-white-gradient-pattern {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 100%), url("/images/pattern-on-white.svg");
+  @apply bg-white;
+}
+
+.alt-p {
+  font-size: 16px;
+}
+
+.alt-a {
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+.h-screen-header {
+  height: calc(100vh - var(--header-height));
+}
+
+.scale-15 {
+  transform: scale(1.5);
+}
+
+.text-0 {
+  font-size: 0;
+}

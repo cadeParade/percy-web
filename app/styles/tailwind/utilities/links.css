@@ -1,7 +1,7 @@
 /* stylelint-disable selector-no-qualifying-type */
 
 .text-white a {
-  color: var(--white);
+  @apply text-white;
 }
 
 /* Link colors */
@@ -31,10 +31,10 @@
 
 .link-white,
 .link-white a {
-  color: var(--white) !important;
+  @apply text-white;
 
   &:hover {
-    color: var(--white) !important;
+    @apply text-white;
   }
 }
 

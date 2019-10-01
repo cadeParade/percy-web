@@ -1,5 +1,5 @@
 <div class="build-card-container {{if build.isExpired 'opacity-50'}}" data-test-build-card {{action "navigateToBuild"}}>
-  <div class="container-xl build-card">
+  <div class="build-card">
     <div>
       <div style="margin-bottom: -6px;">
         {{#link-to "organization.project.builds.build" project.organization.slug project.slug build.id class="text-xl md:text-2xl font-mono font-normal tracking-sm"}}{{build.buildNumber}}{{/link-to}}

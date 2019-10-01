@@ -20,19 +20,18 @@ module.exports = function(defaults) {
     },
     postcssOptions: {
       compile: {
-        extension: 'scss',
-        enabled: true,
-        parser: require('postcss-scss'),
         plugins: [
-          require('@csstools/postcss-sass'),
-          require('postcss-easy-import'),
+          {
+            module: require('postcss-import'),
+            options: {
+              path: ['node_modules'],
+            },
+          },
+          require('postcss-for'),
+          require('postcss-nested'),
           require('tailwindcss')('./tailwind.config.js'),
         ],
       },
-    },
-    autoprefixer: {
-      browsers: ['last 2 versions'],
-      sourcemap: true,
     },
     fingerprint: {
       extensions: ['js', 'css', 'png', 'jpg', 'gif', 'map', 'svg'],

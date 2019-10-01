@@ -1,0 +1,515 @@
+/* stylelint-disable selector-no-qualifying-type, selector-max-specificity  */
+
+.Button,
+button,
+input[type="reset"],
+input[type="button"] {
+  --button-height: 38px;
+  --button-small-height: 28px;
+
+  display: inline-block;
+  position: relative;
+  height: var(--button-height);
+  padding: 0 15px;
+  margin: 0;
+  font-weight: var(--semibold);
+  line-height: var(--button-height);
+  color: var(--default-link);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  @apply bg-white;
+  border: var(--lighter-gray-border);
+  border-radius: 4px;
+}
+
+.Button:hover,
+.Button:focus,
+button:hover,
+button:focus,
+input[type="reset"]:hover,
+input[type="button"]:focus {
+  color: var(--default-link-hover);
+  text-decoration: none;
+  @apply bg-gray-000;
+  border: var(--light-gray-border);
+  outline: 0;
+}
+
+.Button[disabled],
+button[disabled],
+input[type="reset"][disabled],
+input[type="button"][disabled] {
+  color: var(--light-gray);
+  cursor: default;
+  background: var(--very-light-gray);
+  border: var(--gray);
+}
+
+button .fa--left,
+.Button .fa--left {
+  position: absolute;
+  top: 7px;
+  left: 10px;
+  font-size: 2.4rem;
+}
+
+.btn {
+  @apply leading-normal;
+  display: inline-block;
+  height: 30px;
+  padding: 5px 16px;
+  font-size: 12px;
+  font-weight: var(--semibold);
+  text-decoration: none !important;
+  white-space: nowrap;
+  user-select: none;
+  @apply bg-white;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04), 0 1px 1px 0 rgba(0, 0, 0, 0.06);
+  transition: color 250ms, background 250ms, box-shadow 250ms;
+}
+
+.btn:hover {
+  color: var(--blue);
+  background: #f5fafe;
+  border: 1px solid transparent;
+}
+
+.btn:focus,
+.btn:focus:active {
+  @apply bg-gray-000;
+  border: 1px solid transparent;
+  outline: none;
+}
+
+.btn[disabled] {
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+.btn.is-active,
+.btn.active {
+  @apply text-white;
+  background: var(--blue);
+}
+
+.btn.btn-square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+}
+
+.btn-alt {
+  @apply text-gray-400;
+  border: 1px solid var(--gray-200);
+}
+
+.btn-alt:hover {
+  @apply text-gray-700;
+  background: var(--purple-000);
+  border: 1px solid var(--gray-200);
+}
+
+.btn-alt:focus,
+.btn-alt:focus:active {
+  @apply text-gray-700;
+  @apply bg-gray-000;
+  border: 1px solid var(--lighter-gray);
+}
+
+.btn-sm {
+  height: 24px;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+.btn-md {
+  @apply font-bold;
+  height: 42px;
+  padding: 10px theme("spacing.3");
+  font-size: 14px;
+}
+
+.btn-primary {
+  @apply font-bold;
+  padding: 5px theme("spacing.3");
+  @apply text-white;
+  text-shadow: 0 1px 2px rgba(63, 58, 64, 0.2);
+  cursor: pointer;
+  background: var(--purple-600);
+  transition: transform 250ms;
+  backface-visibility: hidden;
+
+  &:hover {
+    @apply text-white;
+    background: var(--purple-600);
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+
+  &:focus,
+  &:focus:active {
+    @apply text-white;
+    background: var(--purple-600);
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+
+  &[disabled] {
+    @apply text-white;
+    pointer-events: none;
+    background: var(--purple-600);
+    border: 1px solid transparent;
+    opacity: 0.25;
+  }
+
+  &.shadow-on-light {
+    box-shadow: 0 2px 8px 0 rgba(46, 0, 62, 0.26), 0 8px 20px 0 rgba(39, 0, 52, 0.08);
+  }
+
+  &.is-loading {
+    display: table; /* safari needs a forced repaint to draw the gradient again after loading is finished */
+    background-image: linear-gradient(-45deg, var(--purple-700) 25%, var(--purple-600) 25%, var(--purple-600) 50%, var(--purple-700) 50%, var(--purple-700) 75%, var(--purple-600) 75%, var(--purple-600));
+    background-size: 20px 20px;
+    animation: loading 4s linear infinite;
+  }
+
+  &.is-successful {
+    svg {
+      animation: fadeinout 3s;
+    }
+  }
+
+  &.is-failed {
+    color: var(--red-500);
+    text-shadow: none;
+    background: var(--red-000);
+    box-shadow: none !important;
+  }
+}
+
+.build-toolbar {
+  .btn:not(.build-approval-button) {
+    height: 42px;
+
+    &:hover,
+    &:focus,
+    &:focus:active {
+      @apply bg-white;
+    }
+  }
+
+  .btn-square {
+    width: 42px;
+  }
+}
+
+.btn-github {
+  @apply text-white;
+  background: var(--darkest-gray);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.26), 0 8px 20px 0 rgba(0, 0, 0, 0.08);
+
+  &:hover {
+    @apply text-white;
+    background: var(--darkest-gray);
+  }
+
+  &:focus,
+  &:focus:active {
+    @apply text-white;
+    background: var(--darkest-gray);
+    border: 1px solid transparent;
+  }
+}
+
+.btn-gray {
+  @apply text-white;
+  background: var(--gray-600);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.26), 0 8px 20px 0 rgba(0, 0, 0, 0.08);
+
+  &:hover {
+    @apply text-white;
+    background: var(--gray-600);
+  }
+
+  &:focus,
+  &:focus:active {
+    @apply text-white;
+    background: var(--gray-600);
+    border: 1px solid transparent;
+  }
+}
+
+.btn-danger {
+  color: var(--red-500);
+
+  &:hover {
+    @apply text-white;
+    background-color: var(--red-500);
+    box-shadow: 0 4px 12px rgba(#e85344, 0.3);
+  }
+}
+
+.btn-success {
+  @apply text-white;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+
+  /* This is the var --green-gradient, but for performance reasons we're repeating it here. */
+  background: linear-gradient(45deg, #43cb54 0%, #4fd960 100%);
+
+  &:hover,
+  &:focus,
+  &:focus:active {
+    @apply text-white;
+
+    /* This is the var --green-gradient, but for performance reasons we're repeating it here. */
+    background: linear-gradient(45deg, #43cb54 0%, #4fd960 100%);
+  }
+
+  &.is-loading {
+    background-image: linear-gradient(-45deg, #4fd960 25%, #43cb54 25%, #43cb54 50%, #4fd960 50%, #4fd960 75%, #43cb54 75%, #43cb54);
+    background-size: 20px 20px;
+    animation: loading 4s linear infinite;
+  }
+
+  &[disabled] {
+    @apply text-gray-000;
+    cursor: default;
+    background: var(--green-500);
+    border: var(--green);
+  }
+}
+
+.snapshot-reject-button {
+  &.is-loading {
+    background-image: linear-gradient(-45deg, #ffdfcc 25%, #ffefe6 25%, #ffefe6 50%, #ffdfcc 50%, #ffdfcc 75%, #ffefe6 75%, #ffefe6);
+    background-size: 20px 20px;
+    animation: loading 4s linear infinite;
+  }
+
+  &:hover,
+  &:focus,
+  &:focus:active {
+    color: var(--orange-500);
+    background-color: var(--orange-100);
+  }
+}
+
+.btn-alt-success {
+  color: var(--green);
+  background: none;
+  border: 1px solid var(--green);
+
+  &:hover,
+  &:focus,
+  &:focus:active {
+    color: var(--dark-green);
+    background: none;
+    border: 1px solid var(--dark-green);
+  }
+}
+
+.build-approval-button {
+  @apply pl-7;
+  @apply font-bold;
+  position: relative;
+  width: 146px;
+  height: 42px;
+  border: 0;
+  box-shadow: 0 2px 6px rgba(96, 217, 87, 0.6);
+  overflow: hidden;
+  transition: width 250ms;
+
+  &:hover,
+  &.is-loading {
+    span {
+      opacity: 0;
+      transform: translate3d(60px, 0, 0);
+    }
+
+    .svg-container {
+      transform: translate3d(38px, -50%, 0) rotate(-10deg);
+    }
+  }
+
+  &.is-approved {
+    @apply pl-0;
+    @apply pointer-events-none;
+    width: 62px;
+
+    &:hover {
+      .svg-container {
+        transform: translate3d(0, -50%, 0) rotate(0deg);
+      }
+    }
+
+    span {
+      opacity: 0;
+    }
+  }
+
+  .svg-container {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transition: transform 250ms;
+    transform: translate3d(0, -50%, 0);
+  }
+
+  span {
+    transition: opacity 250ms, transform 250ms;
+  }
+}
+
+.btn-icon-only {
+  @apply text-gray-700;
+  height: auto !important;
+  padding: 0;
+  line-height: 1.5;
+  background: none;
+  border: 0;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:focus:active {
+    background: none;
+    border: 0;
+  }
+
+  > svg {
+    display: block;
+  }
+}
+
+.btn-app-access {
+  height: 42px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  background: var(--purple-700);
+  border: 1px solid var(--purple-500);
+  box-shadow: 0 6px 12px 0 rgba(46, 0, 62, 0.24), 0 12px 24px 0 rgba(39, 0, 52, 0.12);
+
+  &:hover {
+    @apply text-white;
+    background: var(--purple-700);
+    border: 1px solid var(--purple-500);
+  }
+
+  &:focus,
+  &:focus:active {
+    background: var(--purple-700);
+    border: 1px solid var(--purple-500);
+  }
+}
+
+.btn-group {
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 1px;
+
+  > .btn:not(:first-child):not(:last-child) {
+    border-radius: 0;
+  }
+
+  > .btn:first-child:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  > .btn:last-child:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+.btn-group-alt {
+  .btn {
+    @apply text-gray-700;
+    @apply bg-white;
+
+    &:hover {
+      background: var(--gray-000);
+    }
+
+    &.is-active {
+      @apply text-white;
+      background: var(--gray-700);
+      box-shadow: none;
+      transform: translate3d(0, 0, 0);
+    }
+
+    &.has-diffs {
+      color: var(--purple-600);
+
+      &:hover {
+        background: var(--purple-100);
+      }
+
+      &.is-active {
+        @apply text-white;
+        background: var(--purple-600);
+        box-shadow: inset 0 1px 1px rgba(92, 0, 123, 0.2);
+      }
+    }
+  }
+}
+
+.btn-toolbar {
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: theme("spacing.1");
+}
+
+.btn-scale {
+  transition: transform 250ms;
+  backface-visibility: hidden;
+
+  &:hover {
+    transform: scale(1.025) translate3d(0, 0, 0);
+  }
+}
+
+.btn-white,
+a.btn-white {
+  color: var(--gray-700);
+  @apply bg-white;
+
+  &:hover {
+    color: var(--purple-600);
+  }
+}
+
+.btn-green,
+.btn-purple,
+.btn-orange {
+  color: white;
+  text-shadow: 0 1px 2px rgba(63, 58, 64, 0.2);
+}
+
+.btn-green,
+.btn-green:hover,
+.btn-green:focus,
+.btn-green:focus:active {
+  @apply text-white;
+  background: var(--green-500);
+}
+
+.btn-purple,
+.btn-purple:hover,
+.btn-purple:focus,
+.btn-purple:focus:active {
+  @apply text-white;
+  background: var(--purple-600);
+}
+
+.btn-orange,
+.btn-orange:hover,
+.btn-orange:focus,
+.btn-orange:focus:active {
+  @apply text-white;
+  background: var(--orange-500);
+}

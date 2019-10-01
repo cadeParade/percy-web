@@ -4,7 +4,7 @@
       {{inline-svg 'percy-logo-on-light' class="mr-2"}}
       <div class="text-xl font-semibold">Installed!</div>
     </div>
-    <div class="OrganizationsGithubIntegration-actions">
+    <div>
       <a href="{{currentIntegration.githubHtmlUrl}}" class="btn" target="_blank" rel="noopener">
         {{fa-icon "github" classNames="fa--left"}} Manage
       </a>
@@ -20,7 +20,7 @@
       {{fa-icon "fa-spinner fa-pulse" size="2" classNames="mr-2"}}
       <div class="text-xl font-semibold">Waiting for installation...</div>
     </div>
-    <div class="OrganizationsGithubIntegration-actions">
+    <div>
       <a href="#" class="btn" {{action "cancelIntegrationRequest"}}>Cancel</a>
     </div>
   </div>

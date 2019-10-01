@@ -1,0 +1,10 @@
+.status-pill {
+  @apply flex items-center justify-center;
+  @apply px-2 py-sm;
+  @apply text-sm font-semibold text-center;
+  @apply whitespace-no-wrap;
+  color: var(--status-text-color, var(--text-color));
+  background: var(--status-background-color, var(--gray-100));
+  border-radius: 13px;
+  transition: transform 250ms;
+}

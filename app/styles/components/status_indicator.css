@@ -1,0 +1,7 @@
+.status-indicator {
+  --status-color: var(--gray-000);
+  width: theme("spacing.1");
+  height: theme("spacing.1");
+  background: var(--status-color);
+  border-radius: 50%;
+}

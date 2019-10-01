@@ -1,0 +1,99 @@
+.flash-message-container {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  max-width: calc(100vw - 128px);
+
+  @media screen and (min-width: 768px) {
+    max-width: calc(100vw - 434px);
+  }
+}
+
+.flash-message {
+  display: grid;
+  margin-bottom: 8px;
+  @apply bg-white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 1px 4px rgba(87, 16, 16, 0.1), 0 6px 16px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  overflow: hidden;
+  transition: opacity 500ms, transform 500ms;
+  transform: translate3d(0, 48px, 0);
+
+  &.active {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+
+    &.exiting {
+      opacity: 0;
+      transform: translate3d(0, 48px, 0);
+    }
+  }
+
+  &:last-child {
+    margin: 0;
+  }
+
+  @media screen and (min-width: 544px) {
+    grid-template-columns: 56px auto 46px;
+  }
+}
+
+.flash-message-detail-success {
+  background: var(--green-gradient);
+}
+
+.flash-message-detail-danger {
+  background: var(--red-gradient);
+}
+
+.flash-message-detail-warning {
+  background: var(--yellow-gradient);
+}
+
+.flash-message-detail-info {
+  background: var(--light-gradient);
+}
+
+.flash-message-close {
+  opacity: 0.2;
+  transition: opacity 250ms;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  @media screen and (max-width: 544px) {
+    display: none !important;
+  }
+}
+
+.flash-message-sticky {
+  animation: flash-bounce 4s infinite;
+  animation-delay: 3s;
+  @at-root {
+    /* would normally put this in animations.scss - but this is specific to sticky flash messages since it has blank keyframes for a repeating delay */
+    @keyframes flash-bounce {
+      /* stylelint-disable selector-list-comma-newline-after */
+      0%, 5%, 13.25%, 20%, 25% {
+        transform: translate3d(0, 0, 0);
+        animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+      }
+
+      10%, 10.75% {
+        transform: translate3d(0, -30px, 0);
+        animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+      }
+
+      17.5% {
+        transform: translate3d(0, -15px, 0);
+        animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+      }
+
+      22.5% {
+        transform: translate3d(0, -4px, 0);
+      }
+      /* stylelint-enable selector-list-comma-newline-after */
+    }
+  }
+}

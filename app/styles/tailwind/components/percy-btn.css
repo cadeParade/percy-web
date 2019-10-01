@@ -25,9 +25,9 @@
 .percy-btn-sm {
   @apply text-sm;
   @apply px-1;
+  @apply py-xs;
+  @apply leading-normal;
   height: 24px;
-  padding-top: 2px;
-  padding-bottom: 2px;
 }
 
 .percy-btn:hover,

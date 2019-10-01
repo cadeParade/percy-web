@@ -47,10 +47,13 @@
 .build-card {
   @apply grid;
   @apply items-center;
+  @apply w-90vw;
+  @apply max-w-xl;
   @apply py-3;
+  @apply mx-auto;
   @apply border-b;
   @apply cursor-pointer;
-  grid-gap: var(--spacing-4);
+  grid-gap: theme("spacing.4");
   grid-template-areas:
     "build"
     "details"

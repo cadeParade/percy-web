@@ -1,0 +1,57 @@
+.SnapshotViewer {
+  &.SnapshotViewer--actionable {
+    cursor: pointer;
+
+    &:hover .SnapshotViewer-header {
+      border-color: var(--gray-200) !important;
+    }
+  }
+}
+
+.SnapshotViewer--focus {
+  box-shadow: 0 1px 0 var(--gray-200), 0 -1px 0 var(--gray-200);
+}
+
+.SnapshotViewer-header {
+  @apply sticky;
+  @apply grid;
+  @apply gap-4;
+  @apply z-1;
+  @apply px-2;
+  @apply py-1;
+  @apply bg-gray-000;
+  @apply border-t;
+  @apply border-b;
+  top: 58px;
+  grid-template-columns: 1fr auto;
+
+  &.SnapshotViewer-header--actionable {
+    &:hover {
+      cursor: pointer;
+      border: var(--gray-border-hover);
+    }
+  }
+}
+
+.SnapshotViewer-header-full {
+  min-width: 680px;
+  z-index: 1;
+  grid-template-columns: 1fr auto 1fr;
+}
+
+.maximize-snapshot,
+.minimize-snapshot {
+  path {
+    transition: transform 250ms cubic-bezier(0.68, -2.55, 0.265, 2.55);
+  }
+
+  &:hover {
+    path:first-child {
+      transform: translate3d(1px, -1px, 0);
+    }
+
+    path:last-child {
+      transform: translate3d(-1px, 1px, 0);
+    }
+  }
+}

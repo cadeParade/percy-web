@@ -1,0 +1,63 @@
+/* stylelint-disable selector-max-compound-selectors, value-no-vendor-prefix, property-no-vendor-prefix */
+
+.BuildInfoDropdown-modal {
+  width: calc(100% - 45px);
+  max-width: 450px;
+  padding: 20px;
+  margin-top: 9px;
+  margin-bottom: 100px;
+  background: white;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  z-index: 1000000;
+
+  h4 {
+    font-size: 18px;
+  }
+
+  table {
+    code,
+    pre {
+      white-space: pre-wrap;
+    }
+
+    tr {
+      td {
+        padding: 5px 10px 5px 0;
+        word-break: break-all;
+        vertical-align: top;
+        border-bottom: 1px solid var(--very-light-gray);
+
+        pre {
+          margin: 0;
+        }
+      }
+
+      td:first-child {
+        width: 135px;
+        font-weight: bold;
+      }
+
+      &:last-child {
+        td {
+          border-bottom: 0;
+        }
+      }
+    }
+
+    .BuildInfoDropdown-fullWidthValue {
+      td:first-child {
+        padding-top: 0;
+        font-weight: normal;
+      }
+    }
+
+    .BuildInfoDropdown-commitMessage {
+      display: -webkit-box;
+      max-height: 48px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+  }
+}

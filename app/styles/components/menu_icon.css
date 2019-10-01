@@ -1,0 +1,66 @@
+/* stylelint-disable selector-max-specificity */
+
+.menu-icon {
+  &.is-closeable {
+    .menu-icon-line {
+      width: 8px;
+      opacity: 0;
+    }
+
+    .menu-icon-line:nth-child(2) {
+      opacity: 1;
+      transform: rotate(-45deg) translateY(-1px);
+    }
+
+    .menu-icon-line:nth-child(3) {
+      opacity: 1;
+      transform: rotate(45deg) translateY(1px);
+    }
+  }
+
+  &:not(.is-closeable):hover {
+    .menu-icon-line {
+      &:nth-child(1) {
+        transform: translateX(2px);
+      }
+
+      &:nth-child(2) {
+        transform: translateX(6px);
+      }
+
+      &:nth-child(4) {
+        transform: translateX(4px);
+      }
+    }
+  }
+}
+
+.menu-icon-line {
+  height: 2px;
+  background: var(--purple-800);
+  border-radius: 1px;
+  transition: opacity 250ms, transform 250ms;
+  transform-origin: center;
+
+  &:not(:last-child) {
+    margin-bottom: 2px;
+  }
+
+  &:nth-child(1) {
+    width: 14px;
+  }
+
+  &:nth-child(2) {
+    width: 10px;
+  }
+
+  &:nth-child(4) {
+    width: 12px;
+  }
+}
+
+.marketing-hero-dark {
+  .menu-icon-line {
+    background: white;
+  }
+}

@@ -1,0 +1,21 @@
+.light-icon {
+  path {
+    fill: theme("colors.gray.400");
+  }
+
+  &:hover {
+    path {
+      fill: var(--text-color) !important;
+    }
+  }
+}
+
+.loader {
+  margin: 0;
+}
+
+@media only percy {
+  .loading-spinner {
+    transform: none;
+  }
+}

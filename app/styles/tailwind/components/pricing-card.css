@@ -7,7 +7,6 @@
   @apply flex;
   @apply flex-col;
   @apply justify-between;
-  @apply h-full;
   @apply rounded;
   @apply p-2;
 }
@@ -19,8 +18,11 @@
 }
 
 .pricing-card-container-short {
-  height: 350px;
-  @media screen and (max-width: 850px) {
+  @media screen and (min-width: 768px) {
     height: 450px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    height: 400px;
   }
 }

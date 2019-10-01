@@ -1,0 +1,10 @@
+.marketing-header {
+  @apply bg-purple-000;
+  @apply border-b;
+  @apply border-purple-300;
+  height: 520px;
+}
+
+.marketing-header-positive-margin {
+  margin-bottom: 10px !important;
+}

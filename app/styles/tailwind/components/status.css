@@ -1,0 +1,51 @@
+.is-pending {
+  --status-color: theme("colors.gray.100");
+  --status-text-color: theme("colors.gray.700");
+  --status-background-color: theme("colors.gray.000");
+}
+
+.is-processing {
+  --status-color: theme("colors.gray.200");
+  --status-text-color: theme("colors.gray.700");
+  --status-background-color: theme("colors.gray.000");
+}
+
+.is-unreviewed {
+  --status-color: theme("colors.purple.600");
+  --status-text-color: theme("colors.purple.600");
+  --status-background-color: theme("colors.purple.300");
+}
+
+.is-changes-requested {
+  --status-color: theme("colors.orange.500");
+  --status-text-color: theme("colors.orange.500");
+  --status-background-color: theme("colors.orange.100");
+}
+
+.is-approved {
+  --status-color: theme("colors.green.500");
+  --status-text-color: theme("colors.green.500");
+  --status-background-color: theme("colors.green.000");
+}
+
+.is-unchanged {
+  --status-color: theme("colors.blue.500");
+  --status-text-color: theme("colors.blue.500");
+  --status-background-color: theme("colors.blue.000");
+}
+
+.is-failed {
+  --status-color: theme("colors.red.500");
+  --status-text-color: theme("colors.red.500");
+  --status-background-color: theme("colors.red.000");
+}
+
+.is-expired {
+  --status-color: theme("colors.gray.100");
+  --status-text-color: theme("colors.gray.400");
+  --status-background-color: theme("colors.gray.100");
+}
+
+.text-status {
+  color: var(--status-text-color, theme("colors.gray.700"));
+}

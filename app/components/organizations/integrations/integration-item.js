@@ -74,8 +74,8 @@ export default Component.extend({
 
   buttonClasses: computed('isInstalled', function() {
     return this.isInstalled
-      ? 'data-test-integration-button-edit btn text-blue-500'
-      : 'data-test-integration-button-install btn btn-primary shadow-purple-lg m-0';
+      ? 'data-test-integration-button-edit'
+      : 'data-test-integration-button-install percy-btn-primary shadow-purple-lg m-0';
   }),
 
   actions: {

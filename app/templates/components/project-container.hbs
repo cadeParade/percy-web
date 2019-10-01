@@ -29,7 +29,7 @@
         {{inline-svg "bitbucket-icon" class="mr-1"}}
       </div>
       <div>Integrate your SCM for repo features</div>
-      {{#link-to data-test-add-integration "organizations.organization.integrations" project.organization.slug class="percy-btn percy-btn-primary percy-btn-sm leading-normal ml-2"}}Add integration{{/link-to}}
+      {{#link-to data-test-add-integration "organizations.organization.integrations" project.organization.slug class="percy-btn percy-btn-primary percy-btn-sm ml-2"}}Add integration{{/link-to}}
     </div>
   {{/if}}
 {{/projects/project-header}}
@@ -56,7 +56,7 @@
     {{else}}
       {{#if project.isEnabled}}
         {{#if isUserMember}}
-          <div class="container-xl mb-3">
+          <div class="w-90vw max-w-xl mx-auto mb-3">
             <div class="build-card-placeholder">
               <div class="mr-3">
                 {{build-icon}}
@@ -68,7 +68,7 @@
             </div>
           </div>
 
-          <div class="container-xl">
+          <div class="w-90vw max-w-xl mx-auto">
             <div class="bg-white rounded shadow-1">
               <div class="px-2 py-3 border-b">
                 {{resource-widget project=project}}
@@ -120,7 +120,7 @@
           }}
         {{/if}}
       {{else}}
-        <div class="container-xl">
+        <div class="w-90vw max-w-xl mx-auto">
           <p class="py-2 font-semibold">No builds yet, and this project is disabled.</p>
         </div>
       {{/if}}

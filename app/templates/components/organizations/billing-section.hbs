@@ -1,5 +1,5 @@
 {{!-- TODO: #billingadmins --}}
-<section class="container-xl pt-3 pb-9" data-test-billing-section-container>
+<section class="w-90vw max-w-xl mx-auto pt-3 pb-9" data-test-billing-section-container>
   {{#unless (or isUserOrgAdmin (is-admin))}}
     <div data-test-member-view class="Alert Alert--error" >
       <strong>Changing billing settings requires organization admin permissions.</strong>

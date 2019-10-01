@@ -1,0 +1,63 @@
+/* stylelint-disable selector-max-compound-selectors, selector-max-specificity */
+
+.SnapshotViewerFullModalWrapper {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 1;
+  overflow: hidden;
+
+  .ember-modal-dialog,
+  .ember-modal-overlay {
+    position: relative;
+  }
+
+  .ember-modal-overlay {
+    width: auto;
+    height: auto;
+    padding-bottom: 20px;
+  }
+
+  /* This allows us to use the supplied ember-modal-dialog structure CSS for dropdowns etc, while maintaining full screen support */
+  &.ember-modal-wrapper.emd-static.emd-wrapper-target-attachment-center {
+    .ember-modal-dialog {
+      top: 0;
+      left: 0;
+      transform: none;
+    }
+  }
+
+  .SnapshotViewerFull {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    @apply bg-white;
+    outline: none;
+    z-index: 1001;
+
+    .SnapshotViewerFull-body {
+      position: relative;
+      height: 100vh;
+      padding-bottom: 40px;
+      text-align: center;
+      cursor: pointer;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+
+      p {
+        /* Viewport centering */
+        display: inline-block;
+        width: 100%;
+        line-height: normal;
+      }
+
+      .ComparisonViewerFull {
+        --snapshot-header-padding: 8px;
+        padding-top: var(--snapshot-header-padding);
+      }
+    }
+  }
+}

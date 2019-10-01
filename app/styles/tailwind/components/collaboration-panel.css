@@ -61,7 +61,7 @@
   @apply mb-3;
 }
 
-@media screen and (max-width: 1012px /* var(--width-lg) */) {
+@media screen and (max-width: 1012px) {
   .collaboration-panel {
     @apply w-full;
   }

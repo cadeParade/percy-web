@@ -1,0 +1,6 @@
+pre code {
+  padding-left: 10px;
+  @apply bg-gray-000;
+  border-left: 4px solid var(--lighter-gray);
+  border-radius: 0;
+}

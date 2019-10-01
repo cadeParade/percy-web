@@ -1,0 +1,67 @@
+.auth0-lock-header-bg,
+.auth0-lock-submit {
+  height: auto;
+  background: var(--dark-purple) !important;
+}
+
+.auth0-lock-cred-pane {
+  border-radius: 0 !important;
+}
+
+.auth0-lock-header {
+  border-radius: 4px 4px 0 0 !important;
+}
+
+.auth0-lock-name,
+.auth0-lock-header-welcome * {
+  @apply text-white;
+}
+
+.auth0-lock-badge-bottom,
+.auth0-lock.auth0-lock .auth0-lock-header-bg .auth0-lock-header-bg-blur {
+  display: none !important;
+}
+
+.auth0-lock-overlay {
+  background: theme("colors.gray.000") !important;
+}
+
+.auth0-lock.auth0-lock.auth0-lock-opened .auth0-lock-overlay {
+  opacity: 0.9 !important;
+}
+
+.auth0-lock-widget {
+  border-radius: 4px !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 4px 6px 0 rgba(0, 0, 0, 0.08) !important;
+}
+
+.auth0-lock-widget-container {
+  border-radius: 4px !important;
+}
+
+.auth0-lock-input-wrap {
+  border-radius: 4px !important;
+}
+
+.auth0-lock-input-wrap-with-icon {
+  padding: 0 !important;
+}
+
+.auth0-lock-input-wrap-with-icon span {
+  display: none !important;
+}
+
+.auth0-lock-input {
+  padding-right: 16px !important;
+  padding-left: 16px !important;
+  @apply bg-white;
+  border-radius: 4px !important;
+}
+
+.auth0-lock-input::placeholder {
+  opacity: 0.6 !important;
+}
+
+.auth0-lock-social-button {
+  border-radius: 4px !important;
+}

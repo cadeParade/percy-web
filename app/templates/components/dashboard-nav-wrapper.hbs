@@ -3,7 +3,7 @@
     {{! This empty div allows flexible spacing for the variable height header component internals}}
     <div></div>
 
-    <div class="container-xl flex justify-between items-center">
+    <div class="w-90vw max-w-xl mx-auto flex justify-between items-center">
       <div class="text-2xl font-semibold leading-none">
         {{organization.name}}
       </div>
@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <div class="container-xl">
+    <div class="w-90vw max-w-xl mx-auto">
       <nav class="tab-bar">
         {{#link-to "organization.index" organization.slug class="tab-bar-tab data-test-dashboard-nav-projects"}}
           Projects
@@ -51,7 +51,7 @@
 </header>
 
 <main>
-  <section class="container-xl">
+  <section class="w-90vw max-w-xl mx-auto">
     {{yield}}
   </section>
 </main>

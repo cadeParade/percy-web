@@ -12,7 +12,7 @@ export default Component.extend({
   isDisabled: false,
   'aria-label': 'Approve this build',
   tagName: 'button',
-  classNames: ['build-approval-button btn btn-md btn-success ml-1 px-2 flex items-center'],
+  classNames: ['build-approval-button btn-success ml-1 flex items-center'],
   classNameBindings: ['isLoading:is-loading', 'isApproved:is-approved'],
   attributeBindings: ['aria-label', 'data-test-build-approval-button', 'isDisabled:disabled'],
   'data-test-build-approval-button': true,

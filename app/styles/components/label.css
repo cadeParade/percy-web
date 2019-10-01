@@ -1,0 +1,19 @@
+:root {
+  --label-background: #f6f0f7;
+  --label-text-color: #a161c1;
+}
+
+.label-container {
+  font-size: 0;
+}
+
+.label {
+  display: inline-block;
+  padding: 1px 8px;
+  font-family: var(--mono-font);
+  font-size: 11px;
+  color: var(--label-text-color);
+  text-transform: lowercase;
+  background: var(--label-background);
+  border-radius: 4px;
+}
