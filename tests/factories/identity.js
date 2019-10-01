@@ -15,10 +15,8 @@ FactoryGuy.define('identity', {
       provider: 'auth0',
     },
     oktaProvider: {
-      provider: 'samlp',
-      uid: () => {
-        return `okta-${faker.lorem.slug()}`;
-      },
+      provider: `samlp|okta-${faker.lorem.slug()}`,
+      uid: () => faker.internet.email(),
     },
   },
 });

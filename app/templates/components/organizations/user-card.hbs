@@ -17,16 +17,16 @@
     {{#if isViewerAdmin}}
       <div class="flex-1 leading-none">
         {{#each orderedIdentities as |identity|}}
-          {{#if (eq identity.provider "auth0")}}
-            <span class="hint--top hint--rounded hint--bounce" aria-label="Username/Password identity">
+          {{#if identity.isAuth0Identity}}
+            <span data-test-user-identity-icon class="hint--top hint--rounded hint--bounce test-auth0-identity" aria-label="Username/Password identity">
               {{inline-svg "percy-logo-tiny-on-light" class="mr-1 opacity-50"}}
             </span>
-          {{else if (eq identity.provider "github")}}
-            <span class="hint--top hint--rounded hint--bounce" aria-label="GitHub identity">
+          {{else if identity.isGithubIdentity}}
+            <span data-test-user-identity-icon class="hint--top hint--rounded hint--bounce test-github-identity" aria-label="GitHub identity">
               {{inline-svg "github-icon" class="mr-1 opacity-50"}}
             </span>
-          {{else if (eq identity.provider "samlp")}}
-            <span class="hint--top hint--rounded hint--bounce" aria-label="SAML identity">
+          {{else if identity.isOktaIdentity}}
+            <span data-test-user-identity-icon class="hint--top hint--rounded hint--bounce test-okta-identity" aria-label="Okta identity">
               {{inline-svg "okta-sm" class="mr-1 opacity-50"}}
             </span>
           {{/if}}

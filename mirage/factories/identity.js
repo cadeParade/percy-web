@@ -15,9 +15,9 @@ export default Factory.extend({
   }),
 
   oktaIdentity: trait({
-    provider: 'samlp',
-    uid: () => {
-      return `okta-${faker.lorem.slug()}`;
+    provider: `samlp|okta-${faker.lorem.slug()}`,
+    uid() {
+      return faker.internet.email();
     },
   }),
 });

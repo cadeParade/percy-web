@@ -126,6 +126,26 @@ describe('Integration: UserCard', function() {
         find('.user-card-actions').classList.add('opacity-100');
         await percySnapshot(this.test);
       });
+
+      it('sorts identities correctly: samlp -> github -> auth0', async function() {
+        make('identity', 'githubProvider', {user: adminOrganizationUser.user});
+        make('identity', 'oktaProvider', {user: adminOrganizationUser.user});
+        make('identity', 'auth0Provider', {user: adminOrganizationUser.user});
+
+        await render(
+          hbs`{{
+            organizations/user-card
+            organizationUser=adminOrganizationUser
+            isViewerAdmin=true
+          }}`,
+        );
+
+        expect(UserCard.identityIcons.length).to.equal(3);
+        expect(UserCard.identityIcons[0].ariaLabel).to.equal('Okta identity');
+        expect(UserCard.identityIcons[1].ariaLabel).to.equal('GitHub identity');
+        expect(UserCard.identityIcons[2].ariaLabel).to.equal('Username/Password identity');
+        await percySnapshot(this.test);
+      });
     });
 
     describe('as a member user', async function() {

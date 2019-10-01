@@ -28,14 +28,19 @@ export default Component.extend({
   }),
   _user: readOnly('organizationUser.user'),
   orderedIdentities: computed('user.identities.[]', function() {
-    const identityOrder = ['samlp', 'github', 'auth0'];
-    return this._user.identities.toArray().sort(function(a, b) {
-      return identityOrder.indexOf(a.provider) - identityOrder.indexOf(b.provider);
-    });
+    const identities = this._user.identities.toArray();
+
+    return [
+      ...identities.filter(i => i.isSamlIdentity),
+      ...identities.filter(i => i.isGithubIdentity),
+      ...identities.filter(i => i.isAuth0Identity),
+    ];
   }),
 
-  userHasSamlIdentity: computed('orderedIdentities.@each.isSAMLIdentity', function() {
-    return !!this.orderedIdentities.findBy('provider', 'samlp');
+  userHasSamlIdentity: computed('orderedIdentities.@each.isSamlIdentity', function() {
+    return this.orderedIdentities.some(identity => {
+      return identity.isSamlIdentity;
+    });
   }),
 
   isRemoveDisabled: computed('isViewerAdmin', 'userHasSamlIdentity', function() {

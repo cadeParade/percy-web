@@ -12,9 +12,11 @@ export default DS.Model.extend({
 
   isGithubIdentity: equal('provider', 'github'),
   isAuth0Identity: equal('provider', 'auth0'),
-  isSAMLIdentity: equal('provider', 'samlp'),
-  isOktaIdentity: computed('isSAMLIdentity', 'uid', function() {
-    return this.isSAMLIdentity && this.uid.includes('okta');
+  isSamlIdentity: computed('provider', function() {
+    return this.provider.includes('samlp|');
+  }),
+  isOktaIdentity: computed('provider', function() {
+    return this.provider.includes('okta');
   }),
 
   isExternallyManaged: computed(function() {
