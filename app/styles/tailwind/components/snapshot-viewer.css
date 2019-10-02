@@ -24,7 +24,6 @@
   @apply top-0;
   @apply w-px;
   @apply h-full;
-  @apply bg-purple-700;
 }
 
 .snapshot-group-indent-line-gradient {

@@ -1,5 +1,5 @@
 <div
-  class="status-badge mr-2 {{unless success 'bg-red-500'}}"
+  class="status-badge mr-2 {{if success 'bg-green-500' 'bg-red-500'}}"
   data-test-status-badge
 >
   {{#if statusText}}

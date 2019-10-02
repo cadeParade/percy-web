@@ -153,7 +153,7 @@
 
       {{else}}
         <div class="relative pt-2 bg-gray-000">
-          <div style="left: 28px;" class="snapshot-group-indent-line {{if isGroupRejected 'bg-orange-500'}}"></div>
+          <div style="left: 28px;" class="snapshot-group-indent-line {{if isGroupRejected 'bg-orange-500' 'bg-purple-700'}}"></div>
           {{#each snapshotsToDisplay as |snapshot index|}}
             <div class="flex bg-gray-000">
               <div style="padding: 11px 16px 10px;" class="mb-2">

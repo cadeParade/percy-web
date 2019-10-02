@@ -1,6 +1,8 @@
 @charset "UTF-8";
 
 @import "tailwindcss/base";
+@import "tailwindcss/utilities";
+@import "tailwindcss/components";
 
 @import "tailwind/utilities/disabled";
 @import "tailwind/utilities/flexbox";
@@ -114,6 +116,3 @@
 @import "pages/pricing";
 @import "pages/settings";
 @import "pages/team";
-
-@import "tailwindcss/utilities";
-@import "tailwindcss/components";

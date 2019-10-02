@@ -30,26 +30,6 @@
       <div class="btn-toolbar items-center">
 
         {{#if selectedFramework}}
-          <a
-            href="{{docLink}}"
-            class="percy-btn percy-btn-primary {{docLinkClasses}}"
-            target="_blank"
-            onclick={{action 'trackDocsVisit'}}
-            data-test-framework-docs-button
-          >
-            See {{frameworkName}} docs
-          </a>
-
-          <a
-            href="{{exampleLink}}"
-            class="percy-btn {{exampleLinkClasses}}"
-            target="_blank"
-            onclick={{action 'trackDemoVisit'}}
-            data-test-example-framework-project-button
-          >
-            Example {{frameworkName}} project
-          </a>
-
           {{#if isOtherSelected}}
             <div class="text-sm font-semibold">
               Request framework:
@@ -68,6 +48,27 @@
               onclick={{action "saveRequest"}}
               data-test-org-save-button
             >
+          
+          {{else}}
+            <a
+              href="{{docLink}}"
+              class="percy-btn percy-btn-primary {{docLinkClasses}}"
+              target="_blank"
+              onclick={{action 'trackDocsVisit'}}
+              data-test-framework-docs-button
+            >
+              See {{frameworkName}} docs
+            </a>
+
+            <a
+              href="{{exampleLink}}"
+              class="percy-btn {{exampleLinkClasses}}"
+              target="_blank"
+              onclick={{action 'trackDemoVisit'}}
+              data-test-example-framework-project-button
+            >
+              Example {{frameworkName}} project
+            </a>
           {{/if}}
         {{else}}
           <a
