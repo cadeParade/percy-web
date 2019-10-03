@@ -21,15 +21,11 @@ module.exports = function(defaults) {
     postcssOptions: {
       compile: {
         plugins: [
-          {
-            module: require('postcss-import'),
-            options: {
-              path: ['node_modules'],
-            },
-          },
+          require('postcss-import')({path: ['node_modules']}),
           require('postcss-for'),
           require('postcss-nested'),
           require('tailwindcss')('./tailwind.config.js'),
+          require('autoprefixer')({overrideBrowserslist: ['last 3 versions']}),
         ],
       },
     },
