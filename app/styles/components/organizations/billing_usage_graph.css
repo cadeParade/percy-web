@@ -25,13 +25,11 @@
       animation-delay: ($i * 40) * 1ms !important;
     }
   }
+}
 
-  @at-root {
-    @keyframes bar-height {
-      to {
-        max-height: 200px;
-      }
-    }
+@keyframes bar-height {
+  to {
+    max-height: 200px;
   }
 }
 

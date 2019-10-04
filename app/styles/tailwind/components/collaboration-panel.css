@@ -23,7 +23,7 @@
   @apply mb-6;
 }
 
-.collaboration-comment-replied::after {
+.collaboration-comment-replied::before {
   content: "";
   @apply absolute bottom-0;
   @apply block;
@@ -35,7 +35,6 @@
 
 .collaboration-content-inset {
   @apply relative;
-  @apply z-1;
 }
 
 .collaboration-new-thread {

@@ -14,11 +14,6 @@
     border: 1px solid var(--blue-500);
     box-shadow: 0 0 16px rgba(29, 141, 219, 0.2);
     animation: move-background 8s linear infinite;
-    @at-root {
-      @keyframes move-background {
-        100% { background-position: -300px 0; }
-      }
-    }
 
     .browser-family-selector-detail {
       transform: translate3d(0, 26px, 0);
@@ -52,4 +47,8 @@
       transform: translate3d(-24px, 0, 0);
     }
   }
+}
+
+@keyframes move-background {
+  100% { background-position: -300px 0; }
 }
