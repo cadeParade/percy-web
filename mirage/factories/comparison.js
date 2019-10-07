@@ -41,6 +41,22 @@ export default Factory.extend({
     });
   },
 
+  new: trait({
+    afterCreate(comparison, server) {
+      const diffRatio = NO_DIFF_RATIO;
+      const headScreenshot = server.create('screenshot', 'v1');
+      const baseScreenshot = null;
+      const diffImage = null;
+
+      comparison.update({
+        diffRatio,
+        headScreenshot,
+        baseScreenshot,
+        diffImage,
+      });
+    },
+  }),
+
   same: trait({
     afterCreate(comparison, server) {
       const diffRatio = NO_DIFF_RATIO;

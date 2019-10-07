@@ -941,6 +941,12 @@ describe('Acceptance: Build', function() {
       expectFlashMessage('There was a problem fetching the latest changed snapshot.');
     });
   });
+
+  it('displays new snapshot', async function() {
+    server.create('snapshot', 'new', {build, name: 'ohai'});
+    await BuildPage.visitBuild(urlParams);
+    percySnapshot(this.test);
+  });
 });
 
 describe('Acceptance: Fullscreen Snapshot', function() {

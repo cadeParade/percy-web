@@ -45,6 +45,15 @@ export default Factory.extend({
   userApproved: trait(_userApprovedProps),
   userApprovedPreviously: trait(_userApprovedPreviouslyProps),
 
+  new: trait(
+    Object.assign({}, _unreviewedProps, {
+      afterCreate(snapshot, server) {
+        const comparison = server.create('comparison', 'new');
+        _addComparisonIds(comparison, snapshot);
+      },
+    }),
+  ),
+
   withComparison: trait(
     Object.assign({}, _unreviewedProps, {
       afterCreate(snapshot, server) {
