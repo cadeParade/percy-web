@@ -1,19 +1,19 @@
 .ProjectsDiffBaseSettings {
   .SavingIndicator {
-    float: right;
+    @apply float-right;
     margin-top: 10px;
   }
 
   .ProjectsDiffBaseSettings-setting {
-    position: relative;
+    @apply relative;
+    @apply bg-gray-000;
+    @apply border;
     padding: 10px;
     margin-bottom: 10px;
-    @apply bg-gray-000;
-    border: var(--lighter-gray-border);
 
     .fa-arrow-right {
       @apply text-purple-600;
-      position: absolute;
+      @apply absolute;
       top: 13px;
     }
 
@@ -22,19 +22,19 @@
     }
 
     .ProjectsDiffBaseSettings-title {
+      @apply font-bold;
       margin-left: 1.9rem;
       font-size: 110%;
-      font-weight: bold;
     }
 
     &.ProjectsDiffBaseSettings-setting--selected {
-      background: var(--very-light-gray);
-      border: 1px solid var(--lighter-gray);
+      @apply bg-gray-100;
+      @apply border;
     }
   }
 
   .ProjectsDiffBaseSettings-setting:hover {
-    cursor: pointer;
-    border: var(--lighter-gray-border-hover);
+    @apply cursor-pointer;
+    @apply border border-gray-000;
   }
 }

@@ -1,16 +1,16 @@
 /* stylelint-disable selector-max-specificity */
 
 .Header {
-  position: relative;
+  @apply relative;
+  @apply font-semibold;
   height: 60px;
-  font-weight: var(--semibold);
 
   .Button {
-    margin: 0;
+    @apply m-0;
   }
 
   a {
-    text-decoration: none;
+    @apply no-underline;
   }
 }
 

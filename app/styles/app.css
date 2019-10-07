@@ -49,8 +49,6 @@
 
 @import "ember-modal-dialog/app/styles/ember-modal-dialog/ember-modal-structure.scss";
 
-@import "variables/colors";
-@import "variables/fonts";
 @import "variables/mixins";
 @import "variables/animations";
 @import "variables/layout";
@@ -60,7 +58,6 @@
 @import "vendor/vendor_overrides";
 
 @import "buttons";
-@import "cards";
 @import "dialog";
 @import "forms";
 @import "flash_messages";
@@ -74,6 +71,7 @@
 @import "viewer";
 @import "utilities";
 
+@import "components/billing_usage_graph";
 @import "components/browser_switcher";
 @import "components/browser_family_selector";
 @import "components/build_comparison_info";
@@ -87,6 +85,7 @@
 @import "components/comparison_viewer_full";
 @import "components/comparison_viewer";
 @import "components/container";
+@import "components/diff_base_settings";
 @import "components/snapshot_viewer";
 @import "components/snapshot_viewer_full";
 @import "components/svg";
@@ -100,16 +99,10 @@
 @import "components/marketing/hero_block";
 @import "components/marketing/video_content_block";
 @import "components/menu_icon";
-@import "components/organizations/billing_section";
-@import "components/organizations/billing_usage_graph";
-@import "components/organizations/github_settings";
 @import "components/progress_bar";
 @import "components/public_project_notice";
-@import "components/project_list_sidebar";
-@import "components/projects/diff_base_settings";
 @import "components/saving_indicator";
 @import "components/sidenav";
-@import "components/status_indicator";
 @import "components/status_pill";
 
 @import "pages/changelog";

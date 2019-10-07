@@ -1,37 +1,35 @@
 .BuildStateBadge {
-  padding: 3px 8px;
-  font-weight: bold;
-  color: white;
-  border-radius: 3px;
+  @apply font-bold;
+  @apply text-white;
+  @apply rounded;
+  @apply py-sm;
+  @apply px-1;
 
-  &.BuildStateBadge--pending {
-    background-color: var(--dark-gray);
-  }
-
+  &.BuildStateBadge--pending,
   &.BuildStateBadge--processing {
-    color: var(--dark-green);
-    background-color: var(--lighter-green);
+    @apply bg-gray-400;
   }
 
   &.BuildStateBadge--finished {
-    background-color: var(--green);
+    @apply text-white;
+    @apply bg-green-500;
 
     &.BuildStateBadge--hasDiffs {
-      color: var(--purple-800);
-      background-color: var(--purple-300);
+      @apply bg-purple-600;
     }
 
     &.BuildStateBadge--approved {
-      color: white;
-      background-color: var(--green);
+      @apply bg-green-500;
     }
   }
 
   &.BuildStateBadge--failed {
-    background-color: var(--red);
+    @apply text-white;
+    @apply bg-red-500;
   }
 
   &.BuildStateBadge--expired {
-    background-color: var(--dark-yellow);
+    @apply text-white;
+    @apply bg-yellow-700;
   }
 }

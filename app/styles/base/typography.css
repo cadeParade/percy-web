@@ -6,14 +6,14 @@ h3,
 h4,
 h5,
 h6 {
-  margin-top: 0;
-  margin-bottom: 0;
+  @apply mt-0;
+  @apply mb-0;
 }
 
 /* Body text */
 
 p {
-  margin-bottom: 16px;
+  @apply mb-2;
 }
 
 small {
@@ -21,16 +21,16 @@ small {
 }
 
 blockquote {
-  margin: 0;
+  @apply m-0;
 }
 
 /* Lists */
 
 ul,
 ol {
-  padding-left: 0;
-  margin-top: 0;
-  margin-bottom: 0;
+  @apply mt-0;
+  @apply mb-0;
+  @apply pl-0;
 }
 
 ol ol,
@@ -46,19 +46,20 @@ ol ol ol {
 }
 
 dd {
-  margin-left: 0;
+  @apply ml-0;
 }
 
 /* Code */
 code {
   @apply font-mono;
-  padding: 0 theme("spacing.1");
-  font-weight: 400 !important;
-  color: var(--text-color);
-  letter-spacing: 0.5px !important;
-  white-space: nowrap;
-  background: var(--gray-100);
-  border-radius: var(--border-radius);
+  @apply py-0;
+  @apply px-1;
+  @apply font-normal;
+  @apply text-gray-700;
+  @apply tracking-sm;
+  @apply whitespace-no-wrap;
+  @apply bg-gray-100;
+  @apply rounded;
 }
 
 code,
@@ -66,34 +67,24 @@ kbd,
 pre,
 samp {
   @apply text-sm;
-  margin-top: 0;
-  margin-bottom: 0;
-  font-family: var(--mono-font);
-  font-weight: 400 !important;
-  letter-spacing: 0.5px;
+  @apply font-mono;
+  @apply mt-0;
+  @apply mb-0;
+  @apply font-normal;
+  @apply tracking-sm;
 }
 
 pre > code {
-  display: block;
-  padding: theme("spacing.1");
-  white-space: pre;
+  @apply block;
+  @apply p-1;
+  @apply whitespace-pre;
 }
 
 strong {
-  font-weight: var(--semibold);
-}
-
-a {
-  color: var(--blue-500);
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--blue-500);
-  text-decoration: underline;
+  @apply font-semibold;
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: var(--gray-400);
+  @apply text-gray-400;
 }

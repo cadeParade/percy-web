@@ -1,12 +1,13 @@
 /* stylelint-disable selector-max-specificity */
 
 .dropdown {
-  display: flex;
-  position: relative;
+  @apply flex;
+  @apply relative;
 
   &.is-visible {
     .dropdown-toggle {
-      border-radius: var(--border-radius) var(--border-radius) 0 0;
+      @apply rounded-t;
+      @apply rounded-b-none;
 
       &:hover {
         @apply bg-white;
@@ -26,7 +27,7 @@
     }
 
     .dropdown-menu {
-      display: block;
+      @apply block;
     }
   }
 
@@ -35,7 +36,7 @@
     &:focus,
     &:focus:active {
       @apply bg-white;
-      outline: none;
+      @apply outline-none;
     }
 
     &:hover svg {
@@ -45,36 +46,36 @@
 }
 
 .dropdown-menu-list-item {
-  box-shadow: inset 0 0 0 var(--blue-500);
+  box-shadow: inset 0 0 0 theme("colors.blue.500");
   transition: box-shadow 250ms;
 
   &:hover {
-    box-shadow: inset 2px 0 0 var(--blue-500);
+    box-shadow: inset 2px 0 0 theme("colors.blue.500");
   }
 }
 
 .dropdown-menu {
-  width: 220px;
   @apply bg-white;
-  border-radius: var(--border-radius) 0 var(--border-radius) var(--border-radius);
+  @apply overflow-hidden;
+  width: 220px;
+  border-radius: theme("borderRadius.default") 0 theme("borderRadius.default") theme("borderRadius.default");
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04), 0 1px 1px 0 rgba(0, 0, 0, 0.06);
-  overflow: hidden;
 
   @media screen and (max-width: 768px) {
+    @apply left-0;
     top: calc(100% + 4px);
     right: auto;
-    left: 0;
-    border-radius: 0 var(--border-radius) var(--border-radius) var(--border-radius);
+    border-radius: 0 theme("borderRadius.default") theme("borderRadius.default") theme("borderRadius.default");
 
     &::before {
       content: "";
-      display: block;
-      position: absolute;
-      top: -4px;
-      left: 0;
-      width: 30px;
-      height: 4px;
+      @apply block;
+      @apply absolute;
+      @apply left-0;
+      @apply h-1;
       @apply bg-white;
+      top: -4px;
+      width: 30px;
     }
   }
 }

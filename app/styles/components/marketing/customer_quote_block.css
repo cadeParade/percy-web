@@ -1,7 +1,7 @@
 .quote-block-headshot {
+  @apply bg-cover;
   width: 150px;
   height: 150px;
-  background-size: cover;
 
 }
 

@@ -6,7 +6,7 @@
 
 .ember-power-select-dropdown.ember-basic-dropdown-content--below,
 .ember-power-select-dropdown.ember-basic-dropdown-content--in-place {
-  border: 1px solid theme("colors.gray.100");
+  @apply border border-gray-100;
 }
 
 .ember-basic-dropdown {
@@ -53,7 +53,7 @@
   @apply bg-white border rounded shadow-lg;
   @apply overflow-scroll;
   top: calc(100% + 8px);
-  width: 100%;
+  @apply w-full;
   min-width: 360px;
   max-height: 400px;
 }

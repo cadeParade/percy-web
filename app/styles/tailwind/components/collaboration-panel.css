@@ -7,7 +7,7 @@
 
 .collaboration-panel textarea::placeholder {
   @apply text-gray-300;
-  opacity: 1;
+  @apply opacity-100;
 }
 
 .collaboration-container {
@@ -74,15 +74,15 @@
 
 .collaboration-conversation-count {
   @apply absolute top-0 right-0;
-  top: -4px;
-  right: -4px;
   @apply px-sm;
+  @apply pt-xs;
   @apply shadow-purple-lg bg-purple-600;
   @apply text-xs text-center font-semibold text-white leading-none;
   @apply z-1;
+  top: -4px;
+  right: -4px;
   min-width: 14px;
   height: 14px;
-  padding-top: 2px;
   border-radius: 7px;
 }
 

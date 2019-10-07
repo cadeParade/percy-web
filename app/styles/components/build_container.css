@@ -1,6 +1,6 @@
 .BuildContainer {
   &.BuildContainer--snapshotModalOpen {
-    display: none;
+    @apply hidden;
   }
 
   .BuildContainer-body {

@@ -1,19 +1,15 @@
-:root {
-  --label-background: #f6f0f7;
-  --label-text-color: #a161c1;
-}
-
 .label-container {
   font-size: 0;
 }
 
 .label {
-  display: inline-block;
-  padding: 1px 8px;
-  font-family: var(--mono-font);
+  @apply inline-block;
+  @apply font-mono;
+  @apply rounded;
+  @apply py-px;
+  @apply px-1;
+  @apply lowercase;
+  @apply bg-purple-300;
+  @apply text-purple-600;
   font-size: 11px;
-  color: var(--label-text-color);
-  text-transform: lowercase;
-  background: var(--label-background);
-  border-radius: 4px;
 }

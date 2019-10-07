@@ -9,9 +9,9 @@
 
 .browser-family-selector {
   &:hover:not(.is-browser-active) {
+    @apply border border-blue-500;
     background: url("/images/pattern-on-white.svg");
-    background-color: var(--blue-000);
-    border: 1px solid var(--blue-500);
+    background-color: theme("colors.blue.000");
     box-shadow: 0 0 16px rgba(29, 141, 219, 0.2);
     animation: move-background 8s linear infinite;
 
@@ -24,7 +24,7 @@
     }
 
     .browser-family-selector-enable {
-      opacity: 0;
+      @apply opacity-0;
     }
 
     .browser-family-selector-name {
@@ -32,14 +32,14 @@
     }
 
     span {
-      opacity: 1;
+      @apply opacity-100;
     }
   }
 
   &.is-browser-active {
+    @apply border-purple-600;
     background: url("/images/pattern-on-white.svg");
-    background-color: var(--purple-200);
-    border-color: var(--purple-600);
+    background-color: theme("colors.purple.200");
   }
 
   &:not(.is-browser-active) {

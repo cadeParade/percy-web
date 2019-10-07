@@ -1,31 +1,31 @@
 .Alert {
-  padding: 10px;
+  @apply p-1;
+  @apply rounded;
   margin-bottom: 20px;
   border-top: 3px solid transparent;
-  border-radius: 3px;
 
   &.Alert--info {
-    background-color: var(--lightest-blue);
-    border-color: var(--blue);
+    @apply bg-blue-000;
+    @apply border-blue-500;
   }
 
   &.Alert--success {
-    background-color: var(--lightest-green);
-    border-color: var(--green);
+    @apply bg-green-000;
+    @apply border-green-500;
   }
 
   &.Alert--warning {
-    background-color: var(--lightest-yellow);
-    border-color: var(--yellow);
+    @apply bg-yellow-000;
+    @apply border-yellow-700;
   }
 
   &.Alert--error {
-    background-color: var(--lightest-red);
-    border-color: var(--red);
+    @apply bg-red-000;
+    @apply border-red-500;
   }
 
   .CodeBlock:last-child pre,
   ul:last-child {
-    margin-bottom: 0;
+    @apply mb-0;
   }
 }

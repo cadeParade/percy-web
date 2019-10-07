@@ -1,9 +1,9 @@
 .LoadingPage {
+  @apply text-center;
   padding: 200px 0;
-  text-align: center;
 
   .fa-spinner {
+    @apply text-purple-600;
     font-size: 3rem;
-    color: var(--light-purple);
   }
 }

@@ -1,16 +1,16 @@
 .browser-switcher-diff-count {
   @apply flex;
   @apply items-center;
-  top: 0;
-  right: 0;
+  @apply top-0;
+  @apply right-0;
+  @apply text-xs;
+  @apply rounded-xl;
   min-width: 14px;
   height: 14px;
-  font-size: 10px;
-  border-radius: 7px;
   transition: box-shadow 250ms, transform 250ms, background 250ms, color 250ms;
 
   svg {
-    fill: var(--gray-300);
+    fill: theme("colors.gray.300");
     transition: fill 250ms;
   }
 }
@@ -20,14 +20,14 @@
     transform: translate3d(4px, -4px, 0);
 
     svg {
-      fill: #fff;
+      fill: theme("colors.white");
     }
   }
 }
 
 .is-browser-active svg,
 .browser-switcher:hover svg {
-  opacity: 1 !important;
+  @apply opacity-100;
 }
 
 .SnapshotViewer-header {

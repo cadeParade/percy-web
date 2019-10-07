@@ -13,7 +13,7 @@
   @apply w-full;
   @apply bg-gray-100;
   @apply overflow-hidden;
-  height: 1px;
+  @apply h-px;
 }
 
 .line-loader {
@@ -21,8 +21,8 @@
   @apply top-0;
   @apply left-0;
   @apply bg-purple-600;
-  width: 50%;
-  height: 1px;
+  @apply w-1/2;
+  @apply h-px;
   animation: line-loading 1.5s ease-in-out infinite alternate;
 }
 

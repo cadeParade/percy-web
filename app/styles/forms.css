@@ -1,56 +1,57 @@
 /* stylelint-disable selector-no-qualifying-type */
 
 .Form {
-  width: 100%;
+  @apply w-full;
 
   textarea {
-    width: 100%;
+    @apply w-full;
+    @apply mb-0;
     height: 100px;
-    margin-bottom: 0;
   }
 
   input[type="checkbox"] {
-    float: left;
+    @apply float-left;
     margin-top: 3px;
   }
 
   .Form-errors {
-    margin-top: 0;
+    @apply mt-0;
+    @apply font-bold;
+    @apply text-red-500;
+    @apply list-none;
     margin-bottom: 10px;
-    font-weight: bold;
-    color: var(--red);
-    list-style: none;
 
     li {
-      margin-bottom: 0;
+      @apply mb-0;
     }
   }
 }
 
 select {
+  @apply appearance-none;
   padding-right: 25px;
-  appearance: none;
   background-image: url("/images/caret-down.svg");
   background-repeat: no-repeat;
   background-position: right center;
 
   &:hover {
     @apply bg-gray-000;
-    border: var(--light-gray-border);
+    @apply border border-gray-200;
   }
 }
 
 .form-control {
-  display: block;
-  width: 100%;
-  padding: 8px 16px;
+  @apply block;
+  @apply w-full;
+  @apply text-gray-700;
+  @apply bg-white;
+  @apply py-1;
+  @apply px-2;
+  @apply leading-normal;
+  @apply border border-gray-100;
+  @apply rounded;
   font-size: 16px;
-  line-height: 1.5;
-  color: var(--text-color);
-  background: var(--form-control-background);
   background-clip: padding-box;
-  border: 1px solid var(--very-light-gray);
-  border-radius: 4px;
   transition: border-color 250ms, box-shadow 250ms;
 
   &::placeholder {
@@ -59,13 +60,13 @@ select {
 
   &:focus,
   &:focus:active {
-    border-color: var(--lightest-purple);
-    outline: none;
-    box-shadow: 0 0 2px var(--lightest-purple);
+    @apply outline-none;
+    @apply border-purple-600;
+    box-shadow: 0 0 2px theme("colors.purple.600");
   }
 
   &.error {
-    border: var(--errorborder);
+    @apply border border-red-500;
   }
 }
 

@@ -1,7 +1,7 @@
 .auth0-lock-header-bg,
 .auth0-lock-submit {
-  height: auto;
-  background: var(--dark-purple) !important;
+  @apply h-auto;
+  background: theme("colors.purple.800") !important;
 }
 
 .auth0-lock-cred-pane {

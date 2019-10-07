@@ -5,15 +5,15 @@
   min-height: 300px;
 
   img {
-    box-shadow: 0 0 0 1px var(--very-light-gray);
+    box-shadow: 0 0 0 1px theme("colors.gray.100");
   }
 
   .Viewer-pdiffImageOverlay {
-    position: relative;
+    @apply relative;
   }
 
   .Viewer-pdiffImageBox {
     @apply w-auto;
-    border: 0;
+    @apply border-0;
   }
 }

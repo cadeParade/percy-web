@@ -1,10 +1,9 @@
 .snapshot-group-snapshot .SnapshotViewer-header {
-  top: 121px;
   @apply rounded-l;
+  top: 121px;
 }
 
 .snapshot-group-snapshot .SnapshotViewer-header::before {
-  content: "";
   @apply block;
   @apply absolute;
   @apply h-3;
@@ -12,6 +11,7 @@
   @apply -mt-2;
   @apply -ml-px;
   @apply bg-gray-000;
+  content: "";
   height: 15px;
 }
 

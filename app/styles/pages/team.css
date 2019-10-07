@@ -1,5 +1,5 @@
 .team-gallery {
-  display: grid;
+  @apply grid;
   grid-template-columns: 1fr;
   grid-gap: theme("spacing.sm");
 
@@ -13,35 +13,35 @@
 }
 
 .team-member {
-  padding-right: 48px;
-  padding-left: 48px;
+  @apply px-6;
+}
 
-  @media screen and (min-width: 544px) {
-    padding-right: 0;
-    padding-left: 0;
+@media screen and (min-width: 544px) {
+  .team-member {
+    @apply px-0;
   }
 }
 
 .team-member-photo {
+  @apply rounded;
   min-width: 100%;
   margin-bottom: -19px;
-  border-radius: 4px;
 }
 
 .social-toolbar {
-  position: relative;
-  z-index: 1;
+  @apply relative;
+  @apply z-1;
 }
 
 .social-toolbar-items {
-  height: 38px;
   @apply bg-white;
+  height: 38px;
   border-radius: 19px;
 }
 
 .social-toolbar-item {
-  display: inline-block;
-  padding: 16px;
+  @apply inline-block;
+  @apply p-2;
   transition: transform 250ms;
 
   &:hover {
@@ -49,18 +49,18 @@
   }
 
   svg {
-    display: block;
+    @apply block;
   }
 }
 
 .current-opening {
-  color: var(--text-color);
+  @apply text-gray-700;
 
   &:hover {
-    color: var(--dark-purple);
+    @apply text-purple-800;
   }
 }
 
 .current-opening:not(last-child) {
-  margin-bottom: 8px;
+  @apply mb-1;
 }

@@ -1,7 +1,7 @@
 .marketing-footer a {
-  color: var(--gray-300);
+  @apply text-gray-300;
 
   &:hover {
-    color: white;
+    @apply text-white;
   }
 }

@@ -21,9 +21,9 @@
   @apply leading-loose;
   @apply whitespace-normal;
   @apply break-words;
+  @apply break-normal;
   min-width: 100px;
   hyphens: none;
-  word-break: normal;
   counter-reset: line;
 }
 

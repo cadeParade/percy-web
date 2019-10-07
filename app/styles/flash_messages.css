@@ -1,5 +1,5 @@
 .flash-message-container {
-  position: fixed;
+  @apply fixed;
   bottom: 24px;
   left: 24px;
   max-width: calc(100vw - 128px);
@@ -10,28 +10,28 @@
 }
 
 .flash-message {
-  display: grid;
-  margin-bottom: 8px;
+  @apply grid;
+  @apply mb-1;
   @apply bg-white;
-  border-radius: var(--border-radius);
+  @apply rounded;
+  @apply opacity-0;
+  @apply overflow-hidden;
   box-shadow: 0 1px 4px rgba(87, 16, 16, 0.1), 0 6px 16px rgba(0, 0, 0, 0.1);
-  opacity: 0;
-  overflow: hidden;
   transition: opacity 500ms, transform 500ms;
   transform: translate3d(0, 48px, 0);
 
   &.active {
-    opacity: 1;
+    @apply opacity-100;
     transform: translate3d(0, 0, 0);
 
     &.exiting {
-      opacity: 0;
+      @apply opacity-0;
       transform: translate3d(0, 48px, 0);
     }
   }
 
   &:last-child {
-    margin: 0;
+    @apply m-0;
   }
 
   @media screen and (min-width: 544px) {
@@ -40,19 +40,19 @@
 }
 
 .flash-message-detail-success {
-  background: var(--green-gradient);
+  background: linear-gradient(45deg, #43cb54 0%, #4fd960 100%);
 }
 
 .flash-message-detail-danger {
-  background: var(--red-gradient);
+  background: linear-gradient(45deg, #e74e3e 0%, #f36c5e 100%);
 }
 
 .flash-message-detail-warning {
-  background: var(--yellow-gradient);
+  background: linear-gradient(45deg, #ffd542 0%, #ffe178 100%);
 }
 
 .flash-message-detail-info {
-  background: var(--light-gradient);
+  background: linear-gradient(45deg, #fcfafd 0%, #fff 100%);
 }
 
 .flash-message-close {
@@ -60,7 +60,7 @@
   transition: opacity 250ms;
 
   &:hover {
-    opacity: 1;
+    @apply opacity-100;
   }
 
   @media screen and (max-width: 544px) {

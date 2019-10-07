@@ -13,17 +13,17 @@
 }
 
 .marketing-content-block-dark {
-  background-color: var(--darkest-gray);
+  @apply bg-gray-700;
 
   .content-block-superheader,
   .content-block-subheader,
   .content-block-bodytext,
   .content-block-supporting-text,
   .content-block-supporting-text-body {
-    color: var(--light-gray);
+    @apply text-gray-300;
 
     p {
-      color: var(--light-gray);
+      @apply text-gray-300;
     }
   }
 
@@ -36,7 +36,7 @@
   .content-block-supporting-text-body {
     ul {
       li::before {
-        border-color: transparent var(--gray-100);
+        border-color: transparent theme("colors.gray.100");
       }
     }
   }
@@ -68,15 +68,15 @@
     }
 
     li::before {
-      content: "";
       @apply block;
       @apply relative;
+      @apply w-0;
+      @apply h-0;
+      @apply border;
+      content: "";
       top: 1em;
       left: -1em;
-      width: 0;
-      height: 0;
-      border-color: transparent var(--purple-600);
-      border-style: solid;
+      border-color: transparent theme("colors.purple.600");
       border-width: 0.35em 0 0.35em 0.45em;
     }
   }

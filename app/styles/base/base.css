@@ -1,9 +1,3 @@
-:root {
-  --body-font-size: 14px;
-  --sans-font: "proxima-nova", Helvetica, sans-serif;
-  --mono-font: "source-code-pro", monospace;
-}
-
 /*
 * Make all elements from the DOM inherit from the parent box-sizing
 * Since `*` has a specificity of 0, it does not override the `html` value
@@ -18,10 +12,10 @@
 }
 
 body {
+  @apply text-gray-700;
+  @apply font-sans;
+  @apply text-base;
   -webkit-font-smoothing: antialiased;
-  font-family: var(--sans-font);
-  font-size: var(--body-font-size);
-  color: var(--gray-700);
 }
 
 button,
@@ -35,19 +29,19 @@ textarea {
 }
 
 a {
-  color: var(--link-color, var(--blue-500));
-  text-decoration: none;
+  @apply text-blue-500;
+  @apply no-underline;
   transition: color 250ms;
 }
 
 a:hover {
-  color: var(--link-color, var(--blue-500)); /* In case there is a color altering class on a link for it's not hovered state */
-  text-decoration: underline;
+  @apply text-blue-500; /* In case there is a color altering class on a link for it's not hovered state */
+  @apply underline;
 }
 
 a > code {
-  color: var(--link-color, var(--blue-500));
-  background: var(--link-background-color, var(--blue-000));
+  @apply text-blue-500;
+  @apply bg-blue-000;
 }
 
 b,
@@ -56,51 +50,51 @@ strong {
 }
 
 hr {
-  height: 0;
+  @apply h-0;
+  @apply bg-transparent;
+  @apply border-0;
+  @apply border-b border-gray-100;
+  @apply overflow-hidden;
   margin: 15px 0;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--gray-100);
-  overflow: hidden;
 }
 
 /* Remove most spacing between table cells. */
 table {
+  @apply border-collapse;
   border-spacing: 0;
-  border-collapse: collapse;
 }
 
 td,
 th {
-  padding: 0;
+  @apply p-0;
 }
 
 button {
-  cursor: pointer;
-  border-radius: 0; /* Remove border radius added by Chroma macOS */
+  @apply cursor-pointer;
+  @apply rounded-none; /* Remove border radius added by Chroma macOS */
 }
 
 svg:not(:root) {
-  overflow: visible;
+  @apply overflow-visible;
 }
 
 img {
-  max-width: 100%;
+  @apply max-w-full;
 }
 
 ol,
 ul {
-  margin-top: 0;
+  @apply mt-0;
 }
 
 ul {
-  list-style-type: disc;
+  @apply list-disc;
 }
 
 ul ul {
-  list-style-type: circle;
+  @apply list-circle;
 }
 
 ol {
-  list-style-type: decimal;
+  @apply list-decimal;
 }

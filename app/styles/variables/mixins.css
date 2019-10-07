@@ -1,11 +1,11 @@
 @media (min-width: 551px) {
   .u-show-if-mobile {
-    display: none;
+    @apply hidden;
   }
 }
 
 @media (max-width: 550px) {
   .u-show-if-desktop {
-    display: none;
+    @apply hidden;
   }
 }

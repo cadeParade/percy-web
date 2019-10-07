@@ -6,20 +6,20 @@
 
 [class*=hint--top]::after,
 [class*=hint--top]::before {
-  border-top-color: var(--gray-700);
+  border-top-color: theme("colors.gray.700");
 }
 
 [class*=hint--bottom]::after,
 [class*=hint--bottom]::before {
-  border-bottom-color: var(--gray-700);
+  border-bottom-color: theme("colors.gray.700");
 }
 
 [class*=hint--]::after {
   @apply font-bold;
+  @apply text-sm;
+  @apply bg-gray-700;
   padding: 6px 8px;
   font-family: inherit;
-  @apply text-sm;
-  background: var(--gray-700);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 

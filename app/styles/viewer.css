@@ -1,39 +1,39 @@
 .LargeXIcon {
-  display: block;
+  @apply block;
+  @apply text-gray-200;
   font-size: 8rem;
-  color: var(--lighter-gray);
-  text-shadow: -1px 0 var(--gray), 0 1px var(--gray), 1px 0 var(--gray), 0 -1px var(--gray);
+  text-shadow: -1px 0 theme("colors.gray.400"), 0 1px theme("colors.gray.400"), 1px 0 theme("colors.gray.400"), 0 -1px theme("colors.gray.400");
 }
 
 .Viewer-pdiffImageBox {
-  position: relative;
-  width: 100%;
-  user-select: none;
-  border: var(--very-light-gray-border);
+  @apply relative;
+  @apply w-full;
+  @apply select-none;
+  @apply border border-gray-100;
 
   .pdiffImageOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    @apply absolute;
+    @apply top-0;
+    @apply left-0;
+    @apply w-full;
   }
 }
 
 .Viewer-pdiffImageBox--actionable {
-  cursor: pointer;
-  user-select: none;
+  @apply cursor-pointer;
+  @apply select-none;
 
   &:hover {
-    border: var(--lighter-gray-border-hover);
+    @apply border border-gray-200;
   }
 }
 
 .Viewer-pdiffImageOverlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  cursor: pointer;
-  user-select: none;
-  background-color: rgb(255, 255, 255);
+  @apply absolute;
+  @apply top-0;
+  @apply left-0;
+  @apply cursor-pointer;
+  @apply select-none;
+  @apply bg-white;
   opacity: 0.9;
 }

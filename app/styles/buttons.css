@@ -4,24 +4,21 @@
 button,
 input[type="reset"],
 input[type="button"] {
-  --button-height: 38px;
-  --button-small-height: 28px;
-
-  display: inline-block;
-  position: relative;
-  height: var(--button-height);
-  padding: 0 15px;
-  margin: 0;
-  font-weight: var(--semibold);
-  line-height: var(--button-height);
-  color: var(--default-link);
-  text-align: center;
-  text-decoration: none;
-  white-space: nowrap;
-  cursor: pointer;
   @apply bg-white;
-  border: var(--lighter-gray-border);
-  border-radius: 4px;
+  @apply inline-block;
+  @apply relative;
+  @apply m-0;
+  @apply font-semibold;
+  @apply text-center;
+  @apply whitespace-no-wrap;
+  @apply outline-none;
+  @apply cursor-pointer;
+  @apply rounded;
+  @apply text-blue-500;
+  @apply border border-gray-100;
+  height: 38px;
+  padding: 0 15px;
+  line-height: 38px;
 }
 
 .Button:hover,
@@ -30,26 +27,27 @@ button:hover,
 button:focus,
 input[type="reset"]:hover,
 input[type="button"]:focus {
-  color: var(--default-link-hover);
-  text-decoration: none;
   @apply bg-gray-000;
-  border: var(--light-gray-border);
-  outline: 0;
+  @apply no-underline;
+  @apply text-blue-700;
+  @apply border border-gray-200;
+  @apply no-underline;
+  @apply outline-none;
 }
 
 .Button[disabled],
 button[disabled],
 input[type="reset"][disabled],
 input[type="button"][disabled] {
-  color: var(--light-gray);
-  cursor: default;
-  background: var(--very-light-gray);
-  border: var(--gray);
+  @apply text-gray-400;
+  @apply bg-gray-100;
+  @apply cursor-default;
+  @apply border border-gray-100;
 }
 
 button .fa--left,
 .Button .fa--left {
-  position: absolute;
+  @apply absolute;
   top: 7px;
   left: 10px;
   font-size: 2.4rem;
@@ -57,76 +55,76 @@ button .fa--left,
 
 .btn {
   @apply leading-normal;
-  display: inline-block;
+  @apply bg-white;
+  @apply inline-block;
+  @apply text-sm;
+  @apply font-semibold;
+  @apply whitespace-no-wrap;
+  @apply select-none;
+  @apply border border-transparent;
+  @apply rounded;
   height: 30px;
   padding: 5px 16px;
-  font-size: 12px;
-  font-weight: var(--semibold);
   text-decoration: none !important;
-  white-space: nowrap;
-  user-select: none;
-  @apply bg-white;
-  border: 1px solid transparent;
-  border-radius: 4px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04), 0 1px 1px 0 rgba(0, 0, 0, 0.06);
   transition: color 250ms, background 250ms, box-shadow 250ms;
 }
 
 .btn:hover {
-  color: var(--blue);
-  background: #f5fafe;
-  border: 1px solid transparent;
+  @apply text-blue-500;
+  @apply bg-blue-000;
+  @apply border border-transparent;
 }
 
 .btn:focus,
 .btn:focus:active {
   @apply bg-gray-000;
-  border: 1px solid transparent;
-  outline: none;
+  @apply border border-transparent;
+  @apply outline-none;
 }
 
 .btn[disabled] {
-  pointer-events: none;
-  opacity: 0.25;
+  @apply pointer-events-none;
+  @apply opacity-25;
 }
 
 .btn.is-active,
 .btn.active {
   @apply text-white;
-  background: var(--blue);
+  @apply bg-blue-500;
 }
 
 .btn.btn-square {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @apply flex;
+  @apply items-center;
+  @apply justify-center;
+  @apply p-0;
   width: 30px;
   height: 30px;
-  padding: 0;
 }
 
 .btn-alt {
   @apply text-gray-400;
-  border: 1px solid var(--gray-200);
+  @apply border border-gray-200;
 }
 
 .btn-alt:hover {
   @apply text-gray-700;
-  background: var(--purple-000);
-  border: 1px solid var(--gray-200);
+  @apply bg-gray-000;
+  @apply border border-gray-200;
 }
 
 .btn-alt:focus,
 .btn-alt:focus:active {
   @apply text-gray-700;
   @apply bg-gray-000;
-  border: 1px solid var(--lighter-gray);
+  @apply border border-gray-300;
 }
 
 .btn-sm {
+  @apply text-sm;
   height: 24px;
   padding: 2px 6px;
-  font-size: 12px;
 }
 
 .btn-md {
@@ -137,34 +135,34 @@ button .fa--left,
 }
 
 .btn-primary {
-  @apply font-bold;
-  padding: 5px theme("spacing.2");
   @apply text-white;
+  @apply font-bold;
+  @apply cursor-pointer;
+  @apply bg-purple-600;
+  padding: 5px theme("spacing.2");
   text-shadow: 0 1px 2px rgba(63, 58, 64, 0.2);
-  cursor: pointer;
-  background: var(--purple-600);
   transition: transform 250ms;
   backface-visibility: hidden;
 
   &:hover {
     @apply text-white;
-    background: var(--purple-600);
+    @apply bg-purple-600;
     transform: scale(1.05) translate3d(0, 0, 0);
   }
 
   &:focus,
   &:focus:active {
     @apply text-white;
-    background: var(--purple-600);
+    @apply bg-purple-600;
     transform: scale(1) translate3d(0, 0, 0);
   }
 
   &[disabled] {
     @apply text-white;
-    pointer-events: none;
-    background: var(--purple-600);
-    border: 1px solid transparent;
-    opacity: 0.25;
+    @apply pointer-events-none;
+    @apply bg-purple-600;
+    @apply border border-transparent;
+    @apply opacity-25;
   }
 
   &.shadow-on-light {
@@ -172,8 +170,8 @@ button .fa--left,
   }
 
   &.is-loading {
-    display: table; /* safari needs a forced repaint to draw the gradient again after loading is finished */
-    background-image: linear-gradient(-45deg, var(--purple-700) 25%, var(--purple-600) 25%, var(--purple-600) 50%, var(--purple-700) 50%, var(--purple-700) 75%, var(--purple-600) 75%, var(--purple-600));
+    @apply table; /* safari needs a forced repaint to draw the gradient again after loading is finished */
+    background-image: linear-gradient(-45deg, theme("colors.purple.700") 25%, theme("colors.purple.600") 25%, theme("colors.purple.600") 50%, theme("colors.purple.700") 50%, theme("colors.purple.700") 75%, theme("colors.purple.600") 75%, theme("colors.purple.600"));
     background-size: 20px 20px;
     animation: loading 4s linear infinite;
   }
@@ -185,9 +183,9 @@ button .fa--left,
   }
 
   &.is-failed {
-    color: var(--red-500);
+    @apply text-red-500;
+    @apply bg-red-000;
     text-shadow: none;
-    background: var(--red-000);
     box-shadow: none !important;
   }
 }
@@ -210,46 +208,46 @@ button .fa--left,
 
 .btn-github {
   @apply text-white;
-  background: var(--darkest-gray);
+  @apply bg-gray-700;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.26), 0 8px 20px 0 rgba(0, 0, 0, 0.08);
 
   &:hover {
     @apply text-white;
-    background: var(--darkest-gray);
+    @apply bg-gray-700;
   }
 
   &:focus,
   &:focus:active {
     @apply text-white;
-    background: var(--darkest-gray);
-    border: 1px solid transparent;
+    @apply bg-gray-700;
+    @apply border border-transparent;
   }
 }
 
 .btn-gray {
   @apply text-white;
-  background: var(--gray-600);
+  @apply bg-gray-600;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.26), 0 8px 20px 0 rgba(0, 0, 0, 0.08);
 
   &:hover {
     @apply text-white;
-    background: var(--gray-600);
+    @apply bg-gray-600;
   }
 
   &:focus,
   &:focus:active {
     @apply text-white;
-    background: var(--gray-600);
-    border: 1px solid transparent;
+    @apply bg-gray-600;
+    @apply border border-transparent;
   }
 }
 
 .btn-danger {
-  color: var(--red-500);
+  @apply text-red-500;
 
   &:hover {
     @apply text-white;
-    background-color: var(--red-500);
+    @apply bg-red-500;
     box-shadow: 0 4px 12px rgba(#e85344, 0.3);
   }
 }
@@ -257,16 +255,12 @@ button .fa--left,
 .btn-success {
   @apply text-white;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-
-  /* This is the var --green-gradient, but for performance reasons we're repeating it here. */
   background: linear-gradient(45deg, #43cb54 0%, #4fd960 100%);
 
   &:hover,
   &:focus,
   &:focus:active {
     @apply text-white;
-
-    /* This is the var --green-gradient, but for performance reasons we're repeating it here. */
     background: linear-gradient(45deg, #43cb54 0%, #4fd960 100%);
   }
 
@@ -278,9 +272,9 @@ button .fa--left,
 
   &[disabled] {
     @apply text-gray-000;
-    cursor: default;
-    background: var(--green-500);
-    border: var(--green);
+    @apply cursor-default;
+    @apply bg-green-500;
+    @apply border border-green-500;
   }
 }
 
@@ -294,40 +288,40 @@ button .fa--left,
   &:hover,
   &:focus,
   &:focus:active {
-    color: var(--orange-500);
-    background-color: var(--orange-100);
+    @apply text-orange-500;
+    @apply bg-orange-100;
   }
 }
 
 .btn-alt-success {
-  color: var(--green);
-  background: none;
-  border: 1px solid var(--green);
+  @apply text-green-500;
+  @apply border border-green-500;
+  @apply bg-transparent;
 
   &:hover,
   &:focus,
   &:focus:active {
-    color: var(--dark-green);
-    background: none;
-    border: 1px solid var(--dark-green);
+    @apply text-green-500;
+    @apply border border-green-600;
+    @apply bg-transparent;
   }
 }
 
 .build-approval-button {
   @apply pl-7;
   @apply font-bold;
-  position: relative;
+  @apply relative;
+  @apply border-0;
+  @apply overflow-hidden;
   width: 146px;
   height: 42px;
-  border: 0;
   box-shadow: 0 2px 6px rgba(96, 217, 87, 0.6);
-  overflow: hidden;
   transition: width 250ms;
 
   &:hover,
   &.is-loading {
     span {
-      opacity: 0;
+      @apply opacity-0;
       transform: translate3d(60px, 0, 0);
     }
 
@@ -348,12 +342,12 @@ button .fa--left,
     }
 
     span {
-      opacity: 0;
+      @apply opacity-0;
     }
   }
 
   .svg-container {
-    position: absolute;
+    @apply absolute;
     top: 50%;
     left: 16px;
     transition: transform 250ms;
@@ -367,62 +361,62 @@ button .fa--left,
 
 .btn-icon-only {
   @apply text-gray-700;
+  @apply p-0;
+  @apply border-0;
+  @apply leading-normal;
+  @apply bg-transparent;
   height: auto !important;
-  padding: 0;
-  line-height: 1.5;
-  background: none;
-  border: 0;
 
   &:hover,
   &:focus,
   &:active,
   &:focus:active {
-    background: none;
-    border: 0;
+    @apply border-0;
+    @apply bg-transparent;
   }
 
   > svg {
-    display: block;
+    @apply block;
   }
 }
 
 .btn-app-access {
+  @apply bg-purple-600;
+  @apply border border-purple-600;
   height: 42px;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-  background: var(--purple-700);
-  border: 1px solid var(--purple-500);
   box-shadow: 0 6px 12px 0 rgba(46, 0, 62, 0.24), 0 12px 24px 0 rgba(39, 0, 52, 0.12);
 
   &:hover {
     @apply text-white;
-    background: var(--purple-700);
-    border: 1px solid var(--purple-500);
+    @apply bg-purple-700;
+    @apply border border-purple-700;
   }
 
   &:focus,
   &:focus:active {
-    background: var(--purple-700);
-    border: 1px solid var(--purple-500);
+    @apply bg-purple-700;
+    @apply border border-purple-700;
   }
 }
 
 .btn-group {
-  display: grid;
+  @apply grid;
   grid-auto-flow: column;
   grid-gap: 1px;
 
   > .btn:not(:first-child):not(:last-child) {
-    border-radius: 0;
+    @apply rounded-none;
   }
 
   > .btn:first-child:not(:last-child) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    @apply rounded-r-none;
+    @apply rounded-l;
   }
 
   > .btn:last-child:not(:first-child) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    @apply rounded-l-none;
+    @apply rounded-r;
   }
 }
 
@@ -432,26 +426,26 @@ button .fa--left,
     @apply bg-white;
 
     &:hover {
-      background: var(--gray-000);
+      @apply bg-gray-000;
     }
 
     &.is-active {
       @apply text-white;
-      background: var(--gray-700);
+      @apply bg-gray-700;
       box-shadow: none;
       transform: translate3d(0, 0, 0);
     }
 
     &.has-diffs {
-      color: var(--purple-600);
+      @apply text-purple-600;
 
       &:hover {
-        background: var(--purple-100);
+        @apply bg-purple-100;
       }
 
       &.is-active {
         @apply text-white;
-        background: var(--purple-600);
+        @apply bg-purple-600;
         box-shadow: inset 0 1px 1px rgba(92, 0, 123, 0.2);
       }
     }
@@ -459,7 +453,7 @@ button .fa--left,
 }
 
 .btn-toolbar {
-  display: grid;
+  @apply grid;
   grid-auto-flow: column;
   grid-gap: theme("spacing.1");
 }
@@ -475,18 +469,18 @@ button .fa--left,
 
 .btn-white,
 a.btn-white {
-  color: var(--gray-700);
   @apply bg-white;
+  @apply text-gray-700;
 
   &:hover {
-    color: var(--purple-600);
+    @apply text-purple-600;
   }
 }
 
 .btn-green,
 .btn-purple,
 .btn-orange {
-  color: white;
+  @apply text-white;
   text-shadow: 0 1px 2px rgba(63, 58, 64, 0.2);
 }
 
@@ -495,7 +489,7 @@ a.btn-white {
 .btn-green:focus,
 .btn-green:focus:active {
   @apply text-white;
-  background: var(--green-500);
+  @apply bg-green-500;
 }
 
 .btn-purple,
@@ -503,7 +497,7 @@ a.btn-white {
 .btn-purple:focus,
 .btn-purple:focus:active {
   @apply text-white;
-  background: var(--purple-600);
+  @apply bg-purple-600;
 }
 
 .btn-orange,
@@ -511,5 +505,5 @@ a.btn-white {
 .btn-orange:focus,
 .btn-orange:focus:active {
   @apply text-white;
-  background: var(--orange-500);
+  @apply bg-orange-500;
 }

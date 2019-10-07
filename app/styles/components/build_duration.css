@@ -1,7 +1,7 @@
 .BuildDuration {
-  display: inline-block;
+  @apply inline-block;
 
   .fa {
-    color: var(--gray);
+    @apply text-gray-300;
   }
 }

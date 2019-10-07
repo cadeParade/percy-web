@@ -40,7 +40,7 @@
 }
 
 .percy-btn svg {
-  display: inline-block;
+  @apply inline-block;
   vertical-align: baseline;
 }
 
@@ -71,8 +71,8 @@
 }
 
 .percy-btn-primary.is-loading {
-  display: table; /* safari needs a forced repaint to draw the gradient again after loading is finished */
-  background-image: linear-gradient(-45deg, var(--purple-700) 25%, var(--purple-600) 25%, var(--purple-600) 50%, var(--purple-700) 50%, var(--purple-700) 75%, var(--purple-600) 75%, var(--purple-600));
+  @apply table; /* safari needs a forced repaint to draw the gradient again after loading is finished */
+  background-image: linear-gradient(-45deg, theme("colors.purple.700") 25%, theme("colors.purple.600") 25%, theme("colors.purple.600") 50%, theme("colors.purple.700") 50%, theme("colors.purple.700") 75%, theme("colors.purple.600") 75%, theme("colors.purple.600"));
   background-size: 20px 20px;
   animation: loading 4s linear infinite;
 }

@@ -5,13 +5,13 @@
 
   &:hover {
     path {
-      fill: var(--text-color) !important;
+      fill: theme("colors.gray.700") !important;
     }
   }
 }
 
 .loader {
-  margin: 0;
+  @apply m-0;
 }
 
 @media only percy {

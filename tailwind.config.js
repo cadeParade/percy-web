@@ -152,7 +152,7 @@ module.exports = {
       lg: '0 4px 12px rgba(63, 58, 64, 0.06)',
       inner: 'inset 0 2px 4px 0 rgba(0,0,0,0.06)',
       none: 'none',
-      'purple-underline': '0 1px 0 var(--purple-600)',
+      'purple-underline': '0 1px 0 #9e66bf',
       'input-focus': '0px 0px 8px rgba(158, 102, 191, 0.2);',
       'purple-lg': '0 4px 12px rgba(158, 102, 191, 0.4);',
     },
@@ -254,6 +254,7 @@ module.exports = {
       auto: 'auto',
       full: '100%',
       screen: '100vh',
+      '0': '0',
       px: '1px',
       '1': '4px',
       '2': '8px',
@@ -299,6 +300,7 @@ module.exports = {
     },
     listStyleType: {
       none: 'none',
+      circle: 'circle',
       disc: 'disc',
       decimal: 'decimal',
     },
@@ -313,6 +315,7 @@ module.exports = {
       '28': '28px',
     },
     maxWidth: {
+      '0': '0',
       xs: '460px',
       sm: '544px',
       md: '768px',
@@ -376,6 +379,7 @@ module.exports = {
     textColor: theme => theme('colors'),
     width: {
       auto: 'auto',
+      '0': '0',
       px: '1px',
       '1': '4px',
       '2': '8px',

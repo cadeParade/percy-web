@@ -26,6 +26,16 @@ module.exports = function(defaults) {
           require('postcss-nested'),
           require('tailwindcss')('./tailwind.config.js'),
           require('autoprefixer')({overrideBrowserslist: ['last 3 versions']}),
+          require('cssnano')({
+            preset: [
+              'default',
+              {
+                discardComments: {
+                  removeAll: true,
+                },
+              },
+            ],
+          }),
         ],
       },
     },

@@ -1,14 +1,20 @@
 .video-content-modal {
   height: 80vh;
   max-height: 569px;
+}
 
-  @media screen and (max-width: 1012px) {
+@media screen and (max-width: 1012px) {
+  .video-content-modal {
     max-height: 530px;
   }
-  @media screen and (max-width: 768px) {
+}
+@media screen and (max-width: 768px) {
+  .video-content-modal {
     max-height: 400px;
   }
-  @media screen and (max-width: 544px) {
+}
+@media screen and (max-width: 544px) {
+  .video-content-modal {
     max-height: 300px;
   }
 }

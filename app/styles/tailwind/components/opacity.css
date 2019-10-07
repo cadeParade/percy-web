@@ -7,5 +7,5 @@
 }
 
 .opacity-hoverable:hover {
-  opacity: 1;
+  @apply opacity-100;
 }

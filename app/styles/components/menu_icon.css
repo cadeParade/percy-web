@@ -3,17 +3,17 @@
 .menu-icon {
   &.is-closeable {
     .menu-icon-line {
-      width: 8px;
-      opacity: 0;
+      @apply opacity-0;
+      @apply w-2;
     }
 
     .menu-icon-line:nth-child(2) {
-      opacity: 1;
+      @apply opacity-100;
       transform: rotate(-45deg) translateY(-1px);
     }
 
     .menu-icon-line:nth-child(3) {
-      opacity: 1;
+      @apply opacity-100;
       transform: rotate(45deg) translateY(1px);
     }
   }
@@ -36,14 +36,14 @@
 }
 
 .menu-icon-line {
+  @apply rounded-sm;
+  @apply bg-purple-800;
   height: 2px;
-  background: var(--purple-800);
-  border-radius: 1px;
   transition: opacity 250ms, transform 250ms;
   transform-origin: center;
 
   &:not(:last-child) {
-    margin-bottom: 2px;
+    @apply mb-xs;
   }
 
   &:nth-child(1) {
@@ -61,6 +61,6 @@
 
 .marketing-hero-dark {
   .menu-icon-line {
-    background: white;
+    @apply bg-white;
   }
 }

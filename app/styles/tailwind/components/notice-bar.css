@@ -4,7 +4,7 @@
 
 .notice-bar-black-on-gray {
   @apply bg-gray-100 text-gray-700 font-normal;
-  border-right: 1px solid white;
+  @apply border-r border-white;
 }
 
 .notice-bar-button-gray {

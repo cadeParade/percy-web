@@ -1,18 +1,18 @@
 /* stylelint-disable selector-max-compound-selectors */
 
 .bar {
+  @apply rounded-t;
   height: var(--bar-height);
   min-height: 1px;
-  border-radius: 2px 2px 0 0;
   transition: background 75ms;
 
   &:not(.bar-future):hover {
-    background: var(--purple-700) !important;
+    @apply bg-purple-700;
   }
 }
 
 .bar-future {
-  height: 4px;
+  @apply h-1;
 }
 
 .animated-bar-item {
@@ -35,23 +35,27 @@
 
 .bar-item {
   &::after {
+    @apply absolute;
+    @apply w-full;
+    @apply font-bold;
+    @apply text-gray-200;
+    @apply text-center;
+    @apply text-sm;
     content: attr(data-label);
-    position: absolute;
     bottom: -20px;
-    width: 100%;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--gray-200);
-    text-align: center;
 
     @media screen and (max-width: 768px) {
-      display: none;
+      @apply hidden;
     }
   }
 }
 
 .bar-item-today {
   &::after {
-    color: var(--purple-600);
+    @apply text-purple-600;
   }
+}
+
+.BillingSection-left-col {
+  width: 350px;
 }

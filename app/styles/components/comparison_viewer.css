@@ -1,46 +1,36 @@
 .ComparisonViewer {
   .ComparisonViewer-halfColumn {
-    display: flex;
-    float: left;
-    width: 50%;
-    justify-content: center;
+    @apply flex;
+    @apply float-left;
+    @apply w-1/2;
+    @apply justify-center;
   }
 
   .ComparisonViewer-halfColumn--left {
-    padding: 16px 8px 16px 16px;
+    @apply p-2;
+    @apply pr-1;
   }
 
   .ComparisonViewer-halfColumn--right {
-    padding: 16px 16px 16px 8px;
+    @apply p-2;
+    @apply pl-1;
   }
 
   .ComparisonViewer-snapshotMissing {
     @apply flex;
     @apply items-center;
     @apply justify-center;
-    width: 100%;
-    height: 188px;
-    text-align: center;
+    @apply w-full;
+    @apply text-center;
     @apply bg-white;
-    border: var(--lighter-gray-border);
+    @apply border;
+    height: 188px;
   }
 
   .ComparisonViewer-noDiffBox {
-    padding: 7px;
-    font-style: italic;
-    color: var(--gray);
-    text-align: center;
-  }
-}
-
-@media (max-width: 550px) {
-  .ComparisonViewer {
-    .ComparisonViewer-halfColumn--left {
-      padding: 15px 7px 15px 15px;
-    }
-
-    .ComparisonViewer-halfColumn--right {
-      padding: 15px 15px 15px 7px;
-    }
+    @apply p-1;
+    @apply italic;
+    @apply text-gray-300;
+    @apply text-center;
   }
 }

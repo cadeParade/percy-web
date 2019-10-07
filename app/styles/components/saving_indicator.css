@@ -1,18 +1,17 @@
 .SavingIndicator {
-  padding-right: 10px;
-  padding-left: 10px;
+  @apply px-1;
 
   .fa {
-    font-size: 2rem;
+    @apply text-3xl;
   }
+}
 
-  .fa-check-circle {
-    color: var(--green);
-    opacity: 0;
-    animation: fadeinout 5s ease;
-  }
+.fa-check-circle {
+  @apply text-green-500;
+  @apply opacity-0;
+  animation: fadeinout 5s ease;
+}
 
-  .fa-times-circle {
-    color: var(--red);
-  }
+.fa-times-circle {
+  @apply text-red-500;
 }
