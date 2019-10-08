@@ -21,6 +21,6 @@
 
 {{#if image.file.url}}
   <div class="hero-main-image flex items-center relative w-90vw max-w-lg mx-auto">
-    <img src="{{image.file.url}}" alt="{{image.description}}">
+    {{contentful-image file=image.file}}
   </div>
 {{/if}}
