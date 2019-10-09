@@ -338,7 +338,7 @@ describe('Acceptance: Project', function() {
 
         await ProjectSettingsPage.slackIntegrationsLink.click();
         expect(IntegrationsIndexPage.isVisible).to.equal(true);
-        await percySnapshot(this.test);
+        await percySnapshot(`${this.test.fullTitle()} - #2`);
       });
     });
   });

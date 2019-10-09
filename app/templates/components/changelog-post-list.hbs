@@ -3,9 +3,13 @@
     {{#changelog-post
       postId=changelogPost.id
       tag=changelogPost.tag
-      date=(moment-format changelogPost.date 'MMM D, YYYY')
+      date=(moment-format changelogPost.date "MMM D, YYYY")
     }}
-      <h2>{{changelogPost.title}}</h2>
+      <h2>
+        {{#link-to "changelog.show" changelogPost.slug}}
+          {{changelogPost.title}}
+        {{/link-to}}
+      </h2>
       {{markdown-to-html changelogPost.content}}
       {{#if changelogPost.image}}
         <img src="{{changelogPost.image.file.url}}" alt="{{changelogPost.image.description}}">

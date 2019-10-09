@@ -8,7 +8,7 @@ export default Route.extend({
     const hero = this.store.queryRecord('heroBlock', {
       'fields.page': 'Changelog',
     });
-    const posts = this.store.findAll('changelog-post').then(posts => {
+    const posts = this.store.findAll('changelog-post', {reload: true}).then(posts => {
       return posts.sortBy('date').reverse();
     });
 

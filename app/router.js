@@ -67,7 +67,9 @@ Router.map(function() {
   this.route('privacy');
   this.route('security');
   this.route('admin');
-  this.route('changelog');
+  this.route('changelog', function() {
+    this.route('show', {path: ':slug'});
+  });
   this.route('features');
   this.route('how-it-works');
   this.route('visual-testing');

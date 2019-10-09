@@ -175,7 +175,7 @@ describe('Acceptance: ManageUsers', function() {
 
         expect(currentRouteName()).to.equal('organizations.organization.users.index');
         expect(ManageUsersList.inviteCards.length).to.equal(numberOfInvites + 1);
-        await percySnapshot(this.test.fullTitle());
+        await percySnapshot(`${this.test.fullTitle()} - #2`);
       });
 
       it('cancelling from the invite form returns user to users route', async function() {
