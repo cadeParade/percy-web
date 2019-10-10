@@ -13,47 +13,27 @@
     </div>
     {{#if isFirstComment}}
       {{#if isCommentingAllowed}}
-        {{#if (and isReview (not (variation "request-changes")))}}
-          {{#if isClosed}}
-            <div class="flex items-center text-green-500 font-semibold text-sm leading-none" data-test-resolved>
-              <div class="mr-sm">
-                {{inline-svg "check-green-icon" class="scale-3/4"}}
-              </div>
-              <div>Resolved</div>
+        {{#if isClosed}}
+          <div class="flex items-center" data-test-archived>
+            <div class="text-purple-600 font-semibold text-sm leading-none">
+              Archived
             </div>
-          {{else}}
-            {{#percy-btn
-              handleClick=(action "closeCommentThread")
-              isPrimaryButton=true
-              isSmallButton=true
-              testLabel="commentResolve"
-            }}
-              Resolve
-            {{/percy-btn}}
-          {{/if}}
+          </div>
         {{else}}
-          {{#if isClosed}}
-            <div class="flex items-center" data-test-archived>
-              <div class="text-purple-600 font-semibold text-sm leading-none">
-                Archived
-              </div>
-            </div>
-          {{else}}
-            {{#percy-btn
-              handleClick=(action "closeCommentThread")
-              isSecondaryButton=true
-              isSmallButton=true
-              testLabel="commentArchive"
-            }}
-              Archive
-            {{/percy-btn}}
-          {{/if}}
+          {{#percy-btn
+            handleClick=(action "closeCommentThread")
+            isSecondaryButton=true
+            isSmallButton=true
+            testLabel="commentArchive"
+          }}
+            Archive
+          {{/percy-btn}}
         {{/if}}
       {{/if}}
     {{/if}}
   </header>
 
- {{#if (and isFirstComment isReview (variation "request-changes"))}}
+ {{#if (and isFirstComment isReview)}}
     <div class="collaboration-content-inset py-sm">
       <div class="px-1 py-sm tracking-px rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{if isOnOriginatingSnapshot 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}" data-test-request-changes-badge>
         Changes requested

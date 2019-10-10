@@ -121,16 +121,14 @@
                       {{inline-svg "download-source-icon"}}
                     </li>
                   {{/if}}
-                  {{#if (variation "snapshot-history")}}
-                    <li class="dropdown-menu-list-item cursor-pointer flex justify-between items-center text-sm font-semibold py-1 pl-2 pr-1 mb-0"
-                      {{action (pipe-action
-                        (action "goToLastChangedSnapshot")
-                        dropdown.actions.close
-                      )}}
-                    >
-                      <span>Jump back to last change</span>{{inline-svg 'tiny-comparison-icon'}}
-                    </li>
-                  {{/if}}
+                  <li class="dropdown-menu-list-item cursor-pointer flex justify-between items-center text-sm font-semibold py-1 pl-2 pr-1 mb-0"
+                    {{action (pipe-action
+                      (action "goToLastChangedSnapshot")
+                      dropdown.actions.close
+                    )}}
+                  >
+                    <span>Jump back to last change</span>{{inline-svg 'tiny-comparison-icon'}}
+                  </li>
                 </ul>
               </div>
             </dropdown.Content>
@@ -179,7 +177,7 @@
 
 
         <div class="btn-toolbar" data-test-snapshot-approval-button>
-          {{#if (and (variation 'request-changes') snapshot.isUnreviewed)}}
+          {{#if snapshot.isUnreviewed}}
             {{demo-tooltip
               build=snapshot.build
               isFirstInstance=(eq index 0)

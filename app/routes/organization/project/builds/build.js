@@ -124,16 +124,11 @@ export default Route.extend({
 
   _createReview: task(function*({snapshots, eventData}) {
     const build = this._getBuild();
-    const allowRejection = this.get('launchDarkly').variation('request-changes');
     const hasOpenReviewThreads = this._snapshotsHaveOpenReviewThreads(snapshots);
     const hasRejectedSnapshots = snapshots.any(snapshot => snapshot.isRejected);
 
     let shouldDisplayModal = false;
-    if (allowRejection) {
-      shouldDisplayModal = hasRejectedSnapshots || hasOpenReviewThreads;
-    } else {
-      shouldDisplayModal = hasOpenReviewThreads;
-    }
+    shouldDisplayModal = hasRejectedSnapshots || hasOpenReviewThreads;
 
     if (shouldDisplayModal) {
       const reviewConfirmMessage = this._reviewConfirmMessage(snapshots);
@@ -170,8 +165,7 @@ export default Route.extend({
       taggedUsers: mentionedUsers,
     });
 
-    const allowRejection = this.get('launchDarkly').variation('request-changes');
-    if (areChangesRequested && allowRejection) {
+    if (areChangesRequested) {
       snapshot.set('reviewState', SNAPSHOT_REJECTED_STATE);
       snapshot.set('reviewStateReason', SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED);
     }

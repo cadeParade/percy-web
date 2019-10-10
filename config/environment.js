@@ -203,9 +203,7 @@ module.exports = function(environment) {
     };
     ENV.launchDarkly.local = true;
     ENV.launchDarkly.localFeatureFlags = {
-      'request-changes': true,
       'allow-demo-projects': true,
-      'snapshot-history': true,
       'show-removed-snapshots': true,
     };
 

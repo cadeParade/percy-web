@@ -24,9 +24,6 @@ const SUBSCRIBABLE_EVENTS = [
     value: 'build_finished',
     description: 'A build has finished',
   },
-];
-
-const REJECTION_EVENTS = [
   {
     label: 'build_changes_requested',
     value: 'build_changes_requested',
@@ -88,12 +85,5 @@ export default BaseFormComponent.extend({
 
   labels: FORM_FIELD_LABELS,
 
-  allOptions: computed(function() {
-    const allowRejection = this.launchDarkly.variation('request-changes');
-    if (allowRejection) {
-      return SUBSCRIBABLE_EVENTS.concat(REJECTION_EVENTS);
-    } else {
-      return SUBSCRIBABLE_EVENTS;
-    }
-  }),
+  allOptions: SUBSCRIBABLE_EVENTS,
 });
