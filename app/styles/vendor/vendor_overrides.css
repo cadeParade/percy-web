@@ -15,11 +15,12 @@
 }
 
 [class*=hint--]::after {
-  @apply font-bold;
+  @apply font-semibold;
   @apply text-sm;
   @apply bg-gray-700;
   padding: 6px 8px;
   font-family: inherit;
+  white-space: pre;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 

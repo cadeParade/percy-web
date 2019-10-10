@@ -6806,6 +6806,13 @@ ember-deep-set@^0.2.0:
   dependencies:
     ember-cli-babel "^7.1.2"
 
+ember-diff-attrs@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/ember-diff-attrs/-/ember-diff-attrs-0.2.2.tgz#57baf6907957de004d9aff947809dfe78a054b3b"
+  integrity sha512-dziQ8G8QVRMqSFMg2l9E+Te19kcwk7+Aad7Q8lOci2b3EAiU7s0IFB3Z8rRed0JRJ3e6mPJyRmNbyUuNoyCM8g==
+  dependencies:
+    ember-cli-babel "^6.16.0"
+
 ember-element-helper@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/ember-element-helper/-/ember-element-helper-0.1.1.tgz#ffd2a0566b22a13c0e7780ae96443f4ffda2e63d"

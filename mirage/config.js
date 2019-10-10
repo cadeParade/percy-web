@@ -342,6 +342,28 @@ export default function() {
     }
   });
 
+  this.get('/builds/:build_id/removed-snapshots', function(schema, request) {
+    const build = schema.builds.findBy({id: request.params.build_id});
+    const baseBuild = build.baseBuild;
+    if (!baseBuild) {
+      return {data: []};
+    }
+
+    const headSnapshotNames = build.snapshots.models.mapBy('name');
+    const baseSnapshotNames = baseBuild.snapshots.models.mapBy('name');
+
+    var _difference = new Set(baseSnapshotNames);
+    for (var elem of headSnapshotNames) {
+      _difference.delete(elem);
+    }
+
+    const removedSnapshotIds = [..._difference].map(name => {
+      return baseBuild.snapshots.models.findBy('name', name).id;
+    });
+
+    return schema.snapshots.find(removedSnapshotIds);
+  });
+
   this.get('/browser-families', function(schema) {
     schema.browserFamilies.create({
       id: '1',

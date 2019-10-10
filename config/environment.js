@@ -206,6 +206,7 @@ module.exports = function(environment) {
       'request-changes': true,
       'allow-demo-projects': true,
       'snapshot-history': true,
+      'show-removed-snapshots': true,
     };
 
     ENV.APP.bitbucketCloudUrls = {

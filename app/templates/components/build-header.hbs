@@ -41,8 +41,8 @@
       <div class="flex items-center whitespace-no-wrap">
         Baseline from
         <code class="ml-sm truncate">
-            {{build.baseBuild.branch}}
-          </code>
+          {{build.baseBuild.branch}}
+        </code>
       </div>
       <div class="text-sm">
         Build
@@ -78,6 +78,7 @@
       </div>
     </div>
   </div>
+
   {{#if build.isPending}}
   <div class="p-2 m-2 bg-gray-000 rounded border border-gray-100">
     <div class="font-semibold mb-1">This build has not finished receiving data from your CI service or client.</div>

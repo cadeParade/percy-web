@@ -71,6 +71,7 @@
     "ember-data": "~3.13.1",
     "ember-data-contentful": "^0.2.4",
     "ember-data-factory-guy": "^3.9.4",
+    "ember-diff-attrs": "^0.2.2",
     "ember-exam": "4.0.0",
     "ember-export-application-global": "^2.0.0",
     "ember-fetch": "6.7.0",

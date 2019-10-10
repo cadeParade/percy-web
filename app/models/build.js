@@ -60,6 +60,8 @@ export default DS.Model.extend({
   browsers: DS.hasMany('browser', {async: false}),
   hasMultipleBrowsers: gt('browsers.length', 1),
 
+  removedSnapshots: DS.hasMany('snapshot', {async: true, inverse: null}),
+
   // Processing state.
   state: DS.attr(),
   isPending: equal('state', BUILD_STATES.PENDING),

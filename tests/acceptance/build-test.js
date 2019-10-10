@@ -626,6 +626,82 @@ describe('Acceptance: Build', function() {
     });
   });
 
+  describe('when a build has missing snapshots', function() {
+    let baseBuild;
+    beforeEach(async function() {
+      baseBuild = server.create('build', {project});
+      build.update({baseBuild});
+      build.snapshots.models.forEach(snapshot => {
+        server.create('snapshot', {build: baseBuild, name: snapshot.name});
+      });
+
+      server.create('snapshot', 'withComparison', {
+        build: baseBuild,
+        id: 'missing-snapshot-1',
+        name: 'missing snapshot 1',
+        //eslint-disable-next-line
+        defaultPartialUrl: `/${urlParams.orgSlug}/${urlParams.projectSlug}/builds/${baseBuild.id}/view/missing-snapshot-1/1280?mode=diff&browser=firefox`,
+      });
+    });
+
+    it('does not display when build is not finished', async function() {
+      build.update({state: BUILD_STATES.PENDING});
+      await BuildPage.visitBuild(urlParams);
+      expect(BuildPage.removedSnapshots.isVisible).to.equal(false);
+    });
+
+    describe('when there is one snapshot missing', function() {
+      it('displays correctly', async function() {
+        await BuildPage.visitBuild(urlParams);
+        percySnapshot(this.test);
+      });
+    });
+
+    describe('when there are more than one snapshots missing', function() {
+      beforeEach(async function() {
+        server.create('snapshot', {build: baseBuild, name: 'missing snapshot 2'});
+      });
+
+      it('displays correctly', async function() {
+        await BuildPage.visitBuild(urlParams);
+        percySnapshot(this.test);
+      });
+
+      it('shows expansion option when there are many missing snapshots', async function() {
+        server.createList('snapshot', 20, {build: baseBuild});
+
+        await BuildPage.visitBuild(urlParams);
+        expect(BuildPage.removedSnapshots.snapshotNames.length).to.equal(5);
+        percySnapshot(`${this.test.fullTitle()} | before expansion`);
+
+        await BuildPage.removedSnapshots.toggleSnapshots();
+        expect(BuildPage.removedSnapshots.snapshotNames.length).to.equal(22);
+        percySnapshot(`${this.test.fullTitle()} | after expansion`);
+
+        await BuildPage.removedSnapshots.toggleSnapshots();
+        expect(BuildPage.removedSnapshots.snapshotNames.length).to.equal(5);
+      });
+    });
+
+    it('links to missing snapshots', async function() {
+      await BuildPage.visitBuild(urlParams);
+      expect(BuildPage.removedSnapshots.isVisible).to.equal(true);
+      await BuildPage.removedSnapshots.snapshotNames[0].click();
+      expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
+      percySnapshot(this.test);
+    });
+
+    it('resets removedSnapshots when moving to another build', async function() {
+      await BuildPage.visitBuild(urlParams);
+      expect(BuildPage.removedSnapshots.isVisible).to.equal(true);
+      await BuildPage.removedSnapshots.snapshotNames[0].click();
+      await BuildPage.snapshotFullscreen.header.clickToggleFullscreen();
+      expect(currentRouteName()).to.equal('organization.project.builds.build.index');
+      expect(BuildPage.removedSnapshots.isVisible).to.equal(false);
+      percySnapshot(this.test);
+    });
+  });
+
   it('shows build overview info dropdown', async function() {
     await BuildPage.visitBuild(urlParams);
     await BuildPage.toggleBuildInfoDropdown();

@@ -18,6 +18,10 @@
     isBuildApprovable=isBuildApprovable
   }}
 
+  {{#if (and (variation 'show-removed-snapshots') build.isFinished)}}
+    <RemovedSnapshots @build={{build}} />
+  {{/if}}
+
   {{#if isSnapshotsLoading}}
     {{loading-page}}
   {{else if build.isFinished}}

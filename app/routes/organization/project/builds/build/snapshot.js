@@ -17,7 +17,7 @@ export default Route.extend(ResetScrollMixin, {
     this.set('params', params);
     const organization = this.modelFor('organization');
     return hash({
-      snapshot: this.store.findRecord('snapshot', params.snapshot_id),
+      snapshot: this.store.findRecord('snapshot', params.snapshot_id, {reload: true}),
       isUserMember: isUserMember(this.session.currentUser, organization),
     });
   },
