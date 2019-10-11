@@ -12,44 +12,47 @@ export default {
   //
   // keys that can be used to build a URL are located in /config/environment.js
   buildApiUrl() {
-    var key = arguments[0];
-    var otherArgs = Array.prototype.slice.call(arguments, 1);
+    if (typeof FastBoot === undefined) {
 
-    // Options, if given, must be the last arg and must be a hash.
-    var options = otherArgs.slice(-1)[0];
-    if (typeof options === 'object') {
-      otherArgs = otherArgs.slice(0, -1);
-    } else {
-      options = {};
+      var key = arguments[0];
+      var otherArgs = Array.prototype.slice.call(arguments, 1);
+
+      // Options, if given, must be the last arg and must be a hash.
+      var options = otherArgs.slice(-1)[0];
+      if (typeof options === 'object') {
+        otherArgs = otherArgs.slice(0, -1);
+      } else {
+        options = {};
+      }
+      var params = options.params || {};
+
+      if (options['includePercyMode'] && this.percyMode()) {
+        params['percy-mode'] = this.percyMode();
+      }
+
+      var queryParams = params ? '?' + $.param(params) : '';
+
+      var path = config.APP.apiUrls[key];
+      if (!path) {
+        Ember.Logger.error('API path not found for key: ' + key);
+        return;
+      }
+
+      // If the path requires formatting, make sure the right number of args have been given.
+      var numFormatsRequired = (path.match(/%@/g) || []).length;
+      if (numFormatsRequired !== otherArgs.length) {
+        Ember.Logger.error(
+          'Mismatched number of formatting args for: ' + path + '\nGot: ' + otherArgs,
+        );
+        return;
+      } else {
+        otherArgs.forEach(function(arg) {
+          path = path.replace('%@', arg);
+        });
+      }
+
+      return window.location.origin + path + queryParams;
     }
-    var params = options.params || {};
-
-    if (options['includePercyMode'] && this.percyMode()) {
-      params['percy-mode'] = this.percyMode();
-    }
-
-    var queryParams = params ? '?' + $.param(params) : '';
-
-    var path = config.APP.apiUrls[key];
-    if (!path) {
-      Ember.Logger.error('API path not found for key: ' + key);
-      return;
-    }
-
-    // If the path requires formatting, make sure the right number of args have been given.
-    var numFormatsRequired = (path.match(/%@/g) || []).length;
-    if (numFormatsRequired !== otherArgs.length) {
-      Ember.Logger.error(
-        'Mismatched number of formatting args for: ' + path + '\nGot: ' + otherArgs,
-      );
-      return;
-    } else {
-      otherArgs.forEach(function(arg) {
-        path = path.replace('%@', arg);
-      });
-    }
-
-    return window.location.origin + path + queryParams;
   },
 
   percyMode() {

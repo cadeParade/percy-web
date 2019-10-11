@@ -31,9 +31,9 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
       }
     }
 
-    return this._loadLaunchDarkly().then(() => {
+    // return this._loadLaunchDarkly().then(() => {
       return this._loadCurrentUser();
-    });
+    // });
   },
 
   // Special case: turn off ember-simple-auth-auth0's application-route-mixin expiration timer.

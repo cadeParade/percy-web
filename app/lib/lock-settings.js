@@ -4,9 +4,14 @@ export default {
   configurationBaseUrl: 'https://cdn.auth0.com',
   auth: {
     redirect: true,
-    redirectUrl: `${window.location.origin}${
-      config['ember-simple-auth'].auth0.silentAuth.options.redirectPath //eslint-disable-line
-    }`,
+    redirectUrl: () => {
+      if (typeof FastBoot === undefined) {
+        return `${window.location.origin}${
+          config['ember-simple-auth'].auth0.silentAuth.options.redirectPath //eslint-disable-line
+        }`;
+      }
+    },
+
     responseType: 'code',
     params: {},
   },

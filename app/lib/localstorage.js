@@ -5,61 +5,77 @@
 // single tab only.
 export default {
   get(key, defaultValue, {useSessionStorage = false} = {}) {
-    let item;
-    const storageSystem = useSessionStorage ? sessionStorage : localStorage;
-    try {
-      item = JSON.parse(storageSystem.getItem(key));
-    } catch (_) {
-      // Safari throws errors while accessing localStorage in private mode.
-    } finally {
-      return item || defaultValue; // eslint-disable-line no-unsafe-finally
+    if (typeof FastBoot === undefined) {
+      let item;
+      const storageSystem = useSessionStorage ? sessionStorage : localStorage;
+      try {
+        item = JSON.parse(storageSystem.getItem(key));
+      } catch (_) {
+        // Safari throws errors while accessing localStorage in private mode.
+      } finally {
+        return item || defaultValue; // eslint-disable-line no-unsafe-finally
+      }
     }
   },
 
   set(key, value, {useSessionStorage = false} = {}) {
-    const storageSystem = useSessionStorage ? sessionStorage : localStorage;
-    try {
-      storageSystem.setItem(key, JSON.stringify(value));
-    } catch (_) {
-      // Safari throws errors while accessing localStorage in private mode.
-    } finally {
-      return value; // eslint-disable-line no-unsafe-finally
+    if (typeof FastBoot === undefined) {
+      const storageSystem = useSessionStorage ? sessionStorage : localStorage;
+      try {
+        storageSystem.setItem(key, JSON.stringify(value));
+      } catch (_) {
+        // Safari throws errors while accessing localStorage in private mode.
+      } finally {
+        return value; // eslint-disable-line no-unsafe-finally
+      }
     }
   },
 
   removeItem(key, {useSessionStorage = false} = {}) {
-    const storageSystem = useSessionStorage ? sessionStorage : localStorage;
-    try {
-      storageSystem.removeItem(key);
-    } catch (_) {
-      // Safari throws errors while accessing localStorage in private mode.
+    if (typeof FastBoot === undefined) {
+
+      const storageSystem = useSessionStorage ? sessionStorage : localStorage;
+      try {
+        storageSystem.removeItem(key);
+      } catch (_) {
+        // Safari throws errors while accessing localStorage in private mode.
+      }
     }
   },
 
   _keys({useSessionStorage = false} = {}) {
-    const storageSystem = useSessionStorage ? sessionStorage : localStorage;
+    if (typeof FastBoot === undefined) {
 
-    try {
-      const ret = [];
-      for (var i = 0; i < storageSystem.length; i++) {
-        ret.push(storageSystem.key(i));
+      const storageSystem = useSessionStorage ? sessionStorage : localStorage;
+
+      try {
+        const ret = [];
+        for (var i = 0; i < storageSystem.length; i++) {
+          ret.push(storageSystem.key(i));
+        }
+        return ret;
+      } catch (_) {
+        // Safari throws errors while accessing localStorage in private mode.
+        return [];
       }
-      return ret;
-    } catch (_) {
-      // Safari throws errors while accessing localStorage in private mode.
-      return [];
     }
   },
 
   keysWithString(string, {useSessionStorage = false} = {}) {
-    return this._keys(useSessionStorage).filter(key => {
-      return new RegExp(string).test(key);
-    });
+    if (typeof FastBoot === undefined) {
+
+      return this._keys(useSessionStorage).filter(key => {
+        return new RegExp(string).test(key);
+      });
+    }
   },
 
   removeKeysWithString(string, {useSessionStorage = false} = {}) {
-    this.keysWithString(string, useSessionStorage).forEach(key => {
-      this.removeItem(key);
-    });
+    if (typeof FastBoot === undefined) {
+
+      this.keysWithString(string, useSessionStorage).forEach(key => {
+        this.removeItem(key);
+      });
+    }
   },
 };

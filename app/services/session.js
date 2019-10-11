@@ -11,7 +11,7 @@ export default SessionService.extend({
   analytics: service(),
   raven: service(),
   launchDarkly: service(),
-  websocket: service(),
+  // websocket: service(),
 
   // set by load method
   currentUser: null,

@@ -4,6 +4,11 @@ const Funnel = require('broccoli-funnel');
 
 module.exports = function(defaults) {
   let app = new EmberApp(defaults, {
+    prember: {
+      urls: [
+        '/',
+      ],
+    },
     'ember-cli-babel': {
       includePolyfill: true,
     },

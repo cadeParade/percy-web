@@ -53,20 +53,20 @@ export default FlashMessageService.extend({
   },
 
   displayLocalStorageMessages() {
-    const flashMessages = localStorageProxy.keysWithString('flash-message');
+    // const flashMessages = localStorageProxy.keysWithString('flash-message');
 
-    flashMessages.forEach(messageKey => {
-      const messageContent = localStorageProxy.get(messageKey);
-      const numReloadsLeft = messageContent.persistentReloads;
+    // flashMessages.forEach(messageKey => {
+    //   const messageContent = localStorageProxy.get(messageKey);
+    //   const numReloadsLeft = messageContent.persistentReloads;
 
-      if (numReloadsLeft <= 0) {
-        localStorageProxy.removeItem(messageKey);
-      } else {
-        messageContent.persistentReloads = messageContent.persistentReloads - 1;
-        localStorageProxy.set(messageKey, messageContent);
+    //   if (numReloadsLeft <= 0) {
+    //     localStorageProxy.removeItem(messageKey);
+    //   } else {
+    //     messageContent.persistentReloads = messageContent.persistentReloads - 1;
+    //     localStorageProxy.set(messageKey, messageContent);
 
-        this.add(messageContent.options);
-      }
-    });
+    //     this.add(messageContent.options);
+    //   }
+    // });
   },
 });
