@@ -7,6 +7,7 @@ export default DS.Model.extend({
   auth0ConnectionName: DS.attr('string'),
   providerLoginUrl: DS.attr('string'),
   emailDomain: DS.attr('string'),
+  forceSso: DS.attr('boolean'),
 
   isOktaIntegration: equal('provider', 'okta'),
 });

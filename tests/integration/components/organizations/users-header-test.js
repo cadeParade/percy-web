@@ -60,18 +60,35 @@ describe('Integration: UsersHeader', function() {
       describe('when seats are available', function() {
         beforeEach(async function() {
           organization.set('seatsRemaining', 1);
+        });
+
+        it('form is hidden & button is enabled', async function() {
           await render(hbs`{{organizations/users-header
             organization=organization
             isInviteFormAllowed=isInviteFormAllowed
           }}`);
-        });
-
-        it('form is hidden & button is enabled', async function() {
           expect(UsersHeader.inviteButton.isDisabled).to.equal(false);
           expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(false);
           expect(UsersHeader.inviteForm.isVisible).to.equal(false);
 
           await percySnapshot(this.test);
+        });
+
+        describe('when org has forced sso', function() {
+          beforeEach(async function() {
+            make('saml-integration', 'forced', {organization});
+          });
+
+          it('form is hidden & button is disabled', async function() {
+            await render(hbs`{{organizations/users-header
+              organization=organization
+              isInviteFormAllowed=isInviteFormAllowed
+            }}`);
+
+            expect(UsersHeader.inviteButton.isDisabled).to.equal(true);
+            expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(true);
+            expect(UsersHeader.inviteForm.isVisible).to.equal(false);
+          });
         });
       });
 
@@ -123,18 +140,35 @@ describe('Integration: UsersHeader', function() {
       describe('when seats are available', function() {
         beforeEach(async function() {
           organization.set('seatsRemaining', 1);
+        });
+
+        it('button is disabled & form is displayed', async function() {
           await render(hbs`{{organizations/users-header
             organization=organization
             isInviteFormAllowed=isInviteFormAllowed
           }}`);
-        });
-
-        it('button is disabled & form is displayed', async function() {
           expect(UsersHeader.inviteButton.isDisabled).to.equal(true);
           expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(false);
           expect(UsersHeader.inviteForm.isVisible).to.equal(true);
 
           await percySnapshot(this.test);
+        });
+
+        describe('when org has forced sso', function() {
+          beforeEach(async function() {
+            make('saml-integration', 'forced', {organization});
+          });
+
+          it('form is hidden & button is disabled', async function() {
+            await render(hbs`{{organizations/users-header
+              organization=organization
+              isInviteFormAllowed=isInviteFormAllowed
+            }}`);
+
+            expect(UsersHeader.inviteButton.isDisabled, 'button').to.equal(true);
+            expect(UsersHeader.inviteButtonTooltip.isActive, 'tooltip').to.equal(true);
+            expect(UsersHeader.inviteForm.isVisible, 'form').to.equal(false);
+          });
         });
       });
 

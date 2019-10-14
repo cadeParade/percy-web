@@ -21,9 +21,13 @@ export default Route.extend(AuthenticatedRouteMixin, {
       include: includes,
     });
     const invites = this.store.query('invite', {organization});
+    const orgWithSaml = this.store.findRecord('organization', organization.id, {
+      include: 'saml-integration',
+      reload: true,
+    });
 
     return hash({
-      organization,
+      organization: orgWithSaml,
       organizationUsers,
       invites,
     });
