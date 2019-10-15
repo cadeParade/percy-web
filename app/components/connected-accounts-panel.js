@@ -7,6 +7,9 @@ export default Component.extend({
   session: service(),
   store: service(),
   flashMessages: service(),
+
+  allowEditingAccounts: true,
+
   init() {
     this._super(...arguments);
     this.identities = this.identities || [];

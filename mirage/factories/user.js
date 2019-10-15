@@ -27,6 +27,12 @@ export default Factory.extend({
     },
   }),
 
+  withOktaIdentity: trait({
+    afterCreate(user, server) {
+      server.create('identity', 'oktaIdentity', {user});
+    },
+  }),
+
   withUserNotificationSetting: trait({
     userNotificationSetting: association(),
   }),

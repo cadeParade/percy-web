@@ -47,26 +47,32 @@
   </div>
 {{/if}}
 
-<div class="flex items-center mb-2">
-  {{#if (not emailPasswordIdentity)}}
-    <button type="button" class="btn btn-primary shadow-purple-lg flex-1 mx-1"
-      {{action addIdentity "auth0"}}
-      data-test-connected-accounts-panel-add-ep-identity>
-      Add email/password account
-    </button>
-  {{/if}}
+{{#if allowEditingAccounts}}
+  <div class="flex items-center mb-2">
+    {{#if (not emailPasswordIdentity)}}
+      <button type="button" class="btn btn-primary shadow-purple-lg flex-1 mx-1"
+        {{action addIdentity "auth0"}}
+        data-test-connected-accounts-panel-add-ep-identity>
+        Add email/password account
+      </button>
+    {{/if}}
+
+    {{#if (not githubIdentity)}}
+      <button type="button" class="btn btn-github flex-1 mx-1"
+        {{action addIdentity "github"}}
+        data-test-connected-accounts-panel-add-github-identity>
+        Connect your GitHub account
+      </button>
+    {{/if}}
+  </div>
 
   {{#if (not githubIdentity)}}
-    <button type="button" class="btn btn-github flex-1 mx-1"
-      {{action addIdentity "github"}}
-      data-test-connected-accounts-panel-add-github-identity>
-      Connect your GitHub account
-    </button>
+    <div class="rounded border py-1 px-2">
+      Connecting your GitHub account allows you to sign in with GitHub and manage your GitHub integration with Percy.
+    </div>
   {{/if}}
-</div>
-
-{{#if (not githubIdentity)}}
-  <div class="rounded border py-1 px-2">
-    Connecting your GitHub account allows you to sign in with GitHub and manage your GitHub integration with Percy.
+{{else}}
+  <div class="m-2 rounded border border-blue-500 p-2" >
+    You belong to an organization which requires SSO to be the only login method. To login with a different provider, you must create a new user or leave the SSO organization.
   </div>
 {{/if}}

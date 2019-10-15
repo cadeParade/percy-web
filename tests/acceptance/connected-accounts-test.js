@@ -1,6 +1,7 @@
 import setupAcceptance, {setupSession} from 'percy-web/tests/helpers/setup-acceptance';
 import ConnectedAccountsPage from 'percy-web/tests/pages/connected-accounts-page';
 import {percySnapshot} from 'ember-percy';
+import {beforeEach} from 'mocha';
 
 describe('Acceptance: ConnectedAccounts when user has GitHub identity', function() {
   setupAcceptance({authenticate: true});
@@ -75,5 +76,53 @@ describe('Acceptance: ConnectedAccounts when user has Auth0 identity', function(
     expect(ConnectedAccountsPage.isAddAuth0IdentityFormVisible).to.equal(false);
 
     await percySnapshot(this.test.fullTitle());
+  });
+});
+
+describe('Acceptance: ConnectedAccounts when user has SSO identity', function() {
+  let user;
+  setupAcceptance({authenticate: true});
+  setupSession(function(server) {
+    user = server.create('user', 'withOktaIdentity');
+  });
+
+  describe("when any of user's orgs has a force SSO saml integration", async function() {
+    beforeEach(function() {
+      const orgWithOkta = server.create('organization', 'withForceOktaIntegration');
+      const orgWithoutOkta = server.create('organization');
+
+      [orgWithOkta, orgWithoutOkta].forEach(org => {
+        server.create('organization-user', {organization: org, user: user});
+      });
+    });
+
+    it('does not display any options to add or remove identities', async function() {
+      await ConnectedAccountsPage.visitConnectedAccounts();
+      expect(ConnectedAccountsPage.panel.isAddAuth0IdentityVisible).to.equal(false);
+      expect(ConnectedAccountsPage.panel.isAddGithubIdentityVisible).to.equal(false);
+      expect(ConnectedAccountsPage.isAddAuth0IdentityFormVisible).to.equal(false);
+
+      await percySnapshot(this.test.fullTitle());
+    });
+  });
+
+  describe("when none of a user's orgs has a force SSO saml integration", function() {
+    beforeEach(function() {
+      const orgWithOkta = server.create('organization', 'withOktaIntegration');
+      const orgWithoutOkta = server.create('organization');
+
+      [orgWithOkta, orgWithoutOkta].forEach(org => {
+        server.create('organization-user', {organization: org, user: user});
+      });
+    });
+
+    it('displays options to add or remove identities', async function() {
+      await ConnectedAccountsPage.visitConnectedAccounts();
+      expect(ConnectedAccountsPage.panel.isAddAuth0IdentityVisible).to.equal(true);
+      expect(ConnectedAccountsPage.panel.isAddGithubIdentityVisible).to.equal(true);
+      expect(ConnectedAccountsPage.isAddAuth0IdentityFormVisible).to.equal(false);
+
+      await percySnapshot(this.test.fullTitle());
+    });
   });
 });

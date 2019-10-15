@@ -95,4 +95,16 @@ export default Factory.extend({
       server.create('slackIntegration', {organization});
     },
   }),
+
+  withOktaIntegration: trait({
+    afterCreate(organization, server) {
+      server.create('samlIntegration', 'okta', {organization});
+    },
+  }),
+
+  withForceOktaIntegration: trait({
+    afterCreate(organization, server) {
+      server.create('samlIntegration', 'okta', 'forced', {organization});
+    },
+  }),
 });
