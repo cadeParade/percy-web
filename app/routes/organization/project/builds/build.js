@@ -146,14 +146,9 @@ export default Route.extend({
       body: commentBody,
       taggedUsers: mentionedUsers,
     });
-    return yield newComment
-      .save()
-      .then(() => {
-        commentThread.snapshot.reload();
-      })
-      .catch(() => {
-        newComment.rollbackAttributes();
-      });
+    return yield newComment.save().catch(() => {
+      newComment.rollbackAttributes();
+    });
   }),
 
   _createCommentThread: task(function*({
