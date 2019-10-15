@@ -1,6 +1,7 @@
 import DS from 'ember-data';
+import SaveManualMixin from 'percy-web/mixins/save-manual-mixin';
 
-export default DS.Model.extend({
+export default DS.Model.extend(SaveManualMixin, {
   commentThread: DS.belongsTo('comment-thread', {async: false}),
   author: DS.belongsTo('user', {async: false}),
   body: DS.attr('string'),

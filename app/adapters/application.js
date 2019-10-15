@@ -170,4 +170,17 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 
     return this._super(modelName, id, snapshot, requestType, query);
   },
+
+  createRecordManual(store, type, snapshot) {
+    let data = {};
+    let serializer = store.serializerFor(type.modelName);
+    let url = this.buildURL(type.modelName, null, snapshot, 'createRecord');
+
+    serializer.serializeIntoHash(data, type, snapshot, {includeId: true});
+
+    return this.ajax(url, 'POST', {data: data}).then(response => {
+      store.pushPayload(response);
+      return store.peekRecord(type.modelName, response.data.id);
+    });
+  },
 });
