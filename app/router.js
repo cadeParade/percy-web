@@ -7,6 +7,7 @@ export const AUTH_CALLBACK_ROUTE = 'auth-callback';
 const VERIFY_EMAIL_ROUTE = 'verify-email';
 const VERIFICATION_REQUIRED_ROUTE = 'email-verification-required';
 const DUPLICATE_EMAIL_ROUTE = 'duplicate-email';
+const SSO_LOGIN_ROUTE = 'sso-login';
 const PASSWORD_RESET_ROUTE = 'password-reset';
 const PASSWORD_UPDATED_ROUTE = 'password-updated';
 const LOGIN_ROUTE = 'login';
@@ -17,6 +18,7 @@ export const DO_NOT_FORWARD_REDIRECT_ROUTES = [
   VERIFY_EMAIL_ROUTE,
   VERIFICATION_REQUIRED_ROUTE,
   DUPLICATE_EMAIL_ROUTE,
+  SSO_LOGIN_ROUTE,
   PASSWORD_RESET_ROUTE,
   PASSWORD_UPDATED_ROUTE,
   LOGIN_ROUTE,
@@ -51,6 +53,7 @@ Router.map(function() {
   this.route(VERIFY_EMAIL_ROUTE, {path: '/auth/verify-email'});
   this.route(VERIFICATION_REQUIRED_ROUTE, {path: '/auth/email-verification-required'});
   this.route(DUPLICATE_EMAIL_ROUTE, {path: '/auth/duplicate-email'});
+  this.route(SSO_LOGIN_ROUTE, {path: '/auth/sso-login'});
   this.route(PASSWORD_RESET_ROUTE, {path: '/auth/password-reset'});
   this.route(PASSWORD_UPDATED_ROUTE, {path: '/auth/password-updated'});
   // Docs and child routes are deprecated and are intercepted in docs route for redirect.

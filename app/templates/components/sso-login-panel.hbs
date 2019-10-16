@@ -1,0 +1,22 @@
+<div class='w-full container-vh bg-white-pattern flex items-center justify-center' data-test-sso-login>
+  {{#status-panel
+    inlineSvgName=svgName
+    mainText=mainText
+    secondaryText=secondaryText
+  }}
+    {{#percy-btn isPrimaryButton=true handleClick=(action "showLoginPrompt")}}
+      Login now
+    {{/percy-btn}}
+    <p class='mt-2'>
+      To bypass this page in the future, enter your {{or organizationName ''}} email address in the Percy login screen.
+    </p>
+
+    <div class='mt-2'>
+      If you would like assistance, please
+        <span data-test-sso-show-support {{action "showSupport"}} class='link-blue cursor-pointer'>
+          contact support
+        </span>
+      .
+    </div>
+  {{/status-panel}}
+</div>

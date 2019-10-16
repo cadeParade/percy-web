@@ -114,6 +114,18 @@ var EnsureStatefulLogin = Mixin.create({
     });
   },
 
+  showSsoLoginModal(connectionName) {
+    const originalRedirectUrl = lockOptions.auth.redirectUrl;
+    lockOptions.auth.redirectUrl = `${lockOptions.auth.redirectUrl}?connect=true`;
+    lockOptions.allowLogin = true;
+    lockOptions.sso = true;
+    lockOptions.allowedConnections = [connectionName];
+    this.showLoginModalEnsuringState().then(() => {
+      this.resetLockOptionsToDefault();
+      lockOptions.auth.redirectUrl = originalRedirectUrl;
+    });
+  },
+
   resetLockOptionsToDefault() {
     lockOptions.allowLogin = undefined;
     lockOptions.initialScreen = undefined;
