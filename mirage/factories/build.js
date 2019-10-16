@@ -18,6 +18,7 @@ export default Factory.extend({
   totalComparisonsDiff: 8,
   totalComparisonsFinished: 12,
   totalOpenComments: 0,
+  partial: false,
 
   createdAt() {
     return moment();

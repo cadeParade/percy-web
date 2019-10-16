@@ -41,6 +41,7 @@ const REJECTED_LABEL = 'Changes requested';
 export default DS.Model.extend({
   project: DS.belongsTo('project', {async: false}),
   repo: DS.belongsTo('repo', {async: false}),
+  partial: DS.attr('boolean'),
 
   // Check isRepoLinked before accessing repo.
   isRepoLinked: bool('repo'),

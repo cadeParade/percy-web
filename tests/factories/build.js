@@ -18,6 +18,7 @@ FactoryGuy.define('build', {
     browsers: () => [FactoryGuy.make('browser')],
     commitHtmlUrl: 'http://example.com/commit/123',
     branchHtmlUrl: 'http://example.com/tree/master',
+    partial: false,
   },
   traits: {
     withLongBranch: {branch: () => faker.lorem.slug(20)},

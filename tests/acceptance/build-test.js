@@ -650,6 +650,13 @@ describe('Acceptance: Build', function() {
       expect(BuildPage.removedSnapshots.isVisible).to.equal(false);
     });
 
+    it('does not display when build is partial', async function() {
+      build.update({partial: true});
+      await BuildPage.visitBuild(urlParams);
+      expect(BuildPage.removedSnapshots.isVisible).to.equal(false);
+      percySnapshot(this.test);
+    });
+
     describe('when there is one snapshot missing', function() {
       it('displays correctly', async function() {
         await BuildPage.visitBuild(urlParams);

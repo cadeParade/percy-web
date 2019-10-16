@@ -18,7 +18,13 @@
     isBuildApprovable=isBuildApprovable
   }}
 
-  {{#if (and (variation 'show-removed-snapshots') build.isFinished)}}
+  {{#if (and build.isFinished build.partial)}}
+    <div class="public-project-notice p-2 border border-gray-100 flex items-center font-semibold">
+      Partial build
+    </div>
+  {{/if}}
+
+  {{#if (and (variation 'show-removed-snapshots') build.isFinished (not build.partial))}}
     <RemovedSnapshots @build={{build}} />
   {{/if}}
 
