@@ -644,7 +644,7 @@ describe('Acceptance: Build', function() {
       });
     });
 
-    it('does not display when build is not finished', async function() {
+    it('does not display missing-snapshots box when build is not finished', async function() {
       build.update({state: BUILD_STATES.PENDING});
       await BuildPage.visitBuild(urlParams);
       expect(BuildPage.removedSnapshots.isVisible).to.equal(false);

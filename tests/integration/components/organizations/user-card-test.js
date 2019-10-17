@@ -216,6 +216,25 @@ describe('Integration: UserCard', function() {
       });
 
       describe('Remove', function() {
+        async function _setupSamlIntegration(context, samlIntegrationTraits) {
+          // make saml integration
+          const organization = adminOrganizationUser.organization;
+          const samlIntegration = make(...['saml-integration'].concat(samlIntegrationTraits));
+          organization.setProperties({samlIntegration});
+          context.setProperties({organization});
+
+          //make sso identity
+          make('identity', 'oktaProvider', {user: otherAdminOrganizationUser.user});
+
+          return await render(
+            hbs`{{
+              organizations/user-card
+              organizationUser=otherAdminOrganizationUser
+              isViewerAdmin=true
+            }}`,
+          );
+        }
+
         it('requests confirmation and calls destroyRecord', async function() {
           await render(
             hbs`{{
@@ -235,18 +254,23 @@ describe('Integration: UserCard', function() {
           orgUserStub.restore;
         });
 
-        it('disables remove button when user has saml identity', async function() {
-          make('identity', 'oktaProvider', {user: otherAdminOrganizationUser.user});
+        // eslint-disable-next-line
+        it('enables remove button when user has saml identity in non-forced sso account', async function() {
+          await _setupSamlIntegration(this, []);
+
           const orgUserStub = sinon.stub(otherAdminOrganizationUser, 'destroyRecord');
 
-          await render(
-            hbs`{{
-              organizations/user-card
-              organizationUser=otherAdminOrganizationUser
-              isViewerAdmin=true
-            }}`,
-          );
+          expect(UserCard.buttons.objectAt(1).text).to.equal('Remove');
+          await UserCard.buttons.objectAt(1).click();
 
+          expect(orgUserStub).to.have.been.called;
+        });
+
+        // eslint-disable-next-line
+        it('disables remove button when user has saml identity in forced sso account', async function() {
+          await _setupSamlIntegration(this, ['forced']);
+
+          const orgUserStub = sinon.stub(otherAdminOrganizationUser, 'destroyRecord');
           expect(UserCard.buttons.objectAt(1).text).to.equal('Remove');
           await UserCard.buttons.objectAt(1).click();
 

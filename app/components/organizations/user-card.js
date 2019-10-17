@@ -15,6 +15,7 @@ export default Component.extend({
   currentUser: readOnly('session.currentUser'),
   role: readOnly('organizationUser.role'),
   roleTitle: readOnly('organizationUser.roleTitle'),
+  samlIntegration: readOnly('organizationUser.organization.samlIntegration'),
 
   deleteNameText: computed(function() {
     if (this.isCurrentUser) {
@@ -44,7 +45,8 @@ export default Component.extend({
   }),
 
   isRemoveDisabled: computed('isViewerAdmin', 'userHasSamlIdentity', function() {
-    return this.userHasSamlIdentity || !this.isViewerAdmin;
+    const isOrgForceSso = this.samlIntegration && this.samlIntegration.forceSso;
+    return isOrgForceSso || !this.isViewerAdmin;
   }),
 
   actions: {
