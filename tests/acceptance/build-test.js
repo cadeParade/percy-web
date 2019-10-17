@@ -650,11 +650,26 @@ describe('Acceptance: Build', function() {
       expect(BuildPage.removedSnapshots.isVisible).to.equal(false);
     });
 
-    it('does not display when build is partial', async function() {
-      build.update({partial: true});
-      await BuildPage.visitBuild(urlParams);
-      expect(BuildPage.removedSnapshots.isVisible).to.equal(false);
-      percySnapshot(this.test);
+    describe('partial builds', function() {
+      beforeEach(async function() {
+        build.update({partial: true});
+      });
+      //eslint-disable-next-line
+      it('shows partial header instead of missing snapshots.', async function() {
+        await BuildPage.visitBuild(urlParams);
+        expect(BuildPage.removedSnapshots.isVisible).to.equal(false);
+        percySnapshot(this.test);
+      });
+
+      it('displays correctly when there are no snapshots with diffs', async function() {
+        build.snapshots.models.forEach(snapshot => {
+          snapshot.comparisons.models.forEach(comparison => {
+            comparison.update({isSame: true, diffRatio: 0});
+          });
+        });
+        await BuildPage.visitBuild(urlParams);
+        await percySnapshot(this.test);
+      });
     });
 
     describe('when there is one snapshot missing', function() {
