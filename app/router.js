@@ -138,6 +138,7 @@ Router.map(function() {
         this.route('build', {path: '/:build_id'}, function() {
           this.route('snapshot', {path: '/view/:snapshot_id/:width'});
         });
+        this.route('default-comparison', {path: 'snapshot/:snapshot_id/default-comparison'});
       });
     });
   });

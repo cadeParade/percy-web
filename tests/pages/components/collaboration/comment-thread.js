@@ -52,6 +52,7 @@ export const commentThread = {
   isRejectBadgeVisible: alias('firstComment.requestChangesBadge.isVisible'),
   wasRejectedPreviously: alias('firstComment.requestChangesBadge.isRequestedPreviously'),
   previousBuildHref: alias('firstComment.requestChangesBadge.previousBuildLinkHref'),
+  goToOriginatingSnapshot: alias('firstComment.requestChangesBadge.goToOriginatingSnapshot'),
 };
 
 export default create(commentThread);

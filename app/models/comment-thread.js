@@ -12,9 +12,8 @@ export default DS.Model.extend({
   closedBy: DS.belongsTo('user', {async: false}),
   createdAt: DS.attr('date'),
   updatedAt: DS.attr('date'),
-  originatingBuildNumber: DS.attr('number'),
-  originatingSnapshotId: DS.attr('number'),
-  originatingSnapshotPartialUrl: DS.attr('string'),
+  originatingBuildNumber: DS.attr(),
+  originatingSnapshotId: DS.attr(),
 
   isReview: equal('type', REVIEW_COMMENT_TYPE),
   isNote: equal('type', NOTE_COMMENT_TYPE),

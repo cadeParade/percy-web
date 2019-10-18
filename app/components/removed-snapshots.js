@@ -7,6 +7,7 @@ import diffAttrs from 'ember-diff-attrs';
 const MAX_NAMES_TO_DISPLAY = 5;
 
 export default Component.extend({
+  build: null,
   areAllRemovedSnapshotsShowing: false,
   areSnapshotsTruncated: gt('removedSnapshots.length', MAX_NAMES_TO_DISPLAY),
 

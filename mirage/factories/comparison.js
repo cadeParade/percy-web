@@ -3,7 +3,6 @@ import moment from 'moment';
 import {TEST_IMAGE_DIMS, TEST_IMAGE_URLS} from 'percy-web/mirage/factories/screenshot';
 
 const HIGH_DIFF_RATIO = 0.62;
-const LOW_DIFF_RATIO = 0.42;
 const NO_DIFF_RATIO = 0.0;
 
 export default Factory.extend({
@@ -26,14 +25,12 @@ export default Factory.extend({
   diffRatio: HIGH_DIFF_RATIO,
 
   afterCreate(comparison, server) {
-    const diffRatio = LOW_DIFF_RATIO;
     const headScreenshot = server.create('screenshot', 'v2');
     const baseScreenshot = server.create('screenshot', 'v1');
     const diffImage = server.create('image', {url: TEST_IMAGE_URLS.DIFF_URL});
     const browser = server.create('browser');
 
     comparison.update({
-      diffRatio,
       headScreenshot,
       baseScreenshot,
       diffImage,

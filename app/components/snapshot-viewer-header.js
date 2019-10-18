@@ -83,7 +83,10 @@ export default Component.extend({
       const latestChangedAncestorRef = this.snapshot.belongsTo('latestChangedAncestor');
       try {
         const latestChangedAncestor = await latestChangedAncestorRef.reload();
-        this.router.transitionTo(latestChangedAncestor.defaultPartialUrl);
+        this.router.transitionTo(
+          'organization.project.builds.default-comparison',
+          latestChangedAncestor.id,
+        );
       } catch (e) {
         try {
           let message = 'There was a problem fetching the latest changed snapshot.';

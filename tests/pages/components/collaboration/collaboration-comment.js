@@ -1,4 +1,4 @@
-import {attribute, create, hasClass, isVisible, text} from 'ember-cli-page-object';
+import {attribute, clickable, create, hasClass, isVisible, text} from 'ember-cli-page-object';
 
 const SELECTORS = {
   SCOPE: '[data-test-collaboration-comment]',
@@ -8,6 +8,7 @@ const SELECTORS = {
   RESOLVED_INDICATOR: '[data-test-resolved]',
   CREATED_AT: '[data-test-comment-created-at]',
   REQUEST_CHANGES_BADGE: '[data-test-request-changes-badge]',
+  ORIGINATING_SNAPSHOT_LINK: '[data-test-originating-snapshot-link]',
 };
 
 export const collaborationComment = {
@@ -37,6 +38,7 @@ export const collaborationComment = {
   requestChangesBadge: {
     scope: SELECTORS.REQUEST_CHANGES_BADGE,
     isRequestedPreviously: hasClass('text-orange-500'),
+    goToOriginatingSnapshot: clickable(SELECTORS.ORIGINATING_SNAPSHOT_LINK),
     previousBuildLinkHref: attribute('href', 'a'),
   },
 };

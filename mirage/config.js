@@ -7,6 +7,7 @@ import {
   SNAPSHOT_REVIEW_STATE_REASONS,
 } from 'percy-web/models/snapshot';
 import {REVIEW_ACTIONS} from 'percy-web/models/review';
+import {get} from '@ember/object';
 
 export default function() {
   // Enable this to see verbose request logging from mirage:
@@ -131,7 +132,7 @@ export default function() {
   this.post('/comments', function(schema) {
     const attrs = this.normalizedRequestAttrs('comment');
     const currentUser = schema.users.findBy({_currentLoginInTest: true});
-
+    const snapshot = attrs.snapshotId && schema.snapshots.find(attrs.snapshotId);
     let commentThread;
     if (attrs.commentThreadId) {
       commentThread = schema.commentThreads.findBy({id: attrs.commentThreadId});
@@ -140,10 +141,10 @@ export default function() {
         type: attrs.threadType,
         snapshotId: attrs.snapshotId,
         createdAt: new Date(),
+        originatingSnapshotId: get(snapshot, 'id'),
       });
 
       if (attrs.threadType === REVIEW_COMMENT_TYPE) {
-        const snapshot = schema.snapshots.find(attrs.snapshotId);
         snapshot.update({
           reviewState: SNAPSHOT_REJECTED_STATE,
           reviewStateReason: SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED,
@@ -400,6 +401,7 @@ export default function() {
           type: REVIEW_COMMENT_TYPE,
           snapshotId: snapshot.id,
           createdAt: new Date(),
+          originatingSnapshotId: snapshot.id,
         });
         schema.comments.create({
           commentThread: commentThread,

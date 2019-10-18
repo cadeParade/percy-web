@@ -57,6 +57,10 @@ export const SnapshotViewerHeader = {
     }),
   },
 
+  activeWidthButton: getter(function() {
+    return this.widthSwitcher.buttons.toArray().findBy('isActive');
+  }),
+
   isFullScreenToggleVisible: isVisible(SELECTORS.FULL_SCREEN_TOGGLE),
   clickToggleFullscreen: clickable(SELECTORS.FULL_SCREEN_TOGGLE),
 
@@ -107,8 +111,11 @@ export const SnapshotViewerHeader = {
   isRejected: isVisible(SELECTORS.REQUEST_CHANGES_BADGE),
 
   isBaseComparisonModeButtonVisible: isVisible(SELECTORS.COMPARISON_MODE_SWITCHER_BASE),
+  isBaseComparisonModeSelected: hasClass('is-active', SELECTORS.COMPARISON_MODE_SWITCHER_BASE),
   isDiffComparisonModeButtonVisible: isVisible(SELECTORS.COMPARISON_MODE_SWITCHER_DIFF),
+  isDiffComparisonModeSelected: hasClass('is-active', SELECTORS.COMPARISON_MODE_SWITCHER_DIFF),
   isHeadComparisonModeButtonVisible: isVisible(SELECTORS.COMPARISON_MODE_SWITCHER_HEAD),
+  isHeadComparisonModeSelected: hasClass('is-active', SELECTORS.COMPARISON_MODE_SWITCHER_HEAD),
 
   isNewComparisonModeButtonVisible: isVisible(SELECTORS.COMPARISON_MODE_SWITCHER_NEW),
 

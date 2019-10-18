@@ -36,7 +36,6 @@ export default DS.Model.extend({
   hasOpenCommentThreads: notEmpty('openCommentThreads'),
 
   name: DS.attr(),
-  defaultPartialUrl: DS.attr(),
 
   build: DS.belongsTo('build', {async: true}),
   screenshots: DS.hasMany('screenshot', {async: false}),

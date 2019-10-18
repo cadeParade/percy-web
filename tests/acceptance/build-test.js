@@ -310,21 +310,27 @@ describe('Acceptance: Build', function() {
     });
 
     it('displays previously rejected comment threads', async function() {
-      const originatingSnapshotPartialUrl = 'the/best/url';
-
-      server.create('commentThread', 'withTwoComments', {
+      const commentThread = server.create('commentThread', 'withTwoComments', {
         snapshot: twoWidthsSnapshot,
-        originatingSnapshotPartialUrl,
       });
+      const originatingSnapshotId = commentThread.originatingSnapshotId;
+      server.create('build');
+      server.create('snapshot', 'withComparison', {id: originatingSnapshotId, build});
+
       await BuildPage.visitBuild(urlParams);
 
       const secondSnapshot = BuildPage.snapshots[1];
       const firstCommentThread = secondSnapshot.collaborationPanel.commentThreads[0];
       expect(firstCommentThread.isRejectBadgeVisible).to.equal(true);
       expect(firstCommentThread.wasRejectedPreviously).to.equal(true);
-      expect(firstCommentThread.previousBuildHref).to.equal(originatingSnapshotPartialUrl);
+      await percySnapshot(`${this.test.fullTitle()} | before following originating snapshot link`);
+      // eslint-disable-next-line
+      expect(firstCommentThread.previousBuildHref).to.equal(`/${urlParams.orgSlug}/${urlParams.projectSlug}/builds/snapshot/${originatingSnapshotId}/default-comparison`);
 
-      await percySnapshot(this.test);
+      await firstCommentThread.goToOriginatingSnapshot();
+
+      expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
+      await percySnapshot(`${this.test.fullTitle()} | after following originating snapshot link`);
     });
 
     // eslint-disable-next-line
@@ -639,8 +645,6 @@ describe('Acceptance: Build', function() {
         build: baseBuild,
         id: 'missing-snapshot-1',
         name: 'missing snapshot 1',
-        //eslint-disable-next-line
-        defaultPartialUrl: `/${urlParams.orgSlug}/${urlParams.projectSlug}/builds/${baseBuild.id}/view/missing-snapshot-1/1280?mode=diff&browser=firefox`,
       });
     });
 
@@ -719,6 +723,7 @@ describe('Acceptance: Build', function() {
       await BuildPage.removedSnapshots.snapshotNames[0].click();
       await BuildPage.snapshotFullscreen.header.clickToggleFullscreen();
       expect(currentRouteName()).to.equal('organization.project.builds.build.index');
+
       expect(BuildPage.removedSnapshots.isVisible).to.equal(false);
       percySnapshot(this.test);
     });
@@ -898,8 +903,8 @@ describe('Acceptance: Build', function() {
     expect(snapshotReview.action).to.equal('request_changes');
     expect(snapshotReview.buildId).to.equal(build.id);
     expect(snapshotReview.snapshotIds).to.eql([defaultSnapshot.id]);
-
     expect(firstSnapshot.commentThreads.length).to.equal(1);
+    expect(firstSnapshot.commentThreads[0].wasRejectedPreviously).to.equal(false);
     await percySnapshot(this.test);
   });
 
@@ -995,13 +1000,7 @@ describe('Acceptance: Build', function() {
     it('navigates to latest changed ancestor snapshot', async function() {
       const parentBuild = server.create('build', 'withSnapshots', {project});
       server.get(`/snapshots/${defaultSnapshot.id}/latest-changed-ancestor`, () => {
-        const snapshot = parentBuild.snapshots.models.firstObject;
-        const comparison = snapshot.comparisons.models.firstObject;
-        snapshot.update({
-          //eslint-disable-next-line
-          defaultPartialUrl: `/${parentBuild.project.organization.slug}/${parentBuild.project.slug}/builds/${parentBuild.id}/view/${snapshot.id}/${comparison.width}?mode=diff&browser=${comparison.browser.browserFamily.slug}`,
-        });
-        return snapshot;
+        return parentBuild.snapshots.models.firstObject;
       });
 
       await BuildPage.visitBuild(urlParams);
@@ -1495,13 +1494,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     it('navigates to latest changed ancestor snapshot', async function() {
       const parentBuild = server.create('build', 'withSnapshots', {project});
       server.get(`/snapshots/${snapshot.id}/latest-changed-ancestor`, () => {
-        const snapshot = parentBuild.snapshots.models.firstObject;
-        const comparison = snapshot.comparisons.models.firstObject;
-        snapshot.update({
-          //eslint-disable-next-line
-          defaultPartialUrl: `/${parentBuild.project.organization.slug}/${parentBuild.project.slug}/builds/${parentBuild.id}/view/${snapshot.id}/${comparison.width}?mode=diff&browser=${comparison.browser.browserFamily.slug}`,
-        });
-        return snapshot;
+        return parentBuild.snapshots.models.firstObject;
       });
 
       await BuildPage.visitFullPageSnapshot(urlParams);

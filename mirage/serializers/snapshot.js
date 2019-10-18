@@ -13,9 +13,6 @@ export default JSONAPISerializer.extend({
     'comparisons.headSnapshot',
     'comparisons.diffImage',
     'commentThreads.comments',
-    // Builds are not fully included by API, but it does send the resource linkage info,
-    // and this is the best way to mimick that in Mirage for now.
-    'build',
   ]),
 
   links(snapshot) {
@@ -24,5 +21,11 @@ export default JSONAPISerializer.extend({
         related: `/api/v1/snapshots/${snapshot.id}/latest-changed-ancestor`,
       },
     };
+  },
+
+  shouldIncludeLinkageData(relationshipKey) {
+    if (relationshipKey === 'build') {
+      return true;
+    }
   },
 });

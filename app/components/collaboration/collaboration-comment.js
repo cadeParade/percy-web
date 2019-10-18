@@ -13,6 +13,7 @@ export default Component.extend({
   closeCommentThread() {},
 
   commentThread: readOnly('comment.commentThread'),
+  commentThreadSnapshot: readOnly('commentThread.snapshot'),
   author: readOnly('comment.author'),
   isClosed: readOnly('commentThread.isClosed'),
   isReview: readOnly('commentThread.isReview'),
@@ -22,12 +23,13 @@ export default Component.extend({
   }),
 
   isOnOriginatingSnapshot: computed(
-    'commentThread.{originatingSnapshotId,snapshot.id}',
+    'commentThread.originatingSnapshotId',
+    'commentThreadSnapshot.id',
     function() {
       const threadSnapshot = this.commentThread.snapshot;
       const originatingSnapshotId = this.commentThread.originatingSnapshotId;
       if (threadSnapshot.id && originatingSnapshotId) {
-        return originatingSnapshotId.toString() !== threadSnapshot.id;
+        return originatingSnapshotId.toString() === threadSnapshot.id;
       }
     },
   ),
