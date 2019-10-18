@@ -15,15 +15,9 @@
   {{/if}}
 {{/if}}
 
+
 {{#if isBase}}
-  {{#if comparison.wasAdded}}
-      <p>
-        {{fa-icon "remove" class="LargeXIcon"}}
-        New snapshot,<br>nothing to compare yet.
-      </p>
-  {{else}}
-    {{simple-image image=baseImage}}
-  {{/if}}
+  {{simple-image image=baseImage}}
 {{/if}}
 
 {{#if isHead}}

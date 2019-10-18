@@ -46,8 +46,9 @@
         <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--left">
           <div class="ComparisonViewer-snapshotMissing">
             <div>
-              {{fa-icon "arrows-h"}}
-              <p>No visual changes detected.</p>
+              {{inline-svg "no-changes-snapshot" class="mx-auto mb-3 opacity-50"}}
+              <div class="mb-1 text-lg md:text-xl leading-none font-semibold">No visual changes</div>
+              <p class="mb-0">There are no visual changes detected for this snapshot.</p>
             </div>
           </div>
         </div>
@@ -68,8 +69,15 @@
       <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--left">
         <div class="ComparisonViewer-snapshotMissing">
           <div>
-            {{fa-icon "remove" class="LargeXIcon"}}
-            <p>New snapshot,<br>nothing to compare yet.</p>
+            {{#if comparison.headSnapshot.isReintroduced}}
+              {{inline-svg "reintroduced-snapshot" class="mx-auto mb-3 opacity-50"}}
+              <div class="mb-1 text-lg md:text-xl leading-none font-semibold">Reintroduced snapshot</div>
+              <p class="mb-0 text-gray-400">This snapshot existed in an earlier build, but is not in the base build, so a comparison was not run.</p>
+            {{else}}
+              {{inline-svg "new-snapshot" class="mx-auto mb-3 opacity-50"}}
+              <div class="mb-1 text-lg md:text-xl leading-none font-semibold">New snapshot</div>
+              <p class="mb-0 text-gray-400">No comparison could be run, as the base build does not contain a snapshot with this name.</p>
+            {{/if}}
           </div>
         </div>
       </div>

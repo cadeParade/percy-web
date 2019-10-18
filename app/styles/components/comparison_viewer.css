@@ -18,13 +18,12 @@
 
   .ComparisonViewer-snapshotMissing {
     @apply flex;
-    @apply items-center;
     @apply justify-center;
+    @apply self-start;
     @apply w-full;
     @apply text-center;
-    @apply bg-white;
-    @apply border;
-    height: 188px;
+    @apply border border-dashed border-gray-200;
+    @apply p-8;
   }
 
   .ComparisonViewer-noDiffBox {

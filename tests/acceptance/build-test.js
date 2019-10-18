@@ -1045,6 +1045,12 @@ describe('Acceptance: Build', function() {
     await BuildPage.visitBuild(urlParams);
     percySnapshot(this.test);
   });
+
+  it('displays reintroduced snapshot', async function() {
+    server.create('snapshot', 'new', 'reintroduced', {build, name: 'ohai'});
+    await BuildPage.visitBuild(urlParams);
+    percySnapshot(this.test);
+  });
 });
 
 describe('Acceptance: Fullscreen Snapshot', function() {

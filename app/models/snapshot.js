@@ -44,6 +44,7 @@ export default DS.Model.extend({
   fingerprint: DS.attr(),
 
   latestChangedAncestor: DS.belongsTo('snapshot', {async: true, inverse: null}),
+  isReintroduced: DS.attr('boolean'),
 
   // Review state.
   reviewState: DS.attr(),

@@ -44,6 +44,7 @@ export default Factory.extend({
   rejected: trait(_rejectedProps),
   userApproved: trait(_userApprovedProps),
   userApprovedPreviously: trait(_userApprovedPreviouslyProps),
+  reintroduced: trait({isReintroduced: true}),
 
   new: trait(
     Object.assign({}, _unreviewedProps, {
