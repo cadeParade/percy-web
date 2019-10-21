@@ -29,7 +29,7 @@
     ]
   },
   "devDependencies": {
-    "@ember/jquery": "^0.6.1",
+    "@ember/jquery": "^1.1.0",
     "@ember/optional-features": "^1.0.0",
     "@ember/test-helpers": "1.6.1",
     "@percy/agent": "^0.11.0",
