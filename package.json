@@ -109,7 +109,7 @@
     "glob": "^7.1.4",
     "hint.css": "^2.6.0",
     "http-proxy": "^1.17.0",
-    "husky": "^3.0.1",
+    "husky": "^3.0.9",
     "lint-staged": "9.4.2",
     "loader.js": "^4.7.0",
     "moment": "^2.24.0",
