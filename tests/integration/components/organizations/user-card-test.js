@@ -216,25 +216,6 @@ describe('Integration: UserCard', function() {
       });
 
       describe('Remove', function() {
-        async function _setupSamlIntegration(context, samlIntegrationTraits) {
-          // make saml integration
-          const organization = adminOrganizationUser.organization;
-          const samlIntegration = make(...['saml-integration'].concat(samlIntegrationTraits));
-          organization.setProperties({samlIntegration});
-          context.setProperties({organization});
-
-          //make sso identity
-          make('identity', 'oktaProvider', {user: otherAdminOrganizationUser.user});
-
-          return await render(
-            hbs`{{
-              organizations/user-card
-              organizationUser=otherAdminOrganizationUser
-              isViewerAdmin=true
-            }}`,
-          );
-        }
-
         it('requests confirmation and calls destroyRecord', async function() {
           await render(
             hbs`{{
@@ -245,36 +226,13 @@ describe('Integration: UserCard', function() {
           );
           const orgUserStub = sinon.stub(otherAdminOrganizationUser, 'destroyRecord');
 
-          expect(UserCard.buttons[1].text).to.equal('Remove');
-          await UserCard.buttons[1].click();
+          expect(UserCard.buttons.objectAt(1).text).to.equal('Remove');
+          await UserCard.buttons.objectAt(1).click();
 
           expect(confirmationAlert).to.have.been.called;
           expect(orgUserStub).to.have.been.called;
 
           orgUserStub.restore;
-        });
-
-        // eslint-disable-next-line
-        it('enables remove button when user has saml identity in non-forced sso account', async function() {
-          await _setupSamlIntegration(this, []);
-
-          const orgUserStub = sinon.stub(otherAdminOrganizationUser, 'destroyRecord');
-
-          expect(UserCard.buttons.objectAt(1).text).to.equal('Remove');
-          await UserCard.buttons.objectAt(1).click();
-
-          expect(orgUserStub).to.have.been.called;
-        });
-
-        // eslint-disable-next-line
-        it('disables remove button when user has saml identity in forced sso account', async function() {
-          await _setupSamlIntegration(this, ['forced']);
-
-          const orgUserStub = sinon.stub(otherAdminOrganizationUser, 'destroyRecord');
-          expect(UserCard.buttons.objectAt(1).text).to.equal('Remove');
-          await UserCard.buttons.objectAt(1).click();
-
-          expect(orgUserStub).to.not.have.been.called;
         });
       });
 
@@ -328,10 +286,10 @@ describe('Integration: UserCard', function() {
         it('requests confirmation and calls destroyRecord', async function() {
           await render(
             hbs`{{
-              organizations/user-card
-              organizationUser=adminOrganizationUser
-              isViewerAdmin=true
-            }}`,
+        organizations/user-card
+        organizationUser=adminOrganizationUser
+        isViewerAdmin=true
+      }}`,
           );
           const orgUserStub = sinon.stub(adminOrganizationUser, 'destroyRecord');
 
@@ -343,24 +301,6 @@ describe('Integration: UserCard', function() {
           expect(transitionToStub).to.have.been.calledWith('default-org');
 
           orgUserStub.restore;
-        });
-
-        it('disables "leave organization" button when user has saml identity', async function() {
-          make('identity', 'oktaProvider', {user: adminOrganizationUser.user});
-          const orgUserStub = sinon.stub(adminOrganizationUser, 'destroyRecord');
-
-          await render(
-            hbs`{{
-              organizations/user-card
-              organizationUser=adminOrganizationUser
-              isViewerAdmin=true
-            }}`,
-          );
-
-          expect(UserCard.buttons[0].text).to.equal('Leave organization');
-          await UserCard.buttons[0].click();
-
-          expect(orgUserStub).to.not.have.been.called;
         });
       });
     });

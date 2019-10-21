@@ -15,7 +15,6 @@ export default Component.extend({
   currentUser: readOnly('session.currentUser'),
   role: readOnly('organizationUser.role'),
   roleTitle: readOnly('organizationUser.roleTitle'),
-  samlIntegration: readOnly('organizationUser.organization.samlIntegration'),
 
   deleteNameText: computed(function() {
     if (this.isCurrentUser) {
@@ -36,17 +35,6 @@ export default Component.extend({
       ...identities.filter(i => i.isGithubIdentity),
       ...identities.filter(i => i.isAuth0Identity),
     ];
-  }),
-
-  userHasSamlIdentity: computed('orderedIdentities.@each.isSamlIdentity', function() {
-    return this.orderedIdentities.some(identity => {
-      return identity.isSamlIdentity;
-    });
-  }),
-
-  isRemoveDisabled: computed('isViewerAdmin', 'userHasSamlIdentity', function() {
-    const isOrgForceSso = this.samlIntegration && this.samlIntegration.forceSso;
-    return isOrgForceSso || !this.isViewerAdmin;
   }),
 
   actions: {
