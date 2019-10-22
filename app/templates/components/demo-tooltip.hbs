@@ -1,53 +1,55 @@
-<div data-test-tooltip-wrapper class="{{if shouldHideWholeTooltip 'hidden'}} {{if (not isLastTooltip) 'data-test-nextable-tooltip-wrapper'}}" style="position:relative;">
-  <div class="tip-anchor {{anchorPlacement}}" data-test-tooltip-anchor>
-    {{#attach-popover
-      class=(if isLastTooltip 'tip-container' 'nextable tip-container')
-      isShown=shouldShowTooltip
-      showOn='click'
-      hideOn='clickout'
-      interactive=true
-      arrow=false
-      placement='left'
-      onChange=(action 'onChange')
-      as |attacher|
-    }}
-      <div class="text-lg font-semibold mb-1">
-        {{title}}
-      </div>
-      <p>{{message}}</p>
+{{#if build.project.isDemo}}
+  <div data-test-tooltip-wrapper class="{{if shouldHideWholeTooltip 'hidden'}} {{if (not isLastTooltip) 'data-test-nextable-tooltip-wrapper'}}" style="position:relative;">
+    <div class="tip-anchor {{anchorPlacement}}" data-test-tooltip-anchor>
+      {{#attach-popover
+        class=(if isLastTooltip 'tip-container' 'nextable tip-container')
+        isShown=shouldShowTooltip
+        showOn='click'
+        hideOn='clickout'
+        interactive=true
+        arrow=false
+        placement='left'
+        onChange=(action 'onChange')
+        as |attacher|
+      }}
+        <div class="text-lg font-semibold mb-1">
+          {{this.title}}
+        </div>
+        <p>{{this.message}}</p>
 
-      <div class="flex justify-between">
-        {{#if isLastTooltip}}
-          <button
-            type="button"
-            name="button"
-            class="percy-btn percy-btn-primary"
-            {{action (pipe (action attacher.hide) (action "hideAllTooltips"))}}
-            data-test-tooltip-dismiss-all-button
-          >
-            Got it!
-          </button>
-        {{else}}
-          <button
-            type="button"
-            name="button"
-            class="percy-btn"
-            {{action (pipe (action attacher.hide) (action "hideAllTooltips"))}}
-            data-test-tooltip-dismiss-all-button
-          >
-            Hide all
-          </button>
-          <button
-            type="button"
-            name="button"
-            class="percy-btn percy-btn-primary"
-            {{action "next"}}
-            data-test-tooltip-next-button
-          >
-            Next
-          </button>
-        {{/if}}
-      </div>
-    {{/attach-popover}}
+        <div class="flex justify-between">
+          {{#if isLastTooltip}}
+            <button
+              type="button"
+              name="button"
+              class="percy-btn percy-btn-primary"
+              {{action (pipe (action attacher.hide) (action "hideAllTooltips"))}}
+              data-test-tooltip-dismiss-all-button
+            >
+              Got it!
+            </button>
+          {{else}}
+            <button
+              type="button"
+              name="button"
+              class="percy-btn"
+              {{action (pipe (action attacher.hide) (action "hideAllTooltips"))}}
+              data-test-tooltip-dismiss-all-button
+            >
+              Hide all
+            </button>
+            <button
+              type="button"
+              name="button"
+              class="percy-btn percy-btn-primary"
+              {{action "next"}}
+              data-test-tooltip-next-button
+            >
+              Next
+            </button>
+          {{/if}}
+        </div>
+      {{/attach-popover}}
+    </div>
   </div>
-</div>
+{{/if}}

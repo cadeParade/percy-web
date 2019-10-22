@@ -5,21 +5,32 @@ import {computed} from '@ember/object';
 import {inject as service} from '@ember/service';
 
 export const TOOLTIP_MASTER_KEY = 'percy_demo_tooltips_hidden';
+const GROUP_SEQUENCE = [
+  'build-overview',
+  'group-overview',
+  'comparison-overview',
+  'group-request-changes-button',
+  'group-approval-button',
+  'build-approval-button',
+];
 
-// one --> Build overview
-// two --> Snapshot title
-// three --> Diff
-// four --> Snapshot approval button
-// five --> Build approval button
-// six --> ??
-// seven --> Snapshot group
-// eight --> Group approval
-// nine --> Snapshot request changes button
-// ten --> Group request changes button
+const NO_GROUP_SEQUENCE = [
+  'build-overview',
+  'snapshot-overview',
+  'comparison-overview',
+  'snapshot-request-changes-button',
+  'snapshot-approval-button',
+  'build-approval-button',
+];
 
-const GROUP_SEQUENCE = ['one', 'seven', 'three', 'ten', 'eight', 'five'];
-const NO_GROUP_SEQUENCE = ['one', 'two', 'three', 'nine', 'four', 'five'];
-const NO_DIFF_SEQUENCE = ['one', 'two', 'four', 'five'];
+const NO_DIFF_SEQUENCE = [
+  'build-overview',
+  'snapshot-overview',
+  'snapshot-approval-button',
+  'build-approval-button',
+];
+
+const AUTO_APPROVED_SEQUENCE = ['build-overview', 'snapshot-overview', 'auto-approved-pill'];
 
 export default Service.extend({
   router: service(),
@@ -28,7 +39,7 @@ export default Service.extend({
 
   currentSequence: null,
   tooltipSequenceIndex: 0,
-  tooltipKey: 'one',
+  tooltipKey: 'build-overview',
 
   currentTooltipKey: computed('tooltipKey', function() {
     return this.tooltipKey;
@@ -60,7 +71,7 @@ export default Service.extend({
   setToBeginning() {
     this.set('currentSequence', this._getCurrentSequence(this.build));
     this.set('tooltipSequenceIndex', 0);
-    this.set('tooltipKey', 'one');
+    this.set('tooltipKey', 'build-overview');
   },
 
   async resetTooltipFlow(currentKey, build) {
@@ -96,7 +107,9 @@ export default Service.extend({
 
     // if build.baseBuild = null then this is the first build and has no comparisons
     // need to use `get` syntax for this because `build` in this case is actually a proxy object.
-    if (!build.get('baseBuild')) {
+    if (build.get('project.defaultBaseBranch') === build.get('branch')) {
+      return AUTO_APPROVED_SEQUENCE;
+    } else if (!build.get('baseBuild')) {
       return NO_DIFF_SEQUENCE;
     } else if (groupedSnapshots.groups.length > 0) {
       return GROUP_SEQUENCE;

@@ -35,13 +35,11 @@
 
       </div>
     </div>
-    {{demo-tooltip
-      build=snapshot.build
-      isFirstInstance=(eq index 0)
-      key="two"
-      title="Snapshot comparison"
-      message="Each comparison shows a baseline screenshot on the left and the pixels that have changed on the right. Screenshots are rendered in our infrastructure each time you make a code change."
-    }}
+    <DemoTooltip
+      @build={{snapshot.build}}
+      @isFirstInstance={{eq index 0}}
+      @key="snapshot-overview"
+    />
   </div>
 
   {{#if fullscreen}}
@@ -178,28 +176,23 @@
 
         <div class="btn-toolbar" data-test-snapshot-approval-button>
           {{#if snapshot.isUnreviewed}}
-            {{demo-tooltip
-              build=snapshot.build
-              isFirstInstance=(eq index 0)
-              anchorPlacement='left-corner'
-              key="nine"
-              title="Requesting changes"
-              message="If a snapshot is not yet ready to be approved, request changes so your team can follow the status of a build."
-            }}
+            <DemoTooltip
+              @build={{snapshot.build}}
+              @isFirstInstance={{eq index 0}}
+              @anchorPlacement='left-corner'
+              @key="snapshot-request-changes-button"
+            />
             {{snapshot-reject-button
               snapshots=(array snapshot)
               isDisabled=(not isBuildApprovable)
             }}
           {{/if}}
 
-          {{demo-tooltip
-            build=snapshot.build
-            isFirstInstance=(eq index 0)
-            anchorPlacement='left-corner'
-            key="four"
-            title="Approving screenshots"
-            message="You can review and approve the changes for each snapshot one by one, or you can approve all the snapshots at once with the “Approve All” button at the top of the page."
-          }}
+          <SnapshotApprovalTooltips
+            @snapshot={{snapshot}}
+            @index={{index}}
+            @tagName=''
+          />
           {{snapshot-approval-button
             snapshot=snapshot
             hasDiffsInBrowser=hasDiffsInBrowser

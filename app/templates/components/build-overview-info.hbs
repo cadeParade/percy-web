@@ -4,12 +4,9 @@
       Build <span class="font-mono font-normal tracking-sm text-gray-700 mr-1">{{build.buildNumber}}</span>
     </div>
     {{build-info-dropdown build=build}}
-
-    {{demo-tooltip
-      build=build
-      key="one"
-      title="Percy build"
-      message="This is a Percy build. This is how we organize snapshots for visual review."
-    }}
+    <DemoTooltip
+      @build={{build}}
+      @key="build-overview"
+    />
   </div>
 </div>

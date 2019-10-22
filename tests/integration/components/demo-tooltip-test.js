@@ -31,14 +31,13 @@ describe('Integration: DemoTooltipComponent', function() {
   describe('for a single tooltip', function() {
     beforeEach(async function() {
       localStorage.clear();
+      // Choose `snapshot-overview` as it is not the first one which would show by default
       await render(hbs`
         <div style="position: absolute; top: 20px; left:20px;">
-          {{demo-tooltip
-            build=build
-            key='test-one'
-            title='Important tip'
-            message='Never get involved in a land war in Asia'
-          }}
+          <DemoTooltip
+            @build={{build}}
+            @key='snapshot-overview'
+          />
           <div class="outside"></div>
         </div>
       `);

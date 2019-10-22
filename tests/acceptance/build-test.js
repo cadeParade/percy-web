@@ -127,13 +127,7 @@ describe('Acceptance: Build', function() {
   it('does not display any tooltips if not a demo project', async function() {
     await BuildPage.visitBuild(urlParams);
 
-    // check that the tooltips actually exist on the page
-    expect(BuildPage.demoTooltips.length).to.be.at.least(2);
-
-    // verify that all tooltips are not visible
-    BuildPage.demoTooltips.forEach(tooltip => {
-      expect(tooltip.isAnchorVisible).to.equal(false);
-    });
+    expect(BuildPage.demoTooltips.length).to.equal(0);
   });
 
   it('fetches only snapshots with diffs on initial load', async function() {
@@ -1692,7 +1686,7 @@ describe('Acceptance: Demo Project Build', function() {
     await BuildPage.visitBuild(urlParams);
 
     const tooltipElement = await findAll('.ember-attacher').firstObject;
-    expect(BuildPage.demoTooltips.length).to.equal(6);
+    expect(BuildPage.demoTooltips.length).to.equal(5);
     // Anchors on snapshot viewers should be visible
     // This line checks that the index param is being passed correctly
     expect(BuildPage.demoTooltips[3].isAnchorVisible).to.equal(true);
@@ -1725,7 +1719,7 @@ describe('Acceptance: Demo Project Build', function() {
   it('hides all tooltips and all anchors when all are dismissed', async function() {
     await BuildPage.visitBuild(urlParams);
 
-    expect(BuildPage.demoTooltips.length).to.equal(6);
+    expect(BuildPage.demoTooltips.length).to.equal(5);
 
     await BuildPage.demoTooltips.objectAt(0).clickAnchor();
     await BuildPage.demoTooltips.objectAt(0).clickDismissAll();

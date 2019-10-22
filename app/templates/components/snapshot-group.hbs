@@ -25,13 +25,11 @@
           {{groupTitle}}
         </div>
       </div>
-      {{demo-tooltip
-        build=build
-        isFirstInstance=(eq index 0)
-        key="seven"
-        title="Automatic visual diff matching"
-        message="Percy automatically matches and groups snapshots that have the same visual change."
-      }}
+      <DemoTooltip
+        @build={{build}}
+        @isFirstInstance=true
+        @key="group-overview"
+      />
     </div>
 
     <div class="flex justify-end">
@@ -74,28 +72,24 @@
           </div>
           <div class="btn-toolbar">
             {{#if isGroupUnreviewed}}
-              {{demo-tooltip
-                build=build
-                isFirstInstance=(eq index 0)
-                anchorPlacement='left-corner'
-                key="ten"
-                title="Requesting changes"
-                message="If a snapshot is not yet ready to be approved, request changes so your team can follow the status of a build."
-              }}
+              <DemoTooltip
+                @build={{build}}
+                @isFirstInstance={{eq index 0}}
+                @anchorPlacement='left-corner'
+                @key="group-request-changes-button"
+              />
               {{snapshot-reject-button
                 snapshots=snapshots
                 isDisabled=(not isBuildApprovable)
               }}
             {{/if}}
 
-            {{demo-tooltip
-              build=build
-              isFirstInstance=(eq index 0)
-              anchorPlacement='left-corner'
-              key="eight"
-              title="Approving matching changes"
-              message="You can review and approve individual changes in a group one by one, or approve all grouped changes with a single click. For the whole build, all changes can be approved at once with the “Approve All” button at the top of the page."
-            }}
+            <DemoTooltip
+              @build={{build}}
+              @isFirstInstance={{eq index 0}}
+              @anchorPlacement='left-corner'
+              @key="group-approval-button"
+            />
             {{group-approval-button
               createReview=createReview
               approvableSnapshots=approvableSnapshots
@@ -187,6 +181,7 @@
                 closeCommentThread=closeCommentThread
                 toggleOverlay=(action "toggleGroupOverlay")
                 showDiffOverlay=isGroupShowingDiffOverlay
+                index=index
                 class="snapshot-group-snapshot rounded-l flex-1 border-l border-b"
               }}
             </div>

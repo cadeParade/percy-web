@@ -1,0 +1,14 @@
+{{#if (or snapshot.isUnreviewed snapshot.isRejected)}}
+  <DemoTooltip
+    @build={{snapshot.build}}
+    @isFirstInstance={{eq index 0}}
+    @anchorPlacement='left-corner'
+    @key="snapshot-approval-button"
+  />
+{{else if (eq snapshot.build.project.defaultBaseBranch snapshot.build.branch)}}
+  <DemoTooltip
+    @build={{snapshot.build}}
+    @isFirstInstance={{eq index 0}}
+    @key="auto-approved-pill"
+  />
+{{/if}}
