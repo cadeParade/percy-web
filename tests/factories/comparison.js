@@ -1,12 +1,9 @@
 import FactoryGuy from 'ember-data-factory-guy';
-import moment from 'moment';
 
 export const TEST_COMPARISON_WIDTHS = [375, 550, 1024];
 
 FactoryGuy.define('comparison', {
   default: {
-    startedProcessingAt: () => moment().subtract(65, 'seconds'),
-    finishedProcessingAt: () => moment().subtract(23, 'seconds'),
     diffRatio: 0.23,
     browser: () => {
       return FactoryGuy.make('browser');

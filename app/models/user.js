@@ -28,8 +28,6 @@ export default DS.Model.extend({
   organizations: DS.hasMany('organizations', {inverse: null}),
 
   createdAt: DS.attr('date'),
-  updatedAt: DS.attr('date'),
-
   isVerified: computed.notEmpty('email'),
 
   _hasIdentityType(provider) {

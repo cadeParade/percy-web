@@ -10,9 +10,7 @@ export default DS.Model.extend({
   subscriptionData: service(),
 
   name: DS.attr(),
-  interval: DS.attr(),
   amount: DS.attr('number'),
-  intervalCount: DS.attr('number'),
   workerLimit: DS.attr('number'),
   usageIncluded: DS.attr('number'),
   historyLimitDays: DS.attr('number'),

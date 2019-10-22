@@ -1,5 +1,4 @@
 import {Factory, trait, association} from 'ember-cli-mirage';
-import moment from 'moment';
 import {TEST_IMAGE_DIMS, TEST_IMAGE_URLS} from 'percy-web/mirage/factories/screenshot';
 
 const HIGH_DIFF_RATIO = 0.62;
@@ -8,12 +7,6 @@ const NO_DIFF_RATIO = 0.0;
 export default Factory.extend({
   id(i) {
     return `comparison-${i}`;
-  },
-  startedProcessingAt() {
-    return moment().subtract(65, 'seconds');
-  },
-  finishedProcessingAt() {
-    return moment().subtract(23, 'seconds');
   },
 
   headBuild: association(),

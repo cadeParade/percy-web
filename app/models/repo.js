@@ -9,16 +9,11 @@ import {
 } from 'percy-web/lib/integration-types';
 
 export default DS.Model.extend({
-  externalRepoId: DS.attr('number'),
   name: DS.attr(),
   slug: DS.attr(),
   hostname: DS.attr(),
   source: DS.attr(),
   htmlUrl: DS.attr(),
-  isPrivate: DS.attr('boolean'),
-  description: DS.attr(),
-  createdAt: DS.attr('date'),
-  updatedAt: DS.attr('date'),
 
   isBitbucketCloudRepo: equal('source', BITBUCKET_CLOUD_INTEGRATION_TYPE),
   isGithubRepo: equal('source', GITHUB_INTEGRATION_TYPE),

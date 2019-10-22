@@ -9,7 +9,6 @@ FactoryGuy.define('user', {
     avatarUrl: () => faker.internet.avatar(),
     userHash: () => faker.random.number(),
     createdAt: () => new Date(),
-    updatedAt: () => new Date(),
 
     organizations: FactoryGuy.hasMany('organization'),
   },

@@ -86,9 +86,6 @@ export default DS.Model.extend({
     'isAutoApprovedBranch',
   ),
 
-  createdAt: DS.attr('date'),
-  updatedAt: DS.attr('date'),
-
   comparisonWidths: mapBy('comparisons', 'width'),
   maxComparisonWidth: max('comparisonWidths'),
 });

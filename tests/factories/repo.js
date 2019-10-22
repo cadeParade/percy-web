@@ -8,7 +8,6 @@ FactoryGuy.define('repo', {
     slug: () => faker.lorem.slug(),
     source: 'none',
     hostname: '',
-    isPrivate: false,
   },
   traits: {
     github: {

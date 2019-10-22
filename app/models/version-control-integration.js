@@ -12,15 +12,10 @@ import {
 
 export default DS.Model.extend({
   organization: DS.belongsTo('organization'),
-  gitLabBotUser: DS.belongsTo('user'),
   integrationType: DS.attr(),
   bitbucketCloudClientKey: DS.attr(),
-  bitbucketCloudUserType: DS.attr(),
-  bitbucketCloudDisplayName: DS.attr(),
   githubInstallationId: DS.attr(),
-  githubAccountAvatarUrl: DS.attr(),
   githubHtmlUrl: DS.attr(),
-  githubEnterpriseHost: DS.attr(),
   githubEnterpriseInstallationId: DS.attr(),
   githubEnterpriseIntegrationId: DS.attr(),
   gitlabIntegrationId: DS.attr(),
@@ -32,8 +27,6 @@ export default DS.Model.extend({
   isSyncing: DS.attr(),
   lastUpdatedAt: DS.attr(),
 
-  createdAt: DS.attr('date'),
-  updatedAt: DS.attr('date'),
   isBitbucketCloudIntegration: equal('integrationType', BITBUCKET_CLOUD_INTEGRATION_TYPE),
   isGithubIntegration: equal('integrationType', GITHUB_INTEGRATION_TYPE),
   isGithubEnterpriseIntegration: equal('integrationType', GITHUB_ENTERPRISE_INTEGRATION_TYPE),

@@ -10,8 +10,4 @@ export default DS.Model.extend({
 
   message: DS.attr(),
   authorName: DS.attr(),
-  committerName: DS.attr(),
-  committedAt: DS.attr('date'),
-  createdAt: DS.attr('date'),
-  updatedAt: DS.attr('date'),
 });

@@ -1,7 +1,6 @@
 import {and, equal} from '@ember/object/computed';
 import {computed} from '@ember/object';
 import DS from 'ember-data';
-import moment from 'moment';
 
 export default DS.Model.extend({
   state: DS.attr(),
@@ -17,17 +16,6 @@ export default DS.Model.extend({
   baseScreenshot: DS.belongsTo('screenshot', {async: false}),
   diffImage: DS.belongsTo('image', {async: false}),
   diffRatio: DS.attr('number'),
-
-  startedProcessingAt: DS.attr('date'),
-  finishedProcessingAt: DS.attr('date'),
-  processingDurationSeconds: computed('startedProcessingAt', 'finishedProcessingAt', function() {
-    var finished = this.finishedProcessingAt;
-    var started = this.startedProcessingAt;
-    var milliseconds = moment(finished).diff(started);
-    return milliseconds / 1000;
-  }),
-  createdAt: DS.attr('date'),
-  updatedAt: DS.attr('date'),
 
   browser: DS.belongsTo('browser', {async: false, inverse: false}),
 

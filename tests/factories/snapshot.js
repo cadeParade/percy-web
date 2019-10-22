@@ -11,8 +11,6 @@ import {TEST_COMPARISON_WIDTHS} from 'percy-web/tests/factories/comparison';
 FactoryGuy.define('snapshot', {
   default: {
     name: f => `Snapshot ${f.id}`,
-    createdAt: () => new Date(),
-    updatedAt: () => new Date(),
 
     comparisons: FactoryGuy.hasMany('comparison'),
     build: FactoryGuy.belongsTo('build'),
