@@ -37,7 +37,8 @@ steps:
     artifact_paths:
       - "test.log"
 
-  - wait
+  - wait: ~
+    continue_on_failure: true
 
   - label: ":percy::checkered_flag: finalize"
     commands:
