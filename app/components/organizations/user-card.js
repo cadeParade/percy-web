@@ -15,6 +15,7 @@ export default Component.extend({
   currentUser: readOnly('session.currentUser'),
   role: readOnly('organizationUser.role'),
   roleTitle: readOnly('organizationUser.roleTitle'),
+  email: readOnly('_user.email'),
 
   deleteNameText: computed(function() {
     if (this.isCurrentUser) {
