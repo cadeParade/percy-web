@@ -10,6 +10,7 @@ export default {
     responseType: 'code',
     params: {},
   },
+  __enableIdPInitiatedLogin: true,
   languageDictionary: {
     title: 'Percy',
     emailInputPlaceholder: 'Email',
@@ -34,7 +35,8 @@ export default {
       logIn: 'Thanks for signing in.',
       magicLink: 'We sent you a link to sign in<br />to %s.',
     },
-    signUpTerms: 'By signing up, you agree to our <a href="https://percy.io/terms" target="_blank">terms of service</a> and <a href="https://percy.io/privacy" target="_blank">privacy policy</a>.', // eslint-disable-line
+    signUpTerms:
+      'By signing up, you agree to our <a href="https://percy.io/terms" target="_blank">terms of service</a> and <a href="https://percy.io/privacy" target="_blank">privacy policy</a>.', // eslint-disable-line
   },
   theme: {
     logo: 'https://percy.io/static/images/percy-1f98595db6111fe2e1c86f8fbae815bc.svg',
