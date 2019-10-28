@@ -119,7 +119,7 @@
     "postcss-import": "^12.0.1",
     "postcss-nested": "^4.1.2",
     "prettier": "^1.18.2",
-    "prettier-eslint-cli": "^4.7.0",
+    "prettier-eslint-cli": "^5.0.0",
     "pusher-js": "^5.0.2",
     "pusher-js-mock": "^0.2.0",
     "raven-js": "^3.27.2",
