@@ -11,6 +11,7 @@ export default {
     params: {},
   },
   __enableIdPInitiatedLogin: true,
+  scope: 'openid profile email',
   languageDictionary: {
     title: 'Percy',
     emailInputPlaceholder: 'Email',
