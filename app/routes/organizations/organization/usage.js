@@ -6,13 +6,10 @@ export default Route.extend(AuthenticatedRouteMixin, {
   // when using link-to into this route so that the model hook always fires.
   model() {
     const organization = this.modelFor('organizations.organization');
-    const includes = 'subscription.current-usage-stats';
+    const includes = 'usage-notification-setting,subscription.current-usage-stats';
 
     return this.store
-      .findRecord('organization', organization.id, {
-        reload: true,
-        include: includes,
-      })
+      .loadRecord('organization', organization.id, {include: includes})
       .then(organization => {
         // If you want to access more relationships that belong to the
         // organization in this route, you must set them in setupController
@@ -20,8 +17,8 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
         return {
           organization,
-          usageStats: organization.get('subscription.currentUsageStats'),
-          usageNotificationSetting: organization.get('usageNotificationSetting'),
+          usageStats: organization.subscription.currentUsageStats,
+          usageNotificationSetting: organization.usageNotificationSetting,
         };
       });
   },
@@ -36,7 +33,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
   actions: {
     didTransition() {
-      const organization = this.controller.get('organization');
+      const organization = this.controller.organization;
       this.analytics.track('Usage Viewed', organization);
     },
   },

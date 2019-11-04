@@ -5,15 +5,15 @@ import {INTEGRATION_TYPES} from 'percy-web/lib/integration-types';
 
 export default Route.extend(AuthenticatedRouteMixin, {
   model() {
-    return this.modelFor('organizations.organization');
+    return this.modelFor('organizations.organization.integrations');
   },
 
   setupController(controller, model) {
     controller.setProperties({
       integrationItems: INTEGRATION_TYPES,
       organization: model,
-      versionControlIntegrations: model.get('versionControlIntegrations'),
-      availableIntegrations: model.get('availableIntegrations'),
+      versionControlIntegrations: model.versionControlIntegrations,
+      availableIntegrations: model.availableIntegrations,
     });
   },
 

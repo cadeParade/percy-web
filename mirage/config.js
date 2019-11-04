@@ -272,7 +272,8 @@ export default function() {
     }
   });
 
-  this.delete('/version-control-integrations/:id', function() {
+  this.delete('/version-control-integrations/:id', function(schema, request) {
+    schema.versionControlIntegrations.find(request.params.id).destroy();
     return new Mirage.Response(204);
   });
 

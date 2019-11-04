@@ -8,6 +8,12 @@ export default Route.extend(AuthenticatedRouteMixin, {
   session: service(),
   currentUser: alias('session.currentUser'),
 
+  model(params) {
+    return this.store.loadRecord('organization', params.organization_id, {
+      include: 'subscription.plan',
+    });
+  },
+
   afterModel(model) {
     this.intercom.associateWithCompany(this.currentUser, model);
   },

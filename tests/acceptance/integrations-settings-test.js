@@ -79,6 +79,12 @@ describe('Acceptance: Integrations Settings Page', function() {
 
     it('shows all integrations installed', async function() {
       expect(currentRouteName()).to.equal('organizations.organization.integrations.index');
+
+      expect(IntegrationsIndexPage.hasBitbucketCloudIntegration).to.equal(true);
+      expect(IntegrationsIndexPage.hasGithubIntegration).to.equal(true);
+      expect(IntegrationsIndexPage.hasGitlabIntegration).to.equal(true);
+      expect(IntegrationsIndexPage.hasGitlabSelfHostedIntegration).to.equal(true);
+      expect(IntegrationsIndexPage.hasSlackIntegration).to.equal(true);
       await percySnapshot(this.test);
     });
   });

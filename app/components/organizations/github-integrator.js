@@ -15,20 +15,22 @@ export default Component.extend(PollingMixin, {
   shouldPollForUpdates: alias('organization.githubIntegrationRequest'),
 
   pollRefresh() {
-    this.organization.reload().then(organization => {
-      let githubIntegration = organization.get('githubIntegration');
-      let githubIntegrationRequest = organization.get('githubIntegrationRequest');
+    this.organization
+      .sideload('version-control-integrations,github-integration-request.created-by')
+      .then(organization => {
+        let githubIntegration = organization.githubIntegration;
+        let githubIntegrationRequest = organization.githubIntegrationRequest;
 
-      // If the has been fully installed or uninstalled, stop polling for updates.
-      if (githubIntegration || (!githubIntegration && !githubIntegrationRequest)) {
-        this.pollingTask.cancel();
-      }
-    });
+        // If the has been fully installed or uninstalled, stop polling for updates.
+        if (githubIntegration || (!githubIntegration && !githubIntegrationRequest)) {
+          this.pollingTask.cancel();
+        }
+      });
   },
 
   actions: {
     cancelIntegrationRequest() {
-      let integrationRequest = this.get('organization.githubIntegrationRequest');
+      let integrationRequest = this.organization.githubIntegrationRequest;
       integrationRequest.set('_orgForAdapter', this.organization);
       integrationRequest.destroyRecord();
       this.pollingTask.cancel();

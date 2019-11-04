@@ -17,8 +17,10 @@
         {{project.name}}
       {{/link-to}}
     </div>
-    {{#if organization.isSponsored}}
-      {{fa-icon data-test-build-public-project "globe" class="text-blue-500 ml-sm"}}
+    {{#if isBuildApprovable}}
+      {{#if organization.isSponsored}}
+        {{fa-icon data-test-build-public-project "globe" class="text-blue-500 ml-sm"}}
+      {{/if}}
     {{/if}}
   </div>
 

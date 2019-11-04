@@ -293,6 +293,7 @@ describe('Acceptance: Project', function() {
           orgSlug: organization.slug,
           projectSlug: enabledProject.slug,
         });
+        expect(ProjectSettingsPage.repoIntegrator.isRepoSelectorVisible).to.equal(true);
         await percySnapshot(this.test);
       });
 

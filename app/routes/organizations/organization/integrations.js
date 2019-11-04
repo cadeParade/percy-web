@@ -8,6 +8,16 @@ import {inject as service} from '@ember/service';
 export default Route.extend(AuthenticatedRouteMixin, {
   flashMessages: service(),
 
+  model() {
+    const organization = this.modelFor('organizations.organization');
+    return organization.sideload(
+      'version-control-integrations,' +
+        'github-integration-request.created-by,' +
+        'saml-integration,' +
+        'slack-integrations',
+    );
+  },
+
   actions: {
     connectSlackChannel() {
       const isAdmin = this.modelFor(this.routeName).get('currentUserIsAdmin');

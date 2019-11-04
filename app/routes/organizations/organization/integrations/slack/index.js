@@ -11,7 +11,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
     const organization = this.modelFor('organizations.organization');
 
     return hash({
-      organization,
+      organization: organization.sideload('slack-integrations.slack-integration-configs'),
     });
   },
 

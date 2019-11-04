@@ -30,6 +30,7 @@ describe('Integration: BuildToolbar', function() {
         build=build
         project=project
         organization=organization
+        isBuildApprovable=true
       }}`);
     });
 

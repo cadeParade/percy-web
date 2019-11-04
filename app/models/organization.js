@@ -8,6 +8,7 @@ import {
 } from 'percy-web/lib/integration-types';
 import {inject as service} from '@ember/service';
 import {isUserAdminOfOrg} from 'percy-web/lib/is-user-member-of-org';
+import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 
 const DISPLAY_NAMES = {
   bitbucketCloud: 'Bitbucket Cloud',
@@ -17,7 +18,7 @@ const DISPLAY_NAMES = {
   gitlabSelfHosted: 'GitLab Self-Managed',
 };
 
-export default DS.Model.extend({
+export default DS.Model.extend(LoadableModel, {
   session: service(),
   name: DS.attr(),
   slug: DS.attr(),

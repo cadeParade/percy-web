@@ -9,10 +9,13 @@ export default Route.extend(AuthenticatedRouteMixin, {
   intercom: service(),
 
   model() {
+    const organization = this.store.loadRecord('organization', this.modelFor('organization').id, {
+      include: 'version-control-integrations',
+    });
     const project = this.modelFor('organization.project');
     const webhookConfigs = project.get('webhookConfigs');
 
-    return hash({project, webhookConfigs});
+    return hash({organization, project, webhookConfigs});
   },
 
   setupController(controller, model) {

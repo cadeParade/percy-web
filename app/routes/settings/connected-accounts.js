@@ -13,7 +13,8 @@ export default Route.extend(AuthenticatedRouteMixin, {
     // We need the user's orgs to know if any of them have forced SSO.
     const orgPromises = Promise.all(
       this.currentUser.organizationUsers.map(orgUser => {
-        return orgUser.belongsTo('organization').reload();
+        const orgId = orgUser.belongsTo('organization').id();
+        return this.store.loadRecord('organization', orgId, {include: 'saml-integration'});
       }),
     );
     return hash({

@@ -17,26 +17,22 @@ export default Route.extend(AuthenticatedRouteMixin, {
     const organization = this.modelFor('organizations.organization');
     const plan = organization.subscription.plan;
     // Don't include usage stats if we don't have to. That query is very slow.
+    const baseIncludes = ['subscription.payment-method'];
+    const usageStatsIncludes = ['subscription.current-usage-stats'];
     const shouldIncludeUsageStats = _shouldIncludeUsageStats(plan);
-    const includes = shouldIncludeUsageStats ? 'subscription.current-usage-stats' : '';
+    const includes = shouldIncludeUsageStats
+      ? baseIncludes.concat(usageStatsIncludes)
+      : baseIncludes;
 
-    return this.store
-      .findRecord('organization', organization.id, {
-        reload: true,
-        include: includes,
-      })
-      .then(organization => {
-        // If you want to access more relationships that belong to the
-        // organization in this route, you must set them in setupController
-        // or, for some reason, the relationship will be overwritten or dropped
-
-        return {
-          organization,
-          usageStats: shouldIncludeUsageStats
-            ? organization.get('subscription.currentUsageStats')
-            : null,
-        };
-      });
+    return organization.sideload(includes.join(',')).then(organization => {
+      // If you want to access more relationships that belong to the
+      // organization in this route, you must set them in setupController
+      // or, for some reason, the relationship will be overwritten or dropped
+      return {
+        organization,
+        usageStats: shouldIncludeUsageStats ? organization.subscription.currentUsageStats : null,
+      };
+    });
   },
 
   setupController(controller, model) {
