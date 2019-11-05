@@ -47,7 +47,7 @@
           </div>
         {{else if plan.isFree}}
           <div data-test-free-blurb>
-            You're currently on the <strong>free plan</strong>, which provides {{format-number plan.usageIncluded}} snapshots per month. You can upgrade below or feel free to <a href="#" {{action "showSupport"}} data-test-free-plan-support>reach out</a> with any questions.
+            You're currently on the <strong>free plan</strong>, which provides {{format-number plan.usageIncluded}} snapshots per month. You can upgrade below or feel free to <a href="#" {{action "showIntercom"}} data-test-free-plan-support>reach out</a> with any questions.
           </div>
         {{else if plan.isDeprecated}}
           <div data-test-deprecated-blurb>
@@ -55,7 +55,7 @@
           </div>
         {{else if (not plan.isFree)}}
           <div data-test-contact-us-blurb>
-            Please <span class="text-blue-500 cursor-pointer" {{action "showIntercom"}}>contact us</span> with any questions about your plan.
+            Please <span class="text-blue-500 cursor-pointer" {{action "showIntercom"}} data-test-plan-support>contact us</span> with any questions about your plan.
           </div>
         {{/if}}
       </div>

@@ -1,4 +1,4 @@
-import {create, isVisible} from 'ember-cli-page-object';
+import {clickable, create, isVisible} from 'ember-cli-page-object';
 
 const SELECTORS = {
   SCOPE: '[data-test-current-plan]',
@@ -11,6 +11,8 @@ const SELECTORS = {
   FREE_BLURB: '[data-test-free-blurb]',
   DEPRECATED_BLURB: '[data-test-deprecated-blurb]',
   CONTACT_BLURB: '[data-test-contact-us-blurb]',
+  FREE_PLAN_SUPPORT: '[data-test-free-plan-support]',
+  PLAN_SUPPORT: '[data-test-plan-support]',
 };
 
 export const currentPlan = {
@@ -24,6 +26,8 @@ export const currentPlan = {
   isFreeBlurbVisible: isVisible(SELECTORS.FREE_BLURB),
   isDeprecatedBlurbVisible: isVisible(SELECTORS.DEPRECATED_BLURB),
   isContactBlurbVisible: isVisible(SELECTORS.CONTACT_BLURB),
+  clickFreePlanSupport: clickable(SELECTORS.FREE_PLAN_SUPPORT),
+  clickPlanSupport: clickable(SELECTORS.PLAN_SUPPORT),
 };
 
 export default create(currentPlan);

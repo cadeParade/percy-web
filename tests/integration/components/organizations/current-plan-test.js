@@ -7,6 +7,8 @@ import CurrentPlan from 'percy-web/tests/pages/components/organizations/current-
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {percySnapshot} from 'ember-percy';
 import {render} from '@ember/test-helpers';
+import sinon from 'sinon';
+import mockIntercomService from 'percy-web/tests/helpers/mock-intercom-service';
 
 describe('Integration: CurrentPlan', function() {
   setupRenderingTest('current-plan', {
@@ -162,6 +164,38 @@ describe('Integration: CurrentPlan', function() {
       expect(CurrentPlan.isOveragesVisible).to.equal(true);
       expect(CurrentPlan.isUsageStatsVisible).to.equal(false);
       expect(CurrentPlan.isContactBlurbVisible).to.equal(true);
+    });
+  });
+
+  describe('showIntercom actions', function() {
+    it('calls showIntercom action with free plan', async function() {
+      const orgWFreePlan = make('organization', 'withFreePlan');
+      const showSupportStub = sinon.stub();
+      mockIntercomService(this, showSupportStub);
+      this.setProperties({orgWFreePlan});
+      await render(hbs`
+        {{organizations/current-plan
+          organization=orgWFreePlan
+        }}
+      `);
+
+      await CurrentPlan.clickFreePlanSupport();
+      expect(showSupportStub).to.have.been.called;
+    });
+
+    it('calls showIntercom action with paid plan', async function() {
+      const orgWPaidPlan = make('organization', 'withPaidPlan');
+      const showSupportStub = sinon.stub();
+      mockIntercomService(this, showSupportStub);
+      this.setProperties({orgWPaidPlan});
+      await render(hbs`
+        {{organizations/current-plan
+          organization=orgWPaidPlan
+        }}
+      `);
+
+      await CurrentPlan.clickPlanSupport();
+      expect(showSupportStub).to.have.been.called;
     });
   });
 });
