@@ -46,7 +46,7 @@
     "ember-changeset-validations": "^2.1.0",
     "ember-cli": "~3.12.0",
     "ember-cli-app-version": "^3.2.0",
-    "ember-cli-babel": "7.11.0",
+    "ember-cli-babel": "7.12.0",
     "ember-cli-chai": "^0.5.0",
     "ember-cli-clipboard": "^0.13.0",
     "ember-cli-dependency-checker": "^3.2.0",
