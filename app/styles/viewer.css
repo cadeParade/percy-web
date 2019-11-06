@@ -10,13 +10,13 @@
   @apply w-full;
   @apply select-none;
   @apply border border-gray-100;
+}
 
-  .pdiffImageOverlay {
-    @apply absolute;
-    @apply top-0;
-    @apply left-0;
-    @apply w-full;
-  }
+.pdiffImageOverlay {
+  @apply absolute;
+  @apply top-0;
+  @apply left-0;
+  @apply w-full;
 }
 
 .Viewer-pdiffImageBox--actionable {
@@ -35,5 +35,13 @@
   @apply cursor-pointer;
   @apply select-none;
   @apply bg-white;
+  @apply trans;
+  box-shadow: 0 0 0 1px theme("colors.gray.100");
+  backdrop-filter: saturate(50%) blur(2px);
   opacity: 0.9;
+
+  &:hover {
+    box-shadow: 0 0 0 1px theme("colors.red.200"), 0 0 4px theme("colors.red.100");
+    backdrop-filter: none;
+  }
 }
