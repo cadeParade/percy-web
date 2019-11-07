@@ -1,5 +1,6 @@
 .snapshot-group-snapshot .SnapshotViewer-header {
   @apply rounded-l;
+  @apply z-2;
   top: 121px;
 }
 

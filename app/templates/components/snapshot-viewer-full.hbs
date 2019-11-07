@@ -1,27 +1,25 @@
 {{#unless isBuildApprovable}}
   {{public-project-notice}}
 {{/unless}}
-<div>
-  {{snapshot-viewer-header
-    fullscreen=true
-    snapshot=snapshot
-    snapshotSelectedWidth=snapshotSelectedWidth
-    selectedComparison=selectedComparison
-    toggleViewMode=(action closeSnapshotFullModal)
-    updateSelectedWidth=(action "updateSelectedWidth")
 
-    toggleCollaborationPanel=(action "toggleCollaborationPanel")
-    updateComparisonMode=updateComparisonMode
-    comparisonMode=comparisonMode
-    createReview=(action createReview)
-    activeBrowser=activeBrowser
-    updateActiveBrowser=updateActiveBrowser
-    isBuildApprovable=isBuildApprovable
-    updateSnapshotId=updateSnapshotId
-    openCommentThreads=openCommentThreads
-  }}
-</div>
+{{snapshot-viewer-header
+  fullscreen=true
+  snapshot=snapshot
+  snapshotSelectedWidth=snapshotSelectedWidth
+  selectedComparison=selectedComparison
+  toggleViewMode=(action closeSnapshotFullModal)
+  updateSelectedWidth=(action "updateSelectedWidth")
 
+  toggleCollaborationPanel=(action "toggleCollaborationPanel")
+  updateComparisonMode=updateComparisonMode
+  comparisonMode=comparisonMode
+  createReview=(action createReview)
+  activeBrowser=activeBrowser
+  updateActiveBrowser=updateActiveBrowser
+  isBuildApprovable=isBuildApprovable
+  updateSnapshotId=updateSnapshotId
+  openCommentThreads=openCommentThreads
+}}
 
 <div class="flex flex-col flex-col-reverse lg:flex-row bg-gray-000">
   {{#if selectedComparison}}
