@@ -312,7 +312,8 @@ describe('Acceptance: Project', function() {
       });
 
       it('transitions to webhook config form', async function() {
-        window.crypto.getRandomValues = sinon.fake.returns(new Uint8Array(32));
+        var fake = sinon.fake.returns(new Uint8Array(32));
+        sinon.replace(window.crypto, 'getRandomValues', fake);
 
         await ProjectSettingsPage.visitProjectIntegrations({
           orgSlug: organization.slug,
@@ -326,6 +327,7 @@ describe('Acceptance: Project', function() {
         expect(currentRouteName()).to.equal(
           'organization.project.integrations.webhooks.webhook-config',
         );
+        sinon.restore();
       });
 
       it('displays the Slack section', async function() {
