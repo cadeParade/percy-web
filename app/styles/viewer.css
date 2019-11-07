@@ -17,6 +17,12 @@
   @apply top-0;
   @apply left-0;
   @apply w-full;
+
+  &:hover {
+    .diff-overlay-badge {
+      @apply opacity-75;
+    }
+  }
 }
 
 .Viewer-pdiffImageBox--actionable {
@@ -44,4 +50,20 @@
     box-shadow: 0 0 0 1px theme("colors.red.200"), 0 0 4px theme("colors.red.100");
     backdrop-filter: none;
   }
+}
+
+.diff-overlay-badge {
+  @apply absolute;
+  @apply px-1;
+  @apply py-sm;
+  @apply bg-red-500;
+  @apply text-white;
+  @apply font-bold;
+  @apply leading-none;
+  @apply opacity-0;
+  @apply text-xs;
+  @apply rounded;
+  @apply trans;
+  top: theme("spacing.1");
+  right: theme("spacing.1");
 }

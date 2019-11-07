@@ -22,6 +22,7 @@
               {{#with comparison.diffImage as |diffImage|}}
                 <div class="pdiffImageOverlay" data-test-comparison-viewer-full-diff-image-overlay>
                   {{image-spacer action=toggleOverlay altText="Diff overlay -- Highlights the areas that are changed between base and head screenshots" image=diffImage imageClass="Viewer-pdiffImageOverlay"}}
+                  <div class="diff-overlay-badge">Click to toggle</div>
                 </div>
               {{/with}}
             {{/if}}
