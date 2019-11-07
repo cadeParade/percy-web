@@ -17,7 +17,7 @@ describe('Integration: BuildToolbar', function() {
 
   describe('when the project is public', function() {
     beforeEach(function() {
-      const organization = make('organization', 'withProjects', 'withSponsoredPlan');
+      const organization = make('organization', 'withProjects', {isSponsored: true});
       const project = organization.get('projects.firstObject');
       const build = make('build', {project});
       this.setProperties({
@@ -30,7 +30,6 @@ describe('Integration: BuildToolbar', function() {
         build=build
         project=project
         organization=organization
-        isBuildApprovable=true
       }}`);
     });
 

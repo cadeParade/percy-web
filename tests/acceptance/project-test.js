@@ -32,8 +32,7 @@ describe('Acceptance: Project', function() {
     });
 
     it('shows public notice when org is sponsored', async function() {
-      const subscription = server.create('subscription', 'withSponsoredPlan');
-      this.organization.update({subscription});
+      this.organization.update({isSponsored: true});
       await visit(`organizations/${this.organization.slug}/projects/new`);
       await percySnapshot(this.test.fullTitle() + ' | new project');
     });

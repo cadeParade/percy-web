@@ -75,6 +75,8 @@ export default DS.Model.extend(LoadableModel, {
   seatsRemaining: DS.attr(),
   hasSeatsRemaining: gt('seatsRemaining', 0),
 
+  isSponsored: DS.attr(),
+
   // These are GitHub repositories that the organization has access permissions to. These are not
   // useful on their own other than for listing. A repo must be linked to a project.
   repos: DS.hasMany('repo'),
@@ -157,6 +159,4 @@ export default DS.Model.extend(LoadableModel, {
       return groups;
     },
   ),
-
-  isSponsored: readOnly('subscription.plan.isSponsored'),
 });
