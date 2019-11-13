@@ -63,6 +63,7 @@
   @apply opacity-0;
   @apply text-xs;
   @apply rounded;
+  @apply pointer-events-none;
   @apply trans;
   top: theme("spacing.1");
   right: theme("spacing.1");
