@@ -41,7 +41,7 @@
     "cssnano": "^4.1.10",
     "ember-ajax": "5.0.0",
     "ember-attacher": "^0.15.1",
-    "ember-auto-import": "^1.5.2",
+    "ember-auto-import": "^1.5.3",
     "ember-changeset": "^2.2.4",
     "ember-changeset-validations": "^2.1.0",
     "ember-cli": "~3.12.0",
