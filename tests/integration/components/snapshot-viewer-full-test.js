@@ -222,12 +222,12 @@ describe('Integration: SnapshotViewerFull', function() {
           make('comment-thread', 'withTwoComments', 'closed', 'note', {snapshot});
         });
 
-        it('shows panel by default', async function() {
-          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(true);
+        it('hides panel by default', async function() {
+          expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(false);
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function() {
-          await expectToggleWorks({isOpenByDefault: true, context: this});
+          await expectToggleWorks({isOpenByDefault: false, context: this});
         });
       });
     });

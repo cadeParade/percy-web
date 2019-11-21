@@ -29,7 +29,7 @@ export default Component.extend(EKMixin, {
 
   commentThreads: readOnly('snapshot.commentThreads'),
   openCommentThreads: filterBy('commentThreads', 'isOpen'),
-  defaultIsCommentPanelShowing: notEmpty('commentThreads'),
+  defaultIsCommentPanelShowing: notEmpty('openCommentThreads'),
   isCommentPanelShowing: computed('userIsCommentPanelShowing', 'openCommentThreads.[]', function() {
     if (this.userIsCommentPanelShowing !== undefined) {
       return this.userIsCommentPanelShowing;

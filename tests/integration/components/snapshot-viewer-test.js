@@ -351,7 +351,7 @@ describe('Integration: SnapshotViewer', function() {
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function() {
-          expectToggleWorks({isOpenByDefault: false, context: this});
+          await expectToggleWorks({isOpenByDefault: false, context: this});
         });
       });
 
@@ -376,7 +376,7 @@ describe('Integration: SnapshotViewer', function() {
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function() {
-          expectToggleWorks({isOpenByDefault: true, context: this});
+          await expectToggleWorks({isOpenByDefault: true, context: this});
         });
       });
 
@@ -397,12 +397,12 @@ describe('Integration: SnapshotViewer', function() {
           }}`);
         });
 
-        it('shows panel by default', async function() {
-          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
+        it('hides panel by default', async function() {
+          expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function() {
-          expectToggleWorks({isOpenByDefault: true, context: this});
+          await expectToggleWorks({isOpenByDefault: false, context: this});
         });
       });
     });
