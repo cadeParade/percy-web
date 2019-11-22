@@ -1,27 +1,34 @@
-import {create, collection, hasClass} from 'ember-cli-page-object';
+import {clickable, create, collection, isVisible, hasClass} from 'ember-cli-page-object';
 import {getter} from 'ember-cli-page-object/macros';
 
 const SELECTORS = {
   BROWSER_FAMILY_SELECTOR: '[data-test-browser-family-selector]',
+  BUTTON_CONTAINER: '[data-test-browser-selector-button-container]',
   BUTTON: '[data-test-browser-selector-button]',
+  UPGRADE_BUTTON: '[data-test-percy-btn-label=browser-upgrade]',
 };
 
 export const BrowserFamilySelector = {
   scope: SELECTORS.BROWSER_FAMILY_SELECTOR,
 
-  buttons: collection(SELECTORS.BUTTON, {
-    isActive: hasClass('is-browser-active'),
-    isChrome: hasClass('data-test-browser-selector-chrome'),
-    isFirefox: hasClass('data-test-browser-selector-firefox'),
-    isDisabled: hasClass('opacity-50'),
+  buttonContainers: collection(SELECTORS.BUTTON_CONTAINER, {
+    isActive: hasClass('is-browser-active', SELECTORS.BUTTON),
+    isChrome: hasClass('data-test-browser-selector-chrome', SELECTORS.BUTTON),
+    isFirefox: hasClass('data-test-browser-selector-firefox', SELECTORS.BUTTON),
+    isDisabled: hasClass('opacity-50', SELECTORS.BUTTON),
+    isUpgradeable: isVisible(SELECTORS.UPGRADE_BUTTON),
+    click: clickable(SELECTORS.BUTTON),
+    upgradeButton: {
+      scope: SELECTORS.UPGRADE_BUTTON,
+    },
   }),
 
   chromeButton: getter(function() {
-    return this.buttons.toArray().findBy('isChrome');
+    return this.buttonContainers.toArray().findBy('isChrome');
   }),
 
   firefoxButton: getter(function() {
-    return this.buttons.toArray().findBy('isFirefox');
+    return this.buttonContainers.toArray().findBy('isFirefox');
   }),
 
   clickChrome() {
@@ -30,6 +37,14 @@ export const BrowserFamilySelector = {
 
   clickFirefox() {
     this.firefoxButton.click();
+  },
+
+  upgradeChrome() {
+    this.chromeButton.upgradeButton.click();
+  },
+
+  upgradeFirefox() {
+    this.firefoxButton.upgradeButton.click();
   },
 };
 

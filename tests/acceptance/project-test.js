@@ -7,7 +7,7 @@ import NewProjectPage from 'percy-web/tests/pages/new-project-page';
 import sinon from 'sinon';
 import {beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
-import {visit, currentRouteName, currentURL} from '@ember/test-helpers';
+import {visit, findAll, currentRouteName, currentURL, settled} from '@ember/test-helpers';
 import {selectChoose} from 'ember-power-select/test-support/helpers';
 import UserMenu from 'percy-web/tests/pages/components/user-menu';
 import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
@@ -226,10 +226,13 @@ describe('Acceptance: Project', function() {
             orgSlug: organization.slug,
             projectSlug: projectWithBothBrowsers.slug,
           });
+
           await ProjectSettingsPage.browserSelector.chromeButton.click();
           await percySnapshot(this.test);
 
           expect(deleteStub).to.have.been.calledWith('/api/v1/project-browser-targets/2');
+          const flashMessages = findAll('.flash-message.flash-message-success');
+          expect(flashMessages).to.have.length(1);
         });
 
         it('calls correct endpoint when adding a browser', async function() {
@@ -242,6 +245,39 @@ describe('Acceptance: Project', function() {
           await percySnapshot(this.test);
 
           expect(createStub).to.have.been.calledWith(createData);
+          const flashMessages = findAll('.flash-message.flash-message-success');
+          expect(flashMessages).to.have.length(1);
+        });
+
+        it('calls correct endpoints when upgrading a browser', async function() {
+          const firefoxFamily = server.schema.browserFamilies.findBy({slug: 'firefox'});
+          projectWithBothBrowsers.projectBrowserTargets.models.forEach(pbt => {
+            if (pbt.browserTarget.browserFamilyId === firefoxFamily.id) {
+              pbt.update({isUpgradeable: true});
+            }
+          });
+          await ProjectSettingsPage.visitProjectSettings({
+            orgSlug: organization.slug,
+            projectSlug: projectWithBothBrowsers.slug,
+          });
+
+          await percySnapshot(this.test);
+          await ProjectSettingsPage.browserSelector.upgradeFirefox();
+          await settled();
+
+          expect(createStub).to.have.been.calledWith(createData);
+          expect(deleteStub).to.have.been.calledWith('/api/v1/project-browser-targets/1');
+        });
+
+        it('does not allow removing the last browser', async function() {
+          await ProjectSettingsPage.visitProjectSettings({
+            orgSlug: organization.slug,
+            projectSlug: projectWithFirefoxOnly.slug,
+          });
+
+          await ProjectSettingsPage.browserSelector.firefoxButton.click();
+
+          expect(deleteStub).to.not.have.been.called;
         });
       });
 
@@ -566,7 +602,7 @@ describe('Acceptance: Project', function() {
           'PERCY_TOKEN=[This is a demo project. Create your own project to get a PERCY_TOKEN]',
         );
 
-        await ProjectSettingsPage.browserSelector.buttons.forEach(async button => {
+        await ProjectSettingsPage.browserSelector.buttonContainers.forEach(async button => {
           expect(button.isDisabled, 'browser button should be disabled').to.equal(true);
           expect(button.isActive, 'browser button should be active').to.equal(true);
           await button.click();

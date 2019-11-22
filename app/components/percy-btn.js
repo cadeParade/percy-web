@@ -8,9 +8,14 @@ export default Component.extend({
   isPrimaryButton: false,
   isNoShadow: false,
   isNoAnimate: false,
+  bubbles: true,
 
   actions: {
-    handleClick() {
+    handleClick(e) {
+      if (!this.bubbles) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       // Only call the action if there is one and the button is not disabled.
       if (this.handleClick && !this.isDisabled) {
         this.handleClick();

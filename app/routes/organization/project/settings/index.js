@@ -10,15 +10,18 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
   model() {
     const project = this.modelFor('organization.project');
-    const browserFamilies = this.store.findAll('browserFamily');
-
+    const browserFamilies = this.store.loadRecords('browserFamily');
     return hash({project, browserFamilies});
   },
 
   setupController(controller, model) {
     controller.setProperties({
-      model,
+      project: model.project,
+      browserFamilies: model.browserFamilies.toArray(),
       badgeMarkdown: this._badgeMarkdown(model.project),
+      areAnyBrowsersUpgradeable: model.project.projectBrowserTargets.any(pbt => {
+        return pbt.isUpgradeable;
+      }),
     });
   },
 
@@ -37,73 +40,8 @@ export default Route.extend(AuthenticatedRouteMixin, {
   },
 
   actions: {
-    removeProjectBrowserTargetForFamily(familyToRemove, project) {
-      const projectBrowserTargetForFamily = project
-        .get('projectBrowserTargets')
-        .find(function(pbt) {
-          return pbt.get('browserTarget.browserFamily.id') === familyToRemove.get('id');
-        });
-
-      projectBrowserTargetForFamily
-        .destroyRecord()
-        .then(() => {
-          this.flashMessages.success(
-            `All builds for this project going forward will not be run with ${familyToRemove.get(
-              'name',
-            )}.`,
-            {title: 'Oh Well.'},
-          );
-        })
-        .catch(e => {
-          const errors = e.errors;
-          if (Array.isArray(errors)) {
-            this.flashMessages.danger(this._errorsWithDetails(errors).mapBy('detail'));
-          } else {
-            this.flashMessages.danger('Something went wrong. Please try again later');
-          }
-        });
-      this._callAnalytics('Browser Family Removed', {
-        browser_family_slug: familyToRemove.get('slug'),
-      });
-    },
-
-    addProjectBrowserTargetForFamily(familyToAdd, project) {
-      const newProjectBrowserTarget = this.store.createRecord('projectBrowserTarget', {
-        project,
-        browserFamily: familyToAdd,
-      });
-      newProjectBrowserTarget
-        .save()
-        .then(() => {
-          this.flashMessages.success(
-            `Great! All builds for this project going forward will be run with ${familyToAdd.get(
-              'name',
-            )}.`,
-          );
-        })
-        .catch(() => {
-          this.flashMessages.danger('Something went wrong. Please try again later');
-        });
-      this._callAnalytics('Browser Family Added', {browser_family_slug: familyToAdd.get('slug')});
-    },
-
     onCopyBadgeMarkdown() {
       this.flashMessages.success('Badge markdown was copied to your clipboard');
     },
-  },
-
-  _errorsWithDetails(errors) {
-    return errors.filter(error => {
-      return !!error.detail;
-    });
-  },
-
-  _callAnalytics(actionName, extraProps) {
-    const organization = this.get('project.organization');
-    const props = {
-      project_id: this.get('project.id'),
-    };
-    const allProps = Object.assign({}, extraProps, props);
-    this.analytics.track(actionName, organization, allProps);
   },
 });

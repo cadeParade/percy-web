@@ -4,8 +4,7 @@ import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {make} from 'ember-data-factory-guy';
 import sinon from 'sinon';
-import {render, settled} from '@ember/test-helpers';
-
+import {render} from '@ember/test-helpers';
 import BrowserFamilySelector from 'percy-web/tests/pages/components/projects/browser-family-selector'; // eslint-disable-line
 
 describe('Integration: BrowserFamilySelector', function() {
@@ -17,11 +16,13 @@ describe('Integration: BrowserFamilySelector', function() {
   let firefoxBrowserTarget;
   let project;
 
-  describe('browser active behavior', function() {
-    beforeEach(function() {
-      setupFactoryGuy(this);
-      BrowserFamilySelector.setContext(this);
+  beforeEach(function() {
+    setupFactoryGuy(this);
+    BrowserFamilySelector.setContext(this);
+  });
 
+  describe('display', function() {
+    beforeEach(function() {
       const firefoxBrowserFamily = make('browser-family');
       const chromeBrowserFamily = make('browser-family', 'chrome');
       project = make('project');
@@ -38,165 +39,133 @@ describe('Integration: BrowserFamilySelector', function() {
       });
     });
 
-    it('shows chrome as selected when project has chrome browser_target', async function() {
-      make('project-browser-target', {
-        project,
-        browserTarget: chromeBrowserTarget,
+    describe('enabled/disabled', function() {
+      it('shows chrome as selected when project has chrome browser_target', async function() {
+        make('project-browser-target', {
+          project,
+          browserTarget: chromeBrowserTarget,
+        });
+
+        await render(hbs`{{projects/browser-family-selector
+          allBrowserFamilies=allBrowserFamilies
+          project=project
+        }}`);
+
+        expect(BrowserFamilySelector.chromeButton.isActive).to.equal(true);
+        expect(BrowserFamilySelector.firefoxButton.isActive).to.equal(false);
       });
 
-      await render(hbs`{{projects/browser-family-selector
-        allBrowserFamilies=allBrowserFamilies
-        project=project
-        removeProjectBrowserTargetForFamily=stub
-        addProjectBrowserTargetForFamily=stub
-      }}`);
+      it('shows firefox as selected when project has firefox browser target', async function() {
+        make('project-browser-target', {
+          project,
+          browserTarget: firefoxBrowserTarget,
+        });
 
-      expect(BrowserFamilySelector.chromeButton.isActive).to.equal(true);
-      expect(BrowserFamilySelector.firefoxButton.isActive).to.equal(false);
-    });
+        await render(hbs`{{projects/browser-family-selector
+          allBrowserFamilies=allBrowserFamilies
+          project=project
+        }}`);
 
-    it('shows firefox as selected when project has firefox browser target', async function() {
-      make('project-browser-target', {
-        project,
-        browserTarget: firefoxBrowserTarget,
+        expect(BrowserFamilySelector.chromeButton.isActive).to.equal(false);
+        expect(BrowserFamilySelector.firefoxButton.isActive).to.equal(true);
       });
 
-      await render(hbs`{{projects/browser-family-selector
-        allBrowserFamilies=allBrowserFamilies
-        project=project
-        removeProjectBrowserTargetForFamily=stub
-        addProjectBrowserTargetForFamily=stub
-      }}`);
+      it('shows both browsers as selected when project has both browser targets', async function() {
+        make('project-browser-target', {
+          project,
+          browserTarget: chromeBrowserTarget,
+        });
+        make('project-browser-target', {
+          project,
+          browserTarget: firefoxBrowserTarget,
+        });
+        await render(hbs`{{projects/browser-family-selector
+          allBrowserFamilies=allBrowserFamilies
+          project=project
+        }}`);
 
-      expect(BrowserFamilySelector.chromeButton.isActive).to.equal(false);
-      expect(BrowserFamilySelector.firefoxButton.isActive).to.equal(true);
-    });
-
-    it('shows both browsers as selected when project has both browser targets', async function() {
-      make('project-browser-target', {
-        project,
-        browserTarget: chromeBrowserTarget,
-      });
-      make('project-browser-target', {
-        project,
-        browserTarget: firefoxBrowserTarget,
-      });
-      await render(hbs`{{projects/browser-family-selector
-        allBrowserFamilies=allBrowserFamilies
-        project=project
-        removeProjectBrowserTargetForFamily=stub
-        addProjectBrowserTargetForFamily=stub
-      }}`);
-
-      expect(BrowserFamilySelector.chromeButton.isActive).to.equal(true);
-      expect(BrowserFamilySelector.firefoxButton.isActive).to.equal(true);
-    });
-  });
-
-  // These tests don't wait on the add/remove browser action to finish. Not sure why, but
-  // `await settled()` seems to help...
-  // Perhaps this issue is helpful: https://github.com/emberjs/ember-test-helpers/issues/339
-  describe('updating project browser families', function() {
-    let project;
-    let removeProjectBrowserTargetForFamilyStub;
-    let addProjectBrowserTargetForFamilyStub;
-    let chromeBrowserTarget;
-    let firefoxBrowserTarget;
-    let chromeBrowserFamily;
-    let firefoxBrowserFamily;
-
-    beforeEach(function() {
-      setupFactoryGuy(this);
-      BrowserFamilySelector.setContext(this);
-
-      firefoxBrowserFamily = make('browser-family');
-      chromeBrowserFamily = make('browser-family', 'chrome');
-      project = make('project');
-      chromeBrowserTarget = make('browser-target', {browserFamily: chromeBrowserFamily});
-      firefoxBrowserTarget = make('browser-target', {browserFamily: firefoxBrowserFamily});
-
-      const allBrowserFamilies = [chromeBrowserFamily, firefoxBrowserFamily];
-      removeProjectBrowserTargetForFamilyStub = sinon.stub();
-      addProjectBrowserTargetForFamilyStub = sinon.stub();
-
-      this.setProperties({
-        project,
-        allBrowserFamilies,
-        removeProjectBrowserTargetForFamilyStub,
-        addProjectBrowserTargetForFamilyStub,
+        expect(BrowserFamilySelector.chromeButton.isActive).to.equal(true);
+        expect(BrowserFamilySelector.firefoxButton.isActive).to.equal(true);
       });
     });
 
-    it('sends "removeProjectBrowserTargetForFamily" when adding a browser', async function() {
-      make('project-browser-target', {
-        project,
-        browserTarget: chromeBrowserTarget,
+    describe('upgrading', function() {
+      function makeUpgradeableProjectBrowserTarget(family) {
+        return make('project-browser-target', 'upgradeable', {
+          project,
+          browserTarget: family === 'chrome' ? chromeBrowserTarget : firefoxBrowserTarget,
+        });
+      }
+
+      function makeRecentProjectBrowserTarget(family) {
+        return make('project-browser-target', {
+          project,
+          browserTarget: family === 'chrome' ? chromeBrowserTarget : firefoxBrowserTarget,
+        });
+      }
+
+      describe('when all browsers are enabled', function() {
+        it('shows upgrade button on chrome when only chrome is upgradeable', async function() {
+          const projectBrowserTargets = [
+            makeUpgradeableProjectBrowserTarget('chrome'),
+            makeRecentProjectBrowserTarget('firefox'),
+          ];
+          this.setProperties({projectBrowserTargets});
+          await render(hbs`{{projects/browser-family-selector
+            allBrowserFamilies=allBrowserFamilies
+            project=project
+          }}`);
+          expect(BrowserFamilySelector.chromeButton.isUpgradeable).to.equal(true);
+          expect(BrowserFamilySelector.firefoxButton.isUpgradeable).to.equal(false);
+        });
+
+        it('shows upgrade button on firefox when only firefox is upgradeable', async function() {
+          const projectBrowserTargets = [
+            makeRecentProjectBrowserTarget('chrome'),
+            makeUpgradeableProjectBrowserTarget('firefox'),
+          ];
+          this.setProperties({projectBrowserTargets});
+          await render(hbs`{{projects/browser-family-selector
+            allBrowserFamilies=allBrowserFamilies
+            project=project
+          }}`);
+
+          expect(BrowserFamilySelector.chromeButton.isUpgradeable).to.equal(false);
+          expect(BrowserFamilySelector.firefoxButton.isUpgradeable).to.equal(true);
+        });
+
+        it('shows upgrade button on both when both are upgradeable', async function() {
+          const projectBrowserTargets = [
+            makeUpgradeableProjectBrowserTarget('chrome'),
+            makeUpgradeableProjectBrowserTarget('firefox'),
+          ];
+          this.setProperties({projectBrowserTargets});
+          await render(hbs`{{projects/browser-family-selector
+            allBrowserFamilies=allBrowserFamilies
+            project=project
+          }}`);
+
+          expect(BrowserFamilySelector.chromeButton.isUpgradeable).to.equal(true);
+          expect(BrowserFamilySelector.firefoxButton.isUpgradeable).to.equal(true);
+        });
       });
-      make('project-browser-target', {
-        project,
-        browserTarget: firefoxBrowserTarget,
+
+      describe('when not all browsers are enabled', function() {
+        it('shows upgrade button on enabled browser when it is upgradeable', async function() {
+          const projectBrowserTargets = [makeUpgradeableProjectBrowserTarget('chrome')];
+
+          this.setProperties({projectBrowserTargets});
+          await render(hbs`{{projects/browser-family-selector
+            allBrowserFamilies=allBrowserFamilies
+            project=project
+          }}`);
+
+          expect(BrowserFamilySelector.chromeButton.isActive).to.equal(true);
+          expect(BrowserFamilySelector.chromeButton.isUpgradeable).to.equal(true);
+          expect(BrowserFamilySelector.firefoxButton.isActive).to.equal(false);
+          expect(BrowserFamilySelector.firefoxButton.isUpgradeable).to.equal(false);
+        });
       });
-
-      await render(hbs`{{projects/browser-family-selector
-        allBrowserFamilies=allBrowserFamilies
-        project=project
-        removeProjectBrowserTargetForFamily=removeProjectBrowserTargetForFamilyStub
-        addProjectBrowserTargetForFamily=addProjectBrowserTargetForFamilyStub
-      }}`);
-
-      await BrowserFamilySelector.clickChrome();
-      await settled();
-      expect(removeProjectBrowserTargetForFamilyStub).to.have.been.calledWith(
-        chromeBrowserFamily,
-        project,
-      );
-    });
-
-    it('sends "addProjectBrowserTargetForFamily" when adding a browser', async function() {
-      make('project-browser-target', {
-        project,
-        browserTarget: chromeBrowserTarget,
-      });
-
-      await render(hbs`{{projects/browser-family-selector
-        allBrowserFamilies=allBrowserFamilies
-        project=project
-        removeProjectBrowserTargetForFamily=removeProjectBrowserTargetForFamilyStub
-        addProjectBrowserTargetForFamily=addProjectBrowserTargetForFamilyStub
-      }}`);
-
-      await BrowserFamilySelector.clickFirefox();
-      await settled();
-      expect(addProjectBrowserTargetForFamilyStub).to.have.been.calledWith(
-        firefoxBrowserFamily,
-        project,
-      );
-    });
-
-    it('shows a flash message when trying to remove the last browser family', async function() {
-      const flashMessageService = this.owner
-        .lookup('service:flash-messages')
-        .registerTypes(['info']);
-      sinon.stub(flashMessageService, 'info');
-
-      make('project-browser-target', {
-        project,
-        browserTarget: firefoxBrowserTarget,
-      });
-
-      await render(hbs`{{projects/browser-family-selector
-        allBrowserFamilies=allBrowserFamilies
-        project=project
-        removeProjectBrowserTargetForFamily=removeProjectBrowserTargetForFamilyStub
-        addProjectBrowserTargetForFamily=addProjectBrowserTargetForFamilyStub
-      }}`);
-
-      await BrowserFamilySelector.clickFirefox();
-      await settled();
-      expect(flashMessageService.info).to.have.been.calledWith(
-        'A project must have at least one browser',
-      );
-      expect(removeProjectBrowserTargetForFamilyStub).to.not.have.been.called;
     });
   });
 });

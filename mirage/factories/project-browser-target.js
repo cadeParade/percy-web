@@ -1,3 +1,7 @@
-import {Factory} from 'ember-cli-mirage';
+import {Factory, association} from 'ember-cli-mirage';
 
-export default Factory.extend({});
+export default Factory.extend({
+  project: association(),
+  browserTarget: association(),
+  isUpgradeable: false,
+});
