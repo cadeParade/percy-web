@@ -98,6 +98,11 @@ export default Factory.extend({
     failureReason: 'missing_resources',
   }),
 
+  failedWithMissingFinalize: trait({
+    state: BUILD_STATES.FAILED,
+    failureReason: 'missing_finalize',
+  }),
+
   processing: trait({
     state: BUILD_STATES.PROCESSING,
     totalComparisons: 2312,

@@ -57,6 +57,7 @@ FactoryGuy.define('build', {
       totalComparisonsDiff: 0,
       totalComparisonsFinished: 12,
     },
+    missingFinalize: {failureReason: 'missing_finalize'},
     missingResources: {failureReason: 'missing_resources'},
     missingParallelBuilds: {
       failureReason: 'missing_resources',

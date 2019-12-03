@@ -21,6 +21,7 @@ describe('Integration: BuildOverviewComponent', function() {
     ['processing'],
     ['finished'],
     ['finished', 'noDiffs'],
+    ['failed', 'missingFinalize'],
     ['failed', 'missingResources'],
     ['failed', 'noSnapshots'],
     ['failed', 'renderTimeout'],

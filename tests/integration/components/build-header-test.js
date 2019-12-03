@@ -26,6 +26,7 @@ describe('Integration: BuildHeader', function() {
     ['finished', 'withBaseBuild', 'noDiffs'],
     ['finished', 'withBaseBuild', 'withUpgradedBrowser'],
     ['finished', 'withBaseBuild', 'withTwoUpgradedBrowsers'],
+    ['failed', 'withBaseBuild', 'missingFinalize'],
     ['failed', 'withBaseBuild', 'missingResources'],
     ['failed', 'withBaseBuild', 'missingParallelBuilds'],
     ['failed', 'withBaseBuild', 'noSnapshots'],

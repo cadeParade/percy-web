@@ -482,6 +482,11 @@ describe('Acceptance: Project', function() {
         createdAt: _timeAgo(5, 'seconds'),
         buildNumber: 13,
       });
+      server.create('build', 'failedWithMissingFinalize', {
+        project,
+        createdAt: _timeAgo(3, 'seconds'),
+        buildNumber: 14,
+      });
       this.project = project;
     });
 
@@ -495,7 +500,7 @@ describe('Acceptance: Project', function() {
       await ProjectPage.visitProject(urlParams);
 
       expect(ProjectPage.infinityLoader.isPresent).to.equal(false);
-      expect(ProjectPage.builds.length).to.equal(13);
+      expect(ProjectPage.builds.length).to.equal(14);
     });
 
     it('shows builds with identical build numbers', async function() {
@@ -506,7 +511,7 @@ describe('Acceptance: Project', function() {
       });
 
       await ProjectPage.visitProject(urlParams);
-      expect(ProjectPage.builds.length).to.equal(14);
+      expect(ProjectPage.builds.length).to.equal(15);
     });
 
     it('shows the loader when there are more than 50 builds', async function() {

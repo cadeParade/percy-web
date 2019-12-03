@@ -75,6 +75,8 @@ export default DS.Model.extend({
     let failureReason = this.failureReason;
     if (failureReason === 'missing_resources') {
       return 'Missing resources';
+    } else if (failureReason === 'missing_finalize') {
+      return 'Missing finalize';
     } else if (failureReason === 'no_snapshots') {
       return 'No snapshots';
     } else if (failureReason === 'render_timeout') {

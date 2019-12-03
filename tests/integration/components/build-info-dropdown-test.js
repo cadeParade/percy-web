@@ -25,6 +25,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
     ['processing'],
     ['finished', 'withBaseBuild'],
     ['finished', 'noDiffs', 'withBaseBuild'],
+    ['failed', 'missingFinalize', 'withBaseBuild'],
     ['failed', 'missingResources', 'withBaseBuild'],
     ['failed', 'noSnapshots', 'withBaseBuild'],
     ['failed', 'renderTimeout', 'withBaseBuild'],
