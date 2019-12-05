@@ -12,7 +12,7 @@ export default Component.extend({
 
   projectBrowserTargets: readOnly('project.projectBrowserTargets'),
 
-  enabledBrowserFamilies: computed('projectBrowserTargets.@each.browserTarget.', function() {
+  enabledBrowserFamilies: computed('projectBrowserTargets.@each.browserTarget', function() {
     return this.browserTargets.enabledBrowserFamiliesForProject(this.project);
   }),
 
