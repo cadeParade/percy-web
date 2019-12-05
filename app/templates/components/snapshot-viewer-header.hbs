@@ -134,15 +134,6 @@
         </BasicDropdown>
       </div>
 
-      <div class="btn-group btn-group-alt">
-        {{comparison-switcher
-          comparisons=(if isShowingAllComparisons filteredComparisons.comparisons filteredComparisons.comparisonsWithDiffs)
-          selectedWidth=snapshotSelectedWidth
-          updateSelectedWidth=updateSelectedWidth
-          data-test-SnapshotViewer-widthSwitcher=true
-        }}
-      </div>
-
       <div class="btn-group" role="group" aria-label="Second Group">
         <button type="button" class="ToggleFullViewButton btn btn-square {{if fullscreen 'minimize-snapshot' 'maximize-snapshot'}}"
           {{action toggleViewMode}} aria-label="{{if fullscreen "Minimize" "Maximize"}} snapshot" data-test-SnapshotViewer-toggleFullScreen>
@@ -157,14 +148,6 @@
       </div>
 
       {{#if snapshot.build.isFinished}}
-        {{#if (and fullscreen snapshot.build.hasMultipleBrowsers)}}
-          {{browser-switcher
-            browsers=snapshot.build.browsers
-            activeBrowser=activeBrowser
-            updateActiveBrowser=updateActiveBrowser
-          }}
-        {{/if}}
-
         {{#if isBuildApprovable}}
           {{collaboration/toggle-button
             toggleCollaborationPanel=toggleCollaborationPanel
@@ -173,6 +156,25 @@
           }}
         {{/if}}
 
+        {{#if (and fullscreen snapshot.build.hasMultipleBrowsers)}}
+          {{browser-switcher
+            browsers=snapshot.build.browsers
+            activeBrowser=activeBrowser
+            updateActiveBrowser=updateActiveBrowser
+          }}
+        {{/if}}
+      {{/if}}
+
+      <div class="btn-group btn-group-alt">
+        {{comparison-switcher
+          comparisons=(if isShowingAllComparisons filteredComparisons.comparisons filteredComparisons.comparisonsWithDiffs)
+          selectedWidth=snapshotSelectedWidth
+          updateSelectedWidth=updateSelectedWidth
+          data-test-SnapshotViewer-widthSwitcher=true
+        }}
+      </div>
+
+      {{#if snapshot.build.isFinished}}
         <div class="btn-toolbar" data-test-snapshot-approval-button>
           {{#if snapshot.isUnreviewed}}
             <DemoTooltip

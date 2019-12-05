@@ -38,15 +38,7 @@
 
     <div class="flex justify-end">
       <div class="btn-toolbar">
-
         {{#if isGroupCollapsed}}
-          <div class="btn-group btn-group-alt">
-            {{comparison-switcher
-              comparisons=filteredComparisons.comparisonsWithDiffs
-              selectedWidth=blockSelectedWidth
-              updateSelectedWidth=(action "updateSelectedWidth")
-            }}
-          </div>
           <div class="btn-group" role="group" aria-label="Second Group">
             <button type="button" class="ToggleFullViewButton btn btn-square maximize-snapshot"
               {{action showSnapshotFullModalTriggered snapshots.firstObject.id blockSelectedWidth activeBrowser}} data-test-snapshot-header-dropdown-toggle>
@@ -74,6 +66,17 @@
               </button>
             {{/if}}
           </div>
+
+          {{#if isGroupCollapsed}}
+            <div class="btn-group btn-group-alt">
+              {{comparison-switcher
+                comparisons=filteredComparisons.comparisonsWithDiffs
+                selectedWidth=blockSelectedWidth
+                updateSelectedWidth=(action "updateSelectedWidth")
+              }}
+            </div>
+          {{/if}}
+          
           <div class="btn-toolbar">
             {{#if isGroupUnreviewed}}
               <DemoTooltip
