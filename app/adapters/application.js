@@ -138,6 +138,13 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
       return utils.buildApiUrl('commentThreads', id);
     }
 
+    // /api/v1/builds/:build_id/comment-threads/
+    if (requestType === 'query' && modelName === 'comment-thread') {
+      const buildId = query.filter.build;
+      delete query.filter.build;
+      return utils.buildApiUrl('buildCommentThreads', buildId);
+    }
+
     // Customize buildURL for models where we want to use the slug as the ID in the API URL, but
     // keep the internal ID stable. TODO: remove this when Ember Data fully supports JSON-API
     // self links.

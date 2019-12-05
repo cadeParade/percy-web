@@ -422,6 +422,7 @@ export default function() {
   this.get('/snapshots/:id');
   this.get('/builds/:id');
   this.get('/builds/:build_id/comparisons');
+  this.get('/builds/:build_id/comment-threads');
   this.get('/repos/:id');
   this.post('/user-notification-setting');
   this.patch('/user-notification-setting/:id');

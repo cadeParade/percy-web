@@ -292,8 +292,9 @@ describe('Acceptance: Build', function() {
       expect(secondSnapshot.isRejected).to.equal(true);
 
       let request = server.pretender.handledRequests.find(request => {
-        return request.url.includes('comments');
+        return request.url.includes('/comments');
       });
+
       const taggedUser = JSON.parse(request.requestBody).data.relationships['tagged-users'].data[0];
       expect(taggedUser.id).to.equal('1');
       expect(server.db.snapshots.find(twoWidthsSnapshot.id).reviewState).to.equal(
@@ -495,6 +496,7 @@ describe('Acceptance: Build', function() {
         server.create('commentThread', 'withTenComments', 'note', {
           snapshot: commentedSnapshot,
         });
+        commentedSnapshot.update({totalOpenComments: 13});
 
         await BuildPage.visitBuild(urlParams);
       });

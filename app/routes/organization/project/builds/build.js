@@ -19,6 +19,12 @@ export default Route.extend({
       // Note: passing {reload: true} here to ensure a full reload including all sideloaded data.
       build: this.store.findRecord('build', params.build_id, {reload: true}),
       isUserMember: isUserMember(this.session.currentUser, org),
+      commentThreads: this.store.query('commentThread', {
+        filter: {
+          build: params.build_id,
+        },
+        include: 'comments,comments.author',
+      }),
     });
   },
 

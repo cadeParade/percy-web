@@ -39,6 +39,7 @@ export default Factory.extend({
   name(i) {
     return `Exemplifying Test Snapshot That Shows Things ${i}`;
   },
+  totalOpenComments: 0,
 
   unreviewed: trait(_unreviewedProps),
   rejected: trait(_rejectedProps),

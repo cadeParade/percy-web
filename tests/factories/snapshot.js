@@ -17,6 +17,7 @@ FactoryGuy.define('snapshot', {
     // screenshots: FactoryGuy.belongsTo('screenshot')
 
     reviewState: SNAPSHOT_UNAPPROVED_STATE,
+    totalOpenComments: 0,
   },
   traits: {
     withFinishedBuild: {

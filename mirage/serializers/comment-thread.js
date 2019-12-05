@@ -1,5 +1,9 @@
 import {JSONAPISerializer} from 'ember-cli-mirage';
 
 export default JSONAPISerializer.extend({
-  include: Object.freeze(['comments', 'snapshot']),
+  shouldIncludeLinkageData(relationshipKey) {
+    if (relationshipKey === 'snapshot') {
+      return true;
+    }
+  },
 });

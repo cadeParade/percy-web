@@ -31,6 +31,7 @@ export default DS.Model.extend({
     inverse: 'headSnapshot',
   }),
 
+  totalOpenComments: DS.attr(),
   commentThreads: DS.hasMany('commentThreads', {async: false}),
   openCommentThreads: filterBy('commentThreads', 'isOpen'),
   hasOpenCommentThreads: notEmpty('openCommentThreads'),

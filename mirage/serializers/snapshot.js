@@ -12,7 +12,6 @@ export default JSONAPISerializer.extend({
     'comparisons.baseSnapshot',
     'comparisons.headSnapshot',
     'comparisons.diffImage',
-    'commentThreads.comments',
   ]),
 
   links(snapshot) {

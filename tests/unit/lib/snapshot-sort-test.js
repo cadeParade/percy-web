@@ -91,52 +91,54 @@ describe('snapshot-sort', function() {
     });
 
     it('sorts snapshots with diffs before snapshots with commentThreads and no diffs', function() {
-      const snapshotWithCommentThreads = {
-        commentThreads: [{}, {}],
+      const snapshotWithComments = {
+        totalOpenComments: 100,
         comparisons: [wideComparisonWithNoDiff],
       };
       const snapshotWithDiffs = {
+        totalOpenComments: 0,
         comparisons: [wideComparisonWithLowDiff],
       };
-      const unorderedSnapshots = [snapshotWithDiffs, snapshotWithCommentThreads];
+      const unorderedSnapshots = [snapshotWithDiffs, snapshotWithComments];
 
       expect(snapshotSort(unorderedSnapshots, firefoxBrowser)).to.eql([
         snapshotWithDiffs,
-        snapshotWithCommentThreads,
+        snapshotWithComments,
       ]);
     });
 
     it('returns snapshots with more commentThreads first', function() {
-      const snapshotWithOneCommentThread = {
-        commentThreads: [{}],
+      const snapshotWithOneComment = {
+        totalOpenComments: 1,
         comparisons: [wideComparisonWithLowDiff],
       };
-      const snapshotWithTwoCommentThreads = {
-        commentThreads: [{}, {}],
+      const snapshotWithTwoComments = {
+        totalOpenComments: 2,
         comparisons: [wideComparisonWithLowDiff],
       };
-      const unorderedSnapshots = [snapshotWithOneCommentThread, snapshotWithTwoCommentThreads];
+      const unorderedSnapshots = [snapshotWithOneComment, snapshotWithTwoComments];
 
       expect(snapshotSort(unorderedSnapshots, firefoxBrowser)).to.eql([
-        snapshotWithTwoCommentThreads,
-        snapshotWithOneCommentThread,
+        snapshotWithTwoComments,
+        snapshotWithOneComment,
       ]);
     });
 
     it('sorts snapshots with comments before snapshots diffs at wider widths', function() {
-      const snapshotWithCommentThreads = {
+      const snapshotWithComments = {
         maxComparisonWidth: narrowWidth,
-        commentThreads: [{}, {}],
+        totalOpenComments: 2,
         comparisons: [wideComparisonWithHighDiff],
       };
       const snapshotWithWideDiff = {
         maxComparisonWidth: wideWidth,
+        totalOpenComments: 0,
         comparisons: [wideComparisonWithHighDiff],
       };
 
-      const unorderedSnapshots = [snapshotWithWideDiff, snapshotWithCommentThreads];
+      const unorderedSnapshots = [snapshotWithWideDiff, snapshotWithComments];
       expect(snapshotSort(unorderedSnapshots, firefoxBrowser)).to.eql([
-        snapshotWithCommentThreads,
+        snapshotWithComments,
         snapshotWithWideDiff,
       ]);
     });
