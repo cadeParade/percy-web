@@ -7,6 +7,7 @@ export default DS.Model.extend({
   email: DS.attr(),
   avatarUrl: DS.attr(),
   unverifiedEmail: DS.attr(),
+  webTheme: DS.attr(),
 
   userNotificationSetting: DS.belongsTo('userNotificationSetting', {async: false}),
   identities: DS.hasMany('identities', {async: false}),

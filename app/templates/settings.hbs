@@ -13,6 +13,11 @@
             <li class="sidenav-list-item">
               {{#link-to 'settings.connected-accounts' classNames="sidenav-list-item-link"}}Connected Accounts{{/link-to}}
             </li>
+            {{#if (variation "show-display-preferences")}}
+              <li class="sidenav-list-item">
+                {{#link-to 'settings.display-preferences' classNames="sidenav-list-item-link"}}Display Preferences{{/link-to}}
+              </li>
+            {{/if}}
             <li class="sidenav-list-item">
               {{#link-to 'settings.notifications' classNames="sidenav-list-item-link"}}Notifications{{/link-to}}
             </li>

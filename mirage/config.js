@@ -49,7 +49,7 @@ export default function() {
     let user = schema.users.findBy({_currentLoginInTest: true});
     let attrs = this.normalizedRequestAttrs('user');
 
-    user.update({name: attrs.name, unverifiedEmail: attrs.email});
+    user.update({name: attrs.name, unverifiedEmail: attrs.email, webTheme: attrs.webTheme});
     return user;
   });
 

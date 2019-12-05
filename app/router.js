@@ -85,6 +85,7 @@ Router.map(function() {
   this.route('settings', function() {
     this.route('profile');
     this.route('connected-accounts');
+    this.route('display-preferences');
     this.route('notifications');
   });
   this.route('setup', {path: '/setup'}, function() {
