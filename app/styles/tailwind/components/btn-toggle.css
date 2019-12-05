@@ -3,26 +3,30 @@
   @apply grid;
   @apply col-auto;
   @apply p-xs;
-  @apply rounded;
+  @apply rounded-full;
   @apply bg-gray-100;
   @apply text-sm;
   @apply font-bold;
   @apply leading-none;
+  height: 30px;
 }
 
 .btn-toggle-item {
+  @apply flex;
+  @apply items-center;
   @apply relative;
   @apply px-2;
-  @apply py-1;
-  @apply text-gray-300;
+  @apply text-gray-400;
+  @apply leading-none;
   @apply select-none;
   @apply cursor-pointer;
   @apply z-1;
+  height: 26px;
   transition: color 250ms;
 }
 
 .btn-toggle-item:hover {
-  @apply text-gray-500;
+  @apply text-gray-700;
 }
 
 .btn-toggle-item.is-selected {
@@ -43,7 +47,7 @@
   @apply w-full;
   @apply h-full;
   @apply bg-white;
-  @apply rounded-sm;
+  @apply rounded-full;
   @apply opacity-0;
   z-index: -1;
   transition: opacity 250ms, transform 250ms;

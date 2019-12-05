@@ -2,7 +2,11 @@
   shouldFullyRender=shouldFullyRender
   displayTitle=groupTitle
 }}
-  <header class="SnapshotViewer-header sticky grid gap-4 px-2 py-1 bg-gray-000 border-b border-t" {{action "expandBlock"}} data-test-snapshot-group-header>
+  <header
+    style="grid-template-columns: 1fr auto;"
+    class="SnapshotViewer-header sticky grid gap-4 px-2 py-1 bg-gray-000 border-b border-t"
+    {{action "expandBlock"}}
+    data-test-snapshot-group-header>
     <div style="min-width: 0;" class="flex items-center">
       <div class="Viewer-header-title SnapshotViewer-title flex items-center overflow-hidden cursor-default font-bold" title="{{snapshots.length}} matching changes" data-test-snapshot-group-name>
         <figure class="svg-container mr-1">

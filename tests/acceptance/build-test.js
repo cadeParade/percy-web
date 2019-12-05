@@ -1086,13 +1086,13 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   it('responds to keystrokes and click in full view', async function() {
     await BuildPage.visitFullPageSnapshot(urlParams);
     await BuildPage.snapshotFullscreen.typeRightArrow();
-    expect(currentURL()).to.include('mode=head');
+    expect(currentURL()).to.include('mode=base');
 
     await BuildPage.snapshotFullscreen.typeLeftArrow();
     expect(currentURL()).to.include('mode=diff');
 
     await BuildPage.snapshotFullscreen.clickComparisonViewer();
-    expect(currentURL()).to.include('mode=head');
+    expect(currentURL()).to.include('mode=base');
 
     await BuildPage.snapshotFullscreen.typeEscape();
     expect(currentRouteName()).to.equal('organization.project.builds.build.index');

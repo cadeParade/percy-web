@@ -52,7 +52,7 @@ export const SnapshotViewerHeader = {
   widthSwitcher: {
     scope: SELECTORS.WIDTH_SWITCHER,
     buttons: collection(SELECTORS.WIDTH_SWITCHER_BUTTON, {
-      isActive: hasClass('is-active'),
+      isActive: hasClass('is-selected'),
       text: text(),
     }),
   },
@@ -111,11 +111,11 @@ export const SnapshotViewerHeader = {
   isRejected: isVisible(SELECTORS.REQUEST_CHANGES_BADGE),
 
   isBaseComparisonModeButtonVisible: isVisible(SELECTORS.COMPARISON_MODE_SWITCHER_BASE),
-  isBaseComparisonModeSelected: hasClass('is-active', SELECTORS.COMPARISON_MODE_SWITCHER_BASE),
+  isBaseComparisonModeSelected: hasClass('is-selected', SELECTORS.COMPARISON_MODE_SWITCHER_BASE),
   isDiffComparisonModeButtonVisible: isVisible(SELECTORS.COMPARISON_MODE_SWITCHER_DIFF),
-  isDiffComparisonModeSelected: hasClass('is-active', SELECTORS.COMPARISON_MODE_SWITCHER_DIFF),
+  isDiffComparisonModeSelected: hasClass('is-selected', SELECTORS.COMPARISON_MODE_SWITCHER_DIFF),
   isHeadComparisonModeButtonVisible: isVisible(SELECTORS.COMPARISON_MODE_SWITCHER_HEAD),
-  isHeadComparisonModeSelected: hasClass('is-active', SELECTORS.COMPARISON_MODE_SWITCHER_HEAD),
+  isHeadComparisonModeSelected: hasClass('is-selected', SELECTORS.COMPARISON_MODE_SWITCHER_HEAD),
 
   isNewComparisonModeButtonVisible: isVisible(SELECTORS.COMPARISON_MODE_SWITCHER_NEW),
 

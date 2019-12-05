@@ -1,13 +1,13 @@
-<div class="btn-group" data-test-comparison-mode-switcher role="group" aria-label="Snapshot Comparison Switcher">
+<div class="btn-toggle" data-test-comparison-mode-switcher>
   {{#if wasAdded}}
-    <button type="button" class="btn is-active"
-      {{action updateComparisonMode 'head'}} data-test-comparison-mode-switcher-new>New Snapshot</button>
+    <div class="btn-toggle-item is-selected"
+      {{action updateComparisonMode 'head'}} data-test-comparison-mode-switcher-new>New Snapshot</div>
   {{else}}
-    <button type="button" class="btn {{if (eq comparisonMode 'base') 'is-active'}}"
-      {{action updateComparisonMode 'base'}} data-test-comparison-mode-switcher-base>Original</button>
-    <button type="button" class="btn {{if (eq comparisonMode 'diff') 'is-active'}}"
-      {{action updateComparisonMode 'diff'}} data-test-comparison-mode-switcher-diff>Diff</button>
-    <button type="button" class="btn {{if (eq comparisonMode 'head') 'is-active'}}"
-      {{action updateComparisonMode 'head'}} data-test-comparison-mode-switcher-head>New</button>
+    <div class="btn-toggle-item {{if (eq comparisonMode 'diff') 'is-selected'}}"
+      {{action updateComparisonMode 'diff'}} data-test-comparison-mode-switcher-diff>Diff</div>
+    <div class="btn-toggle-item {{if (eq comparisonMode 'base') 'is-selected'}}"
+      {{action updateComparisonMode 'base'}} data-test-comparison-mode-switcher-base>Original</div>
+    <div class="btn-toggle-item {{if (eq comparisonMode 'head') 'is-selected'}}"
+      {{action updateComparisonMode 'head'}} data-test-comparison-mode-switcher-head>New</div>
   {{/if}}
 </div>

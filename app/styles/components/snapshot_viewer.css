@@ -1,4 +1,6 @@
 .SnapshotViewer {
+  @apply bg-gray-000;
+
   &.SnapshotViewer--actionable {
     @apply cursor-pointer;
 

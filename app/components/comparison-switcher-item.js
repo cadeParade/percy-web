@@ -4,13 +4,6 @@ import Component from '@ember/component';
 export default Component.extend({
   selectedWidth: null,
   width: null,
-  tagName: 'button',
-  classNames: ['btn'],
-  classNameBindings: [
-    'isSelected:is-active:',
-    'matchingComparison::is-disabled',
-    'matchingComparison.isDifferent:has-diffs',
-  ],
 
   init() {
     this._super(...arguments);
@@ -26,7 +19,9 @@ export default Component.extend({
     return parseInt(this.selectedWidth, 10) === this.width;
   }),
 
-  click() {
-    this.updateSelectedWidth(this.width);
+  actions: {
+    setWidth() {
+      this.updateSelectedWidth(this.width);
+    },
   },
 });

@@ -1,1 +1,18 @@
-{{width}}px
+<div
+  class="
+    btn-toggle-item
+    {{if isSelected ' is-selected'}}
+    {{if matchingComparison ' is-disabled'}}
+    {{if matchingComparison.isDifferent ' has-diffs'}}
+  "
+  {{action 'setWidth'}}
+  data-test-ComparisonSwitcher-button>
+  <div class="flex items-center">
+    {{#if (and matchingComparison.isDifferent isSelected)}}
+      {{inline-svg "diff-icon-xs" class="mr-sm"}}
+    {{else if matchingComparison.isDifferent}}
+      {{inline-svg "diff-icon-unselected-xs" class="mr-sm"}}
+    {{/if}}
+    {{width}}px
+  </div>
+</div>

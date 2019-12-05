@@ -9,7 +9,7 @@ const KEYS = {
   RIGHT_ARROW: 39,
 };
 
-const GALLERY_MAP = ['base', 'diff', 'head'];
+const GALLERY_MAP = ['diff', 'base', 'head'];
 
 export default Component.extend(EKMixin, {
   classNames: ['SnapshotViewerFull', 'overflow-y-scroll'],

@@ -43,6 +43,7 @@ export default Component.extend({
 
   isShowingFilteredComparisons: true,
   isNotShowingFilteredComparisons: not('isShowingFilteredComparisons'),
+
   isShowingAllComparisons: or('noComparisonsHaveDiffs', 'isNotShowingFilteredComparisons'),
   noComparisonsHaveDiffs: equal('filteredComparisons.comparisonsWithDiffs.length', 0),
   allComparisonsHaveDiffs: computed(

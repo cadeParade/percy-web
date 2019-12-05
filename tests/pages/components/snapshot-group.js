@@ -79,7 +79,7 @@ export const snapshotGroup = {
     widthSwitcher: {
       scope: SELECTORS.WIDTH_SWITCHER,
       buttons: collection(SELECTORS.WIDTH_SWITCHER_BUTTON, {
-        isActive: hasClass('is-active'),
+        isActive: hasClass('is-selected'),
         text: text(),
       }),
     },
