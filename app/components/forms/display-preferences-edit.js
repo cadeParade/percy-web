@@ -3,16 +3,16 @@ import {task} from 'ember-concurrency';
 
 export const USER_WEB_THEME_OPTIONS = [
   {
-    label: 'System',
-    value: 'system',
-  },
-  {
     label: 'Light',
     value: 'light',
   },
   {
     label: 'Dark',
     value: 'dark',
+  },
+  {
+    label: 'System',
+    value: 'system',
   },
 ];
 

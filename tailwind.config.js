@@ -16,6 +16,14 @@ module.exports = {
       transparent: 'transparent',
       translucent: 'rgba(0, 0, 0, 0.5)',
       white: '#fff',
+      dark: {
+        '400': '#9c9ca1',
+        '500': '#505053',
+        '600': '#38383a',
+        '700': '#242425',
+        '800': '#1e1e1e',
+        '900': '#0f0f10',
+      },
       gray: {
         '000': '#fbfafc',
         '100': '#f0eef1',
