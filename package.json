@@ -81,7 +81,7 @@
     "ember-infinity": "^1.4.9",
     "ember-inflector": "^3.0.0",
     "ember-inline-svg": "^0.3.0",
-    "ember-keyboard": "^4.0.0",
+    "ember-keyboard": "^5.0.0",
     "ember-launch-darkly": "^0.7.0",
     "ember-load-initializers": "^2.1.0",
     "ember-mocha": "^0.16.2",
