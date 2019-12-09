@@ -52,7 +52,7 @@
     "ember-cli-dependency-checker": "^3.2.0",
     "ember-cli-deprecation-workflow": "^1.0.0",
     "ember-cli-eslint": "5.1.0",
-    "ember-cli-flash": "^1.7.2",
+    "ember-cli-flash": "^1.8.0",
     "ember-cli-gravatar": "^3.10.2",
     "ember-cli-htmlbars": "^3.1.0",
     "ember-cli-htmlbars-inline-precompile": "2.1.0",

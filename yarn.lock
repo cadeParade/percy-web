@@ -6958,13 +6958,13 @@ ember-cli-eslint@5.1.0:
     rsvp "^4.6.1"
     walk-sync "^1.0.0"
 
-ember-cli-flash@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/ember-cli-flash/-/ember-cli-flash-1.7.2.tgz#b08cc694103510c42945a8444ce104e426e0b904"
-  integrity sha512-0TOCG1aOhGs6kWfKJmrBpdKQNjKYkKIEnX8qqRpqSfHsLCINWCETBlNL34vf65xUfEKUrHwWOqgfaxGdqUCR5Q==
+ember-cli-flash@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-flash/-/ember-cli-flash-1.8.0.tgz#365decadc850e77b70c1c64ce6ab6f58662f7c38"
+  integrity sha512-Iymt+7MnYPXzz1c23aYNVqj4aq7HGc8oGUSzNsgs9SwLpIoiYafYB3M81x/mqOyLLUVPjBst3Z6cF42FKAAyMw==
   dependencies:
-    ember-cli-babel "^6.10.0"
-    ember-cli-htmlbars "^2.0.1"
+    ember-cli-babel "^7.1.2"
+    ember-cli-htmlbars "^3.0.0"
     ember-runtime-enumerable-includes-polyfill "^2.0.0"
 
 ember-cli-get-component-path-option@^1.0.0:
