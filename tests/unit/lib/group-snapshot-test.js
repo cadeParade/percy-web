@@ -93,7 +93,10 @@ describe('grouping snapshots', function() {
         const result = groupSnapshots(orderedSnapshots);
         expect(result).to.eql({
           singles: [],
-          groups: [[snapshotGroupB2, snapshotGroupB1], [snapshotGroupA1, snapshotGroupA2]],
+          groups: [
+            [snapshotGroupB2, snapshotGroupB1],
+            [snapshotGroupA1, snapshotGroupA2],
+          ],
         });
       });
     });
