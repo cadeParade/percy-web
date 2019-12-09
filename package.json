@@ -127,7 +127,7 @@
     "seedrandom": "^3.0.3",
     "siema": "^1.5.1",
     "sinon-chai": "^3.3.0",
-    "stylelint": "^11.0.0",
+    "stylelint": "^12.0.0",
     "stylelint-config-recommended": "^3.0.0",
     "stylelint-order": "^3.1.1",
     "tailwindcss": "^1.1.3",
