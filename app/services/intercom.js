@@ -28,4 +28,10 @@ export default Service.extend({
       }
     }
   },
+
+  update() {
+    if (window.Intercom) {
+      window.Intercom('update');
+    }
+  },
 });

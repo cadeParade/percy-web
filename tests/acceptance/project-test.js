@@ -68,7 +68,8 @@ describe('Acceptance: Project', function() {
     });
 
     it('has the noBuilds query param in the url', async function() {
-      await ProjectPage.visitProject(urlParams);
+      await ProjectPage.visitOrg(urlParams);
+      await OrganizationDashboard.projects[0].clickLink();
       expect(currentURL()).to.include('noBuilds=true');
     });
 

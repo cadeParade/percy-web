@@ -1,5 +1,7 @@
 {{title (concat project.name " dashboard | Percy") replace=true}}
 
+{{did-insert fire=(action "updateIntercom")}}
+
 {{fixed-top-header currentOrganization=project.organization project=project}}
 
 <div data-test-project-page>
