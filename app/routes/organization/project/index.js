@@ -43,7 +43,6 @@ export default Route.extend(ResetScrollMixin, {
       projects: model.projects,
       infinityBuilds: model.infinityBuilds,
       isUserMember: model.isUserMemberOfOrg,
-      noBuilds: model.infinityBuilds.length === 0,
     });
   },
 

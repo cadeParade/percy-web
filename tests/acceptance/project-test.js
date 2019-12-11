@@ -7,7 +7,7 @@ import NewProjectPage from 'percy-web/tests/pages/new-project-page';
 import sinon from 'sinon';
 import {beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
-import {visit, findAll, currentRouteName, currentURL, settled} from '@ember/test-helpers';
+import {visit, findAll, currentRouteName, settled} from '@ember/test-helpers';
 import {selectChoose} from 'ember-power-select/test-support/helpers';
 import UserMenu from 'percy-web/tests/pages/components/user-menu';
 import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
@@ -65,12 +65,6 @@ describe('Acceptance: Project', function() {
         orgSlug: organization.slug,
         projectSlug: project.slug,
       };
-    });
-
-    it('has the noBuilds query param in the url', async function() {
-      await ProjectPage.visitOrg(urlParams);
-      await OrganizationDashboard.projects[0].clickLink();
-      expect(currentURL()).to.include('noBuilds=true');
     });
 
     it('shows environment variables and demo project instructions', async function() {
