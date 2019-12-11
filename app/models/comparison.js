@@ -7,8 +7,8 @@ export default DS.Model.extend({
   width: DS.attr('number'),
 
   headBuild: DS.belongsTo('build', {async: false}),
-  headSnapshot: DS.belongsTo('snapshot', {async: false}),
-  baseSnapshot: DS.belongsTo('snapshot', {async: false}),
+  headSnapshot: DS.belongsTo('snapshot', {async: true}),
+  baseSnapshot: DS.belongsTo('snapshot', {async: true}),
 
   // If headScreenshot is null, the comparison was removed (compared to the base build).
   headScreenshot: DS.belongsTo('screenshot', {async: false}),
