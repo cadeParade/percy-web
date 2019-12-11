@@ -124,6 +124,7 @@ export default Component.extend(InViewportMixin, {
   actions: {
     updateSelectedWidth(value) {
       set(this, 'userSelectedWidth', value);
+      this.analytics.track('Snapshot Width Selected');
     },
     expandBlock() {
       if (!get(this, '_defaultIsExpanded')) {
