@@ -1,5 +1,5 @@
 import {afterEach, beforeEach} from 'mocha';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import sinon from 'sinon';
 import {currentRouteName, visit} from '@ember/test-helpers';
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';

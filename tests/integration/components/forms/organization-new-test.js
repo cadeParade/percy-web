@@ -5,7 +5,7 @@ import {make} from 'ember-data-factory-guy';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import NewOrganization from 'percy-web/tests/pages/components/new-organization';
 import sinon from 'sinon';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import Service from '@ember/service';
 import {defer} from 'rsvp';
 import {render} from '@ember/test-helpers';

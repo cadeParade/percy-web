@@ -2,7 +2,7 @@ import VideoBlock from 'percy-web/tests/pages/components/marketing/video-block';
 import hbs from 'htmlbars-inline-precompile';
 import {it, describe, beforeEach} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import {render, find} from '@ember/test-helpers';
 
 describe('Integration: Marketing/VideoBlock', function() {

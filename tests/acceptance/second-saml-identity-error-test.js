@@ -1,6 +1,6 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import {visit} from '@ember/test-helpers';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import SecondSamlIdentityErrorPage from 'percy-web/tests/pages/second-saml-identity-error-page';
 import {beforeEach} from 'mocha';
 import sinon from 'sinon';

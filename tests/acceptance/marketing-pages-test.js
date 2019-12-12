@@ -2,7 +2,7 @@ import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import {beforeEach} from 'mocha';
 import stubLockModal from 'percy-web/tests/helpers/stub-lock-modal';
 import {visit, currentRouteName, click, findAll} from '@ember/test-helpers';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 
 describe('Acceptance: Marketing pages', function() {
   function visitAllMarketingPages({authenticated = false, takeSnapshot = false}) {

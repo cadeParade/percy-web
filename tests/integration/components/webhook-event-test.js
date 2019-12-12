@@ -2,7 +2,7 @@ import {it, describe, beforeEach} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import WebhookEvent from 'percy-web/tests/pages/components/webhook-event';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import freezeMoment from 'percy-web/tests/helpers/freeze-moment';

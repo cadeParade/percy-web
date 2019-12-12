@@ -2,7 +2,7 @@ import {it, describe, beforeEach} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import QuoteBlock from 'percy-web/tests/pages/components/marketing/customer-quote-block';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import {render} from '@ember/test-helpers';
 
 describe('Integration: Marketing/CustomerQuoteBlock', function() {

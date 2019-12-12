@@ -2,7 +2,7 @@
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
 import {it, describe, beforeEach} from 'mocha';
-import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
 import sinon from 'sinon';
@@ -107,7 +107,7 @@ describe('Integration: SnapshotViewerFull', function() {
       this.set('snapshot', addedSnapshot);
 
       expect(FullSnapshotPage.isNewComparisonModeButtonVisible).to.equal(true);
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, { darkMode: true });
     });
   });
 
@@ -143,7 +143,7 @@ describe('Integration: SnapshotViewerFull', function() {
   });
 
   it('compares visually to previous screenshot', async function() {
-    await percySnapshotWithDarkMode(this.test);
+    await percySnapshot(this.test, { darkMode: true });
   });
 
   describe('full screen toggle button', function() {
@@ -186,7 +186,7 @@ describe('Integration: SnapshotViewerFull', function() {
       async function expectToggleWorks({isOpenByDefault = true, context} = {}) {
         await FullSnapshotPage.header.toggleCommentSidebar();
         expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(!isOpenByDefault);
-        await percySnapshotWithDarkMode(context.test);
+        await percySnapshot(context.test, { darkMode: true });
 
         await FullSnapshotPage.header.toggleCommentSidebar();
         expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(isOpenByDefault);

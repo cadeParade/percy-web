@@ -1,6 +1,6 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import NotifSettings from 'percy-web/tests/pages/components/forms/user-notification-setting'; // eslint-disable-line
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {findAll, settled, waitUntil} from '@ember/test-helpers';
 import Response from 'ember-cli-mirage/response';
 

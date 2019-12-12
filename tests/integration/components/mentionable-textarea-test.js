@@ -5,7 +5,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {makeList} from 'ember-data-factory-guy';
 import {click, typeIn, findAll, render} from '@ember/test-helpers';
 import MentionableTextarea from 'percy-web/tests/pages/components/mentionable-textarea';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import sinon from 'sinon';
 import {
   generateTributeUserConfig,

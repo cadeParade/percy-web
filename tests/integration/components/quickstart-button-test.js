@@ -1,7 +1,7 @@
 /* jshint expr:true */
 import {setupRenderingTest} from 'ember-mocha';
 import {beforeEach, it, describe} from 'mocha';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {make} from 'ember-data-factory-guy';

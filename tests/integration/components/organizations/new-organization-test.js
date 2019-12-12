@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {describe, it, beforeEach} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
 import {make} from 'ember-data-factory-guy';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import hbs from 'htmlbars-inline-precompile';
 import NewOrganization from 'percy-web/tests/pages/components/new-organization';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';

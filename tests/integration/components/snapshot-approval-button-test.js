@@ -3,7 +3,7 @@
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
 import {it, describe, beforeEach} from 'mocha';
-import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import sinon from 'sinon';
@@ -37,7 +37,7 @@ describe('Integration: SnapshotApprovalButton', function() {
       activeBrowser=activeBrowser
       hasDiffsInBrowser=hasDiffsInBrowser
     }}`);
-    await percySnapshotWithDarkMode(this.test);
+    await percySnapshot(this.test, { darkMode: true });
   });
 
   it('displays correctly when snapshot is not approved does not have diffs in active browser ', async function() {  //eslint-disable-line
@@ -49,7 +49,7 @@ describe('Integration: SnapshotApprovalButton', function() {
       hasDiffsInBrowser=hasDiffsInBrowser
     }}`);
 
-    await percySnapshotWithDarkMode(this.test);
+    await percySnapshot(this.test, { darkMode: true });
   });
 
   it('displays correctly when snapshot is approved', async function() {
@@ -60,7 +60,7 @@ describe('Integration: SnapshotApprovalButton', function() {
       hasDiffsInBrowser=hasDiffsInBrowser
     }}`);
     this.set('snapshot.reviewState', 'approved');
-    await percySnapshotWithDarkMode(this.test);
+    await percySnapshot(this.test, { darkMode: true });
   });
 
   it('calls createReview with correct args when clicked', async function() {
@@ -85,7 +85,7 @@ describe('Integration: SnapshotApprovalButton', function() {
     }}`);
     await SnapshotApprovalButton.clickButton();
 
-    await percySnapshotWithDarkMode(this.test);
+    await percySnapshot(this.test, { darkMode: true });
   });
 
   it('is enabled when isDisabled is false', async function() {

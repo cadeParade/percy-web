@@ -9,7 +9,7 @@ import moment from 'moment';
 import utils from 'percy-web/lib/utils';
 import {resolve} from 'rsvp';
 import sinon from 'sinon';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import {render} from '@ember/test-helpers';
 import stubSession from 'percy-web/tests/helpers/stub-session';
 

@@ -5,7 +5,7 @@ import {make} from 'ember-data-factory-guy';
 import UsageNotificationSettingForm from 'percy-web/tests/pages/components/forms/usage-notification-setting'; // eslint-disable-line
 import CurrentPlan from 'percy-web/tests/pages/components/organizations/current-plan';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import {render} from '@ember/test-helpers';
 import sinon from 'sinon';
 import mockIntercomService from 'percy-web/tests/helpers/mock-intercom-service';

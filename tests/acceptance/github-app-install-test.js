@@ -1,7 +1,7 @@
 import setupAcceptance, {setupSession} from 'percy-web/tests/helpers/setup-acceptance';
 import GithubSettings from 'percy-web/tests/pages/components/github-settings';
 import {beforeEach} from 'mocha';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {currentRouteName} from '@ember/test-helpers';
 
 describe('Acceptance: GitHubAppInstall', function() {

@@ -1,5 +1,5 @@
 import freezeMoment from '../helpers/freeze-moment';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {visit, currentRouteName} from '@ember/test-helpers';
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import {beforeEach} from 'mocha';

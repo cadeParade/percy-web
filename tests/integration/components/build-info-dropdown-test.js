@@ -1,7 +1,7 @@
 /* jshint expr:true */
 import {setupRenderingTest} from 'ember-mocha';
 import {beforeEach, it, describe} from 'mocha';
-import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
@@ -51,7 +51,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
       }}`);
       await BuildInfoDropdown.toggleBuildInfoDropdown();
 
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 
@@ -68,7 +68,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
 
     expect(BuildInfoDropdown.isAdminDetailsPresent).to.equal(false);
 
-    await percySnapshotWithDarkMode(this.test);
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   it('shows admin info if user is an admin', async function() {
@@ -85,7 +85,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
     await BuildInfoDropdown.toggleBuildInfoDropdown();
     expect(BuildInfoDropdown.isAdminDetailsPresent).to.equal(true);
 
-    await percySnapshotWithDarkMode(this.test);
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   describe('with a gitlab self-hosted repo', function() {
@@ -105,7 +105,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
       expect(BuildInfoDropdown.pullRequestLabelText, 'pull request label is incorrect').to.equal(
         'Merge Request',
       );
-      await percySnapshotWithDarkMode(this.test.fullTitle(), {widths: [450]});
+      await percySnapshot(this.test.fullTitle(), {widths: [450], darkMode: true});
     });
   });
 
@@ -126,7 +126,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
       expect(BuildInfoDropdown.pullRequestLabelText, 'pull request label is incorrect').to.equal(
         'Pull Request',
       );
-      await percySnapshotWithDarkMode(this.test.fullTitle(), {widths: [450]});
+      await percySnapshot(this.test.fullTitle(), {widths: [450], darkMode: true});
     });
   });
 });

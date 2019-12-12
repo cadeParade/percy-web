@@ -2,7 +2,7 @@ import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import freezeMoment from '../helpers/freeze-moment';
 import {currentRouteName, currentURL, findAll} from '@ember/test-helpers';
 import {isVisible as attacherIsVisible} from 'ember-attacher';
-import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {beforeEach} from 'mocha';
 import moment from 'moment';
 import sinon from 'sinon';
@@ -26,7 +26,7 @@ describe('Acceptance: Build', function() {
     expect(firstSnapshot.collaborationPanel.isVisible).to.equal(true);
     expect(firstSnapshot.commentThreads.length).to.equal(3);
     expect(firstSnapshot.header.numOpenCommentThreads).to.equal('3');
-    await percySnapshotWithDarkMode(context.test);
+    await percySnapshot(context.test, {darkMode: true});
   }
 
   async function createsCommentReplyOnFirstSnapshot() {
@@ -68,7 +68,7 @@ describe('Acceptance: Build', function() {
     await collabPanel.showArchivedComments();
     expect(collabPanel.commentThreads.length).to.equal(3);
 
-    await percySnapshotWithDarkMode(context.test);
+    await percySnapshot(context.test, {darkMode: true});
   }
 
   function _expectConfirmDialogShowingAndSideEffects(button) {
@@ -189,14 +189,16 @@ describe('Acceptance: Build', function() {
 
       await firstSnapshotGroup.toggleShowAllSnapshots();
       let firstSnapshot = firstSnapshotGroup.snapshots[0];
-      await percySnapshotWithDarkMode(this.test.fullTitle() + 'group is expanded');
+      await percySnapshot(this.test.fullTitle() + 'group is expanded', {
+        darkMode: true,
+      });
 
       expect(firstSnapshotGroup.snapshots.length).to.equal(3);
 
       await firstSnapshot.clickApprove();
-      await percySnapshotWithDarkMode(
-        this.test.fullTitle() + 'group is expanded, first snapshot is approved',
-      );
+      await percySnapshot(this.test.fullTitle() + 'group is expanded, first snapshot is approved', {
+        darkMode: true,
+      });
       expect(firstSnapshotGroup.snapshots[0]).to.equal(firstSnapshot);
       expect(firstSnapshot.isApproved).to.equal(true);
       expect(firstSnapshot.isExpanded).to.equal(true);
@@ -241,7 +243,7 @@ describe('Acceptance: Build', function() {
       expect(BuildPage.snapshotBlocks[0].name).to.equal('3 matching changes');
       expect(BuildPage.snapshotBlocks[1].name).to.equal(twoWidthsSnapshot.name);
 
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 
@@ -303,7 +305,7 @@ describe('Acceptance: Build', function() {
         SNAPSHOT_REJECTED_STATE,
       );
 
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('displays previously rejected comment threads', async function() {
@@ -320,18 +322,20 @@ describe('Acceptance: Build', function() {
       const firstCommentThread = secondSnapshot.collaborationPanel.commentThreads[0];
       expect(firstCommentThread.isRejectBadgeVisible).to.equal(true);
       expect(firstCommentThread.wasRejectedPreviously).to.equal(true);
-      await percySnapshotWithDarkMode(
-        `${this.test.fullTitle()} | before following originating snapshot link`,
-      );
+      await percySnapshot(`${this.test.fullTitle()} | before following originating snapshot link`, {
+        darkMode: true,
+      });
       // eslint-disable-next-line
-      expect(firstCommentThread.previousBuildHref).to.equal(`/${urlParams.orgSlug}/${urlParams.projectSlug}/builds/snapshot/${originatingSnapshotId}/default-comparison`);
+      expect(firstCommentThread.previousBuildHref).to.equal(
+        `/${urlParams.orgSlug}/${urlParams.projectSlug}/builds/snapshot/${originatingSnapshotId}/default-comparison`,
+      );
 
       await firstCommentThread.goToOriginatingSnapshot();
 
       expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
-      await percySnapshotWithDarkMode(
-        `${this.test.fullTitle()} | after following originating snapshot link`,
-      );
+      await percySnapshot(`${this.test.fullTitle()} | after following originating snapshot link`, {
+        darkMode: true,
+      });
     });
 
     // eslint-disable-next-line
@@ -342,7 +346,7 @@ describe('Acceptance: Build', function() {
       await firstSnapshot.clickApprove();
       _expectConfirmDialogShowingAndSideEffects(firstSnapshot.approveButton);
       expect(firstSnapshot.isApproved).to.equal(false);
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
 
       // it acts correctly when you click "Cancel"
       await BuildPage.confirmDialog.cancel.click();
@@ -415,7 +419,7 @@ describe('Acceptance: Build', function() {
           .every(snapshot => snapshot.header.snapshotApprovalButton.isDisabled),
       ).to.equal(true);
 
-      await percySnapshotWithDarkMode(this.test.fullTitle());
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 
@@ -436,9 +440,9 @@ describe('Acceptance: Build', function() {
       await BuildPage.visitBuild(urlParams);
       expect(BuildPage.browserSwitcher.chromeButton.diffCount).to.equal('3');
       expect(BuildPage.browserSwitcher.firefoxButton.diffCount).to.equal('3');
-      await percySnapshotWithDarkMode(this.test.fullTitle() + ' before switching browsers');
+      await percySnapshot(this.test.fullTitle() + ' before switching browsers', {darkMode: true});
       await BuildPage.browserSwitcher.switchBrowser();
-      await percySnapshotWithDarkMode(this.test.fullTitle() + ' after switching browsers');
+      await percySnapshot(this.test.fullTitle() + ' after switching browsers', {darkMode: true});
     });
 
     it('sorts snapshots correctly when switching to another browser', async function() {
@@ -529,7 +533,7 @@ describe('Acceptance: Build', function() {
         expect(firstSnapshot.commentThreads.length).to.equal(4);
         expect(firstSnapshot.header.numOpenCommentThreads).to.equal('4');
 
-        await percySnapshotWithDarkMode(this.test);
+        await percySnapshot(this.test, {darkMode: true});
       });
 
       it('can comment on a grouped snapshot that does not have any comments yet', async function() {
@@ -546,7 +550,7 @@ describe('Acceptance: Build', function() {
         expect(secondSnapshot.commentThreads.length).to.equal(1);
         expect(secondSnapshot.header.numOpenCommentThreads).to.equal('1');
 
-        await percySnapshotWithDarkMode(this.test);
+        await percySnapshot(this.test, {darkMode: true});
       });
 
       it('blocks approval of group if there are open review threads on group', async function() {
@@ -584,7 +588,7 @@ describe('Acceptance: Build', function() {
       expect(review.snapshotIds.length).to.equal(3);
       expect(review.snapshotIds).to.eql(unapprovedSnapshots.mapBy('id'));
 
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('blocks approval of group when any of its snapshots are rejected', async function() {
@@ -618,7 +622,7 @@ describe('Acceptance: Build', function() {
       expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
       expect(currentURL()).to.include(build.id);
       expect(currentURL()).to.include(unapprovedSnapshots[0].id);
-      percySnapshotWithDarkMode(this.test);
+      percySnapshot(this.test, {darkMode: true});
     });
 
     it('switches widths', async function() {
@@ -630,7 +634,7 @@ describe('Acceptance: Build', function() {
       await firstWidthSwitcher.buttons[0].click();
       expect(firstWidthSwitcher.buttons[0].isActive).to.equal(true);
       expect(firstWidthSwitcher.buttons[1].isActive).to.equal(false);
-      percySnapshotWithDarkMode(this.test);
+      percySnapshot(this.test, {darkMode: true});
     });
   });
 
@@ -664,7 +668,7 @@ describe('Acceptance: Build', function() {
       it('shows partial header instead of missing snapshots.', async function() {
         await BuildPage.visitBuild(urlParams);
         expect(BuildPage.removedSnapshots.isVisible).to.equal(false);
-        percySnapshotWithDarkMode(this.test);
+        await percySnapshot(this.test, {darkMode: true});
       });
 
       it('displays correctly when there are no snapshots with diffs', async function() {
@@ -674,14 +678,14 @@ describe('Acceptance: Build', function() {
           });
         });
         await BuildPage.visitBuild(urlParams);
-        await percySnapshotWithDarkMode(this.test);
+        await percySnapshot(this.test, {darkMode: true});
       });
     });
 
     describe('when there is one snapshot missing', function() {
       it('displays correctly', async function() {
         await BuildPage.visitBuild(urlParams);
-        percySnapshotWithDarkMode(this.test);
+        await percySnapshot(this.test, {darkMode: true});
       });
     });
 
@@ -692,7 +696,7 @@ describe('Acceptance: Build', function() {
 
       it('displays correctly', async function() {
         await BuildPage.visitBuild(urlParams);
-        percySnapshotWithDarkMode(this.test);
+        await percySnapshot(this.test, {darkMode: true});
       });
 
       it('shows expansion option when there are many missing snapshots', async function() {
@@ -700,11 +704,11 @@ describe('Acceptance: Build', function() {
 
         await BuildPage.visitBuild(urlParams);
         expect(BuildPage.removedSnapshots.snapshotNames.length).to.equal(5);
-        percySnapshotWithDarkMode(`${this.test.fullTitle()} | before expansion`);
+        await percySnapshot(`${this.test.fullTitle()} | before expansion`, {darkMode: true});
 
         await BuildPage.removedSnapshots.toggleSnapshots();
         expect(BuildPage.removedSnapshots.snapshotNames.length).to.equal(22);
-        percySnapshotWithDarkMode(`${this.test.fullTitle()} | after expansion`);
+        await percySnapshot(`${this.test.fullTitle()} | after expansion`, {darkMode: true});
 
         await BuildPage.removedSnapshots.toggleSnapshots();
         expect(BuildPage.removedSnapshots.snapshotNames.length).to.equal(5);
@@ -716,7 +720,7 @@ describe('Acceptance: Build', function() {
       expect(BuildPage.removedSnapshots.isVisible).to.equal(true);
       await BuildPage.removedSnapshots.snapshotNames[0].click();
       expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
-      percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('resets removedSnapshots when moving to another build', async function() {
@@ -727,14 +731,14 @@ describe('Acceptance: Build', function() {
       expect(currentRouteName()).to.equal('organization.project.builds.build.index');
 
       expect(BuildPage.removedSnapshots.isVisible).to.equal(false);
-      percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 
   it('shows build overview info dropdown', async function() {
     await BuildPage.visitBuild(urlParams);
     await BuildPage.toggleBuildInfoDropdown();
-    await percySnapshotWithDarkMode(this.test.fullTitle());
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   it('toggles the image and pdiff', async function() {
@@ -745,11 +749,11 @@ describe('Acceptance: Build', function() {
     await snapshot.clickDiffImage();
     expect(BuildPage.isDiffsVisibleForAllSnapshots).to.equal(false);
 
-    await percySnapshotWithDarkMode(this.test.fullTitle() + ' | hides overlay');
+    await percySnapshot(this.test.fullTitle() + ' | hides overlay', {darkMode: true});
     await snapshot.clickDiffImageBox();
     expect(BuildPage.isDiffsVisibleForAllSnapshots).to.equal(true);
 
-    await percySnapshotWithDarkMode(this.test.fullTitle() + ' | shows overlay');
+    await percySnapshot(this.test.fullTitle() + ' | shows overlay', {darkMode: true});
     await BuildPage.typeDiffToggleKey();
     expect(BuildPage.isDiffsVisibleForAllSnapshots).to.equal(false);
   });
@@ -790,21 +794,23 @@ describe('Acceptance: Build', function() {
     expect(currentURL()).to.equal(urlBase);
 
     await BuildPage.typeDownArrow();
-    await percySnapshotWithDarkMode(this.test.fullTitle() + ' | Down');
+    await percySnapshot(this.test.fullTitle() + ' | Down', {darkMode: true});
     expect(BuildPage.focusedSnapshot().name).to.equal(defaultSnapshot.name);
     expect(firstSnapshot.isFocused).to.equal(true);
     expect(secondSnapshot.isFocused).to.equal(false);
     expect(thirdSnapshot.isFocused).to.equal(false);
 
     await BuildPage.typeDownArrow();
-    await percySnapshotWithDarkMode(this.test.fullTitle() + ' | Down > Down');
+    await percySnapshot(this.test.fullTitle() + ' | Down > Down', {darkMode: true});
     expect(BuildPage.focusedSnapshot().name).to.equal(twoWidthsSnapshot.name);
     expect(firstSnapshot.isFocused).to.equal(false);
     expect(secondSnapshot.isFocused).to.equal(true);
     expect(thirdSnapshot.isFocused).to.equal(false);
 
     await BuildPage.typeUpArrow();
-    await percySnapshotWithDarkMode(this.test.fullTitle() + ' | Down > Down > Up');
+    await percySnapshot(this.test.fullTitle() + ' | Down > Down > Up', {
+      darkMode: true,
+    });
     expect(BuildPage.focusedSnapshot().name).to.equal(defaultSnapshot.name);
     expect(firstSnapshot.isFocused).to.equal(true);
     expect(secondSnapshot.isFocused).to.equal(false);
@@ -818,7 +824,9 @@ describe('Acceptance: Build', function() {
     expect(BuildPage.isUnchangedPanelVisible).to.equal(true);
     expect(BuildPage.findSnapshotByName(snapshotName)).to.not.exist;
 
-    await percySnapshotWithDarkMode(this.test.fullTitle() + ' | shows batched no diffs');
+    await percySnapshot(this.test.fullTitle() + ' | shows batched no diffs', {
+      darkMode: true,
+    });
     await BuildPage.clickToggleNoDiffsSection();
     const snapshot = BuildPage.findSnapshotByName(snapshotName);
     expect(BuildPage.isUnchangedPanelVisible).to.equal(false);
@@ -831,7 +839,9 @@ describe('Acceptance: Build', function() {
     expect(lastSnapshot.isExpanded).to.equal(true);
     expect(lastSnapshot.isUnchangedComparisonsVisible).to.equal(true);
 
-    await percySnapshotWithDarkMode(this.test.fullTitle() + ' | shows expanded no diffs');
+    await percySnapshot(this.test.fullTitle() + ' | shows expanded no diffs', {
+      darkMode: true,
+    });
   });
 
   it('resets visible snapshots between builds', async function() {
@@ -907,7 +917,7 @@ describe('Acceptance: Build', function() {
     expect(snapshotReview.snapshotIds).to.eql([defaultSnapshot.id]);
     expect(firstSnapshot.commentThreads.length).to.equal(1);
     expect(firstSnapshot.commentThreads[0].wasRejectedPreviously).to.equal(false);
-    await percySnapshotWithDarkMode(this.test);
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   it('blocks approval of snapshot when snapshot is rejected', async function() {
@@ -1010,7 +1020,7 @@ describe('Acceptance: Build', function() {
 
       expect(currentURL()).to.include(parentBuild.id);
       expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it("shows error message when latest changed ancestor doesn't exist", async function() {
@@ -1044,13 +1054,13 @@ describe('Acceptance: Build', function() {
   it('displays new snapshot', async function() {
     server.create('snapshot', 'new', {build, name: 'ohai'});
     await BuildPage.visitBuild(urlParams);
-    percySnapshotWithDarkMode(this.test);
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   it('displays reintroduced snapshot', async function() {
     server.create('snapshot', 'new', 'reintroduced', {build, name: 'ohai'});
     await BuildPage.visitBuild(urlParams);
-    percySnapshotWithDarkMode(this.test);
+    await percySnapshot(this.test, {darkMode: true});
   });
 });
 
@@ -1185,14 +1195,14 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   it('displays the dropdown', async function() {
     await BuildPage.visitFullPageSnapshot(urlParams);
     await BuildPage.snapshotFullscreen.header.clickDropdownToggle();
-    await percySnapshotWithDarkMode(this.test);
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   // eslint-disable-next-line
   it("fetches the build's snapshots when the fullscreen view of snapshot with diff is closed", async function() {
     await BuildPage.visitFullPageSnapshot(urlParams);
     await BuildPage.snapshotFullscreen.clickToggleFullScreen();
-    await percySnapshotWithDarkMode(this.test);
+    await percySnapshot(this.test, {darkMode: true});
     expect(BuildPage.snapshots.length).to.equal(2);
   });
 
@@ -1202,7 +1212,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     await BuildPage.visitFullPageSnapshot(urlParams);
     await BuildPage.snapshotFullscreen.clickToggleFullScreen();
     expect(BuildPage.snapshots.length).to.equal(2);
-    await percySnapshotWithDarkMode(this.test);
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   it('creates a review object when clicking "Approve"', async function() {
@@ -1237,7 +1247,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     expect(snapshot.reviewState).to.equal('changes_requested');
     expect(snapshot.reviewStateReason).to.equal('user_requested_changes');
     expect(BuildPage.snapshotFullscreen.commentThreads.length).to.equal(1);
-    await percySnapshotWithDarkMode(this.test);
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   it('redirects to allowed browser when a browser query param is incorrect', async function() {
@@ -1261,7 +1271,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expect(fullscreenSnapshot.collaborationPanel.isVisible).to.equal(true);
       expect(fullscreenSnapshot.commentThreads.length).to.equal(3);
       expect(fullscreenSnapshot.header.numOpenCommentThreads).to.equal('3');
-      await percySnapshotWithDarkMode(this.test, {widths: [1280, 850, 375]});
+      await percySnapshot(this.test, {widths: [1280, 850, 375], darkMode: true});
     });
 
     it('can create a new comment reply', async function() {
@@ -1285,7 +1295,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expect(snapshot.commentThreads.length).to.equal(4);
       expect(snapshot.header.numOpenCommentThreads).to.equal('4');
 
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('can close comment threads', async function() {
@@ -1312,7 +1322,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expect(collabPanel.reviewThreads[0].isResolved).to.equal(false);
       expect(collabPanel.isShowArchivedCommentsVisible).to.equal(true);
 
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     // eslint-disable-next-line
@@ -1322,7 +1332,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expect(BuildPage.confirmDialog.isVisible).to.equal(true);
       expect(snapshot.approveButton.isLoading).to.equal(true);
       expect(snapshot.approveButton.isVisible).to.equal(true);
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
 
       // it acts correctly when you click "Cancel"
       await BuildPage.confirmDialog.cancel.click();
@@ -1389,7 +1399,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       await settled();
       expect(fullscreenSnapshot.commentThreads.length).to.equal(3);
       expect(fullscreenSnapshot.header.numOpenCommentThreads).to.equal('3');
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('displays new comments', async function() {
@@ -1410,7 +1420,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
 
       await settled();
       expect(firstThread.comments.length).to.equal(2);
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('archives a comment thread', async function() {
@@ -1432,7 +1442,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expect(collabPanel.reviewThreads.length).to.equal(1);
       expect(collabPanel.isShowArchivedCommentsVisible).to.equal(true);
 
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 
@@ -1466,7 +1476,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expect(BuildPage.snapshotFullscreen.commentThreads[0].reply.isVisible).to.equal(false);
       expect(BuildPage.snapshotFullscreen.header.isRejectButtonDisabled).to.equal(true);
       expect(BuildPage.snapshotFullscreen.header.snapshotApprovalButton.isDisabled).to.equal(true);
-      await percySnapshotWithDarkMode(this.test.fullTitle());
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 
@@ -1504,7 +1514,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
 
       expect(currentURL()).to.include(parentBuild.id);
       expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it("shows error message when latest changed ancestor doesn't exist", async function() {
@@ -1558,7 +1568,7 @@ describe('Acceptance: Auto-approved Branch Build', function() {
     await BuildPage.visitBuild(urlParams);
     expect(currentRouteName()).to.equal('organization.project.builds.build.index');
 
-    await percySnapshotWithDarkMode(this.test.fullTitle() + ' on the build page');
+    await percySnapshot(this.test.fullTitle() + ' on the build page', {darkMode: true});
   });
 });
 
@@ -1586,11 +1596,11 @@ describe('Acceptance: Pending Build', function() {
   it('shows as pending', async function() {
     await BuildPage.visitBuild(urlParams);
     expect(currentRouteName()).to.equal('organization.project.builds.build.index');
-    await percySnapshotWithDarkMode(this.test.fullTitle() + ' on the build page');
+    await percySnapshot(this.test.fullTitle() + ' on the build page', {darkMode: true});
     await BuildPage.toggleBuildInfoDropdown();
-    await percySnapshotWithDarkMode(
-      this.test.fullTitle() + ' on the build page with build info open',
-    );
+    await percySnapshot(this.test.fullTitle() + ' on the build page with build info open', {
+      darkMode: true,
+    });
   });
 });
 
@@ -1618,11 +1628,11 @@ describe('Acceptance: Processing Build', function() {
     await BuildPage.visitBuild(urlParams);
     expect(currentRouteName()).to.equal('organization.project.builds.build.index');
 
-    await percySnapshotWithDarkMode(this.test.fullTitle() + ' on the build page');
+    await percySnapshot(this.test.fullTitle() + ' on the build page', {darkMode: true});
     await BuildPage.toggleBuildInfoDropdown();
-    await percySnapshotWithDarkMode(
-      this.test.fullTitle() + ' on the build page with build info open',
-    );
+    await percySnapshot(this.test.fullTitle() + ' on the build page with build info open', {
+      darkMode: true,
+    });
   });
 });
 
@@ -1654,11 +1664,11 @@ describe('Acceptance: Failed Build', function() {
     window.Intercom = sinon.stub();
     expect(currentRouteName()).to.equal('organization.project.builds.build.index');
 
-    await percySnapshotWithDarkMode(this.test.fullTitle() + ' on the build page');
+    await percySnapshot(this.test.fullTitle() + ' on the build page', {darkMode: true});
     await BuildPage.toggleBuildInfoDropdown();
-    await percySnapshotWithDarkMode(
-      this.test.fullTitle() + ' on the build page with build info open',
-    );
+    await percySnapshot(this.test.fullTitle() + ' on the build page with build info open', {
+      darkMode: true,
+    });
     await BuildPage.clickShowSupportLink();
     expect(window.Intercom).to.have.been.calledWith('show');
   });

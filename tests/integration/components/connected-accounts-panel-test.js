@@ -3,7 +3,7 @@
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
 import {it, describe, beforeEach} from 'mocha';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import sinon from 'sinon';

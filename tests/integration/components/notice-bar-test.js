@@ -1,5 +1,5 @@
 import {it, describe, beforeEach} from 'mocha';
-import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {make} from 'ember-data-factory-guy';
 import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
@@ -45,7 +45,7 @@ describe('Integration: Notice Bar', function() {
 
       expect(NoticeBar.message.text).to.equal('Get started with your own project.');
       expect(NoticeBar.buttonLink.text).to.equal('Create project');
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, { darkMode: true });
     });
   });
 
@@ -72,7 +72,7 @@ describe('Integration: Notice Bar', function() {
         expect(NoticeBar.percentage.text).to.equal('1%');
         expect(NoticeBar.buttonLink.text).to.equal('More Info');
 
-        await percySnapshotWithDarkMode(this.test);
+        await percySnapshot(this.test, { darkMode: true });
       });
     });
 
@@ -87,7 +87,7 @@ describe('Integration: Notice Bar', function() {
         expect(NoticeBar.percentage.text).to.equal('99%');
         expect(NoticeBar.buttonLink.text).to.equal('More Info');
 
-        await percySnapshotWithDarkMode(this.test);
+        await percySnapshot(this.test, { darkMode: true });
       });
     });
 
@@ -102,7 +102,7 @@ describe('Integration: Notice Bar', function() {
         expect(NoticeBar.percentage.text).to.equal('all');
         expect(NoticeBar.buttonLink.text).to.equal('Upgrade Plan');
 
-        await percySnapshotWithDarkMode(this.test);
+        await percySnapshot(this.test, { darkMode: true });
       });
     });
   });
@@ -128,7 +128,7 @@ describe('Integration: Notice Bar', function() {
         expect(NoticeBar.message.text).to.equal('Your trial ends today!');
         expect(NoticeBar.buttonLink.text).to.equal('See plans');
 
-        await percySnapshotWithDarkMode(this.test);
+        await percySnapshot(this.test, { darkMode: true });
       });
     });
 
@@ -141,7 +141,7 @@ describe('Integration: Notice Bar', function() {
         expect(NoticeBar.message.text).to.equal('You have 2 days left in your trial.');
         expect(NoticeBar.buttonLink.text).to.equal('See plans');
 
-        await percySnapshotWithDarkMode(this.test);
+        await percySnapshot(this.test, { darkMode: true });
       });
     });
   });

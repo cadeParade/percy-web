@@ -1,6 +1,6 @@
 import {it, describe, beforeEach, afterEach} from 'mocha';
 import {render, find} from '@ember/test-helpers';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import {make} from 'ember-data-factory-guy';
 import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';

@@ -6,7 +6,7 @@ import {it, describe, beforeEach} from 'mocha';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
 import sinon from 'sinon';
-import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import SnapshotList from 'percy-web/tests/pages/components/snapshot-list';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {initialize as initializeEmberKeyboard} from 'ember-keyboard';
@@ -58,7 +58,7 @@ describe('Integration: SnapshotList', function() {
       SnapshotList.snapshotBlocks.forEach(block => {
         expect(block.isLazyRenderHeaderVisible).to.equal(true);
       });
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, { darkMode: true });
     });
   });
 
@@ -206,7 +206,7 @@ describe('Integration: SnapshotList', function() {
       expect(firstSnapshotBlock.isFocused).to.equal(false);
       expect(secondSnapshotBlock.isFocused).to.equal(false);
       expect(lastSnapshotBlock.isFocused).to.equal(true);
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, { darkMode: true });
 
       // wrap around to select first snapshotBlock
       await SnapshotList.typeDownArrow();
@@ -417,7 +417,7 @@ describe('Integration: SnapshotList', function() {
       expectIsSnapshot(approvedSnapshotNoComments);
       expectSnapshotName(approvedSnapshotNoComments, approvedSingleSnapshotsWithoutCommentsTitle);
 
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, { darkMode: true });
     });
   });
 });
