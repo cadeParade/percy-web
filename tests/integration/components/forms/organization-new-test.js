@@ -60,7 +60,7 @@ describe('Integration: OrganizationNewForm', function() {
       await NewOrganization.organizationName('');
       expect(NewOrganization.isCreateNewOrganizationDisabled).to.equal(true);
       expect(NewOrganization.isCreateNewDemoDisabled).to.equal(true);
-      percySnapshot(this.test);
+      await percySnapshot(this.test);
     });
 
     it('enables submit buttons when a valid org name is entered', async function() {

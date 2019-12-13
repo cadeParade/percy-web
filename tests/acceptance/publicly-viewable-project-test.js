@@ -207,7 +207,7 @@ describe('Acceptance: Publicly viewable organizations', function() {
     it('shows organization page with projects when org request returns an org', async function() {
       await visit(`/${publicOrganization.slug}`);
       expect(currentRouteName()).to.equal('organization.index');
-      percySnapshot(this.test);
+      await percySnapshot(this.test);
     });
 
     it('redirects to login when organization request returns an error', async function() {
@@ -243,7 +243,7 @@ describe('Acceptance: Publicly viewable organizations', function() {
     it('shows organization page when org request returns an org', async function() {
       await visit(`/${userOrganization.slug}`);
       expect(currentRouteName()).to.equal('organization.index');
-      percySnapshot(this.test);
+      await percySnapshot(this.test);
     });
 
     it('shows error page when org request returns an error', async function() {
@@ -251,7 +251,7 @@ describe('Acceptance: Publicly viewable organizations', function() {
       await visit(`/${badOrgSlug}`);
 
       expect(currentRouteName()).to.equal('error');
-      percySnapshot(this.test);
+      await percySnapshot(this.test);
     });
   });
 });

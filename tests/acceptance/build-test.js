@@ -622,7 +622,7 @@ describe('Acceptance: Build', function() {
       expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
       expect(currentURL()).to.include(build.id);
       expect(currentURL()).to.include(unapprovedSnapshots[0].id);
-      percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('switches widths', async function() {
@@ -634,7 +634,7 @@ describe('Acceptance: Build', function() {
       await firstWidthSwitcher.buttons[0].click();
       expect(firstWidthSwitcher.buttons[0].isActive).to.equal(true);
       expect(firstWidthSwitcher.buttons[1].isActive).to.equal(false);
-      percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 

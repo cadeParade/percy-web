@@ -28,10 +28,10 @@ describe('Integration: RepoLinkerList', function() {
     }}`);
   });
 
-  it('renders a list of items', function() {
+  it('renders a list of items', async function() {
     expect(RepoLinkerList.isListHeaderVisible).to.eq(true);
     expect(RepoLinkerList.listItems.length).to.eq(2);
-    percySnapshot(this.test);
+    await percySnapshot(this.test);
   });
 
   it('shows some of those items as linked', function() {

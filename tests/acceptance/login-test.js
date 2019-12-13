@@ -13,7 +13,7 @@ describe('Acceptance: Login', function() {
 
   it('should login and logout user', async function() {
     await visit('/');
-    percySnapshot(this.test.fullTitle() + ' | Logged out');
+    await percySnapshot(this.test.fullTitle() + ' | Logged out');
 
     this.server.create('user', {_currentLoginInTest: true});
     await authenticateSession(this.owner);
