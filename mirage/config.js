@@ -18,9 +18,6 @@ export default function() {
   this.passthrough('https://preview.contentful.com/spaces/:space_id/environments/test/entries');
   this.passthrough('https://preview.contentful.com/spaces/:space_id/environments/test/entries/**');
 
-  // TODO: This should be fixed
-  this.passthrough('http://localhost:5338/**');
-
   this.get('/api/auth/session', function() {
     return {state: 'foo'};
   });

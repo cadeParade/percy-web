@@ -1778,8 +1778,8 @@
     winston "^3.0.0"
 
 "@percy/ember@percy/ember-percy#rd/agent":
-  version "0.0.0"
-  resolved "https://codeload.github.com/percy/ember-percy/tar.gz/edbd5144bc0c096981457e404f9739aeaf8be118"
+  version "2.0.0"
+  resolved "https://codeload.github.com/percy/ember-percy/tar.gz/6b8b072e109512d90d42d67e44763702b89ffa41"
   dependencies:
     "@percy/agent" "~0"
     ember-cli-babel "^7.11.1"
