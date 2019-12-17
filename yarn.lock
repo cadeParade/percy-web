@@ -1779,7 +1779,7 @@
 
 "@percy/ember@percy/ember-percy#rd/agent":
   version "2.0.0"
-  resolved "https://codeload.github.com/percy/ember-percy/tar.gz/550264d4a9a17cea11727eb506fbe17824ae9e2e"
+  resolved "https://codeload.github.com/percy/ember-percy/tar.gz/e352bc73beea2540443c37e4cf0c7aeca43a2309"
   dependencies:
     "@percy/agent" "~0"
     ember-cli-babel "^7.11.1"
