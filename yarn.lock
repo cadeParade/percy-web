@@ -1777,9 +1777,10 @@
     which "^2.0.1"
     winston "^3.0.0"
 
-"@percy/ember@percy/ember-percy#rd/agent":
-  version "2.0.0"
-  resolved "https://codeload.github.com/percy/ember-percy/tar.gz/e352bc73beea2540443c37e4cf0c7aeca43a2309"
+"@percy/ember@2.0.0-beta.1":
+  version "2.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@percy/ember/-/ember-2.0.0-beta.1.tgz#8079f2b9a603eca13db15949885fa2d0919eadde"
+  integrity sha512-WCWOitNxSygAfFFJd4j9795IqBzEFHEt5xZUXrWrWpRF9OanET/iROSnkG6Jf34CiRHfvoSBEkqyJWuw4TTnxg==
   dependencies:
     "@percy/agent" "~0"
     ember-cli-babel "^7.11.1"
