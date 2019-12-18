@@ -1,6 +1,6 @@
 <svg width="8" height="8" viewBox="0 0 8 8">
   <g fill="none" fill-rule="evenodd" stroke-width="2" transform="translate(1 1)">
-    <circle cx="3" cy="3" r="3" stroke="#E1DFE2"/>
+    <circle cx="3" cy="3" r="3" stroke="transparent"/>
     <path stroke="#9E66BF" stroke-linecap="round" d="M0,3 C0.0446779951,1.4999995 1.26454557,-0.0144459482 3.00043002,0.000104010179 C4.73631449,0.0146539692 5.96757712,1.4999995 6,3">
       <animateTransform attributeType="xml"
         attributeName="transform"

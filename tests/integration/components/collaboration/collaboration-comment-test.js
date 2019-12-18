@@ -1,7 +1,7 @@
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
 import {it, describe, beforeEach} from 'mocha';
-import {percySnapshot} from 'ember-percy';
+import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
 import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import sinon from 'sinon';
@@ -41,7 +41,7 @@ describe('Integration: CollaborationComment', function() {
     describe('when the comment thread is open', function() {
       it('shows "Archive" button', async function() {
         expect(CollaborationComment.archiveButton.isVisible).to.equal(true);
-        await percySnapshot(this.test);
+        await percySnapshotWithDarkMode(this.test);
       });
 
       it('does not show "Archive" button when isCommentingAllowed is false', async function() {
@@ -57,7 +57,7 @@ describe('Integration: CollaborationComment', function() {
         this.setProperties({comment});
 
         expect(CollaborationComment.isArchived).to.equal(true);
-        await percySnapshot(this.test);
+        await percySnapshotWithDarkMode(this.test);
       });
     });
 
@@ -128,7 +128,7 @@ describe('Integration: CollaborationComment', function() {
       this.setProperties({comment});
 
       expect(CollaborationComment.archiveButton.isVisible).to.equal(false);
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
 
     it('does not show "Archived" indicator', async function() {
@@ -150,7 +150,7 @@ describe('Integration: CollaborationComment', function() {
       });
       this.setProperties({comment});
 
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
   });
 });

@@ -2,12 +2,12 @@
   @apply flex;
   @apply items-center;
   @apply top-0;
-  @apply right-0;
   @apply text-xs;
   @apply rounded-xl;
+  right: 2px;
   min-width: 14px;
   height: 14px;
-  transition: box-shadow 250ms, transform 250ms, background 250ms, color 250ms;
+  transition: transform 250ms, background 250ms, color 250ms;
 
   svg {
     fill: theme("colors.gray.300");
@@ -15,9 +15,9 @@
   }
 }
 
-.is-browser-active {
+.is-selected {
   .browser-switcher-diff-count {
-    transform: translate3d(4px, -4px, 0);
+    transform: translate3d(2px, -4px, 0);
 
     svg {
       fill: theme("colors.white");
@@ -25,7 +25,7 @@
   }
 }
 
-.is-browser-active svg,
+.is-selected svg,
 .browser-switcher:hover svg {
   @apply opacity-100;
 }

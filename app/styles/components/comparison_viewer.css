@@ -1,4 +1,7 @@
 .ComparisonViewer {
+  @apply bg-secondary;
+  @apply border-b;
+
   .ComparisonViewer-halfColumn {
     @apply flex;
     @apply float-left;
@@ -22,7 +25,7 @@
     @apply self-start;
     @apply w-full;
     @apply text-center;
-    @apply border border-dashed border-gray-200;
+    @apply border border-dashed;
     @apply p-8;
   }
 

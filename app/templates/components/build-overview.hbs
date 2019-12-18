@@ -1,6 +1,6 @@
 <div class="grid col-auto gap-1 items-center">
   {{comparison-icon build=build}}
-  <div class="text-xl md:text-2xl leading-none font-semibold">
+  <div class="text-xl md:text-2xl leading-none">
     {{#if build.isPending}}
       Receiving build
     {{else if build.isProcessing}}
@@ -19,7 +19,7 @@
       {{else if build.isRejected}}
         {{pluralize build.totalSnapshotsRequestingChanges "requested change"}}
       {{else}}
-        {{pluralize build.totalSnapshotsUnreviewed "unreviewed change"}}
+        <span class="font-semibold">{{build.totalSnapshotsUnreviewed}}</span> {{pluralize build.totalSnapshotsUnreviewed "unreviewed change" without-count=true}}
       {{/if}}
     {{else if build.isFailed}}
       This build has failed
@@ -28,14 +28,14 @@
     {{/if}}
   </div>
 </div>
-<div class="font-semibold text-gray-400">
+<div class="text-secondary">
   {{#if build.isPending}}
     Hang tight&hellip;
   {{else if build.isProcessing}}
     {{#if (eq progressBarWidth "0%")}}
       Finishing up&hellip;
     {{else}}
-      <span class="text-gray-700">{{build.totalComparisonsFinished}}</span> of <span class="text-gray-700">{{build.totalComparisons}}</span> screenshots processed
+      <span class="text-primary font-semibold">{{build.totalComparisonsFinished}}</span> of <span class="text-primary">{{build.totalComparisons}}</span> screenshots processed
     {{/if}}
   {{else if build.isFinished}}
     <div>
@@ -45,9 +45,9 @@
           by {{build.approvedBy.name}}
         {{/if}}
       {{else if build.isRejected}}
-        <span class="text-gray-700">{{build.totalSnapshotsUnreviewed}}</span> unreviewed snapshots
+        <span class="text-primary font-semibold">{{build.totalSnapshotsUnreviewed}}</span> unreviewed snapshots
       {{else}}
-        in <span class="text-gray-700">{{build.totalSnapshots}}</span> total snapshots
+        in <span class="text-primary font-semibold">{{build.totalSnapshots}}</span> {{pluralize build.totalSnapshots "total snapshot" without-count=true}}
       {{/if}}
     </div>
   {{else if build.isFailed}}

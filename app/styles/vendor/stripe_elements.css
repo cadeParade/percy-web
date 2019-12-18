@@ -1,7 +1,7 @@
 .StripeElement {
   @apply rounded;
   @apply bg-gray-000;
-  @apply border border-gray-100;
+  @apply border;
   height: 40px;
   padding: 10px 12px;
   transition: box-shadow 150ms ease;

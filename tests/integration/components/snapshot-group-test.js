@@ -3,7 +3,7 @@
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
 import {it, describe, beforeEach} from 'mocha';
-import {percySnapshot} from 'ember-percy';
+import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
 import sinon from 'sinon';
@@ -75,7 +75,7 @@ describe('Integration: SnapshotGroup', function() {
 
       expect(SnapshotGroup.header.widthSwitcher.buttons[0].isActive).to.equal(false);
       expect(SnapshotGroup.header.widthSwitcher.buttons[1].isActive).to.equal(true);
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
 
     it('updates active button when clicked', async function() {
@@ -151,7 +151,7 @@ describe('Integration: SnapshotGroup', function() {
     it('is expanded by default when the group is partially approved', async function() {
       this.set('snapshots.firstObject.reviewState', SNAPSHOT_APPROVED_STATE);
       expect(SnapshotGroup.isExpanded).to.equal(true);
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
 
     it('is collapsed by default when the group is approved', async function() {
@@ -209,7 +209,7 @@ describe('Integration: SnapshotGroup', function() {
       expect(SnapshotGroup.snapshots.length).to.equal(5);
       expect(SnapshotGroup.header.widthSwitcher.isVisible).to.equal(false);
       expect(SnapshotGroup.header.isFullScreenToggleVisible).to.equal(false);
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
 
     it('snapshots should be in the correct order', async function() {
@@ -224,7 +224,7 @@ describe('Integration: SnapshotGroup', function() {
       await SnapshotGroup.header.toggleShowAllSnapshots();
       await SnapshotGroup.header.toggleShowAllSnapshots();
       expect(SnapshotGroup.snapshots.length).to.equal(0);
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
   });
 
@@ -324,7 +324,7 @@ describe('Integration: SnapshotGroup', function() {
       }}`);
 
       expect(SnapshotGroup.snapshots.length).to.equal(2);
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
 
     // eslint-disable-next-line
@@ -346,7 +346,7 @@ describe('Integration: SnapshotGroup', function() {
         isBuildApprovable=isBuildApprovable
       }}`);
 
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
   });
 
@@ -373,7 +373,7 @@ describe('Integration: SnapshotGroup', function() {
       expect(SnapshotGroup.snapshots.length).to.equal(5);
       expect(firstSnapshot.collaborationPanel.isVisible).to.equal(true);
       expect(secondSnapshot.collaborationPanel.isVisible).to.equal(false);
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
 
     it('allows collaboration panel toggle on first snapshot', async function() {
@@ -414,7 +414,7 @@ describe('Integration: SnapshotGroup', function() {
       this.setProperties({snapshots});
       expect(SnapshotGroup.approveButton.isUnapproved).to.equal(true);
       expect(SnapshotGroup.header.rejectedBadge.isVisible).to.equal(false);
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
 
     it('shows approved when all snapshots are approved', async function() {
@@ -424,7 +424,7 @@ describe('Integration: SnapshotGroup', function() {
       this.setProperties({snapshots});
       expect(SnapshotGroup.approveButton.isApproved).to.equal(true);
       expect(SnapshotGroup.header.rejectedBadge.isVisible).to.equal(false);
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
 
     it('shows rejected when one snapshot is rejected', async function() {

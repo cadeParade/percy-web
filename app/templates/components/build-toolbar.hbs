@@ -1,8 +1,8 @@
-<header class="build-toolbar fixed top-0 w-screen z-4 flex justify-between items-center px-2 bg-gray-000 border-b" data-test-build-toolbar>
+<header class="build-toolbar fixed top-0 w-screen z-4 flex justify-between items-center px-2 bg-secondary border-b shadow-px" data-test-build-toolbar>
   <div class="flex items-center truncate">
     {{#link-to "index" title="Percy homepage"}}
       <figure class="svg-container mr-2">
-        {{inline-svg "percy-logo-on-light"}}
+        {{theme-svg svg="percy-logo-on-light"}}
       </figure>
     {{/link-to}}
 
@@ -12,7 +12,7 @@
           {{organization.name}}
         {{/link-to}}
       </span>
-      <span class="font-semibold text-gray-700 mx-sm hide-on-tablet">/</span>
+      <span class="font-semibold text-secondary mx-sm hide-on-tablet">/</span>
       {{#link-to "organization.project" organization.slug project class="link-purple truncate" data-test-build-toolbar-project-link=true}}
         {{project.name}}
       {{/link-to}}
@@ -40,7 +40,7 @@
       <button type="button" class="btn btn-square hint--bottom hint--rounded hint--bounce" aria-label="Toggle all diffs (d)" {{action 'toggleOverlay'}} data-test-toggle-diffs-button>
         <figure class="svg-container">
           {{#if allDiffsShown}}
-            {{inline-svg "diff-toggle-on"}}
+            {{theme-svg svg="diff-toggle-on"}}
           {{else}}
             {{inline-svg "diff-toggle-off"}}
           {{/if}}

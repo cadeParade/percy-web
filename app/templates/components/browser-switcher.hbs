@@ -1,8 +1,7 @@
-<div class="btn-group">
+<div class="btn-toggle {{unless fullscreen 'btn-toggle-lg'}}">
   {{#each sortedBrowsers as |browser|}}
-    <button
-      type="button"
-      class="browser-switcher btn btn-square relative {{if (eq browser.id activeBrowser.id) "is-browser-active"}} {{concat "data-test-browser-switcher-" browser.familySlug}}"
+    <div
+      class="btn-toggle-item browser-switcher {{if (eq browser.id activeBrowser.id) "is-selected"}} {{concat "data-test-browser-switcher-" browser.familySlug}}"
       {{action updateActiveBrowser browser}}
       data-test-browser-switcher-button
     >
@@ -13,6 +12,6 @@
           isActive=(eq browser.id activeBrowser.id)
         }}
       {{/if}}
-    </button>
+    </div>
   {{/each}}
 </div>

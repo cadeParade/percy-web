@@ -1,7 +1,7 @@
 /* jshint expr:true */
 import {setupRenderingTest} from 'ember-mocha';
 import {beforeEach, it, describe} from 'mocha';
-import {percySnapshot} from 'ember-percy';
+import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
 import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
@@ -36,7 +36,7 @@ describe('Integration: BuildStateBadgeComponent', function() {
       this.set('build', build);
 
       await render(hbs`{{build-state-badge build=build}}`);
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
   });
 });

@@ -3,7 +3,7 @@
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
 import {it, describe, beforeEach} from 'mocha';
-import {percySnapshot} from 'ember-percy';
+import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
 import sinon from 'sinon';
@@ -76,7 +76,7 @@ describe('Integration: SnapshotViewer', function() {
       isBuildApprovable=isBuildApprovable
     }}`);
 
-    await percySnapshot(this.test);
+    await percySnapshotWithDarkMode(this.test);
   });
 
   describe('comparison mode switcher', function() {
@@ -317,7 +317,7 @@ describe('Integration: SnapshotViewer', function() {
       });
 
       it('displays correctly', async function() {
-        await percySnapshot(this.test);
+        await percySnapshotWithDarkMode(this.test);
       });
     });
 
@@ -325,7 +325,7 @@ describe('Integration: SnapshotViewer', function() {
       async function expectToggleWorks({isOpenByDefault = true, context} = {}) {
         await SnapshotViewer.header.toggleCommentSidebar();
         expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(!isOpenByDefault);
-        await percySnapshot(context.test);
+        await percySnapshotWithDarkMode(context.test);
 
         await SnapshotViewer.header.toggleCommentSidebar();
         expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(isOpenByDefault);

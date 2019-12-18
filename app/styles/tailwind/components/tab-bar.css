@@ -11,7 +11,7 @@
 }
 
 .tab-bar-tab:hover {
-  @apply text-gray-700;
+  @apply text-primary;
   @apply no-underline;
 }
 

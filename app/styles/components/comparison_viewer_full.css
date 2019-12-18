@@ -5,7 +5,7 @@
   min-height: 300px;
 
   img {
-    box-shadow: 0 0 0 1px theme("colors.gray.100");
+    box-shadow: 0 0 0 1px theme("borderColor.default");
   }
 
   .Viewer-pdiffImageOverlay {

@@ -23,7 +23,7 @@
 
   &:first-child {
     .sidenav-list-item-link {
-      @apply border-t border-gray-100;
+      @apply border-t;
       @apply rounded-t;
     }
   }
@@ -54,6 +54,6 @@
   &.active {
     @apply font-semibold;
     @apply bg-gray-000;
-    @apply text-gray-700;
+    @apply text-primary;
   }
 }

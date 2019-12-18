@@ -1,0 +1,59 @@
+:root {
+  --bg-color-primary: theme("colors.white");
+  --bg-color-secondary: theme("colors.gray.000");
+  --bg-color-ternary: theme("colors.white");
+  --bg-color-code: theme("colors.gray.100");
+  --bg-color-action-toggle: theme("colors.gray.100");
+
+  --text-color-primary: theme("colors.gray.700");
+  --text-color-secondary: theme("colors.gray.400");
+
+  --border-color-primary: theme("colors.gray.100");
+  --border-color-secondary: theme("colors.gray.000");
+  --border-color-ternary: theme("colors.gray.100");
+  --border-color-quaternary: theme("colors.gray.100");
+  --border-color-input: theme("colors.gray.100");
+
+  --text-color-btn: theme("colors.blue.500");
+  --bg-color-action: theme("colors.white");
+  --bg-color-action-hover: theme("colors.blue.000");
+  --shadow-btn: 0 2px 4px 0 rgba(0, 0, 0, 0.04), 0 1px 1px 0 rgba(0, 0, 0, 0.06);
+
+  --shadow-px: transparent;
+}
+
+[data-theme-image="dark"] {
+  display: none;
+}
+
+.theme-dark {
+  --bg-color-primary: theme("colors.dark.800");
+  --bg-color-secondary: theme("colors.dark.700");
+  --bg-color-ternary: theme("colors.dark.600");
+  --bg-color-code: theme("colors.dark.500");
+  --bg-color-action-toggle: theme("colors.dark.500");
+
+  --text-color-primary: theme("colors.white");
+  --text-color-secondary: theme("colors.dark.300");
+
+  --border-color-primary: theme("colors.dark.500");
+  --border-color-secondary: theme("colors.dark.700");
+  --border-color-ternary: theme("colors.dark.900");
+  --border-color-quaternary: theme("colors.dark.600");
+  --border-color-input: theme("colors.transparent");
+
+  --text-color-btn: theme("colors.white");
+  --bg-color-action: theme("colors.dark.500");
+  --bg-color-action-hover: theme("colors.dark.400");
+  --shadow-btn: none;
+
+  --shadow-px: theme("colors.dark.900");
+
+  [data-theme-image="light"] {
+    @apply hidden;
+  }
+
+  [data-theme-image="dark"] {
+    @apply block;
+  }
+}

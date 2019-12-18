@@ -21,8 +21,9 @@
 
   {{#if isExpanded}}
     {{#if selectedComparison}}
-      <div class="flex flex-col flex-col-reverse lg:flex-row bg-gray-000">
+      <div class="flex flex-col flex-col-reverse lg:flex-row bg-secondary">
         {{comparison-viewer
+          class="flex-1"
           comparison=selectedComparison
           allDiffsShown=allDiffsShown
           snapshotSelectedWidth=blockSelectedWidth
@@ -34,7 +35,6 @@
           index=index
           showDiffOverlay=isSnapshotShowingDiffOverlay
           toggleOverlay=(action "toggleSnapshotOverlay")
-          class="flex-1"
         }}
 
         {{#if isCommentPanelShowing}}

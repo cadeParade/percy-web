@@ -10,7 +10,7 @@
       @apply rounded-b-none;
 
       &:hover {
-        @apply bg-white;
+        @apply bg-ternary;
 
         svg {
           animation: none;
@@ -35,7 +35,7 @@
   .ember-basic-dropdown-trigger {
     &:focus,
     &:focus:active {
-      @apply bg-white;
+      @apply bg-ternary;
       @apply outline-none;
     }
 
@@ -55,7 +55,7 @@
 }
 
 .dropdown-menu {
-  @apply bg-white;
+  @apply bg-ternary;
   @apply overflow-hidden;
   width: 220px;
   border-radius: theme("borderRadius.default") 0 theme("borderRadius.default") theme("borderRadius.default");

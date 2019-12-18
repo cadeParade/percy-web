@@ -3,7 +3,7 @@ import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 import {render, click} from '@ember/test-helpers';
-import {percySnapshot} from 'ember-percy';
+import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
 
 describe('Integration: CollaborationToggleButton', function() {
   setupRenderingTest('collaboration-toggle-button', {
@@ -25,7 +25,7 @@ describe('Integration: CollaborationToggleButton', function() {
       unresolvedCommentThreadCount=100
       toggleCollaborationPanel=toggleCollaborationPanelStub
     }}`);
-    await percySnapshot(this.test);
+    await percySnapshotWithDarkMode(this.test);
   });
 
   it('displays green check when isResolved is true', async function() {
@@ -33,7 +33,7 @@ describe('Integration: CollaborationToggleButton', function() {
       isResolved=true
       toggleCollaborationPanel=toggleCollaborationPanelStub
     }}`);
-    await percySnapshot(this.test);
+    await percySnapshotWithDarkMode(this.test);
   });
 
   it('displays grey icon with plus button when isResolved is false and there are no comments', async function() { // eslint-disable-line
@@ -41,7 +41,7 @@ describe('Integration: CollaborationToggleButton', function() {
       isResolved=false
       toggleCollaborationPanel=toggleCollaborationPanelStub
     }}`);
-    await percySnapshot(this.test);
+    await percySnapshotWithDarkMode(this.test);
   });
 
   it('calls toggle action when clicked', async function() {

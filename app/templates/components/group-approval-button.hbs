@@ -12,6 +12,6 @@
         {{if isLoading 'is-loading'}}"
       disabled="{{if isDisabled "disabled"}}"
       data-test-group-approval-button
-    >Approve {{numUnapprovedSnapshots}} changes</button>
+    >Approve {{pluralize numUnapprovedSnapshots "change"}}</button>
   </div>
 {{/if}}

@@ -17,9 +17,10 @@ module.exports = {
       translucent: 'rgba(0, 0, 0, 0.5)',
       white: '#fff',
       dark: {
-        '400': '#9c9ca1',
-        '500': '#505053',
-        '600': '#38383a',
+        '300': '#9c9ca1',
+        '400': '#505053',
+        '500': '#38383a',
+        '600': '#2c2c2c',
         '700': '#242425',
         '800': '#1e1e1e',
         '900': '#0f0f10',
@@ -82,7 +83,7 @@ module.exports = {
         '200': '#a5d3f3',
         '300': '#81c1ef',
         '400': '#5dafea',
-        '500': '#1d8ddb' /* base-color */,
+        '500': '#1faaee' /* base-color */,
         '600': '#1773b5',
         '700': '#135c90',
         '800': '#0e456c',
@@ -118,7 +119,15 @@ module.exports = {
       '9': '72px',
       '16': '128px',
     },
-    backgroundColor: theme => theme('colors'),
+    backgroundColor: theme => ({
+      ...theme('colors'),
+      primary: 'var(--bg-color-primary)',
+      secondary: 'var(--bg-color-secondary)',
+      ternary: 'var(--bg-color-ternary)',
+      code: 'var(--bg-color-code)',
+      'btn-toggle': 'var(--bg-color-action-toggle)',
+      action: 'var(--bg-color-action)',
+    }),
     backgroundPosition: {
       bottom: 'bottom',
       center: 'center',
@@ -137,7 +146,11 @@ module.exports = {
     },
     borderColor: theme => ({
       ...theme('colors'),
-      default: theme('colors.gray.100', 'currentColor'),
+      default: 'var(--border-color-primary)',
+      secondary: 'var(--border-color-secondary)',
+      ternary: 'var(--border-color-ternary)',
+      quaternary: 'var(--border-color-quaternary)',
+      input: 'var(--border-color-input)',
     }),
     borderRadius: {
       none: '0',
@@ -161,8 +174,9 @@ module.exports = {
       inner: 'inset 0 2px 4px 0 rgba(0,0,0,0.06)',
       none: 'none',
       'purple-underline': '0 1px 0 #9e66bf',
-      'input-focus': '0px 0px 8px rgba(158, 102, 191, 0.2);',
-      'purple-lg': '0 4px 12px rgba(158, 102, 191, 0.4);',
+      'input-focus': '0px 0px 8px rgba(158, 102, 191, 0.2)',
+      'purple-lg': '0 4px 12px rgba(158, 102, 191, 0.4)',
+      px: '0px 1px 0px var(--shadow-px)',
     },
     container: {},
     cursor: {
@@ -384,7 +398,12 @@ module.exports = {
     stroke: {
       current: 'currentColor',
     },
-    textColor: theme => theme('colors'),
+    textColor: theme => ({
+      ...theme('colors'),
+      primary: 'var(--text-color-primary)',
+      secondary: 'var(--text-color-secondary)',
+      btn: 'var(--text-color-btn)',
+    }),
     width: {
       auto: 'auto',
       '0': '0',

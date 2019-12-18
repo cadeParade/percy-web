@@ -7,7 +7,7 @@
 
   <dropdown.Trigger>
     <button data-test-build-info-dropdown-toggle class="flex center btn-icon-only" aria-label="View detailed information about this build">
-      {{inline-svg 'build-info-icon'}}
+      {{theme-svg svg="build-info-icon"}}
     </button>
   </dropdown.Trigger>
 
@@ -44,7 +44,7 @@
               <a href="{{build.pullRequestHtmlUrl}}">{{build.pullRequestTitle}}</a>
             {{/if}}
             {{#if build.pullRequestNumber}}
-              <span class="text-gray-400">
+              <span class="text-secondary">
                 {{#if build.pullRequestTitle}}
                   #{{build.pullRequestNumber}}
                 {{else}}

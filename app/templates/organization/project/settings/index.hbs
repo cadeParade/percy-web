@@ -7,7 +7,7 @@
 
   {{#if project.isEnabled}}
     {{#if project.isDemo}}
-      <div class="bg-blue-100 p-2 border border-gray-100 justify-start items-center sticky top-0 z-10 flex rounded border border-blue-500 mb-3">
+      <div class="bg-blue-100 p-2 border justify-start items-center sticky top-0 z-10 flex rounded border border-blue-500 mb-3">
         <div class="mr-3">{{inline-svg 'build-info-icon'}}</div>
         <div>This is the settings page for a <strong>demo project</strong>. The demo settings are not editable here, but <strong>{{#link-to 'organizations.organization.projects.new' project.organization.slug}} create your own project {{/link-to}}</strong> to start customizing your Percy experience.
         </div>
@@ -16,7 +16,7 @@
 
     <div class="bg-white rounded shadow-1 p-2 mb-2">
       <h2 class="text-xl font-semibold mb-sm">Project token</h2>
-      <p class="text-gray-400 mb-2">See the {{#link-to "docs" class="font-semibold"}}docs{{/link-to}} for how to set up client authentication for your app.</p>
+      <p class="text-secondary mb-2">See the {{#link-to "docs" class="font-semibold"}}docs{{/link-to}} for how to set up client authentication for your app.</p>
       <div class="p-2 bg-gray-000 rounded border">
         <div class="mb-2">
           {{projects/env-vars project=project}}
@@ -29,7 +29,7 @@
 
     <div class="bg-white rounded shadow-1 p-2 mb-2">
       <h2 class="text-xl font-semibold mb-1">Browsers</h2>
-      <p class="text-gray-400 mb-2">
+      <p class="text-secondary mb-2">
         This setting lets you change which browser your snapshots are created in. Better yet, you can enable multiple browsers for cross browser testing snapshots! <a href="https://docs.percy.io/docs/cross-browser-visual-testing" target="_blank">See docs</a>
       </p>
       <div class="p-2 bg-gray-000 rounded border">

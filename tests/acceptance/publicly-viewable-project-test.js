@@ -5,6 +5,7 @@ import SnapshotViewerFull from 'percy-web/tests/pages/components/snapshot-viewer
 import ProjectPage from 'percy-web/tests/pages/project-page';
 import {visit, currentRouteName} from '@ember/test-helpers';
 import {percySnapshot} from 'ember-percy';
+import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
 
 describe('Acceptance: Publicly viewable projects', function() {
   describe('when user is not logged in', function() {
@@ -35,7 +36,7 @@ describe('Acceptance: Publicly viewable projects', function() {
         BuildPage.snapshots.objectAt(0).header.snapshotApprovalButton.isDisabled,
         'button should be disabled',
       ).to.equal(true);
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
 
       await BuildPage.snapshots.objectAt(0).header.clickToggleFullscreen();
       expect(
@@ -129,7 +130,7 @@ describe('Acceptance: Publicly viewable projects', function() {
             BuildPage.snapshots.objectAt(0).header.snapshotApprovalButton.isDisabled,
             'build page button should be enabled',
           ).to.equal(false);
-          await percySnapshot(this.test);
+          await percySnapshotWithDarkMode(this.test);
 
           await BuildPage.snapshots.objectAt(0).header.clickToggleFullscreen();
           expect(
@@ -182,7 +183,7 @@ describe('Acceptance: Publicly viewable projects', function() {
       });
 
       expect(currentRouteName()).to.equal('error');
-      percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
   });
 });

@@ -5,10 +5,10 @@
 .percy-btn {
   @apply inline-block;
   @apply px-2 py-1;
-  @apply border border-gray-100;
+  @apply border border-input;
   @apply rounded;
-  @apply text-sm font-bold text-gray-400 leading-none;
-  @apply bg-white;
+  @apply text-sm font-bold text-secondary leading-none;
+  @apply bg-action;
   @apply h-10;
   @apply no-underline;
   @apply whitespace-no-wrap;
@@ -33,10 +33,11 @@
 .percy-btn:hover,
 .percy-btn:focus,
 .percy-btn:focus:active {
-  @apply text-gray-700;
-  @apply border-gray-100;
-  @apply bg-white;
+  @apply text-primary;
+  @apply bg-action;
+  @apply border-input;
   @apply no-underline;
+  background: var(--bg-color-action-hover);
 }
 
 .percy-btn svg {
@@ -94,6 +95,21 @@
   @apply text-purple-600;
   @apply bg-purple-100;
   @apply no-underline;
+}
+
+.theme-dark {
+  .percy-btn-secondary {
+    @apply border-transparent;
+    @apply text-white;
+  }
+
+  .percy-btn-secondary:hover,
+  .percy-btn-secondary:focus,
+  .percy-btn-secondary:focus:active {
+    @apply text-white;
+    @apply bg-dark-400;
+    @apply no-underline;
+  }
 }
 
 .percy-btn-danger {

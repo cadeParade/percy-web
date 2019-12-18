@@ -12,20 +12,20 @@
 
   &:hover {
     @apply no-underline;
-    color: theme("colors.gray.700") !important;
+    color: theme("textColor.primary") !important;
   }
 
   &.active {
-    color: theme("colors.gray.700") !important;
+    color: theme("textColor.primary") !important;
   }
 }
 
 .link-dark,
 .link-dark a {
-  color: theme("colors.gray.700") !important;
+  color: theme("textColor.primary") !important;
 
   &:hover {
-    color: theme("colors.gray.700") !important;
+    color: theme("textColor.primary") !important;
   }
 }
 

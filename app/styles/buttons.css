@@ -15,7 +15,7 @@ input[type="button"] {
   @apply cursor-pointer;
   @apply rounded;
   @apply text-blue-500;
-  @apply border border-gray-100;
+  @apply border;
   height: 38px;
   padding: 0 15px;
   line-height: 38px;
@@ -27,22 +27,22 @@ button:hover,
 button:focus,
 input[type="reset"]:hover,
 input[type="button"]:focus {
-  @apply bg-gray-000;
   @apply no-underline;
-  @apply text-blue-700;
+  @apply text-btn;
   @apply border border-gray-200;
   @apply no-underline;
   @apply outline-none;
+  background: var(--bg-color-action-hover);
 }
 
 .Button[disabled],
 button[disabled],
 input[type="reset"][disabled],
 input[type="button"][disabled] {
-  @apply text-gray-400;
+  @apply text-secondary;
   @apply bg-gray-100;
   @apply cursor-default;
-  @apply border border-gray-100;
+  @apply border;
 }
 
 button .fa--left,
@@ -55,10 +55,11 @@ button .fa--left,
 
 .btn {
   @apply leading-normal;
-  @apply bg-white;
+  @apply bg-action;
   @apply inline-block;
   @apply text-sm;
-  @apply font-semibold;
+  @apply font-bold;
+  @apply text-btn;
   @apply whitespace-no-wrap;
   @apply select-none;
   @apply border border-transparent;
@@ -66,21 +67,16 @@ button .fa--left,
   height: 30px;
   padding: 5px 16px;
   text-decoration: none !important;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04), 0 1px 1px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-btn);
   transition: color 250ms, background 250ms, box-shadow 250ms;
 }
 
-.btn:hover {
-  @apply text-blue-500;
-  @apply bg-blue-000;
-  @apply border border-transparent;
-}
-
+.btn:hover,
 .btn:focus,
 .btn:focus:active {
-  @apply bg-gray-000;
-  @apply border border-transparent;
   @apply outline-none;
+  @apply border border-transparent;
+  background: var(--bg-color-action-hover);
 }
 
 .btn[disabled] {
@@ -104,19 +100,19 @@ button .fa--left,
 }
 
 .btn-alt {
-  @apply text-gray-400;
+  @apply text-secondary;
   @apply border border-gray-200;
 }
 
 .btn-alt:hover {
-  @apply text-gray-700;
+  @apply text-primary;
   @apply bg-gray-000;
   @apply border border-gray-200;
 }
 
 .btn-alt:focus,
 .btn-alt:focus:active {
-  @apply text-gray-700;
+  @apply text-primary;
   @apply bg-gray-000;
   @apply border border-gray-300;
 }
@@ -193,12 +189,6 @@ button .fa--left,
 .build-toolbar {
   .btn:not(.build-approval-button) {
     height: 42px;
-
-    &:hover,
-    &:focus,
-    &:focus:active {
-      @apply bg-white;
-    }
   }
 
   .btn-square {
@@ -252,33 +242,67 @@ button .fa--left,
   }
 }
 
+:root {
+  --bg-color-btn-success: theme("colors.green.500");
+  --bg-color-btn-success-hover: theme("colors.green.500");
+  --text-color-btn-success: theme("colors.white");
+  --text-shadow-color-btn-success: 0 1px 1px rgba(0, 0, 0, 0.1);
+  --text-color-btn-success-hover: theme("colors.white");
+}
+
+.theme-dark {
+  --bg-color-btn-success: #2c3d2c;
+  --bg-color-btn-success-hover: theme("colors.green.500");
+  --text-color-btn-success: theme("colors.green.500");
+  --text-shadow-color-btn-success: none;
+  --text-color-btn-success-hover: theme("colors.white");
+}
+
 .btn-success {
-  @apply text-white;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  background: linear-gradient(45deg, #43cb54 0%, #4fd960 100%);
+  color: var(--text-color-btn-success);
+  text-shadow: var(--text-shadow-color-btn-success);
+  background: var(--bg-color-btn-success);
 
   &:hover,
   &:focus,
   &:focus:active {
-    @apply text-white;
-    background: linear-gradient(45deg, #43cb54 0%, #4fd960 100%);
+    color: var(--text-color-btn-success-hover);
+    background: var(--bg-color-btn-success-hover);
   }
 
   &.is-loading {
+    @apply text-white;
     background-image: linear-gradient(-45deg, #4fd960 25%, #43cb54 25%, #43cb54 50%, #4fd960 50%, #4fd960 75%, #43cb54 75%, #43cb54);
     background-size: 20px 20px;
     animation: loading 4s linear infinite;
   }
 
   &[disabled] {
-    @apply text-gray-000;
-    @apply cursor-default;
-    @apply bg-green-500;
-    @apply border border-green-500;
+    @apply opacity-50;
+    color: var(--text-color-btn-success);
+    text-shadow: var(--text-shadow-color-btn-success);
+    background: var(--bg-color-btn-success);
   }
 }
 
+:root {
+  --bg-color-btn-reject: theme("colors.white");
+  --bg-color-btn-reject-hover: theme("colors.orange.100");
+  --text-color-btn-reject: theme("colors.orange.500");
+  --text-color-btn-reject-hover: theme("colors.orange.500");
+}
+
+.theme-dark {
+  --bg-color-btn-reject: #4b3427;
+  --bg-color-btn-reject-hover: theme("colors.orange.500");
+  --text-color-btn-reject: theme("colors.orange.500");
+  --text-color-btn-reject-hover: theme("colors.white");
+}
+
 .snapshot-reject-button {
+  color: var(--text-color-btn-reject);
+  background: var(--bg-color-btn-reject);
+
   &.is-loading {
     background-image: linear-gradient(-45deg, #ffdfcc 25%, #ffefe6 25%, #ffefe6 50%, #ffdfcc 50%, #ffdfcc 75%, #ffefe6 75%, #ffefe6);
     background-size: 20px 20px;
@@ -288,8 +312,14 @@ button .fa--left,
   &:hover,
   &:focus,
   &:focus:active {
-    @apply text-orange-500;
-    @apply bg-orange-100;
+    color: var(--text-color-btn-reject-hover);
+    background: var(--bg-color-btn-reject-hover);
+  }
+
+  &[disabled] {
+    @apply opacity-50;
+    color: var(--text-color-btn-reject);
+    background: var(--bg-color-btn-reject);
   }
 }
 
@@ -307,6 +337,24 @@ button .fa--left,
   }
 }
 
+:root {
+  --build-approval-button-shadow: 0 2px 6px rgba(96, 217, 87, 0.6);
+}
+
+.theme-dark {
+  --build-approval-button-shadow: none;
+
+  .build-approval-button {
+    &:hover,
+    &:focus,
+    &:focus:active,
+    &.is-loading {
+      [data-theme-image="dark"] { @apply hidden; }
+      [data-theme-image="light"] { @apply block; }
+    }
+  }
+}
+
 .build-approval-button {
   @apply pl-7;
   @apply font-bold;
@@ -315,11 +363,20 @@ button .fa--left,
   @apply overflow-hidden;
   width: 146px;
   height: 42px;
-  box-shadow: 0 2px 6px rgba(96, 217, 87, 0.6);
+  box-shadow: var(--build-approval-button-shadow);
   transition: width 250ms;
 
   &:hover,
+  &:focus,
+  &:focus:active {
+    @apply bg-green-500;
+    @apply border-0;
+  }
+
+  &:hover,
   &.is-loading {
+    @apply text-white;
+
     span {
       @apply opacity-0;
       transform: translate3d(60px, 0, 0);
@@ -360,7 +417,7 @@ button .fa--left,
 }
 
 .btn-icon-only {
-  @apply text-gray-700;
+  @apply text-primary;
   @apply p-0;
   @apply border-0;
   @apply leading-normal;
@@ -422,7 +479,7 @@ button .fa--left,
 
 .btn-group-alt {
   .btn {
-    @apply text-gray-700;
+    @apply text-primary;
     @apply bg-white;
 
     &:hover {
@@ -454,6 +511,7 @@ button .fa--left,
 
 .btn-toolbar {
   @apply grid;
+  @apply items-center;
   grid-auto-flow: column;
   grid-gap: theme("spacing.1");
 }
@@ -470,7 +528,7 @@ button .fa--left,
 .btn-white,
 a.btn-white {
   @apply bg-white;
-  @apply text-gray-700;
+  @apply text-primary;
 
   &:hover {
     @apply text-purple-600;

@@ -35,6 +35,6 @@
 
   .ProjectsDiffBaseSettings-setting:hover {
     @apply cursor-pointer;
-    @apply border border-gray-000;
+    @apply border border-secondary;
   }
 }

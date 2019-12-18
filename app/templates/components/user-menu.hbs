@@ -7,21 +7,21 @@
     <div class="flex items-center cursor-pointer z-top" {{action "loadOrgs" dropdown.isOpen}} data-test-org-switcher-toggle>
       {{user-avatar user=user class="mr-sm"}}
       <figure class="svg-container">
-        {{inline-svg "dropdown-icon"}}
+        {{theme-svg svg="dropdown-icon"}}
       </figure>
     </div>
   </dropdown.Trigger>
 
   <dropdown.Content>
     <div class="user-menu" {{action dropdown.actions.close}}>
-      <div class="px-2 pt-2 pb-1 mb-1 text-sm text-gray-400 border-b leading-none">
+      <div class="px-2 pt-2 pb-1 mb-1 text-sm text-secondary border-b leading-none">
         Your organizations
       </div>
 
       <div class="border-b mb-2 pb-1" data-test-org-switcher>
         {{#each orgsToDisplay as |org|}}
           <div class="org-switcher-organization flex items-center justify-between px-2" data-test-org-switcher-item>
-            {{#link-to data-test-switcher-item-link "organization.index" org.slug class="block flex-1 py-sm truncate text-gray-700 hover:text-purple-600"}}
+            {{#link-to data-test-switcher-item-link "organization.index" org.slug class="block flex-1 py-sm truncate text-primary hover:text-purple-600"}}
               {{org.name}}
             {{/link-to}}
             {{#link-to data-test-settings-link "organizations.organization.settings" org.slug class="org-switcher-organization-settings md:opacity-25 block ml-2"}}
@@ -37,15 +37,15 @@
         {{/link-to}}
       </div>
 
-      <div class="px-2 pt-2 pb-1 mb-1 text-sm text-gray-400 border-b leading-none">
+      <div class="px-2 pt-2 pb-1 mb-1 text-sm text-secondary border-b leading-none">
         Profile
       </div>
 
       <div class="pb-1">
-        {{#link-to "settings.profile" class="block px-2 py-sm text-gray-700 hover:text-purple-600"}}
+        {{#link-to "settings.profile" class="block px-2 py-sm text-primary hover:text-purple-600"}}
           Profile settings
         {{/link-to}}
-        <a href="#" class="block px-2 py-sm text-gray-700 hover:text-purple-600" {{action "logout"}} data-test-logout>
+        <a href="#" class="block px-2 py-sm text-primary hover:text-purple-600" {{action "logout"}} data-test-logout>
           Logout
         </a>
       </div>

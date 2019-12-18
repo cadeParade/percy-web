@@ -1,6 +1,6 @@
 <div data-test-browser-selector-button-container>
   <div
-    class="browser-family-selector overflow-hidden cursor-pointer flex justify-center bg-white-pattern border border-transparent rounded p-3 shadow-1 {{if isBrowserEnabled "is-browser-active"}} {{concat "data-test-browser-selector-" browserFamily.slug}} {{if isDisabled "opacity-50"}}"
+    class="browser-family-selector overflow-hidden cursor-pointer flex justify-center bg-white-pattern border border-transparent rounded p-3 shadow-1 {{if isBrowserEnabled "is-selected"}} {{concat "data-test-browser-selector-" browserFamily.slug}} {{if isDisabled "opacity-50"}}"
     {{action updateProjectBrowserTargets browserFamily}}
     data-test-browser-selector-button>
     <div class="browser-family-selector-detail flex flex-col items-center">

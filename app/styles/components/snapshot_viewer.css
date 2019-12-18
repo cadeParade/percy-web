@@ -1,17 +1,9 @@
 .SnapshotViewer {
-  @apply bg-gray-000;
+  @apply bg-secondary;
 
   &.SnapshotViewer--actionable {
     @apply cursor-pointer;
-
-    &:hover .SnapshotViewer-header {
-      @apply border-gray-200;
-    }
   }
-}
-
-.SnapshotViewer--focus {
-  box-shadow: 0 1px 0 theme("colors.gray.200"), 0 -1px 0 theme("colors.gray.200");
 }
 
 .SnapshotViewer-header {
@@ -21,7 +13,8 @@
   @apply z-3;
   @apply px-2;
   @apply py-1;
-  @apply bg-gray-000;
+  @apply bg-secondary;
+  @apply shadow-px;
   @apply border-t;
   @apply border-b;
   top: 58px;

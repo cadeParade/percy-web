@@ -12,7 +12,8 @@
 }
 
 body {
-  @apply text-gray-700;
+  @apply bg-primary;
+  @apply text-primary;
   @apply font-sans;
   @apply text-base;
   -webkit-font-smoothing: antialiased;
@@ -53,7 +54,7 @@ hr {
   @apply h-0;
   @apply bg-transparent;
   @apply border-0;
-  @apply border-b border-gray-100;
+  @apply border-b;
   @apply overflow-hidden;
   margin: 15px 0;
 }

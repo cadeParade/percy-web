@@ -1,13 +1,13 @@
 /* stylelint-disable selector-max-compound-selectors, value-no-vendor-prefix, property-no-vendor-prefix */
 
 .BuildInfoDropdown-modal {
-  @apply bg-white;
+  @apply bg-ternary;
   @apply mt-1;
   width: calc(100% - 45px);
   max-width: 450px;
   padding: 20px;
   margin-bottom: 100px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.2);
   z-index: 1000000;
 
   h4 {
@@ -24,7 +24,7 @@
       td {
         @apply break-all;
         @apply align-top;
-        @apply border-b border-gray-100;
+        @apply border-b;
         padding: 5px 10px 5px 0;
 
         pre {

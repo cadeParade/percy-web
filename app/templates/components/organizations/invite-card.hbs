@@ -11,7 +11,7 @@
         <div data-test-invite-email class="font-semibold leading-none truncate">
           {{invite.email}}
         </div>
-        <div class="text-sm text-gray-400 italic truncate">Expires <span data-test-invite-expiration>{{moment-format invite.expiresAt 'MMM D, Y'}}</span></div>
+        <div class="text-sm text-secondary italic truncate">Expires <span data-test-invite-expiration>{{moment-format invite.expiresAt 'MMM D, Y'}}</span></div>
       </div>
     </div>
     <div data-test-invite-role style="min-width: 100px" class="flex-1 leading-none">
@@ -21,7 +21,7 @@
     </div>
     <div class="flex-1 leading-none">
       <div>Invited on <span data-test-invite-date>{{moment-format invite.createdAt 'MMM D, Y'}}</span></div>
-      <div class="text-sm text-gray-400 italic truncate">by <span data-test-invite-inviter-name>{{invite.inviterName}}</span></div>
+      <div class="text-sm text-secondary italic truncate">by <span data-test-invite-inviter-name>{{invite.inviterName}}</span></div>
     </div>
     <div style="min-width: 100px" class="flex-1 leading-none"></div>
     <div class="flex-1 flex justify-end">

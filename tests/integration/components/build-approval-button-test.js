@@ -3,7 +3,7 @@
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
 import {it, describe, beforeEach} from 'mocha';
-import {percySnapshot} from 'ember-percy';
+import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
 import sinon from 'sinon';
@@ -32,7 +32,7 @@ describe('Integration: BuildApprovalButton', function() {
       build=build
       createReview=stub
     }}`);
-    await percySnapshot(this.test);
+    await percySnapshotWithDarkMode(this.test);
   });
 
   it('displays correctly when build is approved', async function() {
@@ -41,7 +41,7 @@ describe('Integration: BuildApprovalButton', function() {
       createReview=stub
     }}`);
     this.set('build.reviewState', 'approved');
-    await percySnapshot(this.test);
+    await percySnapshotWithDarkMode(this.test);
   });
 
   it('calls createReview with correct args when clicked', async function() {
@@ -112,7 +112,7 @@ describe('Integration: BuildApprovalButton', function() {
     }}`);
 
     await BuildApprovalButton.clickButton();
-    await percySnapshot(this.test);
+    await percySnapshotWithDarkMode(this.test);
   });
 
   it('is enabled when isDisabled is false', async function() {

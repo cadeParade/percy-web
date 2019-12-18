@@ -8,19 +8,17 @@
         {{/bar.button}}
 
       {{else if isSubscriptionFree}}
-
         {{#if hasRemainingSnapshots}}
           {{#bar.body classes="notice-bar-black-on-white"}}
             You have used <strong data-test-percentage>{{currentUsagePercentage}}%</strong> of your free snapshots this month.
           {{/bar.body}}
           {{#bar.button
-            buttonClasses="notice-bar-button-gray border border-gray-100"
+            buttonClasses="notice-bar-button-gray border"
             linkClasses="text-blue-500"
           }}
             More Info
           {{/bar.button}}
         {{else}}
-
           {{#bar.body}}
             You have used <span data-test-percentage>all</span> of your free snapshots this month.
           {{/bar.body}}
@@ -30,7 +28,6 @@
         {{/if}}
 
       {{else if isSubscriptionTrial}}
-
         {{#bar.body classes="notice-bar-black-on-gray"}}
           {{#if isTrialEndingToday}}
             Your trial ends today!

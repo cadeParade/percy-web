@@ -20,6 +20,7 @@
     }}
   {{else}}
     {{snapshot-viewer
+      class="data-test-snapshot-viewer"
       build=build
       snapshot=block
       allDiffsShown=allDiffsShown
@@ -35,7 +36,6 @@
       createComment=createComment
       closeCommentThread=closeCommentThread
       index=index
-      class="data-test-snapshot-viewer"
     }}
   {{/if}}
   </div>
@@ -44,7 +44,7 @@
 {{#if numSnapshotsUnchanged}}
   {{#if (not isUnchangedSnapshotsVisible)}}
     <div class="SnapshotViewer--actionable">
-      <div class="flex items-center justify-center font-bold p-2 m-2 bg-gray-000 rounded border border-gray-100 cursor-pointer" data-test-toggle-unchanged {{action toggleUnchangedSnapshotsVisible}}>
+      <div class="flex items-center justify-center font-bold p-2 m-2 bg-secondary rounded border border-dashed cursor-pointer" data-test-toggle-unchanged {{action toggleUnchangedSnapshotsVisible}}>
         {{#if isUnchangedSnapshotsLoading}}
           {{inline-svg "loader-icon" class="mx-2"}} Loading unchanged snapshots
         {{else}}

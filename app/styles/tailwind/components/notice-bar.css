@@ -1,14 +1,14 @@
 .notice-bar-black-on-white {
-  @apply border border-gray-100 text-gray-700 font-normal;
+  @apply border text-primary font-normal;
 }
 
 .notice-bar-black-on-gray {
-  @apply bg-gray-100 text-gray-700 font-normal;
-  @apply border-r border-white;
+  @apply bg-code text-primary font-normal;
+  @apply border-r border-secondary;
 }
 
 .notice-bar-button-gray {
-  @apply bg-gray-100;
+  @apply bg-code;
 }
 
 .notice-bar-button-purple {

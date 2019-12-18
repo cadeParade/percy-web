@@ -8,7 +8,7 @@
 }
 
 .browser-family-selector {
-  &:hover:not(.is-browser-active) {
+  &:hover:not(.is-selected) {
     @apply border border-blue-500;
     background: url("/images/pattern-on-white.svg");
     background-color: theme("colors.blue.000");
@@ -36,13 +36,13 @@
     }
   }
 
-  &.is-browser-active {
+  &.is-selected {
     @apply border-purple-600;
     background: url("/images/pattern-on-white.svg");
     background-color: theme("colors.purple.200");
   }
 
-  &:not(.is-browser-active) {
+  &:not(.is-selected) {
     .browser-family-selector-name {
       transform: translate3d(-24px, 0, 0);
     }

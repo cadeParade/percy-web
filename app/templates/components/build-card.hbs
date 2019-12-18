@@ -4,7 +4,7 @@
       <div style="margin-bottom: -6px;">
         {{#link-to "organization.project.builds.build" project.organization.slug project.slug build.id class="text-xl md:text-2xl font-mono font-normal tracking-sm"}}{{build.buildNumber}}{{/link-to}}
       </div>
-      <div class="text-sm text-gray-400 font-semibold whitespace-no-wrap truncate">
+      <div class="text-sm text-secondary font-semibold whitespace-no-wrap truncate">
         {{moment-from-now build.createdAt interval=60000}}
       </div>
     </div>
@@ -35,7 +35,7 @@
               {{inline-svg "commit-icon" class="mr-1"}}
             {{/if}}
             <strong class="whitespace-no-wrap mr-1">{{build.commit.authorName}}</strong>
-            <span class="text-gray-400 truncate">{{build.commit.message}}</span>
+            <span class="text-secondary truncate">{{build.commit.message}}</span>
           {{/if}}
         {{/if}}
       </div>
@@ -46,21 +46,21 @@
       </div>
       <div>
         {{#if build.isPending}}
-          <span class="text-sm font-semibold text-gray-400">Receiving Build</span>
+          <span class="text-sm font-semibold text-secondary">Receiving Build</span>
         {{else if build.isProcessing}}
-          <span class="text-sm font-semibold text-gray-400">Processing snapshots</span>
+          <span class="text-sm font-semibold text-secondary">Processing snapshots</span>
         {{else if build.isFailed}}
-          <span class="font-semibold text-gray-400">{{build.failureReasonHumanized}}</span>
+          <span class="font-semibold text-secondary">{{build.failureReasonHumanized}}</span>
         {{else}}
           {{#if build.hasDiffs}}
             {{#unless build.isApproved}}
               <div class="whitespace-no-wrap">
                 {{#if build.isUnreviewed}}
                   <strong>{{build.totalSnapshotsUnreviewed}}</strong>
-                  <span class="text-sm text-gray-400 font-semibold">unreviewed</span>
+                  <span class="text-sm text-secondary font-semibold">unreviewed</span>
                 {{else}}
                   <strong>{{build.totalSnapshotsRequestingChanges}}</strong>
-                  <span class="text-sm text-gray-400 font-semibold">{{pluralize build.totalSnapshotsRequestingChanges "requested change" without-count=true}}</span>
+                  <span class="text-sm text-secondary font-semibold">{{pluralize build.totalSnapshotsRequestingChanges "requested change" without-count=true}}</span>
                 {{/if}}
               </div>
             {{/unless}}
@@ -68,10 +68,10 @@
           <div class="whitespace-no-wrap">
             {{#if build.isRejected}}
               <strong>{{build.totalSnapshotsUnreviewed}}</strong>
-              <span class="text-sm text-gray-400 font-semibold">{{pluralize build.totalSnapshotsUnreviewed "unreviewed snapshot" without-count=true}}</span>
+              <span class="text-sm text-secondary font-semibold">{{pluralize build.totalSnapshotsUnreviewed "unreviewed snapshot" without-count=true}}</span>
             {{else}}
               <strong>{{build.totalSnapshots}}</strong>
-              <span class="text-sm text-gray-400 font-semibold">{{pluralize build.totalSnapshots "total snapshot" without-count=true}}</span>
+              <span class="text-sm text-secondary font-semibold">{{pluralize build.totalSnapshots "total snapshot" without-count=true}}</span>
             {{/if}}
           </div>
         {{/if}}

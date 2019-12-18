@@ -12,7 +12,7 @@ export const BrowserSwitcher = {
   scope: SELECTORS.BROWSER_SWITCHER,
 
   buttons: collection(SELECTORS.BUTTON, {
-    isActive: hasClass('is-browser-active'),
+    isActive: hasClass('is-selected'),
     diffCount: text(SELECTORS.DIFF_COUNT),
     isDiffCountPresent: isPresent(SELECTORS.DIFF_COUNT),
     isAllApproved: isPresent(SELECTORS.APPROVED_CHECK),

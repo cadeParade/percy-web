@@ -1,4 +1,4 @@
-<div class="Header flex items-center px-2 border-b bg-gray-000" data-test-fixed-top-header>
+<div class="Header flex items-center px-2 border-b bg-secondary" data-test-fixed-top-header>
   <div class="w-90vw max-w-xl mx-auto flex justify-between items-center">
     <div class="flex items-center truncate">
       {{#if session.isAuthenticated}}
@@ -13,7 +13,9 @@
             {{inline-svg "percy-logo-on-light" class="mr-3"}}
           </figure>
           <figure class="hidden sm:block svg-container">
-            {{inline-svg "percy-full-horizontal-on-light" class="mr-3"}}
+            <div class="mr-3">
+              {{theme-svg svg="percy-full-horizontal-on-light"}}
+            </div>
           </figure>
         {{/link-to}}
       {{/if}}
@@ -27,7 +29,7 @@
               {{/link-to}}
             </span>
             {{#if project}}
-              <span class="font-semibold text-gray-700 mx-sm">/</span>
+              <span class="font-semibold text-primary mx-sm">/</span>
               {{#link-to "organization.project" currentOrganization.slug project class="link-purple truncate"}}
                 {{project.name}}
               {{/link-to}}

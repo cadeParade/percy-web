@@ -2,7 +2,8 @@
   @apply block;
   @apply w-full;
   @apply mb-0;
-  @apply border-gray-200;
+  @apply bg-action;
+  @apply border-input;
 }
 
 .percy-input:focus {

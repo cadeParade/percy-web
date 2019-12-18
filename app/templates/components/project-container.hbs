@@ -48,7 +48,7 @@
             {{loading-build-card}}
           {{/infinity-loader}}
         {{else if isBranchSelected}}
-          <div class="p-4 bg-white border-b flex justify-center text-gray-400">
+          <div class="p-4 bg-white border-b flex justify-center text-secondary">
               To load more builds, select "All branches" from the select menu above
           </div>
         {{/if}}
@@ -75,7 +75,7 @@
               </div>
               <div class="px-2 py-3">
                 <h2 class="text-xl font-semibold mb-sm">Project token</h2>
-                <p class="text-gray-400 mb-2">Configure your local or CI environment with PERCY-TOKEN. This is a project-specific write-only API key that only has access to create builds, snapshots, and upload resources to this project. It should be kept secret.</p>
+                <p class="text-secondary mb-2">Configure your local or CI environment with PERCY-TOKEN. This is a project-specific write-only API key that only has access to create builds, snapshots, and upload resources to this project. It should be kept secret.</p>
 
                 {{#unless project.isDemo}}
                   {{#if project.tokens.isPending}}

@@ -7,7 +7,7 @@ export default Component.extend({
   allDiffsShown: null,
 
   // State:
-  classNames: ['ComparisonViewer bg-gray-000'],
+  classNames: ['ComparisonViewer'],
   attributeBindings: ['data-test-comparison-viewer'],
   'data-test-comparison-viewer': true,
   isUnchangedSnapshotExpanded: false,

@@ -1,5 +1,5 @@
 .snapshot-group-snapshot .SnapshotViewer-header {
-  @apply rounded-l;
+  @apply rounded-tl;
   @apply z-2;
   top: 121px;
 }
@@ -11,7 +11,7 @@
   @apply w-full;
   @apply -mt-2;
   @apply -ml-px;
-  @apply bg-gray-000;
+  @apply bg-secondary;
   content: "";
   height: 15px;
 }
@@ -31,12 +31,23 @@
   background: linear-gradient(180deg, theme("colors.purple.600") 0%, theme("colors.gray.100") 100%);
 }
 
+.theme-dark {
+  .snapshot-group-indent-line-gradient {
+    background: linear-gradient(180deg, theme("colors.purple.600") 0%, theme("colors.dark.700") 100%);
+  }
+}
+
 .snapshot-group-indent-line-changes-requested-gradient {
   background: linear-gradient(180deg, theme("colors.orange.500") 0%, theme("colors.gray.100") 100%);
 }
 
+.snapshot-group-indent-line-approved-gradient,
+.theme-dark .snapshot-group-indent-line-approved-gradient {
+  background: linear-gradient(180deg, theme("colors.green.500") 0%, theme("colors.green.500") 100%);
+}
+
 .snapshot-group-comparison-viewer.ComparisonViewer {
-  @apply bg-white;
+  @apply bg-primary;
   @apply border;
   @apply rounded;
 }

@@ -13,8 +13,8 @@
 .collaboration-container {
   @apply flex-1;
   @apply px-2 pt-3;
-  @apply bg-white;
-  @apply border rounded-l;
+  @apply bg-ternary;
+  @apply border-l border-ternary;
   @apply border-r-0;
 }
 
@@ -28,7 +28,7 @@
   @apply absolute bottom-0;
   @apply block;
   @apply w-px;
-  @apply bg-gray-100;
+  @apply bg-code;
   top: 36px;
   left: 14px;
 }
@@ -74,18 +74,14 @@
 
 .collaboration-conversation-count {
   @apply absolute top-0 right-0;
-  @apply px-sm;
-  @apply pt-xs;
-  @apply shadow-purple-lg bg-purple-600;
-  @apply text-xs text-center font-semibold text-white leading-none;
+  @apply flex items-center justify-center;
+  @apply bg-purple-600;
+  @apply border-secondary border-2;
+  @apply text-sm font-bold text-white leading-none;
   @apply z-1;
   top: -4px;
   right: -4px;
-  min-width: 14px;
-  height: 14px;
-  border-radius: 7px;
-}
-
-.collaboration-toggle:focus {
-  @apply bg-white !important;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
 }

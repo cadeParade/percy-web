@@ -55,24 +55,24 @@
 
       {{#if webhookEvent.responseStatus}}
         <div class="flex justify-center">
-          <div class="percy-btn-group mb-2">
-            <button
-              class="btn {{if isRequest "is-active"}}"
+          <div class="btn-toggle mb-2">
+            <div
+              class="btn-toggle-item {{if isRequest "is-selected"}}"
               {{action "openTab" "request"}}
               data-test-request-tab
             >
               Request
-            </button>
-            <button
-              class="btn {{unless isRequest "is-active"}}"
+            </div>
+            <div
+              class="btn-toggle-item {{unless isRequest "is-selected"}}"
               {{action "openTab" "response"}}
               data-test-response-tab
             >
               Response
-              <span class="{{if webhookEvent.isSuccess "text-green-500" "text-red-500"}}">
+              <span class="ml-sm {{if webhookEvent.isSuccess "text-green-500" "text-red-500"}}">
                 {{webhookEvent.responseStatus}}
               </span>
-            </button>
+            </div>
           </div>
         </div>
       {{/if}}

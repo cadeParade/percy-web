@@ -1,6 +1,6 @@
 <div class="border-b leading-none" data-test-project-list-item>
   <div class="flex justify-between items-center">
-    {{#link-to 'organization.project' organization.slug project.slug class="flex-1 block py-3 text-gray-700 hover:no-underline hover:text-purple-600" data-test-project-link=true}}
+    {{#link-to 'organization.project' organization.slug project.slug class="flex-1 block py-3 text-primary hover:no-underline hover:text-purple-600" data-test-project-link=true}}
       <div class="flex items-center mb-1">
         {{#if project.publiclyReadable}}
           <div class="mr-1 hint--top hint--rounded hint--bounce" aria-label="Public project">
@@ -22,7 +22,7 @@
         {{/if}}
       </div>
 
-      <div class="text-sm text-gray-400 font-semibold">
+      <div class="text-sm text-secondary font-semibold">
         Updated {{moment-from-now project.updatedAt interval=60000}}
       </div>
     {{/link-to}}

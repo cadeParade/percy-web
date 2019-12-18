@@ -1,3 +1,17 @@
 .public-project-notice {
+  @apply text-primary;
   @apply bg-blue-000;
+  @apply p-2;
+  @apply pl-3;
+  @apply border-b;
+  @apply flex;
+  @apply items-center;
+  @apply justify-start;
+  @apply flex-wrap;
+}
+
+.theme-dark {
+  .public-project-notice {
+    @apply bg-blue-900;
+  }
 }

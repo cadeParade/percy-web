@@ -1,6 +1,5 @@
-<div class="collaboration-panel p-2 lg:p-0 lg:my-2" data-test-collaboration-panel>
+<div class="collaboration-panel p-2 lg:p-0 lg:border-b" data-test-collaboration-panel>
   <div class="collaboration-container">
-
     {{#if isCommentingAllowed}}
       {{collaboration/new-thread
         shouldShowNewCommentInput=(not hasCommentThreads)
@@ -18,6 +17,7 @@
         isCommentingAllowed=isCommentingAllowed
       }}
     {{/each}}
+
     {{#if hasClosedThreads}}
       {{#if areClosedThreadsExpanded}}
         {{#each closedThreads as |thread|}}
@@ -38,7 +38,6 @@
         {{/percy-btn}}
       {{/if}}
     {{/if}}
-
   </div>
 </div>
 

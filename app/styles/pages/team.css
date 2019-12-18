@@ -54,7 +54,7 @@
 }
 
 .current-opening {
-  @apply text-gray-700;
+  @apply text-primary;
 
   &:hover {
     @apply text-purple-800;

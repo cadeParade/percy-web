@@ -9,7 +9,7 @@
   @apply relative;
   @apply w-full;
   @apply select-none;
-  @apply border border-gray-100;
+  @apply border;
 }
 
 .pdiffImageOverlay {

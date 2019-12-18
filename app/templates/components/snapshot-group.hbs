@@ -3,22 +3,11 @@
   displayTitle=groupTitle
 }}
   <header
-    style="grid-template-columns: 1fr auto;"
-    class="SnapshotViewer-header sticky grid gap-4 px-2 py-1 bg-gray-000 border-b border-t"
+    class="SnapshotViewer-header sticky grid gap-4 px-2 py-1 bg-secondary border-b border-t"
     {{action "expandBlock"}}
     data-test-snapshot-group-header>
     <div style="min-width: 0;" class="flex items-center">
       <div class="Viewer-header-title SnapshotViewer-title flex items-center overflow-hidden cursor-default font-bold" title="{{snapshots.length}} matching changes" data-test-snapshot-group-name>
-        <figure class="svg-container mr-1">
-          {{#if isGroupRejected}}
-            {{inline-svg "comparison-icon-requested-changes"}}
-          {{else if isGroupApproved}}
-            {{inline-svg "comparison-icon-group-approved"}}
-          {{else}}
-            {{inline-svg "comparison-icon-group"}}
-          {{/if}}
-        </figure>
-
         {{#if isGroupRejected}}
           <div class="mr-1">
             <div class="px-1 py-sm tracking-px rounded bg-orange-500 text-xs text-center uppercase font-bold text-white whitespace-no-wrap" data-test-group-rejected-badge>Changes requested</div>
@@ -43,29 +32,28 @@
             <button type="button" class="ToggleFullViewButton btn btn-square maximize-snapshot"
               {{action showSnapshotFullModalTriggered snapshots.firstObject.id blockSelectedWidth activeBrowser}} data-test-snapshot-header-dropdown-toggle>
               <figure class="svg-container">
-                {{inline-svg "maximize-icon"}}
+                {{theme-svg svg="maximize-icon"}}
               </figure>
             </button>
           </div>
         {{/if}}
 
         <div class="btn-toolbar">
-          <div class="percy-btn-group">
-            <button class="btn" {{action "toggleAreAllSnapshotsExpanded"}} data-test-show-group-snapshots>
-              {{#if isGroupCollapsed}}
-                Expand matches
-              {{else}}
-                Collapse matches
-              {{/if}}
-            </button>
-            {{#if noSnapshotsWithOpenCommentThreads}}
-              <button class="btn btn-square flex items-center" {{action "handleCommentClick"}} data-test-group-comment-btn>
-                <figure class="svg-container">
-                  {{inline-svg "conversation-icon-add"}}
-                </figure>
-              </button>
+          <button class="btn" {{action "toggleAreAllSnapshotsExpanded"}} data-test-show-group-snapshots>
+            {{#if isGroupCollapsed}}
+              Expand matches
+            {{else}}
+              Collapse matches
             {{/if}}
-          </div>
+          </button>
+
+          {{#if noSnapshotsWithOpenCommentThreads}}
+            <button class="btn btn-square collaboration-toggle relative" {{action "handleCommentClick"}} data-test-group-comment-btn>
+              <figure class="svg-container">
+                {{theme-svg svg="conversation-icon-add"}}
+              </figure>
+            </button>
+          {{/if}}
 
           {{#if isGroupCollapsed}}
             <div class="btn-group btn-group-alt">
@@ -77,35 +65,33 @@
             </div>
           {{/if}}
           
-          <div class="btn-toolbar">
-            {{#if isGroupUnreviewed}}
-              <DemoTooltip
-                @build={{build}}
-                @isFirstInstance={{eq index 0}}
-                @anchorPlacement='left-corner'
-                @key="group-request-changes-button"
-              />
-              {{snapshot-reject-button
-                snapshots=snapshots
-                isDisabled=(not isBuildApprovable)
-              }}
-            {{/if}}
-
+          {{#if isGroupUnreviewed}}
             <DemoTooltip
               @build={{build}}
               @isFirstInstance={{eq index 0}}
               @anchorPlacement='left-corner'
-              @key="group-approval-button"
+              @key="group-request-changes-button"
             />
-            {{group-approval-button
-              createReview=createReview
-              approvableSnapshots=approvableSnapshots
-              numTotalSnapshots=snapshots.length
-              numUnapprovedSnapshots=numUnapprovedSnapshots
-              isGroupApproved=isGroupApproved
+            {{snapshot-reject-button
+              snapshots=snapshots
               isDisabled=(not isBuildApprovable)
             }}
-          </div>
+          {{/if}}
+
+          <DemoTooltip
+            @build={{build}}
+            @isFirstInstance={{eq index 0}}
+            @anchorPlacement='left-corner'
+            @key="group-approval-button"
+          />
+          {{group-approval-button
+            createReview=createReview
+            approvableSnapshots=approvableSnapshots
+            numTotalSnapshots=snapshots.length
+            numUnapprovedSnapshots=numUnapprovedSnapshots
+            isGroupApproved=isGroupApproved
+            isDisabled=(not isBuildApprovable)
+          }}
         </div>
       </div>
     </div>
@@ -113,27 +99,26 @@
 
   <div>
     {{#if isExpanded}}
-
       {{#if displaySingleSnapshotGroupCover}}
         <div class="relative border-b">
-          <div style="left: 28px;" class="snapshot-group-indent-line {{if isGroupRejected 'snapshot-group-indent-line-changes-requested-gradient' 'snapshot-group-indent-line-gradient'}}"></div>
-          <div class="flex bg-gray-000">
+          <div style="left: 28px;" class="snapshot-group-indent-line {{if isGroupRejected 'snapshot-group-indent-line-changes-requested-gradient' 'snapshot-group-indent-line-gradient'}} {{if isGroupApproved 'snapshot-group-indent-line-approved-gradient'}}"></div>
+          <div class="flex bg-secondary">
             <div style="padding: 22px 16px 10px;" class="mb-2">
               <div style="top: 126px;" class="sticky">
                 <figure class="svg-container">
                   {{#if isGroupApproved}}
-                    {{inline-svg "comparison-icon-group-approved"}}
+                    {{theme-svg svg="comparison-icon-group-approved"}}
                   {{else if isGroupRejected}}
-                    {{inline-svg "comparison-icon-group-changes-requested"}}
+                    {{theme-svg svg="comparison-icon-group-changes-requested"}}
                   {{else}}
-                    {{inline-svg "comparison-icon-group-snapshot"}}
+                    {{theme-svg svg="comparison-icon-group-snapshot"}}
                   {{/if}}
                 </figure>
               </div>
             </div>
             <div class="relative flex-1 p-2">
-              <div class="absolute bg-white rounded border pin-t-4 pin-r-4 left-0 pin-b-2 shadow-lg"></div>
-              <div class="absolute bg-white rounded border pin-t-3 pin-r-3 pin-l-1 pin-b-3 shadow-lg"></div>
+              <div class="absolute bg-primary rounded border pin-t-4 pin-r-4 left-0 pin-b-2 shadow-lg"></div>
+              <div class="absolute bg-primary rounded border pin-t-3 pin-r-3 pin-l-1 pin-b-3 shadow-lg"></div>
               <div class="relative pl-0 pb-2">
                 {{comparison-viewer
                   comparison=selectedComparison
@@ -153,19 +138,19 @@
         </div>
 
       {{else}}
-        <div class="relative pt-2 bg-gray-000">
-          <div style="left: 28px;" class="snapshot-group-indent-line {{if isGroupRejected 'bg-orange-500' 'bg-purple-700'}}"></div>
+        <div class="relative pt-2 bg-secondary">
+          <div style="left: 28px;" class="snapshot-group-indent-line {{if isGroupRejected 'bg-orange-500' 'bg-purple-600'}}  {{if isGroupApproved 'snapshot-group-indent-line-approved-gradient'}}"></div>
           {{#each snapshotsToDisplay as |snapshot index|}}
-            <div class="flex bg-gray-000">
+            <div class="flex bg-secondary"> 
               <div style="padding: 11px 16px 10px;" class="mb-2">
                 <div style="top: 132px;" class="sticky">
                   <figure class="svg-container">
                     {{#if snapshot.isApproved}}
-                      {{inline-svg "comparison-icon-group-approved"}}
+                      {{theme-svg svg="comparison-icon-group-approved"}}
                     {{else if snapshot.isRejected}}
-                      {{inline-svg "comparison-icon-group-changes-requested"}}
+                      {{theme-svg svg="comparison-icon-group-changes-requested"}}
                     {{else}}
-                      {{inline-svg "comparison-icon-group-snapshot"}}
+                      {{theme-svg svg="comparison-icon-group-snapshot"}}
                     {{/if}}
                   </figure>
                 </div>
@@ -189,7 +174,7 @@
                 toggleOverlay=(action "toggleGroupOverlay")
                 showDiffOverlay=isGroupShowingDiffOverlay
                 index=index
-                class="snapshot-group-snapshot rounded-l flex-1 border-l border-b"
+                class="snapshot-group-snapshot rounded-l flex-1 border-l"
               }}
             </div>
           {{/each}}

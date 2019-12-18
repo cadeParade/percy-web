@@ -4,11 +4,19 @@
   @apply col-auto;
   @apply p-xs;
   @apply rounded-full;
-  @apply bg-gray-100;
+  @apply bg-btn-toggle;
   @apply text-sm;
   @apply font-bold;
   @apply leading-none;
   height: 30px;
+}
+
+.btn-toggle-lg {
+  height: 42px;
+
+  .btn-toggle-item {
+    height: 38px;
+  }
 }
 
 .btn-toggle-item {
@@ -16,7 +24,7 @@
   @apply items-center;
   @apply relative;
   @apply px-2;
-  @apply text-gray-400;
+  @apply text-secondary;
   @apply leading-none;
   @apply select-none;
   @apply cursor-pointer;
@@ -26,14 +34,14 @@
 }
 
 .btn-toggle-item:hover {
-  @apply text-gray-700;
+  @apply text-primary;
 }
 
 .btn-toggle-item.is-selected {
   @apply relative;
   @apply px-2;
   @apply py-1;
-  @apply text-gray-700;
+  @apply text-primary;
   @apply pointer-events-none;
   @apply z-1;
 }
@@ -46,7 +54,7 @@
   @apply left-0;
   @apply w-full;
   @apply h-full;
-  @apply bg-white;
+  @apply bg-primary;
   @apply rounded-full;
   @apply opacity-0;
   z-index: -1;

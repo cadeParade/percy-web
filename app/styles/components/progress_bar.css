@@ -16,10 +16,14 @@
 
 .progress-bar-subtle {
   @apply top-0;
-  @apply bg-gray-000;
+  @apply bg-secondary;
 }
 
 .progress-bar-light {
   background: linear-gradient(to right, theme("colors.gray.100") 0%, theme("colors.gray.200") 25%, theme("colors.gray.100") 50%);
   animation: progress-bar 30s infinite linear;
+}
+
+.theme-dark .progress-bar-light {
+  background: linear-gradient(to right, theme("colors.dark.500") 0%, theme("colors.dark.400") 25%, theme("colors.dark.500") 50%);
 }

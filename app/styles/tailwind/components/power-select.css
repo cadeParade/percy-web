@@ -21,8 +21,7 @@
   @apply px-1-1/2;
   @apply font-semibold;
   @apply bg-transparent;
-  @apply border;
-  @apply border-gray-100;
+  @apply border border-gray-100;
   @apply rounded;
   @apply select-none;
   @apply min-h-0;
@@ -46,11 +45,12 @@
 .ember-basic-dropdown-content {
   @apply absolute;
   @apply z-top;
+  @apply bg-transparent;
 }
 
 .ember-power-select-dropdown.ember-basic-dropdown-content {
   @apply max-w-full;
-  @apply bg-white border rounded shadow-lg;
+  @apply bg-white border border-gray-100 rounded shadow-lg;
   @apply overflow-scroll;
   top: calc(100% + 8px);
   @apply w-full;
@@ -73,7 +73,7 @@
 .ember-power-select-search {
   @apply sticky top-0;
   @apply p-1;
-  @apply bg-white border-b rounded-t;
+  @apply bg-white border-b rounded-t border-gray-100;
 }
 
 .ember-power-select-search-input {
@@ -98,7 +98,7 @@
   @apply block;
   @apply px-2 pb-sm;
   @apply text-gray-300 font-semibold text-sm leading-none;
-  @apply border-b;
+  @apply border-b border-gray-100;
 }
 
 .ember-power-select-group .ember-power-select-group-name {
@@ -124,7 +124,7 @@
 .ember-power-select-option {
   @apply p-2 m-0;
   @apply font-semibold leading-none;
-  @apply border-b;
+  @apply border-b border-gray-100;
   @apply cursor-pointer;
   @apply truncate;
 }
@@ -166,7 +166,7 @@
   @apply sticky bottom-0;
   @apply px-2 py-1;
   @apply font-semibold text-sm text-gray-300 leading-none;
-  @apply bg-white border-t rounded-b;
+  @apply bg-white border-t rounded-b border-gray-100;
 }
 
 .repo-selector .ember-basic-dropdown {

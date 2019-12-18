@@ -55,10 +55,10 @@ code {
   @apply py-0;
   @apply px-1;
   @apply font-normal;
-  @apply text-gray-700;
+  @apply text-primary;
   @apply tracking-sm;
   @apply whitespace-no-wrap;
-  @apply bg-gray-100;
+  @apply bg-code;
   @apply rounded;
 }
 
@@ -86,5 +86,5 @@ strong {
 
 input::placeholder,
 textarea::placeholder {
-  @apply text-gray-400;
+  @apply text-secondary;
 }

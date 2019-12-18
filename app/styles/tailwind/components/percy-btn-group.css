@@ -4,7 +4,7 @@
 
 .percy-btn-group .btn,
 .percy-btn-group .percy-btn {
-  @apply bg-gray-000 text-gray-400 border-gray-100;
+  @apply bg-gray-000 text-secondary border-gray-100;
   box-shadow: none;
 }
 
@@ -14,12 +14,12 @@
 .percy-btn-group .percy-btn:hover,
 .percy-btn-group .percy-btn:focus,
 .percy-btn-group .percy-btn:focus:active {
-  @apply bg-gray-000 border-gray-100 text-gray-700;
+  @apply bg-gray-000 text-primary border-gray-100;
 }
 
 .percy-btn-group .btn.is-active,
 .percy-btn-group .percy-btn.is-active {
-  @apply bg-white text-gray-700 pointer-events-none;
+  @apply bg-white text-primary pointer-events-none;
 }
 
 .percy-btn-group > .btn:not(:first-child),

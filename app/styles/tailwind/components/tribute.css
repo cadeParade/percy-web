@@ -1,7 +1,7 @@
 .tribute-container {
   @apply py-1-1/2 mt-1;
   @apply bg-white;
-  @apply border border-gray-100 rounded;
+  @apply border rounded;
   box-shadow: 0 4px 12px rgba(63, 58, 64, 0.06);
   z-index: 2 !important;
 }

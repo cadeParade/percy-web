@@ -1,7 +1,7 @@
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
 import {it, describe, beforeEach} from 'mocha';
-import {percySnapshot} from 'ember-percy';
+import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
 import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import sinon from 'sinon';
@@ -50,7 +50,7 @@ describe('Integration: CollaborationNewThread', function() {
       expect(CollaborationNewThread.textareaValue).to.equal(commentText);
       expect(CollaborationNewThread.isSubmitDisabled).to.equal(false);
 
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
 
     it('sends save action with correct args when "request changes" is not checked', async function() { // eslint-disable-line
@@ -194,7 +194,7 @@ describe('Integration: CollaborationNewThread', function() {
     it('displays new comment button', async function() {
       expect(CollaborationNewThread.isNewThreadButtonVisible).to.equal(true);
       expect(CollaborationNewThread.isNewThreadContainerVisible).to.equal(false);
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
 
     it('shows new comment textarea when the button is clicked', async function() {
@@ -202,7 +202,7 @@ describe('Integration: CollaborationNewThread', function() {
 
       expect(CollaborationNewThread.isNewThreadButtonVisible).to.equal(false);
       expect(CollaborationNewThread.isNewThreadContainerVisible).to.equal(true);
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
   });
 });

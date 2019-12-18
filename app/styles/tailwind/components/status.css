@@ -49,3 +49,10 @@
 .text-status {
   color: var(--status-text-color, theme("colors.gray.700"));
 }
+
+.theme-dark {
+  .is-approved,
+  .is-unchanged {
+    --status-background-color: theme("colors.dark.700");
+  }
+}

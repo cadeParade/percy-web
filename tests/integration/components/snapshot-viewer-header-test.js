@@ -1,7 +1,7 @@
 /* jshint expr:true */
 import {setupRenderingTest} from 'ember-mocha';
 import {beforeEach, it, describe} from 'mocha';
-import {percySnapshot} from 'ember-percy';
+import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
 import SnapshotViewerHeaderPO from 'percy-web/tests/pages/components/snapshot-viewer-header';
@@ -63,7 +63,7 @@ describe('Integration: SnapshotViewerHeader', function() {
 
       await SnapshotViewerHeaderPO.clickDropdownToggle();
       expect(SnapshotViewerHeaderPO.dropdownOptions.objectAt(0).text).to.equal('Copy snapshot URL');
-      await percySnapshot(this.test);
+      await percySnapshotWithDarkMode(this.test);
     });
 
     describe('download HTML options', function() {
@@ -97,7 +97,7 @@ describe('Integration: SnapshotViewerHeader', function() {
         expect(SnapshotViewerHeaderPO.dropdownOptions.objectAt(2).text).to.equal(
           'Download new source',
         );
-        await percySnapshot(this.test);
+        await percySnapshotWithDarkMode(this.test);
       });
 
       it('shows download new source option', async function() {
@@ -107,7 +107,7 @@ describe('Integration: SnapshotViewerHeader', function() {
         expect(SnapshotViewerHeaderPO.dropdownOptions.objectAt(1).text).to.equal(
           'Download new source',
         );
-        await percySnapshot(this.test);
+        await percySnapshotWithDarkMode(this.test);
       });
     });
 
@@ -141,7 +141,7 @@ describe('Integration: SnapshotViewerHeader', function() {
           expect(
             SnapshotViewerHeaderPO.dropdownOptions.mapBy('text').includes('Download source diff'),
           ).to.be.true;
-          await percySnapshot(this.test);
+          await percySnapshotWithDarkMode(this.test);
         });
       });
 
@@ -169,7 +169,7 @@ describe('Integration: SnapshotViewerHeader', function() {
           expect(
             SnapshotViewerHeaderPO.dropdownOptions.mapBy('text').includes('Download source diff'),
           ).to.be.true;
-          await percySnapshot(this.test);
+          await percySnapshotWithDarkMode(this.test);
         });
       });
 
@@ -195,7 +195,7 @@ describe('Integration: SnapshotViewerHeader', function() {
           expect(
             SnapshotViewerHeaderPO.dropdownOptions.mapBy('text').includes('Download source diff'),
           ).to.be.false;
-          await percySnapshot(this.test);
+          await percySnapshotWithDarkMode(this.test);
         });
       });
     });
@@ -273,7 +273,7 @@ describe('Integration: SnapshotViewerHeader', function() {
       it('does displays toggle widths option in dropdown', async function() {
         await SnapshotViewerHeaderPO.clickDropdownToggle();
         expect(SnapshotViewerHeaderPO.isToggleWidthsOptionVisible).to.equal(true);
-        await percySnapshot(this.test);
+        await percySnapshotWithDarkMode(this.test);
       });
 
       it('shows all comparisons widths when toggle widths option is clicked', async function() {

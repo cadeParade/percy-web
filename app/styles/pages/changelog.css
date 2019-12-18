@@ -18,13 +18,13 @@
   }
 
   p {
-    @apply text-gray-400;
+    @apply text-secondary;
   }
 
   img {
     @apply w-full;
     @apply mb-1;
-    @apply border border-gray-100;
+    @apply border;
   }
 
   a {
