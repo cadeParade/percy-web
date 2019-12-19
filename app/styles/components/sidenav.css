@@ -9,7 +9,6 @@
 .sidenav-header {
   @apply mb-1;
   @apply font-semibold;
-  @apply capitalize;
 }
 
 .sidenav-list {

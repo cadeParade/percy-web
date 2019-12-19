@@ -5,17 +5,17 @@
     <div class="sm:flex">
       <div class="sm:flex-1 sm:mr-4">
         <aside class="sidenav">
-          <header class="sidenav-header">Account Settings</header>
+          <header class="sidenav-header">Account settings</header>
           <ul class="sidenav-list">
             <li class="sidenav-list-item">
               {{#link-to 'settings.profile' classNames="sidenav-list-item-link"}}Profile{{/link-to}}
             </li>
             <li class="sidenav-list-item">
-              {{#link-to 'settings.connected-accounts' classNames="sidenav-list-item-link"}}Connected Accounts{{/link-to}}
+              {{#link-to 'settings.connected-accounts' classNames="sidenav-list-item-link"}}Connected accounts{{/link-to}}
             </li>
             {{#if (variation "show-display-preferences")}}
               <li class="sidenav-list-item">
-                {{#link-to 'settings.display-preferences' classNames="sidenav-list-item-link"}}Display Preferences{{/link-to}}
+                {{#link-to 'settings.display-preferences' classNames="sidenav-list-item-link"}}Display preferences{{/link-to}}
               </li>
             {{/if}}
             <li class="sidenav-list-item">
