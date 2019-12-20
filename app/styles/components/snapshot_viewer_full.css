@@ -34,7 +34,7 @@
     @apply relative;
     @apply w-screen;
     @apply h-screen;
-    @apply bg-white;
+    @apply bg-primary;
     @apply outline-none;
     z-index: 1001;
 
