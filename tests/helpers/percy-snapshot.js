@@ -23,6 +23,6 @@ function processName(name) {
     // Automatic name generation for Mocha tests by passing in the `this.test` object.
     return `Dark${name.fullTitle()}`;
   } else {
-    return `Dark ${name}`;
+    return name;
   }
 }

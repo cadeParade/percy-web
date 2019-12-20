@@ -325,8 +325,8 @@ describe('Acceptance: Build', function() {
       await percySnapshot(`${this.test.fullTitle()} | before following originating snapshot link`, {
         darkMode: true,
       });
-      // eslint-disable-next-line
       expect(firstCommentThread.previousBuildHref).to.equal(
+        // eslint-disable-next-line
         `/${urlParams.orgSlug}/${urlParams.projectSlug}/builds/snapshot/${originatingSnapshotId}/default-comparison`,
       );
 
