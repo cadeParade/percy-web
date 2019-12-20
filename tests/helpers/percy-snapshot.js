@@ -18,10 +18,10 @@ export default async function percySnapshot(name, options = {}) {
 function processName(name) {
   // Automatic name generation for QUnit tests by passing in the `assert` object.
   if (name.test && name.test.module && name.test.module.name && name.test.testName) {
-    return `Dark ${name.test.module.name} | ${name.test.testName}`;
+    return `Dark${name.test.module.name} | ${name.test.testName}`;
   } else if (name.fullTitle) {
     // Automatic name generation for Mocha tests by passing in the `this.test` object.
-    return `Dark ${name.fullTitle()}`;
+    return `Dark${name.fullTitle()}`;
   } else {
     return `Dark ${name}`;
   }
