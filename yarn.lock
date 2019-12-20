@@ -1777,14 +1777,13 @@
     which "^2.0.1"
     winston "^3.0.0"
 
-"@percy/ember@2.0.0-beta.1":
-  version "2.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@percy/ember/-/ember-2.0.0-beta.1.tgz#8079f2b9a603eca13db15949885fa2d0919eadde"
-  integrity sha512-WCWOitNxSygAfFFJd4j9795IqBzEFHEt5xZUXrWrWpRF9OanET/iROSnkG6Jf34CiRHfvoSBEkqyJWuw4TTnxg==
+"@percy/ember@2.0.0-beta.2":
+  version "2.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@percy/ember/-/ember-2.0.0-beta.2.tgz#93f4541ce2599056d46eada25ea4b84231a51b96"
+  integrity sha512-RHuBITfkzNfmzuWKaW95J+kdew7FNsKZYKCCTg+pYdaRIKz/Utk9nDC1QWv5i1Z/glWaSPMFRLJdjESL1NyWNw==
   dependencies:
     "@percy/agent" "~0"
     ember-cli-babel "^7.11.1"
-    ember-cli-htmlbars "^4.0.5"
 
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
@@ -7054,26 +7053,6 @@ ember-cli-htmlbars@^3.0.0, ember-cli-htmlbars@^3.0.1, ember-cli-htmlbars@^3.1.0:
     strip-bom "^3.0.0"
 
 ember-cli-htmlbars@^4.0.0, ember-cli-htmlbars@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-4.2.0.tgz#a3694ab31f6d571c45786a3041b9c76e4eb30989"
-  integrity sha512-YymJLg/rRiclK5jxbTFpaRNlbS+f3SY6SplnMExjcrcbSjMRsBuams50+mppENEu7iKfd6PBqH3FHVbYsukHSQ==
-  dependencies:
-    "@ember/edition-utils" "^1.1.1"
-    babel-plugin-htmlbars-inline-precompile "^3.0.0"
-    broccoli-debug "^0.6.5"
-    broccoli-persistent-filter "^2.3.1"
-    broccoli-plugin "^3.0.0"
-    common-tags "^1.8.0"
-    ember-cli-babel-plugin-helpers "^1.1.0"
-    fs-tree-diff "^2.0.1"
-    hash-for-dep "^1.5.1"
-    heimdalljs-logger "^0.1.10"
-    json-stable-stringify "^1.0.1"
-    semver "^6.3.0"
-    strip-bom "^4.0.0"
-    walk-sync "^2.0.2"
-
-ember-cli-htmlbars@^4.0.5:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-4.2.0.tgz#a3694ab31f6d571c45786a3041b9c76e4eb30989"
   integrity sha512-YymJLg/rRiclK5jxbTFpaRNlbS+f3SY6SplnMExjcrcbSjMRsBuams50+mppENEu7iKfd6PBqH3FHVbYsukHSQ==
