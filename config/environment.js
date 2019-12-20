@@ -206,7 +206,6 @@ module.exports = function(environment) {
     ENV.launchDarkly.localFeatureFlags = {
       'allow-demo-projects': true,
       'show-removed-snapshots': true,
-      'show-display-preferences': true,
     };
 
     ENV.APP.bitbucketCloudUrls = {
