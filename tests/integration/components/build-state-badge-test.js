@@ -36,7 +36,7 @@ describe('Integration: BuildStateBadgeComponent', function() {
       this.set('build', build);
 
       await render(hbs`{{build-state-badge build=build}}`);
-      await percySnapshot(this.test, { darkMode: true });
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 });

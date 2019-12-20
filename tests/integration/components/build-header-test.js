@@ -48,7 +48,7 @@ describe('Integration: BuildHeader', function() {
         build=build
         isBuildApprovable=true
       }}`);
-      await percySnapshot(this.test, { darkMode: true });
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 

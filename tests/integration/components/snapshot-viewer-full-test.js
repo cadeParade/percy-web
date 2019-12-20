@@ -107,7 +107,7 @@ describe('Integration: SnapshotViewerFull', function() {
       this.set('snapshot', addedSnapshot);
 
       expect(FullSnapshotPage.isNewComparisonModeButtonVisible).to.equal(true);
-      await percySnapshot(this.test, { darkMode: true });
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 
@@ -143,7 +143,7 @@ describe('Integration: SnapshotViewerFull', function() {
   });
 
   it('compares visually to previous screenshot', async function() {
-    await percySnapshot(this.test, { darkMode: true });
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   describe('full screen toggle button', function() {
@@ -186,7 +186,7 @@ describe('Integration: SnapshotViewerFull', function() {
       async function expectToggleWorks({isOpenByDefault = true, context} = {}) {
         await FullSnapshotPage.header.toggleCommentSidebar();
         expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(!isOpenByDefault);
-        await percySnapshot(context.test, { darkMode: true });
+        await percySnapshot(context.test, {darkMode: true});
 
         await FullSnapshotPage.header.toggleCommentSidebar();
         expect(FullSnapshotPage.collaborationPanel.isVisible).to.equal(isOpenByDefault);

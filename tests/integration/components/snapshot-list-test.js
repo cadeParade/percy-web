@@ -58,7 +58,7 @@ describe('Integration: SnapshotList', function() {
       SnapshotList.snapshotBlocks.forEach(block => {
         expect(block.isLazyRenderHeaderVisible).to.equal(true);
       });
-      await percySnapshot(this.test, { darkMode: true });
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 
@@ -206,7 +206,7 @@ describe('Integration: SnapshotList', function() {
       expect(firstSnapshotBlock.isFocused).to.equal(false);
       expect(secondSnapshotBlock.isFocused).to.equal(false);
       expect(lastSnapshotBlock.isFocused).to.equal(true);
-      await percySnapshot(this.test, { darkMode: true });
+      await percySnapshot(this.test, {darkMode: true});
 
       // wrap around to select first snapshotBlock
       await SnapshotList.typeDownArrow();
@@ -417,7 +417,7 @@ describe('Integration: SnapshotList', function() {
       expectIsSnapshot(approvedSnapshotNoComments);
       expectSnapshotName(approvedSnapshotNoComments, approvedSingleSnapshotsWithoutCommentsTitle);
 
-      await percySnapshot(this.test, { darkMode: true });
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 });

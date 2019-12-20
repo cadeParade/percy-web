@@ -63,7 +63,7 @@ describe('Integration: SnapshotViewerHeader', function() {
 
       await SnapshotViewerHeaderPO.clickDropdownToggle();
       expect(SnapshotViewerHeaderPO.dropdownOptions.objectAt(0).text).to.equal('Copy snapshot URL');
-      await percySnapshot(this.test, { darkMode: true });
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     describe('download HTML options', function() {
@@ -97,7 +97,7 @@ describe('Integration: SnapshotViewerHeader', function() {
         expect(SnapshotViewerHeaderPO.dropdownOptions.objectAt(2).text).to.equal(
           'Download new source',
         );
-        await percySnapshot(this.test, { darkMode: true });
+        await percySnapshot(this.test, {darkMode: true});
       });
 
       it('shows download new source option', async function() {
@@ -107,7 +107,7 @@ describe('Integration: SnapshotViewerHeader', function() {
         expect(SnapshotViewerHeaderPO.dropdownOptions.objectAt(1).text).to.equal(
           'Download new source',
         );
-        await percySnapshot(this.test, { darkMode: true });
+        await percySnapshot(this.test, {darkMode: true});
       });
     });
 
@@ -141,7 +141,7 @@ describe('Integration: SnapshotViewerHeader', function() {
           expect(
             SnapshotViewerHeaderPO.dropdownOptions.mapBy('text').includes('Download source diff'),
           ).to.be.true;
-          await percySnapshot(this.test, { darkMode: true });
+          await percySnapshot(this.test, {darkMode: true});
         });
       });
 
@@ -169,7 +169,7 @@ describe('Integration: SnapshotViewerHeader', function() {
           expect(
             SnapshotViewerHeaderPO.dropdownOptions.mapBy('text').includes('Download source diff'),
           ).to.be.true;
-          await percySnapshot(this.test, { darkMode: true });
+          await percySnapshot(this.test, {darkMode: true});
         });
       });
 
@@ -195,7 +195,7 @@ describe('Integration: SnapshotViewerHeader', function() {
           expect(
             SnapshotViewerHeaderPO.dropdownOptions.mapBy('text').includes('Download source diff'),
           ).to.be.false;
-          await percySnapshot(this.test, { darkMode: true });
+          await percySnapshot(this.test, {darkMode: true});
         });
       });
     });
@@ -273,7 +273,7 @@ describe('Integration: SnapshotViewerHeader', function() {
       it('does displays toggle widths option in dropdown', async function() {
         await SnapshotViewerHeaderPO.clickDropdownToggle();
         expect(SnapshotViewerHeaderPO.isToggleWidthsOptionVisible).to.equal(true);
-        await percySnapshot(this.test, { darkMode: true });
+        await percySnapshot(this.test, {darkMode: true});
       });
 
       it('shows all comparisons widths when toggle widths option is clicked', async function() {

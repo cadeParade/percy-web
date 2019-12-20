@@ -33,7 +33,7 @@ describe('Integration: CollaborationCommentReply', function() {
     it('shows collapsed reply textarea by default', async function() {
       expect(CommentReply.isCollapsed).to.equal(true);
 
-      await percySnapshot(this.test, { darkMode: true });
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('expands when the textarea is focused', async function() {
@@ -66,13 +66,13 @@ describe('Integration: CollaborationCommentReply', function() {
 
     it('submit button is disabled by default', async function() {
       expect(CommentReply.submit.isDisabled).to.equal(true);
-      await percySnapshot(this.test, { darkMode: true });
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('submit button is enabled when comment body is not empty', async function() {
       await CommentReply.typeComment('hi there');
       expect(CommentReply.submit.isDisabled).to.equal(false);
-      await percySnapshot(this.test, { darkMode: true });
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('collapses reply when cancel button is clicked', async function() {
@@ -151,7 +151,7 @@ describe('Integration: CollaborationCommentReply', function() {
       await CommentReply.typeComment(commentText);
       await CommentReply.submit.click();
       expect(CommentReply.submit.isLoading).to.equal(true);
-      await percySnapshot(this.test, { darkMode: true });
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('resets reply when comment is successfully saved', async function() {

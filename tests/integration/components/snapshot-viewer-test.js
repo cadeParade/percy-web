@@ -76,7 +76,7 @@ describe('Integration: SnapshotViewer', function() {
       isBuildApprovable=isBuildApprovable
     }}`);
 
-    await percySnapshot(this.test, { darkMode: true });
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   describe('comparison mode switcher', function() {
@@ -317,7 +317,7 @@ describe('Integration: SnapshotViewer', function() {
       });
 
       it('displays correctly', async function() {
-        await percySnapshot(this.test, { darkMode: true });
+        await percySnapshot(this.test, {darkMode: true});
       });
     });
 
@@ -325,7 +325,7 @@ describe('Integration: SnapshotViewer', function() {
       async function expectToggleWorks({isOpenByDefault = true, context} = {}) {
         await SnapshotViewer.header.toggleCommentSidebar();
         expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(!isOpenByDefault);
-        await percySnapshot(context.test, { darkMode: true });
+        await percySnapshot(context.test, {darkMode: true});
 
         await SnapshotViewer.header.toggleCommentSidebar();
         expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(isOpenByDefault);

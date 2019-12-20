@@ -36,7 +36,7 @@ describe('Integration: BuildOverviewComponent', function() {
       this.set('build', build);
 
       await render(hbs`{{build-overview build=build}}`);
-      await percySnapshot(this.test, { darkMode: true });
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 });

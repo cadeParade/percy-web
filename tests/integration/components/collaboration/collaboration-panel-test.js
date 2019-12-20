@@ -43,7 +43,7 @@ describe('Integration: CollaborationPanel', function() {
       expect(CollaborationPanel.newComment.isNewThreadContainerVisible).to.equal(true);
       expect(CollaborationPanel.newComment.isSubmitDisabled).to.equal(true);
       expect(CollaborationPanel.commentThreads.length).to.equal(0);
-      await percySnapshot(this.test, { darkMode: true });
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('does not show "New Comment" textarea when isCommentingAllowed is false', async function() {
@@ -83,13 +83,17 @@ describe('Integration: CollaborationPanel', function() {
 
       expect(CollaborationPanel.commentThreads[0].comments[0].createdAt).to.equal('a day ago');
       expect(CollaborationPanel.commentThreads[0].isClosed).to.equal(false);
-      await percySnapshot(this.test.fullTitle() + 'before closed threads are expanded', {darkMode: true});
+      await percySnapshot(this.test.fullTitle() + 'before closed threads are expanded', {
+        darkMode: true,
+      });
 
       await CollaborationPanel.showArchivedComments();
       expect(CollaborationPanel.commentThreads.length).to.equal(4);
       expect(CollaborationPanel.commentThreads[2].comments[0].createdAt).to.equal('a day ago');
       expect(CollaborationPanel.commentThreads[2].isClosed).to.equal(true);
-      await percySnapshot(this.test.fullTitle() + 'after closed threads are expanded', {darkMode: true);
+      await percySnapshot(this.test.fullTitle() + 'after closed threads are expanded', {
+        darkMode: true,
+      });
     });
 
     it('does not show "New Comment" button when isCommentingAllowed is false', async function() {

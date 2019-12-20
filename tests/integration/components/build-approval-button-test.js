@@ -32,7 +32,7 @@ describe('Integration: BuildApprovalButton', function() {
       build=build
       createReview=stub
     }}`);
-    await percySnapshot(this.test, { darkMode: true });
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   it('displays correctly when build is approved', async function() {
@@ -41,7 +41,7 @@ describe('Integration: BuildApprovalButton', function() {
       createReview=stub
     }}`);
     this.set('build.reviewState', 'approved');
-    await percySnapshot(this.test, { darkMode: true });
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   it('calls createReview with correct args when clicked', async function() {
@@ -112,7 +112,7 @@ describe('Integration: BuildApprovalButton', function() {
     }}`);
 
     await BuildApprovalButton.clickButton();
-    await percySnapshot(this.test, { darkMode: true });
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   it('is enabled when isDisabled is false', async function() {

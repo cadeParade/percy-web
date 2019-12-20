@@ -25,7 +25,7 @@ describe('Integration: CollaborationToggleButton', function() {
       unresolvedCommentThreadCount=100
       toggleCollaborationPanel=toggleCollaborationPanelStub
     }}`);
-    await percySnapshot(this.test, { darkMode: true });
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   it('displays green check when isResolved is true', async function() {
@@ -33,7 +33,7 @@ describe('Integration: CollaborationToggleButton', function() {
       isResolved=true
       toggleCollaborationPanel=toggleCollaborationPanelStub
     }}`);
-    await percySnapshot(this.test, { darkMode: true });
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   it('displays grey icon with plus button when isResolved is false and there are no comments', async function() { // eslint-disable-line
@@ -41,7 +41,7 @@ describe('Integration: CollaborationToggleButton', function() {
       isResolved=false
       toggleCollaborationPanel=toggleCollaborationPanelStub
     }}`);
-    await percySnapshot(this.test, { darkMode: true });
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   it('calls toggle action when clicked', async function() {

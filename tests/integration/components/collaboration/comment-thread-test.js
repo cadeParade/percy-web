@@ -34,7 +34,7 @@ describe('Integration: CommentThread', function() {
 
         expect(CommentThread.comments.length).to.equal(1);
         expect(CommentThread.reply.isVisible).to.equal(true);
-        await percySnapshot(this.test, { darkMode: true });
+        await percySnapshot(this.test, {darkMode: true});
       });
 
       it('displays correctly with two comments', async function() {
@@ -46,7 +46,7 @@ describe('Integration: CommentThread', function() {
 
         expect(CommentThread.comments.length).to.equal(2);
         expect(CommentThread.reply.isVisible).to.equal(true);
-        await percySnapshot(this.test, { darkMode: true });
+        await percySnapshot(this.test, {darkMode: true});
       });
 
       it('expands reply input when clicked', async function() {
@@ -56,7 +56,7 @@ describe('Integration: CommentThread', function() {
           commentThread=commentThread
         }}`);
         await CommentThread.focusReply();
-        await percySnapshot(this.test, { darkMode: true });
+        await percySnapshot(this.test, {darkMode: true});
       });
 
       it('does not display reply box when `isCommentingAllowed` is false', async function() {
@@ -83,7 +83,7 @@ describe('Integration: CommentThread', function() {
         expect(CommentThread.comments.length).to.equal(3);
         expect(CommentThread.expandComments.collapsedCommentCount).to.include(7);
         expect(CommentThread.reply.isVisible).to.equal(true);
-        await percySnapshot(this.test, { darkMode: true });
+        await percySnapshot(this.test, {darkMode: true});
       });
 
       it('expands collapsed comments when "Show additional comments" is clicked', async function() {
@@ -105,7 +105,7 @@ describe('Integration: CommentThread', function() {
 
         expect(CommentThread.comments.length).to.equal(1);
         expect(CommentThread.reply.isVisible).to.equal(false);
-        await percySnapshot(this.test, { darkMode: true });
+        await percySnapshot(this.test, {darkMode: true});
       });
 
       it('displays correctly with two comments', async function() {
@@ -117,7 +117,7 @@ describe('Integration: CommentThread', function() {
 
         expect(CommentThread.comments.length).to.equal(2);
         expect(CommentThread.reply.isVisible).to.equal(false);
-        await percySnapshot(this.test, { darkMode: true });
+        await percySnapshot(this.test, {darkMode: true});
       });
     });
 
@@ -134,7 +134,7 @@ describe('Integration: CommentThread', function() {
         expect(CommentThread.comments.length).to.equal(3);
         expect(CommentThread.expandComments.collapsedCommentCount).to.include('View conversation');
         expect(CommentThread.reply.isVisible).to.equal(false);
-        await percySnapshot(this.test, { darkMode: true });
+        await percySnapshot(this.test, {darkMode: true});
       });
 
       it('expands collapsed comments when "View conversation" is clicked', async function() {
