@@ -27,7 +27,7 @@ steps:
       - PERCY_TOKEN
     plugins:
       - docker#v3.3.0:
-          image: "circleci/node:8-browsers"
+          image: "circleci/node:12-browsers"
           workdir: "/home/circleci/percy-web"
           propagate-environment: true
           user: "root"

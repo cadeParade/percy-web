@@ -65,3 +65,7 @@
 .auth0-lock-social-button {
   border-radius: 4px !important;
 }
+
+.auth0-lock-social-button[data-provider="github"] {
+  appearance: none;
+}
