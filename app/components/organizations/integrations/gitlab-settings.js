@@ -16,6 +16,8 @@ export default Component.extend({
     let record = this.currentGitlabIntegration;
     if (record) {
       return record.get('dirtyType') === 'created';
+    } else {
+      return false;
     }
   }),
 

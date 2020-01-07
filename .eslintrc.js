@@ -32,6 +32,7 @@ module.exports = {
     'space-unary-ops': ['error', {nonwords: false}],
     'comma-dangle': ['error', 'always-multiline'],
     'no-unused-expressions': ["error", { "allowTernary": true }],
+    'ember/no-new-mixins': 'off',
   },
   overrides: [
     {

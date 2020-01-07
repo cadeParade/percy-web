@@ -60,7 +60,7 @@ Router.map(function() {
   this.route(PASSWORD_RESET_ROUTE, {path: '/auth/password-reset'});
   this.route(PASSWORD_UPDATED_ROUTE, {path: '/auth/password-updated'});
   // Docs and child routes are deprecated and are intercepted in docs route for redirect.
-  this.route('docs', {path: '/docs'}, function() {
+  this.route('docs', {}, function() {
     this.route('page', {path: '*path'});
   });
   this.route(LOGIN_ROUTE);
@@ -88,17 +88,17 @@ Router.map(function() {
     this.route('display-preferences');
     this.route('notifications');
   });
-  this.route('setup', {path: '/setup'}, function() {
+  this.route('setup', {}, function() {
     this.route('github-app');
   });
   this.route('default-org');
   this.route('recent-project');
 
-  this.route('organizations', {path: '/organizations'}, function() {
+  this.route('organizations', {}, function() {
     this.route('new');
     this.route('organization', {path: '/:organization_id'}, function() {
       this.route('setup');
-      this.route('projects', {path: '/projects'}, function() {
+      this.route('projects', {}, function() {
         this.route('new');
         this.route('new-demo');
       });
@@ -115,13 +115,13 @@ Router.map(function() {
         this.route('github');
         this.route('gitlab');
         this.route('gitlab-self-hosted');
-        this.route('slack', {path: '/slack'}, function() {
+        this.route('slack', {}, function() {
           this.route('slack-config', {
             path: '/:slack_integration_id/configs/:slack_integration_config_id',
           });
         });
       });
-      this.route('setup', {path: '/setup'}, function() {
+      this.route('setup', {}, function() {
         this.route('slack-integration');
         this.route('bitbucket-cloud-integration');
       });

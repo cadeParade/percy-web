@@ -68,6 +68,8 @@ export default Component.extend({
       return 'Large';
     } else if (snapshotCount > planBreaks.large.maxSnapshots) {
       return 'Enterprise';
+    } else {
+      return '';
     }
   }),
 
@@ -80,6 +82,8 @@ export default Component.extend({
         snapshotCount: this.displaySnapshotCount,
         overageUnitCost: plan.overageUnitCost,
       });
+    } else {
+      return '';
     }
   }),
 

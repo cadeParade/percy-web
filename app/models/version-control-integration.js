@@ -40,5 +40,6 @@ export default DS.Model.extend({
         return integrationItem['textName'];
       }
     }
+    return '';
   }),
 });

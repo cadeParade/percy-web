@@ -81,6 +81,8 @@ export default DS.Model.extend({
       return 'No snapshots';
     } else if (failureReason === 'render_timeout') {
       return 'Timed out';
+    } else {
+      return '';
     }
   }),
 
@@ -175,6 +177,8 @@ export default DS.Model.extend({
     } else if (this.isExpired) {
       return EXPIRED_LABEL;
     }
+
+    return '';
   }),
 
   commit: DS.belongsTo('commit', {async: false}), // Might be null.

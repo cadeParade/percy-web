@@ -28,6 +28,8 @@ export default Component.extend({
       return 'No seats remaining';
     } else if (this.isForceSso) {
       return 'This organization requires you to be added via your SSO integration.';
+    } else {
+      return '';
     }
   }),
 

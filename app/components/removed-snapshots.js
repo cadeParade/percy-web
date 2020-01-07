@@ -25,6 +25,8 @@ export default Component.extend({
       return "There was 1 snapshot in the base build that isn't present in this build.";
     } else if (length > 1) {
       return `There were ${length} snapshots in the base build that aren't present in this build.`;
+    } else {
+      return '';
     }
   }),
 

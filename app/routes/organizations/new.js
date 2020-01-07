@@ -41,6 +41,8 @@ export default Route.extend(AuthenticatedRouteMixin, {
     let marketplaceListingPlanId = this.marketplaceListingPlanId;
     if (marketplaceListingPlanId) {
       return 'github_marketplace';
+    } else {
+      return '';
     }
   }),
 
@@ -50,6 +52,8 @@ export default Route.extend(AuthenticatedRouteMixin, {
       return JSON.stringify({
         marketplace_listing_plan_id: parseInt(marketplaceListingPlanId),
       });
+    } else {
+      return '';
     }
   }),
 

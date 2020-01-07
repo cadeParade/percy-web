@@ -30,6 +30,8 @@ export default Component.extend({
       const originatingSnapshotId = this.commentThread.originatingSnapshotId;
       if (threadSnapshot.id && originatingSnapshotId) {
         return originatingSnapshotId.toString() === threadSnapshot.id;
+      } else {
+        return false;
       }
     },
   ),

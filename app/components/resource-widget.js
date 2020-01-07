@@ -28,6 +28,8 @@ export default Component.extend({
   docLinkClasses: computed('selectedFramework', function() {
     if (!this.docLink) {
       return 'hidden';
+    } else {
+      return '';
     }
   }),
 
@@ -36,6 +38,8 @@ export default Component.extend({
       return 'percy-btn-primary';
     } else if (!this.exampleLink) {
       return 'hidden';
+    } else {
+      return '';
     }
   }),
 
