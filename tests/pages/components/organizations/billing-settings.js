@@ -1,4 +1,4 @@
-import {clickable, create, isVisible} from 'ember-cli-page-object';
+import {clickable, create, isVisible, text} from 'ember-cli-page-object';
 import {BillingCardUpdater} from 'percy-web/tests/pages/components/organizations/billing-card-updater'; // eslint-disable-line
 import {billingEdit} from 'percy-web/tests/pages/components/forms/billing-edit';
 
@@ -17,6 +17,7 @@ export const billingSettings = {
 
   isEmailInfoVisible: isVisible(SELECTORS.EMAIL_INFO),
   isCardInfoVisible: isVisible(SELECTORS.CARD_INFO),
+  cardInfo: text(SELECTORS.CARD_INFO),
   isEmptyCardInfoVisible: isVisible(SELECTORS.CARD_INFO_ABSENT),
 
   openEmailForm: clickable(SELECTORS.OPEN_EMAIL_FORM),

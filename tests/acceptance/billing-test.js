@@ -28,6 +28,18 @@ describe('Acceptance: Billing', function() {
 
       await percySnapshot(this.test.fullTitle() + ' | ok modification');
     });
+
+    it('shows the correct card expiration date', async function() {
+      // Static date at beginning of month to ensure time localization doesn't change display date
+      const expirationDate = new Date('2055-11-1 UTC');
+      const expectedDate = /11\/55/;
+      organization.subscription.paymentMethod.update({cardExpiresAt: expirationDate});
+
+      await BillingPage.visitBillingPage({orgSlug: organization.slug});
+
+      expect(BillingPage.billingSettings.cardInfo).to.match(expectedDate);
+      await percySnapshot(this.test);
+    });
   });
 
   describe('user is member but not an admin', function() {

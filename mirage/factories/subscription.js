@@ -2,6 +2,7 @@ import moment from 'moment';
 import {Factory, association, trait} from 'ember-cli-mirage';
 
 export default Factory.extend({
+  paymentMethod: association(),
   billingEmail(i) {
     return `billing-email-${i}@example.com`;
   },
