@@ -1,4 +1,4 @@
-import {fillable, clickable, create, hasClass, is, text} from 'ember-cli-page-object';
+import {fillable, clickable, create, hasClass, property, text} from 'ember-cli-page-object';
 
 const SELECTORS = {
   SCOPE: '[data-test-billing-edit-form]',
@@ -14,7 +14,7 @@ export const billingEdit = {
   enterEmail: fillable(SELECTORS.EMAIL_INPUT),
   submit: clickable(SELECTORS.SUBMIT),
   errorText: text(SELECTORS.INPUT_ERRORS),
-  isSubmitDisabled: is(':disabled', SELECTORS.SUBMIT),
+  isSubmitDisabled: property('disabled', SELECTORS.SUBMIT),
   isSubmitLoading: hasClass('is-loading', SELECTORS.SUBMIT),
   cancel: clickable(SELECTORS.CANCEL),
 };

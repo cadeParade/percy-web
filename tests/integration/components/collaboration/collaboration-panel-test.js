@@ -19,7 +19,6 @@ describe('Integration: CollaborationPanel', function() {
 
   beforeEach(async function() {
     setupFactoryGuy(this);
-    CollaborationPanel.setContext(this);
   });
 
   describe('when there are no comment threads', function() {

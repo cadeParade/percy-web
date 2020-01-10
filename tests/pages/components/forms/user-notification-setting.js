@@ -1,4 +1,4 @@
-import {collection, create, hasClass, is, visitable} from 'ember-cli-page-object';
+import {collection, create, hasClass, property, visitable} from 'ember-cli-page-object';
 import {getter} from 'ember-cli-page-object/macros';
 
 const SELECTORS = {
@@ -17,7 +17,7 @@ export const userNotificationSettingForm = {
   options: collection(SELECTORS.NOTIF_OPTION, {
     label: {scope: SELECTORS.OPTION_LABEL},
     description: {scope: SELECTORS.OPTION_DESCRIPTION},
-    isChecked: is(':checked', SELECTORS.OPTION_CHECKBOX),
+    isChecked: property('checked', SELECTORS.OPTION_CHECKBOX),
     checkbox: {scope: SELECTORS.OPTION_CHECKBOX},
   }),
 

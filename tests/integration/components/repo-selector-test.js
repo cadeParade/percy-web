@@ -16,7 +16,6 @@ describe('Integration: RepoSelectorComponent', function() {
   });
 
   beforeEach(async function() {
-    RepoSelector.setContext(this);
     setupFactoryGuy(this);
   });
 

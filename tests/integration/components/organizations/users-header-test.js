@@ -18,7 +18,6 @@ describe('Integration: UsersHeader', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    UsersHeader.setContext(this);
     this.setProperties({isInviteFormAllowed: false});
   });
 

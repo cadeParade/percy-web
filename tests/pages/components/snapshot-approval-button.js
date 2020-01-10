@@ -1,4 +1,4 @@
-import {clickable, create, hasClass, is, isVisible} from 'ember-cli-page-object';
+import {clickable, create, hasClass, property, isVisible} from 'ember-cli-page-object';
 
 const SELECTORS = {
   BUTTON: '[data-test-SnapshotViewerHeader-approve]',
@@ -17,7 +17,7 @@ export const SnapshotApprovalButton = {
   isUnapproved: isVisible(SELECTORS.BUTTON),
   isUnchanged: hasClass('is-unchanged', SELECTORS.APPROVED_PILL),
   isNoChangeInBrowserVisible: isVisible(SELECTORS.NO_CHANGES_IN_BROWSER_PILL),
-  isDisabled: is(':disabled', SELECTORS.BUTTON),
+  isDisabled: property('disabled', SELECTORS.BUTTON),
 };
 
 export default create(SnapshotApprovalButton);

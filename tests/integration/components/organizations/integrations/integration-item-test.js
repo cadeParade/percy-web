@@ -18,7 +18,6 @@ describe('Integration | Component | organizations/integrations/integration-item'
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    IntegrationItem.setContext(this);
     AdminMode.clear();
   });
 

@@ -18,7 +18,6 @@ describe('Integration: BrowserFamilySelector', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    BrowserFamilySelector.setContext(this);
   });
 
   describe('display', function() {

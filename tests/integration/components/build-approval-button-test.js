@@ -21,7 +21,6 @@ describe('Integration: BuildApprovalButton', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    BuildApprovalButton.setContext(this);
     build = make('build', {snapshots: makeList('snapshot', 4)});
     const stub = sinon.stub().returns(resolve());
     this.setProperties({build, stub});

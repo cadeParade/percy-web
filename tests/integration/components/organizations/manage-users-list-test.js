@@ -67,7 +67,6 @@ describe('Integration: ManageUsersList', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    ManageUsersList.setContext(this);
     organization = make('organization');
 
     const memberOrgUsers = makeList('organization-user', numberOfUsers - 1, {organization});

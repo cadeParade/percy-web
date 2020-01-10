@@ -16,7 +16,6 @@ describe('Integration: CollaborationNewThread', function() {
 
   beforeEach(async function() {
     setupFactoryGuy(this);
-    CollaborationNewThread.setContext(this);
   });
 
   describe('when shouldShowNewCommentInput is true', function() {

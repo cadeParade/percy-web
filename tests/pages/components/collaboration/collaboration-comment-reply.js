@@ -1,4 +1,4 @@
-import {clickable, fillable, hasClass, create, is, value} from 'ember-cli-page-object';
+import {clickable, fillable, hasClass, create, property, value} from 'ember-cli-page-object';
 import {collaborationComment} from 'percy-web/tests/pages/components/collaboration/collaboration-comment'; // eslint-disable-line
 import {getter} from 'ember-cli-page-object/macros';
 import {percyTextarea} from 'percy-web/tests/pages/components/percy-textarea';
@@ -19,7 +19,7 @@ export const collaborationCommentReply = {
   commentText: value(SELECTORS.REPLY_TEXTAREA),
   submit: {
     scope: SELECTORS.SUBMIT,
-    isDisabled: is(':disabled'),
+    isDisabled: property('disabled'),
     isLoading: hasClass('is-loading'),
   },
   cancel: {scope: SELECTORS.CANCEL},

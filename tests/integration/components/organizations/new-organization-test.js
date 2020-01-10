@@ -17,7 +17,6 @@ describe('Integration: OrganizationsNewOrganization', function() {
   let user;
   beforeEach(function() {
     setupFactoryGuy(this);
-    NewOrganization.setContext(this);
     user = make('user');
 
     const sessionServiceStub = Service.extend({

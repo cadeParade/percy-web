@@ -17,7 +17,6 @@ describe('Integration: UsageNotificationSettingForm', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    UsageNotificationSettingForm.setContext(this);
   });
 
   describe('when a setting exists', function() {

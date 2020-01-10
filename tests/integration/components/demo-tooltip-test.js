@@ -19,7 +19,6 @@ describe('Integration: DemoTooltipComponent', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    DemoTooltip.setContext(this);
     // create a build with snapshots
     const snapshots = makeList('snapshot', 5, 'withComparisons', {fingerprint: 'fingerprint'});
     const build = make('build', 'finished', {project: {isDemo: true}});

@@ -16,7 +16,6 @@ describe('Integration: BuildHeader', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    BuildHeader.setContext(this);
   });
 
   const states = [

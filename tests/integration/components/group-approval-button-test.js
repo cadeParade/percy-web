@@ -18,7 +18,6 @@ describe('Integration: GroupApprovalButton', function() {
   let createReview;
 
   beforeEach(async function() {
-    GroupApprovalButton.setContext(this);
     createReview = sinon.stub().returns(resolve());
     this.setProperties({createReview});
   });

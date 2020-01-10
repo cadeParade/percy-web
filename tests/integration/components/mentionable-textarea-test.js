@@ -23,7 +23,6 @@ describe('Integration: MentionableTextarea', function() {
 
   beforeEach(async function() {
     setupFactoryGuy(this);
-    MentionableTextarea.setContext(this);
 
     const mentionableUsers = makeList('user', numUsers);
     const collections = [

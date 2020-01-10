@@ -12,7 +12,6 @@ describe('Integration: BuildToolbar', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    BuildPage.setContext(this);
   });
 
   describe('when the project is public', function() {

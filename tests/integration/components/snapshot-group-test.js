@@ -25,7 +25,6 @@ describe('Integration: SnapshotGroup', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    SnapshotGroup.setContext(this);
 
     showSnapshotFullModalTriggeredStub = sinon.stub();
     createReviewStub = sinon.stub().returns(resolve());

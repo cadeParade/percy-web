@@ -19,7 +19,6 @@ describe('Integration: OrganizationNewForm', function() {
   let saveStub;
   beforeEach(async function() {
     setupFactoryGuy(this);
-    NewOrganization.setContext(this);
 
     newOrganization = make('organization', 'new');
     saveStub = sinon.stub();

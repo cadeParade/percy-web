@@ -19,7 +19,6 @@ describe('Integration: GitlabSettings', function() {
   beforeEach(function() {
     AdminMode.setAdminMode();
     setupFactoryGuy(this);
-    GitlabSettings.setContext(this);
     const routeHelperStub = sinon.stub();
     this.set('actions', {redirectToIntegrationsIndex: routeHelperStub});
   });

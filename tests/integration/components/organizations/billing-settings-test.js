@@ -18,7 +18,6 @@ describe('Integration: BillingSettings', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    BillingSettings.setContext(this);
     mockStripeService(this);
   });
 

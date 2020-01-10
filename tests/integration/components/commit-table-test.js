@@ -16,7 +16,6 @@ describe('Integration: CommitTable', function() {
     let build;
     beforeEach(async function() {
       setupFactoryGuy(this);
-      CommitTable.setContext(this);
 
       build = make('build', 'withGithubRepo');
       this.setProperties({build});
@@ -61,7 +60,6 @@ describe('Integration: CommitTable', function() {
     let build;
     beforeEach(async function() {
       setupFactoryGuy(this);
-      CommitTable.setContext(this);
 
       build = make('build', 'withGithubEnterpriseRepo');
       this.setProperties({build});
@@ -106,7 +104,6 @@ describe('Integration: CommitTable', function() {
     let build;
     beforeEach(async function() {
       setupFactoryGuy(this);
-      CommitTable.setContext(this);
 
       build = make('build', 'withGitlabRepo');
       this.setProperties({build});
@@ -151,7 +148,6 @@ describe('Integration: CommitTable', function() {
     let build;
     beforeEach(async function() {
       setupFactoryGuy(this);
-      CommitTable.setContext(this);
 
       build = make('build', 'withGitlabSelfHostedRepo');
       this.setProperties({build});
@@ -196,7 +192,6 @@ describe('Integration: CommitTable', function() {
     let build;
     beforeEach(async function() {
       setupFactoryGuy(this);
-      CommitTable.setContext(this);
 
       build = make('build', 'withBitbucketRepo');
       this.setProperties({build});

@@ -1,4 +1,4 @@
-import {create, is, property, text} from 'ember-cli-page-object';
+import {create, property, text} from 'ember-cli-page-object';
 
 export const SELECTORS = {
   CONTAINER: '[data-test-invite-card]',
@@ -18,11 +18,11 @@ export const InviteCard = {
   avatarUrl: property('src', 'img', {scope: SELECTORS.AVATAR}),
   cancelButton: {
     scope: SELECTORS.CANCEL_BUTTON,
-    isDisabled: is(':disabled'),
+    isDisabled: property('disabled'),
   },
   copyUrlButton: {
     scope: SELECTORS.COPY_URL_BUTTON,
-    isDisabled: is(':disabled'),
+    isDisabled: property('disabled'),
   },
   email: text(SELECTORS.EMAIL),
   inviteDate: text(SELECTORS.INVITE_DATE),

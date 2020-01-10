@@ -16,7 +16,6 @@ describe('Integration: CommentThread', function() {
 
   beforeEach(async function() {
     setupFactoryGuy(this);
-    CommentThread.setContext(this);
 
     const currentUser = make('user');
     const sessionServiceStub = Service.extend({currentUser});

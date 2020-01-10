@@ -3,10 +3,10 @@ import {
   create,
   hasClass,
   isPresent,
-  is,
   isVisible,
   text,
   value,
+  property,
   fillable,
 } from 'ember-cli-page-object';
 import isFocused from 'percy-web/tests/pages/helpers/is-focused';
@@ -36,8 +36,8 @@ export const NewOrganization = {
 
   isOrgNameFieldFocused: isFocused(SELECTORS.ORG_NAME_INPUT),
 
-  isCreateNewOrganizationDisabled: is(':disabled', SELECTORS.PROJECT_FORM_SUBMIT_BUTTON),
-  isCreateNewDemoDisabled: is(':disabled', SELECTORS.DEMO_FORM_SUBMIT_BUTTON),
+  isCreateNewOrganizationDisabled: property('disabled', SELECTORS.PROJECT_FORM_SUBMIT_BUTTON),
+  isCreateNewDemoDisabled: property('disabled', SELECTORS.DEMO_FORM_SUBMIT_BUTTON),
 
   isCreateProjectSaving: hasClass('is-loading', SELECTORS.PROJECT_FORM_SUBMIT_BUTTON),
   isCreateDemoSaving: hasClass('is-loading', SELECTORS.DEMO_FORM_SUBMIT_BUTTON),

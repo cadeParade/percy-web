@@ -15,7 +15,6 @@ describe('Integration: PercyTextarea', function() {
   let onEscStub;
   beforeEach(async function() {
     initializeEmberKeyboard();
-    PercyTextarea.setContext(this);
 
     onCmdEnterStub = sinon.stub();
     onEscStub = sinon.stub();

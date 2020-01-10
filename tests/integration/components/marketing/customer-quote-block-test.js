@@ -34,7 +34,6 @@ describe('Integration: Marketing/CustomerQuoteBlock', function() {
   };
 
   beforeEach(function() {
-    QuoteBlock.setContext(this);
     this.set('quoteBlock', quoteBlock);
   });
 

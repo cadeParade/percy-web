@@ -14,7 +14,6 @@ describe('Integration: ProjectEditForm', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    ProjectEditForm.setContext(this);
   });
 
   describe('publicly viewable checkbox', function() {

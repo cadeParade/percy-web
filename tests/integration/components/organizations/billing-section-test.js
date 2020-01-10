@@ -21,7 +21,6 @@ describe('Integration: BillingSection', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    BillingSection.setContext(this);
     mockStripeService(this);
   });
 

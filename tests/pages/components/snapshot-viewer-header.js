@@ -1,11 +1,11 @@
 import {
   create,
   clickable,
-  is,
   isVisible,
   hasClass,
   text,
   collection,
+  property,
   isPresent,
 } from 'ember-cli-page-object';
 import {SnapshotApprovalButton} from 'percy-web/tests/pages/components/snapshot-approval-button';
@@ -107,7 +107,7 @@ export const SnapshotViewerHeader = {
 
   clickReject: clickable(SELECTORS.SNAPSHOT_REJECT_BUTTON),
   isRejectButtonPresent: isPresent(SELECTORS.SNAPSHOT_REJECT_BUTTON),
-  isRejectButtonDisabled: is(':disabled', SELECTORS.SNAPSHOT_REJECT_BUTTON),
+  isRejectButtonDisabled: property('disabled', SELECTORS.SNAPSHOT_REJECT_BUTTON),
   isRejected: isVisible(SELECTORS.REQUEST_CHANGES_BADGE),
 
   isBaseComparisonModeButtonVisible: isVisible(SELECTORS.COMPARISON_MODE_SWITCHER_BASE),

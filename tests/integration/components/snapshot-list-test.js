@@ -19,7 +19,6 @@ describe('Integration: SnapshotList', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    SnapshotList.setContext(this);
   });
 
   describe('when shouldDeferRendering is true', function() {

@@ -22,7 +22,6 @@ describe('Integration: SnapshotApprovalButton', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    SnapshotApprovalButton.setContext(this);
     snapshot = make('snapshot', 'withTwoBrowsers');
     createReview = sinon.stub().returns(resolve());
     const activeBrowser = make('browser');

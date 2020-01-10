@@ -16,7 +16,6 @@ describe('Integration: SnapshotViewerHeader', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    SnapshotViewerHeaderPO.setContext(this);
     this.set('browser', make('browser'));
   });
 

@@ -1,6 +1,5 @@
 import {
   text,
-  is,
   collection,
   fillable,
   value,
@@ -38,7 +37,7 @@ export const WebhookConfigEdit = {
   fillInAuthToken: fillable(SELECTORS.AUTH_TOKEN_INPUT),
 
   subscribedEvents: collection(SELECTORS.SUBSCRIBED_EVENTS_INPUT, {
-    value: is(':checked', 'input'),
+    value: property('checked', 'input'),
     click: clickable('input'),
   }),
 

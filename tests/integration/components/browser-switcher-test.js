@@ -17,7 +17,6 @@ describe('Integration: BrowserSwitcher', function() {
 
   beforeEach(async function() {
     setupFactoryGuy(this);
-    browserSwitcher.setContext(this);
     const store = this.owner.lookup('service:store');
 
     const build = make('build');

@@ -15,7 +15,6 @@ describe('Integration: RepoIntegratorComponent', function() {
   });
 
   beforeEach(async function() {
-    RepoIntegrator.setContext(this);
     setupFactoryGuy(this);
   });
 

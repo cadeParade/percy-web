@@ -24,13 +24,10 @@ describe('Integration: CurrentPlan', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    CurrentPlan.setContext(this);
   });
 
   describe('rendering realistic combinations', function() {
     beforeEach(function() {
-      setupFactoryGuy(this);
-      CurrentPlan.setContext(this);
       orgWFreePlan = make('organization', 'withFreePlan');
       orgWTrialPlan = make('organization', 'withTrialPlan');
       orgWPaidPlan = make('organization', 'withPaidPlan');

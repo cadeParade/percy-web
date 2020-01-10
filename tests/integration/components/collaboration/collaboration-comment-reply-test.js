@@ -18,7 +18,6 @@ describe('Integration: CollaborationCommentReply', function() {
 
   beforeEach(async function() {
     setupFactoryGuy(this);
-    CommentReply.setContext(this);
 
     const currentUser = make('user');
     const sessionServiceStub = Service.extend({currentUser});

@@ -16,7 +16,6 @@ describe('Integration: Confirm Dialog', function() {
   let resolveSpy;
 
   beforeEach(function() {
-    ConfirmDialog.setContext(this);
     emberKeyboardInitialize();
 
     confirmService = this.owner.lookup('service:confirm');

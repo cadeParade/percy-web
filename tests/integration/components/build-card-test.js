@@ -15,7 +15,6 @@ describe('Integration: BuildCard', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    BuildCard.setContext(this);
   });
 
   describe('with an empty repo source', function() {

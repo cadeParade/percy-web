@@ -22,7 +22,6 @@ describe('Integration: Marketing/VideoBlock', function() {
   };
 
   beforeEach(function() {
-    VideoBlock.setContext(this);
     this.set('videoBlock', videoBlock);
   });
 

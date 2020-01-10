@@ -19,7 +19,6 @@ describe('Integration: BuildContainer', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    BuildPage.setContext(this);
   });
 
   describe('snapshot display during different build states', function() {

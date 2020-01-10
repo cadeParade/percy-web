@@ -1,4 +1,4 @@
-import {clickable, collection, create, is} from 'ember-cli-page-object';
+import {clickable, collection, create, property} from 'ember-cli-page-object';
 
 const SELECTORS = {
   CONTAINER: '[data-test-slack-config-form]',
@@ -16,7 +16,7 @@ export const SlackConfig = {
   saveButton: {scope: SELECTORS.SAVE_BUTTON},
   project: {scope: SELECTORS.PROJECT},
   notificationTypes: collection(SELECTORS.NOTIFICATION_TYPES, {
-    value: is(':checked', 'input'),
+    value: property('checked', 'input'),
     click: clickable('input'),
   }),
   deleteButton: {scope: SELECTORS.DELETE_BUTTON},

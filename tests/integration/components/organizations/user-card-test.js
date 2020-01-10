@@ -28,7 +28,6 @@ describe('Integration: UserCard', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    UserCard.setContext(this);
     organization = make('organization');
     adminUser = make('user');
     otherAdminUser = make('user');

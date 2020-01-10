@@ -15,7 +15,6 @@ describe('Integration: UserMenu', function() {
   });
   beforeEach(async function() {
     setupFactoryGuy(this);
-    userMenu.setContext(this);
   });
 
   describe('logout', function() {

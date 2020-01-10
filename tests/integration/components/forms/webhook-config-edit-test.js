@@ -16,7 +16,6 @@ describe('Integration: WebhookConfigEditForm', function() {
 
   beforeEach(async function() {
     setupFactoryGuy(this);
-    WebhookConfigEditForm.setContext(this);
     webhookConfig = make('webhook-config');
     this.set('webhookConfig', webhookConfig);
     await render(hbs`{{forms/webhook-config-edit webhookConfig=webhookConfig}}`);

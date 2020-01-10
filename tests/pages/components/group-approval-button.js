@@ -1,4 +1,4 @@
-import {clickable, create, hasClass, is, isVisible, text} from 'ember-cli-page-object';
+import {clickable, create, hasClass, isVisible, property, text} from 'ember-cli-page-object';
 
 const SELECTORS = {
   SCOPE: '[data-test-group-approval]',
@@ -11,7 +11,7 @@ export const groupApprovalButton = {
 
   isApproved: isVisible(SELECTORS.APPROVED_PILL),
   isUnapproved: isVisible(SELECTORS.BUTTON),
-  isDisabled: is(':disabled', SELECTORS.BUTTON),
+  isDisabled: property('disabled', SELECTORS.BUTTON),
   isButtonLoading: hasClass('is-loading', SELECTORS.BUTTON),
   isLoading: hasClass('is-loading', SELECTORS.BUTTON),
 

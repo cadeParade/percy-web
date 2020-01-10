@@ -1,4 +1,4 @@
-import {clickable, create, hasClass, is} from 'ember-cli-page-object';
+import {clickable, create, hasClass, property} from 'ember-cli-page-object';
 
 const SELECTORS = {
   BUTTON: '[data-test-build-approval-button]',
@@ -9,7 +9,7 @@ export const BuildApprovalButton = {
   clickButton: clickable(),
   isLoading: hasClass('is-loading'),
   isApproved: hasClass('is-approved'),
-  isDisabled: is(':disabled'),
+  isDisabled: property('disabled'),
 };
 
 export default create(BuildApprovalButton);

@@ -16,7 +16,6 @@ describe('Integration: BuildInfoDropdownComponent', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    BuildInfoDropdown.setContext(this);
     AdminMode.clear();
   });
 

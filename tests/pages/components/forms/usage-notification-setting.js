@@ -1,4 +1,4 @@
-import {create, is} from 'ember-cli-page-object';
+import {create, property} from 'ember-cli-page-object';
 
 const SELECTORS = {
   CONTAINER: '[data-test-usage-notification-setting-form]',
@@ -12,7 +12,7 @@ const SELECTORS = {
 export const UsageNotificationSettingForm = {
   scope: SELECTORS.CONTAINER,
 
-  isEnabled: is(':checked', SELECTORS.ENABLED),
+  isEnabled: property('checked', SELECTORS.ENABLED),
   emails: {scope: SELECTORS.EMAILS},
   thresholds: {scope: SELECTORS.THRESHOLDS},
   errors: {scope: SELECTORS.ERRORS},

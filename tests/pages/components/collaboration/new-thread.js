@@ -1,4 +1,4 @@
-import {clickable, create, fillable, is, isVisible, value} from 'ember-cli-page-object';
+import {clickable, create, fillable, property, isVisible, value} from 'ember-cli-page-object';
 import {percyTextarea} from 'percy-web/tests/pages/components/percy-textarea';
 import {mentionableTextarea} from 'percy-web/tests/pages/components/mentionable-textarea';
 
@@ -24,11 +24,11 @@ export const collaborationNewThread = {
   textareaValue: value(SELECTORS.NEW_COMMENT_TEXTAREA),
 
   checkRequestChangesBox: clickable(SELECTORS.REQUEST_CHANGES_CHECKBOX),
-  isRequestChangesChecked: is(':checked', SELECTORS.REQUEST_CHANGES_CHECKBOX),
-  isRequestChangesDisabled: is(':disabled', SELECTORS.REQUEST_CHANGES_CHECKBOX),
+  isRequestChangesChecked: property('checked', SELECTORS.REQUEST_CHANGES_CHECKBOX),
+  isRequestChangesDisabled: property('disabled', SELECTORS.REQUEST_CHANGES_CHECKBOX),
 
   submitNewThread: clickable(SELECTORS.SAVE_COMMENT),
-  isSubmitDisabled: is(':disabled', SELECTORS.SAVE_COMMENT),
+  isSubmitDisabled: property('disabled', SELECTORS.SAVE_COMMENT),
 
   cancelNewThread: clickable(SELECTORS.CANCEL_COMMENT_BUTTON),
   percyTextarea,

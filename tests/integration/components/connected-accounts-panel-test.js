@@ -18,7 +18,6 @@ describe('Integration: ConnectedAccountsPanel', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    CAPPageObject.setContext(this);
   });
 
   describe('when a user has only an okta identity', function() {

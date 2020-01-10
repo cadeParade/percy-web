@@ -26,7 +26,6 @@ describe('Integration: SnapshotViewer', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    SnapshotViewer.setContext(this);
 
     showSnapshotFullModalTriggeredStub = sinon.stub();
     createReviewStub = sinon.stub().returns(resolve());

@@ -15,7 +15,6 @@ describe('Integration: UsageSection', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    UsageSection.setContext(this);
   });
 
   describe('usage graph', function() {

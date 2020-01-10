@@ -26,7 +26,6 @@ describe('Integration: SnapshotViewerFull', function() {
 
   beforeEach(async function() {
     setupFactoryGuy(this);
-    FullSnapshotPage.setContext(this);
 
     build = make('build', 'finished');
     const browser = make('browser');

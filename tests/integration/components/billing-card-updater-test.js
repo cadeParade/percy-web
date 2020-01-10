@@ -18,7 +18,6 @@ describe('Integration: BillingCardUpdater', function() {
   beforeEach(function() {
     setupFactoryGuy(this);
     mockStripeService(this);
-    BillingCardUpdater.setContext(this);
     organization = make('organization', 'withPaidPlan');
     this.setProperties({organization});
   });

@@ -11,7 +11,6 @@ describe('Integration: Marketing/PricingCardBlock', function() {
   });
 
   beforeEach(async function() {
-    PricingCardBlock.setContext(this);
     await render(hbs`{{marketing/pricing-card-block}}`);
   });
 

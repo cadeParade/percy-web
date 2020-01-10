@@ -1,4 +1,4 @@
-import {it, describe, beforeEach} from 'mocha';
+import {it, describe} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import percySnapshot from '@percy/ember';
@@ -8,10 +8,6 @@ import {getRootElement, render} from '@ember/test-helpers';
 describe('Integration: PasswordUpdatedStatusPanel;', function() {
   setupRenderingTest('password-updated-status-panel', {
     integration: true,
-  });
-
-  beforeEach(function() {
-    PasswordStatusPanel.setContext(this);
   });
 
   describe('when success is true', function() {

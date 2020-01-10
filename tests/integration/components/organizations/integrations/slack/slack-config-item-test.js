@@ -17,7 +17,6 @@ describe('Integration: SlackConfigItem', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    SlackConfigItem.setContext(this);
     project = make('project');
     projectOptions = [
       {id: 'allProjects', name: 'All projects'},

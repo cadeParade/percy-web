@@ -1,4 +1,4 @@
-import {create, clickable, fillable, is, isVisible, text} from 'ember-cli-page-object';
+import {create, clickable, fillable, property, isVisible, text} from 'ember-cli-page-object';
 
 const SELECTORS = {
   PROJECT_EDIT_FORM: '[data-test-project-edit-form]',
@@ -23,17 +23,17 @@ export const ProjectEdit = {
   fillInProjectSlug: fillable(SELECTORS.PROJECT_SLUG_INPUT),
   fillInAutoApproveBranchFilter: fillable(SELECTORS.BRANCH_SETTINGS_HEADER),
 
-  isPublicCheckboxDisabled: is(':disabled', SELECTORS.PUBLIC_CHECKBOX),
-  isPublicCheckboxChecked: is(':checked', SELECTORS.PUBLIC_CHECKBOX),
+  isPublicCheckboxDisabled: property('disabled', SELECTORS.PUBLIC_CHECKBOX),
+  isPublicCheckboxChecked: property('checked', SELECTORS.PUBLIC_CHECKBOX),
   togglePublicCheckbox: clickable(SELECTORS.PUBLIC_CHECKBOX),
 
   clickSave: clickable(SELECTORS.SAVE_BUTTON),
 
   errorText: text(SELECTORS.ERRORS),
 
-  isNameDisabled: is(':disabled', SELECTORS.PROJECT_NAME_INPUT),
-  isSlugDisabled: is(':disabled', SELECTORS.PROJECT_SLUG_INPUT),
-  isAutoApproveInputDisabled: is(':disabled', SELECTORS.AUTO_APPROVE_FILTER_INPUT),
+  isNameDisabled: property('disabled', SELECTORS.PROJECT_NAME_INPUT),
+  isSlugDisabled: property('disabled', SELECTORS.PROJECT_SLUG_INPUT),
+  isAutoApproveInputDisabled: property('disabled', SELECTORS.AUTO_APPROVE_FILTER_INPUT),
 };
 
 export default create(ProjectEdit);

@@ -1,4 +1,12 @@
-import {create, clickable, hasClass, fillable, is, isVisible, text} from 'ember-cli-page-object';
+import {
+  create,
+  clickable,
+  hasClass,
+  fillable,
+  isVisible,
+  property,
+  text,
+} from 'ember-cli-page-object';
 
 const SELECTORS = {
   SCOPE: '[data-test-subscription-list]',
@@ -24,8 +32,8 @@ export const subscriptionList = {
   isPlanInfoVisible: isVisible(SELECTORS.PLAN_INFO),
   planInfoText: text(SELECTORS.PLAN_INFO),
 
-  isPlanSubmitDisabled: is(':disabled', SELECTORS.PLAN_SUBMIT_BUTTON),
-  isInputSubmitDisabled: is(':disabled', SELECTORS.INPUT_SUBMIT_BUTTON),
+  isPlanSubmitDisabled: property('disabled', SELECTORS.PLAN_SUBMIT_BUTTON),
+  isInputSubmitDisabled: property('disabled', SELECTORS.INPUT_SUBMIT_BUTTON),
   submitInputs: clickable(SELECTORS.INPUT_SUBMIT_BUTTON),
   isSubmitInputsButtonLoading: hasClass('is-loading', SELECTORS.INPUT_SUBMIT_BUTTON),
   submitNewPlan: clickable(SELECTORS.PLAN_SUBMIT_BUTTON),
@@ -35,9 +43,9 @@ export const subscriptionList = {
   selectMediumPlan: clickable(SELECTORS.MEDIUM_PLAN_RADIO),
   selectLargePlan: clickable(SELECTORS.LARGE_PLAN_RADIO),
 
-  isSmallPlanSelected: is(':checked', SELECTORS.SMALL_PLAN_RADIO),
-  isMediumPlanSelected: is(':checked', SELECTORS.MEDIUM_PLAN_RADIO),
-  isLargePlanSelected: is(':checked', SELECTORS.LARGE_PLAN_RADIO),
+  isSmallPlanSelected: property('checked', SELECTORS.SMALL_PLAN_RADIO),
+  isMediumPlanSelected: property('checked', SELECTORS.MEDIUM_PLAN_RADIO),
+  isLargePlanSelected: property('checked', SELECTORS.LARGE_PLAN_RADIO),
 };
 
 export default create(subscriptionList);

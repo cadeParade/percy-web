@@ -28,7 +28,6 @@ describe('Integration: ProjectContainer', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    ProjectContainer.setContext(this);
   });
 
   describe('without a repo', function() {

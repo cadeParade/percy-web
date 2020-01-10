@@ -16,7 +16,6 @@ describe('Integration: CollaborationComment', function() {
 
   beforeEach(async function() {
     setupFactoryGuy(this);
-    CollaborationComment.setContext(this);
   });
 
   let closeCommentThreadStub;

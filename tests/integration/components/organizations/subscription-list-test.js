@@ -17,7 +17,6 @@ describe('Integration: SubscriptionList', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    SubscriptionList.setContext(this);
     mockStripeService(this);
   });
 

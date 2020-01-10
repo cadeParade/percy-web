@@ -14,7 +14,6 @@ describe('Integration: ProfileEditForm', function() {
   let user;
   beforeEach(function() {
     setupFactoryGuy(this);
-    ProfileEditForm.setContext(this);
 
     user = make('user', {name: 'Jamie Lannister', email: 'jamie@lannisters.net'});
     this.set('user', user);

@@ -34,7 +34,6 @@ describe('Integration: InviteCard', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    InviteCard.setContext(this);
     invite = make('invite');
     organization = make('organization');
     const adminOrgUser = make('organization-user', 'adminUser', {user: adminUser, organization});

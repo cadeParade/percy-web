@@ -21,7 +21,6 @@ describe('Integration: Notice Bar', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    NoticeBar.setContext(this);
   });
 
   describe('New project prompt bar', function() {
