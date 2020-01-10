@@ -1,6 +1,6 @@
 import {setupRenderingTest} from 'ember-mocha';
 import {it, describe, beforeEach} from 'mocha';
-import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import BuildHeader from 'percy-web/tests/pages/components/build-header';
@@ -48,7 +48,7 @@ describe('Integration: BuildHeader', function() {
         build=build
         isBuildApprovable=true
       }}`);
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 

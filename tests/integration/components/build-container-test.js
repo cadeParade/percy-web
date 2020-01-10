@@ -1,7 +1,7 @@
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
 import {it, describe, beforeEach} from 'mocha';
-import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
 import sinon from 'sinon';
@@ -48,14 +48,14 @@ describe('Integration: BuildContainer', function() {
       this.set('build.totalComparisons', 2312);
       this.set('build.totalComparisonsFinished', 2187);
 
-      await percySnapshotWithDarkMode(this.test.fullTitle());
+      await percySnapshot(this.test, {darkMode: true});
       expect(BuildPage.snapshotList.isVisible).to.equal(false);
     });
 
     it('does not display snapshots while build is pending', async function() {
       this.set('build.state', 'pending');
 
-      await percySnapshotWithDarkMode(this.test.fullTitle());
+      await percySnapshot(this.test, {darkMode: true});
       expect(BuildPage.snapshotList.isVisible).to.equal(false);
     });
 
@@ -63,14 +63,14 @@ describe('Integration: BuildContainer', function() {
       const failedBuild = make('build', 'withBaseBuild', 'failed');
       this.set('build', failedBuild);
 
-      await percySnapshotWithDarkMode(this.test.fullTitle());
+      await percySnapshot(this.test, {darkMode: true});
       expect(BuildPage.snapshotList.isVisible).to.equal(false);
     });
 
     it('does not display snapshots when build is expired', async function() {
       this.set('build.state', 'expired');
 
-      await percySnapshotWithDarkMode(this.test.fullTitle());
+      await percySnapshot(this.test, {darkMode: true});
       expect(BuildPage.snapshotList.isVisible).to.equal(false);
     });
   });
@@ -90,7 +90,7 @@ describe('Integration: BuildContainer', function() {
       notifyOfUnchangedSnapshots=stub
     }}`);
 
-    await percySnapshotWithDarkMode(this.test.fullTitle());
+    await percySnapshot(this.test, {darkMode: true});
     expect(BuildPage.snapshotList.isVisible).to.equal(false);
   });
 
@@ -111,7 +111,7 @@ describe('Integration: BuildContainer', function() {
       createReview=stub
       notifyOfUnchangedSnapshots=stub
     }}`);
-    await percySnapshotWithDarkMode(this.test.fullTitle());
+    await percySnapshot(this.test, {darkMode: true});
 
     expect(BuildPage.snapshotList.isVisible).to.equal(true);
     expect(BuildPage.snapshotList.snapshots.length).to.equal(1);
@@ -139,7 +139,7 @@ describe('Integration: BuildContainer', function() {
     }}`);
 
     await BuildPage.snapshotList.clickToggleNoDiffsSection();
-    await percySnapshotWithDarkMode(this.test);
+    await percySnapshot(this.test, {darkMode: true});
   });
 
   it('gets snapshots with no diffs after expanding no diffs section', async function() {
@@ -317,7 +317,7 @@ describe('Integration: BuildContainer', function() {
 
     it('displays notice that build is public', async function() {
       expect(BuildPage.isPublicBuildNoticeVisible).to.equal(true);
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 

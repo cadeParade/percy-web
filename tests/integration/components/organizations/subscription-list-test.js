@@ -5,7 +5,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {make} from 'ember-data-factory-guy';
 import SubscriptionList from 'percy-web/tests/pages/components/organizations/subscription-list';
 import mockStripeService from 'percy-web/tests/helpers/mock-stripe-service';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import sinon from 'sinon';
 import {resolve} from 'rsvp';
 import {render} from '@ember/test-helpers';

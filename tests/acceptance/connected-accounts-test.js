@@ -1,6 +1,6 @@
 import setupAcceptance, {setupSession} from 'percy-web/tests/helpers/setup-acceptance';
 import ConnectedAccountsPage from 'percy-web/tests/pages/connected-accounts-page';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {beforeEach} from 'mocha';
 
 describe('Acceptance: ConnectedAccounts when user has GitHub identity', function() {

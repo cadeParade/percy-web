@@ -1,0 +1,7 @@
+version: 1
+agent:
+  asset-discovery:
+    network-idle-timeout: 300 # ms
+    page-pool-size-min: 10 # pages
+    page-pool-size-max: 30 # pages
+    cache-responses: true

@@ -1,6 +1,6 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import UserSettingsPageObject from 'percy-web/tests/pages/user-settings-page';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 
 describe('Acceptance: User Settings', function() {
   setupAcceptance();

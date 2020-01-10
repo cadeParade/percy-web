@@ -1,7 +1,7 @@
 import {it, describe, beforeEach} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import PasswordStatusPanel from 'percy-web/tests/pages/components/password-updated-status-panel';
 import {getRootElement, render} from '@ember/test-helpers';
 

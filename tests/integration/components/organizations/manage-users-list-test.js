@@ -1,7 +1,7 @@
 import {it, describe, beforeEach} from 'mocha';
 import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
 import {make, makeList} from 'ember-data-factory-guy';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import moment from 'moment';

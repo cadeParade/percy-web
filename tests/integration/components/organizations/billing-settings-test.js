@@ -5,7 +5,7 @@ import {make} from 'ember-data-factory-guy';
 import UsageNotificationSettingForm from 'percy-web/tests/pages/components/forms/usage-notification-setting'; // eslint-disable-line
 import BillingSettings from 'percy-web/tests/pages/components/organizations/billing-settings';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import sinon from 'sinon';
 import {defer, resolve} from 'rsvp';
 import mockStripeService from 'percy-web/tests/helpers/mock-stripe-service';

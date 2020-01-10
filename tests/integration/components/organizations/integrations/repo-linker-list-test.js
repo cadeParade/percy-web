@@ -4,7 +4,7 @@ import hbs from 'htmlbars-inline-precompile';
 import {it, describe, beforeEach} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
 import {make} from 'ember-data-factory-guy';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render} from '@ember/test-helpers';
 
@@ -28,10 +28,10 @@ describe('Integration: RepoLinkerList', function() {
     }}`);
   });
 
-  it('renders a list of items', function() {
+  it('renders a list of items', async function() {
     expect(RepoLinkerList.isListHeaderVisible).to.eq(true);
     expect(RepoLinkerList.listItems.length).to.eq(2);
-    percySnapshot(this.test);
+    await percySnapshot(this.test);
   });
 
   it('shows some of those items as linked', function() {

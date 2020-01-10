@@ -1,7 +1,7 @@
 import {setupRenderingTest} from 'ember-mocha';
 import {expect} from 'chai';
 import {it, describe, beforeEach} from 'mocha';
-import {percySnapshotWithDarkMode} from 'percy-web/tests/helpers/percy-snapshot-dark-mode';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import CommentReply from 'percy-web/tests/pages/components/collaboration/collaboration-comment-reply'; // eslint-disable-line
@@ -33,7 +33,7 @@ describe('Integration: CollaborationCommentReply', function() {
     it('shows collapsed reply textarea by default', async function() {
       expect(CommentReply.isCollapsed).to.equal(true);
 
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('expands when the textarea is focused', async function() {
@@ -66,13 +66,13 @@ describe('Integration: CollaborationCommentReply', function() {
 
     it('submit button is disabled by default', async function() {
       expect(CommentReply.submit.isDisabled).to.equal(true);
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('submit button is enabled when comment body is not empty', async function() {
       await CommentReply.typeComment('hi there');
       expect(CommentReply.submit.isDisabled).to.equal(false);
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('collapses reply when cancel button is clicked', async function() {
@@ -151,7 +151,7 @@ describe('Integration: CollaborationCommentReply', function() {
       await CommentReply.typeComment(commentText);
       await CommentReply.submit.click();
       expect(CommentReply.submit.isLoading).to.equal(true);
-      await percySnapshotWithDarkMode(this.test);
+      await percySnapshot(this.test, {darkMode: true});
     });
 
     it('resets reply when comment is successfully saved', async function() {

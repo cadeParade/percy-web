@@ -1,6 +1,6 @@
 import {setupRenderingTest} from 'ember-mocha';
 import {beforeEach, it, describe} from 'mocha';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import {expect} from 'chai';
 import {find, waitUntil, waitFor, click, render} from '@ember/test-helpers';
 import {isVisible as attacherIsVisible} from 'ember-attacher';

@@ -2,7 +2,7 @@ import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import {currentRouteName, currentURL} from '@ember/test-helpers';
 import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
 import {beforeEach, afterEach} from 'mocha';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import ManageUsersList from 'percy-web/tests/pages/components/organizations/manage-users-list';
 import UsersHeader from 'percy-web/tests/pages/components/organizations/users-header';
 import UsersPage from 'percy-web/tests/pages/organizations/users-page';

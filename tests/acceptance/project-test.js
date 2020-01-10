@@ -6,7 +6,7 @@ import ProjectSettingsPage from 'percy-web/tests/pages/project-settings-page';
 import NewProjectPage from 'percy-web/tests/pages/new-project-page';
 import sinon from 'sinon';
 import {beforeEach} from 'mocha';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {visit, findAll, currentRouteName, settled} from '@ember/test-helpers';
 import {selectChoose} from 'ember-power-select/test-support/helpers';
 import UserMenu from 'percy-web/tests/pages/components/user-menu';

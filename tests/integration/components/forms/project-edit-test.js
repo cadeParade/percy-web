@@ -3,7 +3,7 @@ import hbs from 'htmlbars-inline-precompile';
 import {make} from 'ember-data-factory-guy';
 import ProjectEditForm from 'percy-web/tests/pages/components/forms/project-edit';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import {setupRenderingTest} from 'ember-mocha';
 import {render} from '@ember/test-helpers';
 

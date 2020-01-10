@@ -19,7 +19,7 @@
     "test": "ember test",
     "start-production-for-testing": "ember server --environment=production",
     "test:node_debug": "node debug node_modules/ember-cli/bin/ember test --server",
-    "test:parallel": "PERCY_PARALLEL_TOTAL=-1 EMBER_ENV=test ember exam --environment=test --path dist --partition=$(($BUILDKITE_PARALLEL_JOB + 1)) --split=4 --parallel",
+    "test:parallel": "PERCY_PARALLEL_TOTAL=-1 EMBER_ENV=test percy exec -- ember exam --environment=test --path dist --partition=$(($BUILDKITE_PARALLEL_JOB + 1)) --split=4 --parallel",
     "test:server": "ember test --server"
   },
   "lint-staged": {
@@ -32,7 +32,8 @@
     "@ember/jquery": "^1.1.0",
     "@ember/optional-features": "^1.0.0",
     "@ember/test-helpers": "1.6.1",
-    "@percy/agent": "^0.20.2",
+    "@percy/agent": "^0.20.5",
+    "@percy/ember": "2.0.0-beta.2",
     "accounting": "^0.4.1",
     "autoprefixer": "^9.6.1",
     "babel-eslint": "^10.0.3",
@@ -88,7 +89,6 @@
     "ember-modal-dialog": "^3.0.0",
     "ember-moment": "^8.0.0",
     "ember-page-title": "5.1.0",
-    "ember-percy": "1.6.0",
     "ember-power-select": "^3.0.4",
     "ember-promise-helpers": "^1.0.9",
     "ember-resolver": "^5.3.0",

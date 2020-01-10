@@ -1,5 +1,5 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {visit, currentRouteName} from '@ember/test-helpers';
 import {authenticateSession} from 'percy-web/tests/helpers/authenticate-session';
 
@@ -13,7 +13,7 @@ describe('Acceptance: Login', function() {
 
   it('should login and logout user', async function() {
     await visit('/');
-    percySnapshot(this.test.fullTitle() + ' | Logged out');
+    await percySnapshot(this.test.fullTitle() + ' | Logged out');
 
     this.server.create('user', {_currentLoginInTest: true});
     await authenticateSession(this.owner);

@@ -1,6 +1,6 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import {visit, click} from '@ember/test-helpers';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 
 describe('Acceptance: Error page', function() {
   setupAcceptance();

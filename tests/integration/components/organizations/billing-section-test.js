@@ -5,7 +5,7 @@ import {make} from 'ember-data-factory-guy';
 import UsageNotificationSettingForm from 'percy-web/tests/pages/components/forms/usage-notification-setting'; // eslint-disable-line
 import BillingSection from 'percy-web/tests/pages/components/organizations/billing-section';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import mockStripeService from 'percy-web/tests/helpers/mock-stripe-service';
 import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage-sandbox';
 import {render} from '@ember/test-helpers';

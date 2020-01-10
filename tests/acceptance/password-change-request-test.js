@@ -1,6 +1,6 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import PasswordChangeRequest from '../pages/components/password-change-request';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {settled} from '@ember/test-helpers';
 
 describe('Acceptance: PasswordChangeRequest', function() {

@@ -1,6 +1,6 @@
 import setupAcceptance, {setupSession} from 'percy-web/tests/helpers/setup-acceptance';
 import BitbucketCloudSettings from 'percy-web/tests/pages/components/bitbucket-cloud-settings';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {currentRouteName, visit, findAll} from '@ember/test-helpers';
 import {resolve} from 'rsvp';
 import sinon from 'sinon';

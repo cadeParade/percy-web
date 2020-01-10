@@ -2,7 +2,7 @@ import RepoSelector from 'percy-web/tests/pages/components/repo-selector';
 import {setupRenderingTest} from 'ember-mocha';
 import {it, describe, beforeEach} from 'mocha';
 import {make, makeList} from 'ember-data-factory-guy';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import {clickTrigger} from 'ember-power-select/test-support/helpers';
 import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';

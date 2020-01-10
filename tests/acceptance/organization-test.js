@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import freezeMoment from '../helpers/freeze-moment';
 import localStorageProxy from 'percy-web/lib/localstorage';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {visit, click, currentRouteName, fillIn, findAll} from '@ember/test-helpers';
 import Response from 'ember-cli-mirage/response';
 import ProjectPage from 'percy-web/tests/pages/project-page';

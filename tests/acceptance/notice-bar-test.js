@@ -5,7 +5,7 @@ import ProjectPage from 'percy-web/tests/pages/project-page';
 import BuildPage from 'percy-web/tests/pages/build-page';
 import NoticeBar from 'percy-web/tests/pages/components/notice-bar';
 import {currentRouteName} from '@ember/test-helpers';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 
 describe('Acceptance: Notice Bar', function() {
   freezeMoment('2018-05-22');

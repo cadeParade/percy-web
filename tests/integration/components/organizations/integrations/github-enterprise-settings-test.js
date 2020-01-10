@@ -1,7 +1,7 @@
 import {it, describe, beforeEach} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
 import {make} from 'ember-data-factory-guy';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import hbs from 'htmlbars-inline-precompile';
 import GithubEnterpriseSettings from 'percy-web/tests/pages/components/github-enterprise-settings';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';

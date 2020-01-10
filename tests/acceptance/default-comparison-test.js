@@ -1,7 +1,7 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import {visit, currentRouteName, currentURL} from '@ember/test-helpers';
 import SnapshotViewerFull from 'percy-web/tests/pages/components/snapshot-viewer-full';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 
 describe('Acceptance: Default comparison', function() {
   setupAcceptance();

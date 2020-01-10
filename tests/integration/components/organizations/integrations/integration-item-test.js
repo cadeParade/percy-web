@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {describe, it, beforeEach} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
 import {make} from 'ember-data-factory-guy';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 import AdminMode from 'percy-web/lib/admin-mode';

@@ -5,7 +5,7 @@ import sinon from 'sinon';
 import utils from 'percy-web/lib/utils';
 import {afterEach} from 'mocha';
 import AdminMode from 'percy-web/lib/admin-mode';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {currentRouteName} from '@ember/test-helpers';
 
 describe('Acceptance: GitLab Integration Settings', function() {

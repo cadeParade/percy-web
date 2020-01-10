@@ -2,7 +2,7 @@ import {it, describe, beforeEach} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import PricingCardBlock from 'percy-web/tests/pages/components/marketing/pricing-card-block';
-import {percySnapshot} from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import {render} from '@ember/test-helpers';
 
 describe('Integration: Marketing/PricingCardBlock', function() {
