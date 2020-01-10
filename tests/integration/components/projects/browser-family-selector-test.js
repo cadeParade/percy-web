@@ -166,6 +166,42 @@ describe('Integration: BrowserFamilySelector', function() {
           expect(BrowserFamilySelector.firefoxButton.isUpgradeable).to.equal(false);
         });
       });
+
+      describe('with feature flag on to prevent members from upgrading', function() {
+        describe('as a member', function() {
+          it('does not show an upgrade button when both are upgradeable', async function() {
+            const projectBrowserTargets = [
+              makeUpgradeableProjectBrowserTarget('chrome'),
+              makeUpgradeableProjectBrowserTarget('firefox'),
+            ];
+            this.setProperties({projectBrowserTargets});
+            await render(hbs`{{projects/browser-family-selector
+              allBrowserFamilies=allBrowserFamilies
+              project=project
+              isUpgradeAllowed=false
+            }}`);
+
+            expect(BrowserFamilySelector.chromeButton.isUpgradeable).to.equal(false);
+            expect(BrowserFamilySelector.firefoxButton.isUpgradeable).to.equal(false);
+          });
+        });
+        describe('as an admin', function() {
+          it('shows upgrade button on both browsers when both are upgradeable', async function() {
+            const projectBrowserTargets = [
+              makeUpgradeableProjectBrowserTarget('chrome'),
+              makeUpgradeableProjectBrowserTarget('firefox'),
+            ];
+            this.setProperties({projectBrowserTargets});
+            await render(hbs`{{projects/browser-family-selector
+              allBrowserFamilies=allBrowserFamilies
+              project=project
+            }}`);
+
+            expect(BrowserFamilySelector.chromeButton.isUpgradeable).to.equal(true);
+            expect(BrowserFamilySelector.firefoxButton.isUpgradeable).to.equal(true);
+          });
+        });
+      });
     });
   });
 });

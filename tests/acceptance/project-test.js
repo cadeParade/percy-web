@@ -13,6 +13,7 @@ import UserMenu from 'percy-web/tests/pages/components/user-menu';
 import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
 import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
 import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
+import BrowserFamilySelector from 'percy-web/tests/pages/components/projects/browser-family-selector'; // eslint-disable-line
 
 describe('Acceptance: Project', function() {
   setupAcceptance();
@@ -179,7 +180,7 @@ describe('Acceptance: Project', function() {
         );
       });
 
-      describe('browser toggling', function() {
+      describe('browser', function() {
         let deleteStub;
         let createStub;
         let projectWithBothBrowsers;
@@ -273,6 +274,46 @@ describe('Acceptance: Project', function() {
           await ProjectSettingsPage.browserSelector.firefoxButton.click();
 
           expect(deleteStub).to.not.have.been.called;
+        });
+
+        describe('with feature flag on to prevent members from upgrading', function() {
+          beforeEach(function() {
+            server.create('project-browser-target', 'upgradeable', {
+              project: projectWithBothBrowsers,
+              browserTarget: server.create('browser-family', 'chrome'),
+            });
+          });
+
+          describe('user is member', function() {
+            setupSession(function(server) {
+              // we porbably don't need  this block
+              organization = server.create('organization', 'withUser');
+              server.create('project', {organization});
+            });
+
+            it('does not show an upgrade button a browser is upgradeable', async function() {
+              await ProjectSettingsPage.visitProjectSettings({
+                orgSlug: organization.slug,
+                projectSlug: projectWithBothBrowsers.slug,
+              });
+
+              expect(BrowserFamilySelector.chromeButton.isUpgradeable).to.equal(false);
+            });
+          });
+          describe('user is admin', function() {
+            setupSession(function(server) {
+              organization = server.create('organization', 'withAdminUser');
+            });
+
+            it('shows upgrade button on a browseris upgradeable', async function() {
+              await ProjectSettingsPage.visitProjectSettings({
+                orgSlug: organization.slug,
+                projectSlug: projectWithBothBrowsers.slug,
+              });
+
+              expect(BrowserFamilySelector.chromeButton.isUpgradeable).to.equal(true);
+            });
+          });
         });
       });
 
