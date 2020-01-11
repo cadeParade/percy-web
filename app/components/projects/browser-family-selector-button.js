@@ -7,6 +7,7 @@ import {task} from 'ember-concurrency';
 export default Component.extend({
   browserTargets: service(),
   flashMessages: service(),
+  launchDarkly: service(),
   browserFamily: null,
   project: null,
 
@@ -32,17 +33,36 @@ export default Component.extend({
     },
   ),
 
-  isBrowserUpgradeable: computed('projectBrowserTargetsForFamily.@each.isUpgradeable', function() {
-    // If there are no project-browser-targets for family it is not upgradeable. (the project
-    //   does not have that family enabled)
-    if (this.projectBrowserTargetsForFamily.length === 0) return false;
-    // If there is only one project-browser-target and it is upgradeable it will return true.
-    // If there are more than one project-browser-target and any are not upgradeable, that means
-    //   they already have the most recent browser for family on at least one pbt,
-    //   so don't do anything.
-    return this.projectBrowserTargetsForFamily.every(projectBrowserTarget => {
-      return projectBrowserTarget.isUpgradeable;
-    });
+  isBrowserUpgradeAvailable: computed(
+    'projectBrowserTargetsForFamily.@each.isUpgradeable',
+    function() {
+      // If there are no project-browser-targets for family it is not upgradeable. (the project
+      //   does not have that family enabled)
+      if (this.projectBrowserTargetsForFamily.length === 0) return false;
+      // If there is only one project-browser-target and it is upgradeable it will return true.
+      // If there are more than one project-browser-target and any are not upgradeable, that means
+      //   they already have the most recent browser for family on at least one pbt,
+      //   so don't do anything.
+      return this.projectBrowserTargetsForFamily.every(projectBrowserTarget => {
+        return projectBrowserTarget.isUpgradeable;
+      });
+    },
+  ),
+
+  isBrowserUpgradeable: computed('isBrowserEnabled', 'isBrowserUpgradeable', function() {
+    return this.isBrowserEnabled && this.isBrowserUpgradeAvailable && this.isUserPermittedToUpgrade;
+  }),
+
+  isAdmin: readOnly('project.organization.currentUserIsAdmin'),
+  isUserPermittedToUpgrade: computed('isAdmin', function() {
+    console.log('organization', this.project.organization);
+    // debugger;
+    if (this.launchDarkly.variation('only-admins-upgrade-browsers')) {
+      console.log('isAdmin', this.isAdmin);
+      return this.isAdmin;
+    } else {
+      return true;
+    }
   }),
 
   _upgradeBrowser: task(function*(project, browserFamily) {
@@ -53,7 +73,7 @@ export default Component.extend({
 
   actions: {
     async upgradeBrowser() {
-      if (!this.isBrowserUpgradeable) return;
+      if (!this.isBrowserUpgradeAvailable) return;
       try {
         await this._upgradeBrowser.perform(this.project, this.browserFamily);
       } catch (e) {

@@ -6,6 +6,8 @@ import {make} from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import {render} from '@ember/test-helpers';
 import BrowserFamilySelector from 'percy-web/tests/pages/components/projects/browser-family-selector'; // eslint-disable-line
+import stubSession from 'percy-web/tests/helpers/stub-session';
+import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Integration: BrowserFamilySelector', function() {
   setupRenderingTest('projects/browser-family-selector', {
@@ -25,13 +27,12 @@ describe('Integration: BrowserFamilySelector', function() {
     beforeEach(function() {
       const firefoxBrowserFamily = make('browser-family');
       const chromeBrowserFamily = make('browser-family', 'chrome');
-      project = make('project');
+      project = make('project', 'withOrganization');
       chromeBrowserTarget = make('browser-target', {browserFamily: chromeBrowserFamily});
       firefoxBrowserTarget = make('browser-target', {browserFamily: firefoxBrowserFamily});
 
       const allBrowserFamilies = [chromeBrowserFamily, firefoxBrowserFamily];
       const stub = sinon.stub();
-
       this.setProperties({
         project,
         allBrowserFamilies,
@@ -167,7 +168,11 @@ describe('Integration: BrowserFamilySelector', function() {
         });
       });
 
-      describe('with feature flag on to prevent members from upgrading', function() {
+      describe('with the only-admins-upgrade-browsers feature flag on', function() {
+        beforeEach(function() {
+          withVariation(this.owner, 'only-admins-upgrade-browsers', true);
+        });
+
         describe('as a member', function() {
           it('does not show an upgrade button when both are upgradeable', async function() {
             const projectBrowserTargets = [
@@ -178,14 +183,24 @@ describe('Integration: BrowserFamilySelector', function() {
             await render(hbs`{{projects/browser-family-selector
               allBrowserFamilies=allBrowserFamilies
               project=project
-              isUpgradeAllowed=false
             }}`);
 
             expect(BrowserFamilySelector.chromeButton.isUpgradeable).to.equal(false);
             expect(BrowserFamilySelector.firefoxButton.isUpgradeable).to.equal(false);
           });
         });
+
         describe('as an admin', function() {
+          beforeEach(function() {
+            const adminUser = make('user');
+            const adminOrganizationUser = make('organization-user', 'adminUser', {
+              organization: project.organization,
+              user: adminUser,
+            });
+            adminUser.set('organizationUsers', [adminOrganizationUser]);
+            stubSession(this, {currentUser: adminUser});
+          });
+
           it('shows upgrade button on both browsers when both are upgradeable', async function() {
             const projectBrowserTargets = [
               makeUpgradeableProjectBrowserTarget('chrome'),

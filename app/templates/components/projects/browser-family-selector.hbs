@@ -9,7 +9,7 @@
   {{/each}}
 </div>
 
-{{#if @areAnyBrowsersUpgradeable}}
+{{#if (and @areAnyBrowsersUpgradeable isUserPermittedToUpgrade}}
   <div class="rounded border border-green-300 p-2 mt-2">
     <strong>A browser upgrade is available!</strong> To upgrade your browser, click the upgrade button below the browser icon. <strong>After a browser upgrade, we recommend you establish a new baseline using the new browser version.</strong> You can do this by running a new build on your master (default) branch, and then re-basing your feature branches off the latest master commit. This will ensure all comparisons going forward are using the new browser version.
   </div>

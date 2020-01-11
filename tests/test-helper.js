@@ -7,8 +7,8 @@ import {setApplication} from '@ember/test-helpers';
 import start from 'ember-exam/test-support/start';
 
 mocha.setup({
-  timeout: 10000,
-  slow: 2000,
+  timeout: 10444000,
+  slow: 2444000,
 });
 
 setApplication(Application.create(config.APP));

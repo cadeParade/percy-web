@@ -7,13 +7,14 @@ import NewProjectPage from 'percy-web/tests/pages/new-project-page';
 import sinon from 'sinon';
 import {beforeEach} from 'mocha';
 import {percySnapshot} from 'ember-percy';
-import {visit, findAll, currentRouteName, settled} from '@ember/test-helpers';
+import {visit, findAll, currentRouteName, settled, pauseTest} from '@ember/test-helpers';
 import {selectChoose} from 'ember-power-select/test-support/helpers';
 import UserMenu from 'percy-web/tests/pages/components/user-menu';
 import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
 import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
 import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
 import BrowserFamilySelector from 'percy-web/tests/pages/components/projects/browser-family-selector'; // eslint-disable-line
+import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Acceptance: Project', function() {
   setupAcceptance();
@@ -245,26 +246,6 @@ describe('Acceptance: Project', function() {
           expect(flashMessages).to.have.length(1);
         });
 
-        it('calls correct endpoints when upgrading a browser', async function() {
-          const firefoxFamily = server.schema.browserFamilies.findBy({slug: 'firefox'});
-          projectWithBothBrowsers.projectBrowserTargets.models.forEach(pbt => {
-            if (pbt.browserTarget.browserFamilyId === firefoxFamily.id) {
-              pbt.update({isUpgradeable: true});
-            }
-          });
-          await ProjectSettingsPage.visitProjectSettings({
-            orgSlug: organization.slug,
-            projectSlug: projectWithBothBrowsers.slug,
-          });
-
-          await percySnapshot(this.test);
-          await ProjectSettingsPage.browserSelector.upgradeFirefox();
-          await settled();
-
-          expect(createStub).to.have.been.calledWith(createData);
-          expect(deleteStub).to.have.been.calledWith('/api/v1/project-browser-targets/1');
-        });
-
         it('does not allow removing the last browser', async function() {
           await ProjectSettingsPage.visitProjectSettings({
             orgSlug: organization.slug,
@@ -276,42 +257,68 @@ describe('Acceptance: Project', function() {
           expect(deleteStub).to.not.have.been.called;
         });
 
-        describe('with feature flag on to prevent members from upgrading', function() {
+        describe('upgrading browsers', function() {
           beforeEach(function() {
-            server.create('project-browser-target', 'upgradeable', {
-              project: projectWithBothBrowsers,
-              browserTarget: server.create('browser-family', 'chrome'),
+            const firefoxFamily = server.schema.browserFamilies.findBy({slug: 'firefox'});
+            projectWithBothBrowsers.projectBrowserTargets.models.forEach(pbt => {
+              if (pbt.browserTarget.browserFamilyId === firefoxFamily.id) {
+                pbt.update({isUpgradeable: true});
+              }
             });
           });
 
-          describe('user is member', function() {
-            setupSession(function(server) {
-              // we porbably don't need  this block
-              organization = server.create('organization', 'withUser');
-              server.create('project', {organization});
+          it('calls correct endpoints', async function() {
+            await ProjectSettingsPage.visitProjectSettings({
+              orgSlug: organization.slug,
+              projectSlug: projectWithBothBrowsers.slug,
             });
+            await pauseTest();
+            await percySnapshot(this.test);
+            await ProjectSettingsPage.browserSelector.upgradeFirefox();
+            await settled();
 
-            it('does not show an upgrade button a browser is upgradeable', async function() {
-              await ProjectSettingsPage.visitProjectSettings({
-                orgSlug: organization.slug,
-                projectSlug: projectWithBothBrowsers.slug,
-              });
-
-              expect(BrowserFamilySelector.chromeButton.isUpgradeable).to.equal(false);
-            });
+            expect(createStub).to.have.been.calledWith(createData);
+            expect(deleteStub).to.have.been.calledWith('/api/v1/project-browser-targets/1');
           });
-          describe('user is admin', function() {
-            setupSession(function(server) {
-              organization = server.create('organization', 'withAdminUser');
+
+          describe('with the only-admins-upgrade-browsers feature flag on', function() {
+            beforeEach(function() {
+              withVariation(this.owner, 'only-admins-upgrade-browsers', true);
             });
 
-            it('shows upgrade button on a browseris upgradeable', async function() {
-              await ProjectSettingsPage.visitProjectSettings({
-                orgSlug: organization.slug,
-                projectSlug: projectWithBothBrowsers.slug,
+            describe('user is member', function() {
+              it('does not show an upgrade button a browser is upgradeable', async function() {
+                await ProjectSettingsPage.visitProjectSettings({
+                  orgSlug: organization.slug,
+                  projectSlug: projectWithBothBrowsers.slug,
+                });
+                await pauseTest();
+
+                const browserSelector = ProjectSettingsPage.browserSelector;
+                expect(browserSelector.chromeButton.isUpgradeable).to.equal(false);
+                expect(browserSelector.firefoxButton.isUpgradeable).to.equal(false);
+              });
+            });
+
+            describe('user is admin', function() {
+              let organization;
+
+              setupSession(function(server) {
+                organization = server.create('organization', 'withAdminUser');
+                projectWithFirefoxOnly.update({organization});
               });
 
-              expect(BrowserFamilySelector.chromeButton.isUpgradeable).to.equal(true);
+              it('shows upgrade button on a browseris upgradeable', async function() {
+                await ProjectSettingsPage.visitProjectSettings({
+                  orgSlug: organization.slug,
+                  projectSlug: projectWithBothBrowsers.slug,
+                });
+                await pauseTest();
+
+                const browserSelector = ProjectSettingsPage.browserSelector;
+                expect(browserSelector.chromeButton.isUpgradeable).to.equal(true);
+                expect(browserSelector.firefoxButton.isUpgradeable).to.equal(true);
+              });
             });
           });
         });

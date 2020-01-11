@@ -13,6 +13,7 @@ FactoryGuy.define('project', {
     withGithubRepo: {repo: FactoryGuy.belongsTo('repo', 'github')},
     withGitlabRepo: {repo: FactoryGuy.belongsTo('repo', 'gitlab')},
     withGithubEnterpriseRepo: {repo: FactoryGuy.belongsTo('repo', 'githubEnterprise')},
+    withOrganization: {organization: FactoryGuy.belongsTo('organization')},
     demo: {
       isDemo: true,
       name: () => 'demo-' + faker.commerce.productName(),
