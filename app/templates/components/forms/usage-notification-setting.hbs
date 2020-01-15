@@ -18,9 +18,7 @@
       @property="displayEmails"
       @class="mb-2"
       @title="Email addresses (separated by spaces)"
-      @placeholder="Separate each email address with a space: person1
-      @email.com person2
-      @email.com"
+      @placeholder="Separate each email address with a space: person1@email.com person2@email.com"
       @changeset={{this.changeset}}
       @validateProperty={{action "validateProperty" this.changeset "displayEmails"}}
       @testLabel="usage-notification-emails"
