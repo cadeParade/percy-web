@@ -16,24 +16,24 @@
     </div>
     {{/if}}
     {{#if isSelfHosted}}
-      {{form-fields/input
-        data-test-gitlab-host-field
-        type="input"
-        property="gitlabHost"
-        title="GitLab Host"
-        changeset=changeset
-        placeholder="https://gitlab.example.com"
-      }}
+      <FormFields::Input
+        @data-test-gitlab-host-field={{true}}
+        @type="input"
+        @property="gitlabHost"
+        @title="GitLab Host"
+        @changeset={{this.changeset}}
+        @placeholder="https://gitlab.example.com"
+      />
     {{/if}}
-    {{form-fields/input
-      data-test-gitlab-personal-access-token-field
-      type="password"
-      autocomplete="new-password-gitlab"
-      property="gitlabPersonalAccessToken"
-      title="Personal access token"
-      changeset=changeset
-      placeholder=gitlabPersonalAccessTokenPlaceholder
-    }}
+    <FormFields::Input
+      @data-test-gitlab-personal-access-token-field={{true}}
+      @type="password"
+      @autocomplete="new-password-gitlab"
+      @property="gitlabPersonalAccessToken"
+      @title="Personal access token"
+      @changeset={{this.changeset}}
+      @placeholder={{gitlabPersonalAccessTokenPlaceholder}}
+    />
     <div class="rounded border p-2 mb-2">
       <strong>Note:</strong> The <a href="https://gitlab.com/profile/personal_access_tokens" target="_blank">personal access token</a> is used to update commit statuses in GitLab. These updates will be made on behalf of this user. You may wish to create a specialized GitLab user for this purpose.
     </div>

@@ -13,15 +13,15 @@
             @tributeConfigs={{tributeConfigs}}
             @handleItemSelected={{action "handleAtMentionUser"}}
           >
-            {{percy-textarea
-              data-test-new-comment-thread-textarea
-              autofocus=true
-              onCmdEnter=(action "saveComment")
-              onEscape=(action "toggleShouldShowNewCommentInput")
-              placeholder="Add comment..."
-              value=commentBody
+            <PercyTextarea
+              data-test-new-comment-thread-textarea={{true}}
+              @autofocus={{true}}
+              @onCmdEnter={{action "saveComment"}}
+              @onEscape={{action "toggleShouldShowNewCommentInput"}}
+              @placeholder="Add comment..."
+              @value={{commentBody}}
               class="percy-input collaboration-new-thread relative pb-5"
-            }}
+            />
           </MentionableTextarea>
           <div
             class="
@@ -32,15 +32,15 @@
           >
             <label class="flex items-center justify-end m-0">
               <span>Request changes</span>
-              {{input
-                data-test-request-changes-checkbox
-                type="checkbox"
-                name="isRequestChanges"
-                checked=areChangesRequested
-                disabled=isRequestChangesDisabled
-                maxlength=6000
+              <Input
+                data-test-request-changes-checkbox={{true}}
+                @type="checkbox"
+                @name="isRequestChanges"
+                @checked={{areChangesRequested}}
+                @disabled={{isRequestChangesDisabled}}
+                @maxLength=6000
                 class="ml-1"
-              }}
+              />
             </label>
           </div>
         </div>
