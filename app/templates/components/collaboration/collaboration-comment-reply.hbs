@@ -19,8 +19,7 @@
           @onEscape={{action "collapseReply"}}
           @placeholder="Add reply..."
           @value={{commentBody}}
-          @classNameBindings="isExpanded:h-24:collaboration-collapsed-comment-reply"
-          class="percy-input px-1 py-sm"
+          class="percy-input px-1 py-sm {{if isExpanded "h-24" "collaboration-collapsed-comment-reply"}}"
         />
       </MentionableTextarea>
     </div>
