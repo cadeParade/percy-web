@@ -15,18 +15,14 @@
         {{/if}}
 
       {{else if isEmailEditShowing}}
-        {{forms/billing-edit
-          subscription=subscription
-          saveSuccess=(action "afterEmailUpdate")
-          hideForm=(action "hideEmailEdit")
-          class="mb-2"
-        }}
+        <Forms::BillingEdit
+          @subscription={{subscription}}
+          @saveSuccess={{action "afterEmailUpdate"}}
+          @hideForm={{action "hideEmailEdit"}}
+          @class="mb-2"
+        />
       {{else if isCardEditShowing}}
-        {{organizations/billing-card-updater
-          organization=organization
-          updateCreditCard=updateCreditCard
-          hideForm=(action "hideCardEdit")
-        }}
+        <Organizations::BillingCardUpdater @organization={{organization}} @updateCreditCard={{updateCreditCard}} @hideForm={{action "hideCardEdit"}} />
       {{/if}}
       </div>
     </div>

@@ -1,8 +1,4 @@
-{{#projects/project-header
-  project=project
-  shouldShowLinks=isUserMember
-  shouldDisplayBottomBorder=false
-}}
+<Projects::ProjectHeader @project={{project}} @shouldShowLinks={{isUserMember}} @shouldDisplayBottomBorder={{false}}>
   {{#if shouldShowBranchFilter}}
     <div class="flex justify-end mt-1" data-test-project-container-branch-filter>
       <PowerSelect
@@ -32,21 +28,21 @@
       {{#link-to data-test-add-integration "organizations.organization.integrations" project.organization.slug class="percy-btn percy-btn-primary percy-btn-sm ml-2"}}Add integration{{/link-to}}
     </div>
   {{/if}}
-{{/projects/project-header}}
+</Projects::ProjectHeader>
 
 <main class="project-container flex-1 pb-8 bg-gray-000">
   {{#if (and builds.isPending (not isRefreshing))}}
-    {{loading-page}}
+    <LoadingPage />
   {{else}}
     {{#if builds}}
       <div class="build-list">
         {{#each branchFilteredBuilds as |build|}}
-          {{build-card build=build project=project}}
+          <BuildCard @build={{build}} @project={{project}} />
         {{/each}}
         {{#if shouldLoadMore}}
-          {{#infinity-loader infinityModel=infinityBuilds}}
-            {{loading-build-card}}
-          {{/infinity-loader}}
+          <InfinityLoader @infinityModel={{infinityBuilds}}>
+            <LoadingBuildCard />
+          </InfinityLoader>
         {{else if isBranchSelected}}
           <div class="p-4 bg-white border-b flex justify-center text-secondary">
               To load more builds, select "All branches" from the select menu above
@@ -59,7 +55,7 @@
           <div class="w-90vw max-w-xl mx-auto mb-3">
             <div class="build-card-placeholder">
               <div class="mr-3">
-                {{build-icon}}
+                <BuildIcon />
               </div>
               <span class="text-xl font-semibold mr-sm">Waiting for your first build</span>
               <div class="line-loader-container">
@@ -71,7 +67,7 @@
           <div class="w-90vw max-w-xl mx-auto">
             <div class="bg-white rounded shadow-1">
               <div class="px-2 py-3 border-b">
-                {{resource-widget project=project}}
+                <ResourceWidget @project={{project}} />
               </div>
               <div class="px-2 py-3">
                 <h2 class="text-xl font-semibold mb-sm">Project token</h2>
@@ -112,12 +108,7 @@
             </div>
           </div>
         {{else}}
-          {{status-panel
-            inlineSvgName="refresh-icon"
-            classes="pt-8"
-            mainText="This project doesn't have any builds yet."
-            secondaryText="The owners of this project are working hard to get some diffs ready for you to see!"
-          }}
+          <StatusPanel @inlineSvgName="refresh-icon" @classes="pt-8" @mainText="This project doesn't have any builds yet." @secondaryText="The owners of this project are working hard to get some diffs ready for you to see!" />
         {{/if}}
       {{else}}
         <div class="w-90vw max-w-xl mx-auto">

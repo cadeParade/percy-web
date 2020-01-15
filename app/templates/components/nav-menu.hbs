@@ -1,14 +1,12 @@
 <div class="flex items-center">
-  {{#link-to "docs.index" class="hide-on-tablet link-dark"}}Docs{{/link-to}}
+  <LinkTo @route="docs.index" class="hide-on-tablet link-dark">Docs</LinkTo>
   <a href="https://docs.percy.io/docs/example-apps" class="ml-3 hide-on-tablet link-dark">Tutorials</a>
   {{#if session.isAuthenticated}}
-    {{user-menu user=user class="ml-3"}}
+    <UserMenu @user={{user}} @class="ml-3" />
   {{else}}
     <a href="https://blog.percy.io" class="ml-3 link-dark">Blog</a>
-    {{#link-to "pricing" class="ml-3 link-dark"}}Pricing{{/link-to}}
-    {{#link-to "enterprise" class="ml-3 link-dark"}}Enterprise{{/link-to}}
-    {{sign-in-header-link
-      classNames="mx-3 hide-on-mobile link-dark"
-    }}
+    <LinkTo @route="pricing" class="ml-3 link-dark">Pricing</LinkTo>
+    <LinkTo @route="enterprise" class="ml-3 link-dark">Enterprise</LinkTo>
+    <SignInHeaderLink @classNames="mx-3 hide-on-mobile link-dark" />
   {{/if}}
 </div>

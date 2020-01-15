@@ -1,7 +1,7 @@
 <div class="collaboration-comment" data-test-collaboration-comment>
   <header class="flex justify-between mb-sm {{if isClosed 'items-center' 'items-start'}}">
     <div class="flex items-center">
-      {{user-avatar user=author class="mr-1" isSmallAvatar=true}}
+      <UserAvatar @user={{author}} @class="mr-1" @isSmallAvatar={{true}} />
       <div class="leading-none">
         <div class="font-semibold">
           {{author.name}}
@@ -20,14 +20,9 @@
             </div>
           </div>
         {{else}}
-          {{#percy-btn
-            handleClick=(action "closeCommentThread")
-            isSecondaryButton=true
-            isSmallButton=true
-            testLabel="commentArchive"
-          }}
+          <PercyBtn @handleClick={{action "closeCommentThread"}} @isSecondaryButton={{true}} @isSmallButton={{true}} @testLabel="commentArchive">
             Archive
-          {{/percy-btn}}
+          </PercyBtn>
         {{/if}}
       {{/if}}
     {{/if}}

@@ -2,7 +2,7 @@
   <div class="flex">
     <div class="siema w-90vw max-w-lg mx-auto mb-4">
       {{#each quoteBlock.customerQuotes as |quote|}}
-        {{marketing/customer-quote quote=quote}}
+        <Marketing::CustomerQuote @quote={{quote}} />
       {{/each}}
     </div>
   </div>

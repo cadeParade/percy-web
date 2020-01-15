@@ -34,12 +34,7 @@
 
   {{#if fullscreen}}
     <div class="flex items-center">
-      {{comparison-mode-switcher
-        comparison=selectedComparison
-        updateComparisonMode=updateComparisonMode
-        comparisonMode=comparisonMode
-        data-test-SnapshotViewer-comparison-mode-switcher=true
-      }}
+      <ComparisonModeSwitcher @comparison={{selectedComparison}} @updateComparisonMode={{updateComparisonMode}} @comparisonMode={{comparisonMode}} @data-test-SnapshotViewer-comparison-mode-switcher={{true}} />
     </div>
   {{/if}}
 
@@ -50,7 +45,7 @@
           <div class="dropdown {{if dropdown.isOpen 'is-visible'}}">
             <dropdown.Trigger>
               <button type="button" class="btn btn-square dropdown-toggle" data-test-snapshot-header-dropdown-toggle aria-label="Toggle snapshot options">
-                {{theme-svg svg="snapshot-dropdown-icon"}}
+                <ThemeSvg @svg="snapshot-dropdown-icon" />
               </button>
             </dropdown.Trigger>
             <dropdown.Content>
@@ -72,14 +67,10 @@
                     </li>
                   {{/unless}}
                   <li class="dropdown-menu-list-item cursor-pointer text-sm font-semibold py-1 pl-2 pr-1 mb-0">
-                    {{#copy-button
-                      class="btn-icon-only w-full flex justify-between items-center"
-                      clipboardText=(generate-fullscreen-snapshot-url snapshot.id snapshotSelectedWidth comparisonMode activeBrowser.familySlug fullscreen)
-                      success=(pipe-action (action "onCopySnapshotUrlToClipboard") dropdown.actions.close)
-                    }}
+                    <CopyButton @class="btn-icon-only w-full flex justify-between items-center" @clipboardText={{generate-fullscreen-snapshot-url snapshot.id snapshotSelectedWidth comparisonMode activeBrowser.familySlug fullscreen}} @success={{pipe-action (action "onCopySnapshotUrlToClipboard") dropdown.actions.close}}>
                       <span>Copy snapshot URL</span>
                       {{inline-svg "link-icon"}}
-                    {{/copy-button}}
+                    </CopyButton>
                   </li>
                   {{#if selectedComparison.baseSnapshot}}
                     <li class="dropdown-menu-list-item cursor-pointer flex justify-between items-center text-sm font-semibold py-1 pl-2 pr-1 mb-0"
@@ -127,13 +118,12 @@
       </div>
 
       <div class="btn-group" role="group" aria-label="Second Group">
-        <button type="button" class="ToggleFullViewButton btn btn-square {{if fullscreen 'minimize-snapshot' 'maximize-snapshot'}}"
-          {{action toggleViewMode}} aria-label="{{if fullscreen "Minimize" "Maximize"}} snapshot" data-test-SnapshotViewer-toggleFullScreen>
+        <button type="button" class="ToggleFullViewButton btn btn-square {{if fullscreen 'minimize-snapshot' 'maximize-snapshot'}}" {{action toggleViewMode}} aria-label="{{if fullscreen "Minimize" "Maximize"}} snapshot" data-test-SnapshotViewer-toggleFullScreen>
           <figure class="svg-container">
             {{#if fullscreen}}
-              {{theme-svg svg="minimize-icon"}}
+              <ThemeSvg @svg="minimize-icon" />
             {{else}}
-              {{theme-svg svg="maximize-icon"}}
+              <ThemeSvg @svg="maximize-icon" />
             {{/if}}
           </figure>
         </button>
@@ -141,30 +131,16 @@
 
       {{#if snapshot.build.isFinished}}
         {{#if isBuildApprovable}}
-          {{collaboration/toggle-button
-            toggleCollaborationPanel=toggleCollaborationPanel
-            isResolved=false
-            unresolvedCommentThreadCount=unresolvedCommentThreadCount
-          }}
+          <Collaboration::ToggleButton @toggleCollaborationPanel={{toggleCollaborationPanel}} @isResolved={{false}} @unresolvedCommentThreadCount={{unresolvedCommentThreadCount}} />
         {{/if}}
 
         {{#if (and fullscreen snapshot.build.hasMultipleBrowsers)}}
-          {{browser-switcher
-            browsers=snapshot.build.browsers
-            activeBrowser=activeBrowser
-            updateActiveBrowser=updateActiveBrowser
-            fullscreen=fullscreen
-          }}
+          <BrowserSwitcher @browsers={{snapshot.build.browsers}} @activeBrowser={{activeBrowser}} @updateActiveBrowser={{updateActiveBrowser}} @fullscreen={{fullscreen}} />
         {{/if}}
       {{/if}}
 
       <div class="btn-group btn-group-alt">
-        {{comparison-switcher
-          comparisons=(if isShowingAllComparisons filteredComparisons.comparisons filteredComparisons.comparisonsWithDiffs)
-          selectedWidth=snapshotSelectedWidth
-          updateSelectedWidth=updateSelectedWidth
-          data-test-SnapshotViewer-widthSwitcher=true
-        }}
+        <ComparisonSwitcher @comparisons={{if isShowingAllComparisons filteredComparisons.comparisons filteredComparisons.comparisonsWithDiffs}} @selectedWidth={{snapshotSelectedWidth}} @updateSelectedWidth={{updateSelectedWidth}} @data-test-SnapshotViewer-widthSwitcher={{true}} />
       </div>
 
       {{#if snapshot.build.isFinished}}
@@ -176,10 +152,7 @@
               @anchorPlacement='left-corner'
               @key="snapshot-request-changes-button"
             />
-            {{snapshot-reject-button
-              snapshots=(array snapshot)
-              isDisabled=(not isBuildApprovable)
-            }}
+            <SnapshotRejectButton @snapshots={{array snapshot}} @isDisabled={{not isBuildApprovable}} />
           {{/if}}
 
           <SnapshotApprovalTooltips
@@ -187,13 +160,7 @@
             @index={{index}}
             @tagName=''
           />
-          {{snapshot-approval-button
-            snapshot=snapshot
-            hasDiffsInBrowser=hasDiffsInBrowser
-            activeBrowser=activeBrowser
-            createReview=createReview
-            isDisabled=(not isBuildApprovable)
-          }}
+          <SnapshotApprovalButton @snapshot={{snapshot}} @hasDiffsInBrowser={{hasDiffsInBrowser}} @activeBrowser={{activeBrowser}} @createReview={{createReview}} @isDisabled={{not isBuildApprovable}} />
         </div>
       {{/if}}
     </div>

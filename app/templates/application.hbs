@@ -1,17 +1,17 @@
-{{head-layout}}
+<HeadLayout />
 {{title "Percy | Visual testing as a service"}}
 
-{{dark-mode}}
+<DarkMode />
 {{outlet}}
 
 {{#if confirm.showPrompt}}
-  {{confirm-dialog}}
+  <ConfirmDialog />
 {{/if}}
 
 {{#if flashMessages.queue}}
   <div class="flash-message-container z-top">
     {{#each flashMessages.queue as |flash|}}
-      {{#flash-message flash=flash classNames=(concat "flash-message-" flash.type (if flash.sticky ' flash-message-sticky')) as |component flash|}}
+      <FlashMessage @flash={{flash}} @classNames={{concat "flash-message-" flash.type (if flash.sticky " flash-message-sticky")}} as |component flash|>
         <div class="flash-message-detail flash-message-detail-{{flash.type}} flex justify-center items-center">
           <figure class="svg-container">
             {{inline-svg (concat "flash-" flash.type "-icon")}}
@@ -26,7 +26,7 @@
             {{inline-svg "close-icon"}}
           </figure>
         </div>
-      {{/flash-message}}
+      </FlashMessage>
     {{/each}}
   </div>
 {{/if}}

@@ -43,27 +43,16 @@
       </div>
     {{/if}}
     {{#if isGitlabPersonalAccessTokenPresent}}
-      {{organizations/integrations/repo-linker-list organization=organization}}
+      <Organizations::Integrations::RepoLinkerList @organization={{organization}} />
     {{/if}}
   </div>
   <div data-test-gitlab-settings-edit-form-toolbar class="flex justify-between">
     <button type="button" disabled={{if isNewRecord true false}} data-test-gitlab-settings-delete class="btn btn-danger" {{action "delete" "Are you sure you want to remove the GitLab integration?"}}>Remove Integration</button>
     <div class="flex align-center">
-      {{#link-to
-        "organizations.organization.integrations.index"
-        organization.slug
-        class="btn back"
-      }}
+      <LinkTo @route="organizations.organization.integrations.index" @model={{organization.slug}} class="btn back">
         Back
-      {{/link-to}}
-      {{form-fields/submit
-        value="Save"
-        isSaving=isSaving
-        isSaveSuccessful=isSaveSuccessful
-        disabled=isSubmitDisabled
-        classes="btn btn-primary shadow-purple-lg mb-0 ml-1"
-        submit=(action "save")
-      }}
+      </LinkTo>
+      <FormFields::Submit @value="Save" @isSaving={{isSaving}} @isSaveSuccessful={{isSaveSuccessful}} @disabled={{isSubmitDisabled}} @classes="btn btn-primary shadow-purple-lg mb-0 ml-1" @submit={{action "save"}} />
     </div>
   </div>
 </form>

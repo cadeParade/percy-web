@@ -4,10 +4,7 @@
       <div class="px-4 pt-2 pb-sm text-sm text-gray-300 font-semibold border-b">{{pluralize invites.length "pending invitation"}}</div>
 
       {{#each invites as |invite|}}
-        {{organizations/invite-card
-          invite=invite
-          organization=organization
-        }}
+        <Organizations::InviteCard @invite={{invite}} @organization={{organization}} />
       {{/each}}
     {{/if}}
 
@@ -23,10 +20,7 @@
     </div>
 
     {{#each organizationUsers as |organizationUser|}}
-      {{organizations/user-card
-        organizationUser=organizationUser
-        isViewerAdmin=isAdmin
-      }}
+      <Organizations::UserCard @organizationUser={{organizationUser}} @isViewerAdmin={{isAdmin}} />
     {{/each}}
   </section>
 </div>

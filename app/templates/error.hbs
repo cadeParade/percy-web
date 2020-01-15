@@ -1,12 +1,9 @@
 {{title "Error"}}
-{{fixed-top-header}}
+<FixedTopHeader />
 <div class="w-full container-vh bg-white-pattern flex items-center justify-center">
   {{#if (is-substring-present model '403')}}
 
-    {{#status-panel
-      inlineSvgName="error-large-icon"
-      mainText="Access Denied"
-    }}
+    <StatusPanel @inlineSvgName="error-large-icon" @mainText="Access Denied">
       <p class="alt-p text-secondary">
         <strong>Open Source Projects: </strong>
         If this is an open source project, you can ask an administrator to make the project public.
@@ -18,30 +15,22 @@
       <p class="alt-p text-secondary">
         Please feel welcome to <a href="#" {{action "showSupport"}}>contact us</a> if you believe you have reached this in error.
       </p>
-    {{/status-panel}}
+    </StatusPanel>
   {{else if (is-substring-present model '404')}}
 
-    {{#status-panel
-      inlineSvgName="error-large-icon"
-      mainText="Not Found"
-      secondaryText="This resource was not found in Percy."
-    }}
+    <StatusPanel @inlineSvgName="error-large-icon" @mainText="Not Found" @secondaryText="This resource was not found in Percy.">
       <p class="alt-p text-secondary">
         Feel free to <a href="#" {{action "showSupport"}}>contact us</a> if you believe you have reached this in error.
       </p>
-      {{error-toggle error=model}}
-    {{/status-panel}}
+      <ErrorToggle @error={{model}} />
+    </StatusPanel>
   {{else}}
 
-    {{#status-panel
-      inlineSvgName="error-large-icon"
-      mainText="Uh Oh ..."
-      secondaryText="Something went wrong, sorry! This error has been reported and we will look into it."
-    }}
+    <StatusPanel @inlineSvgName="error-large-icon" @mainText="Uh Oh ..." @secondaryText="Something went wrong, sorry! This error has been reported and we will look into it.">
       <p class="alt-p text-secondary">
         Feel free to <a href="#" {{action "showSupport"}}>contact us</a> if you believe you have reached this in error.
       </p>
-      {{error-toggle error=model}}
-    {{/status-panel}}
+      <ErrorToggle @error={{model}} />
+    </StatusPanel>
   {{/if}}
 </div>

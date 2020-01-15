@@ -1,5 +1,5 @@
 {{#unless shouldShowLinks}}
-  {{public-project-notice}}
+  <PublicProjectNotice />
 {{/unless}}
 
 <header class="bg-white border-b">
@@ -40,16 +40,16 @@
     </div>
     <div class="w-90vw max-w-xl mx-auto">
       <nav class="tab-bar">
-        {{#link-to "organization.project.index" project.organization.slug project.slug class="tab-bar-tab"}}
+        <LinkTo @route="organization.project.index" @models={{array project.organization.slug project.slug}} class="tab-bar-tab">
           Builds
-        {{/link-to}}
+        </LinkTo>
         {{#if shouldShowLinks}}
-          {{#link-to "organization.project.settings" project.organization.slug project.slug class="tab-bar-tab"}}
+          <LinkTo @route="organization.project.settings" @models={{array project.organization.slug project.slug}} class="tab-bar-tab">
             Project settings
-          {{/link-to}}
-          {{#link-to "organization.project.integrations" project.organization.slug project.slug class="tab-bar-tab"}}
+          </LinkTo>
+          <LinkTo @route="organization.project.integrations" @models={{array project.organization.slug project.slug}} class="tab-bar-tab">
             Integrations
-          {{/link-to}}
+          </LinkTo>
         {{/if}}
       </nav>
     </div>

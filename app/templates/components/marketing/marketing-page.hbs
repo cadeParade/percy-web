@@ -1,30 +1,27 @@
 {{#each page.blocks as |block|}}
   {{#if block.isContentBlock}}
-    {{marketing/content-block block=block.contentBlock}}
+    <Marketing::ContentBlock @block={{block.contentBlock}} />
   {{else if block.isVideoBlock}}
-    {{marketing/video-block block=block.videoBlock}}
+    <Marketing::VideoBlock @block={{block.videoBlock}} />
   {{else if block.isQuoteBlock}}
-    {{marketing/customer-quote-block quoteBlock=block.quoteBlock}}
+    <Marketing::CustomerQuoteBlock @quoteBlock={{block.quoteBlock}} />
   {{else if block.isFooter}}
-    {{marketing/footer-cta content=block.footerCta}}
+    <Marketing::FooterCta @content={{block.footerCta}} />
   {{else if block.isHero}}
-    {{#marketing/marketing-header
-      logomark=block.hero.logomark
-      image=block.hero.mainImage
-      classes=block.hero.classes}}
-      {{marketing/hero-block content=block.hero}}
-    {{/marketing/marketing-header}}
+    <Marketing::MarketingHeader @logomark={{block.hero.logomark}} @image={{block.hero.mainImage}} @classes={{block.hero.classes}}>
+      <Marketing::HeroBlock @content={{block.hero}} />
+    </Marketing::MarketingHeader>
   {{else if block.isFaqBlock}}
-    {{marketing/faq-block block=block.faqBlock}}
+    <Marketing::FaqBlock @block={{block.faqBlock}} />
   {{else if block.isLogoBlock}}
-    {{marketing/logo-block logos=block.logoBlock.customerLogos}}
+    <Marketing::LogoBlock @logos={{block.logoBlock.customerLogos}} />
   {{else if block.isProfileBlock}}
-    {{marketing/profile-block profiles=block.profileBlock.profiles}}
+    <Marketing::ProfileBlock @profiles={{block.profileBlock.profiles}} />
   {{else if block.isPricingTableBlock}}
-    {{marketing/pricing-table table=block.pricingTableBlock}}
+    <Marketing::PricingTable @table={{block.pricingTableBlock}} />
   {{else if block.isPricingCardBlock}}
-    {{marketing/pricing-card-block}}
+    <Marketing::PricingCardBlock />
   {{else if block.isCaseStudyBlock}}
-    {{marketing/case-study-block block=block.caseStudyBlock}}
+    <Marketing::CaseStudyBlock @block={{block.caseStudyBlock}} />
   {{/if}}
 {{/each}}

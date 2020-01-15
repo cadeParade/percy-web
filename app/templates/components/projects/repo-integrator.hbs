@@ -3,10 +3,10 @@
 {{#unless project.isDemo}}
   {{#if organization.isVersionControlIntegrated}}
     <div class="mb-2">
-      {{repo-selector project=project}}
+      <RepoSelector @project={{project}} />
     </div>
     <div class="rounded border p-2">
-      <strong>Note:</strong> Missing a repository? Check your organization's {{#link-to "organizations.organization.integrations" organization.slug class="font-semibold"}} integration settings{{/link-to}}.
+      <strong>Note:</strong> Missing a repository? Check your organization's <LinkTo @route="organizations.organization.integrations" @model={{organization.slug}} class="font-semibold"> integration settings</LinkTo>.
     </div>
   {{else}}
 

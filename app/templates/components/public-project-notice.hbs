@@ -4,7 +4,7 @@
     {{displayText}}
   </div>
   {{#if currentUser}}
-    {{#link-to "default-org" class="btn btn-primary mt-2 ml-5 md:ml-0 md:mt-0"}}{{btnText}}{{/link-to}}
+    <LinkTo @route="default-org" class="btn btn-primary mt-2 ml-5 md:ml-0 md:mt-0">{{btnText}}</LinkTo>
   {{else}}
     <a href="#" {{action "showLoginModal"}} class="btn btn-primary mt-2 ml-5 md:ml-0 md:mt-0">{{btnText}}</a>
   {{/if}}

@@ -17,15 +17,15 @@
         </div>
 
         <div data-test-bitbucket-cloud-settings>
-          {{#organizations/require-role role="admin" user=currentUser organization=organization}}
+          <Organizations::RequireRole @role="admin" @user={{currentUser}} @organization={{organization}}>
           <div class="mb-2">
-            {{organizations/bitbucket-cloud-integrator organization=organization}}
+            <Organizations::BitbucketCloudIntegrator @organization={{organization}} />
 
             {{#if organization.bitbucketCloudIntegration}}
-              {{organizations/integrations/repo-linker-list organization=organization}}
+              <Organizations::Integrations::RepoLinkerList @organization={{organization}} />
             {{/if}}
           </div>
-          {{/organizations/require-role}}
+          </Organizations::RequireRole>
         </div>
       </div>
 
@@ -34,13 +34,9 @@
         {{#if currentIntegration}}
           <button type="button" data-test-bitbucket-cloud-settings-delete class="btn btn-danger" {{action deleteBitbucketCloud currentIntegration}}>Remove Integration</button>
         {{/if}}
-        {{#link-to
-          'organizations.organization.integrations.index'
-          organization.slug
-          class="percy-btn"
-        }}
+        <LinkTo @route="organizations.organization.integrations.index" @model={{organization.slug}} class="percy-btn">
           Back
-        {{/link-to}}
+        </LinkTo>
       </div>
     </div>
   </section>

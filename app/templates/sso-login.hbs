@@ -1,11 +1,6 @@
 {{title "Percy: Login instructions"}}
-{{fixed-top-header}}
+<FixedTopHeader />
 
-{{sso-login-panel
-  connectionName=connectionName
-  provider=provider
-  organizationName=organizationName
-  required=required
-}}
+<SsoLoginPanel @connectionName={{connectionName}} @provider={{provider}} @organizationName={{organizationName}} @required={{required}} />
 
-{{main-footer}}
+<MainFooter />

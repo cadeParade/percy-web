@@ -4,7 +4,7 @@
       <a href="{{caseStudy.caseStudyLink}}" class="no-underline hover:no-underline cursor-pointer">
         <div class="text-center p-4 border rounded shadow-purple-lg h-full">
           <div class="flex justify-center pb-3" style="height: 65px;">
-            {{contentful-image file=caseStudy.logo.file class="h-full"}}
+            <ContentfulImage @file={{caseStudy.logo.file}} @class="h-full" />
           </div>
           <div class="font-semibold text-lg mb-3 text-gray-600">
             {{caseStudy.caseStudyTitle}}

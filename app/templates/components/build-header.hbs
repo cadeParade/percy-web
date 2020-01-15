@@ -1,6 +1,6 @@
 <div class="build-header" data-test-build-header>
   {{#unless isBuildApprovable}}
-    {{public-project-notice}}
+    <PublicProjectNotice />
   {{/unless}}
   <div
     class="build-header-state relative flex justify-between items-center py-3 pr-2 pl-3 border-b border-secondary">
@@ -8,9 +8,9 @@
       <div class="progress-bar-subtle absolute" style={{progressBarWidthStyle}}></div>
       <div class="progress-bar absolute" style={{progressBarWidthStyle}}></div>
     {{/unless}}
-    {{build-overview-info build=build isBuildApprovable=isBuildApprovable}}
+    <BuildOverviewInfo @build={{build}} @isBuildApprovable={{isBuildApprovable}} />
     <div class="text-right">
-      {{build-overview build=build progressBarWidth=progressBarWidth}}
+      <BuildOverview @build={{build}} @progressBarWidth={{progressBarWidth}} />
     </div>
   </div>
   {{#if (and build.isFinished build.browsersUpgraded)}}
@@ -46,7 +46,7 @@
         </div>
         <div class="text-sm">
           Build
-          {{#link-to "organization.project.builds.build" build.project.organization.slug build.project.slug build.baseBuild.id class="font-mono font-normal tracking-sm"}}{{build.baseBuild.buildNumber}}{{/link-to}}
+          <LinkTo @route="organization.project.builds.build" @models={{array build.project.organization.slug build.project.slug build.baseBuild.id}} class="font-mono font-normal tracking-sm">{{build.baseBuild.buildNumber}}</LinkTo>
           -
           <span class="cursor-default hint--right hint--rounded" aria-label="{{moment-format build.baseBuild.createdAt 'lll'}}">
             {{moment-from-now build.baseBuild.createdAt interval=60000}}
@@ -56,7 +56,7 @@
     </div>
     <div style="margin-left: -8px">
       <figure class="svg-container">
-        {{theme-svg svg="build-column-separation-icon"}}
+        <ThemeSvg @svg="build-column-separation-icon" />
       </figure>
     </div>
     <div class="w-1/2 text-secondary p-2 -mb-px">
@@ -138,7 +138,7 @@
         <div class="font-semibold mb-1">Build history on the
           <strong>{{build.project.organization.subscription.plan.name}}</strong> is limited to <strong>{{build.project.organization.subscription.plan.historyLimitDays}} days</strong>.
         </div>
-        You can easily {{#link-to "organizations.organization.billing" build.project.organization.slug}}upgrade your plan{{/link-to}} for more build history.
+        You can easily <LinkTo @route="organizations.organization.billing" @model={{build.project.organization.slug}}>upgrade your plan</LinkTo> for more build history.
       </div>
     {{else}}
       <div class="p-2 m-2 bg-secondary rounded border">
