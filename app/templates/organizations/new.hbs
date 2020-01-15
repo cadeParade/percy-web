@@ -1,10 +1,4 @@
 {{title "Create a new organization"}}
-{{fixed-top-header}}
+<FixedTopHeader />
 
-{{organizations/new-organization
-  newOrganization=newOrganization
-  organizationsForUser=organizationsForUser
-  userIdentities=identities
-  githubMarketplacePlanId=githubMarketplacePlanId
-  organizationCreated=(route-action 'organizationCreated')
-}}
+<Organizations::NewOrganization @newOrganization={{newOrganization}} @organizationsForUser={{organizationsForUser}} @userIdentities={{identities}} @githubMarketplacePlanId={{githubMarketplacePlanId}} @organizationCreated={{route-action "organizationCreated"}} />

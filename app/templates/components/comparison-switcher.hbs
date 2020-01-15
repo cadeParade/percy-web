@@ -1,10 +1,5 @@
 <div class="btn-toggle" data-test-comparison-switcher>
   {{#each (sort-by "width" comparisons) as |comparison|}}
-    {{comparison-switcher-item
-      selectedWidth=selectedWidth
-      width=comparison.width
-      comparisons=comparisons
-      updateSelectedWidth=updateSelectedWidth
-    }}
+    <ComparisonSwitcherItem @selectedWidth={{selectedWidth}} @width={{comparison.width}} @comparisons={{comparisons}} @updateSelectedWidth={{updateSelectedWidth}} />
   {{/each}}
 </div>

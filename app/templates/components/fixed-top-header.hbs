@@ -2,49 +2,49 @@
   <div class="w-90vw max-w-xl mx-auto flex justify-between items-center">
     <div class="flex items-center truncate">
       {{#if session.isAuthenticated}}
-        {{#link-to "index"}}
+        <LinkTo @route="index">
           <figure class="svg-container">
             {{inline-svg "percy-logo-on-light" class="mr-2"}}
           </figure>
-        {{/link-to}}
+        </LinkTo>
       {{else}}
-        {{#link-to "index"}}
+        <LinkTo @route="index">
           <figure class="sm:hidden svg-container">
             {{inline-svg "percy-logo-on-light" class="mr-3"}}
           </figure>
           <figure class="hidden sm:block svg-container">
             <div class="mr-3">
-              {{theme-svg svg="percy-full-horizontal-on-light"}}
+              <ThemeSvg @svg="percy-full-horizontal-on-light" />
             </div>
           </figure>
-        {{/link-to}}
+        </LinkTo>
       {{/if}}
 
       {{#if session.isAuthenticated}}
         {{#if currentOrganization}}
           <div class="flex items-center text-lg mr-3 truncate">
             <span class="truncate">
-              {{#link-to "organization" currentOrganization.slug class="link-purple data-test-organization-dashboard-link"}}
+              <LinkTo @route="organization" @model={{currentOrganization.slug}} class="link-purple data-test-organization-dashboard-link">
                 {{currentOrganization.name}}
-              {{/link-to}}
+              </LinkTo>
             </span>
             {{#if project}}
               <span class="font-semibold text-primary mx-sm">/</span>
-              {{#link-to "organization.project" currentOrganization.slug project class="link-purple truncate"}}
+              <LinkTo @route="organization.project" @models={{array currentOrganization.slug project}} class="link-purple truncate">
                 {{project.name}}
-              {{/link-to}}
+              </LinkTo>
             {{/if}}
           </div>
         {{/if}}
       {{/if}}
     </div>
 
-    {{notice-bar organization=currentOrganization shouldShowNewProjectPrompt=project.isDemo}}
+    <NoticeBar @organization={{currentOrganization}} @shouldShowNewProjectPrompt={{project.isDemo}} />
 
     {{#if session.isAuthenticated}}
-      {{nav-menu user=session.currentUser currentOrganization=currentOrganization isTransparentHeader=isTransparentHeader}}
+      <NavMenu @user={{session.currentUser}} @currentOrganization={{currentOrganization}} @isTransparentHeader={{isTransparentHeader}} />
     {{else}}
-      {{nav-menu}}
+      <NavMenu />
     {{/if}}
   </div>
 </div>

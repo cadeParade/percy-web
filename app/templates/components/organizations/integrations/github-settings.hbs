@@ -16,30 +16,26 @@
           <h2 class="text-xl font-semibold m-0">GitHub integration</h2>
         </div>
 
-        {{#organizations/require-role role="admin" user=currentUser organization=organization}}
+        <Organizations::RequireRole @role="admin" @user={{currentUser}} @organization={{organization}}>
         <div class="mb-2">
           {{#if (not (await isEligibleForGithubIntegration))}}
-            To install the GitHub integration you first need to {{#link-to 'settings.connected-accounts'}} connect your GitHub account{{/link-to}}.
+            To install the GitHub integration you first need to <LinkTo @route="settings.connected-accounts"> connect your GitHub account</LinkTo>.
           {{else}}
-            {{organizations/github-integrator organization=organization}}
+            <Organizations::GithubIntegrator @organization={{organization}} />
 
             {{#if organization.githubIntegration}}
-              {{organizations/integrations/repo-linker-list organization=organization}}
+              <Organizations::Integrations::RepoLinkerList @organization={{organization}} />
             {{/if}}
           {{/if}}
         </div>
-        {{/organizations/require-role}}
+        </Organizations::RequireRole>
       </div>
 
 
       <div class="flex justify-end px-2 pb-2">
-        {{#link-to
-          'organizations.organization.integrations.index'
-          organization.slug
-          class="percy-btn"
-        }}
+        <LinkTo @route="organizations.organization.integrations.index" @model={{organization.slug}} class="percy-btn">
           Back
-        {{/link-to}}
+        </LinkTo>
       </div>
     </div>
   </section>

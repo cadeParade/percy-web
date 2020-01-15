@@ -4,7 +4,7 @@
       style={{html-safe "background-image: url('" quote.headshot.file.url "?w=200&q=90');"}}>
       {{#if quote.logo.file.url}}
       <div class="quote-logo absolute bottom-0 p-1 bg-white border rounded-full">
-        {{contentful-image file=quote.logo.file}}
+        <ContentfulImage @file={{quote.logo.file}} />
       </div>
       {{/if}}
     </div>

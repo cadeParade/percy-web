@@ -7,26 +7,26 @@
 
   <dropdown.Trigger>
     <button data-test-build-info-dropdown-toggle class="flex center btn-icon-only" aria-label="View detailed information about this build">
-      {{theme-svg svg="build-info-icon"}}
+      <ThemeSvg @svg="build-info-icon" />
     </button>
   </dropdown.Trigger>
 
   <dropdown.Content class="BuildInfoDropdown-modal">
-    {{build-state-badge build=build}}
+    <BuildStateBadge @build={{build}} />
 
     <h3 class="mb-2 text-2xl font-bold">{{build.buildTitle}}</h3>
     <table class="w-full">
       <tr>
         <td>Created</td>
-        <td>{{build-started build=build}}</td>
+        <td><BuildStarted @build={{build}} /></td>
       </tr>
       <tr>
         <td>Build time</td>
-        <td>{{build-duration build=build}}</td>
+        <td><BuildDuration @build={{build}} /></td>
       </tr>
       <tr>
         <td>Baseline build</td>
-        <td>{{build-comparison-info build=build onLinkClick=(action dropdown.actions.close)}}</td>
+        <td><BuildComparisonInfo @build={{build}} @onLinkClick={{action dropdown.actions.close}} /></td>
       </tr>
 
       {{#if build.isFinished}}
@@ -68,12 +68,12 @@
 
     {{#if build.commit}}
       <h4 class="mb-2 mt-4 font-bold">Head commit</h4>
-      {{commit-table build=build commit=build.commit}}
+      <CommitTable @build={{build}} @commit={{build.commit}} />
     {{/if}}
 
     {{#if build.baseBuild.commit}}
       <h4 class="mb-2 mt-4 font-bold">Base commit</h4>
-      {{commit-table build=build.baseBuild commit=build.baseBuild.commit}}
+      <CommitTable @build={{build.baseBuild}} @commit={{build.baseBuild.commit}} />
     {{/if}}
 
     {{#if (is-admin)}}

@@ -5,9 +5,9 @@
 >
   <dropdown.Trigger class="focus:outline-none">
     <div class="flex items-center cursor-pointer z-top" {{action "loadOrgs" dropdown.isOpen}} data-test-org-switcher-toggle>
-      {{user-avatar user=user class="mr-sm"}}
+      <UserAvatar @user={{user}} @class="mr-sm" />
       <figure class="svg-container">
-        {{theme-svg svg="dropdown-icon"}}
+        <ThemeSvg @svg="dropdown-icon" />
       </figure>
     </div>
   </dropdown.Trigger>
@@ -42,9 +42,9 @@
       </div>
 
       <div class="pb-1">
-        {{#link-to "settings.profile" class="block px-2 py-sm text-primary hover:text-purple-600"}}
+        <LinkTo @route="settings.profile" class="block px-2 py-sm text-primary hover:text-purple-600">
           Account settings
-        {{/link-to}}
+        </LinkTo>
         <a href="#" class="block px-2 py-sm text-primary hover:text-purple-600" {{action "logout"}} data-test-logout>
           Logout
         </a>

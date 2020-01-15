@@ -1,20 +1,13 @@
 <form action="javascript:;" class="m-0 Form" data-test-billing-edit-form>
-  {{form-fields/input
-    property="billingEmail"
-    title="Billing email (for payment receipts)"
-    changeset=changeset
-    validateProperty=(action "validateProperty" changeset "billingEmail")
-    testLabel="billing-email"
-  }}
+  <FormFields::Input
+    @property="billingEmail"
+    @title="Billing email (for payment receipts)"
+    @changeset={{this.changeset}}
+    @validateProperty={{action "validateProperty" this.changeset "billingEmail"}}
+    @testLabel="billing-email"
+  />
   <div class="flex justify-start">
-    {{form-fields/submit
-      value="Save"
-      classes="btn btn-primary shadow-purple-lg mb-0 mr-2"
-      disabled=isSubmitDisabled
-      isSaving=isSaving
-      isSaveSuccessful=isSaveSuccessful
-      submit=(action "save")
-    }}
-    {{#percy-btn handleClick=hideForm}}Cancel{{/percy-btn}}
+    <FormFields::Submit @value="Save" @classes="btn btn-primary shadow-purple-lg mb-0 mr-2" @disabled={{isSubmitDisabled}} @isSaving={{isSaving}} @isSaveSuccessful={{isSaveSuccessful}} @submit={{action "save"}} />
+    <PercyBtn @handleClick={{hideForm}}>Cancel</PercyBtn>
   </div>
 </form>

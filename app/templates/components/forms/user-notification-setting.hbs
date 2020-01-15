@@ -9,25 +9,21 @@
   <div class="p-2 bg-gray-000 rounded border mb-2">
     <fieldset class="mb-0">
       {{#each userNotificationSettingOptions as |option|}}
-        {{#form.label data-test-notif-option=option.value class="flex mb-sm"}}
-          {{form.checkbox
-            data-test-checkbox=option.value
-            checked=(get userNotificationSetting option.path)
-            class="mr-2"
-          }}
+        <form.label @data-test-notif-option={{option.value}} @class="flex mb-sm">
+          <form.checkbox @data-test-checkbox={{option.value}} @checked={{get userNotificationSetting option.path}} @class="mr-2" />
 
           <div>
             <div class="font-semibold" data-test-notif-option-label>{{option.label}}</div>
             <div class="text-secondary" data-test-notif-option-description>{{option.description}}</div>
           </div>
-        {{/form.label}}
+        </form.label>
 
       {{/each}}
     </fieldset>
   </div>
 
-  {{#form.submit testLabel='submit'}}
+  <form.submit @testLabel="submit">
     Update notification settings
-  {{/form.submit}}
+  </form.submit>
 
 {{/percy-form}}

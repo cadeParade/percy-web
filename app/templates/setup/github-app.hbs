@@ -1,4 +1,4 @@
 {{title "Completing GitHub App Setup"}}
-{{fixed-top-header}}
-  {{setup-github-app installationId=installationId afterAppInstalled=(route-action "afterAppInstalled")}}
-{{main-footer}}
+<FixedTopHeader />
+  <SetupGithubApp @installationId={{installationId}} @afterAppInstalled={{route-action "afterAppInstalled"}} />
+<MainFooter />

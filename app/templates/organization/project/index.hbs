@@ -1,13 +1,8 @@
 {{title (concat project.name " dashboard | Percy") replace=true}}
 
-{{fixed-top-header currentOrganization=project.organization project=project}}
+<FixedTopHeader @currentOrganization={{project.organization}} @project={{project}} />
 
 <div data-test-project-page>
-  {{project-container
-    project=project
-    selectedBranch='All branches'
-    infinityBuilds=infinityBuilds
-    isUserMember=isUserMember
-  }}
+  <ProjectContainer @project={{project}} @selectedBranch="All branches" @infinityBuilds={{infinityBuilds}} @isUserMember={{isUserMember}} />
 </div>
 

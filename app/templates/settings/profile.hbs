@@ -1,9 +1,7 @@
 {{title (concat model.name " edit profile | Percy") replace=true}}
 <div class="w-90vw max-w-sm mx-auto">
   <section class="form-section mb-3">
-    {{forms/profile-edit
-      user=model
-    }}
+    <Forms::ProfileEdit @user={{model}} />
   </section>
 
   {{#if model.hasEmailPasswordIdentity}}
@@ -12,7 +10,7 @@
         <span class="label-body">Password</span>
       </label>
       <div>
-        {{password-change-button user=model}}
+        <PasswordChangeButton @user={{model}} />
       </div>
     </section>
   {{/if}}

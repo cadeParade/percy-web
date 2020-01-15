@@ -1,7 +1,7 @@
 <div data-test-user-card class="user-card bg-white border-b">
   <div class="px-4 py-3 flex items-center">
     <div style="min-width: 200px" class="flex flex-1 items-center pr-2">
-      {{user-avatar class="flex-none mr-2" user=organizationUser.user}}
+      <UserAvatar @class="flex-none mr-2" @user={{organizationUser.user}} />
       <div class="truncate">
         <div data-test-user-name class="font-semibold truncate leading-none">
           {{organizationUser.user.name}}
@@ -10,9 +10,9 @@
       </div>
     </div>
     <div data-test-user-role style="min-width: 100px" class="flex-1 leading-none">
-      {{#label-tag isPrimaryTag=(eq "Administrator" roleTitle)}}
+      <LabelTag @isPrimaryTag={{eq "Administrator" roleTitle}}>
         {{roleTitle}}
-      {{/label-tag}}
+      </LabelTag>
     </div>
     <div data-test-user-join-date class="flex-1 leading-none text-secondary" style="min-width: 100px;">
       {{moment-format organizationUser.createdAt 'MMM D, Y'}}
@@ -39,22 +39,22 @@
     <div class="user-card-actions flex-1 opacity-0 flex justify-end">
       <div data-test-user-button-toolbar class=" btn-toolbar">
         {{#if isCurrentUser}}
-          {{#percy-btn handleClick=(action "removeUser")}}
+          <PercyBtn @handleClick={{action "removeUser"}}>
             Leave organization
-          {{/percy-btn}}
+          </PercyBtn>
         {{else}}
           {{#if (eq "member" role)}}
-            {{#percy-btn isDisabled=(not isViewerAdmin) handleClick=(action "setRole" "admin")}}
+            <PercyBtn @isDisabled={{not isViewerAdmin}} @handleClick={{action "setRole" "admin"}}>
               Make admin
-            {{/percy-btn}}
+            </PercyBtn>
           {{else}}
-            {{#percy-btn isDisabled=(not isViewerAdmin) handleClick=(action "setRole" "member")}}
+            <PercyBtn @isDisabled={{not isViewerAdmin}} @handleClick={{action "setRole" "member"}}>
               Make member
-            {{/percy-btn}}
+            </PercyBtn>
           {{/if}}
-          {{#percy-btn isDisabled=(not isViewerAdmin) handleClick=(action "removeUser")}}
+          <PercyBtn @isDisabled={{not isViewerAdmin}} @handleClick={{action "removeUser"}}>
             Remove
-          {{/percy-btn}}
+          </PercyBtn>
         {{/if}}
       </div>
     </div>

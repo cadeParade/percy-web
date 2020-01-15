@@ -1,9 +1,5 @@
 {{title (concat model.name " Usage | Percy") replace=true}}
 
-{{#dashboard-nav-wrapper organization=organization showMemberLinks=true}}
-  {{organizations/usage-section
-    organization=organization
-    currentUsageStats=currentUsageStats
-    usageNotificationSetting=usageNotificationSetting
-  }}
-{{/dashboard-nav-wrapper}}
+<DashboardNavWrapper @organization={{organization}} @showMemberLinks={{true}}>
+  <Organizations::UsageSection @organization={{organization}} @currentUsageStats={{currentUsageStats}} @usageNotificationSetting={{usageNotificationSetting}} />
+</DashboardNavWrapper>

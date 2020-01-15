@@ -19,9 +19,9 @@
         </div>
       </div>
 
-      {{#link-to "signup" class="btn btn-md btn-green btn-scale text-center w-full" data-test-pricing-card-cta=true}}
+      <LinkTo @route="signup" class="btn btn-md btn-green btn-scale text-center w-full" data-test-pricing-card-cta={{true}}>
         Sign up for free
-      {{/link-to}}
+      </LinkTo>
     </div>
   </div>
 
@@ -63,13 +63,7 @@
       </div>
 
       <div class="px-2">
-        {{range-slider
-          min=sliderSetup.minRange
-          max=sliderSetup.maxRange
-          step=sliderSetup.step
-          value=displaySnapshotCount
-          handleSliderMoved=(action "handleSliderMoved")
-        }}
+        <RangeSlider @min={{sliderSetup.minRange}} @max={{sliderSetup.maxRange}} @step={{sliderSetup.step}} @value={{displaySnapshotCount}} @handleSliderMoved={{action "handleSliderMoved"}} />
       </div>
 
       <div class="font-semibold text-gray-500 text-right" style="height: 70px;" data-test-price-text>
@@ -86,13 +80,13 @@
       </div>
 
       {{#if isEnterpriseSelected}}
-        {{#link-to "enterprise" class="btn btn-md btn-purple btn-scale text-center w-full" data-test-pricing-card-cta=true}}
+        <LinkTo @route="enterprise" class="btn btn-md btn-purple btn-scale text-center w-full" data-test-pricing-card-cta={{true}}>
           Learn more
-        {{/link-to}}
+        </LinkTo>
       {{else}}
-        {{#link-to "signup" class="btn btn-md btn-purple btn-scale text-center w-full" data-test-pricing-card-cta=true}}
+        <LinkTo @route="signup" class="btn btn-md btn-purple btn-scale text-center w-full" data-test-pricing-card-cta={{true}}>
           Get started
-        {{/link-to}}
+        </LinkTo>
       {{/if}}
     </div>
   </div>
@@ -112,9 +106,9 @@
           </div>
         </div>
       </div>
-      {{#link-to "enterprise" class="btn btn-md btn-gray btn-scale text-center w-full" data-test-pricing-card-cta=true}}
+      <LinkTo @route="enterprise" class="btn btn-md btn-gray btn-scale text-center w-full" data-test-pricing-card-cta={{true}}>
         Learn more
-      {{/link-to}}
+      </LinkTo>
     </div>
   </div>
 

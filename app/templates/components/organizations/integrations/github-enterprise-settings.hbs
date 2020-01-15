@@ -34,13 +34,9 @@
       </div>
       <div class="flex justify-end">
         <div class="btn-toolbar">
-          {{#link-to
-            'organizations.organization.integrations.index'
-            organization.slug
-            class="btn"
-          }}
+          <LinkTo @route="organizations.organization.integrations.index" @model={{organization.slug}} class="btn">
             Back
-          {{/link-to}}
+          </LinkTo>
           <button class="btn btn-primary shadow-purple-lg">Save Github Settings</button>
         </div>
       </div>

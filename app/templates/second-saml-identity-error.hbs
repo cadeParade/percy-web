@@ -1,12 +1,6 @@
 {{title "Percy: Login Error"}}
-{{fixed-top-header}}
+<FixedTopHeader />
 
-{{second-saml-identity-error-panel
-  connectionName=connectionName
-  newSsoProfileEmail=newSsoProfileEmail
-  organizationName=organizationName
-  provider=provider
-  userEmail=userEmail
-}}
+<SecondSamlIdentityErrorPanel @connectionName={{connectionName}} @newSsoProfileEmail={{newSsoProfileEmail}} @organizationName={{organizationName}} @provider={{provider}} @userEmail={{userEmail}} />
 
-{{main-footer}}
+<MainFooter />

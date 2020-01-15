@@ -14,14 +14,10 @@
         </div>
       </div>
     </div>
-    {{#link-to
-      "organizations.organization.integrations.slack.slack-config"
-      slackIntegrationConfig.slackIntegration.id
-      slackIntegrationConfig.id
-    }}
+    <LinkTo @route="organizations.organization.integrations.slack.slack-config" @models={{array slackIntegrationConfig.slackIntegration.id slackIntegrationConfig.id}}>
       <button type="button" class="percy-btn ml-2" data-test-edit-button>
         Edit Configuration
       </button>
-    {{/link-to}}
+    </LinkTo>
   </div>
 </div>

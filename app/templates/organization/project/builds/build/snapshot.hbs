@@ -1,18 +1,3 @@
-{{#modal-dialog wrapperClass="SnapshotViewerFullModalWrapper"}}
-  {{snapshot-viewer-full
-    snapshot=model.snapshot
-    snapshotSelectedWidth=snapshotSelectedWidth
-    comparisonMode=comparisonMode
-    updateComparisonMode=(route-action 'updateComparisonMode')
-    transitionRouteToWidth=(route-action 'transitionRouteToWidth')
-    closeSnapshotFullModal=(route-action 'closeSnapshotFullModal')
-    createReview=(route-action "createReview")
-    updateSnapshotId=(route-action "updateSnapshotId")
-    activeBrowser=activeBrowser
-    updateActiveBrowser=(route-action 'updateActiveBrowser')
-    isBuildApprovable=isBuildApprovable
-    createCommentThread=(route-action "createCommentThread")
-    closeCommentThread=(route-action "closeCommentThread")
-    createComment=(route-action "createComment")
-  }}
-{{/modal-dialog}}
+<ModalDialog @wrapperClass="SnapshotViewerFullModalWrapper">
+  <SnapshotViewerFull @snapshot={{model.snapshot}} @snapshotSelectedWidth={{snapshotSelectedWidth}} @comparisonMode={{comparisonMode}} @updateComparisonMode={{route-action "updateComparisonMode"}} @transitionRouteToWidth={{route-action "transitionRouteToWidth"}} @closeSnapshotFullModal={{route-action "closeSnapshotFullModal"}} @createReview={{route-action "createReview"}} @updateSnapshotId={{route-action "updateSnapshotId"}} @activeBrowser={{activeBrowser}} @updateActiveBrowser={{route-action "updateActiveBrowser"}} @isBuildApprovable={{isBuildApprovable}} @createCommentThread={{route-action "createCommentThread"}} @closeCommentThread={{route-action "closeCommentThread"}} @createComment={{route-action "createComment"}} />
+</ModalDialog>

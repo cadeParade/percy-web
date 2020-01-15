@@ -15,7 +15,7 @@
           </div>
         {{/if}}
 
-        {{forms/project-new organization=model saveSuccess=(route-action "projectCreated")}}
+        <Forms::ProjectNew @organization={{model}} @saveSuccess={{route-action "projectCreated"}} />
       </section>
     </div>
   </div>

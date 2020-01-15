@@ -25,7 +25,7 @@
     <tbody class="pricing-feature-table">
       {{#each table.pricingTableRows as |row index|}}
         {{#if (gt index 0)}}
-          {{marketing/pricing-table-row row=row}}
+          <Marketing::PricingTableRow @row={{row}} />
         {{/if}}
       {{/each}}
     </tbody>

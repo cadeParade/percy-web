@@ -1,13 +1,6 @@
 <form class="Form" action="javascript:;" data-test-new-org-form>
   <div class="pt-2 px-2 bg-gray-000 rounded border mb-3">
-    {{form-fields/input
-      property="name"
-      title=(if isFirstOrganization "Company name" "Organization name")
-      changeset=changeset
-      autofocus=isInputFocused
-      placeholder="Acme Co."
-      testLabel="organization-name"
-    }}
+    <FormFields::Input @property="name" @title={{if isFirstOrganization "Company name" "Organization name"}} @changeset={{this.changeset}} @autofocus={{isInputFocused}} @placeholder="Acme Co." @testLabel="organization-name" />
     {{#if errorMessage}}
       <div class="Form-errors">
         {{errorMessage}}
@@ -15,14 +8,7 @@
     {{/if}}
 
     {{#if (and hasOnlyGithubIdentity isFirstOrganization)}}
-      {{form-fields/input
-        property="email"
-        title="Confirm email address"
-        changeset=userChangeset
-        placeholder="name@acme.co"
-        validateProperty=(action "validateProperty" userChangeset "email")
-        testLabel="user-email"
-      }}
+      <FormFields::Input @property="email" @title="Confirm email address" @changeset={{userChangeset}} @placeholder="name@acme.co" @validateProperty={{action "validateProperty" userChangeset "email"}} @testLabel="user-email" />
     {{/if}}
   </div>
 
@@ -36,13 +22,7 @@
           Check out what Percy is capable of
         </div>
       </div>
-      {{form-fields/submit
-        value="Try demo project"
-        classes="percy-btn percy-btn-primary data-test-demo-submit-button"
-        submit=(action "handleSubmit" "demo")
-        isSaving=isDemoSaving
-        disabled=isDemoDisabled
-      }}
+      <FormFields::Submit @value="Try demo project" @classes="percy-btn percy-btn-primary data-test-demo-submit-button" @submit={{action "handleSubmit" "demo"}} @isSaving={{isDemoSaving}} @disabled={{isDemoDisabled}} />
     </div>
   {{/if}}
 
@@ -55,12 +35,6 @@
         Start a new Percy project
       </div>
     </div>
-    {{form-fields/submit
-      value="Start new project"
-      classes="percy-btn data-test-project-submit-button"
-      submit=(action "handleSubmit" "project")
-      isSaving=isCustomProjectSaving
-      disabled=isCustomProjectDisabled
-    }}
+    <FormFields::Submit @value="Start new project" @classes="percy-btn data-test-project-submit-button" @submit={{action "handleSubmit" "project"}} @isSaving={{isCustomProjectSaving}} @disabled={{isCustomProjectDisabled}} />
   </div>
 </form>

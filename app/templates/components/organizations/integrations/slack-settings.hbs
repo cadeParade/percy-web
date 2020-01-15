@@ -1,11 +1,7 @@
 <div data-test-slack-settings>
   {{#if organization.isSlackIntegrated}}
     {{#each organization.slackIntegrations as |slackIntegration|}}
-      {{organizations/integrations/slack-integration-item
-        projectOptions=projectOptions
-        slackIntegration=slackIntegration
-        deleteSlackIntegration=deleteSlackIntegration
-      }}
+      <Organizations::Integrations::SlackIntegrationItem @projectOptions={{projectOptions}} @slackIntegration={{slackIntegration}} @deleteSlackIntegration={{deleteSlackIntegration}} />
     {{/each}}
   {{/if}}
 
@@ -13,9 +9,9 @@
     <div class="bg-white rounded shadow-1 border-t p-2">
       <div class="flex items-center">
         {{inline-svg "slack-icon" class="mr-2"}}
-        {{#percy-btn handleClick=(action "connectSlackChannel") isPrimaryButton=true}}
+        <PercyBtn @handleClick={{action "connectSlackChannel"}} @isPrimaryButton={{true}}>
           Add Slack channel
-        {{/percy-btn}}
+        </PercyBtn>
       </div>
     </div>
   </section>

@@ -13,9 +13,9 @@
   </div>
 
   {{#if isEnabled}}
-    {{#percy-btn handleClick=(action "installButtonAction") class=buttonClasses}}
+    <PercyBtn @handleClick={{action "installButtonAction"}} @class={{buttonClasses}}>
       {{buttonText}}
-    {{/percy-btn}}
+    </PercyBtn>
   {{else if (and isBeta isInstalled)}}
     <button
       class="btn btn-primary"

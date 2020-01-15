@@ -20,7 +20,7 @@
 
   {{#if showInviteForm}}
     <div class="pb-4" data-test-invite-form-wrapper>
-      {{forms/organization-invite organization=organization}}
+      <Forms::OrganizationInvite @organization={{organization}} />
     </div>
   {{else if isInviteFormAllowed}}
     <div data-test-invite-permission-error class="pb-3">
