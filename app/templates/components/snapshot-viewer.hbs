@@ -1,13 +1,52 @@
-<LazyLoadingSnapshotItem @shouldFullyRender={{shouldFullyRender}} @displayTitle={{snapshot.name}}>
-  <SnapshotViewerHeader @fullscreen={{false}} @snapshot={{snapshot}} @snapshotSelectedWidth={{blockSelectedWidth}} @selectedComparison={{selectedComparison}} @toggleViewMode={{action showSnapshotFullModalTriggered snapshot.id blockSelectedWidth activeBrowser}} @toggleCollaborationPanel={{action "toggleCollaborationPanel"}} @updateSelectedWidth={{action "updateSelectedWidth"}} @createReview={{createReview}} @expandSnapshot={{action "expandBlock"}} @activeBrowser={{activeBrowser}} @updateActiveBrowser={{updateActiveBrowser}} @isBuildApprovable={{isBuildApprovable}} @index={{index}} @openCommentThreads={{openCommentThreads}} />
+<LazyLoadingSnapshotItem
+  @shouldFullyRender={{shouldFullyRender}}
+  @displayTitle={{snapshot.name}}
+>
+  <SnapshotViewerHeader
+    @fullscreen={{false}}
+    @snapshot={{snapshot}}
+    @snapshotSelectedWidth={{blockSelectedWidth}}
+    @selectedComparison={{selectedComparison}}
+    @toggleViewMode={{action showSnapshotFullModalTriggered snapshot.id blockSelectedWidth activeBrowser}}
+    @toggleCollaborationPanel={{action "toggleCollaborationPanel"}}
+    @updateSelectedWidth={{action "updateSelectedWidth"}}
+    @createReview={{createReview}}
+    @expandSnapshot={{action "expandBlock"}}
+    @activeBrowser={{activeBrowser}}
+    @updateActiveBrowser={{updateActiveBrowser}}
+    @isBuildApprovable={{isBuildApprovable}}
+    @index={{index}}
+    @openCommentThreads={{openCommentThreads}}
+  />
 
   {{#if isExpanded}}
     {{#if selectedComparison}}
       <div class="flex flex-col flex-col-reverse lg:flex-row bg-secondary">
-        <ComparisonViewer @class="flex-1" @comparison={{selectedComparison}} @allDiffsShown={{allDiffsShown}} @snapshotSelectedWidth={{blockSelectedWidth}} @isDefaultExpanded={{isDefaultExpanded}} @isUnchangedSnapshotExpanded={{isUnchangedSnapshotExpanded}} @data-test-SnapshotViewer-comparison={{true}} @activeBrowser={{activeBrowser}} @isSnapshotDiffOverlayShowingClickBadge={{isSnapshotDiffOverlayShowingClickBadge}} @index={{index}} @showDiffOverlay={{isSnapshotShowingDiffOverlay}} @toggleOverlay={{action "toggleSnapshotOverlay"}} />
+        <ComparisonViewer
+          @class="flex-1"
+          @comparison={{selectedComparison}}
+          @allDiffsShown={{allDiffsShown}}
+          @snapshotSelectedWidth={{blockSelectedWidth}}
+          @isDefaultExpanded={{isDefaultExpanded}}
+          @isUnchangedSnapshotExpanded={{isUnchangedSnapshotExpanded}}
+          @data-test-SnapshotViewer-comparison={{true}}
+          @activeBrowser={{activeBrowser}}
+          @isSnapshotDiffOverlayShowingClickBadge={{isSnapshotDiffOverlayShowingClickBadge}}
+          @index={{index}}
+          @showDiffOverlay={{isSnapshotShowingDiffOverlay}}
+          @toggleOverlay={{action "toggleSnapshotOverlay"}}
+        />
 
         {{#if isCommentPanelShowing}}
-          <Collaboration::CollaborationPanel @commentThreads={{commentThreads}} @showCollaborationPanel={{isShowingCollaborationPanel}} @createCommentThread={{createCommentThread}} @createComment={{createComment}} @closeCommentThread={{closeCommentThread}} @isCommentingAllowed={{isBuildApprovable}} @snapshot={{snapshot}} />
+          <Collaboration::CollaborationPanel
+            @commentThreads={{commentThreads}}
+            @showCollaborationPanel={{isShowingCollaborationPanel}}
+            @createCommentThread={{createCommentThread}}
+            @createComment={{createComment}}
+            @closeCommentThread={{closeCommentThread}}
+            @isCommentingAllowed={{isBuildApprovable}}
+            @snapshot={{snapshot}}
+          />
         {{/if}}
       </div>
     {{else}}

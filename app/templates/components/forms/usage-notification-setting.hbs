@@ -1,14 +1,39 @@
 <div data-test-usage-notification-setting-form>
   <div class="flex items-center justify-between">
     <h2 class="text-xl font-semibold mb-1">Usage notifications</h2>
-    <FormFields::Checkbox @property="isEnabled" @title="Enabled" @checkedValue={{true}} @uncheckedValue={{false}} @toggle={{true}} @changeset={{this.changeset}} @testLabel="usage-notification-enabled-slider" />
+    <FormFields::Checkbox
+      @property="isEnabled"
+      @title="Enabled"
+      @checkedValue={{true}}
+      @uncheckedValue={{false}}
+      @toggle={{true}}
+      @changeset={{this.changeset}}
+      @testLabel="usage-notification-enabled-slider"
+    />
   </div>
   <p>Receive emails based on how many Percy snapshots you've used in your current billing cycle.</p>
 
   <form action="javascript:;" class="Form mb-0">
-    <FormFields::Textarea @property="displayEmails" @class="mb-2" @title="Email addresses (separated by spaces)" @placeholder="Separate each email address with a space: person1@email.com person2@email.com" @changeset={{this.changeset}} @validateProperty={{action "validateProperty" this.changeset "displayEmails"}} @testLabel="usage-notification-emails" />
+    <FormFields::Textarea
+      @property="displayEmails"
+      @class="mb-2"
+      @title="Email addresses (separated by spaces)"
+      @placeholder="Separate each email address with a space: person1
+      @email.com person2
+      @email.com"
+      @changeset={{this.changeset}}
+      @validateProperty={{action "validateProperty" this.changeset "displayEmails"}}
+      @testLabel="usage-notification-emails"
+    />
 
-    <FormFields::Input @property="displayThresholds" @title="Number of snapshots reached to receive notification (separated by spaces)" @placeholder="Separate each number with a space: 5000 30000" @changeset={{this.changeset}} @validateProperty={{action "validateProperty" this.changeset "displayThresholds"}} @testLabel="usage-notification-thresholds" />
+    <FormFields::Input
+      @property="displayThresholds"
+      @title="Number of snapshots reached to receive notification (separated by spaces)"
+      @placeholder="Separate each number with a space: 5000 30000"
+      @changeset={{this.changeset}}
+      @validateProperty={{action "validateProperty" this.changeset "displayThresholds"}}
+      @testLabel="usage-notification-thresholds"
+    />
 
     {{#if errorMessage}}
       <div class="Form-errors">
@@ -17,7 +42,14 @@
     {{/if}}
 
     <div class="flex justify-end">
-      <FormFields::Submit @value="Save" @classes="percy-btn percy-btn-primary mb-0" @submit={{action "customSave"}} @testLabel="usage-notification-save" @isSaving={{isSaving}} @isSaveSuccessful={{isSaveSuccessful}} />
+      <FormFields::Submit
+        @value="Save"
+        @classes="percy-btn percy-btn-primary mb-0"
+        @submit={{action "customSave"}}
+        @testLabel="usage-notification-save"
+        @isSaving={{isSaving}}
+        @isSaveSuccessful={{isSaveSuccessful}}
+      />
     </div>
   </form>
 </div>

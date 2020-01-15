@@ -39,10 +39,17 @@
       {{/if}}
     </div>
 
-    <NoticeBar @organization={{currentOrganization}} @shouldShowNewProjectPrompt={{project.isDemo}} />
+    <NoticeBar
+      @organization={{currentOrganization}}
+      @shouldShowNewProjectPrompt={{project.isDemo}}
+    />
 
     {{#if session.isAuthenticated}}
-      <NavMenu @user={{session.currentUser}} @currentOrganization={{currentOrganization}} @isTransparentHeader={{isTransparentHeader}} />
+      <NavMenu
+        @user={{session.currentUser}}
+        @currentOrganization={{currentOrganization}}
+        @isTransparentHeader={{isTransparentHeader}}
+      />
     {{else}}
       <NavMenu />
     {{/if}}

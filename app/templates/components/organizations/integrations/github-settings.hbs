@@ -16,7 +16,11 @@
           <h2 class="text-xl font-semibold m-0">GitHub integration</h2>
         </div>
 
-        <Organizations::RequireRole @role="admin" @user={{currentUser}} @organization={{organization}}>
+        <Organizations::RequireRole
+          @role="admin"
+          @user={{currentUser}}
+          @organization={{organization}}
+        >
         <div class="mb-2">
           {{#if (not (await isEligibleForGithubIntegration))}}
             To install the GitHub integration you first need to <LinkTo @route="settings.connected-accounts"> connect your GitHub account</LinkTo>.

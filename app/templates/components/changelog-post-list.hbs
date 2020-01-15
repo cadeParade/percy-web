@@ -1,8 +1,15 @@
 <div class="changelog-post-list">
   {{#each changelogPosts as |changelogPost|}}
-    <ChangelogPost @postId={{changelogPost.id}} @tag={{changelogPost.tag}} @date={{moment-format changelogPost.date "MMM D, YYYY"}}>
+    <ChangelogPost
+      @postId={{changelogPost.id}}
+      @tag={{changelogPost.tag}}
+      @date={{moment-format changelogPost.date "MMM D, YYYY"}}
+    >
       <h2>
-        <LinkTo @route="changelog.show" @model={{changelogPost.slug}}>
+        <LinkTo
+          @route="changelog.show"
+          @model={{changelogPost.slug}}
+        >
           {{changelogPost.title}}
         </LinkTo>
       </h2>

@@ -1,7 +1,22 @@
-<BuildToolbar @build={{build}} @project={{build.project}} @organization={{build.project.organization}} @allDiffsShown={{allDiffsShown}} @toggleAllDiffs={{action "toggleAllDiffs"}} @createReview={{createReview}} @approvableSnapshots={{allApprovableSnapshots}} @activeBrowser={{activeBrowser}} @updateActiveBrowser={{action "updateActiveBrowser"}} @isSnapshotsLoading={{isSnapshotsLoading}} @isBuildApprovable={{isBuildApprovable}} />
+<BuildToolbar
+  @build={{build}}
+  @project={{build.project}}
+  @organization={{build.project.organization}}
+  @allDiffsShown={{allDiffsShown}}
+  @toggleAllDiffs={{action "toggleAllDiffs"}}
+  @createReview={{createReview}}
+  @approvableSnapshots={{allApprovableSnapshots}}
+  @activeBrowser={{activeBrowser}}
+  @updateActiveBrowser={{action "updateActiveBrowser"}}
+  @isSnapshotsLoading={{isSnapshotsLoading}}
+  @isBuildApprovable={{isBuildApprovable}}
+/>
 
 <div class="BuildContainer-body w-full">
-  <BuildHeader @build={{build}} @isBuildApprovable={{isBuildApprovable}} />
+  <BuildHeader
+    @build={{build}}
+    @isBuildApprovable={{isBuildApprovable}}
+  />
 
   {{#if (and build.isFinished build.partial)}}
     <div class="public-project-notice p-2 border flex items-center font-semibold">
@@ -16,6 +31,24 @@
   {{#if isSnapshotsLoading}}
     <LoadingPage />
   {{else if build.isFinished}}
-    <SnapshotList @snapshotsChanged={{snapshotsChanged}} @build={{build}} @allDiffsShown={{allDiffsShown}} @toggleAllDiffs={{action "toggleAllDiffs"}} @isKeyboardNavEnabled={{not isHidingBuildContainer}} @showSnapshotFullModalTriggered={{action "showSnapshotFullModalTriggered"}} @createReview={{createReview}} @activeBrowser={{activeBrowser}} @updateActiveBrowser={{action "updateActiveBrowser"}} @isUnchangedSnapshotsVisible={{isUnchangedSnapshotsVisible}} @toggleUnchangedSnapshotsVisible={{action "toggleUnchangedSnapshotsVisible"}} @snapshotsUnchanged={{snapshotsUnchanged}} @isUnchangedSnapshotsLoading={{isUnchangedSnapshotsLoading}} @isBuildApprovable={{isBuildApprovable}} @createCommentThread={{createCommentThread}} @closeCommentThread={{closeCommentThread}} @createComment={{createComment}} />
+    <SnapshotList
+      @snapshotsChanged={{snapshotsChanged}}
+      @build={{build}}
+      @allDiffsShown={{allDiffsShown}}
+      @toggleAllDiffs={{action "toggleAllDiffs"}}
+      @isKeyboardNavEnabled={{not isHidingBuildContainer}}
+      @showSnapshotFullModalTriggered={{action "showSnapshotFullModalTriggered"}}
+      @createReview={{createReview}}
+      @activeBrowser={{activeBrowser}}
+      @updateActiveBrowser={{action "updateActiveBrowser"}}
+      @isUnchangedSnapshotsVisible={{isUnchangedSnapshotsVisible}}
+      @toggleUnchangedSnapshotsVisible={{action "toggleUnchangedSnapshotsVisible"}}
+      @snapshotsUnchanged={{snapshotsUnchanged}}
+      @isUnchangedSnapshotsLoading={{isUnchangedSnapshotsLoading}}
+      @isBuildApprovable={{isBuildApprovable}}
+      @createCommentThread={{createCommentThread}}
+      @closeCommentThread={{closeCommentThread}}
+      @createComment={{createComment}}
+    />
   {{/if}}
 </div>

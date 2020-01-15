@@ -63,7 +63,13 @@
       </div>
 
       <div class="px-2">
-        <RangeSlider @min={{sliderSetup.minRange}} @max={{sliderSetup.maxRange}} @step={{sliderSetup.step}} @value={{displaySnapshotCount}} @handleSliderMoved={{action "handleSliderMoved"}} />
+        <RangeSlider
+          @min={{sliderSetup.minRange}}
+          @max={{sliderSetup.maxRange}}
+          @step={{sliderSetup.step}}
+          @value={{displaySnapshotCount}}
+          @handleSliderMoved={{action "handleSliderMoved"}}
+        />
       </div>
 
       <div class="font-semibold text-gray-500 text-right" style="height: 70px;" data-test-price-text>

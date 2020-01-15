@@ -1,8 +1,22 @@
 <form class="Form m-0" action="javascript:;" data-test-project-edit-form>
   <div class="p-2 bg-gray-000 rounded border mb-2">
-    <FormFields::Input @property="name" @title="Project name" @changeset={{this.changeset}} @validateProperty={{action "validateProperty" changeset "name"}} @disabled={{project.isDemo}} @testLabel="data-test-project-edit-name" />
+    <FormFields::Input
+      @property="name"
+      @title="Project name"
+      @changeset={{this.changeset}}
+      @validateProperty={{action "validateProperty" changeset "name"}}
+      @disabled={{project.isDemo}}
+      @testLabel="data-test-project-edit-name"
+    />
 
-    <FormFields::Input @property="slug" @title="Slug" @changeset={{this.changeset}} @validateProperty={{action "validateProperty" this.changeset "slug"}} @disabled={{project.isDemo}} @testLabel="data-test-project-edit-slug" />
+    <FormFields::Input
+      @property="slug"
+      @title="Slug"
+      @changeset={{this.changeset}}
+      @validateProperty={{action "validateProperty" this.changeset "slug"}}
+      @disabled={{project.isDemo}}
+      @testLabel="data-test-project-edit-slug"
+    />
     <div class="rounded bg-yellow-000 border border-yellow-100 p-2">
       <strong>Note:</strong> The slug is used to identify this project in URLs and the Percy API. Old build URLs will break if the slug is changed.
     </div>
@@ -10,15 +24,39 @@
 
   <h2 class="text-xl font-semibold mb-1" data-test-branch-settings-header>Branch settings</h2>
   <div class="p-2 bg-gray-000 rounded border mb-2">
-    <FormFields::Input @property="defaultBaseBranch" @title="Default base branch" @subtitle="The default branch that’s used as the base build for comparisons. <a href='https://docs.percy.io/docs/baseline-picking-logic#section-overriding-the-default-base-branch'>Learn more in the docs</a>." @changeset={{this.changeset}} @validateProperty={{action "validateProperty" this.changeset "defaultBaseBranch"}} @disabled={{project.isDemo}} @testLabel="data-test-project-edit-default-branch" />
+    <FormFields::Input
+      @property="defaultBaseBranch"
+      @title="Default base branch"
+      @subtitle="The default branch that’s used as the base build for comparisons. <a href='https://docs.percy.io/docs/baseline-picking-logic#section-overriding-the-default-base-branch'>Learn more in the docs</a>."
+      @changeset={{this.changeset}}
+      @validateProperty={{action "validateProperty" this.changeset "defaultBaseBranch"}}
+      @disabled={{project.isDemo}}
+      @testLabel="data-test-project-edit-default-branch"
+    />
 
-    <FormFields::Input @property="autoApproveBranchFilter" @title="Auto-approve branches" @subtitle="Builds with branches that match this filter will be automatically approved and won't require manual approval. <br />Separate multiple branches with spaces. You can use <code>*</code> as a wildcard match. Example: <code>master staging-* release-*.*.*</code>" @changeset={{this.changeset}} @disabled={{project.isDemo}} @testLabel="data-test-project-edit-autoapprove" />
+    <FormFields::Input
+      @property="autoApproveBranchFilter"
+      @title="Auto-approve branches"
+      @subtitle="Builds with branches that match this filter will be automatically approved and won't require manual approval. <br />Separate multiple branches with spaces. You can use <code>*</code> as a wildcard match. Example: <code>master staging-* release-*.*.*</code>"
+      @changeset={{this.changeset}}
+      @disabled={{project.isDemo}}
+      @testLabel="data-test-project-edit-autoapprove"
+    />
   </div>
 
   <h2 class="text-xl font-semibold mb-1">Privacy</h2>
   <div class="p-2 bg-gray-000 rounded border mb-2">
     <div class="{{if isPlanSponsored "hint hint--top hint--rounded"}}" aria-label={{if isPlanSponsored "This project's organization is sponsored, so the project must be public."}}>
-      <FormFields::Checkbox @property="publiclyReadable" @changeset={{this.changeset}} @title="Allow public viewers?" @checkedValue={{true}} @uncheckedValue={{false}} @toggle={{true}} @isDisabled={{or isPlanSponsored project.isDemo}} @testLabel="data-test-project-edit-public-checkbox" />
+      <FormFields::Checkbox
+        @property="publiclyReadable"
+        @changeset={{this.changeset}}
+        @title="Allow public viewers?"
+        @checkedValue={{true}}
+        @uncheckedValue={{false}}
+        @toggle={{true}}
+        @isDisabled={{or isPlanSponsored project.isDemo}}
+        @testLabel="data-test-project-edit-public-checkbox"
+      />
     </div>
     If enabled, this project is publicly viewable by members outside of this organization. <a href="https://docs.percy.io/docs/public-projects">Learn more</a>.
   </div>
@@ -30,6 +68,13 @@
   {{/if}}
 
   <div class="flex justify-end">
-    <FormFields::Submit @isSaving={{isSaving}} @isSaveSuccessful={{isSaveSuccessful}} @value="Save" @classes="btn btn-primary shadow-purple-lg mb-0" @disabled={{project.isDemo}} @submit={{action "save"}} />
+    <FormFields::Submit
+      @isSaving={{isSaving}}
+      @isSaveSuccessful={{isSaveSuccessful}}
+      @value="Save"
+      @classes="btn btn-primary shadow-purple-lg mb-0"
+      @disabled={{project.isDemo}}
+      @submit={{action "save"}}
+    />
   </div>
 </form>

@@ -21,8 +21,16 @@
 
 <section>
   <div data-test-gitlab-settings class="bg-white rounded shadow-1 border-t p-2 mb-2">
-    <Organizations::RequireRole @user={{currentUser}} @organization={{organization}}>
-      <Forms::GitlabSettingsEdit @organization={{organization}} @currentGitlabIntegration={{currentGitlabIntegration}} @isNewRecord={{isNewRecord}} @afterDelete={{afterDelete}} />
+    <Organizations::RequireRole
+      @user={{currentUser}}
+      @organization={{organization}}
+    >
+      <Forms::GitlabSettingsEdit
+        @organization={{organization}}
+        @currentGitlabIntegration={{currentGitlabIntegration}}
+        @isNewRecord={{isNewRecord}}
+        @afterDelete={{afterDelete}}
+      />
     </Organizations::RequireRole>
   </div>
 </section>

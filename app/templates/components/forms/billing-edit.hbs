@@ -7,7 +7,14 @@
     @testLabel="billing-email"
   />
   <div class="flex justify-start">
-    <FormFields::Submit @value="Save" @classes="btn btn-primary shadow-purple-lg mb-0 mr-2" @disabled={{isSubmitDisabled}} @isSaving={{isSaving}} @isSaveSuccessful={{isSaveSuccessful}} @submit={{action "save"}} />
+    <FormFields::Submit
+      @value="Save"
+      @classes="btn btn-primary shadow-purple-lg mb-0 mr-2"
+      @disabled={{isSubmitDisabled}}
+      @isSaving={{isSaving}}
+      @isSaveSuccessful={{isSaveSuccessful}}
+      @submit={{action "save"}}
+    />
     <PercyBtn @handleClick={{hideForm}}>Cancel</PercyBtn>
   </div>
 </form>
