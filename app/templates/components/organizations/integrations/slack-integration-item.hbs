@@ -12,7 +12,10 @@
 
     <div class="my-2">
       {{#each slackIntegrationConfigs as |slackIntegrationConfig|}}
-        <Organizations::Integrations::SlackConfigItem @projectOptions={{projectOptions}} @slackIntegrationConfig={{slackIntegrationConfig}} />
+        <Organizations::Integrations::SlackConfigItem
+          @projectOptions={{projectOptions}}
+          @slackIntegrationConfig={{slackIntegrationConfig}}
+        />
       {{else}}
         <div class="rounded bg-yellow-000 border border-yellow-100 p-1" data-test-reminder>
           <strong>Note:</strong> There are no projects configured for Slack notifications to {{channelName}}
@@ -21,7 +24,10 @@
     </div>
 
     <div>
-      <LinkTo @route="organizations.organization.integrations.slack.slack-config" @models={{array slackIntegration.organization.id slackIntegration.id "new"}}>
+      <LinkTo
+        @route="organizations.organization.integrations.slack.slack-config"
+        @models={{array slackIntegration.organization.id slackIntegration.id "new"}}
+      >
         <button type="button" class="percy-btn percy-btn-primary" data-test-add-project-button>
           Add project
         </button>

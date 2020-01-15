@@ -8,7 +8,11 @@
   {{else if block.isFooter}}
     <Marketing::FooterCta @content={{block.footerCta}} />
   {{else if block.isHero}}
-    <Marketing::MarketingHeader @logomark={{block.hero.logomark}} @image={{block.hero.mainImage}} @classes={{block.hero.classes}}>
+    <Marketing::MarketingHeader
+      @logomark={{block.hero.logomark}}
+      @image={{block.hero.mainImage}}
+      @classes={{block.hero.classes}}
+    >
       <Marketing::HeroBlock @content={{block.hero}} />
     </Marketing::MarketingHeader>
   {{else if block.isFaqBlock}}

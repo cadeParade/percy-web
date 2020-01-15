@@ -49,10 +49,21 @@
   <div data-test-gitlab-settings-edit-form-toolbar class="flex justify-between">
     <button type="button" disabled={{if isNewRecord true false}} data-test-gitlab-settings-delete class="btn btn-danger" {{action "delete" "Are you sure you want to remove the GitLab integration?"}}>Remove Integration</button>
     <div class="flex align-center">
-      <LinkTo @route="organizations.organization.integrations.index" @model={{organization.slug}} class="btn back">
+      <LinkTo
+        @route="organizations.organization.integrations.index"
+        @model={{organization.slug}}
+        class="btn back"
+      >
         Back
       </LinkTo>
-      <FormFields::Submit @value="Save" @isSaving={{isSaving}} @isSaveSuccessful={{isSaveSuccessful}} @disabled={{isSubmitDisabled}} @classes="btn btn-primary shadow-purple-lg mb-0 ml-1" @submit={{action "save"}} />
+      <FormFields::Submit
+        @value="Save"
+        @isSaving={{isSaving}}
+        @isSaveSuccessful={{isSaveSuccessful}}
+        @disabled={{isSubmitDisabled}}
+        @classes="btn btn-primary shadow-purple-lg mb-0 ml-1"
+        @submit={{action "save"}}
+      />
     </div>
   </div>
 </form>

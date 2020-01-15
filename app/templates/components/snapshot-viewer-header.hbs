@@ -34,7 +34,12 @@
 
   {{#if fullscreen}}
     <div class="flex items-center">
-      <ComparisonModeSwitcher @comparison={{selectedComparison}} @updateComparisonMode={{updateComparisonMode}} @comparisonMode={{comparisonMode}} @data-test-SnapshotViewer-comparison-mode-switcher={{true}} />
+      <ComparisonModeSwitcher
+        @comparison={{selectedComparison}}
+        @updateComparisonMode={{updateComparisonMode}}
+        @comparisonMode={{comparisonMode}}
+        @data-test-SnapshotViewer-comparison-mode-switcher={{true}}
+      />
     </div>
   {{/if}}
 
@@ -174,7 +179,10 @@
               @anchorPlacement='left-corner'
               @key="snapshot-request-changes-button"
             />
-            <SnapshotRejectButton @snapshots={{array snapshot}} @isDisabled={{not isBuildApprovable}} />
+            <SnapshotRejectButton
+              @snapshots={{array snapshot}}
+              @isDisabled={{not isBuildApprovable}}
+            />
           {{/if}}
 
           <SnapshotApprovalTooltips
