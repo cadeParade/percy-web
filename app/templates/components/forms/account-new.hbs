@@ -4,7 +4,21 @@
     <input type="input" class="form-control" disabled value={{session.currentUser.email}}>
   </label>
 
-  <FormFields::Input @property="password" @title="Password" @type="password" @changeset={{this.changeset}} @data-test-account-new-password={{true}} @class="mb-2" />
+  <FormFields::Input
+    @property="password"
+    @title="Password"
+    @type="password"
+    @changeset={{this.changeset}}
+    @data-test-account-new-password={{true}}
+    @class="mb-2"
+  />
 
-  <FormFields::Submit @value="Create account" @classes="btn btn-primary shadow-purple-lg mb-2" @isSaving={{isSaving}} @isSaveSuccessful={{isSaveSuccessful}} @submit={{action "save"}} @data-test-account-new-submit={{true}} />
+  <FormFields::Submit
+    @value="Create account"
+    @classes="btn btn-primary shadow-purple-lg mb-2"
+    @isSaving={{isSaving}}
+    @isSaveSuccessful={{isSaveSuccessful}}
+    @submit={{action "save"}}
+    @data-test-account-new-submit={{true}}
+  />
 </form>

@@ -61,7 +61,13 @@
             If your organization already has Percy set up, ask an administrator to send you an invite.
           </p>
         {{/if}}
-        <Forms::OrganizationNew @isFirstOrganization={{isFirstOrganization}} @model={{newOrganization}} @userIdentities={{userIdentities}} @saveSuccess={{organizationCreated}} @needsGithubIdentity={{needsGithubIdentity}} />
+        <Forms::OrganizationNew
+          @isFirstOrganization={{isFirstOrganization}}
+          @model={{newOrganization}}
+          @userIdentities={{userIdentities}}
+          @saveSuccess={{organizationCreated}}
+          @needsGithubIdentity={{needsGithubIdentity}}
+        />
       </section>
     </div>
   </div>

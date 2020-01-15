@@ -75,9 +75,15 @@
       {{/if}}
 
       {{#if isRequest}}
-        <WebhookEventHeaders @headers={{webhookEvent.requestHeaders}} @title="Request" />
+        <WebhookEventHeaders
+          @headers={{webhookEvent.requestHeaders}}
+          @title="Request"
+        />
       {{else}}
-        <WebhookEventHeaders @headers={{webhookEvent.responseHeaders}} @title="Response" />
+        <WebhookEventHeaders
+          @headers={{webhookEvent.responseHeaders}}
+          @title="Response"
+        />
       {{/if}}
 
       <div class="mb-1 font-semibold leading-none">

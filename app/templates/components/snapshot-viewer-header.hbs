@@ -41,7 +41,11 @@
   <div class="flex items-center justify-end">
     <div class="btn-toolbar">
       <div class="btn-group">
-        <BasicDropdown @horizontalPosition='auto-right' @preventScroll={{true}} as |dropdown|>
+        <BasicDropdown
+          @horizontalPosition='auto-right'
+          @preventScroll={{true}}
+          as |dropdown|
+        >
           <div class="dropdown {{if dropdown.isOpen 'is-visible'}}">
             <dropdown.Trigger>
               <button type="button" class="btn btn-square dropdown-toggle" data-test-snapshot-header-dropdown-toggle aria-label="Toggle snapshot options">
@@ -67,7 +71,11 @@
                     </li>
                   {{/unless}}
                   <li class="dropdown-menu-list-item cursor-pointer text-sm font-semibold py-1 pl-2 pr-1 mb-0">
-                    <CopyButton @class="btn-icon-only w-full flex justify-between items-center" @clipboardText={{generate-fullscreen-snapshot-url snapshot.id snapshotSelectedWidth comparisonMode activeBrowser.familySlug fullscreen}} @success={{pipe-action (action "onCopySnapshotUrlToClipboard") dropdown.actions.close}}>
+                    <CopyButton
+                      @class="btn-icon-only w-full flex justify-between items-center"
+                      @clipboardText={{generate-fullscreen-snapshot-url snapshot.id snapshotSelectedWidth comparisonMode activeBrowser.familySlug fullscreen}}
+                      @success={{pipe-action (action "onCopySnapshotUrlToClipboard") dropdown.actions.close}}
+                    >
                       <span>Copy snapshot URL</span>
                       {{inline-svg "link-icon"}}
                     </CopyButton>
@@ -131,16 +139,30 @@
 
       {{#if snapshot.build.isFinished}}
         {{#if isBuildApprovable}}
-          <Collaboration::ToggleButton @toggleCollaborationPanel={{toggleCollaborationPanel}} @isResolved={{false}} @unresolvedCommentThreadCount={{unresolvedCommentThreadCount}} />
+          <Collaboration::ToggleButton
+            @toggleCollaborationPanel={{toggleCollaborationPanel}}
+            @isResolved={{false}}
+            @unresolvedCommentThreadCount={{unresolvedCommentThreadCount}}
+          />
         {{/if}}
 
         {{#if (and fullscreen snapshot.build.hasMultipleBrowsers)}}
-          <BrowserSwitcher @browsers={{snapshot.build.browsers}} @activeBrowser={{activeBrowser}} @updateActiveBrowser={{updateActiveBrowser}} @fullscreen={{fullscreen}} />
+          <BrowserSwitcher
+            @browsers={{snapshot.build.browsers}}
+            @activeBrowser={{activeBrowser}}
+            @updateActiveBrowser={{updateActiveBrowser}}
+            @fullscreen={{fullscreen}}
+          />
         {{/if}}
       {{/if}}
 
       <div class="btn-group btn-group-alt">
-        <ComparisonSwitcher @comparisons={{if isShowingAllComparisons filteredComparisons.comparisons filteredComparisons.comparisonsWithDiffs}} @selectedWidth={{snapshotSelectedWidth}} @updateSelectedWidth={{updateSelectedWidth}} @data-test-SnapshotViewer-widthSwitcher={{true}} />
+        <ComparisonSwitcher
+          @comparisons={{if isShowingAllComparisons filteredComparisons.comparisons filteredComparisons.comparisonsWithDiffs}}
+          @selectedWidth={{snapshotSelectedWidth}}
+          @updateSelectedWidth={{updateSelectedWidth}}
+          @data-test-SnapshotViewer-widthSwitcher={{true}}
+        />
       </div>
 
       {{#if snapshot.build.isFinished}}
@@ -160,7 +182,13 @@
             @index={{index}}
             @tagName=''
           />
-          <SnapshotApprovalButton @snapshot={{snapshot}} @hasDiffsInBrowser={{hasDiffsInBrowser}} @activeBrowser={{activeBrowser}} @createReview={{createReview}} @isDisabled={{not isBuildApprovable}} />
+          <SnapshotApprovalButton
+            @snapshot={{snapshot}}
+            @hasDiffsInBrowser={{hasDiffsInBrowser}}
+            @activeBrowser={{activeBrowser}}
+            @createReview={{createReview}}
+            @isDisabled={{not isBuildApprovable}}
+          />
         </div>
       {{/if}}
     </div>

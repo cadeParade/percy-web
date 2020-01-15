@@ -53,7 +53,13 @@
           </span>
         </span>
 
-        <FormFields::CheckboxSet @property="notificationTypes" @changeset={{this.changeset}} @title="Notifications" @subtitle="Send notifications to Slack when a build has finished processing or is approved." @allOptions={{slackNotificationOptions}} />
+        <FormFields::CheckboxSet
+          @property="notificationTypes"
+          @changeset={{this.changeset}}
+          @title="Notifications"
+          @subtitle="Send notifications to Slack when a build has finished processing or is approved."
+          @allOptions={{slackNotificationOptions}}
+        />
 
         {{#if errorMessage}}
           <div class="Form-errors">
@@ -63,7 +69,10 @@
 
         {{#if isEditing}}
           <div data-test-delete-button>
-            <PercyBtn @handleClick={{action "deleteSlackIntegrationConfig"}} @class="percy-btn-danger">
+            <PercyBtn
+              @handleClick={{action "deleteSlackIntegrationConfig"}}
+              @class="percy-btn-danger"
+            >
               Remove project from {{channelName}}
             </PercyBtn>
           </div>

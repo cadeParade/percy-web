@@ -17,7 +17,11 @@
         </div>
 
         <div data-test-bitbucket-cloud-settings>
-          <Organizations::RequireRole @role="admin" @user={{currentUser}} @organization={{organization}}>
+          <Organizations::RequireRole
+            @role="admin"
+            @user={{currentUser}}
+            @organization={{organization}}
+          >
           <div class="mb-2">
             <Organizations::BitbucketCloudIntegrator @organization={{organization}} />
 

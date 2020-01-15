@@ -20,7 +20,12 @@
             </div>
           </div>
         {{else}}
-          <PercyBtn @handleClick={{action "closeCommentThread"}} @isSecondaryButton={{true}} @isSmallButton={{true}} @testLabel="commentArchive">
+          <PercyBtn
+            @handleClick={{action "closeCommentThread"}}
+            @isSecondaryButton={{true}}
+            @isSmallButton={{true}}
+            @testLabel="commentArchive"
+          >
             Archive
           </PercyBtn>
         {{/if}}

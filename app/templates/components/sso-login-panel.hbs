@@ -1,6 +1,13 @@
 <div class='w-full container-vh bg-white-pattern flex items-center justify-center' data-test-sso-login>
-  <StatusPanel @inlineSvgName={{svgName}} @mainText={{mainText}} @secondaryText={{secondaryText}}>
-    <PercyBtn @isPrimaryButton={{true}} @handleClick={{action "showLoginPrompt"}}>
+  <StatusPanel
+    @inlineSvgName={{svgName}}
+    @mainText={{mainText}}
+    @secondaryText={{secondaryText}}
+  >
+    <PercyBtn
+      @isPrimaryButton={{true}}
+      @handleClick={{action "showLoginPrompt"}}
+    >
       Login now
     </PercyBtn>
     <p class='mt-2'>

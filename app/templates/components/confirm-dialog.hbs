@@ -1,10 +1,28 @@
-<ModalDialog @hasOverlay={{true}} @translucentOverlay={{0.5}} @overlayClass="dialog-wrapper" @onClose={{action "cancel" target=this.confirm}} as |dialog|>
+<ModalDialog
+  @hasOverlay={{true}}
+  @translucentOverlay={{0.5}}
+  @overlayClass="dialog-wrapper"
+  @onClose={{action "cancel" target=this.confirm}}
+  as |dialog|
+>
   <div class="bg-white rounded border z-top flex flex-col shadow-purple-lg" data-test-confirm-dialog>
     <div class="flex items-center justify-center bg-purple-200 px-2 py-1 rounded-t font-semibold text-gray-700">{{confirm.title}}</div>
     <div class="flex items-center px-2 py-1 text-gray-500">{{confirm.message}}</div>
     <div class="flex items-center px-2 py-1 justify-end">
-      <PercyBtn @class="mr-1" @handleClick={{action "cancel" target=this.confirm}} @testLabel="cancelConfirm">Cancel</PercyBtn>
-      <PercyBtn @isPrimaryButton={{true}} @handleClick={{action "confirm" target=this.confirm}} @testLabel="goAhead">Continue</PercyBtn>
+      <PercyBtn
+        @class="mr-1"
+        @handleClick={{action "cancel" target=this.confirm}}
+        @testLabel="cancelConfirm"
+      >
+        Cancel
+      </PercyBtn>
+      <PercyBtn
+        @isPrimaryButton={{true}}
+        @handleClick={{action "confirm" target=this.confirm}}
+        @testLabel="goAhead"
+      >
+        Continue
+      </PercyBtn>
     </div>
   </div>
 </ModalDialog>

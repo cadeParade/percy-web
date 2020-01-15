@@ -44,15 +44,24 @@
           </PercyBtn>
         {{else}}
           {{#if (eq "member" role)}}
-            <PercyBtn @isDisabled={{not isViewerAdmin}} @handleClick={{action "setRole" "admin"}}>
+            <PercyBtn
+              @isDisabled={{not isViewerAdmin}}
+              @handleClick={{action "setRole" "admin"}}
+            >
               Make admin
             </PercyBtn>
           {{else}}
-            <PercyBtn @isDisabled={{not isViewerAdmin}} @handleClick={{action "setRole" "member"}}>
+            <PercyBtn
+              @isDisabled={{not isViewerAdmin}}
+              @handleClick={{action "setRole" "member"}}
+            >
               Make member
             </PercyBtn>
           {{/if}}
-          <PercyBtn @isDisabled={{not isViewerAdmin}} @handleClick={{action "removeUser"}}>
+          <PercyBtn
+            @isDisabled={{not isViewerAdmin}}
+            @handleClick={{action "removeUser"}}
+          >
             Remove
           </PercyBtn>
         {{/if}}

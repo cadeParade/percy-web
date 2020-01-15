@@ -7,9 +7,21 @@
     <p class="error">{{stripeError.message}}</p>
   {{/if}}
   <div class="flex justify-start mt-2">
-    <PercyBtn @handleClick={{action "submitCardUpdate" stripeElement planId}} @isPrimaryButton={{true}} @isDisabled={{not isCardValid}} @isSaving={{isSaving}} @class="mr-2" @testLabel="submit">
+    <PercyBtn
+      @handleClick={{action "submitCardUpdate" stripeElement planId}}
+      @isPrimaryButton={{true}}
+      @isDisabled={{not isCardValid}}
+      @isSaving={{isSaving}}
+      @class="mr-2"
+      @testLabel="submit"
+    >
       Update card
     </PercyBtn>
-    <PercyBtn @handleClick={{action "cancel"}} @testLabel="cancel">Cancel</PercyBtn>
+    <PercyBtn
+      @handleClick={{action "cancel"}}
+      @testLabel="cancel"
+    >
+      Cancel
+    </PercyBtn>
   </div>
 {{/stripe-card}}

@@ -1,8 +1,20 @@
 <form action="javascript:;">
   <h2 class="text-2xl md:text-3xl font-normal">Profile</h2>
 
-  <FormFields::Input @property="name" @title="Name" @changeset={{this.changeset}} @validateProperty={{action "validateProperty" this.changeset "name"}} @testLabel="profile-edit-name" />
-  <FormFields::Input @property="email" @title="Email" @changeset={{this.changeset}} @validateProperty={{action "validateProperty" this.changeset "email"}} @testLabel="profile-edit-email" />
+  <FormFields::Input
+    @property="name"
+    @title="Name"
+    @changeset={{this.changeset}}
+    @validateProperty={{action "validateProperty" this.changeset "name"}}
+    @testLabel="profile-edit-name"
+  />
+  <FormFields::Input
+    @property="email"
+    @title="Email"
+    @changeset={{this.changeset}}
+    @validateProperty={{action "validateProperty" this.changeset "email"}}
+    @testLabel="profile-edit-email"
+  />
 
   {{#if user.unverifiedEmail}}
     <div class="mb-3" data-test-profile-edit-unverified-email-message>
@@ -10,5 +22,13 @@
     </div>
   {{/if}}
 
-  <FormFields::Submit @value="Save" @classes="btn btn-primary shadow-purple-lg" @isSaving={{isSaving}} @isSaveSuccessful={{isSaveSuccessful}} @submit={{action "save"}} @disabled={{this.changeset.isPristine}} @data-test-profile-edit-submit={{true}} />
+  <FormFields::Submit
+    @value="Save"
+    @classes="btn btn-primary shadow-purple-lg"
+    @isSaving={{isSaving}}
+    @isSaveSuccessful={{isSaveSuccessful}}
+    @submit={{action "save"}}
+    @disabled={{this.changeset.isPristine}}
+    @data-test-profile-edit-submit={{true}}
+  />
 </form>

@@ -25,10 +25,20 @@
 
   {{#if isExpanded}}
     <div class="flex justify-end mt-1">
-      <PercyBtn @handleClick={{action "collapseReply"}} @testLabel="cancel">
+      <PercyBtn
+        @handleClick={{action "collapseReply"}}
+        @testLabel="cancel"
+      >
         Cancel
       </PercyBtn>
-      <PercyBtn @handleClick={{action "saveReply"}} @class="ml-1" @isPrimaryButton={{true}} @isDisabled={{is-empty commentBody}} @testLabel="submit" @isSaving={{isCommentSaving}}>
+      <PercyBtn
+        @handleClick={{action "saveReply"}}
+        @class="ml-1"
+        @isPrimaryButton={{true}}
+        @isDisabled={{is-empty commentBody}}
+        @testLabel="submit"
+        @isSaving={{isCommentSaving}}
+      >
         Comment
       </PercyBtn>
     </div>

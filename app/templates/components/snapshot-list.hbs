@@ -1,9 +1,42 @@
 {{#each snapshotBlocks as |block index|}}
   <div data-test-snapshot-block>
   {{#if (is-item-array block)}}
-    <SnapshotGroup @build={{build}} @snapshots={{block}} @allDiffsShown={{allDiffsShown}} @activeSnapshotBlockId={{activeSnapshotBlockId}} @shouldDeferRendering={{shouldDeferRendering}} @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}} @createReview={{createReview}} @updateActiveSnapshotBlockId={{action "updateActiveSnapshotBlockId"}} @activeBrowser={{activeBrowser}} @updateActiveBrowser={{updateActiveBrowser}} @isBuildApprovable={{isBuildApprovable}} @createCommentThread={{createCommentThread}} @createComment={{createComment}} @closeCommentThread={{closeCommentThread}} @index={{index}} />
+    <SnapshotGroup
+      @build={{build}}
+      @snapshots={{block}}
+      @allDiffsShown={{allDiffsShown}}
+      @activeSnapshotBlockId={{activeSnapshotBlockId}}
+      @shouldDeferRendering={{shouldDeferRendering}}
+      @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+      @createReview={{createReview}}
+      @updateActiveSnapshotBlockId={{action "updateActiveSnapshotBlockId"}}
+      @activeBrowser={{activeBrowser}}
+      @updateActiveBrowser={{updateActiveBrowser}}
+      @isBuildApprovable={{isBuildApprovable}}
+      @createCommentThread={{createCommentThread}}
+      @createComment={{createComment}}
+      @closeCommentThread={{closeCommentThread}}
+      @index={{index}}
+    />
   {{else}}
-    <SnapshotViewer @class="data-test-snapshot-viewer" @build={{build}} @snapshot={{block}} @allDiffsShown={{allDiffsShown}} @activeSnapshotBlockId={{activeSnapshotBlockId}} @shouldDeferRendering={{shouldDeferRendering}} @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}} @createReview={{createReview}} @updateActiveSnapshotBlockId={{action "updateActiveSnapshotBlockId"}} @activeBrowser={{activeBrowser}} @updateActiveBrowser={{updateActiveBrowser}} @isBuildApprovable={{isBuildApprovable}} @createCommentThread={{createCommentThread}} @createComment={{createComment}} @closeCommentThread={{closeCommentThread}} @index={{index}} />
+    <SnapshotViewer
+      @class="data-test-snapshot-viewer"
+      @build={{build}}
+      @snapshot={{block}}
+      @allDiffsShown={{allDiffsShown}}
+      @activeSnapshotBlockId={{activeSnapshotBlockId}}
+      @shouldDeferRendering={{shouldDeferRendering}}
+      @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+      @createReview={{createReview}}
+      @updateActiveSnapshotBlockId={{action "updateActiveSnapshotBlockId"}}
+      @activeBrowser={{activeBrowser}}
+      @updateActiveBrowser={{updateActiveBrowser}}
+      @isBuildApprovable={{isBuildApprovable}}
+      @createCommentThread={{createCommentThread}}
+      @createComment={{createComment}}
+      @closeCommentThread={{closeCommentThread}}
+      @index={{index}}
+    />
   {{/if}}
   </div>
 {{/each}}
@@ -32,7 +65,22 @@
   {{else}}
     {{#each snapshotsUnchanged as |snapshot|}}
       <div data-test-snapshot-block>
-        <SnapshotViewer @build={{build}} @allDiffsShown={{allDiffsShown}} @snapshot={{snapshot}} @activeSnapshotBlockId={{activeSnapshotBlockId}} @shouldDeferRendering={{shouldDeferRendering}} @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}} @createReview={{createReview}} @updateActiveSnapshotBlockId={{action "updateActiveSnapshotBlockId"}} @activeBrowser={{activeBrowser}} @updateActiveBrowser={{updateActiveBrowser}} @isBuildApprovable={{isBuildApprovable}} @closeCommentThread={{closeCommentThread}} @createCommentThread={{createCommentThread}} @createComment={{createComment}} />
+        <SnapshotViewer
+          @build={{build}}
+          @allDiffsShown={{allDiffsShown}}
+          @snapshot={{snapshot}}
+          @activeSnapshotBlockId={{activeSnapshotBlockId}}
+          @shouldDeferRendering={{shouldDeferRendering}}
+          @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+          @createReview={{createReview}}
+          @updateActiveSnapshotBlockId={{action "updateActiveSnapshotBlockId"}}
+          @activeBrowser={{activeBrowser}}
+          @updateActiveBrowser={{updateActiveBrowser}}
+          @isBuildApprovable={{isBuildApprovable}}
+          @closeCommentThread={{closeCommentThread}}
+          @createCommentThread={{createCommentThread}}
+          @createComment={{createComment}}
+        />
       </div>
     {{/each}}
   {{/if}}
