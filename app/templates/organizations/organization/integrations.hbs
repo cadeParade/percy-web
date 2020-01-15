@@ -1,5 +1,8 @@
 {{title (concat model.name " integrations | Percy") replace=true}}
 
-<DashboardNavWrapper @organization={{model}} @showMemberLinks={{true}}>
+<DashboardNavWrapper
+  @organization={{model}}
+  @showMemberLinks={{true}}
+>
   {{outlet}}
 </DashboardNavWrapper>

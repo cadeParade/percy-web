@@ -1,10 +1,17 @@
 {{title (concat model.project.fullSlug " project settings | Percy") replace=true}}
 
-<FixedTopHeader @currentOrganization={{model.organization}} @project={{model.project}} />
+<FixedTopHeader
+  @currentOrganization={{model.organization}}
+  @project={{model.project}}
+/>
 
 <section>
   <div class="flex-1 pb-8 bg-gray-000">
-    <Projects::ProjectHeader @project={{model.project}} @shouldShowLinks={{true}} @shouldDisplayBottomBorder={{true}} />
+    <Projects::ProjectHeader
+      @project={{model.project}}
+      @shouldShowLinks={{true}}
+      @shouldDisplayBottomBorder={{true}}
+    />
 
     {{outlet}}
 

@@ -1,3 +1,18 @@
 {{title model.build.buildTitle}}
-<BuildContainer @build={{model.build}} @isSnapshotsLoading={{isSnapshotsLoading}} @openSnapshotFullModal={{route-action "openSnapshotFullModal"}} @isHidingBuildContainer={{isHidingBuildContainer}} @createReview={{route-action "createReview"}} @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}} @initializeSnapshotOrdering={{route-action "initializeSnapshotOrdering"}} @isUnchangedSnapshotsVisible={{isUnchangedSnapshotsVisible}} @isBuildApprovable={{isBuildApprovable}} @notifyOfUnchangedSnapshots={{action "notifyOfUnchangedSnapshots"}} @createCommentThread={{route-action "createCommentThread"}} @closeCommentThread={{route-action "closeCommentThread"}} @createComment={{route-action "createComment"}} @allApprovableSnapshots={{allApprovableSnapshots}} />
+<BuildContainer
+  @build={{model.build}}
+  @isSnapshotsLoading={{isSnapshotsLoading}}
+  @openSnapshotFullModal={{route-action "openSnapshotFullModal"}}
+  @isHidingBuildContainer={{isHidingBuildContainer}}
+  @createReview={{route-action "createReview"}}
+  @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
+  @initializeSnapshotOrdering={{route-action "initializeSnapshotOrdering"}}
+  @isUnchangedSnapshotsVisible={{isUnchangedSnapshotsVisible}}
+  @isBuildApprovable={{isBuildApprovable}}
+  @notifyOfUnchangedSnapshots={{action "notifyOfUnchangedSnapshots"}}
+  @createCommentThread={{route-action "createCommentThread"}}
+  @closeCommentThread={{route-action "closeCommentThread"}}
+  @createComment={{route-action "createComment"}}
+  @allApprovableSnapshots={{allApprovableSnapshots}}
+/>
 {{outlet}}

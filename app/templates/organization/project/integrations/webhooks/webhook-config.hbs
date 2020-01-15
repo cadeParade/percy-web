@@ -6,7 +6,12 @@
     </LinkTo>
   </div>
   <div class="bg-white rounded shadow-1 p-2 mb-2">
-    <Forms::WebhookConfigEdit @webhookConfig={{model.webhookConfig}} @isSaving={{isSaving}} @isSaveSuccessful={{isSaveSuccessful}} @saveSuccess={{route-action "webhookConfigUpdated"}} />
+    <Forms::WebhookConfigEdit
+      @webhookConfig={{model.webhookConfig}}
+      @isSaving={{isSaving}}
+      @isSaveSuccessful={{isSaveSuccessful}}
+      @saveSuccess={{route-action "webhookConfigUpdated"}}
+    />
   </div>
 
   {{#if (await model.webhookConfig.webhookEvents)}}

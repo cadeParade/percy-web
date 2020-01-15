@@ -1,14 +1,23 @@
 <FixedTopHeader @currentOrganization={{organization}} />
 
-<DashboardNavWrapper @organization={{organization}} @showMemberLinks={{isUserMember}}>
+<DashboardNavWrapper
+  @organization={{organization}}
+  @showMemberLinks={{isUserMember}}
+>
   {{#each enabledProjects as |project|}}
-    <Organizations::ProjectCard @project={{project}} @organization={{organization}} />
+    <Organizations::ProjectCard
+      @project={{project}}
+      @organization={{organization}}
+    />
   {{/each}}
 
   {{#if (and isUserMember (gt archivedProjects.length 0))}}
     {{#if isShowingArchivedProjects}}
       {{#each archivedProjects as |project|}}
-        <Organizations::ProjectCard @project={{project}} @organization={{organization}} />
+        <Organizations::ProjectCard
+          @project={{project}}
+          @organization={{organization}}
+        />
       {{/each}}
     {{else}}
       <div class="text-blue-500 my-2 cursor-pointer hover:text-blue-700" {{action (toggle "isShowingArchivedProjects" this)}} data-test-show-archived-projects>Show archived projects</div>

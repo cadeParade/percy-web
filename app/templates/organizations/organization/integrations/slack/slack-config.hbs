@@ -1,5 +1,10 @@
 {{#if isAdmin}}
-  <Organizations::Integrations::SlackDetailsContainer @showSlackIntegrationConfig={{true}} @organization={{organization}} @slackIntegrationConfig={{slackIntegrationConfig}} @deleteSlackIntegrationConfig={{route-action "deleteSlackIntegrationConfig"}} />
+  <Organizations::Integrations::SlackDetailsContainer
+    @showSlackIntegrationConfig={{true}}
+    @organization={{organization}}
+    @slackIntegrationConfig={{slackIntegrationConfig}}
+    @deleteSlackIntegrationConfig={{route-action "deleteSlackIntegrationConfig"}}
+  />
 {{else}}
   <Organizations::Integrations::SlackPermissionsWarning />
 {{/if}}
