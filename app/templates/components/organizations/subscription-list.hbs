@@ -28,11 +28,12 @@
     {{#if (or shouldShowInputs isEmailOrCardSaving)}}
       <div class="pt-2 mb-2">
         <label><span class="label-body">Card number</span></label>
-        {{#stripe-card
-          data-test-stripe-card-input
-          options=stripeOptions
-          change=(action "checkCard")
-          as |stripeElement stripeError|}}
+        <StripeCard
+          data-test-stripe-card-input={{true}}
+          options={{stripeOptions}}
+          change={{action "checkCard"}}
+          as |stripeElement stripeError|
+        >
           {{#if stripeError}}
             <p class="error">{{stripeError.message}}</p>
           {{/if}}
@@ -63,7 +64,7 @@
             </div>
 
           </div>
-        {{/stripe-card}}
+        </StripeCard>
       </div>
     {{else}}
 

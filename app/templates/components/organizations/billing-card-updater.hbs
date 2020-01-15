@@ -1,8 +1,9 @@
-{{#stripe-card
-  data-test-billing-card-updater-stripe-card
-  options=stripeOptions
-  change=(action 'checkCard')
-  as |stripeElement stripeError|}}
+<StripeCard
+  data-test-billing-card-updater-stripe-card={{true}}
+  options={{stripeOptions}}
+  change={{action 'checkCard'}}
+  as |stripeElement stripeError|
+>
   {{#if stripeError}}
     <p class="error">{{stripeError.message}}</p>
   {{/if}}
@@ -24,4 +25,4 @@
       Cancel
     </PercyBtn>
   </div>
-{{/stripe-card}}
+</StripeCard>
