@@ -1,11 +1,21 @@
 {{title (concat organization.name " settings | Percy") replace=true}}
 
-<DashboardNavWrapper @organization={{organization}} @showMemberLinks={{true}}>
+<DashboardNavWrapper
+  @organization={{organization}}
+  @showMemberLinks={{true}}
+>
   <section class="pt-3">
-    <Organizations::RequireRole @role="admin" @user={{currentUser}} @organization={{organization}}>
+    <Organizations::RequireRole
+      @role="admin"
+      @user={{currentUser}}
+      @organization={{organization}}
+    >
       <div class="bg-white rounded shadow-1 p-2 border-t">
         <h2 class="text-xl font-semibold mb-1">Organization settings</h2>
-        <Forms::OrganizationEdit @organization={{organization}} @saveSuccess={{route-action "organizationUpdated"}} />
+        <Forms::OrganizationEdit
+          @organization={{organization}}
+          @saveSuccess={{route-action "organizationUpdated"}}
+        />
       </div>
     </Organizations::RequireRole>
   </section>

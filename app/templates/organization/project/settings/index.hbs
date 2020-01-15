@@ -33,7 +33,11 @@
         This setting lets you change which browser your snapshots are created in. Better yet, you can enable multiple browsers for cross browser testing snapshots! <a href="https://docs.percy.io/docs/cross-browser-visual-testing" target="_blank">See docs</a>
       </p>
       <div class="p-2 bg-gray-000 rounded border">
-        <Projects::BrowserFamilySelector @allBrowserFamilies={{browserFamilies}} @areAnyBrowsersUpgradeable={{areAnyBrowsersUpgradeable}} @project={{project}} />
+        <Projects::BrowserFamilySelector
+          @allBrowserFamilies={{browserFamilies}}
+          @areAnyBrowsersUpgradeable={{areAnyBrowsersUpgradeable}}
+          @project={{project}}
+        />
       </div>
     </div>
 
@@ -51,7 +55,11 @@
               <div class="mb-1">Show the world that you're using Percy for visual testing. Place this badge in your README by copying the markdown snippet below:</div>
               <div class="flex justify-between">
                 <textarea readonly=true class="flex-1 px-1 py-sm font-mono font-normal tracking-sm text-sm">{{badgeMarkdown}}</textarea>
-                <CopyButton @class="percy-btn ml-1" @clipboardText={{badgeMarkdown}} @success={{route-action "onCopyBadgeMarkdown"}}>
+                <CopyButton
+                  @class="percy-btn ml-1"
+                  @clipboardText={{badgeMarkdown}}
+                  @success={{route-action "onCopyBadgeMarkdown"}}
+                >
                   {{inline-svg "copy-icon"}}
                 </CopyButton>
               </div>

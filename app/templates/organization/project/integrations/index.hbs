@@ -29,7 +29,11 @@
       {{/if}}
     </div>
 
-    <Projects::WebhookConfigList @webhookConfigs={{webhookConfigs}} @deleteWebhookConfig={{route-action "deleteWebhookConfig"}} @isDisabled={{project.isDemo}} />
+    <Projects::WebhookConfigList
+      @webhookConfigs={{webhookConfigs}}
+      @deleteWebhookConfig={{route-action "deleteWebhookConfig"}}
+      @isDisabled={{project.isDemo}}
+    />
 
     <div class="bg-white rounded shadow-1 border-t p-2 mb-2" data-test-slack-info>
       <div class="flex justify-between items-center mb-1">
