@@ -23,13 +23,13 @@
 
         {{#if block.subheader}}
           <div class="content-block-subheader text-secondary text-center mb-2 pt-2">
-            {{markdown-to-html markdown=block.subheader}}
+            <MarkdownToHtml @markdown={{block.subheader}} />
           </div>
         {{/if}}
 
         {{#if block.bodyText}}
           <div class="content-block-bodytext">
-            {{markdown-to-html markdown=block.bodyText}}
+            <MarkdownToHtml @markdown={{block.bodyText}} />
           </div>
         {{/if}}
 
@@ -72,7 +72,7 @@
 
             {{#if supportingText.bodyText}}
               <div class="content-block-supporting-text-body">
-                {{markdown-to-html markdown=supportingText.bodyText}}
+                <MarkdownToHtml @markdown={{supportingText.bodyText}} />
               </div>
             {{/if}}
           </div>
