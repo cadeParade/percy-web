@@ -28,7 +28,12 @@
     {{#if (and build.isFinished (not isSnapshotsLoading))}}
       {{#if build.hasMultipleBrowsers}}
         <div class="mr-1">
-          <BrowserSwitcher @browsers={{build.browsers}} @activeBrowser={{activeBrowser}} @updateActiveBrowser={{action "switchBrowsers"}} @build={{build}} />
+          <BrowserSwitcher
+            @browsers={{build.browsers}}
+            @activeBrowser={{activeBrowser}}
+            @updateActiveBrowser={{action "switchBrowsers"}}
+            @build={{build}}
+          />
         </div>
       {{/if}}
 

@@ -17,7 +17,13 @@
   <div class="">
     <div class="flex flex-wrap py-2">
       {{#each-in frameworkOptions as |key framework|}}
-        <TechCard @label={{framework.name}} @classes="mr-2 mb-2" @tagname="" @isSelected={{eq selectedFramework key}} @select={{action "selectFramework" key}} />
+        <TechCard
+          @label={{framework.name}}
+          @classes="mr-2 mb-2"
+          @tagname=""
+          @isSelected={{eq selectedFramework key}}
+          @select={{action "selectFramework" key}}
+        />
       {{/each-in}}
     </div>
     <div class="flex">
@@ -28,7 +34,11 @@
             <div class="text-sm font-semibold">
               Request framework:
             </div>
-            <Input @type="text" class="form-control h-10 m-0" @value={{mut requestedFramework}} data-test-sdk-request-field={{true}} @enter={{action "saveRequest"}} />
+            <Input
+              @type="text" class="form-control h-10 m-0"
+              @value={{mut requestedFramework}} data-test-sdk-request-field={{true}}
+              @enter={{action "saveRequest"}}
+            />
             <input
               type="submit"
               class="btn btn-primary shadow-purple-lg mb-0"
@@ -36,7 +46,7 @@
               onclick={{action "saveRequest"}}
               data-test-org-save-button
             >
-          
+
           {{else}}
             <a
               href="{{docLink}}"

@@ -1,7 +1,11 @@
 <section class="w-90vw max-w-xl mx-auto pt-3 pb-9">
   <div class="flex items-start justify-between pb-3">
     <h1 class="text-xl font-semibold mb-sm">Edit webhook</h1>
-    <LinkTo @route="organization.project.integrations.index" @models={{array model.organization.slug model.project.slug}} @classNames="btn btn-secondary">
+    <LinkTo
+      @route="organization.project.integrations.index"
+      @models={{array model.organization.slug model.project.slug}}
+      @classNames="btn btn-secondary"
+    >
       Back to integration settings
     </LinkTo>
   </div>

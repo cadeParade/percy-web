@@ -10,7 +10,15 @@
       {{#unless (eq planData.id "free")}}
         <div class="flex items-center pb-1">
           <div class="items-start mr-3 pr-2 text-xl font-semibold BillingSection-left-col" data-test-plan-item>
-            <FormFields::Radio @name="planSelector" @value={{planData.id}} @title={{planData.name}} @disabled={{eq planData.id plan.id}} @shouldBeChecked={{eq planData.id selectedPlanId}} @handleRadioClick={{action "clickNewPlan"}} @testLabel={{planData.id}} />
+            <FormFields::Radio
+              @name="planSelector"
+              @value={{planData.id}}
+              @title={{planData.name}}
+              @disabled={{eq planData.id plan.id}}
+              @shouldBeChecked={{eq planData.id selectedPlanId}}
+              @handleRadioClick={{action "clickNewPlan"}}
+              @testLabel={{planData.id}}
+            />
           </div>
           <div class="flex-1"><strong>{{format-number planData.usageIncluded}}</strong> snapshots/month included. {{planData.numTeamMembersTitle}}</div>
         </div>
@@ -30,13 +38,23 @@
           {{/if}}
 
           <div class="my-2">
-            <FormFields::Input @property="billingEmail" @title="Billing email (for payment receipts)" @changeset={{subscriptionChangeset}} @testLabel="billing-email" />
+            <FormFields::Input
+              @property="billingEmail"
+              @title="Billing email (for payment receipts)"
+              @changeset={{subscriptionChangeset}}
+              @testLabel="billing-email"
+            />
           </div>
 
           <div class="flex mt-1 items-center">
             <div class="mr-3 pr-2 BillingSection-left-col" data-test-submit-inputs>
               {{!-- This button is for submitting plan updates when the credit card form IS visible --}}
-              <PercyBtn @isPrimaryButton={{true}} @isDisabled={{not isSubmitWithInputsEnabled}} @handleClick={{action "submitSubscriptionStart" stripeElement}} @isSaving={{isEmailOrCardSaving}}>
+              <PercyBtn
+                @isPrimaryButton={{true}}
+                @isDisabled={{not isSubmitWithInputsEnabled}}
+                @handleClick={{action "submitSubscriptionStart" stripeElement}}
+                @isSaving={{isEmailOrCardSaving}}
+              >
                 Upgrade plan
               </PercyBtn>
             </div>

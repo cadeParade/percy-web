@@ -1,7 +1,10 @@
 <div class="p-2">
   <div class="flex items-center justify-between cursor-pointer" data-test-event-toggle {{action "toggleOpen"}}>
     <div class="flex items-center">
-      <StatusBadge @statusText={{webhookEvent.responseStatus}} @success={{webhookEvent.isSuccess}} />
+      <StatusBadge
+        @statusText={{webhookEvent.responseStatus}}
+        @success={{webhookEvent.isSuccess}}
+      />
       <div class="font-mono font-normal tracking-sm">
         <div class="flex items-center mb-sm">
           <div class="leading-none mr-1" data-test-delivery-url>

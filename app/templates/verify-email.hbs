@@ -16,7 +16,11 @@
       {{/if}}
     </StatusPanel>
   {{else}}
-    <StatusPanel @inlineSvgName="error-large-icon" @mainText="Uh Oh..." @secondaryText={{or model "Something went wrong. Please try again or contact support"}} />
+    <StatusPanel
+      @inlineSvgName="error-large-icon"
+      @mainText="Uh Oh..."
+      @secondaryText={{or model "Something went wrong. Please try again or contact support"}}
+    />
   {{/if}}
 </div>
 

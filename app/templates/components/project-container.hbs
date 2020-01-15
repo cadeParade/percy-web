@@ -1,4 +1,8 @@
-<Projects::ProjectHeader @project={{project}} @shouldShowLinks={{isUserMember}} @shouldDisplayBottomBorder={{false}}>
+<Projects::ProjectHeader
+  @project={{project}}
+  @shouldShowLinks={{isUserMember}}
+  @shouldDisplayBottomBorder={{false}}
+>
   {{#if shouldShowBranchFilter}}
     <div class="flex justify-end mt-1" data-test-project-container-branch-filter>
       <PowerSelect
@@ -103,12 +107,17 @@
                     </pre>
                   </div>
                 {{/unless}}
-                
+
               </div>
             </div>
           </div>
         {{else}}
-          <StatusPanel @inlineSvgName="refresh-icon" @classes="pt-8" @mainText="This project doesn't have any builds yet." @secondaryText="The owners of this project are working hard to get some diffs ready for you to see!" />
+          <StatusPanel
+            @inlineSvgName="refresh-icon"
+            @classes="pt-8"
+            @mainText="This project doesn't have any builds yet."
+            @secondaryText="The owners of this project are working hard to get some diffs ready for you to see!"
+          />
         {{/if}}
       {{else}}
         <div class="w-90vw max-w-xl mx-auto">
