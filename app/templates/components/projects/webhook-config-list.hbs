@@ -13,7 +13,7 @@
     <div class="mb-2 rounded border">
       {{#each filteredWebhookConfigs as |webhookConfig|}}
         <div
-          class="p-2 {{unless (eq webhookConfig filteredWebhookConfigs.lastObject) "border-b"}}"
+          class="p-2 {{if (not-eq webhookConfig filteredWebhookConfigs.lastObject) "border-b"}}"
           data-test-webhook-config-item
         >
           <div class="flex items-center justify-between">

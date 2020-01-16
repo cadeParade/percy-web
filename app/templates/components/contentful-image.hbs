@@ -1,4 +1,4 @@
-{{#unless (eq file.contentType 'image/svg+xml')}}
+{{#if (not-eq file.contentType 'image/svg+xml')}}
   <picture>
     {{!-- webp format --}}
     <source media="(max-width: 480px)" srcset="{{file.url}}?fm=webp&fit=fill&w=480&q=95 1x, {{file.url}}?fm=webp&fit=fill&w=720&q=95 1.5x, {{file.url}}?fm=webp&fit=fill&w=960&q=90 2x" type="image/webp">
@@ -15,4 +15,4 @@
   </picture>
 {{else}}
   <img src="{{file.url}}" alt="{{file.description}}" class="{{class}}" />
-{{/unless}}
+{{/if}}

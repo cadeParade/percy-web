@@ -1,6 +1,6 @@
 <p class="text-secondary mb-2">To link a project to a repository you must first add that repo's source code integration for your organization. This comes with several benefits, including better <a class="font-semibold" href="https://docs.percy.io/docs/github">pull request integration</a> support, contextual UI, and baseline picking.</p>
 
-{{#unless project.isDemo}}
+{{#if (not project.isDemo)}}
   {{#if organization.isVersionControlIntegrated}}
     <div class="mb-2">
       <RepoSelector @project={{project}} />
@@ -41,4 +41,4 @@
   <div class="Alert Alert--info" data-test-repo-integrator-demo-project>
     <strong>Missing organization source code integration.</strong> {{#link-to data-test-repo-integrator-demo-link 'organizations.organization.projects.new' organization.slug}}Set up your own project {{/link-to}}to install a source code integration.
   </div>
-{{/unless}}
+{{/if}}

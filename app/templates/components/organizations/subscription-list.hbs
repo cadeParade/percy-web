@@ -7,7 +7,7 @@
   <div class="p-2 bg-gray-000 rounded border mb-2">
 
     {{#each subscriptionData.PLANS as |planData|}}
-      {{#unless (eq planData.id "free")}}
+      {{#if (not-eq planData.id "free")}}
         <div class="flex items-center pb-1">
           <div class="items-start mr-3 pr-2 text-xl font-semibold BillingSection-left-col" data-test-plan-item>
             <FormFields::Radio
@@ -22,7 +22,7 @@
           </div>
           <div class="flex-1"><strong>{{format-number planData.usageIncluded}}</strong> snapshots/month included. {{planData.numTeamMembersTitle}}</div>
         </div>
-      {{/unless}}
+      {{/if}}
     {{/each}}
 
     {{#if (or shouldShowInputs isEmailOrCardSaving)}}

@@ -77,7 +77,7 @@
                 <h2 class="text-xl font-semibold mb-sm">Project token</h2>
                 <p class="text-secondary mb-2">Configure your local or CI environment with PERCY-TOKEN. This is a project-specific write-only API key that only has access to create builds, snapshots, and upload resources to this project. It should be kept secret.</p>
 
-                {{#unless project.isDemo}}
+                {{#if (not project.isDemo)}}
                   {{#if project.tokens.isPending}}
                     <div class="percy-code-snippet">
                       <pre>
@@ -106,7 +106,7 @@
                       <span class="percy-code-bash">PERCY_TOKEN=[This is a demo project. Create your own project to get a PERCY_TOKEN]</span>
                     </pre>
                   </div>
-                {{/unless}}
+                {{/if}}
 
               </div>
             </div>

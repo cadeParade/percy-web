@@ -60,7 +60,7 @@
             <dropdown.Content>
               <div class="dropdown-menu" data-test-snapshot-header-dropdown-pane>
                 <ul class="mb-0">
-                  {{#unless (or allComparisonsHaveDiffs noComparisonsHaveDiffs)}}
+                  {{#if (not (or allComparisonsHaveDiffs noComparisonsHaveDiffs))}}
                     <li class="dropdown-menu-list-item flex justify-between items-center cursor-pointer text-sm font-semibold border-b border-secondary py-1 pl-2 pr-1 mb-0"
                       {{action (pipe-action
                         (action 'toggleFilteredComparisons')
@@ -74,7 +74,7 @@
                         {{inline-svg "tiny-comparison-icon"}}
                       {{/if}}
                     </li>
-                  {{/unless}}
+                  {{/if}}
                   <li class="dropdown-menu-list-item cursor-pointer text-sm font-semibold py-1 pl-2 pr-1 mb-0">
                     <CopyButton
                       @class="btn-icon-only w-full flex justify-between items-center"
