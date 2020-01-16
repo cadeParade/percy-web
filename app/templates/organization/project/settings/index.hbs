@@ -54,7 +54,7 @@
             <label>
               <div class="mb-1">Show the world that you're using Percy for visual testing. Place this badge in your README by copying the markdown snippet below:</div>
               <div class="flex justify-between">
-                <textarea readonly=true class="flex-1 px-1 py-sm font-mono font-normal tracking-sm text-sm">{{badgeMarkdown}}</textarea>
+                <textarea readonly={{true}} class="flex-1 px-1 py-sm font-mono font-normal tracking-sm text-sm">{{badgeMarkdown}}</textarea>
                 <CopyButton
                   @class="percy-btn ml-1"
                   @clipboardText={{badgeMarkdown}}
