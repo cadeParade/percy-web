@@ -1,4 +1,4 @@
-<div class="p-2">
+<div class="p-2 hover:bg-gray-000">
   <div class="flex items-center justify-between cursor-pointer" data-test-event-toggle role="button" {{action "toggleOpen"}}>
     <div class="flex items-center">
       <StatusBadge
@@ -33,11 +33,6 @@
           </div>
         {{/if}}
       </div>
-      <button type="button" class="btn btn-square ml-2">
-        <figure class="svg-container trans-transform {{if isOpen "animate-rotate-180"}}">
-          {{inline-svg "dropdown-icon"}}
-        </figure>
-      </button>
     </div>
   </div>
 
