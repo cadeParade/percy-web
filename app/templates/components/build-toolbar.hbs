@@ -49,7 +49,7 @@
     {{/if}}
 
     {{#if build.isFinished}}
-      <div class="{{if (not isBuildApprovable) "hint--left hint--rounded hint--bounce"}}" aria-label="{{if (not isBuildApprovable) "You can't approve this build because you are not a member of this build's organization or are not logged in"}}">
+      <div class="{{unless isBuildApprovable "hint--left hint--rounded hint--bounce"}}" aria-label="{{unless  isBuildApprovable "You can't approve this build because you are not a member of this build's organization or are not logged in"}}">
         <DemoTooltip
           @build={{build}}
           @key="build-approval-button"

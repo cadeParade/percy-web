@@ -42,27 +42,7 @@
 {{/each}}
 
 {{#if numSnapshotsUnchanged}}
-  {{#if (not isUnchangedSnapshotsVisible)}}
-    <div class="SnapshotViewer--actionable">
-      <div class="flex items-center justify-center font-bold p-2 m-2 bg-secondary rounded border border-dashed cursor-pointer" data-test-toggle-unchanged {{action toggleUnchangedSnapshotsVisible}}>
-        {{#if isUnchangedSnapshotsLoading}}
-          {{inline-svg "loader-icon" class="mx-2"}} Loading unchanged snapshots
-        {{else}}
-          <figure class="svg-container">
-            {{inline-svg "no-comparison-group-icon" class="mr-1"}}
-          </figure>
-           <div class="text-blue-500">
-            {{pluralize numSnapshotsUnchanged "unchanged snapshot"}}
-            {{#if build.hasMultipleBrowsers}}
-              in {{activeBrowser.familyName}}
-            {{else}}
-              for all widths.
-            {{/if}}
-          </div>
-        {{/if}}
-      </div>
-    </div>
-  {{else}}
+  {{#if isUnchangedSnapshotsVisible}}
     {{#each snapshotsUnchanged as |snapshot|}}
       <div data-test-snapshot-block>
         <SnapshotViewer
@@ -83,5 +63,25 @@
         />
       </div>
     {{/each}}
+  {{else}}
+    <div class="SnapshotViewer--actionable">
+      <div class="flex items-center justify-center font-bold p-2 m-2 bg-secondary rounded border border-dashed cursor-pointer" data-test-toggle-unchanged {{action toggleUnchangedSnapshotsVisible}}>
+        {{#if isUnchangedSnapshotsLoading}}
+          {{inline-svg "loader-icon" class="mx-2"}} Loading unchanged snapshots
+        {{else}}
+          <figure class="svg-container">
+            {{inline-svg "no-comparison-group-icon" class="mr-1"}}
+          </figure>
+           <div class="text-blue-500">
+            {{pluralize numSnapshotsUnchanged "unchanged snapshot"}}
+            {{#if build.hasMultipleBrowsers}}
+              in {{activeBrowser.familyName}}
+            {{else}}
+              for all widths.
+            {{/if}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
   {{/if}}
 {{/if}}

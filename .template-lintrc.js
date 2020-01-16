@@ -11,6 +11,5 @@ module.exports = {
     'require-valid-alt-text': false,
     'table-groups': false,
     'require-button-type': false,
-    'no-negated-condition': false,
   }
 };
