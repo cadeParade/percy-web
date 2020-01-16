@@ -10,6 +10,5 @@ module.exports = {
     'link-rel-noopener': false,
     'require-valid-alt-text': false,
     'table-groups': false,
-    'require-button-type': false,
   }
 };

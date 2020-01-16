@@ -38,7 +38,7 @@
         {{/if}}
 
         <div class="btn-toolbar">
-          <button class="btn" {{action "toggleAreAllSnapshotsExpanded"}} data-test-show-group-snapshots>
+          <button type="button" class="btn" {{action "toggleAreAllSnapshotsExpanded"}} data-test-show-group-snapshots>
             {{#if isGroupCollapsed}}
               Expand matches
             {{else}}
@@ -47,7 +47,7 @@
           </button>
 
           {{#if noSnapshotsWithOpenCommentThreads}}
-            <button class="btn btn-square collaboration-toggle relative" {{action "handleCommentClick"}} data-test-group-comment-btn>
+            <button type="button" class="btn btn-square collaboration-toggle relative" {{action "handleCommentClick"}} data-test-group-comment-btn>
               <figure class="svg-container">
                 <ThemeSvg @svg="conversation-icon-add" />
               </figure>

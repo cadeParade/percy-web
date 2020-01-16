@@ -1,6 +1,7 @@
 <button
   class="{{classes}} relative {{if isSaving 'is-loading'}} {{if isSaveSuccessful 'is-successful'}} {{if (eq isSaveSuccessful false) 'is-failed'}}"
   disabled={{disabled}}
+  type="submit"
   {{action "perform"}}
   data-test-form-submit-button
 >
