@@ -28,8 +28,6 @@ const ProjectPage = {
   finishedBuilds: alias('projectContainer.finishedBuilds'),
   infinityLoader: alias('projectContainer.infinityLoader'),
 
-  clickQuickstartButton: alias('projectContainer.clickQuickstartButton'),
-
   isNoBuildsPanelVisible: alias('projectContainer.isNoBuildsPanelVisible'),
   isPublicProjectNoticeVisible: alias('projectContainer.isPublicProjectNoticeVisible'),
 
