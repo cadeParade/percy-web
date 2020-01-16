@@ -15,6 +15,5 @@ module.exports = {
     'no-unused-block-params': false,
     'simple-unless': false,
     'no-triple-curlies': false,
-    'no-duplicate-attributes': false,
   }
 };
