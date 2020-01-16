@@ -9,6 +9,5 @@ module.exports = {
     'no-invalid-interactive': false,
     'link-rel-noopener': false,
     'require-valid-alt-text': false,
-    'table-groups': false,
   }
 };
