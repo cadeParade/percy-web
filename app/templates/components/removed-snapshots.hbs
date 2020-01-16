@@ -13,7 +13,7 @@
       {{/each}}
     </ul>
     {{#if areSnapshotsTruncated}}
-      <div class="link-blue cursor-pointer" {{action (toggle "areAllRemovedSnapshotsShowing" this)}} data-test-toggle-snapshots>
+      <div class="link-blue cursor-pointer" {{action (toggle "areAllRemovedSnapshotsShowing" this)}} role="button" data-test-toggle-snapshots>
         {{#if areAllRemovedSnapshotsShowing}}
           Collapse
         {{else}}

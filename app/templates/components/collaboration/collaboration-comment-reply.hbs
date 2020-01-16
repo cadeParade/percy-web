@@ -8,7 +8,7 @@
         </div>
       {{/if}}
     </div>
-    <div class="flex-1 {{if isExpanded 'collaboration-content-inset'}}" {{action "expandReply"}} data-test-comment-reply-textarea-container>
+    <div class="flex-1 {{if isExpanded 'collaboration-content-inset'}}" {{action "expandReply"}} data-test-comment-reply-textarea-container role="button">
       <MentionableTextarea
         @tributeConfigs={{tributeConfigs}}
         @handleItemSelected={{action "handleAtMentionUser"}}

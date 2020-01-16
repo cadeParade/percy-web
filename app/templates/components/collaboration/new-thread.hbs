@@ -65,7 +65,7 @@
     </div>
   </div>
 {{else}}
-  <div class="flex items-center mb-3 cursor-pointer" {{action "toggleShouldShowNewCommentInput"}} data-test-new-comment>
+  <div class="flex items-center mb-3 cursor-pointer" {{action "toggleShouldShowNewCommentInput"}} role="button"data-test-new-comment>
     <PercyBtn
       @isPrimaryButton={{true}}
       @class="percy-btn-primary-round mr-1"

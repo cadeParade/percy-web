@@ -4,7 +4,7 @@
   as |dropdown|
 >
   <dropdown.Trigger class="focus:outline-none">
-    <div class="flex items-center cursor-pointer z-top" {{action "loadOrgs" dropdown.isOpen}} data-test-org-switcher-toggle>
+    <div class="flex items-center cursor-pointer z-top" {{action "loadOrgs" dropdown.isOpen}} role="button" data-test-org-switcher-toggle>
       <UserAvatar @user={{user}} @class="mr-sm" />
       <figure class="svg-container">
         <ThemeSvg @svg="dropdown-icon" />
@@ -13,7 +13,7 @@
   </dropdown.Trigger>
 
   <dropdown.Content>
-    <div class="user-menu" {{action dropdown.actions.close}}>
+    <div class="user-menu" role="button" {{action dropdown.actions.close}}>
       <div class="px-2 pt-2 pb-1 mb-1 text-sm text-secondary border-b leading-none">
         Your organizations
       </div>

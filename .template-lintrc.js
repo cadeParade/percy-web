@@ -5,6 +5,6 @@ module.exports = {
   rules: {
     'no-triple-curlies': false,
     'no-inline-styles': false,
-    'no-invalid-interactive': false,
+    'no-nested-interactive': false, // TODO fix this
   }
 };

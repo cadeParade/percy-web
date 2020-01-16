@@ -1,5 +1,5 @@
 <div class="build-card-container {{if build.isExpired 'opacity-50'}}">
-  <div class="build-card" data-test-build-card {{action "navigateToBuild"}}>
+  <div class="build-card" role="button" data-test-build-card {{action "navigateToBuild"}}>
     <div>
       <div style="margin-bottom: -6px;">
         <LinkTo @route="organization.project.builds.build" @models={{array project.organization.slug project.slug build.id}} class="text-xl md:text-2xl font-mono font-normal tracking-sm">{{build.buildNumber}}</LinkTo>

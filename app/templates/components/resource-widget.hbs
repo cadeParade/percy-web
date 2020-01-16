@@ -8,6 +8,7 @@
       <div
         class="{{if (eq selectedLanguage key) 'cursor-default text-purple-600' 'cursor-pointer'}}"
         {{action 'selectLanguage' key}}
+        role="button"
         data-test-resource-wiget-sidebar-link
       >
         {{capitalize language.name}}

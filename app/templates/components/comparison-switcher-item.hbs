@@ -6,6 +6,7 @@
     {{if matchingComparison.isDifferent ' has-diffs'}}
   "
   {{action 'setWidth'}}
+  role="button"
   data-test-ComparisonSwitcher-button>
   <div class="flex items-center">
     {{#if (and matchingComparison.isDifferent isSelected)}}

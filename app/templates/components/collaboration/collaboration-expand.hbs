@@ -2,7 +2,7 @@
   <div class="flex justify-center items-center w-20 h-20 mr-1-1/2 bg-white border rounded-full">
     {{inline-svg "dot-dot-dot" class=(if isThreadClosed 'fill-gray-700')}}
   </div>
-  <div class="leading-none" {{action showCollapsedComments}} data-test-expand-comments>
+  <div class="leading-none" role="button" {{action showCollapsedComments}} data-test-expand-comments>
     {{#if isThreadClosed}}
       View conversation
     {{else}}

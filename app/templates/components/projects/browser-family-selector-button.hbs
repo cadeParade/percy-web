@@ -2,7 +2,7 @@
   <div
     class="browser-family-selector overflow-hidden cursor-pointer flex justify-center bg-white-pattern border border-transparent rounded p-3 shadow-1 {{if isBrowserEnabled "is-selected"}} {{concat "data-test-browser-selector-" browserFamily.slug}} {{if isDisabled "opacity-50"}}"
     {{action updateProjectBrowserTargets browserFamily}}
-    data-test-browser-selector-button>
+    role="button" data-test-browser-selector-button>
     <div class="browser-family-selector-detail flex flex-col items-center">
       {{inline-svg (concat browserFamily.slug "-icon-lg") class="browser-family-selector-icon mb-1"}}
       <div class="browser-family-selector-name font-semibold leading-none mb-2">

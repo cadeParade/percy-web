@@ -1,5 +1,5 @@
 <div class="p-2">
-  <div class="flex items-center justify-between cursor-pointer" data-test-event-toggle {{action "toggleOpen"}}>
+  <div class="flex items-center justify-between cursor-pointer" data-test-event-toggle role="button" {{action "toggleOpen"}}>
     <div class="flex items-center">
       <StatusBadge
         @statusText={{webhookEvent.responseStatus}}
@@ -58,6 +58,7 @@
           <div class="btn-toggle mb-2">
             <div
               class="btn-toggle-item {{if isRequest "is-selected"}}"
+              role="button"
               {{action "openTab" "request"}}
               data-test-request-tab
             >
@@ -65,6 +66,7 @@
             </div>
             <div
               class="btn-toggle-item {{unless isRequest "is-selected"}}"
+              role="button"
               {{action "openTab" "response"}}
               data-test-response-tab
             >

@@ -3,6 +3,7 @@
     <div
       class="btn-toggle-item browser-switcher {{if (eq browser.id activeBrowser.id) "is-selected"}} {{concat "data-test-browser-switcher-" browser.familySlug}}"
       {{action updateActiveBrowser browser}}
+      role="button"
       data-test-browser-switcher-button
     >
       {{inline-svg (concat browser.familySlug "-browser-icon") class="opacity-25"}}

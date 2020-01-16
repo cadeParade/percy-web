@@ -1,4 +1,4 @@
-<header class="SnapshotViewer-header {{if fullscreen 'SnapshotViewer-header-full w-screen z-2'}}" data-test-SnapshotViewer-header {{action expandSnapshot}}>
+<header class="SnapshotViewer-header {{if fullscreen 'SnapshotViewer-header-full w-screen z-2'}}" data-test-SnapshotViewer-header {{action expandSnapshot}} role="button">
   <div style="min-width: 0;" class="flex items-center">
     {{#if fullscreen}}
       <div class="btn-group mr-2">
@@ -65,7 +65,7 @@
                       {{action (pipe-action
                         (action 'toggleFilteredComparisons')
                         dropdown.actions.close
-                      )}} data-test-toggle-widths-option>
+                      )}} role="button" data-test-toggle-widths-option>
                       {{#if isShowingFilteredComparisons}}
                         <span>Show all widths</span>
                         {{inline-svg "width-icon"}}
@@ -90,13 +90,14 @@
                     {{action (pipe-action
                       (action 'downloadHTML' 'base' selectedComparison.baseSnapshot)
                       dropdown.actions.close
-                    )}}>
+                    )}} role="button">
                       <span>Download original source</span>
                       {{inline-svg "download-source-icon"}}
                     </li>
                   {{/if}}
                   {{#if selectedComparison.headSnapshot}}
                     <li class="dropdown-menu-list-item cursor-pointer flex justify-between items-center text-sm font-semibold py-1 pl-2 pr-1 mb-0"
+                    role="button"
                     {{action (pipe-action
                       (action 'downloadHTML' 'head' selectedComparison.headSnapshot)
                       dropdown.actions.close
@@ -107,6 +108,7 @@
                   {{/if}}
                   {{#if (and selectedComparison.headSnapshot selectedComparison.baseSnapshot)}}
                     <li class="dropdown-menu-list-item cursor-pointer flex justify-between items-center text-sm font-semibold py-1 pl-2 pr-1 mb-0"
+                    role="button"
                     {{action (pipe-action
                       (action 'downloadDiff' selectedComparison)
                       dropdown.actions.close
@@ -116,6 +118,7 @@
                     </li>
                   {{/if}}
                   <li class="dropdown-menu-list-item cursor-pointer flex justify-between items-center text-sm font-semibold py-1 pl-2 pr-1 mb-0"
+                    role="button"
                     {{action (pipe-action
                       (action "goToLastChangedSnapshot")
                       dropdown.actions.close

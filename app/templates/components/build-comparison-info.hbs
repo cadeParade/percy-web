@@ -1,5 +1,5 @@
 {{#if build.baseBuild}}
-  <div {{action onLinkClick}}>
+  <div role="button" {{action onLinkClick}}>
     <LinkTo @route="organization.project.builds.build" @models={{array build.project.organization.slug build.project.slug build.baseBuild.id}} class="data-test-baseline-build-link">{{build.baseBuild.buildTitle}}</LinkTo>
   </div>
 {{else}}

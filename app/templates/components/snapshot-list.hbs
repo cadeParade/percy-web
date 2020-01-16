@@ -65,7 +65,7 @@
     {{/each}}
   {{else}}
     <div class="SnapshotViewer--actionable">
-      <div class="flex items-center justify-center font-bold p-2 m-2 bg-secondary rounded border border-dashed cursor-pointer" data-test-toggle-unchanged {{action toggleUnchangedSnapshotsVisible}}>
+      <div class="flex items-center justify-center font-bold p-2 m-2 bg-secondary rounded border border-dashed cursor-pointer" data-test-toggle-unchanged {{action toggleUnchangedSnapshotsVisible}} role="button">
         {{#if isUnchangedSnapshotsLoading}}
           {{inline-svg "loader-icon" class="mx-2"}} Loading unchanged snapshots
         {{else}}
