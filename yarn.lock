@@ -1254,10 +1254,10 @@
     which "^2.0.1"
     winston "^3.0.0"
 
-"@percy/ember@2.0.0-beta.2":
-  version "2.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@percy/ember/-/ember-2.0.0-beta.2.tgz#93f4541ce2599056d46eada25ea4b84231a51b96"
-  integrity sha512-RHuBITfkzNfmzuWKaW95J+kdew7FNsKZYKCCTg+pYdaRIKz/Utk9nDC1QWv5i1Z/glWaSPMFRLJdjESL1NyWNw==
+"@percy/ember@2.0.0-beta.3":
+  version "2.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@percy/ember/-/ember-2.0.0-beta.3.tgz#44debfe7309833ae09c890bb2fda3f3f55980345"
+  integrity sha512-AbBKBgWUwKElG6ExtUGfoJmWYho3/5z0RR8NV76gT7j0NSKiXcb0Pj2mdgGqtb15HENS4MmIKvbkC8xTFWlA1w==
   dependencies:
     "@percy/agent" "~0"
     ember-cli-babel "^7.11.1"
