@@ -32,11 +32,11 @@ describe('Integration: GitlabSettings', function() {
       });
       this.owner.register('service:session', sessionServiceStub, 'sessionService');
       this.setProperties({organization, gitlabIntegration});
-      await render(hbs`{{
-        organizations/integrations/gitlab-settings
-        organization=organization
-        currentGitlabIntegration=gitlabIntegration
-      }}`);
+      await render(hbs`<
+        Organizations::Integrations::GitlabSettings
+        @organization={{organization}}
+        @currentGitlabIntegration={{gitlabIntegration}}
+      />`);
     });
 
     it('shows the settings form', async function() {
@@ -84,11 +84,11 @@ describe('Integration: GitlabSettings', function() {
       this.owner.register('service:session', sessionServiceStub, 'sessionService');
 
       this.setProperties({organization, gitlabIntegration});
-      await render(hbs`{{
-        organizations/integrations/gitlab-settings
-        organization=organization
-        currentGitlabIntegration=gitlabIntegration
-      }}`);
+      await render(hbs`<
+        Organizations::Integrations::GitlabSettings
+        @organization={{organization}}
+        @currentGitlabIntegration={{gitlabIntegration}}
+      />`);
     });
 
     it('shows the settings form', async function() {
@@ -123,11 +123,11 @@ describe('Integration: GitlabSettings', function() {
       this.owner.register('service:session', sessionServiceStub, 'sessionService');
 
       this.setProperties({organization, gitlabIntegration});
-      await render(hbs`{{
-        organizations/integrations/gitlab-settings
-        organization=organization
-        currentGitlabIntegration=gitlabIntegration
-      }}`);
+      await render(hbs`<
+        Organizations::Integrations::GitlabSettings
+        @organization={{organization}}
+        @currentGitlabIntegration={{gitlabIntegration}}
+      />`);
     });
 
     it('shows the firewall contact link', async function() {
@@ -201,11 +201,11 @@ describe('Integration: GitlabSettings', function() {
       this.owner.register('service:session', sessionServiceStub, 'sessionService');
 
       this.setProperties({organization, gitlabIntegration});
-      await render(hbs`{{
-        organizations/integrations/gitlab-settings
-        organization=organization
-        currentGitlabIntegration=gitlabIntegration
-      }}`);
+      await render(hbs`<
+        Organizations::Integrations::GitlabSettings
+        @organization={{organization}}
+        @currentGitlabIntegration={{gitlabIntegration}}
+      />`);
     });
 
     it('shows the settings form', async function() {

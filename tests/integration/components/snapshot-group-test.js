@@ -62,15 +62,15 @@ describe('Integration: SnapshotGroup', function() {
 
     // eslint-disable-next-line
     it('shows widest width with diff as active by default when some comparisons have diffs', async function() {
-      await render(hbs`{{snapshot-group
-        snapshots=snapshots
-        build=build
-        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-        userSelectedWidth=userSelectedWidth
-        activeBrowser=browser
-        createReview=createReview
-        isBuildApprovable=isBuildApprovable
-      }}`);
+      await render(hbs`<SnapshotGroup
+        @snapshots={{snapshots}}
+        @build={{build}}
+        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+        @userSelectedWidth={{userSelectedWidth}}
+        @activeBrowser={{browser}}
+        @createReview={{createReview}}
+        @isBuildApprovable={{isBuildApprovable}}
+      />`);
 
       expect(SnapshotGroup.header.widthSwitcher.buttons[0].isActive).to.equal(false);
       expect(SnapshotGroup.header.widthSwitcher.buttons[1].isActive).to.equal(true);
@@ -78,16 +78,16 @@ describe('Integration: SnapshotGroup', function() {
     });
 
     it('updates active button when clicked', async function() {
-      await render(hbs`{{snapshot-group
-        snapshots=snapshots
-        build=build
-        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-        userSelectedWidth=userSelectedWidth
-        createReview=createReview
-        activeBrowser=browser
-        updateActiveSnapshotBlockId=stub
-        isBuildApprovable=isBuildApprovable
-      }}`);
+      await render(hbs`<SnapshotGroup
+        @snapshots={{snapshots}}
+        @build={{build}}
+        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+        @userSelectedWidth={{userSelectedWidth}}
+        @createReview={{createReview}}
+        @activeBrowser={{browser}}
+        @updateActiveSnapshotBlockId={{stub}}
+        @isBuildApprovable={{isBuildApprovable}}
+      />`);
 
       expect(SnapshotGroup.header.widthSwitcher.buttons[1].isActive).to.equal(true);
       await SnapshotGroup.header.widthSwitcher.buttons[0].click();
@@ -98,16 +98,16 @@ describe('Integration: SnapshotGroup', function() {
 
   describe('full screen toggle button', function() {
     beforeEach(async function() {
-      await render(hbs`{{snapshot-group
-        snapshots=snapshots
-        build=build
-        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-        userSelectedWidth=userSelectedWidth
-        createReview=createReview
-        updateActiveSnapshotBlockId=stub
-        activeBrowser=browser
-        isBuildApprovable=isBuildApprovable
-      }}`);
+      await render(hbs`<SnapshotGroup
+        @snapshots={{snapshots}}
+        @build={{build}}
+        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+        @userSelectedWidth={{userSelectedWidth}}
+        @createReview={{createReview}}
+        @updateActiveSnapshotBlockId={{stub}}
+        @activeBrowser={{browser}}
+        @isBuildApprovable={{isBuildApprovable}}
+      />`);
     });
 
     it('displays', async function() {
@@ -130,17 +130,17 @@ describe('Integration: SnapshotGroup', function() {
     beforeEach(async function() {
       this.set('activeSnapshotBlockId', null);
 
-      await render(hbs`{{snapshot-group
-        snapshots=snapshots
-        build=build
-        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-        userSelectedWidth=userSelectedWidth
-        createReview=createReview
-        activeSnapshotBlockId=activeSnapshotBlockId
-        updateActiveSnapshotBlockId=stub
-        activeBrowser=browser
-        isBuildApprovable=isBuildApprovable
-      }}`);
+      await render(hbs`<SnapshotGroup
+        @snapshots={{snapshots}}
+        @build={{build}}
+        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+        @userSelectedWidth={{userSelectedWidth}}
+        @createReview={{createReview}}
+        @activeSnapshotBlockId={{activeSnapshotBlockId}}
+        @updateActiveSnapshotBlockId={{stub}}
+        @activeBrowser={{browser}}
+        @isBuildApprovable={{isBuildApprovable}}
+      />`);
     });
 
     it('is expanded by default when the group is completely unapproved', async function() {
@@ -190,17 +190,17 @@ describe('Integration: SnapshotGroup', function() {
       let snapshots = unapprovedSnapshots.concat(approvedSnapshots);
       this.set('snapshots', snapshots);
 
-      await render(hbs`{{snapshot-group
-        snapshots=snapshots
-        build=build
-        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-        userSelectedWidth=userSelectedWidth
-        createReview=createReview
-        activeSnapshotBlockId=activeSnapshotBlockId
-        updateActiveSnapshotBlockId=stub
-        activeBrowser=browser
-        isBuildApprovable=isBuildApprovable
-      }}`);
+      await render(hbs`<SnapshotGroup
+        @snapshots={{snapshots}}
+        @build={{build}}
+        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+        @userSelectedWidth={{userSelectedWidth}}
+        @createReview={{createReview}}
+        @activeSnapshotBlockId={{activeSnapshotBlockId}}
+        @updateActiveSnapshotBlockId={{stub}}
+        @activeBrowser={{browser}}
+        @isBuildApprovable={{isBuildApprovable}}
+      />`);
     });
 
     it('should show all snapshots', async function() {
@@ -229,15 +229,15 @@ describe('Integration: SnapshotGroup', function() {
 
   describe('approve snapshot button', function() {
     beforeEach(async function() {
-      await render(hbs`{{snapshot-group
-        snapshots=snapshots
-        build=build
-        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-        createReview=createReview
-        updateActiveSnapshotBlockId=stub
-        activeBrowser=browser
-        isBuildApprovable=isBuildApprovable
-      }}`);
+      await render(hbs`<SnapshotGroup
+        @snapshots={{snapshots}}
+        @build={{build}}
+        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+        @createReview={{createReview}}
+        @updateActiveSnapshotBlockId={{stub}}
+        @activeBrowser={{browser}}
+        @isBuildApprovable={{isBuildApprovable}}
+      />`);
     });
 
     it('sends createReview with correct args when approve button is clicked', async function() {
@@ -248,16 +248,16 @@ describe('Integration: SnapshotGroup', function() {
 
   describe('diff toggling', function() {
     beforeEach(async function() {
-      await render(hbs`{{snapshot-group
-        snapshots=snapshots
-        build=build
-        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-        userSelectedWidth=userSelectedWidth
-        activeBrowser=browser
-        createReview=createReview
-        isBuildApprovable=isBuildApprovable
-        updateActiveSnapshotBlockId=stub
-      }}`);
+      await render(hbs`<SnapshotGroup
+        @snapshots={{snapshots}}
+        @build={{build}}
+        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+        @userSelectedWidth={{userSelectedWidth}}
+        @activeBrowser={{browser}}
+        @createReview={{createReview}}
+        @isBuildApprovable={{isBuildApprovable}}
+        @updateActiveSnapshotBlockId={{stub}}
+      />`);
     });
 
     it('toggles cover image diff when clicking', async function() {
@@ -312,15 +312,15 @@ describe('Integration: SnapshotGroup', function() {
     });
 
     it('shows multiple snapshots as "cover" snapshots', async function() {
-      await render(hbs`{{snapshot-group
-        snapshots=snapshots
-        build=build
-        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-        createReview=createReview
-        updateActiveSnapshotBlockId=stub
-        activeBrowser=browser
-        isBuildApprovable=isBuildApprovable
-      }}`);
+      await render(hbs`<SnapshotGroup
+        @snapshots={{snapshots}}
+        @build={{build}}
+        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+        @createReview={{createReview}}
+        @updateActiveSnapshotBlockId={{stub}}
+        @activeBrowser={{browser}}
+        @isBuildApprovable={{isBuildApprovable}}
+      />`);
 
       expect(SnapshotGroup.snapshots.length).to.equal(2);
       await percySnapshot(this.test, {darkMode: true});
@@ -335,15 +335,15 @@ describe('Integration: SnapshotGroup', function() {
         });
       });
 
-      await render(hbs`{{snapshot-group
-        snapshots=snapshots
-        build=build
-        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-        createReview=createReview
-        updateActiveSnapshotBlockId=stub
-        activeBrowser=browser
-        isBuildApprovable=isBuildApprovable
-      }}`);
+      await render(hbs`<SnapshotGroup
+        @snapshots={{snapshots}}
+        @build={{build}}
+        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+        @createReview={{createReview}}
+        @updateActiveSnapshotBlockId={{stub}}
+        @activeBrowser={{browser}}
+        @isBuildApprovable={{isBuildApprovable}}
+      />`);
 
       await percySnapshot(this.test, {darkMode: true});
     });
@@ -351,17 +351,17 @@ describe('Integration: SnapshotGroup', function() {
 
   describe('comment button', function() {
     beforeEach(async function() {
-      await render(hbs`{{snapshot-group
-        snapshots=snapshots
-        build=build
-        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-        userSelectedWidth=userSelectedWidth
-        createReview=createReview
-        activeSnapshotBlockId=activeSnapshotBlockId
-        updateActiveSnapshotBlockId=stub
-        activeBrowser=browser
-        isBuildApprovable=isBuildApprovable
-      }}`);
+      await render(hbs`<SnapshotGroup
+        @snapshots={{snapshots}}
+        @build={{build}}
+        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+        @userSelectedWidth={{userSelectedWidth}}
+        @createReview={{createReview}}
+        @activeSnapshotBlockId={{activeSnapshotBlockId}}
+        @updateActiveSnapshotBlockId={{stub}}
+        @activeBrowser={{browser}}
+        @isBuildApprovable={{isBuildApprovable}}
+      />`);
     });
 
     it('expands all snapshots and shows comment panel on first snapshot', async function() {
@@ -395,17 +395,17 @@ describe('Integration: SnapshotGroup', function() {
 
   describe('group state', function() {
     beforeEach(async function() {
-      await render(hbs`{{snapshot-group
-        snapshots=snapshots
-        build=build
-        showSnapshotFullModalTriggered=showSnapshotFullModalTriggered
-        userSelectedWidth=userSelectedWidth
-        createReview=createReview
-        activeSnapshotBlockId=activeSnapshotBlockId
-        updateActiveSnapshotBlockId=stub
-        activeBrowser=browser
-        isBuildApprovable=isBuildApprovable
-      }}`);
+      await render(hbs`<SnapshotGroup
+        @snapshots={{snapshots}}
+        @build={{build}}
+        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+        @userSelectedWidth={{userSelectedWidth}}
+        @createReview={{createReview}}
+        @activeSnapshotBlockId={{activeSnapshotBlockId}}
+        @updateActiveSnapshotBlockId={{stub}}
+        @activeBrowser={{browser}}
+        @isBuildApprovable={{isBuildApprovable}}
+      />`);
     });
 
     it('is unreviewed by default', async function() {

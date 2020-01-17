@@ -37,12 +37,12 @@ describe('Integration: SlackIntegrationItem', function() {
         slackIntegration,
         deleteSlackIntegrationStub,
       });
-      await render(hbs`{{
-        organizations/integrations/slack-integration-item
-        projectOptions=projectOptions
-        slackIntegration=slackIntegration
-        deleteSlackIntegration=deleteSlackIntegrationStub
-      }}`);
+      await render(hbs`<
+        Organizations::Integrations::SlackIntegrationItem
+        @projectOptions={{projectOptions}}
+        @slackIntegration={{slackIntegration}}
+        @deleteSlackIntegration={{deleteSlackIntegrationStub}}
+      />`);
     });
 
     it('renders the empty integration correctly', async function() {
@@ -80,12 +80,12 @@ describe('Integration: SlackIntegrationItem', function() {
     });
 
     it('renders the integration correctly for All Projects', async function() {
-      await render(hbs`{{
-        organizations/integrations/slack-integration-item
-        projectOptions=projectOptions
-        slackIntegration=slackIntegration
-        deleteSlackIntegration=deleteSlackIntegrationStub
-      }}`);
+      await render(hbs`<
+        Organizations::Integrations::SlackIntegrationItem
+        @projectOptions={{projectOptions}}
+        @slackIntegration={{slackIntegration}}
+        @deleteSlackIntegration={{deleteSlackIntegrationStub}}
+      />`);
 
       expect(SlackIntegrationItem.configItems.length).to.equal(3);
 
@@ -97,12 +97,12 @@ describe('Integration: SlackIntegrationItem', function() {
         slackIntegration,
         projectId: project.id,
       });
-      await render(hbs`{{
-        organizations/integrations/slack-integration-item
-        projectOptions=projectOptions
-        slackIntegration=slackIntegration
-        deleteSlackIntegration=deleteSlackIntegrationStub
-      }}`);
+      await render(hbs`<
+        Organizations::Integrations::SlackIntegrationItem
+        @projectOptions={{projectOptions}}
+        @slackIntegration={{slackIntegration}}
+        @deleteSlackIntegration={{deleteSlackIntegrationStub}}
+      />`);
       expect(SlackIntegrationItem.configItems.length).to.equal(4);
 
       await percySnapshot(this.test.fullTitle());

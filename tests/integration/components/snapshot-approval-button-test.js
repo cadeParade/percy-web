@@ -30,44 +30,44 @@ describe('Integration: SnapshotApprovalButton', function() {
   });
 
   it('displays correctly when snapshot is not approved and has diffs in active browser', async function() {  //eslint-disable-line
-    await render(hbs`{{snapshot-approval-button
-      snapshot=snapshot
-      createReview=createReview
-      activeBrowser=activeBrowser
-      hasDiffsInBrowser=hasDiffsInBrowser
-    }}`);
+    await render(hbs`<SnapshotApprovalButton
+      @snapshot={{snapshot}}
+      @createReview={{createReview}}
+      @activeBrowser={{activeBrowser}}
+      @hasDiffsInBrowser={{hasDiffsInBrowser}}
+    />`);
     await percySnapshot(this.test, {darkMode: true});
   });
 
   it('displays correctly when snapshot is not approved does not have diffs in active browser ', async function() {  //eslint-disable-line
     this.set('hasDiffsInBrowser', false);
-    await render(hbs`{{snapshot-approval-button
-      snapshot=snapshot
-      createReview=createReview
-      activeBrowser=activeBrowser
-      hasDiffsInBrowser=hasDiffsInBrowser
-    }}`);
+    await render(hbs`<SnapshotApprovalButton
+      @snapshot={{snapshot}}
+      @createReview={{createReview}}
+      @activeBrowser={{activeBrowser}}
+      @hasDiffsInBrowser={{hasDiffsInBrowser}}
+    />`);
 
     await percySnapshot(this.test, {darkMode: true});
   });
 
   it('displays correctly when snapshot is approved', async function() {
-    await render(hbs`{{snapshot-approval-button
-      snapshot=snapshot
-      createReview=createReview
-      activeBrowser=activeBrowser
-      hasDiffsInBrowser=hasDiffsInBrowser
-    }}`);
+    await render(hbs`<SnapshotApprovalButton
+      @snapshot={{snapshot}}
+      @createReview={{createReview}}
+      @activeBrowser={{activeBrowser}}
+      @hasDiffsInBrowser={{hasDiffsInBrowser}}
+    />`);
     this.set('snapshot.reviewState', 'approved');
     await percySnapshot(this.test, {darkMode: true});
   });
 
   it('calls createReview with correct args when clicked', async function() {
-    await render(hbs`{{snapshot-approval-button
-      snapshot=snapshot
-      createReview=createReview
-      hasDiffsInBrowser=hasDiffsInBrowser
-    }}`);
+    await render(hbs`<SnapshotApprovalButton
+      @snapshot={{snapshot}}
+      @createReview={{createReview}}
+      @hasDiffsInBrowser={{hasDiffsInBrowser}}
+    />`);
     await SnapshotApprovalButton.clickButton();
 
     expect(createReview).to.have.been.calledWith([snapshot]);
@@ -77,37 +77,37 @@ describe('Integration: SnapshotApprovalButton', function() {
     const deferred = defer();
     const createReview = sinon.stub().returns(deferred.promise);
     this.set('createReview', createReview);
-    await render(hbs`{{snapshot-approval-button
-      snapshot=snapshot
-      createReview=(action createReview)
-      hasDiffsInBrowser=hasDiffsInBrowser
-    }}`);
+    await render(hbs`<SnapshotApprovalButton
+      @snapshot={{snapshot}}
+      @createReview={{action createReview}}
+      @hasDiffsInBrowser={{hasDiffsInBrowser}}
+    />`);
     await SnapshotApprovalButton.clickButton();
 
     await percySnapshot(this.test, {darkMode: true});
   });
 
   it('is enabled when isDisabled is false', async function() {
-    await render(hbs`{{snapshot-approval-button
-      snapshot=snapshot
-      createReview=createReview
-      activeBrowser=activeBrowser
-      hasDiffsInBrowser=hasDiffsInBrowser
-      isDisabled=false
-    }}`);
+    await render(hbs`<SnapshotApprovalButton
+      @snapshot={{snapshot}}
+      @createReview={{createReview}}
+      @activeBrowser={{activeBrowser}}
+      @hasDiffsInBrowser={{hasDiffsInBrowser}}
+      @isDisabled={{false}}
+    />`);
     expect(SnapshotApprovalButton.isDisabled).to.equal(false);
     await SnapshotApprovalButton.clickButton();
     expect(createReview).to.have.been.calledWith([snapshot]);
   });
 
   it('is disabled when isDisabled is true', async function() {
-    await render(hbs`{{snapshot-approval-button
-      snapshot=snapshot
-      createReview=createReview
-      activeBrowser=activeBrowser
-      hasDiffsInBrowser=hasDiffsInBrowser
-      isDisabled=true
-    }}`);
+    await render(hbs`<SnapshotApprovalButton
+      @snapshot={{snapshot}}
+      @createReview={{createReview}}
+      @activeBrowser={{activeBrowser}}
+      @hasDiffsInBrowser={{hasDiffsInBrowser}}
+      @isDisabled={{true}}
+    />`);
     expect(SnapshotApprovalButton.isDisabled).to.equal(true);
     await SnapshotApprovalButton.clickButton();
     expect(createReview).to.not.have.been.called;
@@ -115,11 +115,11 @@ describe('Integration: SnapshotApprovalButton', function() {
 
   it('shows approvalBadge when createReview returns true', async function() {
     this.set('createReview', sinon.stub().returns(resolve(true)));
-    await render(hbs`{{snapshot-approval-button
-      snapshot=snapshot
-      createReview=createReview
-      hasDiffsInBrowser=hasDiffsInBrowser
-    }}`);
+    await render(hbs`<SnapshotApprovalButton
+      @snapshot={{snapshot}}
+      @createReview={{createReview}}
+      @hasDiffsInBrowser={{hasDiffsInBrowser}}
+    />`);
 
     await SnapshotApprovalButton.clickButton();
     expect(SnapshotApprovalButton.isApproved).to.equal(true);
@@ -127,11 +127,11 @@ describe('Integration: SnapshotApprovalButton', function() {
 
   it('does not show approval badge when createReview returns false', async function() {
     this.set('createReview', sinon.stub().returns(resolve(false)));
-    await render(hbs`{{snapshot-approval-button
-      snapshot=snapshot
-      createReview=createReview
-      hasDiffsInBrowser=hasDiffsInBrowser
-    }}`);
+    await render(hbs`<SnapshotApprovalButton
+      @snapshot={{snapshot}}
+      @createReview={{createReview}}
+      @hasDiffsInBrowser={{hasDiffsInBrowser}}
+    />`);
 
     await SnapshotApprovalButton.clickButton();
     expect(SnapshotApprovalButton.isApproved).to.equal(false);

@@ -11,7 +11,7 @@ describe('Integration: Marketing/PricingCardBlock', function() {
   });
 
   beforeEach(async function() {
-    await render(hbs`{{marketing/pricing-card-block}}`);
+    await render(hbs`<Marketing::PricingCardBlock />`);
   });
 
   it('displays correct initial values', async function() {

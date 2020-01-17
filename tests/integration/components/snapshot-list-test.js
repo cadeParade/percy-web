@@ -40,16 +40,16 @@ describe('Integration: SnapshotList', function() {
         shouldDeferRendering: true,
       });
 
-      await render(hbs`{{snapshot-list
-        snapshotsChanged=snapshotsChanged
-        build=build
-        createReview=stub
-        showSnapshotFullModalTriggered=stub
-        activeBrowser=browser
-        shouldDeferRendering=shouldDeferRendering
-        toggleUnchangedSnapshotsVisible=stub
-        isBuildApprovable=true
-      }}`);
+      await render(hbs`<SnapshotList
+        @snapshotsChanged={{snapshotsChanged}}
+        @build={{build}}
+        @createReview={{stub}}
+        @showSnapshotFullModalTriggered={{stub}}
+        @activeBrowser={{browser}}
+        @shouldDeferRendering={{shouldDeferRendering}}
+        @toggleUnchangedSnapshotsVisible={{stub}}
+        @isBuildApprovable={{true}}
+      />`);
     });
 
     it('renders snapshot header placeholder', async function() {
@@ -99,18 +99,18 @@ describe('Integration: SnapshotList', function() {
         isUnchangedSnapshotsVisible: false,
       });
 
-      await render(hbs`{{snapshot-list
-        snapshotsChanged=snapshotsChanged
-        build=build
-        createReview=stub
-        showSnapshotFullModalTriggered=stub
-        isKeyboardNavEnabled=isKeyboardNavEnabled
-        activeBrowser=browser
-        toggleUnchangedSnapshotsVisible=stub
-        isUnchangedSnapshotsVisible=isUnchangedSnapshotsVisible
-        snapshotsUnchanged=snapshotsUnchanged
-        isBuildApprovable=true
-      }}`);
+      await render(hbs`<SnapshotList
+        @snapshotsChanged={{snapshotsChanged}}
+        @build={{build}}
+        @createReview={{stub}}
+        @showSnapshotFullModalTriggered={{stub}}
+        @isKeyboardNavEnabled={{isKeyboardNavEnabled}}
+        @activeBrowser={{browser}}
+        @toggleUnchangedSnapshotsVisible={{stub}}
+        @isUnchangedSnapshotsVisible={{isUnchangedSnapshotsVisible}}
+        @snapshotsUnchanged={{snapshotsUnchanged}}
+        @isBuildApprovable={{true}}
+      />`);
     });
 
     it('automatically expands collapsed snapshot blocks if focused', async function() {
@@ -336,16 +336,16 @@ describe('Integration: SnapshotList', function() {
         snapshotsUnchanged: [],
       });
 
-      await render(hbs`{{snapshot-list
-        snapshotsChanged=snapshotsChanged
-        snapshotsUnchanged=snapshotsUnchanged
-        build=build
-        createReview=stub
-        showSnapshotFullModalTriggered=stub
-        activeBrowser=browser
-        toggleUnchangedSnapshotsVisible=stub
-        isBuildApprovable=true
-      }}`);
+      await render(hbs`<SnapshotList
+        @snapshotsChanged={{snapshotsChanged}}
+        @snapshotsUnchanged={{snapshotsUnchanged}}
+        @build={{build}}
+        @createReview={{stub}}
+        @showSnapshotFullModalTriggered={{stub}}
+        @activeBrowser={{browser}}
+        @toggleUnchangedSnapshotsVisible={{stub}}
+        @isBuildApprovable={{true}}
+      />`);
     });
 
     it('orders individual and grouped snapshots correctly', async function() {

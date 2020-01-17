@@ -29,12 +29,12 @@ describe('Integration: CollaborationComment', function() {
         closeCommentThreadStub,
         isCommentingAllowed: true,
       });
-      await render(hbs`{{collaboration/collaboration-comment
-        comment=comment
-        isFirstComment=isFirstComment
-        closeCommentThread=closeCommentThreadStub
-        isCommentingAllowed=isCommentingAllowed
-      }}`);
+      await render(hbs`<Collaboration::CollaborationComment
+        @comment={{comment}}
+        @isFirstComment={{isFirstComment}}
+        @closeCommentThread={{closeCommentThreadStub}}
+        @isCommentingAllowed={{isCommentingAllowed}}
+      />`);
     });
 
     describe('when the comment thread is open', function() {
@@ -116,10 +116,10 @@ describe('Integration: CollaborationComment', function() {
   describe('when `isFirstComment` is false', function() {
     beforeEach(async function() {
       this.setProperties({isFirstComment: false, comment: {}});
-      await render(hbs`{{collaboration/collaboration-comment
-        comment=comment
-        isFirstComment=isFirstComment
-      }}`);
+      await render(hbs`<Collaboration::CollaborationComment
+        @comment={{comment}}
+        @isFirstComment={{isFirstComment}}
+      />`);
     });
 
     it('does not show "Archive" button', async function() {

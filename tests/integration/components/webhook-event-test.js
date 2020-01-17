@@ -14,7 +14,7 @@ describe('Integration: WebhookEvent', function() {
 
   beforeEach(async function() {
     setupFactoryGuy(this);
-    await render(hbs`{{webhook-event webhookEvent=webhookEvent}}`);
+    await render(hbs`<WebhookEvent @webhookEvent={{webhookEvent}} />`);
   });
 
   it('displays webhook event data', async function() {

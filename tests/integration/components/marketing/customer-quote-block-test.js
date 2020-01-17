@@ -38,9 +38,9 @@ describe('Integration: Marketing/CustomerQuoteBlock', function() {
   });
 
   it('switches quotes when dot is clicked', async function() {
-    await render(hbs`{{marketing/customer-quote-block
-      quoteBlock=quoteBlock
-    }}`);
+    await render(hbs`<Marketing::CustomerQuoteBlock
+      @quoteBlock={{quoteBlock}}
+    />`);
 
     await percySnapshot(`${this.test.fullTitle()} | slide 1`);
     await QuoteBlock.dots.objectAt(1).click();

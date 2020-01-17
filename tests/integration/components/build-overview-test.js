@@ -35,7 +35,7 @@ describe('Integration: BuildOverviewComponent', function() {
       const build = make.apply(this, ['build'].concat(state));
       this.set('build', build);
 
-      await render(hbs`{{build-overview build=build}}`);
+      await render(hbs`<BuildOverview @build={{build}} />`);
       await percySnapshot(this.test, {darkMode: true});
     });
   });

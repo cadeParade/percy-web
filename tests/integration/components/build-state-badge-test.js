@@ -35,7 +35,7 @@ describe('Integration: BuildStateBadgeComponent', function() {
       let build = make.apply(this, ['build'].concat(state));
       this.set('build', build);
 
-      await render(hbs`{{build-state-badge build=build}}`);
+      await render(hbs`<BuildStateBadge @build={{build}} />`);
       await percySnapshot(this.test, {darkMode: true});
     });
   });

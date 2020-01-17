@@ -13,21 +13,21 @@ describe('Integration: RepoRefreshStatus', function() {
   it('renders correctly when the repo is refreshing', async function() {
     this.set('isRepoRefreshInProgress', true);
 
-    await render(hbs`{{repo-refresh-status isRepoRefreshInProgress=isRepoRefreshInProgress}}`);
+    await render(hbs`<RepoRefreshStatus @isRepoRefreshInProgress={{isRepoRefreshInProgress}} />`);
     expect(getRootElement().innerText).to.include('Checking repo status...');
   });
 
   it('renders correctly without a date', async function() {
     this.set('isRepoRefreshInProgress', false);
 
-    await render(hbs`{{repo-refresh-status isRepoRefreshInProgress=isRepoRefreshInProgress}}`);
+    await render(hbs`<RepoRefreshStatus @isRepoRefreshInProgress={{isRepoRefreshInProgress}} />`);
     expect(getRootElement().innerText).to.include('Never updated');
   });
 
   it('renders correctly with a date', async function() {
     const twoMinutesAgo = moment().subtract('2', 'minutes');
     this.set('lastSyncedAt', twoMinutesAgo);
-    await render(hbs`{{repo-refresh-status lastSyncedAt=lastSyncedAt}}`);
+    await render(hbs`<RepoRefreshStatus @lastSyncedAt={{lastSyncedAt}} />`);
     expect(getRootElement().innerText).to.include('Last updated: 2 minutes ago');
   });
 });

@@ -34,11 +34,11 @@ describe('Integration: OrganizationsNewOrganization', function() {
       const githubIdentity = make('identity', 'githubProvider', {user});
       this.setProperties({newOrganization, userIdentities: [githubIdentity]});
 
-      await render(hbs`{{organizations/new-organization
-        newOrganization=newOrganization
-        organizationCreated=organizationCreated
-        userIdentities=userIdentities
-      }}`);
+      await render(hbs`<Organizations::NewOrganization
+        @newOrganization={{newOrganization}}
+        @organizationCreated={{organizationCreated}}
+        @userIdentities={{userIdentities}}
+      />`);
     });
 
     it('hides the connect github account section', async function() {
@@ -54,11 +54,11 @@ describe('Integration: OrganizationsNewOrganization', function() {
       this.setProperties({newOrganization, userIdentities: [auth0Identity]});
       this.set('newOrganization', newOrganization);
 
-      await render(hbs`{{organizations/new-organization
-        newOrganization=newOrganization
-        organizationCreated=organizationCreated
-        userIdentities=userIdentities
-      }}`);
+      await render(hbs`<Organizations::NewOrganization
+        @newOrganization={{newOrganization}}
+        @organizationCreated={{organizationCreated}}
+        @userIdentities={{userIdentities}}
+      />`);
     });
 
     it('shows the connect github account section', async function() {
@@ -89,11 +89,11 @@ describe('Integration: OrganizationsNewOrganization', function() {
       this.set('newOrganization', newOrganization);
       this.set('userIdentities', [githubIdentity]);
 
-      await render(hbs`{{organizations/new-organization
-        newOrganization=newOrganization
-        organizationCreated=organizationCreated
-        userIdentities=userIdentities
-      }}`);
+      await render(hbs`<Organizations::NewOrganization
+        @newOrganization={{newOrganization}}
+        @organizationCreated={{organizationCreated}}
+        @userIdentities={{userIdentities}}
+      />`);
     });
 
     it('shows the connect github account section', async function() {

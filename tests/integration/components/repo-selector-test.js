@@ -31,7 +31,7 @@ describe('Integration: RepoSelectorComponent', function() {
 
       this.setProperties({project});
       repoRefreshServiceStub(this, null, null);
-      await render(hbs`{{repo-selector project=project}}`);
+      await render(hbs`<RepoSelector @project={{project}} />`);
     });
 
     it('renders powerselect closed', async function() {
@@ -57,7 +57,7 @@ describe('Integration: RepoSelectorComponent', function() {
 
       this.setProperties({project});
       repoRefreshServiceStub(this, null, null);
-      await render(hbs`{{repo-selector project=project}}`);
+      await render(hbs`<RepoSelector @project={{project}} />`);
     });
 
     it('renders powerselect closed', async function() {
@@ -87,7 +87,7 @@ describe('Integration: RepoSelectorComponent', function() {
 
       this.setProperties({project});
       repoRefreshServiceStub(this, null, null);
-      await render(hbs`{{repo-selector project=project}}`);
+      await render(hbs`<RepoSelector @project={{project}} />`);
     });
 
     it('renders powerselect closed', async function() {
@@ -116,7 +116,7 @@ describe('Integration: RepoSelectorComponent', function() {
       project.set('organization', organization);
       this.setProperties({project});
       repoRefreshServiceStub(this, null, null);
-      await render(hbs`{{repo-selector project=project}}`);
+      await render(hbs`<RepoSelector @project={{project}} />`);
     });
 
     it('renders powerselect closed', async function() {
@@ -141,7 +141,7 @@ describe('Integration: RepoSelectorComponent', function() {
       project.set('organization', organization);
       this.setProperties({project});
       repoRefreshServiceStub(this, null, null);
-      await render(hbs`{{repo-selector project=project}}`);
+      await render(hbs`<RepoSelector @project={{project}} />`);
     });
 
     it('renders powerselect closed', async function() {
@@ -178,7 +178,7 @@ describe('Integration: RepoSelectorComponent', function() {
       oldRepos = organization.get('repos');
       oldUpdatedAt = organization.get('lastSyncedAt');
       repoRefreshServiceStub(this, oldRepos, oldUpdatedAt);
-      await render(hbs`{{repo-selector project=project}}`);
+      await render(hbs`<RepoSelector @project={{project}} />`);
       await clickTrigger();
       expect(RepoSelector.dropdown.isSelectorOpen).to.eq(true);
       expect(RepoSelector.repoFreshness.message).to.eq('Last updated: 20 minutes ago');
@@ -190,7 +190,7 @@ describe('Integration: RepoSelectorComponent', function() {
       const newRepos = makeList('repo', expectedRepoCount, 'githubEnterprise');
       const newUpdatedAt = moment().subtract(1, 'minutes');
       repoRefreshServiceStub(this, newRepos, newUpdatedAt);
-      await render(hbs`{{repo-selector project=project}}`);
+      await render(hbs`<RepoSelector @project={{project}} />`);
       await clickTrigger();
       expect(RepoSelector.dropdown.isSelectorOpen).to.eq(true);
       expect(RepoSelector.dropdown.options.count).to.eq(expectedRepoCount);

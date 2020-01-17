@@ -21,10 +21,10 @@ describe('Integration: PercyTextarea', function() {
 
     this.setProperties({onCmdEnterStub, onEscStub});
 
-    await render(hbs`{{percy-textarea
-        onCmdEnter=onCmdEnterStub
-        onEscape=onEscStub
-      }}`);
+    await render(hbs`<PercyTextarea
+        @onCmdEnter={{onCmdEnterStub}}
+        @onEscape={{onEscStub}}
+      />`);
   });
 
   it('calls cmdEnter stub when cmd+Enter is pushed', async function() {

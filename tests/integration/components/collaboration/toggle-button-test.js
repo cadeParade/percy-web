@@ -21,33 +21,33 @@ describe('Integration: CollaborationToggleButton', function() {
   });
 
   it('displays purple bubble with count when there are unresolved comments', async function() {
-    await render(hbs`{{collaboration/toggle-button
-      unresolvedCommentThreadCount=100
-      toggleCollaborationPanel=toggleCollaborationPanelStub
-    }}`);
+    await render(hbs`<Collaboration::ToggleButton
+      @unresolvedCommentThreadCount={{100}}
+      @toggleCollaborationPanel={{toggleCollaborationPanelStub}}
+    />`);
     await percySnapshot(this.test, {darkMode: true});
   });
 
   it('displays green check when isResolved is true', async function() {
-    await render(hbs`{{collaboration/toggle-button
-      isResolved=true
-      toggleCollaborationPanel=toggleCollaborationPanelStub
-    }}`);
+    await render(hbs`<Collaboration::ToggleButton
+      @isResolved={{true}}
+      @toggleCollaborationPanel={{toggleCollaborationPanelStub}}
+    />`);
     await percySnapshot(this.test, {darkMode: true});
   });
 
   it('displays grey icon with plus button when isResolved is false and there are no comments', async function() { // eslint-disable-line
-    await render(hbs`{{collaboration/toggle-button
-      isResolved=false
-      toggleCollaborationPanel=toggleCollaborationPanelStub
-    }}`);
+    await render(hbs`<Collaboration::ToggleButton
+      @isResolved={{false}}
+      @toggleCollaborationPanel={{toggleCollaborationPanelStub}}
+    />`);
     await percySnapshot(this.test, {darkMode: true});
   });
 
   it('calls toggle action when clicked', async function() {
-    await render(hbs`{{collaboration/toggle-button
-      toggleCollaborationPanel=toggleCollaborationPanelStub
-    }}`);
+    await render(hbs`<Collaboration::ToggleButton
+      @toggleCollaborationPanel={{toggleCollaborationPanelStub}}
+    />`);
     await click('[data-test-toggle-comment-sidebar]');
     expect(toggleCollaborationPanelStub).to.have.been.called;
   });

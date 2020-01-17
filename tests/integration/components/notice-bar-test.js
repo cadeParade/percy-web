@@ -37,10 +37,10 @@ describe('Integration: Notice Bar', function() {
     });
 
     it('shows new project prompt', async function() {
-      await render(hbs`{{notice-bar
-        organization=organization
-        shouldShowNewProjectPrompt=true
-      }}`);
+      await render(hbs`<NoticeBar
+        @organization={{organization}}
+        @shouldShowNewProjectPrompt={{true}}
+      />`);
 
       expect(NoticeBar.message.text).to.equal('Get started with your own project.');
       expect(NoticeBar.buttonLink.text).to.equal('Create project');
@@ -67,7 +67,7 @@ describe('Integration: Notice Bar', function() {
       });
 
       it('shows 1% and "More Info" link', async function() {
-        await render(hbs`{{notice-bar organization=organization}}`);
+        await render(hbs`<NoticeBar @organization={{organization}} />`);
         expect(NoticeBar.percentage.text).to.equal('1%');
         expect(NoticeBar.buttonLink.text).to.equal('More Info');
 
@@ -81,7 +81,7 @@ describe('Integration: Notice Bar', function() {
       });
 
       it('shows 99% and "More Info" link', async function() {
-        await render(hbs`{{notice-bar organization=organization}}`);
+        await render(hbs`<NoticeBar @organization={{organization}} />`);
 
         expect(NoticeBar.percentage.text).to.equal('99%');
         expect(NoticeBar.buttonLink.text).to.equal('More Info');
@@ -96,7 +96,7 @@ describe('Integration: Notice Bar', function() {
       });
 
       it('shows all have been used and "Upgrade Plan" link', async function() {
-        await render(hbs`{{notice-bar organization=organization}}`);
+        await render(hbs`<NoticeBar @organization={{organization}} />`);
 
         expect(NoticeBar.percentage.text).to.equal('all');
         expect(NoticeBar.buttonLink.text).to.equal('Upgrade Plan');
@@ -122,7 +122,7 @@ describe('Integration: Notice Bar', function() {
     describe('when no trial days are left', function() {
       it('shows "Your trial ends today!" and "See plans"', async function() {
         organization.subscription.set('trialEnd', moment());
-        await render(hbs`{{notice-bar organization=organization}}`);
+        await render(hbs`<NoticeBar @organization={{organization}} />`);
 
         expect(NoticeBar.message.text).to.equal('Your trial ends today!');
         expect(NoticeBar.buttonLink.text).to.equal('See plans');
@@ -135,7 +135,7 @@ describe('Integration: Notice Bar', function() {
       it('shows "Your trial ends today!" and "See plans"', async function() {
         organization.subscription.set('trialEnd', moment().add(2, 'days'));
 
-        await render(hbs`{{notice-bar organization=organization}}`);
+        await render(hbs`<NoticeBar @organization={{organization}} />`);
 
         expect(NoticeBar.message.text).to.equal('You have 2 days left in your trial.');
         expect(NoticeBar.buttonLink.text).to.equal('See plans');

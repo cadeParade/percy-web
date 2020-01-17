@@ -31,12 +31,11 @@ describe('Integration: ConnectedAccountsPanel', function() {
         addIdentity: stub,
       });
 
-      await render(hbs`{{
-        connected-accounts-panel
-        identities=identities
-        deleteIdentity=deleteIdentity
-        addIdentity=addIdentity
-      }}`);
+      await render(hbs`<ConnectedAccountsPanel
+        @identities={{identities}}
+        @deleteIdentity={{deleteIdentity}}
+        @addIdentity={{addIdentity}}
+      />`);
     });
 
     it('shows okta identity', async function() {
@@ -63,12 +62,11 @@ describe('Integration: ConnectedAccountsPanel', function() {
         addIdentity: addStub,
       });
 
-      await render(hbs`{{
-        connected-accounts-panel
-        identities=identities
-        deleteIdentity=(action "deleteIdentity")
-        addIdentity=(action "addIdentity")
-      }}`);
+      await render(hbs`<ConnectedAccountsPanel
+        @identities={{identities}}
+        @deleteIdentity={{action "deleteIdentity"}}
+        @addIdentity={{action "addIdentity"}}
+      />`);
     });
 
     it('displays correctly', async function() {
@@ -99,12 +97,11 @@ describe('Integration: ConnectedAccountsPanel', function() {
         addIdentity: addStub,
       });
 
-      await render(hbs`{{
-        connected-accounts-panel
-        identities=identities
-        deleteIdentity=(action "deleteIdentity")
-        addIdentity=(action "addIdentity")
-      }}`);
+      await render(hbs`<ConnectedAccountsPanel
+        @identities={{identities}}
+        @deleteIdentity={{action "deleteIdentity"}}
+        @addIdentity={{action "addIdentity"}}
+      />`);
     });
 
     it('displays correctly', async function() {
@@ -137,12 +134,11 @@ describe('Integration: ConnectedAccountsPanel', function() {
         addIdentity: addStub,
       });
 
-      await render(hbs`{{
-        connected-accounts-panel
-        identities=identities
-        deleteIdentity=(action "deleteIdentity")
-        addIdentity=(action "addIdentity")
-      }}`);
+      await render(hbs`<ConnectedAccountsPanel
+        @identities={{identities}}
+        @deleteIdentity={{action "deleteIdentity"}}
+        @addIdentity={{action "addIdentity"}}
+      />`);
     });
 
     it('displays correctly', async function() {
@@ -172,12 +168,11 @@ describe('Integration: ConnectedAccountsPanel', function() {
         addIdentity: stub,
       });
 
-      await render(hbs`{{
-        connected-accounts-panel
-        identities=identities
-        deleteIdentity=deleteIdentity
-        addIdentity=addIdentity
-      }}`);
+      await render(hbs`<ConnectedAccountsPanel
+        @identities={{identities}}
+        @deleteIdentity={{deleteIdentity}}
+        @addIdentity={{addIdentity}}
+      />`);
     });
 
     it('displays correctly', async function() {
@@ -202,12 +197,11 @@ describe('Integration: ConnectedAccountsPanel', function() {
         addIdentity: stub,
       });
 
-      await render(hbs`{{
-        connected-accounts-panel
-        identities=identities
-        deleteIdentity=deleteIdentity
-        addIdentity=addIdentity
-      }}`);
+      await render(hbs`<ConnectedAccountsPanel
+        @identities={{identities}}
+        @deleteIdentity={{deleteIdentity}}
+        @addIdentity={{addIdentity}}
+      />`);
     });
 
     it('displays correctly', async function() {

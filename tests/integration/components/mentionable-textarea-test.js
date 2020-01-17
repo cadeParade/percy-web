@@ -38,12 +38,12 @@ describe('Integration: MentionableTextarea', function() {
     });
 
     await render(hbs`
-      {{#mentionable-textarea
-        tributeConfigs=tributeConfigs
-        handleItemSelected=(action handleItemSelected)
-      }}
+      <MentionableTextarea
+        @tributeConfigs={{tributeConfigs}}
+        @handleItemSelected={{action handleItemSelected}}
+      >
         {{percy-textarea}}
-      {{/mentionable-textarea}}
+      </MentionableTextarea>
       `);
   });
 

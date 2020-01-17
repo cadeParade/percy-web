@@ -31,10 +31,10 @@ describe('Integration: CollaborationPanel', function() {
       const isCommentingAllowed = true;
       this.setProperties({commentThreads, user, saveStub, isCommentingAllowed});
 
-      await render(hbs`{{collaboration/collaboration-panel
-        commentThreads=commentThreads
-        isCommentingAllowed=isCommentingAllowed
-      }}`);
+      await render(hbs`<Collaboration::CollaborationPanel
+        @commentThreads={{commentThreads}}
+        @isCommentingAllowed={{isCommentingAllowed}}
+      />`);
     });
 
     it('shows "New Comment" textarea by default', async function() {
@@ -72,9 +72,9 @@ describe('Integration: CollaborationPanel', function() {
       ];
 
       this.setProperties({commentThreads});
-      await render(hbs`{{collaboration/collaboration-panel
-        commentThreads=commentThreads
-      }}`);
+      await render(hbs`<Collaboration::CollaborationPanel
+        @commentThreads={{commentThreads}}
+      />`);
 
       expect(CollaborationPanel.newComment.isNewThreadButtonVisible).to.equal(true);
       expect(CollaborationPanel.newComment.isNewThreadContainerVisible).to.equal(false);
@@ -97,10 +97,10 @@ describe('Integration: CollaborationPanel', function() {
 
     it('does not show "New Comment" button when isCommentingAllowed is false', async function() {
       this.set('commentThreads', makeList('comment-thread', 2, 'withOneComment'));
-      await render(hbs`{{collaboration/collaboration-panel
-        commentThreads=commentThreads
-        isCommentingAllowed=false
-      }}`);
+      await render(hbs`<Collaboration::CollaborationPanel
+        @commentThreads={{commentThreads}}
+        @isCommentingAllowed={{false}}
+      />`);
 
       expect(CollaborationPanel.newComment.isNewThreadButtonVisible).to.equal(false);
       expect(CollaborationPanel.newComment.isNewThreadContainerVisible).to.equal(false);

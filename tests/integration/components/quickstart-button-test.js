@@ -20,7 +20,7 @@ describe('Integration: QuickstartButtonComponent', function() {
   });
 
   it('renders', async function() {
-    await render(hbs`{{quickstart-button}}`);
+    await render(hbs`<QuickstartButton />`);
     await percySnapshot(this.test);
   });
 });

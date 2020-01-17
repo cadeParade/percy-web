@@ -43,11 +43,11 @@ describe('Integration: BuildInfoDropdownComponent', function() {
       let build = make.apply(this, ['build'].concat(state));
       this.set('build', build);
 
-      await render(hbs`{{build-info-dropdown
-        build=build
-        isShowingModal=true
-        renderInPlace=true
-      }}`);
+      await render(hbs`<BuildInfoDropdown
+        @build={{build}}
+        @isShowingModal={{true}}
+        @renderInPlace={{true}}
+      />`);
       await BuildInfoDropdown.toggleBuildInfoDropdown();
 
       await percySnapshot(this.test, {darkMode: true});
@@ -58,11 +58,11 @@ describe('Integration: BuildInfoDropdownComponent', function() {
     const build = make('build', 'finished');
     this.set('build', build);
 
-    await render(hbs`{{build-info-dropdown
-      build=build
-      isShowingModal=true
-      renderInPlace=true
-    }}`);
+    await render(hbs`<BuildInfoDropdown
+      @build={{build}}
+      @isShowingModal={{true}}
+      @renderInPlace={{true}}
+    />`);
     await BuildInfoDropdown.toggleBuildInfoDropdown();
 
     expect(BuildInfoDropdown.isAdminDetailsPresent).to.equal(false);
@@ -76,11 +76,11 @@ describe('Integration: BuildInfoDropdownComponent', function() {
 
     AdminMode.setAdminMode();
 
-    await render(hbs`{{build-info-dropdown
-       build=build
-       isShowingModal=true
-       renderInPlace=true
-     }}`);
+    await render(hbs`<BuildInfoDropdown
+       @build={{build}}
+       @isShowingModal={{true}}
+       @renderInPlace={{true}}
+     />`);
     await BuildInfoDropdown.toggleBuildInfoDropdown();
     expect(BuildInfoDropdown.isAdminDetailsPresent).to.equal(true);
 
@@ -92,11 +92,11 @@ describe('Integration: BuildInfoDropdownComponent', function() {
       const build = make('build', 'withGitlabSelfHostedRepo', 'hasMergeRequest', {buildNumber: 1});
       this.setProperties({build});
 
-      await render(hbs`{{build-info-dropdown
-        build=build
-        isShowingModal=true
-        renderInPlace=true
-      }}`);
+      await render(hbs`<BuildInfoDropdown
+        @build={{build}}
+        @isShowingModal={{true}}
+        @renderInPlace={{true}}
+      />`);
       await BuildInfoDropdown.toggleBuildInfoDropdown();
     });
 
@@ -113,11 +113,11 @@ describe('Integration: BuildInfoDropdownComponent', function() {
       const build = make('build', 'withGithubRepo', 'hasPullRequest', {buildNumber: 1});
       this.setProperties({build});
 
-      await render(hbs`{{build-info-dropdown
-        build=build
-        isShowingModal=true
-        renderInPlace=true
-      }}`);
+      await render(hbs`<BuildInfoDropdown
+        @build={{build}}
+        @isShowingModal={{true}}
+        @renderInPlace={{true}}
+      />`);
       await BuildInfoDropdown.toggleBuildInfoDropdown();
     });
 

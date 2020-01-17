@@ -26,7 +26,7 @@ describe('Integration: CollaborationCommentReply', function() {
 
   describe('when the reply is collapsed', function() {
     beforeEach(async function() {
-      await render(hbs`{{collaboration/collaboration-comment-reply}}`);
+      await render(hbs`<Collaboration::CollaborationCommentReply />`);
     });
 
     it('shows collapsed reply textarea by default', async function() {
@@ -55,10 +55,10 @@ describe('Integration: CollaborationCommentReply', function() {
       submitStub = sinon.stub().returns({isSuccessful: true});
 
       this.setProperties({commentThread, submitStub, organization});
-      await render(hbs`{{collaboration/collaboration-comment-reply
-        commentThread=commentThread
-        createComment=submitStub
-      }}`);
+      await render(hbs`<Collaboration::CollaborationCommentReply
+        @commentThread={{commentThread}}
+        @createComment={{submitStub}}
+      />`);
 
       await CommentReply.expandTextarea();
     });

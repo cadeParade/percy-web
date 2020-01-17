@@ -37,13 +37,13 @@ describe('Integration: Confirm Dialog', function() {
     }
 
     it('calls confirm action when "Continue" is clicked', async function() {
-      await render(hbs`{{confirm-dialog}}`);
+      await render(hbs`<ConfirmDialog />`);
       await ConfirmDialog.confirm.click();
       expectConfirm(resolveSpy, confirmService);
     });
 
     it('calls confirm action when "Enter" is pressed', async function() {
-      await render(hbs`{{confirm-dialog}}`);
+      await render(hbs`<ConfirmDialog />`);
       await ConfirmDialog.pressEnter();
       expectConfirm(resolveSpy, confirmService);
     });
@@ -56,13 +56,13 @@ describe('Integration: Confirm Dialog', function() {
     }
 
     it('calls cancel action when "Cancel" is clicked', async function() {
-      await render(hbs`{{confirm-dialog}}`);
+      await render(hbs`<ConfirmDialog />`);
       await ConfirmDialog.cancel.click();
       expectCancel(resolveSpy, confirmService);
     });
 
     it('calls cancel action when "Escape" is pressed', async function() {
-      await render(hbs`{{confirm-dialog}}`);
+      await render(hbs`<ConfirmDialog />`);
       await ConfirmDialog.pressEscape();
       expectCancel(resolveSpy, confirmService);
     });

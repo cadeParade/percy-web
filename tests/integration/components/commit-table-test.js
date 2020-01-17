@@ -20,11 +20,11 @@ describe('Integration: CommitTable', function() {
       build = make('build', 'withGithubRepo');
       this.setProperties({build});
 
-      await render(hbs`{{
-        commit-table
-        build=build
-        commit=build.commit
-      }}`);
+      await render(hbs`<
+        CommitTable
+        @build={{build}}
+        @commit={{build.commit}}
+      />`);
     });
 
     it('has the correct commit URL', function() {
@@ -64,11 +64,11 @@ describe('Integration: CommitTable', function() {
       build = make('build', 'withGithubEnterpriseRepo');
       this.setProperties({build});
 
-      await render(hbs`{{
-        commit-table
-        build=build
-        commit=build.commit
-      }}`);
+      await render(hbs`<
+        CommitTable
+        @build={{build}}
+        @commit={{build.commit}}
+      />`);
     });
 
     it('has the correct commit URL', function() {
@@ -108,11 +108,11 @@ describe('Integration: CommitTable', function() {
       build = make('build', 'withGitlabRepo');
       this.setProperties({build});
 
-      await render(hbs`{{
-        commit-table
-        build=build
-        commit=build.commit
-      }}`);
+      await render(hbs`<
+        CommitTable
+        @build={{build}}
+        @commit={{build.commit}}
+      />`);
     });
 
     it('has the correct commit URL', function() {
@@ -152,11 +152,11 @@ describe('Integration: CommitTable', function() {
       build = make('build', 'withGitlabSelfHostedRepo');
       this.setProperties({build});
 
-      await render(hbs`{{
-        commit-table
-        build=build
-        commit=build.commit
-      }}`);
+      await render(hbs`<
+        CommitTable
+        @build={{build}}
+        @commit={{build.commit}}
+      />`);
     });
 
     it('has the correct commit URL', function() {
@@ -196,11 +196,11 @@ describe('Integration: CommitTable', function() {
       build = make('build', 'withBitbucketRepo');
       this.setProperties({build});
 
-      await render(hbs`{{
-        commit-table
-        build=build
-        commit=build.commit
-      }}`);
+      await render(hbs`<
+        CommitTable
+        @build={{build}}
+        @commit={{build.commit}}
+      />`);
     });
 
     it('has the correct commit URL', function() {

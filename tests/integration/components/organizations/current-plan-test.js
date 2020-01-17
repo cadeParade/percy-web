@@ -51,44 +51,44 @@ describe('Integration: CurrentPlan', function() {
     it('renders all combinations', async function() {
       await render(hbs`
         <div class="m1 font-semibold">Trial plan</div>
-        {{organizations/current-plan
-          organization=orgWTrialPlan
-        }}
+        <Organizations::CurrentPlan
+          @organization={{orgWTrialPlan}}
+        />
 
         <div class="m1 font-semibold">Free plan</div>
-        {{organizations/current-plan
-          organization=orgWFreePlan
-        }}
+        <Organizations::CurrentPlan
+          @organization={{orgWFreePlan}}
+        />
 
         <div class="m1 font-semibold">V3 self-serve plan</div>
-        {{organizations/current-plan
-          organization=orgWPaidPlan
-          currentUsageStats=usageStats
-        }}
+        <Organizations::CurrentPlan
+          @organization={{orgWPaidPlan}}
+          @currentUsageStats={{usageStats}}
+        />
 
         <div class="m1 font-semibold">Legacy plan</div>
-        {{organizations/current-plan
-          organization=orgWLegacyPlan
-          currentUsageStats=usageStats
-        }}
+        <Organizations::CurrentPlan
+          @organization={{orgWLegacyPlan}}
+          @currentUsageStats={{usageStats}}
+        />
 
         <div class="m1 font-semibold">Sponsored plan</div>
-        {{organizations/current-plan
-          organization=orgWSponsoredPlan
-        }}
+        <Organizations::CurrentPlan
+          @organization={{orgWSponsoredPlan}}
+        />
 
         <div class="m1 font-semibold">Enterprise plan</div>
-        {{organizations/current-plan
-          organization=orgWEnterprisePlan
-        }}
+        <Organizations::CurrentPlan
+          @organization={{orgWEnterprisePlan}}
+        />
       `);
       await percySnapshot(this.test);
     });
 
     it('displays trial plan correctly', async function() {
-      await render(hbs`{{organizations/current-plan
-        organization=orgWTrialPlan
-      }}`);
+      await render(hbs`<Organizations::CurrentPlan
+        @organization={{orgWTrialPlan}}
+      />`);
 
       expect(CurrentPlan.isSnapshotsIncludedVisible).to.equal(true);
       expect(CurrentPlan.isUserLimitVisible).to.equal(true);
@@ -99,9 +99,9 @@ describe('Integration: CurrentPlan', function() {
     });
 
     it('displays free plan correctly', async function() {
-      await render(hbs`{{organizations/current-plan
-        organization=orgWFreePlan
-      }}`);
+      await render(hbs`<Organizations::CurrentPlan
+        @organization={{orgWFreePlan}}
+      />`);
 
       expect(CurrentPlan.isSnapshotsIncludedVisible).to.equal(true);
       expect(CurrentPlan.isUserLimitVisible).to.equal(true);
@@ -112,9 +112,9 @@ describe('Integration: CurrentPlan', function() {
     });
 
     it('displays v3 self-serve plan correctly', async function() {
-      await render(hbs`{{organizations/current-plan
-        organization=orgWPaidPlan
-      }}`);
+      await render(hbs`<Organizations::CurrentPlan
+        @organization={{orgWPaidPlan}}
+      />`);
 
       expect(CurrentPlan.isSnapshotsIncludedVisible).to.equal(true);
       expect(CurrentPlan.isUserLimitVisible).to.equal(true);
@@ -125,9 +125,9 @@ describe('Integration: CurrentPlan', function() {
     });
 
     it('displays legacy plan correctly', async function() {
-      await render(hbs`{{organizations/current-plan
-        organization=orgWLegacyPlan
-      }}`);
+      await render(hbs`<Organizations::CurrentPlan
+        @organization={{orgWLegacyPlan}}
+      />`);
 
       expect(CurrentPlan.isSnapshotsIncludedVisible).to.equal(true);
       expect(CurrentPlan.isUserLimitVisible).to.equal(true);
@@ -138,9 +138,9 @@ describe('Integration: CurrentPlan', function() {
     });
 
     it('displays sponsored plan correctly', async function() {
-      await render(hbs`{{organizations/current-plan
-        organization=orgWSponsoredPlan
-      }}`);
+      await render(hbs`<Organizations::CurrentPlan
+        @organization={{orgWSponsoredPlan}}
+      />`);
 
       expect(CurrentPlan.isSnapshotsIncludedVisible).to.equal(true);
       expect(CurrentPlan.isUserLimitVisible).to.equal(true);
@@ -151,9 +151,9 @@ describe('Integration: CurrentPlan', function() {
     });
 
     it('displays enterprise plan correctly', async function() {
-      await render(hbs`{{organizations/current-plan
-        organization=orgWEnterprisePlan
-      }}`);
+      await render(hbs`<Organizations::CurrentPlan
+        @organization={{orgWEnterprisePlan}}
+      />`);
 
       expect(CurrentPlan.isSnapshotsIncludedVisible).to.equal(true);
       expect(CurrentPlan.isUserLimitVisible).to.equal(true);
@@ -171,9 +171,9 @@ describe('Integration: CurrentPlan', function() {
       mockIntercomService(this, showSupportStub);
       this.setProperties({orgWFreePlan});
       await render(hbs`
-        {{organizations/current-plan
-          organization=orgWFreePlan
-        }}
+        <Organizations::CurrentPlan
+          @organization={{orgWFreePlan}}
+        />
       `);
 
       await CurrentPlan.clickFreePlanSupport();
@@ -186,9 +186,9 @@ describe('Integration: CurrentPlan', function() {
       mockIntercomService(this, showSupportStub);
       this.setProperties({orgWPaidPlan});
       await render(hbs`
-        {{organizations/current-plan
-          organization=orgWPaidPlan
-        }}
+        <Organizations::CurrentPlan
+          @organization={{orgWPaidPlan}}
+        />
       `);
 
       await CurrentPlan.clickPlanSupport();

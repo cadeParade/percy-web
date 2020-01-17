@@ -23,9 +23,9 @@ describe('Integration: RepoLinkerList', function() {
     const organization = make('organization', {projects: [linkedProject, unlinkedProject]});
     this.set('organization', organization);
 
-    await render(hbs`{{organizations/integrations/repo-linker-list
-      organization=organization
-    }}`);
+    await render(hbs`<Organizations::Integrations::RepoLinkerList
+      @organization={{organization}}
+    />`);
   });
 
   it('renders a list of items', async function() {
