@@ -35,9 +35,9 @@ describe('Integration: ManageUsersList', function() {
         : orgUsers.findBy('isMember').user;
       session.setProperties({currentUser});
       await render(
-        hbs`{{organizations/manage-users-list
-          organization=organization
-          organizationUsers=organizationUsers}}`,
+        hbs`<Organizations::ManageUsersList
+          @organization={{organization}}
+          @organizationUsers={{organizationUsers}} />`,
       );
 
       const inviteCard = ManageUsersList.inviteCards.objectAt(0);
@@ -87,9 +87,9 @@ describe('Integration: ManageUsersList', function() {
   describe('when there are no invites', function() {
     beforeEach(async function() {
       await render(
-        hbs`{{organizations/manage-users-list
-          organization=organization
-          organizationUsers=organizationUsers}}`,
+        hbs`<Organizations::ManageUsersList
+          @organization={{organization}}
+          @organizationUsers={{organizationUsers}} />`,
       );
     });
 
@@ -115,9 +115,9 @@ describe('Integration: ManageUsersList', function() {
       });
       this.setProperties({invites});
       await render(
-        hbs`{{organizations/manage-users-list
-          organization=organization
-          organizationUsers=organizationUsers}}`,
+        hbs`<Organizations::ManageUsersList
+          @organization={{organization}}
+          @organizationUsers={{organizationUsers}} />`,
       );
     });
 

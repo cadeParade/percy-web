@@ -1,12 +1,12 @@
 <div data-test-invite-card class="user-card bg-white border-b">
   <div class="px-4 py-3 flex items-center">
     <div data-test-invite-avatar style="min-width: 200px" class="flex flex-1 items-center pr-2">
-      {{gravatar-image
-        class="rounded-full overflow-hidden flex-none mr-2"
-        defaultImage="mp"
-        email=invite.email
-        size=36
-      }}
+      <GravatarImage
+        @class="rounded-full overflow-hidden flex-none mr-2"
+        @defaultImage="mp"
+        @email={{invite.email}}
+        @size={{36}}
+      />
       <div class="truncate">
         <div data-test-invite-email class="font-semibold leading-none truncate">
           {{invite.email}}
@@ -15,9 +15,9 @@
       </div>
     </div>
     <div data-test-invite-role style="min-width: 100px" class="flex-1 leading-none">
-      {{#label-tag isPrimaryTag=(eq "Administrator" invite.roleTitle)}}
+      <LabelTag @isPrimaryTag={{eq "Administrator" invite.roleTitle}}>
         {{invite.roleTitle}}
-      {{/label-tag}}
+      </LabelTag>
     </div>
     <div class="flex-1 leading-none">
       <div>Invited on <span data-test-invite-date>{{moment-format invite.createdAt 'MMM D, Y'}}</span></div>
@@ -35,9 +35,9 @@
         }}
           Copy invite link
         {{/copy-button}}
-        {{#percy-btn isDisabled=(unless isAdmin true) handleClick=(action "cancelInvite")}}
+        <PercyBtn @isDisabled={{unless isAdmin true}} @handleClick={{action "cancelInvite"}}>
           Cancel
-        {{/percy-btn}}
+        </PercyBtn>
       </div>
     </div>
   </div>

@@ -37,10 +37,10 @@ describe('Integration: UsersHeader', function() {
     });
 
     it('displays basic information', async function() {
-      await render(hbs`{{organizations/users-header
-        organization=organization
-        isInviteFormAllowed=isInviteFormAllowed
-      }}`);
+      await render(hbs`<Organizations::UsersHeader
+        @organization={{organization}}
+        @isInviteFormAllowed={{isInviteFormAllowed}}
+      />`);
 
       const text = `You’ve used ${seatsUsed} of ${seatLimit} seats available.`;
       expect(UsersHeader.seatCount.text).to.equal(text);
@@ -62,10 +62,10 @@ describe('Integration: UsersHeader', function() {
         });
 
         it('form is hidden & button is enabled', async function() {
-          await render(hbs`{{organizations/users-header
-            organization=organization
-            isInviteFormAllowed=isInviteFormAllowed
-          }}`);
+          await render(hbs`<Organizations::UsersHeader
+            @organization={{organization}}
+            @isInviteFormAllowed={{isInviteFormAllowed}}
+          />`);
           expect(UsersHeader.inviteButton.isDisabled).to.equal(false);
           expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(false);
           expect(UsersHeader.inviteForm.isVisible).to.equal(false);
@@ -79,10 +79,10 @@ describe('Integration: UsersHeader', function() {
           });
 
           it('form is hidden & button is disabled', async function() {
-            await render(hbs`{{organizations/users-header
-              organization=organization
-              isInviteFormAllowed=isInviteFormAllowed
-            }}`);
+            await render(hbs`<Organizations::UsersHeader
+              @organization={{organization}}
+              @isInviteFormAllowed={{isInviteFormAllowed}}
+            />`);
 
             expect(UsersHeader.inviteButton.isDisabled).to.equal(true);
             expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(true);
@@ -97,10 +97,10 @@ describe('Integration: UsersHeader', function() {
         });
 
         it('form is hidden & button is disabled', async function() {
-          await render(hbs`{{organizations/users-header
-            organization=organization
-            isInviteFormAllowed=isInviteFormAllowed
-          }}`);
+          await render(hbs`<Organizations::UsersHeader
+            @organization={{organization}}
+            @isInviteFormAllowed={{isInviteFormAllowed}}
+          />`);
 
           expect(UsersHeader.inviteButton.isDisabled).to.equal(true);
           expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(true);
@@ -115,10 +115,10 @@ describe('Integration: UsersHeader', function() {
         it('form and usage text are hidden & button is enabled', async function() {
           organization.set('seatLimit', null);
 
-          await render(hbs`{{organizations/users-header
-            organization=organization
-            isInviteFormAllowed=isInviteFormAllowed
-          }}`);
+          await render(hbs`<Organizations::UsersHeader
+            @organization={{organization}}
+            @isInviteFormAllowed={{isInviteFormAllowed}}
+          />`);
 
           expect(UsersHeader.seatCount.isVisible).to.equal(false);
           expect(UsersHeader.billingLink.isVisible).to.equal(false);
@@ -142,10 +142,10 @@ describe('Integration: UsersHeader', function() {
         });
 
         it('button is disabled & form is displayed', async function() {
-          await render(hbs`{{organizations/users-header
-            organization=organization
-            isInviteFormAllowed=isInviteFormAllowed
-          }}`);
+          await render(hbs`<Organizations::UsersHeader
+            @organization={{organization}}
+            @isInviteFormAllowed={{isInviteFormAllowed}}
+          />`);
           expect(UsersHeader.inviteButton.isDisabled).to.equal(true);
           expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(false);
           expect(UsersHeader.inviteForm.isVisible).to.equal(true);
@@ -159,10 +159,10 @@ describe('Integration: UsersHeader', function() {
           });
 
           it('form is hidden & button is disabled', async function() {
-            await render(hbs`{{organizations/users-header
-              organization=organization
-              isInviteFormAllowed=isInviteFormAllowed
-            }}`);
+            await render(hbs`<Organizations::UsersHeader
+              @organization={{organization}}
+              @isInviteFormAllowed={{isInviteFormAllowed}}
+            />`);
 
             expect(UsersHeader.inviteButton.isDisabled, 'button').to.equal(true);
             expect(UsersHeader.inviteButtonTooltip.isActive, 'tooltip').to.equal(true);
@@ -174,10 +174,10 @@ describe('Integration: UsersHeader', function() {
       describe('when seats are unavailable', function() {
         beforeEach(async function() {
           organization.set('seatLimit', 3);
-          await render(hbs`{{organizations/users-header
-            organization=organization
-            isInviteFormAllowed=isInviteFormAllowed
-          }}`);
+          await render(hbs`<Organizations::UsersHeader
+            @organization={{organization}}
+            @isInviteFormAllowed={{isInviteFormAllowed}}
+          />`);
         });
 
         it('button is disabled & form is hidden', async function() {
@@ -195,10 +195,10 @@ describe('Integration: UsersHeader', function() {
         it('button is disabled & form is displayed', async function() {
           organization.set('seatLimit', null);
 
-          await render(hbs`{{organizations/users-header
-            organization=organization
-            isInviteFormAllowed=isInviteFormAllowed
-          }}`);
+          await render(hbs`<Organizations::UsersHeader
+            @organization={{organization}}
+            @isInviteFormAllowed={{isInviteFormAllowed}}
+          />`);
 
           expect(UsersHeader.inviteButton.isDisabled).to.equal(true);
           expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(false);
@@ -230,10 +230,10 @@ describe('Integration: UsersHeader', function() {
       describe('when seats are available', function() {
         beforeEach(async function() {
           organization.set('seatsRemaining', 1);
-          await render(hbs`{{organizations/users-header
-            organization=organization
-            isInviteFormAllowed=false
-          }}`);
+          await render(hbs`<Organizations::UsersHeader
+            @organization={{organization}}
+            @isInviteFormAllowed={{false}}
+          />`);
         });
 
         it('form is hidden & button is disabled', async function() {
@@ -251,10 +251,10 @@ describe('Integration: UsersHeader', function() {
       describe('when seats are available', function() {
         beforeEach(async function() {
           organization.set('seatsRemaining', 1);
-          await render(hbs`{{organizations/users-header
-            organization=organization
-            isInviteFormAllowed=true
-          }}`);
+          await render(hbs`<Organizations::UsersHeader
+            @organization={{organization}}
+            @isInviteFormAllowed={{true}}
+          />`);
         });
 
         it('button is disabled & form is hidden', async function() {

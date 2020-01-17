@@ -1,18 +1,18 @@
 <div class="p-2">
   <div class="flex items-center justify-between cursor-pointer" data-test-event-toggle {{action "toggleOpen"}}>
     <div class="flex items-center">
-      {{status-badge
-        statusText=webhookEvent.responseStatus
-        success=webhookEvent.isSuccess
-      }}
+      <StatusBadge
+        @statusText={{webhookEvent.responseStatus}}
+        @success={{webhookEvent.isSuccess}}
+      />
       <div class="font-mono font-normal tracking-sm">
         <div class="flex items-center mb-sm">
           <div class="leading-none mr-1" data-test-delivery-url>
             POST {{webhookEvent.url}}
           </div>
-          {{#label-tag}}
+          <LabelTag>
             {{webhookEvent.event}}
-          {{/label-tag}}
+          </LabelTag>
         </div>
         <div class="leading-none text-gray-300" data-test-id>
           {{webhookEvent.id}}
@@ -78,15 +78,15 @@
       {{/if}}
 
       {{#if isRequest}}
-        {{webhook-event-headers
-          headers=webhookEvent.requestHeaders
-          title='Request'
-        }}
+        <WebhookEventHeaders
+          @headers={{webhookEvent.requestHeaders}}
+          @title="Request"
+        />
       {{else}}
-        {{webhook-event-headers
-          headers=webhookEvent.responseHeaders
-          title='Response'
-        }}
+        <WebhookEventHeaders
+          @headers={{webhookEvent.responseHeaders}}
+          @title="Response"
+        />
       {{/if}}
 
       <div class="mb-1 font-semibold leading-none">

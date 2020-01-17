@@ -21,9 +21,9 @@ describe('Integration: ProjectEditForm', function() {
     beforeEach(async function() {
       project = make('project');
       this.setProperties({project});
-      await render(hbs`{{forms/project-edit
-        project=project
-      }}`);
+      await render(hbs`<Forms::ProjectEdit
+        @project={{project}}
+      />`);
     });
 
     it('shows as not-checked when publiclyReadable is false', async function() {

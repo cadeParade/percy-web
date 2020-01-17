@@ -33,13 +33,13 @@ describe('Integration: BuildContainer', function() {
 
       // Override the pollRefresh method for the test. This does not happen IRL,
       // but we can't have the component make requests in this integration test
-      await render(hbs`{{build-container
-        build=build
-        createReview=stub
-        pollRefresh=stub
-        allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
-        notifyOfUnchangedSnapshots=stub
-      }}`);
+      await render(hbs`<BuildContainer
+        @build={{build}}
+        @createReview={{stub}}
+        @pollRefresh={{stub}}
+        @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
+        @notifyOfUnchangedSnapshots={{stub}}
+      />`);
     });
 
     it('does not display snapshots while build is processing', async function() {
@@ -81,13 +81,13 @@ describe('Integration: BuildContainer', function() {
 
     this.setProperties({build, allChangedBrowserSnapshotsSorted});
 
-    await render(hbs`{{build-container
-      build=build
-      isSnapshotsLoading=true
-      createReview=stub
-      allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
-      notifyOfUnchangedSnapshots=stub
-    }}`);
+    await render(hbs`<BuildContainer
+      @build={{build}}
+      @isSnapshotsLoading={{true}}
+      @createReview={{stub}}
+      @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
+      @notifyOfUnchangedSnapshots={{stub}}
+    />`);
 
     await percySnapshot(this.test, {darkMode: true});
     expect(BuildPage.snapshotList.isVisible).to.equal(false);
@@ -104,12 +104,12 @@ describe('Integration: BuildContainer', function() {
       allChangedBrowserSnapshotsSorted,
     });
 
-    await render(hbs`{{build-container
-      build=build
-      allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
-      createReview=stub
-      notifyOfUnchangedSnapshots=stub
-    }}`);
+    await render(hbs`<BuildContainer
+      @build={{build}}
+      @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
+      @createReview={{stub}}
+      @notifyOfUnchangedSnapshots={{stub}}
+    />`);
     await percySnapshot(this.test, {darkMode: true});
 
     expect(BuildPage.snapshotList.isVisible).to.equal(true);
@@ -130,12 +130,12 @@ describe('Integration: BuildContainer', function() {
       stub,
     });
 
-    await render(hbs`{{build-container
-      build=build
-      allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
-      createReview=stub
-      notifyOfUnchangedSnapshots=stub
-    }}`);
+    await render(hbs`<BuildContainer
+      @build={{build}}
+      @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
+      @createReview={{stub}}
+      @notifyOfUnchangedSnapshots={{stub}}
+    />`);
 
     await BuildPage.snapshotList.clickToggleNoDiffsSection();
     await percySnapshot(this.test, {darkMode: true});
@@ -156,12 +156,12 @@ describe('Integration: BuildContainer', function() {
       stub,
     });
 
-    await render(hbs`{{build-container
-      build=build
-      allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
-      createReview=stub
-      notifyOfUnchangedSnapshots=stub
-    }}`);
+    await render(hbs`<BuildContainer
+      @build={{build}}
+      @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
+      @createReview={{stub}}
+      @notifyOfUnchangedSnapshots={{stub}}
+    />`);
 
     expect(BuildPage.snapshotList.isNoDiffsBatchVisible).to.equal(true);
     await BuildPage.snapshotList.clickToggleNoDiffsSection();
@@ -225,13 +225,13 @@ describe('Integration: BuildContainer', function() {
         snapshotWithDiffInBothBrowsers,
         analyticsStub,
       });
-      await render(hbs`{{build-container
-        build=build
-        allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
-        createReview=stub
-        analytics=analyticsStub
-        notifyOfUnchangedSnapshots=stub
-      }}`);
+      await render(hbs`<BuildContainer
+        @build={{build}}
+        @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
+        @createReview={{stub}}
+        @analytics={{analyticsStub}}
+        @notifyOfUnchangedSnapshots={{stub}}
+      />`);
     });
 
     it('decrements browser count badge when a snapshot is approved', async function() {
@@ -305,13 +305,13 @@ describe('Integration: BuildContainer', function() {
         isBuildApprovable,
       });
 
-      await render(hbs`{{build-container
-        build=build
-        allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
-        createReview=stub
-        isBuildApprovable=isBuildApprovable
-        notifyOfUnchangedSnapshots=stub
-      }}`);
+      await render(hbs`<BuildContainer
+        @build={{build}}
+        @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
+        @createReview={{stub}}
+        @isBuildApprovable={{isBuildApprovable}}
+        @notifyOfUnchangedSnapshots={{stub}}
+      />`);
     });
 
     it('displays notice that build is public', async function() {
@@ -333,12 +333,12 @@ describe('Integration: BuildContainer', function() {
         allChangedBrowserSnapshotsSorted,
       });
 
-      await render(hbs`{{build-container
-        build=build
-        allChangedBrowserSnapshotsSorted=allChangedBrowserSnapshotsSorted
-        createReview=stub
-        notifyOfUnchangedSnapshots=stub
-      }}`);
+      await render(hbs`<BuildContainer
+        @build={{build}}
+        @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
+        @createReview={{stub}}
+        @notifyOfUnchangedSnapshots={{stub}}
+      />`);
     });
 
     it('toggles diffs of snapshots and snapshot groups', async function() {

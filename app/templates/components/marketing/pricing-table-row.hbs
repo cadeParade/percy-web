@@ -2,18 +2,18 @@
 
 <td class="text-center text-gray-500 p-1">
   {{#if row.xsmallCell}}
-    {{markdown-to-html row.xsmallCell class="pricing-table-markdown"}}
+    <MarkdownToHtml @markdown={{row.xsmallCell}} @class="pricing-table-markdown" />
   {{/if}}
 </td>
 
 <td class="text-center text-gray-500 p-1">
   {{#if row.smallCell}}
-    {{markdown-to-html row.smallCell class="pricing-table-markdown"}}
+    <MarkdownToHtml @markdown={{row.smallCell}} @class="pricing-table-markdown" />
   {{/if}}
 </td>
 
 <td class="text-center text-gray-500 p-1">
   {{#if row.largeCell}}
-    {{markdown-to-html row.largeCell class="pricing-table-markdown"}}
+    <MarkdownToHtml @markdown={{row.largeCell}} @class="pricing-table-markdown" />
   {{/if}}
 </td>

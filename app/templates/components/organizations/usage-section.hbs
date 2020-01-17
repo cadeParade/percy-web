@@ -2,16 +2,22 @@
   <section>
     <div class="bg-white rounded shadow-1 border-t p-2 mb-2" style="min-height: 363px;" data-test-graph-container>
       <h2 class="text-xl font-semibold mb-1">Usage history</h2>
-      {{organizations/billing-usage-graph-header currentUsageStats=currentUsageStats subscription=subscription}}
-      {{organizations/billing-usage-graph currentUsageStats=currentUsageStats subscription=subscription}}
+      <Organizations::BillingUsageGraphHeader
+        @currentUsageStats={{currentUsageStats}}
+        @subscription={{subscription}}
+      />
+      <Organizations::BillingUsageGraph
+        @currentUsageStats={{currentUsageStats}}
+        @subscription={{subscription}}
+      />
     </div>
 
     {{#if subscription.isPaid}}
       <div class="bg-white rounded shadow-1 border-t p-2 mb-2">
-        {{forms/usage-notification-setting
-          organization=organization
-          setting=usageNotificationSetting
-        }}
+        <Forms::UsageNotificationSetting
+          @organization={{organization}}
+          @setting={{usageNotificationSetting}}
+        />
       </div>
     {{/if}}
   </section>

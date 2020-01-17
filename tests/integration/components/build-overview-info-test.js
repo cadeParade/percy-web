@@ -30,7 +30,7 @@ describe('Integration: BuildOverviewInfoComponent', function() {
       let build = make.apply(this, ['build'].concat(state));
       this.set('build', build);
 
-      await render(hbs`{{build-overview-info build=build isBuildApprovable=true}}`);
+      await render(hbs`<BuildOverviewInfo @build={{build}} @isBuildApprovable={{true}} />`);
       await percySnapshot(this.test, {darkMode: true});
     });
   });

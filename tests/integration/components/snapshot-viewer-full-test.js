@@ -58,21 +58,21 @@ describe('Integration: SnapshotViewerFull', function() {
       stub: sinon.stub(),
     });
 
-    await render(hbs`{{snapshot-viewer-full
-      snapshot=snapshot
-      snapshotSelectedWidth=snapshotSelectedWidth
-      comparisonMode=comparisonMode
-      transitionRouteToWidth=stub
-      updateComparisonMode=updateComparisonMode
-      closeSnapshotFullModal=closeSnapshotFullModal
-      createReview=createReview
-      activeBrowser=browser
-      isBuildApprovable=isBuildApprovable
-      updateSnapshotId=stub
-      createCommentThread=stub
-      closeCommentThread=stub
-      createComment=stub
-    }}`);
+    await render(hbs`<SnapshotViewerFull
+      @snapshot={{snapshot}}
+      @snapshotSelectedWidth={{snapshotSelectedWidth}}
+      @comparisonMode={{comparisonMode}}
+      @transitionRouteToWidth={{stub}}
+      @updateComparisonMode={{updateComparisonMode}}
+      @closeSnapshotFullModal={{closeSnapshotFullModal}}
+      @createReview={{createReview}}
+      @activeBrowser={{browser}}
+      @isBuildApprovable={{isBuildApprovable}}
+      @updateSnapshotId={{stub}}
+      @createCommentThread={{stub}}
+      @closeCommentThread={{stub}}
+      @createComment={{stub}}
+    />`);
   });
 
   it('displays snapshot name', function() {

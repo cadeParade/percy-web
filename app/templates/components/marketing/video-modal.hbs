@@ -1,11 +1,11 @@
 {{yield}}
 
 {{#if isVideoModalVisible}}
-  {{#modal-dialog
-    onClose=(action toggleModalVisibility)
-    translucentOverlay=true
-    containerClassNames="w-90vw max-w-lg mx-auto video-content-modal"
-  }}
+  <ModalDialog
+    @onClose={{action toggleModalVisibility}}
+    @translucentOverlay={{true}}
+    @containerClassNames="w-90vw max-w-lg mx-auto video-content-modal"
+  >
     <iframe
       width="100%"
       height="100%"
@@ -15,5 +15,5 @@
       allowfullscreen
     >
     </iframe>
-  {{/modal-dialog}}
+  </ModalDialog>
 {{/if}}

@@ -1,4 +1,5 @@
-{{organizations/integrations/gitlab-settings
-  organization=organization
-  currentGitlabIntegration=currentGitlabIntegration
-  afterDelete=(route-action "redirectToIntegrationsIndex")}}
+<Organizations::Integrations::GitlabSettings
+  @organization={{organization}}
+  @currentGitlabIntegration={{currentGitlabIntegration}}
+  @afterDelete={{route-action "redirectToIntegrationsIndex"}}
+/>

@@ -12,15 +12,13 @@
     <div style="bottom: -178px; right: -48px;" class="absolute">
       {{inline-svg "marketing/bubbles-4"}}
     </div>
-    {{marketing/menu-bar
-      logomark=logomark
-    }}
+    <Marketing::MenuBar @logomark={{logomark}} />
     {{yield}}
   </div>
 </header>
 
 {{#if image.file.url}}
   <div class="hero-main-image flex items-center relative w-90vw max-w-lg mx-auto">
-    {{contentful-image file=image.file}}
+    <ContentfulImage @file={{image.file}} />
   </div>
 {{/if}}

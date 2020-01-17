@@ -1,22 +1,21 @@
 <section class="w-90vw max-w-xl mx-auto pt-3 pb-9">
   <div class="flex items-start justify-between pb-3">
     <h1 class="text-xl font-semibold mb-sm">Edit webhook</h1>
-    {{#link-to
-      "organization.project.integrations.index"
-      model.organization.slug
-      model.project.slug
-      classNames="btn btn-secondary"
-    }}
+    <LinkTo
+      @route="organization.project.integrations.index"
+      @models={{array model.organization.slug model.project.slug}}
+      @classNames="btn btn-secondary"
+    >
       Back to integration settings
-    {{/link-to}}
+    </LinkTo>
   </div>
   <div class="bg-white rounded shadow-1 p-2 mb-2">
-    {{forms/webhook-config-edit
-      webhookConfig=model.webhookConfig
-      isSaving=isSaving
-      isSaveSuccessful=isSaveSuccessful
-      saveSuccess=(route-action "webhookConfigUpdated")
-    }}
+    <Forms::WebhookConfigEdit
+      @webhookConfig={{model.webhookConfig}}
+      @isSaving={{isSaving}}
+      @isSaveSuccessful={{isSaveSuccessful}}
+      @saveSuccess={{route-action "webhookConfigUpdated"}}
+    />
   </div>
 
   {{#if (await model.webhookConfig.webhookEvents)}}
@@ -25,7 +24,7 @@
       <div class="mb-2 rounded border">
         {{#each model.webhookConfig.webhookEvents as |webhookEvent|}}
           <div class="{{unless (eq webhookEvent model.webhookConfig.webhookEvents.lastObject) "border-b"}}">
-            {{webhook-event webhookEvent=webhookEvent}}
+            <WebhookEvent @webhookEvent={{webhookEvent}} />
           </div>
         {{/each}}
       </div>

@@ -2,7 +2,7 @@
   <div class="build-card" data-test-build-card {{action "navigateToBuild"}}>
     <div>
       <div style="margin-bottom: -6px;">
-        {{#link-to "organization.project.builds.build" project.organization.slug project.slug build.id class="text-xl md:text-2xl font-mono font-normal tracking-sm"}}{{build.buildNumber}}{{/link-to}}
+        <LinkTo @route="organization.project.builds.build" @models={{array project.organization.slug project.slug build.id}} class="text-xl md:text-2xl font-mono font-normal tracking-sm">{{build.buildNumber}}</LinkTo>
       </div>
       <div class="text-sm text-secondary font-semibold whitespace-no-wrap truncate">
         {{moment-from-now build.createdAt interval=60000}}
@@ -42,7 +42,7 @@
     </div>
     <div class="flex items-center">
       <div class="mr-2">
-        {{comparison-icon build=build}}
+        <ComparisonIcon @build={{build}} />
       </div>
       <div>
         {{#if build.isPending}}

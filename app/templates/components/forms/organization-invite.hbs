@@ -1,24 +1,24 @@
 <form action="javascript:;" class="mb-0">
   <div class="p-2 bg-gray-000 rounded border mb-2">
-    {{form-fields/textarea
-        property="emails"
-        title="Email addresses"
-        id="inviteFormEmailAddresses"
-        changeset=changeset
-        autofocus=true
-        class="mb-2"
-        placeholder="Separate each email with a space or a new line. Invitations expire after one week."
-        validateProperty=(action "validateProperty" changeset "emails")
-        keyUp=(action "resetSaveButton")
-    }}
-    {{form-fields/checkbox
-        property="role"
-        checkedValue="admin"
-        title="Administrator"
-        id="inviteFormRole"
-        changeset=changeset
-        validateProperty=(action "validateProperty" changeset "role")
-    }}
+    <FormFields::Textarea
+      @property="emails"
+      @title="Email addresses"
+      @id="inviteFormEmailAddresses"
+      @changeset={{this.changeset}}
+      @autofocus={{true}}
+      @class="mb-2"
+      @placeholder="Separate each email with a space or a new line. Invitations expire after one week."
+      @validateProperty={{action "validateProperty" this.changeset "emails"}}
+      @keyUp={{action "resetSaveButton"}}
+     />
+    <FormFields::Checkbox
+      @property="role"
+      @checkedValue="admin"
+      @title="Administrator"
+      @id="inviteFormRole"
+      @changeset={{this.changeset}}
+      @validateProperty={{action "validateProperty" this.changeset "role"}}
+    />
     <p class="m-0 -mt-1">Allow these people to edit organization details, billing information, and invite new members. All normal members can create and manage projects.</p>
     {{#if errorMessage}}
       <div class="Form-errors">
@@ -31,12 +31,12 @@
     {{#link-to data-test-cancel-button "organizations.organization.users" organization.slug class="percy-btn"}}
       Cancel
     {{/link-to}}
-    {{form-fields/submit
-      value="Send Invites"
-      classes="btn btn-primary shadow-purple-lg mb-0 ml-1"
-      isSaving=isSaving
-      isSaveSuccessful=isSaveSuccessful
-      submit=(action "save")
-    }}
+    <FormFields::Submit
+      @value="Send Invites"
+      @classes="btn btn-primary shadow-purple-lg mb-0 ml-1"
+      @isSaving={{isSaving}}
+      @isSaveSuccessful={{isSaveSuccessful}}
+      @submit={{action "save"}}
+    />
   </div>
 </form>

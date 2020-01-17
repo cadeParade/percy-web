@@ -27,18 +27,18 @@ describe('Integration: BuildApprovalButton', function() {
   });
 
   it('displays correctly when build is not approved ', async function() {
-    await render(hbs`{{build-approval-button
-      build=build
-      createReview=stub
-    }}`);
+    await render(hbs`<BuildApprovalButton
+      @build={{build}}
+      @createReview={{stub}}
+    />`);
     await percySnapshot(this.test, {darkMode: true});
   });
 
   it('displays correctly when build is approved', async function() {
-    await render(hbs`{{build-approval-button
-      build=build
-      createReview=stub
-    }}`);
+    await render(hbs`<BuildApprovalButton
+      @build={{build}}
+      @createReview={{stub}}
+    />`);
     this.set('build.reviewState', 'approved');
     await percySnapshot(this.test, {darkMode: true});
   });
@@ -52,11 +52,11 @@ describe('Integration: BuildApprovalButton', function() {
       approvableSnapshots: build.get('snapshots'),
     });
 
-    await render(hbs`{{build-approval-button
-      build=build
-      createReview=createReviewStub
-      approvableSnapshots=approvableSnapshots
-    }}`);
+    await render(hbs`<BuildApprovalButton
+      @build={{build}}
+      @createReview={{createReviewStub}}
+      @approvableSnapshots={{approvableSnapshots}}
+    />`);
     await BuildApprovalButton.clickButton();
 
     expect(createReviewStub).to.have.been.calledWith(build.get('snapshots'));
@@ -73,11 +73,11 @@ describe('Integration: BuildApprovalButton', function() {
       approvableSnapshots: build.get('snapshots'),
     });
 
-    await render(hbs`{{build-approval-button
-      build=build
-      createReview=createReviewStub
-      approvableSnapshots=approvableSnapshots
-    }}`);
+    await render(hbs`<BuildApprovalButton
+      @build={{build}}
+      @createReview={{createReviewStub}}
+      @approvableSnapshots={{approvableSnapshots}}
+    />`);
 
     await BuildApprovalButton.clickButton();
     expect(createReviewStub).to.not.have.been.called;
@@ -91,11 +91,11 @@ describe('Integration: BuildApprovalButton', function() {
       approvableSnapshots: [],
     });
 
-    await render(hbs`{{build-approval-button
-      build=build
-      createReview=createReviewStub
-      approvableSnapshots=approvableSnapshots
-    }}`);
+    await render(hbs`<BuildApprovalButton
+      @build={{build}}
+      @createReview={{createReviewStub}}
+      @approvableSnapshots={{approvableSnapshots}}
+    />`);
 
     await BuildApprovalButton.clickButton();
     expect(createReviewStub).to.not.have.been.called;
@@ -105,10 +105,10 @@ describe('Integration: BuildApprovalButton', function() {
     const deferred = defer();
     const createReviewStub = sinon.stub().returns(deferred.promise);
     this.set('createReviewStub', createReviewStub);
-    await render(hbs`{{build-approval-button
-      build=build
-      createReview=createReviewStub
-    }}`);
+    await render(hbs`<BuildApprovalButton
+      @build={{build}}
+      @createReview={{createReviewStub}}
+    />`);
 
     await BuildApprovalButton.clickButton();
     await percySnapshot(this.test, {darkMode: true});
@@ -117,11 +117,11 @@ describe('Integration: BuildApprovalButton', function() {
   it('is enabled when isDisabled is false', async function() {
     let createReviewStub = sinon.stub().returns(resolve({then: sinon.stub()}));
     this.set('createReviewStub', createReviewStub);
-    await render(hbs`{{build-approval-button
-      build=build
-      createReview=createReviewStub
-      isDisabled=false
-    }}`);
+    await render(hbs`<BuildApprovalButton
+      @build={{build}}
+      @createReview={{createReviewStub}}
+      @isDisabled={{false}}
+    />`);
 
     expect(BuildApprovalButton.isDisabled).to.equal(false);
     await BuildApprovalButton.clickButton();
@@ -131,11 +131,11 @@ describe('Integration: BuildApprovalButton', function() {
   it('is disabled when isDisabled is true', async function() {
     let createReviewStub = sinon.stub().returns(resolve({then: sinon.stub()}));
     this.set('createReview', createReviewStub);
-    await render(hbs`{{build-approval-button
-      build=build
-      createReview=createReviewStub
-      isDisabled=true
-    }}`);
+    await render(hbs`<BuildApprovalButton
+      @build={{build}}
+      @createReview={{createReviewStub}}
+      @isDisabled={{true}}
+    />`);
     expect(BuildApprovalButton.isDisabled).to.equal(true);
     await BuildApprovalButton.clickButton();
     expect(createReviewStub).to.not.have.been.called;

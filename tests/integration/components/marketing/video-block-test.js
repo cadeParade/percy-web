@@ -26,7 +26,7 @@ describe('Integration: Marketing/VideoBlock', function() {
   });
 
   it('opens a modal when the image is clicked', async function() {
-    await render(hbs`{{marketing/video-block block=videoBlock}}`);
+    await render(hbs`<Marketing::VideoBlock @block={{videoBlock}} />`);
 
     // then click the image
     await VideoBlock.clickImage();

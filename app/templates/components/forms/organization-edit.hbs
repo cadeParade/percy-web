@@ -1,20 +1,20 @@
 <form action="javascript:;" class="Form mb-0" data-test-edit-org-form>
   <div class="p-2 bg-gray-000 rounded border mb-2">
-    {{form-fields/input
-        property="name"
-        title="Organization name"
-        changeset=changeset
-        validateProperty=(action "validateProperty" changeset "name")
-        testLabel="org-name"
-    }}
+    <FormFields::Input
+      @property="name"
+      @title="Organization name"
+      @changeset={{this.changeset}}
+      @validateProperty={{action "validateProperty" this.changeset "name"}}
+      @testLabel="org-name"
+    />
 
-    {{form-fields/input
-        property="slug"
-        title="Slug"
-        changeset=changeset
-        validateProperty=(action "validateProperty" changeset "slug")
-        testLabel='org-slug'
-    }}
+    <FormFields::Input
+      @property="slug"
+      @title="Slug"
+      @changeset={{this.changeset}}
+      @validateProperty={{action "validateProperty" this.changeset "slug"}}
+      @testLabel="org-slug"
+    />
 
     <div class="rounded bg-yellow-000 border border-yellow-100 p-2">
       <strong>Note:</strong> The slug is used to identify this organization in URLs. Old build URLs will break if the slug is changed, and a new organization can claim the old slug.

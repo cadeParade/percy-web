@@ -34,7 +34,7 @@
         {{#if shouldDisplayUsageStats}}
           <div class="mb-3" data-test-current-usage-stats>
             <div class="font-semibold">This billing period:</div>
-            <div>Current usage: <span class="font-semibold">{{format-number currentUsageStats.total}} snapshots</span>{{snapshot-explanation-tooltip}}</div>
+            <div>Current usage: <span class="font-semibold">{{format-number currentUsageStats.total}} snapshots</span><SnapshotExplanationTooltip /></div>
             <div>Estimated cost: <span class="font-semibold">{{format-currency currentUsageStats.currentCostDollars}}</span></div>
           </div>
         {{/if}}

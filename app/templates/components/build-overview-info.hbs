@@ -3,7 +3,7 @@
     <div class="text-secondary">
       Build <span class="font-mono font-normal tracking-sm text-primary mr-1">{{build.buildNumber}}</span>
     </div>
-    {{build-info-dropdown build=build}}
+    <BuildInfoDropdown @build={{build}} />
     <DemoTooltip
       @build={{build}}
       @key="build-overview"

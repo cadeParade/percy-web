@@ -1,48 +1,41 @@
 {{#if showNoticeBar}}
   <div class="hidden sm:block flex-shrink-0 mr-4">
-    {{#notice-bar-container organization=organization as |bar|}}
+    <NoticeBarContainer @organization={{organization}} as |bar|>
       {{#if shouldShowNewProjectPrompt}}
-        {{#bar.body}}Get started with your own project.{{/bar.body}}
-        {{#bar.button
-          linkRoute="organizations.organization.projects.new"}}Create project
-        {{/bar.button}}
+        <bar.body>Get started with your own project.</bar.body>
+        <bar.button @linkRoute="organizations.organization.projects.new">Create project
+        </bar.button>
 
       {{else if isSubscriptionFree}}
         {{#if hasRemainingSnapshots}}
-          {{#bar.body classes="notice-bar-black-on-white"}}
+          <bar.body @classes="notice-bar-black-on-white">
             You have used <strong data-test-percentage>{{currentUsagePercentage}}%</strong> of your free snapshots this month.
-          {{/bar.body}}
-          {{#bar.button
-            buttonClasses="notice-bar-button-gray border"
-            linkClasses="text-blue-500"
-          }}
+          </bar.body>
+          <bar.button @buttonClasses="notice-bar-button-gray border" @linkClasses="text-blue-500">
             More Info
-          {{/bar.button}}
+          </bar.button>
         {{else}}
-          {{#bar.body}}
+          <bar.body>
             You have used <span data-test-percentage>all</span> of your free snapshots this month.
-          {{/bar.body}}
-          {{#bar.button}}
+          </bar.body>
+          <bar.button>
             Upgrade Plan
-          {{/bar.button}}
+          </bar.button>
         {{/if}}
 
       {{else if isSubscriptionTrial}}
-        {{#bar.body classes="notice-bar-black-on-gray"}}
+        <bar.body @classes="notice-bar-black-on-gray">
           {{#if isTrialEndingToday}}
             Your trial ends today!
           {{else}}
             You have <strong>{{pluralize trialDaysRemaining "day"}}</strong> left in your trial.
           {{/if}}
-        {{/bar.body}}
-        {{#bar.button
-          buttonClasses="notice-bar-button-gray"
-          linkClasses="text-blue-500"
-        }}
+        </bar.body>
+        <bar.button @buttonClasses="notice-bar-button-gray" @linkClasses="text-blue-500">
           See plans
-        {{/bar.button}}
+        </bar.button>
 
       {{/if}}
-    {{/notice-bar-container}}
+    </NoticeBarContainer>
   </div>
 {{/if}}

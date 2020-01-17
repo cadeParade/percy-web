@@ -1,5 +1,5 @@
-<div class="BuildInfo-started">{{build-started build=build}}</div>
-<div class="BuildInfo-duration">{{build-duration build=build}}</div>
+<div class="BuildInfo-started"><BuildStarted @build={{build}} /></div>
+<div class="BuildInfo-duration"><BuildDuration @build={{build}} /></div>
 {{#if showComparisonInfo}}
-  <div class="BuildInfo-comparison">{{build-comparison-info build=build}}</div>
+  <div class="BuildInfo-comparison"><BuildComparisonInfo @build={{build}} /></div>
 {{/if}}

@@ -13,26 +13,26 @@
   {{/if}}
 
   <section data-test-admin-view>
-    {{organizations/current-plan
-        organization=organization
-        currentUsageStats=currentUsageStats
-      }}
+    <Organizations::CurrentPlan
+      @organization={{organization}}
+      @currentUsageStats={{currentUsageStats}}
+    />
 
     {{#if subscription.plan.isUpgradeable}}
-    {{organizations/subscription-list
-          organization=organization
-          updateEmail=updateEmail
-          updateSubscription=updateSubscription
-          updateCreditCard=updateCreditCard
-          updateSavingState=(action "updateSavingState")
-        }}
+    <Organizations::SubscriptionList
+      @organization={{organization}}
+      @updateEmail={{updateEmail}}
+      @updateSubscription={{updateSubscription}}
+      @updateCreditCard={{updateCreditCard}}
+      @updateSavingState={{action "updateSavingState"}}
+    />
     {{/if}}
 
     {{#if (and subscription.isPaid (not isEmailOrCardSaving))}}
-    {{organizations/billing-settings
-          organization=organization
-          updateCreditCard=updateCreditCard
-        }}
+    <Organizations::BillingSettings
+      @organization={{organization}}
+      @updateCreditCard={{updateCreditCard}}
+    />
     {{/if}}
   </section>
   {{/unless}}

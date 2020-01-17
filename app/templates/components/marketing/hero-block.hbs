@@ -14,14 +14,14 @@
   {{/if}}
 
   {{#if content.videoEmbedUrl}}
-    {{#marketing/video-modal
-      videoEmbedUrl=content.videoEmbedUrl
-      isVideoModalVisible=isVideoModalVisible
-      toggleModalVisibility=(action (toggle "isVideoModalVisible" this))
-    }}
+    <Marketing::VideoModal
+      @videoEmbedUrl={{content.videoEmbedUrl}}
+      @isVideoModalVisible={{isVideoModalVisible}}
+      @toggleModalVisibility={{action (toggle "isVideoModalVisible" this)}}
+    >
       <button class="percy-btn percy-btn-secondary mt-1" {{action (toggle "isVideoModalVisible" this)}}>
         Watch how it works
       </button>
-    {{/marketing/video-modal}}
+    </Marketing::VideoModal>
   {{/if}}
 </div>

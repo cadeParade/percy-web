@@ -1,11 +1,11 @@
 <button type="button" class="btn btn-square collaboration-toggle relative" {{action toggleCollaborationPanel}} aria-label="Add a comment or toggle comment panel" data-test-toggle-comment-sidebar>
   <figure class="svg-container">
     {{#if unresolvedCommentThreadCount}}
-      {{theme-svg svg="conversation-icon-purple"}}
+      <ThemeSvg @svg="conversation-icon-purple" />
     {{else if isResolved}}
       {{inline-svg "conversation-icon-resolved"}}
     {{else}}
-      {{theme-svg svg="conversation-icon-add"}}
+      <ThemeSvg @svg="conversation-icon-add" />
     {{/if}}
   </figure>
 

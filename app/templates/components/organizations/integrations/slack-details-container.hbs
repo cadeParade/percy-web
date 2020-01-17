@@ -1,19 +1,19 @@
 <div data-test-slack-details-container>
   {{#if fetchedProjects}}
     {{#if showSlackIntegrationConfig}}
-      {{forms/slack-integration-config
-        projectOptions=projectOptions
-        slackIntegrationConfig=slackIntegrationConfig
-        deleteSlackIntegrationConfig=deleteSlackIntegrationConfig
-        saveSuccess=(action 'slackConfigSaveSuccess')
-      }}
+      <Forms::SlackIntegrationConfig
+        @projectOptions={{projectOptions}}
+        @slackIntegrationConfig={{slackIntegrationConfig}}
+        @deleteSlackIntegrationConfig={{deleteSlackIntegrationConfig}}
+        @saveSuccess={{action "slackConfigSaveSuccess"}}
+      />
     {{else if showSlackIntegrationList}}
-      {{organizations/integrations/slack-settings
-        projectOptions=projectOptions
-        organization=organization
-        connectSlackChannel=connectSlackChannel
-        deleteSlackIntegration=deleteSlackIntegration
-      }}
+      <Organizations::Integrations::SlackSettings
+        @projectOptions={{projectOptions}}
+        @organization={{organization}}
+        @connectSlackChannel={{connectSlackChannel}}
+        @deleteSlackIntegration={{deleteSlackIntegration}}
+      />
     {{/if}}
   {{/if}}
 </div>

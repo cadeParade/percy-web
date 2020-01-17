@@ -45,10 +45,10 @@ describe('Integration: BrowserFamilySelector', function() {
           browserTarget: chromeBrowserTarget,
         });
 
-        await render(hbs`{{projects/browser-family-selector
-          allBrowserFamilies=allBrowserFamilies
-          project=project
-        }}`);
+        await render(hbs`<Projects::BrowserFamilySelector
+          @allBrowserFamilies={{allBrowserFamilies}}
+          @project={{project}}
+        />`);
 
         expect(BrowserFamilySelector.chromeButton.isActive).to.equal(true);
         expect(BrowserFamilySelector.firefoxButton.isActive).to.equal(false);
@@ -60,10 +60,10 @@ describe('Integration: BrowserFamilySelector', function() {
           browserTarget: firefoxBrowserTarget,
         });
 
-        await render(hbs`{{projects/browser-family-selector
-          allBrowserFamilies=allBrowserFamilies
-          project=project
-        }}`);
+        await render(hbs`<Projects::BrowserFamilySelector
+          @allBrowserFamilies={{allBrowserFamilies}}
+          @project={{project}}
+        />`);
 
         expect(BrowserFamilySelector.chromeButton.isActive).to.equal(false);
         expect(BrowserFamilySelector.firefoxButton.isActive).to.equal(true);
@@ -78,10 +78,10 @@ describe('Integration: BrowserFamilySelector', function() {
           project,
           browserTarget: firefoxBrowserTarget,
         });
-        await render(hbs`{{projects/browser-family-selector
-          allBrowserFamilies=allBrowserFamilies
-          project=project
-        }}`);
+        await render(hbs`<Projects::BrowserFamilySelector
+          @allBrowserFamilies={{allBrowserFamilies}}
+          @project={{project}}
+        />`);
 
         expect(BrowserFamilySelector.chromeButton.isActive).to.equal(true);
         expect(BrowserFamilySelector.firefoxButton.isActive).to.equal(true);
@@ -110,10 +110,10 @@ describe('Integration: BrowserFamilySelector', function() {
             makeRecentProjectBrowserTarget('firefox'),
           ];
           this.setProperties({projectBrowserTargets});
-          await render(hbs`{{projects/browser-family-selector
-            allBrowserFamilies=allBrowserFamilies
-            project=project
-          }}`);
+          await render(hbs`<Projects::BrowserFamilySelector
+            @allBrowserFamilies={{allBrowserFamilies}}
+            @project={{project}}
+          />`);
           expect(BrowserFamilySelector.chromeButton.isUpgradeable).to.equal(true);
           expect(BrowserFamilySelector.firefoxButton.isUpgradeable).to.equal(false);
         });
@@ -124,10 +124,10 @@ describe('Integration: BrowserFamilySelector', function() {
             makeUpgradeableProjectBrowserTarget('firefox'),
           ];
           this.setProperties({projectBrowserTargets});
-          await render(hbs`{{projects/browser-family-selector
-            allBrowserFamilies=allBrowserFamilies
-            project=project
-          }}`);
+          await render(hbs`<Projects::BrowserFamilySelector
+            @allBrowserFamilies={{allBrowserFamilies}}
+            @project={{project}}
+          />`);
 
           expect(BrowserFamilySelector.chromeButton.isUpgradeable).to.equal(false);
           expect(BrowserFamilySelector.firefoxButton.isUpgradeable).to.equal(true);
@@ -139,10 +139,10 @@ describe('Integration: BrowserFamilySelector', function() {
             makeUpgradeableProjectBrowserTarget('firefox'),
           ];
           this.setProperties({projectBrowserTargets});
-          await render(hbs`{{projects/browser-family-selector
-            allBrowserFamilies=allBrowserFamilies
-            project=project
-          }}`);
+          await render(hbs`<Projects::BrowserFamilySelector
+            @allBrowserFamilies={{allBrowserFamilies}}
+            @project={{project}}
+          />`);
 
           expect(BrowserFamilySelector.chromeButton.isUpgradeable).to.equal(true);
           expect(BrowserFamilySelector.firefoxButton.isUpgradeable).to.equal(true);
@@ -154,10 +154,10 @@ describe('Integration: BrowserFamilySelector', function() {
           const projectBrowserTargets = [makeUpgradeableProjectBrowserTarget('chrome')];
 
           this.setProperties({projectBrowserTargets});
-          await render(hbs`{{projects/browser-family-selector
-            allBrowserFamilies=allBrowserFamilies
-            project=project
-          }}`);
+          await render(hbs`<Projects::BrowserFamilySelector
+            @allBrowserFamilies={{allBrowserFamilies}}
+            @project={{project}}
+          />`);
 
           expect(BrowserFamilySelector.chromeButton.isActive).to.equal(true);
           expect(BrowserFamilySelector.chromeButton.isUpgradeable).to.equal(true);

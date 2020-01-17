@@ -3,7 +3,7 @@
     <div class="md:flex items-center {{if block.isImageRightAligned "flex-row-reverse"}} {{if block.isImageCentered "flex-col"}}">
       {{#if block.isImagePresent}}
         <div class="flex-1 text-center">
-          {{contentful-image file=block.mainImage.file}}
+          <ContentfulImage @file={{block.mainImage.file}} />
         </div>
       {{/if}}
       <div class="flex-1 mb-6 md:mb-0">
@@ -23,13 +23,13 @@
 
         {{#if block.subheader}}
           <div class="content-block-subheader text-secondary text-center mb-2 pt-2">
-            {{markdown-to-html block.subheader}}
+            <MarkdownToHtml @markdown={{block.subheader}} />
           </div>
         {{/if}}
 
         {{#if block.bodyText}}
           <div class="content-block-bodytext">
-            {{markdown-to-html block.bodyText}}
+            <MarkdownToHtml @markdown={{block.bodyText}} />
           </div>
         {{/if}}
 
@@ -60,7 +60,7 @@
           <div class="mb-3 {{concat "px-2 md:w-1/" numSupportingTextColumns}}">
             {{#if supportingText.supportingContentImageIcon.file.url}}
               <div class="content-block-supporting-image">
-                {{contentful-image file=supportingText.supportingContentImageIcon.file}}
+                <ContentfulImage @file={{supportingText.supportingContentImageIcon.file}} />
               </div>
             {{/if}}
 
@@ -72,7 +72,7 @@
 
             {{#if supportingText.bodyText}}
               <div class="content-block-supporting-text-body">
-                {{markdown-to-html supportingText.bodyText}}
+                <MarkdownToHtml @markdown={{supportingText.bodyText}} />
               </div>
             {{/if}}
           </div>

@@ -1,17 +1,16 @@
 {{#if build.project.isDemo}}
   <div data-test-tooltip-wrapper class="{{if shouldHideWholeTooltip 'hidden'}} {{if (not isLastTooltip) 'data-test-nextable-tooltip-wrapper'}}" style="position:relative;">
     <div class="tip-anchor {{anchorPlacement}}" data-test-tooltip-anchor>
-      {{#attach-popover
-        class=(if isLastTooltip 'tip-container' 'nextable tip-container')
-        isShown=shouldShowTooltip
-        showOn='click'
-        hideOn='clickout'
-        interactive=true
-        arrow=false
-        placement='left'
-        onChange=(action 'onChange')
-        as |attacher|
-      }}
+      <AttachPopover
+        @class={{if isLastTooltip "tip-container" "nextable tip-container"}}
+        @isShown={{shouldShowTooltip}}
+        @showOn="click"
+        @hideOn="clickout"
+        @interactive={{true}}
+        @arrow={{false}}
+        @placement="left"
+        @onChange={{action "onChange"}}
+      as |attacher|>
         <div class="text-lg font-semibold mb-1">
           {{this.title}}
         </div>
@@ -49,7 +48,7 @@
             </button>
           {{/if}}
         </div>
-      {{/attach-popover}}
+      </AttachPopover>
     </div>
   </div>
 {{/if}}

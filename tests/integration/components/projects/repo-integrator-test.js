@@ -25,7 +25,7 @@ describe('Integration: RepoIntegratorComponent', function() {
       project.set('organization', organization);
       this.setProperties({project});
       repoRefreshServiceStub(this, null, null);
-      await render(hbs`{{projects/repo-integrator project=project}}`);
+      await render(hbs`<Projects::RepoIntegrator @project={{project}} />`);
     });
 
     it('renders with the repo selector closed', async function() {
@@ -47,7 +47,7 @@ describe('Integration: RepoIntegratorComponent', function() {
       freshReposStub = sinon.stub();
       repoRefreshServiceStub(this, null, null, freshReposStub);
 
-      await render(hbs`{{projects/repo-integrator project=project}}`);
+      await render(hbs`<Projects::RepoIntegrator @project={{project}} />`);
     });
 
     it('displays no integrations message', async function() {

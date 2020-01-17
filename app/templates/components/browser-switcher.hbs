@@ -7,10 +7,10 @@
     >
       {{inline-svg (concat browser.familySlug "-browser-icon") class="opacity-25"}}
       {{#if build}}
-        {{browser-switcher-badge
-          unnapprovedSnapshotCount=(get (get unapprovedSnapshotsWithDiffForBrowsers browser.id) "length")
-          isActive=(eq browser.id activeBrowser.id)
-        }}
+        <BrowserSwitcherBadge
+          @unnapprovedSnapshotCount={{get (get unapprovedSnapshotsWithDiffForBrowsers browser.id) "length"}}
+          @isActive={{eq browser.id activeBrowser.id}}
+        />
       {{/if}}
     </div>
   {{/each}}

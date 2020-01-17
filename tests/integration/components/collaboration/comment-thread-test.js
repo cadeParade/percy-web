@@ -27,9 +27,9 @@ describe('Integration: CommentThread', function() {
       it('displays correctly with one comment', async function() {
         const commentThread = make('comment-thread', 'note', 'withOneComment');
         this.setProperties({commentThread});
-        await render(hbs`{{collaboration/comment-thread
-          commentThread=commentThread
-        }}`);
+        await render(hbs`<Collaboration::CommentThread
+          @commentThread={{commentThread}}
+        />`);
 
         expect(CommentThread.comments.length).to.equal(1);
         expect(CommentThread.reply.isVisible).to.equal(true);
@@ -39,9 +39,9 @@ describe('Integration: CommentThread', function() {
       it('displays correctly with two comments', async function() {
         const commentThread = make('comment-thread', 'note', 'withTwoComments');
         this.setProperties({commentThread});
-        await render(hbs`{{collaboration/comment-thread
-          commentThread=commentThread
-        }}`);
+        await render(hbs`<Collaboration::CommentThread
+          @commentThread={{commentThread}}
+        />`);
 
         expect(CommentThread.comments.length).to.equal(2);
         expect(CommentThread.reply.isVisible).to.equal(true);
@@ -51,9 +51,9 @@ describe('Integration: CommentThread', function() {
       it('expands reply input when clicked', async function() {
         const commentThread = make('comment-thread', 'note', 'withOneComment');
         this.setProperties({commentThread});
-        await render(hbs`{{collaboration/comment-thread
-          commentThread=commentThread
-        }}`);
+        await render(hbs`<Collaboration::CommentThread
+          @commentThread={{commentThread}}
+        />`);
         await CommentThread.focusReply();
         await percySnapshot(this.test, {darkMode: true});
       });
@@ -61,10 +61,10 @@ describe('Integration: CommentThread', function() {
       it('does not display reply box when `isCommentingAllowed` is false', async function() {
         const commentThread = make('comment-thread', 'note', 'withOneComment');
         this.setProperties({commentThread});
-        await render(hbs`{{collaboration/comment-thread
-          commentThread=commentThread
-          isCommentingAllowed=false
-        }}`);
+        await render(hbs`<Collaboration::CommentThread
+          @commentThread={{commentThread}}
+          @isCommentingAllowed={{false}}
+        />`);
         expect(CommentThread.reply.isVisible).to.equal(false);
       });
     });
@@ -73,9 +73,9 @@ describe('Integration: CommentThread', function() {
       beforeEach(async function() {
         const commentThread = make('comment-thread', 'note', 'withTenComments');
         this.setProperties({commentThread});
-        await render(hbs`{{collaboration/comment-thread
-          commentThread=commentThread
-        }}`);
+        await render(hbs`<Collaboration::CommentThread
+          @commentThread={{commentThread}}
+        />`);
       });
 
       it('displays correctly', async function() {
@@ -98,9 +98,9 @@ describe('Integration: CommentThread', function() {
       it('displays correctly with one comment', async function() {
         const commentThread = make('comment-thread', 'withOneComment', 'closed');
         this.setProperties({commentThread});
-        await render(hbs`{{collaboration/comment-thread
-          commentThread=commentThread
-        }}`);
+        await render(hbs`<Collaboration::CommentThread
+          @commentThread={{commentThread}}
+        />`);
 
         expect(CommentThread.comments.length).to.equal(1);
         expect(CommentThread.reply.isVisible).to.equal(false);
@@ -110,9 +110,9 @@ describe('Integration: CommentThread', function() {
       it('displays correctly with two comments', async function() {
         const commentThread = make('comment-thread', 'withTwoComments', 'closed');
         this.setProperties({commentThread});
-        await render(hbs`{{collaboration/comment-thread
-          commentThread=commentThread
-        }}`);
+        await render(hbs`<Collaboration::CommentThread
+          @commentThread={{commentThread}}
+        />`);
 
         expect(CommentThread.comments.length).to.equal(2);
         expect(CommentThread.reply.isVisible).to.equal(false);
@@ -124,9 +124,9 @@ describe('Integration: CommentThread', function() {
       beforeEach(async function() {
         const commentThread = make('comment-thread', 'withTenComments', 'closed');
         this.setProperties({commentThread});
-        await render(hbs`{{collaboration/comment-thread
-          commentThread=commentThread
-        }}`);
+        await render(hbs`<Collaboration::CommentThread
+          @commentThread={{commentThread}}
+        />`);
       });
 
       it('displays correctly', async function() {

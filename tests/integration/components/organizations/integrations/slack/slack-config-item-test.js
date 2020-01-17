@@ -38,11 +38,11 @@ describe('Integration: SlackConfigItem', function() {
         projectOptions,
         slackIntegrationConfig,
       });
-      await render(hbs`{{
-        organizations/integrations/slack-config-item
-        projectOptions=projectOptions
-        slackIntegrationConfig=slackIntegrationConfig
-      }}`);
+      await render(hbs`<
+        Organizations::Integrations::SlackConfigItem
+        @projectOptions={{projectOptions}}
+        @slackIntegrationConfig={{slackIntegrationConfig}}
+      />`);
     });
 
     it('renders correctly', async function() {
@@ -73,11 +73,11 @@ describe('Integration: SlackConfigItem', function() {
         projectOptions,
         slackIntegrationConfig,
       });
-      await render(hbs`{{
-          organizations/integrations/slack-config-item
-          projectOptions=projectOptions
-          slackIntegrationConfig=slackIntegrationConfig
-        }}`);
+      await render(hbs`<
+          Organizations::Integrations::SlackConfigItem
+          @projectOptions={{projectOptions}}
+          @slackIntegrationConfig={{slackIntegrationConfig}}
+        />`);
     });
 
     it('renders correctly', async function() {

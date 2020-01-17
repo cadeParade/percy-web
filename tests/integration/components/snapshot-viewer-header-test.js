@@ -26,24 +26,24 @@ describe('Integration: SnapshotViewerHeader', function() {
     });
 
     it('shows dropdown toggle', async function() {
-      await render(hbs`{{snapshot-viewer-header
-        snapshot=snapshot
-        toggleViewMode=stub
-        updateSelectedWidth=stub
-        expandSnapshot=stub
-        activeBrowser=browser
-      }}`);
+      await render(hbs`<SnapshotViewerHeader
+        @snapshot={{snapshot}}
+        @toggleViewMode={{stub}}
+        @updateSelectedWidth={{stub}}
+        @expandSnapshot={{stub}}
+        @activeBrowser={{browser}}
+      />`);
 
       expect(SnapshotViewerHeaderPO.isDropdownToggleVisible).to.equal(true);
     });
 
     it('toggles dropdown pane when dropdown toggle is clicked', async function() {
-      await render(hbs`{{snapshot-viewer-header
-        snapshot=snapshot
-        toggleViewMode=stub
-        updateSelectedWidth=stub
-        activeBrowser=browser
-      }}`);
+      await render(hbs`<SnapshotViewerHeader
+        @snapshot={{snapshot}}
+        @toggleViewMode={{stub}}
+        @updateSelectedWidth={{stub}}
+        @activeBrowser={{browser}}
+      />`);
 
       expect(SnapshotViewerHeaderPO.isDropdownPaneVisible).to.equal(false);
       await SnapshotViewerHeaderPO.clickDropdownToggle();
@@ -53,12 +53,12 @@ describe('Integration: SnapshotViewerHeader', function() {
     });
 
     it('shows copy url option', async function() {
-      await render(hbs`{{snapshot-viewer-header
-        snapshot=snapshot
-        toggleViewMode=stub
-        updateSelectedWidth=stub
-        activeBrowser=browser
-      }}`);
+      await render(hbs`<SnapshotViewerHeader
+        @snapshot={{snapshot}}
+        @toggleViewMode={{stub}}
+        @updateSelectedWidth={{stub}}
+        @activeBrowser={{browser}}
+      />`);
 
       await SnapshotViewerHeaderPO.clickDropdownToggle();
       expect(SnapshotViewerHeaderPO.dropdownOptions.objectAt(0).text).to.equal('Copy snapshot URL');
@@ -76,13 +76,13 @@ describe('Integration: SnapshotViewerHeader', function() {
         this.set('comparison', comparison);
         this.set('snapshot', make('snapshot'));
 
-        await render(hbs`{{snapshot-viewer-header
-          snapshot=snapshot
-          toggleViewMode=stub
-          updateSelectedWidth=stub
-          selectedComparison=comparison
-          activeBrowser=browser
-        }}`);
+        await render(hbs`<SnapshotViewerHeader
+          @snapshot={{snapshot}}
+          @toggleViewMode={{stub}}
+          @updateSelectedWidth={{stub}}
+          @selectedComparison={{comparison}}
+          @activeBrowser={{browser}}
+        />`);
       });
 
       it('shows download original and new source option', async function() {
@@ -125,13 +125,13 @@ describe('Integration: SnapshotViewerHeader', function() {
           this.set('comparison.baseSnapshot', baseSnapshot);
           this.set('comparison.headSnapshot', headSnapshot);
 
-          await render(hbs`{{snapshot-viewer-header
-            snapshot=snapshot
-            toggleViewMode=stub
-            updateSelectedWidth=stub
-            selectedComparison=comparison
-            activeBrowser=browser
-          }}`);
+          await render(hbs`<SnapshotViewerHeader
+            @snapshot={{snapshot}}
+            @toggleViewMode={{stub}}
+            @updateSelectedWidth={{stub}}
+            @selectedComparison={{comparison}}
+            @activeBrowser={{browser}}
+          />`);
         });
 
         it('shows download source diff', async function() {
@@ -154,13 +154,13 @@ describe('Integration: SnapshotViewerHeader', function() {
           this.set('comparison.baseSnapshot', headSnapshot);
           this.set('comparison.headSnapshot', headSnapshot);
 
-          await render(hbs`{{snapshot-viewer-header
-            snapshot=snapshot
-            toggleViewMode=stub
-            updateSelectedWidth=stub
-            selectedComparison=comparison
-            activeBrowser=browser
-          }}`);
+          await render(hbs`<SnapshotViewerHeader
+            @snapshot={{snapshot}}
+            @toggleViewMode={{stub}}
+            @updateSelectedWidth={{stub}}
+            @selectedComparison={{comparison}}
+            @activeBrowser={{browser}}
+          />`);
         });
 
         it('shows download source diff', async function() {
@@ -180,13 +180,13 @@ describe('Integration: SnapshotViewerHeader', function() {
           this.set('snapshot', headSnapshot);
           this.set('comparison.headSnapshot', headSnapshot);
 
-          await render(hbs`{{snapshot-viewer-header
-            snapshot=snapshot
-            toggleViewMode=stub
-            updateSelectedWidth=stub
-            selectedComparison=comparison
-            activeBrowser=browser
-          }}`);
+          await render(hbs`<SnapshotViewerHeader
+            @snapshot={{snapshot}}
+            @toggleViewMode={{stub}}
+            @updateSelectedWidth={{stub}}
+            @selectedComparison={{comparison}}
+            @activeBrowser={{browser}}
+          />`);
         });
 
         it('does not show download source diff', async function() {
@@ -206,13 +206,13 @@ describe('Integration: SnapshotViewerHeader', function() {
         const snapshot = make('snapshot', 'withComparisons');
         this.set('stub', sinon.stub());
         this.set('snapshot', snapshot);
-        await render(hbs`{{snapshot-viewer-header
-          snapshot=snapshot
-          toggleViewMode=stub
-          updateSelectedWidth=stub
-          expandSnapshot=stub
-          activeBrowser=browser
-        }}`);
+        await render(hbs`<SnapshotViewerHeader
+          @snapshot={{snapshot}}
+          @toggleViewMode={{stub}}
+          @updateSelectedWidth={{stub}}
+          @expandSnapshot={{stub}}
+          @activeBrowser={{browser}}
+        />`);
       });
 
       it('displays all comparison widths', function() {
@@ -248,13 +248,13 @@ describe('Integration: SnapshotViewerHeader', function() {
 
         this.set('stub', sinon.stub());
         this.set('snapshot', snapshot);
-        await render(hbs`{{snapshot-viewer-header
-          snapshot=snapshot
-          toggleViewMode=stub
-          updateSelectedWidth=stub
-          expandSnapshot=stub
-          activeBrowser=browser
-        }}`);
+        await render(hbs`<SnapshotViewerHeader
+          @snapshot={{snapshot}}
+          @toggleViewMode={{stub}}
+          @updateSelectedWidth={{stub}}
+          @expandSnapshot={{stub}}
+          @activeBrowser={{browser}}
+        />`);
       });
 
       it('displays only widths with diffs', function() {
@@ -296,13 +296,13 @@ describe('Integration: SnapshotViewerHeader', function() {
 
         this.set('stub', sinon.stub());
         this.set('snapshot', snapshot);
-        await render(hbs`{{snapshot-viewer-header
-          snapshot=snapshot
-          toggleViewMode=stub
-          updateSelectedWidth=stub
-          expandSnapshot=stub
-          activeBrowser=browser
-        }}`);
+        await render(hbs`<SnapshotViewerHeader
+          @snapshot={{snapshot}}
+          @toggleViewMode={{stub}}
+          @updateSelectedWidth={{stub}}
+          @expandSnapshot={{stub}}
+          @activeBrowser={{browser}}
+        />`);
       });
 
       it('displays all widths', function() {
@@ -350,13 +350,13 @@ describe('Integration: SnapshotViewerHeader', function() {
     it('displays "No changes in [browser]" when there are changes in a different browser', async function() {
       const browser = make('browser', 'chrome');
       this.set('browser', browser);
-      await render(hbs`{{snapshot-viewer-header
-        snapshot=snapshot
-        toggleViewMode=stub
-        updateSelectedWidth=stub
-        expandSnapshot=stub
-        activeBrowser=browser
-      }}`);
+      await render(hbs`<SnapshotViewerHeader
+        @snapshot={{snapshot}}
+        @toggleViewMode={{stub}}
+        @updateSelectedWidth={{stub}}
+        @expandSnapshot={{stub}}
+        @activeBrowser={{browser}}
+      />`);
 
       expect(SnapshotViewerHeaderPO.snapshotApprovalButton.isNoChangeInBrowserVisible).to.equal(
         true,
@@ -367,13 +367,13 @@ describe('Integration: SnapshotViewerHeader', function() {
     it('displays "Approve" button when there are changes in the active browser', async function() {
       const browser = make('browser');
       this.set('browser', browser);
-      await render(hbs`{{snapshot-viewer-header
-        snapshot=snapshot
-        toggleViewMode=stub
-        updateSelectedWidth=stub
-        expandSnapshot=stub
-        activeBrowser=browser
-      }}`);
+      await render(hbs`<SnapshotViewerHeader
+        @snapshot={{snapshot}}
+        @toggleViewMode={{stub}}
+        @updateSelectedWidth={{stub}}
+        @expandSnapshot={{stub}}
+        @activeBrowser={{browser}}
+      />`);
 
       expect(SnapshotViewerHeaderPO.snapshotApprovalButton.isNoChangeInBrowserVisible).to.equal(
         false,
@@ -390,16 +390,16 @@ describe('Integration: SnapshotViewerHeader', function() {
 
       this.setProperties({snapshot, stub, openCommentThreads});
 
-      await render(hbs`{{snapshot-viewer-header
-        snapshot=snapshot
-        toggleViewMode=stub
-        updateSelectedWidth=stub
-        expandSnapshot=stub
-        activeBrowser=browser
-        openCommentThreads=openCommentThreads
-        toggleCollaborationPanel=stub
-        isBuildApprovable=true
-      }}`);
+      await render(hbs`<SnapshotViewerHeader
+        @snapshot={{snapshot}}
+        @toggleViewMode={{stub}}
+        @updateSelectedWidth={{stub}}
+        @expandSnapshot={{stub}}
+        @activeBrowser={{browser}}
+        @openCommentThreads={{openCommentThreads}}
+        @toggleCollaborationPanel={{stub}}
+        @isBuildApprovable={{true}}
+      />`);
 
       expect(SnapshotViewerHeaderPO.isToggleCommentSidebarVisible).to.equal(true);
       expect(SnapshotViewerHeaderPO.numOpenCommentThreads).to.equal('3');

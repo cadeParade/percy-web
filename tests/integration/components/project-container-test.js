@@ -39,12 +39,12 @@ describe('Integration: ProjectContainer', function() {
       const stub = sinon.stub();
       this.setProperties({project, stub, infinityBuilds});
 
-      await render(hbs`{{project-container
-        project=project
-        infinityBuilds=infinityBuilds
-        pollRefresh=stub
-        isUserMember=true
-      }}`);
+      await render(hbs`<ProjectContainer
+        @project={{project}}
+        @infinityBuilds={{infinityBuilds}}
+        @pollRefresh={{stub}}
+        @isUserMember={{true}}
+      />`);
     });
 
     it('shows integration prompt banner', async function() {
@@ -67,12 +67,12 @@ describe('Integration: ProjectContainer', function() {
       stubPeekAllBuilds(builds, this);
       this.setProperties({project, infinityBuilds, stub});
 
-      await render(hbs`{{project-container
-        project=project
-        infinityBuilds=infinityBuilds
-        pollRefresh=stub
-        isUserMember=true
-      }}`);
+      await render(hbs`<ProjectContainer
+        @project={{project}}
+        @infinityBuilds={{infinityBuilds}}
+        @pollRefresh={{stub}}
+        @isUserMember={{true}}
+      />`);
     });
 
     it('shows no logo', async function() {
@@ -106,12 +106,12 @@ describe('Integration: ProjectContainer', function() {
       stubPeekAllBuilds(builds, this);
       this.setProperties({project, infinityBuilds, stub});
 
-      await render(hbs`{{project-container
-        project=project
-        infinityBuilds=infinityBuilds
-        pollRefresh=stub
-        isUserMember=true
-      }}`);
+      await render(hbs`<ProjectContainer
+        @project={{project}}
+        @infinityBuilds={{infinityBuilds}}
+        @pollRefresh={{stub}}
+        @isUserMember={{true}}
+      />`);
     });
 
     it('shows the github logo', async function() {
@@ -146,12 +146,12 @@ describe('Integration: ProjectContainer', function() {
       stubPeekAllBuilds(builds, this);
       this.setProperties({project, infinityBuilds, stub});
 
-      await render(hbs`{{project-container
-        project=project
-        infinityBuilds=infinityBuilds
-        pollRefresh=stub
-        isUserMember=true
-      }}`);
+      await render(hbs`<ProjectContainer
+        @project={{project}}
+        @infinityBuilds={{infinityBuilds}}
+        @pollRefresh={{stub}}
+        @isUserMember={{true}}
+      />`);
     });
 
     it('shows the github logo', async function() {
@@ -187,12 +187,12 @@ describe('Integration: ProjectContainer', function() {
       stubPeekAllBuilds(builds, this);
       this.setProperties({project, infinityBuilds, stub});
 
-      await render(hbs`{{project-container
-        project=project
-        infinityBuilds=infinityBuilds
-        pollRefresh=stub
-        isUserMember=true
-      }}`);
+      await render(hbs`<ProjectContainer
+        @project={{project}}
+        @infinityBuilds={{infinityBuilds}}
+        @pollRefresh={{stub}}
+        @isUserMember={{true}}
+      />`);
     });
 
     it('shows the gitlab logo', async function() {
@@ -224,12 +224,12 @@ describe('Integration: ProjectContainer', function() {
       stubPeekAllBuilds(builds, this);
       this.setProperties({project, infinityBuilds, stub});
 
-      await render(hbs`{{project-container
-        project=project
-        infinityBuilds=infinityBuilds
-        pollRefresh=stub
+      await render(hbs`<ProjectContainer
+        @project={{project}}
+        @infinityBuilds={{infinityBuilds}}
+        @pollRefresh={{stub}}
         isUserMember=false
-      }}`);
+      />`);
     });
 
     it('displays notice that build is public', async function() {
@@ -260,12 +260,12 @@ describe('Integration: ProjectContainer', function() {
       stubPeekAllBuilds(allBuilds, this);
       this.setProperties({project, infinityBuilds, stub});
 
-      await render(hbs`{{project-container
-        project=project
-        infinityBuilds=infinityBuilds
-        pollRefresh=stub
-        isUserMember=true
-      }}`);
+      await render(hbs`<ProjectContainer
+        @project={{project}}
+        @infinityBuilds={{infinityBuilds}}
+        @pollRefresh={{stub}}
+        @isUserMember={{true}}
+      />`);
     });
 
     it('filters branches by selected branch', async function() {
@@ -304,12 +304,12 @@ describe('Integration: ProjectContainer', function() {
       stubPeekAllBuilds(allBuilds, this);
       this.setProperties({project, infinityBuilds, stub});
 
-      await render(hbs`{{project-container
-        project=project
-        infinityBuilds=infinityBuilds
-        pollRefresh=stub
-        isUserMember=true
-      }}`);
+      await render(hbs`<ProjectContainer
+        @project={{project}}
+        @infinityBuilds={{infinityBuilds}}
+        @pollRefresh={{stub}}
+        @isUserMember={{true}}
+      />`);
     });
 
     it('filters branches by selected branch', async function() {
@@ -339,12 +339,12 @@ describe('Integration: ProjectContainer', function() {
       stubPeekAllBuilds(branch1Builds, this);
       this.setProperties({project, infinityBuilds, stub});
 
-      await render(hbs`{{project-container
-        project=project
-        infinityBuilds=infinityBuilds
-        pollRefresh=stub
-        isUserMember=true
-      }}`);
+      await render(hbs`<ProjectContainer
+        @project={{project}}
+        @infinityBuilds={{infinityBuilds}}
+        @pollRefresh={{stub}}
+        @isUserMember={{true}}
+      />`);
     });
 
     it('does not show the branch filter', async function() {

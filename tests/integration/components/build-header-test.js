@@ -42,11 +42,10 @@ describe('Integration: BuildHeader', function() {
       const build = make.apply(this, ['build'].concat(state));
       this.setProperties({build});
 
-      await render(hbs`{{
-        build-header
-        build=build
-        isBuildApprovable=true
-      }}`);
+      await render(hbs`<BuildHeader
+        @build={{build}}
+        @isBuildApprovable={{true}}
+      />`);
       await percySnapshot(this.test, {darkMode: true});
     });
   });
@@ -58,10 +57,10 @@ describe('Integration: BuildHeader', function() {
 
       const build = make('build', 'withBaseBuild', 'failed', 'renderTimeout');
       this.setProperties({build});
-      await render(hbs`{{build-header
-        build=build
-        isBuildApprovable=true
-      }}`);
+      await render(hbs`<BuildHeader
+        @build={{build}}
+        @isBuildApprovable={{true}}
+      />`);
 
       await BuildHeader.clickShowSupport();
       expect(showSupportStub).to.have.been.called;
@@ -73,10 +72,10 @@ describe('Integration: BuildHeader', function() {
 
       const build = make('build', 'withBaseBuild', 'failed', 'missingParallelBuilds');
       this.setProperties({build});
-      await render(hbs`{{build-header
-        build=build
-        isBuildApprovable=true
-      }}`);
+      await render(hbs`<BuildHeader
+        @build={{build}}
+        @isBuildApprovable={{true}}
+      />`);
 
       await BuildHeader.clickShowSupport();
       expect(showSupportStub).to.have.been.called;

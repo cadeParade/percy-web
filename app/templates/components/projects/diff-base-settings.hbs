@@ -1,6 +1,6 @@
 <div {{action 'setAutomatic'}} class="ProjectsDiffBaseSettings-setting {{if (eq project.diffBase "automatic") "ProjectsDiffBaseSettings-setting--selected"}}">
   {{#if (eq project.diffBase "automatic")}}
-    {{saving-indicator isSaving=isSaving isSaveSuccessful=isSaveSuccessful}}
+    <SavingIndicator @isSaving={{isSaving}} @isSaveSuccessful={{isSaveSuccessful}} />
     {{fa-icon "arrow-right"}}
   {{/if}}
   <span class="ProjectsDiffBaseSettings-title">
@@ -12,7 +12,7 @@
 </div>
 <div {{action 'setManual'}} class="ProjectsDiffBaseSettings-setting {{if (eq project.diffBase "manual") "ProjectsDiffBaseSettings-setting--selected"}}">
   {{#if (eq project.diffBase "manual")}}
-    {{saving-indicator isSaving=isSaving isSaveSuccessful=isSaveSuccessful}}
+    <SavingIndicator @isSaving={{isSaving}} @isSaveSuccessful={{isSaveSuccessful}} />
     {{fa-icon "arrow-right"}}
   {{/if}}
   <span class="ProjectsDiffBaseSettings-title">Manual diff base</span>

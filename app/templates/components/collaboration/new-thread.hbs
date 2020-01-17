@@ -2,27 +2,27 @@
   <div class="collaboration-comment mb-3" data-test-new-comment>
     <div data-test-new-comment-container>
       <div class="flex items-center">
-        {{user-avatar user=currentUser class="mr-1" isSmallAvatar=true}}
+        <UserAvatar @user={{currentUser}} @class="mr-1" @isSmallAvatar={{true}} />
         <div class="font-semibold leading-none">
           {{currentUser.name}}
         </div>
       </div>
       <div class="flex-1 collaboration-content-inset">
         <div class="relative">
-          {{#mentionable-textarea
-            tributeConfigs=tributeConfigs
-            handleItemSelected=(action "handleAtMentionUser")
-          }}
-            {{percy-textarea
-              data-test-new-comment-thread-textarea
-              autofocus=true
-              onCmdEnter=(action "saveComment")
-              onEscape=(action "toggleShouldShowNewCommentInput")
-              placeholder="Add comment..."
-              value=commentBody
+          <MentionableTextarea
+            @tributeConfigs={{tributeConfigs}}
+            @handleItemSelected={{action "handleAtMentionUser"}}
+          >
+            <PercyTextarea
+              data-test-new-comment-thread-textarea={{true}}
+              @autofocus={{true}}
+              @onCmdEnter={{action "saveComment"}}
+              @onEscape={{action "toggleShouldShowNewCommentInput"}}
+              @placeholder="Add comment..."
+              @value={{commentBody}}
               class="percy-input collaboration-new-thread relative pb-5"
-            }}
-          {{/mentionable-textarea}}
+            />
+          </MentionableTextarea>
           <div
             class="
               absolute right-0 bottom-0 left-0 bg-action border-t border-quaternary p-1-1/2
@@ -32,49 +32,47 @@
           >
             <label class="flex items-center justify-end m-0">
               <span>Request changes</span>
-              {{input
-                data-test-request-changes-checkbox
-                type="checkbox"
-                name="isRequestChanges"
-                checked=areChangesRequested
-                disabled=isRequestChangesDisabled
-                maxlength=6000
+              <Input
+                data-test-request-changes-checkbox={{true}}
+                @type="checkbox"
+                @name="isRequestChanges"
+                @checked={{areChangesRequested}}
+                @disabled={{isRequestChangesDisabled}}
+                @maxLength=6000
                 class="ml-1"
-              }}
+              />
             </label>
           </div>
         </div>
       </div>
     </div>
     <div class="flex justify-end mt-1">
-      {{#percy-btn
-        handleClick=(action "toggleShouldShowNewCommentInput")
-        testLabel="cancelNewComment"
-      }}
+      <PercyBtn
+        @handleClick={{action "toggleShouldShowNewCommentInput"}}
+        @testLabel="cancelNewComment"
+      >
         Cancel
-      {{/percy-btn}}
-      {{#percy-btn
-        handleClick=(action "saveComment")
-        class="ml-1"
-        isPrimaryButton=true
-        isDisabled=(is-empty commentBody)
-        isSaving=isThreadSaving
-        testLabel="saveNewComment"
-      }}
+      </PercyBtn>
+      <PercyBtn
+        @handleClick={{action "saveComment"}}
+        @class="ml-1"
+        @isPrimaryButton={{true}}
+        @isDisabled={{is-empty commentBody}}
+        @isSaving={{isThreadSaving}} @testLabel="saveNewComment"
+      >
         Comment
-      {{/percy-btn}}
+      </PercyBtn>
     </div>
   </div>
 {{else}}
-  <div class="flex items-center mb-3 cursor-pointer" {{action "toggleShouldShowNewCommentInput"}}
- data-test-new-comment>
-    {{#percy-btn
-      isPrimaryButton=true
-      class="percy-btn-primary-round mr-1"
-      testLabel="showNewCommentTextarea"
-    }}
+  <div class="flex items-center mb-3 cursor-pointer" {{action "toggleShouldShowNewCommentInput"}} data-test-new-comment>
+    <PercyBtn
+      @isPrimaryButton={{true}}
+      @class="percy-btn-primary-round mr-1"
+      @testLabel="showNewCommentTextarea"
+    >
       {{inline-svg "add-icon-white"}}
-    {{/percy-btn}}
+    </PercyBtn>
 
     <div class="text-purple-600 font-semibold leading-none">
       New comment

@@ -18,7 +18,7 @@
         >
           <div class="flex items-center justify-between">
             <div class="flex items-center mr-2 truncate">
-              {{status-dot status=webhookConfig.status}}
+              <StatusDot @status={{webhookConfig.status}} />
               <div style="min-width: 0;"
                 class="font-mono font-normal tracking-sm truncate {{if (not webhookConfig.deliveryEnabled) 'opacity-25'}}"
                 data-test-webhook-config-url
@@ -43,14 +43,11 @@
               >
                 Delete
               </button>
-              {{#link-to
-                "organization.project.integrations.webhooks.webhook-config"
-                webhookConfig.id
-              }}
+              <LinkTo @route="organization.project.integrations.webhooks.webhook-config" @model={{webhookConfig.id}}>
                 <button type="button" class="btn btn-secondary">
                   Edit Settings
                 </button>
-              {{/link-to}}
+              </LinkTo>
             </div>
           </div>
         </div>
@@ -59,7 +56,7 @@
   {{/if}}
 
   <div class="flex justify-end">
-    {{#link-to "organization.project.integrations.webhooks.webhook-config" "new" disabled=isDisabled}}
+    <LinkTo @route="organization.project.integrations.webhooks.webhook-config" @model="new" @disabled={{isDisabled}}>
       <button
         type="button"
         name="button"
@@ -69,6 +66,6 @@
       >
         Add Webhook
       </button>
-    {{/link-to}}
+    </LinkTo>
   </div>
 </div>

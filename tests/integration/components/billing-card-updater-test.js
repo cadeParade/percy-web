@@ -23,21 +23,21 @@ describe('Integration: BillingCardUpdater', function() {
   });
 
   it('disables "Update Credit Card" button when card is not complete', async function() {
-    await render(hbs`{{
-      organizations/billing-card-updater
-      organization=organization
-      _isCardComplete=false
-    }}`);
+    await render(hbs`<
+      Organizations::BillingCardUpdater
+      @organization={{organization}}
+      @_isCardComplete={{false}}
+    />`);
 
     expect(BillingCardUpdater.isSubmitCardButtonDisabled).to.equal(true);
   });
 
   it('enables "Update Credit Card" button when card is complete', async function() {
-    await render(hbs`{{
-      organizations/billing-card-updater
-      organization=organization
-      _isCardComplete=true
-    }}`);
+    await render(hbs`<
+      Organizations::BillingCardUpdater
+      @organization={{organization}}
+      @_isCardComplete={{true}}
+    />`);
 
     expect(BillingCardUpdater.isSubmitCardButtonDisabled).to.equal(false);
   });
@@ -45,11 +45,11 @@ describe('Integration: BillingCardUpdater', function() {
   it('calls hideForm when the cancel button is clicked', async function() {
     const hideFormStub = sinon.stub().returns(resolve());
     this.setProperties({hideFormStub});
-    await render(hbs`{{
-      organizations/billing-card-updater
-      organization=organization
-      hideForm=hideFormStub
-    }}`);
+    await render(hbs`<
+      Organizations::BillingCardUpdater
+      @organization={{organization}}
+      @hideForm={{hideFormStub}}
+    />`);
 
     await BillingCardUpdater.cancel();
     expect(hideFormStub).to.have.been.called;
@@ -65,13 +65,13 @@ describe('Integration: BillingCardUpdater', function() {
     });
 
     it('calls updateCreditCard when submitted', async function() {
-      await render(hbs`{{
-        organizations/billing-card-updater
-        organization=organization
-        updateCreditCard=updateCreditCardStub
-        hideForm=hideFormStub
-        _isCardComplete=true
-      }}`);
+      await render(hbs`<
+        Organizations::BillingCardUpdater
+        @organization={{organization}}
+        @updateCreditCard={{updateCreditCardStub}}
+        @hideForm={{hideFormStub}}
+        @_isCardComplete={{true}}
+      />`);
 
       await BillingCardUpdater.clickSubmitCard();
       expect(updateCreditCardStub).to.have.been.calledWith(
@@ -81,13 +81,13 @@ describe('Integration: BillingCardUpdater', function() {
     });
 
     it('calls hideForm after save', async function() {
-      await render(hbs`{{
-        organizations/billing-card-updater
-        organization=organization
-        updateCreditCard=updateCreditCardStub
-        hideForm=hideFormStub
-        _isCardComplete=true
-      }}`);
+      await render(hbs`<
+        Organizations::BillingCardUpdater
+        @organization={{organization}}
+        @updateCreditCard={{updateCreditCardStub}}
+        @hideForm={{hideFormStub}}
+        @_isCardComplete={{true}}
+      />`);
 
       await BillingCardUpdater.clickSubmitCard();
       expect(hideFormStub).to.have.been.called;
@@ -99,13 +99,13 @@ describe('Integration: BillingCardUpdater', function() {
         .registerTypes(['success']);
       const flashMessageSuccessStub = sinon.stub(flashMessageService, 'success');
 
-      await render(hbs`{{
-        organizations/billing-card-updater
-        organization=organization
-        updateCreditCard=updateCreditCardStub
-        hideForm=hideFormStub
-        _isCardComplete=true
-      }}`);
+      await render(hbs`<
+        Organizations::BillingCardUpdater
+        @organization={{organization}}
+        @updateCreditCard={{updateCreditCardStub}}
+        @hideForm={{hideFormStub}}
+        @_isCardComplete={{true}}
+      />`);
 
       await BillingCardUpdater.clickSubmitCard();
       expect(flashMessageSuccessStub).to.have.been.called;
@@ -114,12 +114,12 @@ describe('Integration: BillingCardUpdater', function() {
     it('shows button loading state when save task is running', async function() {
       const cardSaveTask = {isRunning: true};
       this.setProperties({cardSaveTask});
-      await render(hbs`{{
-        organizations/billing-card-updater
-        organization=organization
-        cardSaveTask=cardSaveTask
-        _isCardComplete=true
-      }}`);
+      await render(hbs`<
+        Organizations::BillingCardUpdater
+        @organization={{organization}}
+        @cardSaveTask={{cardSaveTask}}
+        @_isCardComplete={{true}}
+      />`);
       expect(BillingCardUpdater.isCardSubmitButtonLoading).to.equal(true);
     });
   });

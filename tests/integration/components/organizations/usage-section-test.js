@@ -21,8 +21,8 @@ describe('Integration: UsageSection', function() {
     it('displays', async function() {
       const organization = make('organization', 'withPaidPlan');
       this.set('organization', organization);
-      await render(hbs`{{organizations/usage-section
-        organization=organization}}`);
+      await render(hbs`<Organizations::UsageSection
+        @organization={{organization}} />`);
 
       expect(UsageSection.usageGraphContainer.isVisible).to.equal(true);
       await percySnapshot(this.test);
@@ -34,8 +34,8 @@ describe('Integration: UsageSection', function() {
       async function _expectDoesNotDisplayUsageNotificationSettingWithPlan(context, orgTraits) {
         const organization = make(...['organization'].concat(orgTraits));
         context.set('organization', organization);
-        await context.render(hbs`{{organizations/usage-section
-          organization=organization}}`);
+        await context.render(hbs`<Organizations::UsageSection
+          @organization={{organization}} />`);
 
         expect(UsageSection.usageNotificationSettingForm.isVisible).to.equal(false);
       }
@@ -43,8 +43,8 @@ describe('Integration: UsageSection', function() {
       it('displays when plan is paid', async function() {
         const organization = make('organization', 'withPaidPlan');
         this.set('organization', organization);
-        await render(hbs`{{organizations/usage-section
-          organization=organization}}`);
+        await render(hbs`<Organizations::UsageSection
+          @organization={{organization}} />`);
 
         expect(UsageSection.usageNotificationSettingForm.isVisible).to.equal(true);
       });
@@ -71,9 +71,9 @@ describe('Integration: UsageSection', function() {
           thresholds: {'snapshot-count': ['1', '20', '33000']},
         });
         this.setProperties({setting, organization});
-        await render(hbs`{{organizations/usage-section
-          organization=organization
-          usageNotificationSetting=setting}}`);
+        await render(hbs`<Organizations::UsageSection
+          @organization={{organization}}
+          @usageNotificationSetting={{setting}} />`);
       });
 
       it('renders the data for the setting', async function() {

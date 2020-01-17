@@ -1,5 +1,5 @@
 <div class="grid col-auto gap-1 items-center">
-  {{comparison-icon build=build}}
+  <ComparisonIcon @build={{build}} />
   <div class="text-xl md:text-2xl leading-none">
     {{#if build.isPending}}
       Receiving build

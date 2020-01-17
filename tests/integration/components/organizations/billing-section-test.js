@@ -32,8 +32,9 @@ describe('Integration: BillingSection', function() {
     });
 
     it('renders the admin view', async function() {
-      await render(hbs`{{organizations/billing-section
-        organization=organization}}`);
+      await render(hbs`<Organizations::BillingSection
+        @organization={{organization}}
+      />`);
 
       expect(BillingSection.memberView.isVisible).to.equal(false);
       expect(BillingSection.adminView.isVisible).to.equal(true);
@@ -50,8 +51,9 @@ describe('Integration: BillingSection', function() {
         const organization = make('organization', planTrait, 'withAdminUser');
         stubSession(context, {currentUser: organization.organizationUsers.firstObject.user});
         context.set('organization', organization);
-        await context.render(hbs`{{organizations/billing-section
-          organization=organization}}`);
+        await context.render(hbs`<Organizations::BillingSection
+          @organization={{organization}}
+        />`);
         expect(BillingSection.subscriptionList.isVisible).to.equal(isVisible);
       }
 
@@ -87,9 +89,9 @@ describe('Integration: BillingSection', function() {
         {isVisible = false} = {},
       ) {
         organization.set('subscription', make('subscription', planTrait));
-        await context.render(hbs`{{organizations/billing-section
-          organization=organization
-        }}`);
+        await context.render(hbs`<Organizations::BillingSection
+          @organization={{organization}}
+        />`);
 
         expect(BillingSection.billingSettings.isVisible).to.equal(isVisible);
       }
@@ -128,9 +130,9 @@ describe('Integration: BillingSection', function() {
     });
 
     it('renders the member view', async function() {
-      await render(hbs`{{organizations/billing-section
-        organization=organization
-       }}`);
+      await render(hbs`<Organizations::BillingSection
+        @organization={{organization}}
+      />`);
 
       expect(BillingSection.memberView.isVisible).to.equal(true);
       expect(BillingSection.adminView.isVisible).to.equal(false);

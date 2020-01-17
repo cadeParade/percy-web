@@ -1,46 +1,46 @@
 <header class="build-toolbar fixed top-0 w-screen z-4 flex justify-between items-center px-2 bg-secondary border-b shadow-px" data-test-build-toolbar>
   <div class="flex items-center truncate">
-    {{#link-to "index" title="Percy homepage"}}
+    <LinkTo @route="index" @title="Percy homepage">
       <figure class="svg-container mr-2">
-        {{theme-svg svg="percy-logo-on-light"}}
+        <ThemeSvg @svg="percy-logo-on-light" />
       </figure>
-    {{/link-to}}
+    </LinkTo>
 
     <div class="flex items-center text-lg font-semibold mr-3 truncate hide-on-mobile">
       <span class="truncate">
-        {{#link-to "organization" organization class="link-purple hide-on-tablet"}}
+        <LinkTo @route="organization" @model={{organization}} class="link-purple hide-on-tablet">
           {{organization.name}}
-        {{/link-to}}
+        </LinkTo>
       </span>
       <span class="font-semibold text-secondary mx-sm hide-on-tablet">/</span>
-      {{#link-to "organization.project" organization.slug project class="link-purple truncate" data-test-build-toolbar-project-link=true}}
+      <LinkTo @route="organization.project" @models={{array organization.slug project}} class="link-purple truncate" data-test-build-toolbar-project-link={{true}}>
         {{project.name}}
-      {{/link-to}}
+      </LinkTo>
     </div>
     {{#if organization.isSponsored}}
       {{fa-icon data-test-build-public-project "globe" class="text-blue-500 ml-sm"}}
     {{/if}}
   </div>
 
-  {{notice-bar organization=organization shouldShowNewProjectPrompt=project.isDemo}}
+  <NoticeBar @organization={{organization}} @shouldShowNewProjectPrompt={{project.isDemo}} />
 
   <div class="flex items-center">
     {{#if (and build.isFinished (not isSnapshotsLoading))}}
       {{#if build.hasMultipleBrowsers}}
         <div class="mr-1">
-          {{browser-switcher
-            browsers=build.browsers
-            activeBrowser=activeBrowser
-            updateActiveBrowser=(action "switchBrowsers")
-            build=build
-          }}
+          <BrowserSwitcher
+            @browsers={{build.browsers}}
+            @activeBrowser={{activeBrowser}}
+            @updateActiveBrowser={{action "switchBrowsers"}}
+            @build={{build}}
+          />
         </div>
       {{/if}}
 
       <button type="button" class="btn btn-square hint--bottom hint--rounded hint--bounce" aria-label="Toggle all diffs (d)" {{action 'toggleOverlay'}} data-test-toggle-diffs-button>
         <figure class="svg-container">
           {{#if allDiffsShown}}
-            {{theme-svg svg="diff-toggle-on"}}
+            <ThemeSvg @svg="diff-toggle-on" />
           {{else}}
             {{inline-svg "diff-toggle-off"}}
           {{/if}}
@@ -54,12 +54,12 @@
           @build={{build}}
           @key="build-approval-button"
         />
-        {{build-approval-button
-          build=build
-          createReview=createReview
-          approvableSnapshots=approvableSnapshots
-          isDisabled=(not isBuildApprovable)
-        }}
+        <BuildApprovalButton
+          @build={{build}}
+          @createReview={{createReview}}
+          @approvableSnapshots={{approvableSnapshots}}
+          @isDisabled={{not isBuildApprovable}}
+        />
       </div>
     {{/if}}
   </div>

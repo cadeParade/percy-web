@@ -36,12 +36,12 @@ describe('Integration: BrowserSwitcher', function() {
       updateActiveBrowser: updateActiveBrowserStub,
     });
 
-    await render(hbs`{{browser-switcher
-      browsers=browsers
-      activeBrowser=activeBrowser
-      updateActiveBrowser=updateActiveBrowser
-      build=build
-    }}`);
+    await render(hbs`<BrowserSwitcher
+      @browsers={{browsers}}
+      @activeBrowser={{activeBrowser}}
+      @updateActiveBrowser={{updateActiveBrowser}}
+      @build={{build}}
+    />`);
   });
 
   it('renders correct number of browsers', function() {

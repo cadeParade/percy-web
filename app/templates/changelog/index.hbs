@@ -1,18 +1,19 @@
 {{title "Changelog"}}
-{{#marketing/marketing-header
-  logomark=hero.logomark
-  image=hero.mainImage
-  classes=hero.classes}}
-  {{marketing/hero-block content=hero}}
-{{/marketing/marketing-header}}
+<Marketing::MarketingHeader
+  @logomark={{hero.logomark}}
+  @image={{hero.mainImage}}
+  @classes={{hero.classes}}
+>
+  <Marketing::HeroBlock @content={{hero}} />
+</Marketing::MarketingHeader>
 
 <section class="bg-gray-pattern border-t">
   <div class="w-90vw max-w-md mx-auto relative pt-8 pb-4">
 
     <div class="hidden sm:block absolute h-full bg-gray-100" style="width: 1px; top: 0; left: 116px;"></div>
 
-    {{changelog-post-list changelogPosts=posts}}
+    <ChangelogPostList @changelogPosts={{posts}} />
   </div>
 </section>
 
-{{main-footer}}
+<MainFooter />

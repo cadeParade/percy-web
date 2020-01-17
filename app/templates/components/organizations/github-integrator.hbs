@@ -1,11 +1,11 @@
 {{#if currentIntegration}}
-  {{organizations/github-integration organization=organization}}
+  <Organizations::GithubIntegration @organization={{organization}} />
 {{else}}
   {{#if organization.githubIntegrationRequest}}
-    {{organizations/github-integration
-      organization=organization
-      cancelIntegrationRequest=(action "cancelIntegrationRequest")
-    }}
+    <Organizations::GithubIntegration
+      @organization={{organization}}
+      @cancelIntegrationRequest={{action "cancelIntegrationRequest"}}
+    />
   {{else}}
     <div class="mb-2">
       <a

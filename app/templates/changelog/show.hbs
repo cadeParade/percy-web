@@ -1,32 +1,36 @@
 {{title (concat "Changelog " post.title)}}
 
-{{#marketing/marketing-header
-   logomark=hero.logomark
-   image=hero.mainImage
-   classes=hero.classes}}
-  {{marketing/hero-block content=hero}}
-{{/marketing/marketing-header}}
+<Marketing::MarketingHeader
+  @logomark={{hero.logomark}}
+  @image={{hero.mainImage}}
+  @classes={{hero.classes}}
+>
+  <Marketing::HeroBlock @content={{hero}} />
+</Marketing::MarketingHeader>
 
 <section class="bg-gray-pattern border-t">
   <div class="w-90vw max-w-md mx-auto relative pt-8 pb-4">
 
     <div class="hidden sm:block absolute h-full bg-gray-100" style="width: 1px; top: 0; left: 116px;"></div>
 
-    {{#changelog-post
-       postId=post.id
-       tag=post.tag
-       date=(moment-format post.date 'MMM D, YYYY')
-    }}
+    <ChangelogPost
+      @postId={{post.id}}
+      @tag={{post.tag}}
+      @date={{moment-format post.date "MMM D, YYYY"}}
+    >
       <h2>{{post.title}}</h2>
-      {{markdown-to-html post.content}}
+      <MarkdownToHtml @markdown={{post.content}} />
       {{#if post.image}}
         <img src="{{post.image.file.url}}" alt="{{post.image.description}}">
       {{/if}}
-      {{#link-to "changelog.index" class="block text-center pb-2"}}
+      <LinkTo
+        @route="changelog.index"
+        class="block text-center pb-2"
+      >
         Show full changelog
-      {{/link-to}}
-    {{/changelog-post}}
+      </LinkTo>
+    </ChangelogPost>
   </div>
 </section>
 
-{{main-footer}}
+<MainFooter />

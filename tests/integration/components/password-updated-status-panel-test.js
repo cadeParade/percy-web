@@ -13,9 +13,9 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
   describe('when success is true', function() {
     it('renders success panel', async function() {
       this.set('success', 'true');
-      await render(hbs`{{password-updated-status-panel
-        success=success
-      }}`);
+      await render(hbs`<PasswordUpdatedStatusPanel
+        @success={{success}}
+      />`);
 
       expect(PasswordStatusPanel.isSuccessIconPresent, 'success icon should be visible').to.equal(
         true,
@@ -30,10 +30,10 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
     it('renders "Continue to Profile" button when user is logged in', async function() {
       this.set('success', 'true');
       this.set('currentUser', 'something is present');
-      await render(hbs`{{password-updated-status-panel
-        success=success
-        currentUser=currentUser
-      }}`);
+      await render(hbs`<PasswordUpdatedStatusPanel
+        @success={{success}}
+        @currentUser={{currentUser}}
+      />`);
 
       expect(PasswordStatusPanel.isSettingsButtonVisible).to.equal(true);
       expect(PasswordStatusPanel.isSigninButtonVisible).to.equal(false);
@@ -44,10 +44,10 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
     it('renders "Sign in" button when user is not logged in', async function() {
       this.set('success', 'true');
       this.set('currentUser', null);
-      await render(hbs`{{password-updated-status-panel
-        success=success
-        currentUser=currentUser
-      }}`);
+      await render(hbs`<PasswordUpdatedStatusPanel
+        @success={{success}}
+        @currentUser={{currentUser}}
+      />`);
 
       expect(PasswordStatusPanel.isSigninButtonVisible).to.equal(true);
       expect(PasswordStatusPanel.isSettingsButtonVisible).to.equal(false);
@@ -58,7 +58,7 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
   describe('when success is false', function() {
     it('renders failure panel', async function() {
       this.set('success', 'false');
-      await render(hbs`{{password-updated-status-panel success=success}}`);
+      await render(hbs`<PasswordUpdatedStatusPanel @success={{success}} />`);
 
       expect(
         PasswordStatusPanel.isSuccessIconPresent,
@@ -74,10 +74,10 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
     it('renders "Continue to Profile" button when user is logged in', async function() {
       this.set('success', 'false');
       this.set('currentUser', 'something is present');
-      await render(hbs`{{password-updated-status-panel
-        success=success
-        currentUser=currentUser
-      }}`);
+      await render(hbs`<PasswordUpdatedStatusPanel
+        @success={{success}}
+        @currentUser={{currentUser}}
+      />`);
 
       expect(PasswordStatusPanel.isSettingsButtonVisible).to.equal(true);
       expect(PasswordStatusPanel.isSigninButtonVisible).to.equal(false);
@@ -88,10 +88,10 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
     it('renders "Sign in" button when user is not logged in', async function() {
       this.set('success', 'false');
       this.set('currentUser', null);
-      await render(hbs`{{password-updated-status-panel
-        success=success
-        currentUser=currentUser
-      }}`);
+      await render(hbs`<PasswordUpdatedStatusPanel
+        @success={{success}}
+        @currentUser={{currentUser}}
+      />`);
 
       expect(PasswordStatusPanel.isSigninButtonVisible).to.equal(true);
       expect(PasswordStatusPanel.isSettingsButtonVisible).to.equal(false);

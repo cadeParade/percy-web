@@ -26,11 +26,11 @@ describe('Integration: GroupApprovalButton', function() {
     const numTotalSnapshots = 'one million';
     beforeEach(async function() {
       this.setProperties({numTotalSnapshots});
-      await render(hbs`{{group-approval-button
-        isGroupApproved=true
-        numTotalSnapshots=numTotalSnapshots
-        createReview=createReview
-      }}`);
+      await render(hbs`<GroupApprovalButton
+        @isGroupApproved={{true}}
+        @numTotalSnapshots={{numTotalSnapshots}}
+        @createReview={{createReview}}
+      />`);
     });
 
     it('displays approved bubble', async function() {
@@ -49,12 +49,12 @@ describe('Integration: GroupApprovalButton', function() {
 
     describe('when isDisabled is true', function() {
       beforeEach(async function() {
-        await render(hbs`{{group-approval-button
-          isGroupApproved=isGroupApproved
-          isDisabled=true
-          createReview=createReview
-          numUnapprovedSnapshots=40
-        }}`);
+        await render(hbs`<GroupApprovalButton
+          @isGroupApproved={{isGroupApproved}}
+          @isDisabled={{true}}
+          @createReview={{createReview}}
+          @numUnapprovedSnapshots={{40}}
+        />`);
       });
 
       it('displays as disabled when isDisabled is true', async function() {
@@ -74,13 +74,13 @@ describe('Integration: GroupApprovalButton', function() {
 
       beforeEach(async function() {
         this.setProperties({approvableSnapshots, numUnapprovedSnapshots});
-        await render(hbs`{{group-approval-button
-          isGroupApproved=isGroupApproved
-          isDisabled=false
-          createReview=createReview
-          numUnapprovedSnapshots=numUnapprovedSnapshots
-          approvableSnapshots=approvableSnapshots
-        }}`);
+        await render(hbs`<GroupApprovalButton
+          @isGroupApproved={{isGroupApproved}}
+          @isDisabled={{false}}
+          @createReview={{createReview}}
+          @numUnapprovedSnapshots={{numUnapprovedSnapshots}}
+          @approvableSnapshots={{approvableSnapshots}}
+        />`);
       });
 
       it('displays the correct number of snapshots', async function() {

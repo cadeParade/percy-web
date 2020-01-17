@@ -66,7 +66,11 @@ describe('Integration: InviteCard', function() {
     });
 
     it('renders with buttons enabled', async function() {
-      await render(hbs`{{organizations/invite-card invite=invite organization=organization}}`);
+      await render(hbs`<
+        Organizations::InviteCard
+        @invite={{invite}}
+        @organization={{organization}}
+      />`);
 
       expect(InviteCard.email).to.equal(invite.email);
       expect(InviteCard.role).to.equal('Member');
@@ -83,7 +87,10 @@ describe('Integration: InviteCard', function() {
     });
 
     it('"Cancel" button works', async function() {
-      await render(hbs`{{organizations/invite-card invite=invite organization=organization}}`);
+      await render(hbs`<Organizations::InviteCard
+        @invite={{invite}}
+        @organization={{organization}}
+      />`);
 
       await InviteCard.cancelButton.click();
 
@@ -104,7 +111,11 @@ describe('Integration: InviteCard', function() {
     });
 
     it('renders with buttons disabled', async function() {
-      await render(hbs`{{organizations/invite-card invite=invite organization=organization}}`);
+      await render(hbs`<
+        Organizations::InviteCard
+        @invite={{invite}}
+        @organization={{organization}}
+      />`);
       expect(InviteCard.email).to.equal(invite.email);
       expect(InviteCard.role).to.equal('Member');
       expect(InviteCard.avatarUrl).to.include('https://www.gravatar.com/avatar/');
@@ -120,7 +131,11 @@ describe('Integration: InviteCard', function() {
     });
 
     it('"Cancel" button does not work', async function() {
-      await render(hbs`{{organizations/invite-card invite=invite organization=organization}}`);
+      await render(hbs`<
+        Organizations::InviteCard
+        @invite={{invite}}
+        @organization={{organization}}
+      />`);
 
       await InviteCard.cancelButton.click();
       expect(confirmationAlertStub).to.not.have.been.called;

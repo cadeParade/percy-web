@@ -13,23 +13,23 @@
         <h2 data-test-integrations-installed class="text-xl font-semibold mb-2">Installed integrations</h2>
         <div class="bg-gray-000 rounded border">
           {{#each versionControlIntegrations as |integration|}}
-            {{organizations/integrations/integration-item
-              integrationName=integration.integrationType
-              integrationStatus=integration.status
-              organization=organization
-            }}
+            <Organizations::Integrations::IntegrationItem
+              @integrationName={{integration.integrationType}}
+              @integrationStatus={{integration.status}}
+              @organization={{organization}}
+            />
           {{/each}}
           {{#if organization.isSlackIntegrated}}
-            {{organizations/integrations/integration-item
-              integrationName='slack'
-              organization=organization
-            }}
+            <Organizations::Integrations::IntegrationItem
+              @integrationName="slack"
+              @organization={{organization}}
+            />
           {{/if}}
           {{#if organization.isOktaIntegrated}}
-            {{organizations/integrations/integration-item
-              integrationName="okta"
-              organization=organization
-            }}
+            <Organizations::Integrations::IntegrationItem
+              @integrationName="okta"
+              @organization={{organization}}
+            />
           {{/if}}
         </div>
       </div>
@@ -39,18 +39,18 @@
   <section>
     <div data-test-integrations-available class="bg-white rounded shadow-1 border-t mb-2">
       {{#each availableIntegrations as |integrationName| }}
-        {{organizations/integrations/integration-item
-          integrationName=integrationName
-          organization=organization
-        }}
+        <Organizations::Integrations::IntegrationItem
+          @integrationName={{integrationName}}
+          @organization={{organization}}
+        />
       {{/each}}
 
       {{#if organization.isNotSlackIntegrated}}
-        {{organizations/integrations/integration-item
-          integrationName='slack'
-          organization=organization
-          customInstallButtonAction=(route-action "connectSlackChannel")
-        }}
+        <Organizations::Integrations::IntegrationItem
+          @integrationName="slack"
+          @organization={{organization}}
+          @customInstallButtonAction={{route-action "connectSlackChannel"}}
+        />
       {{/if}}
     </div>
   </section>

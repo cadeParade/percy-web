@@ -33,12 +33,12 @@ describe('Integration: CollaborationNewThread', function() {
 
       this.setProperties({user, saveStub, snapshot, organization});
 
-      await render(hbs`{{collaboration/new-thread
-        currentUser=user
-        createCommentThread=saveStub
-        shouldShowNewCommentInput=true
-        snapshot=snapshot
-      }}`);
+      await render(hbs`<Collaboration::NewThread
+        @currentUser={{user}}
+        @createCommentThread={{saveStub}}
+        @shouldShowNewCommentInput={{true}}
+        @snapshot={{snapshot}}
+      />`);
     });
 
     it('allows typing in textarea', async function() {
@@ -184,10 +184,10 @@ describe('Integration: CollaborationNewThread', function() {
   describe('when shouldShowNewCommentInput is false', function() {
     beforeEach(async function() {
       this.setProperties({user: make('user')});
-      await render(hbs`{{collaboration/new-thread
-        currentUser=user
-        shouldShowNewCommentInput=false
-      }}`);
+      await render(hbs`<Collaboration::NewThread
+        @currentUser={{user}}
+        @shouldShowNewCommentInput={{false}}
+      />`);
     });
 
     it('displays new comment button', async function() {

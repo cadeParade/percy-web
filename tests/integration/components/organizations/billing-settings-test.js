@@ -25,9 +25,9 @@ describe('Integration: BillingSettings', function() {
     it('it shows existing email address and card when they are both present', async function() {
       const organization = make('organization', 'withPaidPlan');
       this.setProperties({organization});
-      await render(hbs`{{organizations/billing-settings
-          organization=organization
-        }}
+      await render(hbs`<Organizations::BillingSettings
+          @organization={{organization}}
+        />
       `);
 
       expect(BillingSettings.isEmailInfoVisible).to.equal(true);
@@ -40,9 +40,9 @@ describe('Integration: BillingSettings', function() {
       beforeEach(async function() {
         const organization = make('organization', 'withEnterprisePlan', 'withNoPaymentMethod');
         this.setProperties({organization});
-        await render(hbs`{{organizations/billing-settings
-            organization=organization
-          }}
+        await render(hbs`<Organizations::BillingSettings
+            @organization={{organization}}
+          />
         `);
       });
 
@@ -68,9 +68,9 @@ describe('Integration: BillingSettings', function() {
     beforeEach(async function() {
       organization = make('organization', 'withPaidPlan');
       this.setProperties({organization});
-      await render(hbs`{{organizations/billing-settings
-          organization=organization
-        }}
+      await render(hbs`<Organizations::BillingSettings
+          @organization={{organization}}
+        />
       `);
     });
 
@@ -128,9 +128,9 @@ describe('Integration: BillingSettings', function() {
     beforeEach(async function() {
       const organization = make('organization', 'withPaidPlan');
       this.setProperties({organization});
-      await render(hbs`{{organizations/billing-settings
-          organization=organization
-        }}
+      await render(hbs`<Organizations::BillingSettings
+          @organization={{organization}}
+        />
       `);
     });
 

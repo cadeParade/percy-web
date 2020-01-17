@@ -1,4 +1,4 @@
-{{fixed-top-header}}
+<FixedTopHeader />
 
 <div class="container-vh">
   <div class="w-90vw max-w-md mx-auto py-4">
@@ -8,16 +8,16 @@
           <header class="sidenav-header">Account settings</header>
           <ul class="sidenav-list">
             <li class="sidenav-list-item">
-              {{#link-to 'settings.profile' classNames="sidenav-list-item-link"}}Profile{{/link-to}}
+              <LinkTo @route="settings.profile" @classNames="sidenav-list-item-link">Profile</LinkTo>
             </li>
             <li class="sidenav-list-item">
-              {{#link-to 'settings.connected-accounts' classNames="sidenav-list-item-link"}}Connected accounts{{/link-to}}
+              <LinkTo @route="settings.connected-accounts" @classNames="sidenav-list-item-link">Connected accounts</LinkTo>
             </li>
             <li class="sidenav-list-item">
-              {{#link-to 'settings.display-preferences' classNames="sidenav-list-item-link"}}Display preferences{{/link-to}}
+              <LinkTo @route="settings.display-preferences" @classNames="sidenav-list-item-link">Display preferences</LinkTo>
             </li>
             <li class="sidenav-list-item">
-              {{#link-to 'settings.notifications' classNames="sidenav-list-item-link"}}Notifications{{/link-to}}
+              <LinkTo @route="settings.notifications" @classNames="sidenav-list-item-link">Notifications</LinkTo>
             </li>
           </ul>
         </aside>
@@ -27,4 +27,4 @@
   </div>
 </div>
 
-{{main-footer}}
+<MainFooter />

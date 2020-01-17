@@ -22,9 +22,9 @@ describe('Integration: BuildCard', function() {
       const build = make('build', 'withRepo', 'hasPullRequest', {buildNumber: 1});
       this.setProperties({build});
 
-      await render(hbs`{{build-card
-        build=build
-      }}`);
+      await render(hbs`<BuildCard
+        @build={{build}}
+      />`);
     });
 
     it('has a pull request URL', function() {
@@ -50,9 +50,9 @@ describe('Integration: BuildCard', function() {
       const build = make('build', 'withGithubRepo', 'withLongHeadCommitMessage', {buildNumber: 1});
       this.setProperties({build});
 
-      await render(hbs`{{build-card
-        build=build
-      }}`);
+      await render(hbs`<BuildCard
+        @build={{build}}
+      />`);
     });
 
     it('renders correctly', async function() {
@@ -65,9 +65,9 @@ describe('Integration: BuildCard', function() {
       const build = make('build', 'withGithubRepo', 'hasPullRequest', {buildNumber: 1});
       this.setProperties({build});
 
-      await render(hbs`{{build-card
-        build=build
-      }}`);
+      await render(hbs`<BuildCard
+        @build={{build}}
+      />`);
     });
 
     it('has a pull request URL', function() {
@@ -95,9 +95,9 @@ describe('Integration: BuildCard', function() {
 
       this.setProperties({build});
 
-      await render(hbs`{{build-card
-        build=build
-      }}`);
+      await render(hbs`<BuildCard
+        @build={{build}}
+      />`);
     });
 
     it('has a pull request URL', function() {
@@ -125,9 +125,9 @@ describe('Integration: BuildCard', function() {
 
       this.setProperties({build});
 
-      await render(hbs`{{build-card
-        build=build
-      }}`);
+      await render(hbs`<BuildCard
+        @build={{build}}
+      />`);
     });
 
     it('has a pull request URL', function() {
@@ -154,9 +154,9 @@ describe('Integration: BuildCard', function() {
       const build = make('build', 'withGitlabSelfHostedRepo', 'hasMergeRequest', {buildNumber: 1});
       this.setProperties({build});
 
-      await render(hbs`{{build-card
-        build=build
-      }}`);
+      await render(hbs`<BuildCard
+        @build={{build}}
+      />`);
     });
 
     it('has a pull request URL', function() {

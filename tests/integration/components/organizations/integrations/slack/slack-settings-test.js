@@ -28,11 +28,11 @@ describe('Integration: SlackSettings', function() {
     beforeEach(async function() {
       const organization = make('organization');
       this.setProperties({organization, projectOptions});
-      await render(hbs`{{
-        organizations/integrations/slack-settings
-        projectOptions=projectOptions
-        organization=organization
-      }}`);
+      await render(hbs`<
+        Organizations::Integrations::SlackSettings
+        @projectOptions={{projectOptions}}
+        @organization={{organization}}
+      />`);
     });
 
     it('renders correctly', async function() {
@@ -47,11 +47,11 @@ describe('Integration: SlackSettings', function() {
       const organization = make('organization');
       make('slack-integration', {organization});
       this.setProperties({organization, projectOptions});
-      await render(hbs`{{
-        organizations/integrations/slack-settings
-        projectOptions=projectOptions
-        organization=organization
-      }}`);
+      await render(hbs`<
+        Organizations::Integrations::SlackSettings
+        @projectOptions={{projectOptions}}
+        @organization={{organization}}
+      />`);
     });
 
     it('renders correctly', async function() {
@@ -71,11 +71,11 @@ describe('Integration: SlackSettings', function() {
       const slackIntegration = make('slack-integration', {organization});
       makeList('slack-integration-config', 3, {slackIntegration});
       this.setProperties({organization, projectOptions});
-      await render(hbs`{{
-        organizations/integrations/slack-settings
-        projectOptions=projectOptions
-        organization=organization
-      }}`);
+      await render(hbs`<
+        Organizations::Integrations::SlackSettings
+        @projectOptions={{projectOptions}}
+        @organization={{organization}}
+      />`);
     });
 
     it('renders correctly', async function() {

@@ -28,7 +28,7 @@ describe('Integration: UserMenu', function() {
       });
       this.owner.register('service:session', sessionServiceStub, 'sessionService');
 
-      await render(hbs`{{user-menu user=currentUser}}`);
+      await render(hbs`<UserMenu @user={{currentUser}} />`);
     });
 
     it('calls logout', async function() {

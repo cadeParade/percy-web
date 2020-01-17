@@ -26,11 +26,11 @@ describe('Integration: GithubEnterpriseSettings', function() {
     it('renders', async function() {
       const isIntegrated = this.get('organization.isGithubEnterpriseIntegrated');
       expect(isIntegrated).to.equal(true);
-      await render(hbs`{{
-        organizations/integrations/github-enterprise-settings
-        currentUser=user
-        organization=organization
-      }}`);
+      await render(hbs`<
+        Organizations::Integrations::GithubEnterpriseSettings
+        @currentUser={{user}}
+        @organization={{organization}}
+      />`);
       await percySnapshot(this.test);
     });
   });

@@ -25,11 +25,11 @@ describe('Integration: BuildToolbar', function() {
         organization,
       });
 
-      render(hbs`{{build-toolbar
-        build=build
-        project=project
-        organization=organization
-      }}`);
+      render(hbs`<BuildToolbar
+        @build={{build}}
+        @project={{project}}
+        @organization={{organization}}
+      />`);
     });
 
     it('displays public project icon', function() {

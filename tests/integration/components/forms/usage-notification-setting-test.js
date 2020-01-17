@@ -26,9 +26,9 @@ describe('Integration: UsageNotificationSettingForm', function() {
       setting.set('thresholds', {'snapshot-count': ['1', '20', '33000']});
       this.set('organization', organization);
       this.set('setting', setting);
-      await render(hbs`{{forms/usage-notification-setting
-        organization=organization
-        setting=setting}}`);
+      await render(hbs`<Forms::UsageNotificationSetting
+        @organization={{organization}}
+        @setting={{setting}} />`);
     });
 
     it('displays setting information', async function() {
@@ -45,7 +45,7 @@ describe('Integration: UsageNotificationSettingForm', function() {
     beforeEach(async function() {
       organization = make('organization');
       this.set('organization', organization);
-      await render(hbs`{{forms/usage-notification-setting organization=organization}}`);
+      await render(hbs`<Forms::UsageNotificationSetting @organization={{organization}} />`);
     });
 
     it('renders', async function() {

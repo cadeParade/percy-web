@@ -1,11 +1,14 @@
 {{title (concat model.name " billing | Percy") replace=true}}
 
-{{#dashboard-nav-wrapper organization=organization showMemberLinks=true}}
-  {{organizations/billing-section
-    organization=organization
-    currentUsageStats=currentUsageStats
-    updateEmail=(route-action "updateEmail")
-    updateSubscription=(route-action "updateSubscription")
-    updateCreditCard=(route-action "updateCreditCard")
-  }}
-{{/dashboard-nav-wrapper}}
+<DashboardNavWrapper
+  @organization={{organization}}
+  @showMemberLinks={{true}}
+>
+  <Organizations::BillingSection
+    @organization={{organization}}
+    @currentUsageStats={{currentUsageStats}}
+    @updateEmail={{route-action "updateEmail"}}
+    @updateSubscription={{route-action "updateSubscription"}}
+    @updateCreditCard={{route-action "updateCreditCard"}}
+  />
+</DashboardNavWrapper>
