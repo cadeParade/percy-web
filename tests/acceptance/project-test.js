@@ -5,7 +5,7 @@ import ProjectPage from 'percy-web/tests/pages/project-page';
 import ProjectSettingsPage from 'percy-web/tests/pages/project-settings-page';
 import NewProjectPage from 'percy-web/tests/pages/new-project-page';
 import sinon from 'sinon';
-import {beforeEach} from 'mocha';
+import {beforeEach, afterEach} from 'mocha';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {visit, findAll, currentRouteName, settled} from '@ember/test-helpers';
 import {selectChoose} from 'ember-power-select/test-support/helpers';
@@ -13,7 +13,7 @@ import UserMenu from 'percy-web/tests/pages/components/user-menu';
 import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
 import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
 import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
-
+import withVariation from 'percy-web/tests/helpers/with-variation';
 describe('Acceptance: Project', function() {
   setupAcceptance();
 
@@ -134,7 +134,7 @@ describe('Acceptance: Project', function() {
     let repos;
     let webhookConfig;
 
-    setupSession(function(server) {
+    beforeEach(function() {
       organization = server.create('organization', 'withUser');
       versionControlIntegration = server.create('versionControlIntegration', 'github');
       repos = server.createList('repo', 3);
@@ -145,7 +145,80 @@ describe('Acceptance: Project', function() {
       });
     });
 
+    describe('with the only-admins-edit-settings feature flag on', function() {
+      beforeEach(function() {
+        withVariation(this.owner, 'only-admins-edit-settings', true);
+      });
+
+      afterEach(function() {
+        withVariation(this.owner, 'only-admins-edit-settings', false);
+      });
+
+      describe('user is member', function() {
+        setupSession(() => {});
+
+        it('hides settings', async function() {
+          await ProjectSettingsPage.visitProjectSettings({
+            orgSlug: organization.slug,
+            projectSlug: enabledProject.slug,
+          });
+          await percySnapshot(this.test);
+
+          expect(ProjectSettingsPage.projectEditForm.isVisible).to.equal(false);
+          expect(ProjectSettingsPage.browserSelector.isVisible).to.equal(false);
+        });
+
+        it('hides integrations', async function() {
+          await ProjectSettingsPage.visitProjectIntegrations({
+            orgSlug: organization.slug,
+            projectSlug: enabledProject.slug,
+          });
+          await percySnapshot(this.test);
+
+          expect(ProjectSettingsPage.webhookConfigList.isVisible).to.equal(false);
+          expect(ProjectSettingsPage.slackInfo.isVisible).to.equal(false);
+        });
+      });
+
+      describe('user is admin', function() {
+        let adminUser;
+
+        beforeEach(function() {
+          adminUser = server.create('user');
+          server.create('organizationUser', {user: adminUser, organization, role: 'admin'});
+        });
+
+        setupSession(function() {
+          this.loginUser = adminUser;
+        });
+
+        it('shows settings', async function() {
+          await ProjectSettingsPage.visitProjectSettings({
+            orgSlug: organization.slug,
+            projectSlug: enabledProject.slug,
+          });
+          await percySnapshot(this.test);
+
+          expect(ProjectSettingsPage.projectEditForm.isVisible).to.equal(true);
+          expect(ProjectSettingsPage.browserSelector.isVisible).to.equal(true);
+        });
+
+        it('shows integrations', async function() {
+          await ProjectSettingsPage.visitProjectIntegrations({
+            orgSlug: organization.slug,
+            projectSlug: enabledProject.slug,
+          });
+          await percySnapshot(this.test);
+
+          expect(ProjectSettingsPage.webhookConfigList.isVisible).to.equal(true);
+          expect(ProjectSettingsPage.slackInfo.isVisible).to.equal(true);
+        });
+      });
+    });
+
     describe('settings', function() {
+      setupSession(() => {});
+
       it('displays Branch settings section', async function() {
         await ProjectSettingsPage.visitProjectSettings({
           orgSlug: organization.slug,
@@ -316,6 +389,8 @@ describe('Acceptance: Project', function() {
     });
 
     describe('integrations', function() {
+      setupSession(() => {});
+
       it('displays github integration select menu', async function() {
         organization.update({versionControlIntegrations: [versionControlIntegration], repos});
 
@@ -383,7 +458,7 @@ describe('Acceptance: Project', function() {
     let project;
     let organization;
 
-    setupSession(function(server) {
+    beforeEach(function() {
       const repo = server.create('repo');
       organization = server.create('organization', 'withUser');
       project = server.create('project', {
@@ -485,6 +560,8 @@ describe('Acceptance: Project', function() {
       this.project = project;
     });
 
+    setupSession(() => {});
+
     it('shows builds on index', async function() {
       await ProjectPage.visitProject(urlParams);
       await percySnapshot(this.test);
@@ -581,7 +658,8 @@ describe('Acceptance: Project', function() {
 
   describe('demo project', function() {
     let urlParams;
-    setupSession(function(server) {
+
+    beforeEach(function() {
       const organization = server.create('organization', 'withUser');
       const demoProject = server.create('project', 'demo', 'withChromeAndFirefox', {organization});
       urlParams = {
@@ -589,6 +667,8 @@ describe('Acceptance: Project', function() {
         projectSlug: demoProject.slug,
       };
     });
+
+    setupSession(() => {});
 
     describe('project settings page', function() {
       beforeEach(async function() {

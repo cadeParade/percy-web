@@ -169,6 +169,7 @@
   @apply bg-white border-t rounded-b border-gray-100;
 }
 
-.repo-selector .ember-basic-dropdown {
+.repo-selector .ember-basic-dropdown,
+.slack-selector .ember-basic-dropdown {
   min-width: 360px;
 }

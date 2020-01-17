@@ -14,65 +14,72 @@
       </div>
     {{/if}}
 
-    <div class="bg-white rounded shadow-1 p-2 mb-2">
-      <h2 class="text-xl font-semibold mb-sm">Project token</h2>
-      <p class="text-secondary mb-2">See the {{#link-to "docs" class="font-semibold"}}docs{{/link-to}} for how to set up client authentication for your app.</p>
-      <div class="p-2 bg-gray-000 rounded border">
-        <div class="mb-2">
-          {{projects/env-vars project=project}}
-        </div>
-        <div class="rounded bg-yellow-000 border border-yellow-100 p-2">
-          <strong>Note:</strong> <code>PERCY_TOKEN</code> is a project-specific, write-only API key that only has access to create builds, snapshots, and upload resources to this project. It should be kept secret.
+    {{#if (and (variation 'only-admins-edit-settings') (not isUserOrgAdmin))}}
+      <div data-test-member-view class="Alert Alert--error">
+        <strong>Editing this organization's project settings requires organization admin permissions.</strong>
+      </div>
+    {{else}}
+      <div class="bg-white rounded shadow-1 p-2 mb-2">
+        <h2 class="text-xl font-semibold mb-sm">Project token</h2>
+        <p class="text-secondary mb-2">See the {{#link-to "docs" class="font-semibold"}}docs{{/link-to}} for how to set up client authentication for your app.</p>
+        <div class="p-2 bg-gray-000 rounded border">
+          <div class="mb-2">
+            {{projects/env-vars project=project}}
+          </div>
+          <div class="rounded bg-yellow-000 border border-yellow-100 p-2">
+            <strong>Note:</strong> <code>PERCY_TOKEN</code> is a project-specific, write-only API key that only has access to create builds, snapshots, and upload resources to this project. It should be kept secret.
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="bg-white rounded shadow-1 p-2 mb-2">
-      <h2 class="text-xl font-semibold mb-1">Browsers</h2>
-      <p class="text-secondary mb-2">
-        This setting lets you change which browser your snapshots are created in. Better yet, you can enable multiple browsers for cross browser testing snapshots! <a href="https://docs.percy.io/docs/cross-browser-visual-testing" target="_blank">See docs</a>
-      </p>
-      <div class="p-2 bg-gray-000 rounded border">
-        {{projects/browser-family-selector
-          allBrowserFamilies=browserFamilies
-          areAnyBrowsersUpgradeable=areAnyBrowsersUpgradeable
+      <div class="bg-white rounded shadow-1 p-2 mb-2">
+        <h2 class="text-xl font-semibold mb-1">Browsers</h2>
+        <p class="text-secondary mb-2">
+          This setting lets you change which browser your snapshots are created in. Better yet, you can enable multiple browsers for cross browser testing snapshots! <a href="https://docs.percy.io/docs/cross-browser-visual-testing" target="_blank">See docs</a>
+        </p>
+        <div class="p-2 bg-gray-000 rounded border">
+          {{projects/browser-family-selector
+            allBrowserFamilies=browserFamilies
+            areAnyBrowsersUpgradeable=areAnyBrowsersUpgradeable
+            project=project
+          }}
+        </div>
+      </div>
+
+      <div class="bg-white rounded shadow-1 p-2 mb-2">
+        <h2 class="text-xl font-semibold mb-1">Project details</h2>
+        {{forms/project-edit
           project=project
         }}
       </div>
-    </div>
 
-    <div class="bg-white rounded shadow-1 p-2 mb-2">
-      <h2 class="text-xl font-semibold mb-1">Project details</h2>
-      {{forms/project-edit
-        project=project
-      }}
-    </div>
+      {{#unless project.isDemo}}
+        <div class="bg-white rounded shadow-1 p-2 mb-2">
+          <h2 class="text-xl font-semibold mb-1">Percy badge</h2>
+            <img src="https://percy.io/static/images/percy-badge.svg" alt="visual testing by Percy badge">
+            <div>
+              <label>
+                <div class="mb-1">Show the world that you're using Percy for visual testing. Place this badge in your README by copying the markdown snippet below:</div>
+                <div class="flex justify-between">
+                  <textarea readonly=true class="flex-1 px-1 py-sm font-mono font-normal tracking-sm text-sm">{{badgeMarkdown}}</textarea>
+                  {{#copy-button
+                    class="percy-btn ml-1"
+                    clipboardText=badgeMarkdown
+                    success=(route-action "onCopyBadgeMarkdown")
+                  }}
+                    {{inline-svg "copy-icon"}}
+                  {{/copy-button}}
+                </div>
+              </label>
+            </div>
+        </div>
+      {{/unless}}
 
-    {{#unless project.isDemo}}
       <div class="bg-white rounded shadow-1 p-2 mb-2">
-        <h2 class="text-xl font-semibold mb-1">Percy badge</h2>
-          <img src="https://percy.io/static/images/percy-badge.svg" alt="visual testing by Percy badge">
-          <div>
-            <label>
-              <div class="mb-1">Show the world that you're using Percy for visual testing. Place this badge in your README by copying the markdown snippet below:</div>
-              <div class="flex justify-between">
-                <textarea readonly=true class="flex-1 px-1 py-sm font-mono font-normal tracking-sm text-sm">{{badgeMarkdown}}</textarea>
-                {{#copy-button
-                  class="percy-btn ml-1"
-                  clipboardText=badgeMarkdown
-                  success=(route-action "onCopyBadgeMarkdown")
-                }}
-                  {{inline-svg "copy-icon"}}
-                {{/copy-button}}
-              </div>
-            </label>
-          </div>
+        <h2 class="text-xl font-semibold mb-1">Actions</h2>
+        {{projects/enabled-toggle project=project}}
       </div>
-    {{/unless}}
+    {{/if}}
   {{/if}}
 
-  <div class="bg-white rounded shadow-1 p-2 mb-2">
-    <h2 class="text-xl font-semibold mb-1">Actions</h2>
-    {{projects/enabled-toggle project=project}}
-  </div>
 </section>

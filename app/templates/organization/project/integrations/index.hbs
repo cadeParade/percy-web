@@ -5,47 +5,52 @@
       <strong>This project is archived.</strong>
     </div>
   {{/unless}}
-  {{#if project.isEnabled}}
 
+  {{#if project.isEnabled}}
     {{#if project.isDemo}}
       <div class="bg-blue-100 p-2 border justify-start items-center sticky top-0 z-10 flex rounded border border-blue-500 mb-3">
         <div class="mr-3">{{inline-svg 'build-info-icon'}}</div>
-
         <div>This is the integrations page for a <strong>demo project</strong>. The demo settings are not editable here, but <strong>{{#link-to 'organizations.organization.projects.new' project.organization.slug}} create your own project {{/link-to}}</strong> to start customizing your Percy experience.
         </div>
       </div>
     {{/if}}
 
-
-    <div class="bg-white rounded shadow-1 p-2 mb-2">
-      <h2 class="text-xl font-semibold mb-sm">Link a repository</h2>
-      {{projects/repo-integrator project=project}}
-      {{#if (eq project.diffBase "manual")}}
-        <h2 class="text-xl font-semibold mb-1 mt-3">Diff base config</h2>
-        <div class="Alert Alert--warning">
-          <strong>Deprecated:</strong> Manual diff base mode is deprecated and may be removed in the future. Switching to Automatic diff base is encouraged, and cannot be undone.
-        </div>
-        {{projects/diff-base-settings project=project}}
-      {{/if}}
-    </div>
-
-    {{projects/webhook-config-list
-      webhookConfigs=webhookConfigs
-      deleteWebhookConfig=(route-action "deleteWebhookConfig")
-      isDisabled=project.isDemo
-    }}
-
-    <div class="bg-white rounded shadow-1 border-t p-2 mb-2" data-test-slack-info>
-      <div class="flex justify-between items-center mb-1">
-        <div class="flex items-center">
-          {{inline-svg "slack-icon" class="mr-1 mb-1"}}
-          <h2 class="text-xl font-semibold mb-1">Slack integration</h2>
-        </div>
+    {{#if (and (variation 'only-admins-edit-settings') (not isUserOrgAdmin))}}
+      <div data-test-member-view class="Alert Alert--error">
+        <strong>Editing this organization's integration settings requires organization admin permissions.</strong>
       </div>
-      <p class='label-body'>
-        The Percy Slack integration helps you keep your team updated about visual changes in your app.<br>
-        Configure your Slack integration in your {{#link-to 'organizations.organization.integrations' project.organization.slug data-test-slack-organization-integrations-link}}organization integration settings.{{/link-to}}
-      </p>
-    </div>
+    {{else}}
+      <div class="bg-white rounded shadow-1 p-2 mb-2">
+        <h2 class="text-xl font-semibold mb-sm">Link a repository</h2>
+        {{projects/repo-integrator project=project}}
+        {{#if (eq project.diffBase "manual")}}
+          <h2 class="text-xl font-semibold mb-1 mt-3">Diff base config</h2>
+          <div class="Alert Alert--warning">
+            <strong>Deprecated:</strong> Manual diff base mode is deprecated and may be removed in the future. Switching to Automatic diff base is encouraged, and cannot be undone.
+          </div>
+          {{projects/diff-base-settings project=project}}
+        {{/if}}
+      </div>
+
+      {{projects/webhook-config-list
+        webhookConfigs=webhookConfigs
+        deleteWebhookConfig=(route-action "deleteWebhookConfig")
+        isDisabled=project.isDemo
+      }}
+
+      <div class="bg-white rounded shadow-1 border-t p-2 mb-2" data-test-slack-info>
+        <div class="flex justify-between items-center mb-1">
+          <div class="flex items-center">
+            {{inline-svg "slack-icon" class="mr-1 mb-1"}}
+            <h2 class="text-xl font-semibold mb-1">Slack integration</h2>
+          </div>
+        </div>
+        <p class='label-body'>
+          The Percy Slack integration helps you keep your team updated about visual changes in your app.<br>
+          Configure your Slack integration in your {{#link-to 'organizations.organization.integrations' project.organization.slug data-test-slack-organization-integrations-link}}organization integration settings.{{/link-to}}
+        </p>
+      </div>
+    {{/if}}
+
   {{/if}}
 </section>

@@ -22,6 +22,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
       areAnyBrowsersUpgradeable: model.project.projectBrowserTargets.any(pbt => {
         return pbt.isUpgradeable;
       }),
+      isUserOrgAdmin: model.project.organization.currentUserIsAdmin,
     });
   },
 

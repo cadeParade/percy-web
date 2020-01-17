@@ -22,6 +22,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
     controller.setProperties({
       project: model.project,
       webhookConfigs: model.webhookConfigs,
+      isUserOrgAdmin: model.project.organization.currentUserIsAdmin,
     });
   },
 

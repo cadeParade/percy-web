@@ -11,7 +11,7 @@ describe('Acceptance: Login', function() {
     this.server = server;
   });
 
-  it('should login and logout user', async function() {
+  it('should login user', async function() {
     await visit('/');
     await percySnapshot(this.test.fullTitle() + ' | Logged out');
 
