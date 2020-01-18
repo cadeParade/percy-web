@@ -4,7 +4,7 @@
     {{#if hint}}<span class="text-gray-300">({{hint}})</span>{{/if}}
   </span>
   {{#if subtitle}}
-    <div class="mb-1 text-secondary">{{{subtitle}}}</div>
+    <div class="mb-1 text-secondary">{{html-safe subtitle}}</div>
   {{/if}}
   <input
     type={{type}}

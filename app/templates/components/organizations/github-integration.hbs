@@ -5,13 +5,13 @@
       <div class="text-xl font-semibold">Installed!</div>
     </div>
     <div>
-      <a href="{{currentIntegration.githubHtmlUrl}}" class="btn" target="_blank" rel="noopener">
+      <a href="{{currentIntegration.githubHtmlUrl}}" class="btn" target="_blank" rel="noopener noreferrer">
         {{fa-icon "github" classNames="fa--left"}} Manage
       </a>
     </div>
   </div>
   <div class="rounded bg-yellow-000 border border-yellow-100 p-2 mb-3">
-    <strong>Note:</strong> Each project must be linked to a GitHub repository for <strong><a href="https://docs.percy.io/docs/github" target="_blank">Pull Request integration</a></strong> to work. You can link projects to repositories below or in each project's settings.
+    <strong>Note:</strong> Each project must be linked to a GitHub repository for <strong><a href="https://docs.percy.io/docs/github" target="_blank" rel="noopener noreferrer">Pull Request integration</a></strong> to work. You can link projects to repositories below or in each project's settings.
   </div>
 
 {{else if organization.githubIntegrationRequest}}

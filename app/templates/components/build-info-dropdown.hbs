@@ -6,7 +6,7 @@
 >
 
   <dropdown.Trigger>
-    <button data-test-build-info-dropdown-toggle class="flex center btn-icon-only" aria-label="View detailed information about this build">
+    <button data-test-build-info-dropdown-toggle type="button" class="flex center btn-icon-only" aria-label="View detailed information about this build">
       <ThemeSvg @svg="build-info-icon" />
     </button>
   </dropdown.Trigger>
@@ -16,54 +16,56 @@
 
     <h3 class="mb-2 text-2xl font-bold">{{build.buildTitle}}</h3>
     <table class="w-full">
-      <tr>
-        <td>Created</td>
-        <td><BuildStarted @build={{build}} /></td>
-      </tr>
-      <tr>
-        <td>Build time</td>
-        <td><BuildDuration @build={{build}} /></td>
-      </tr>
-      <tr>
-        <td>Baseline build</td>
-        <td><BuildComparisonInfo @build={{build}} @onLinkClick={{action dropdown.actions.close}} /></td>
-      </tr>
-
-      {{#if build.isFinished}}
+      <tbody>
         <tr>
-          <td>Total snapshots:</td>
-          <td>{{build.totalComparisons}} across all browsers and widths</td>
+          <td>Created</td>
+          <td><BuildStarted @build={{build}} /></td>
         </tr>
-      {{/if}}
-
-      {{#if build.isPullRequestPresent}}
         <tr>
-          <td data-test-pull-request-label>{{build.pullRequestLabel}}</td>
-          <td>
-            {{#if build.pullRequestTitle}}
-              <a href="{{build.pullRequestHtmlUrl}}">{{build.pullRequestTitle}}</a>
-            {{/if}}
-            {{#if build.pullRequestNumber}}
-              <span class="text-secondary">
-                {{#if build.pullRequestTitle}}
-                  #{{build.pullRequestNumber}}
-                {{else}}
-                  <a href="{{build.pullRequestHtmlUrl}}">#{{build.pullRequestNumber}}</a>
-                {{/if}}
-              </span>
-            {{/if}}
-          </td>
+          <td>Build time</td>
+          <td><BuildDuration @build={{build}} /></td>
         </tr>
-      {{/if}}
+        <tr>
+          <td>Baseline build</td>
+          <td><BuildComparisonInfo @build={{build}} @onLinkClick={{action dropdown.actions.close}} /></td>
+        </tr>
 
-      {{#if build.userAgent}}
-        <tr class="border-0">
-          <td colspan="2">Environment</td>
-        </tr>
-        <tr class="BuildInfoDropdown-fullWidthValue">
-          <td colspan="2"><pre>{{build.userAgent}}</pre></td>
-        </tr>
-      {{/if}}
+        {{#if build.isFinished}}
+          <tr>
+            <td>Total snapshots:</td>
+            <td>{{build.totalComparisons}} across all browsers and widths</td>
+          </tr>
+        {{/if}}
+
+        {{#if build.isPullRequestPresent}}
+          <tr>
+            <td data-test-pull-request-label>{{build.pullRequestLabel}}</td>
+            <td>
+              {{#if build.pullRequestTitle}}
+                <a href="{{build.pullRequestHtmlUrl}}">{{build.pullRequestTitle}}</a>
+              {{/if}}
+              {{#if build.pullRequestNumber}}
+                <span class="text-secondary">
+                  {{#if build.pullRequestTitle}}
+                    #{{build.pullRequestNumber}}
+                  {{else}}
+                    <a href="{{build.pullRequestHtmlUrl}}">#{{build.pullRequestNumber}}</a>
+                  {{/if}}
+                </span>
+              {{/if}}
+            </td>
+          </tr>
+        {{/if}}
+
+        {{#if build.userAgent}}
+          <tr class="border-0">
+            <td colspan="2">Environment</td>
+          </tr>
+          <tr class="BuildInfoDropdown-fullWidthValue">
+            <td colspan="2"><pre>{{build.userAgent}}</pre></td>
+          </tr>
+        {{/if}}
+      </tbody>
     </table>
 
     {{#if build.commit}}
@@ -80,12 +82,14 @@
       <div data-test-build-info-admin-details>
         <h4 class="mb-2 mt-4 font-bold">Admin Info</h4>
         <table>
-          {{#each build.browsers as |browser|}}
-            <tr>
-              <td>{{browser.familyName}} Version</td>
-              <td><pre>{{browser.version}}</pre></td>
-            </tr>
-          {{/each}}
+          <tbody>
+            {{#each build.browsers as |browser|}}
+              <tr>
+                <td>{{browser.familyName}} Version</td>
+                <td><pre>{{browser.version}}</pre></td>
+              </tr>
+            {{/each}}
+          </tbody>
         </table>
       </div>
     {{/if}}

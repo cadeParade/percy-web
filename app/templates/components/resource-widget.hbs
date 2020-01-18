@@ -8,6 +8,7 @@
       <div
         class="{{if (eq selectedLanguage key) 'cursor-default text-purple-600' 'cursor-pointer'}}"
         {{action 'selectLanguage' key}}
+        role="button"
         data-test-resource-wiget-sidebar-link
       >
         {{capitalize language.name}}
@@ -52,6 +53,7 @@
               href="{{docLink}}"
               class="percy-btn percy-btn-primary {{docLinkClasses}}"
               target="_blank"
+              rel="noopener noreferrer"
               onclick={{action 'trackDocsVisit'}}
               data-test-framework-docs-button
             >
@@ -62,6 +64,7 @@
               href="{{exampleLink}}"
               class="percy-btn {{exampleLinkClasses}}"
               target="_blank"
+              rel="noopener noreferrer"
               onclick={{action 'trackDemoVisit'}}
               data-test-example-framework-project-button
             >
@@ -72,6 +75,7 @@
           <a
             href="https://docs.percy.io/docs"
             target="_blank"
+            rel="noopener noreferrer"
             class="percy-btn"
             data-test-generic-docs-button
           >

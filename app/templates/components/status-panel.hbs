@@ -5,7 +5,7 @@
     </figure>
     <h2 class="font-normal text-xl md:text-2xl mb-2">{{mainText}}</h2>
     <p class="alt-p text-secondary">
-      {{{secondaryText}}}
+      {{html-safe secondaryText}}
     </p>
     {{yield}}
   </div>

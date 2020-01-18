@@ -22,7 +22,7 @@
         <div class="flex-1 px-6 text-center mb-4 md:mb-0 {{if block.isImageCentered "md:mb-4"}}">
           {{! style="cursor:pointer" is necessary to translate touch events to html elements that aren't standardly clickable, like divs. If it is not present then the action will not fire in mobile browsers because the 'click' event won't be detected. }}
           {{! this is an old issue, but it explains the problem well https://github.com/emberjs/ember.js/issues/586#issuecomment-7827647 }}
-          <div class="relative rounded overflow-hidden shadow-y-lg-purple-600" style="cursor: pointer" {{action (toggle "isVideoModalVisible" this)}} data-test-video-block-image>
+          <div class="relative rounded overflow-hidden shadow-y-lg-purple-600" style="cursor: pointer" role="button" {{action (toggle "isVideoModalVisible" this)}} data-test-video-block-image>
             <ContentfulImage @file={{block.mainImage.file}} />
             <div class="flex justify-center items-center absolute top-0 bottom-0 w-full bg-translucent">
               <figure class="svg-container">

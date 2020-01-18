@@ -1,4 +1,4 @@
-<div class="{{if (not isBuildApprovable) "mr-2"}}">
+<div class="{{unless isBuildApprovable "mr-2"}}">
   <div class="flex items-center text-xl md:text-2xl leading-none">
     <div class="text-secondary">
       Build <span class="font-mono font-normal tracking-sm text-primary mr-1">{{build.buildNumber}}</span>

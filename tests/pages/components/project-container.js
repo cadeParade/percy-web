@@ -7,7 +7,6 @@ const SELECTORS = {
   REPO_LINKED: '[data-test-project-container-project-repo-linked]',
   GITHUB_LOGO: 'svg[data-test-github-icon]',
   GITLAB_LOGO: 'svg[data-test-gitlab-icon]',
-  QUICKSTART_BUTTON: '[data-test-quickstart-button]',
   NO_BUILDS_PANEL: '[data-test-status-panel]',
   PUBIC_PROJECT_NOTICE: '[data-test-public-project-notice]',
   INFINITY_LOADER: '.infinity-loader', // only one possible per page
@@ -47,8 +46,6 @@ export const ProjectContainer = {
   finishedBuilds: getter(function() {
     return this.builds.filter(build => !!build.isFinished);
   }),
-
-  clickQuickstartButton: clickable(SELECTORS.QUICKSTART_BUTTON),
 
   isNoBuildsPanelVisible: isVisible(SELECTORS.NO_BUILDS_PANEL),
   isPublicProjectNoticeVisible: isVisible(SELECTORS.PUBLIC_BUILD_NOTICE),

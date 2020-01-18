@@ -36,7 +36,7 @@
       <div class="bg-white rounded shadow-1 p-2 mb-2">
         <h2 class="text-xl font-semibold mb-1">Browsers</h2>
         <p class="text-secondary mb-2">
-          This setting lets you change which browser your snapshots are created in. Better yet, you can enable multiple browsers for cross browser testing snapshots! <a href="https://docs.percy.io/docs/cross-browser-visual-testing" target="_blank">See docs</a>
+          This setting lets you change which browser your snapshots are created in. Better yet, you can enable multiple browsers for cross browser testing snapshots! <a href="https://docs.percy.io/docs/cross-browser-visual-testing" target="_blank" rel="noopener noreferrer">See docs</a>
         </p>
         <div class="p-2 bg-gray-000 rounded border">
           <Projects::BrowserFamilySelector
@@ -46,7 +46,6 @@
           />
         </div>
       </div>
-
       <div class="bg-white rounded shadow-1 p-2 mb-2">
         <h2 class="text-xl font-semibold mb-1">Project details</h2>
         <Forms::ProjectEdit @project={{project}} />
@@ -60,7 +59,7 @@
               <label>
                 <div class="mb-1">Show the world that you're using Percy for visual testing. Place this badge in your README by copying the markdown snippet below:</div>
                 <div class="flex justify-between">
-                  <textarea readonly=true class="flex-1 px-1 py-sm font-mono font-normal tracking-sm text-sm">{{badgeMarkdown}}</textarea>
+                  <textarea readonly="true" class="flex-1 px-1 py-sm font-mono font-normal tracking-sm text-sm">{{badgeMarkdown}}</textarea>
                   <CopyButton
                     @class="percy-btn ml-1"
                     @clipboardText={{badgeMarkdown}}

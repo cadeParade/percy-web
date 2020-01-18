@@ -1,3 +1,4 @@
+{{!-- template-lint-disable no-nested-interactive --}}
 <LazyLoadingSnapshotItem
   @shouldFullyRender={{shouldFullyRender}}
   @displayTitle={{groupTitle}}
@@ -5,6 +6,7 @@
   <header
     class="SnapshotViewer-header sticky grid gap-4 px-2 py-1 bg-secondary border-b border-t"
     {{action "expandBlock"}}
+    role="button"
     data-test-snapshot-group-header>
     <div style="min-width: 0;" class="flex items-center">
       <div class="Viewer-header-title SnapshotViewer-title flex items-center overflow-hidden cursor-default font-bold" title="{{snapshots.length}} matching changes" data-test-snapshot-group-name>
@@ -20,7 +22,7 @@
       </div>
       <DemoTooltip
         @build={{build}}
-        @isFirstInstance=true
+        @isFirstInstance={{true}}
         @key="group-overview"
       />
     </div>
@@ -38,7 +40,7 @@
         {{/if}}
 
         <div class="btn-toolbar">
-          <button class="btn" {{action "toggleAreAllSnapshotsExpanded"}} data-test-show-group-snapshots>
+          <button type="button" class="btn" {{action "toggleAreAllSnapshotsExpanded"}} data-test-show-group-snapshots>
             {{#if isGroupCollapsed}}
               Expand matches
             {{else}}
@@ -47,7 +49,7 @@
           </button>
 
           {{#if noSnapshotsWithOpenCommentThreads}}
-            <button class="btn btn-square collaboration-toggle relative" {{action "handleCommentClick"}} data-test-group-comment-btn>
+            <button type="button" class="btn btn-square collaboration-toggle relative" {{action "handleCommentClick"}} data-test-group-comment-btn>
               <figure class="svg-container">
                 <ThemeSvg @svg="conversation-icon-add" />
               </figure>

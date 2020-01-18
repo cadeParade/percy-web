@@ -1,5 +1,6 @@
 <button
   class="btn snapshot-reject-button {{if isLoading "is-loading"}}"
+  type="button"
   {{action 'rejectSnapshots'}}
   disabled="{{if isDisabled "disabled"}}"
   aria-label="Request changes on this snapshot"

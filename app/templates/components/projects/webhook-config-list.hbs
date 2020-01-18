@@ -13,14 +13,14 @@
     <div class="mb-2 rounded border">
       {{#each filteredWebhookConfigs as |webhookConfig|}}
         <div
-          class="p-2 {{unless (eq webhookConfig filteredWebhookConfigs.lastObject) "border-b"}}"
+          class="p-2 {{if (not-eq webhookConfig filteredWebhookConfigs.lastObject) "border-b"}}"
           data-test-webhook-config-item
         >
           <div class="flex items-center justify-between">
             <div class="flex items-center mr-2 truncate">
               <StatusDot @status={{webhookConfig.status}} />
               <div style="min-width: 0;"
-                class="font-mono font-normal tracking-sm truncate {{if (not webhookConfig.deliveryEnabled) 'opacity-25'}}"
+                class="font-mono font-normal tracking-sm truncate {{unless webhookConfig.deliveryEnabled 'opacity-25'}}"
                 data-test-webhook-config-url
               >
                 {{webhookConfig.url}}

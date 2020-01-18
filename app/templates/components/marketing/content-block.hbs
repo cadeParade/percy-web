@@ -54,7 +54,7 @@
     </div>
 
     {{#if block.supportingTextSections}}
-      <div class="md:flex md:flex-wrap md:justify-center mb-1 {{if (not block.mainImage) "mt-4"}}">
+      <div class="md:flex md:flex-wrap md:justify-center mb-1 {{unless block.mainImage "mt-4"}}">
         {{#each block.supportingTextSections as |supportingText|}}
 
           <div class="mb-3 {{concat "px-2 md:w-1/" numSupportingTextColumns}}">

@@ -80,9 +80,9 @@
           <span class="tabular-nums text-purple-600 text-3xl" data-test-calculated-price>${{format-number sliderCalculatedPrice}}</span>/mo
         {{/if}}
         <br>
-        {{#unless (eq selectedPlanRange "Enterprise")}}
+        {{#if (not-eq selectedPlanRange "Enterprise")}}
           <span class="text-sm font-normal text-gray-300">Additional snapshots at $0.006/snapshot</span>
-        {{/unless}}
+        {{/if}}
       </div>
 
       {{#if isEnterpriseSelected}}

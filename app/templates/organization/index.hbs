@@ -20,7 +20,7 @@
         />
       {{/each}}
     {{else}}
-      <div class="text-blue-500 my-2 cursor-pointer hover:text-blue-700" {{action (toggle "isShowingArchivedProjects" this)}} data-test-show-archived-projects>Show archived projects</div>
+      <div class="text-blue-500 my-2 cursor-pointer hover:text-blue-700" role="button" {{action (toggle "isShowingArchivedProjects" this)}} data-test-show-archived-projects>Show archived projects</div>
     {{/if}}
   {{/if}}
 </DashboardNavWrapper>
