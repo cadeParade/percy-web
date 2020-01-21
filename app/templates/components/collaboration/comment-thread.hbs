@@ -1,41 +1,41 @@
- <div class="collaboration pr-2 lg:pr-0 {{if (gt commentThread.comments.length 1)  'collaboration-comment-replied'}}" data-test-comment-thread data-test-thread-type={{commentThread.type}}>
+<div class="collaboration pr-2 lg:pr-0 {{if (gt commentThread.comments.length 1)  'collaboration-comment-replied'}}" data-test-comment-thread data-test-thread-type={{commentThread.type}}>
 
-    {{#if areCommentsCollapsed}}
+  {{#if areCommentsCollapsed}}
+    <Collaboration::CollaborationComment
+      @comment={{firstComment}}
+      @isFirstComment={{true}}
+      @closeCommentThread={{closeCommentThread}}
+      @isCommentingAllowed={{isCommentingAllowed}}
+    />
+    <div class="collaboration-content-inset">
       <Collaboration::CollaborationComment
-        @comment={{firstComment}}
-        @isFirstComment={{true}}
-        @closeCommentThread={{closeCommentThread}}
-        @isCommentingAllowed={{isCommentingAllowed}}
+        @comment={{secondComment}}
       />
-      <div class="collaboration-content-inset">
+      <Collaboration::CollaborationExpand
+        @isThreadClosed={{commentThread.isClosed}}
+        @numCollapsedComments={{numCollapsedComments}}
+        @showCollapsedComments={{action "showCollapsedComments"}}
+      />
+      <Collaboration::CollaborationComment
+        @comment={{lastComment}}
+      />
+    </div>
+  {{else}}
+    {{#each filteredComments as |comment index|}}
+      <div class="{{if (not-eq index 0) "collaboration-content-inset"}}">
         <Collaboration::CollaborationComment
-          @comment={{secondComment}}
-        />
-        <Collaboration::CollaborationExpand
-          @isThreadClosed={{commentThread.isClosed}}
-          @numCollapsedComments={{numCollapsedComments}}
-          @showCollapsedComments={{action "showCollapsedComments"}}
-        />
-        <Collaboration::CollaborationComment
-          @comment={{lastComment}}
+          @comment={{comment}}
+          @isFirstComment={{eq index 0}}
+          @closeCommentThread={{closeCommentThread}}
         />
       </div>
-    {{else}}
-      {{#each filteredComments as |comment index|}}
-        <div class="{{if (not-eq index 0) "collaboration-content-inset"}}">
-          <Collaboration::CollaborationComment
-            @comment={{comment}}
-            @isFirstComment={{eq index 0}}
-            @closeCommentThread={{closeCommentThread}}
-          />
-        </div>
-      {{/each}}
-    {{/if}}
+    {{/each}}
+  {{/if}}
 
-    {{#if shouldShowThreadReplyInput}}
-      <Collaboration::CollaborationCommentReply
-        @commentThread={{commentThread}}
-        @createComment={{createComment}}
-      />
-    {{/if}}
-  </div>
+  {{#if shouldShowThreadReplyInput}}
+    <Collaboration::CollaborationCommentReply
+      @commentThread={{commentThread}}
+      @createComment={{createComment}}
+    />
+  {{/if}}
+</div>

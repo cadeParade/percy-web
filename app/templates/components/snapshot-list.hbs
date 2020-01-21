@@ -1,43 +1,43 @@
 {{#each snapshotBlocks as |block index|}}
   <div data-test-snapshot-block>
-  {{#if (is-item-array block)}}
-    <SnapshotGroup
-      @build={{build}}
-      @snapshots={{block}}
-      @allDiffsShown={{allDiffsShown}}
-      @activeSnapshotBlockId={{activeSnapshotBlockId}}
-      @shouldDeferRendering={{shouldDeferRendering}}
-      @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
-      @createReview={{createReview}}
-      @updateActiveSnapshotBlockId={{action "updateActiveSnapshotBlockId"}}
-      @activeBrowser={{activeBrowser}}
-      @updateActiveBrowser={{updateActiveBrowser}}
-      @isBuildApprovable={{isBuildApprovable}}
-      @createCommentThread={{createCommentThread}}
-      @createComment={{createComment}}
-      @closeCommentThread={{closeCommentThread}}
-      @index={{index}}
-    />
-  {{else}}
-    <SnapshotViewer
-      @class="data-test-snapshot-viewer"
-      @build={{build}}
-      @snapshot={{block}}
-      @allDiffsShown={{allDiffsShown}}
-      @activeSnapshotBlockId={{activeSnapshotBlockId}}
-      @shouldDeferRendering={{shouldDeferRendering}}
-      @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
-      @createReview={{createReview}}
-      @updateActiveSnapshotBlockId={{action "updateActiveSnapshotBlockId"}}
-      @activeBrowser={{activeBrowser}}
-      @updateActiveBrowser={{updateActiveBrowser}}
-      @isBuildApprovable={{isBuildApprovable}}
-      @createCommentThread={{createCommentThread}}
-      @createComment={{createComment}}
-      @closeCommentThread={{closeCommentThread}}
-      @index={{index}}
-    />
-  {{/if}}
+    {{#if (is-item-array block)}}
+      <SnapshotGroup
+        @build={{build}}
+        @snapshots={{block}}
+        @allDiffsShown={{allDiffsShown}}
+        @activeSnapshotBlockId={{activeSnapshotBlockId}}
+        @shouldDeferRendering={{shouldDeferRendering}}
+        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+        @createReview={{createReview}}
+        @updateActiveSnapshotBlockId={{action "updateActiveSnapshotBlockId"}}
+        @activeBrowser={{activeBrowser}}
+        @updateActiveBrowser={{updateActiveBrowser}}
+        @isBuildApprovable={{isBuildApprovable}}
+        @createCommentThread={{createCommentThread}}
+        @createComment={{createComment}}
+        @closeCommentThread={{closeCommentThread}}
+        @index={{index}}
+      />
+    {{else}}
+      <SnapshotViewer
+        @class="data-test-snapshot-viewer"
+        @build={{build}}
+        @snapshot={{block}}
+        @allDiffsShown={{allDiffsShown}}
+        @activeSnapshotBlockId={{activeSnapshotBlockId}}
+        @shouldDeferRendering={{shouldDeferRendering}}
+        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
+        @createReview={{createReview}}
+        @updateActiveSnapshotBlockId={{action "updateActiveSnapshotBlockId"}}
+        @activeBrowser={{activeBrowser}}
+        @updateActiveBrowser={{updateActiveBrowser}}
+        @isBuildApprovable={{isBuildApprovable}}
+        @createCommentThread={{createCommentThread}}
+        @createComment={{createComment}}
+        @closeCommentThread={{closeCommentThread}}
+        @index={{index}}
+      />
+    {{/if}}
   </div>
 {{/each}}
 
@@ -72,7 +72,7 @@
           <figure class="svg-container">
             {{inline-svg "no-comparison-group-icon" class="mr-1"}}
           </figure>
-           <div class="text-blue-500">
+          <div class="text-blue-500">
             {{pluralize numSnapshotsUnchanged "unchanged snapshot"}}
             {{#if build.hasMultipleBrowsers}}
               in {{activeBrowser.familyName}}

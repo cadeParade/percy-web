@@ -3,13 +3,15 @@
     <h1 class="text-xl font-semibold mb-sm">Set up GitLab</h1>
     <p class="text-secondary">
       We’ll need just a bit of information to get Percy set up on your GitLab account.
-      If you need some help, check out our <strong>
-      {{#if currentGitlabIntegration.isGitlabSelfHostedIntegration}}
-        <a href="https://docs.percy.io/docs/gitlab-self-managed" target="_blank" rel="noopener noreferrer">Percy + GitLab</a>
-      {{else}}
-        <a href="https://docs.percy.io/docs/gitlab" target="_blank" rel="noopener noreferrer">Percy + GitLab</a>
-      {{/if}}
-      </strong> doc to guide you through the set up process.
+      If you need some help, check out our
+      <strong>
+        {{#if currentGitlabIntegration.isGitlabSelfHostedIntegration}}
+          <a href="https://docs.percy.io/docs/gitlab-self-managed" target="_blank" rel="noopener noreferrer">Percy + GitLab</a>
+        {{else}}
+          <a href="https://docs.percy.io/docs/gitlab" target="_blank" rel="noopener noreferrer">Percy + GitLab</a>
+        {{/if}}
+      </strong>
+      doc to guide you through the set up process.
       {{#if currentGitlabIntegration.isGitlabSelfHostedIntegration}}
         <span data-test-integration-note>
           If you’re running GitLab behind a firewall, please <a href="#" data-test-integration-contact-support {{action "showSupport"}}>get in touch</a>.

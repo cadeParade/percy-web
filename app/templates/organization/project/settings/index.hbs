@@ -9,7 +9,8 @@
     {{#if project.isDemo}}
       <div class="bg-blue-100 p-2 border justify-start items-center sticky top-0 z-10 flex rounded border border-blue-500 mb-3">
         <div class="mr-3">{{inline-svg 'build-info-icon'}}</div>
-        <div>This is the settings page for a <strong>demo project</strong>. The demo settings are not editable here, but <strong><LinkTo @route="organizations.organization.projects.new" @model={{project.organization.slug}}> create your own project </LinkTo></strong> to start customizing your Percy experience.
+        <div>
+          This is the settings page for a <strong>demo project</strong>. The demo settings are not editable here, but <strong><LinkTo @route="organizations.organization.projects.new" @model={{project.organization.slug}}> create your own project </LinkTo></strong> to start customizing your Percy experience.
         </div>
       </div>
     {{/if}}
@@ -54,22 +55,22 @@
       {{#unless project.isDemo}}
         <div class="bg-white rounded shadow-1 p-2 mb-2">
           <h2 class="text-xl font-semibold mb-1">Percy badge</h2>
-            <img src="https://percy.io/static/images/percy-badge.svg" alt="visual testing by Percy badge">
-            <div>
-              <label>
-                <div class="mb-1">Show the world that you're using Percy for visual testing. Place this badge in your README by copying the markdown snippet below:</div>
-                <div class="flex justify-between">
-                  <textarea readonly="true" class="flex-1 px-1 py-sm font-mono font-normal tracking-sm text-sm">{{badgeMarkdown}}</textarea>
-                  <CopyButton
-                    @class="percy-btn ml-1"
-                    @clipboardText={{badgeMarkdown}}
-                    @success={{route-action "onCopyBadgeMarkdown"}}
-                  >
-                    {{inline-svg "copy-icon"}}
-                  </CopyButton>
-                </div>
-              </label>
-            </div>
+          <img src="https://percy.io/static/images/percy-badge.svg" alt="visual testing by Percy badge">
+          <div>
+            <label>
+              <div class="mb-1">Show the world that you're using Percy for visual testing. Place this badge in your README by copying the markdown snippet below:</div>
+              <div class="flex justify-between">
+                <textarea readonly="true" class="flex-1 px-1 py-sm font-mono font-normal tracking-sm text-sm">{{badgeMarkdown}}</textarea>
+                <CopyButton
+                  @class="percy-btn ml-1"
+                  @clipboardText={{badgeMarkdown}}
+                  @success={{route-action "onCopyBadgeMarkdown"}}
+                >
+                  {{inline-svg "copy-icon"}}
+                </CopyButton>
+              </div>
+            </label>
+          </div>
         </div>
       {{/unless}}
 

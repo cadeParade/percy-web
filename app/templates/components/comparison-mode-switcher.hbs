@@ -1,13 +1,9 @@
 <div class="btn-toggle" data-test-comparison-mode-switcher>
   {{#if wasAdded}}
-    <div class="btn-toggle-item is-selected" role="button"
-      {{action updateComparisonMode 'head'}} data-test-comparison-mode-switcher-new>New Snapshot</div>
+    <div class="btn-toggle-item is-selected" role="button" {{action updateComparisonMode 'head'}} data-test-comparison-mode-switcher-new>New Snapshot</div>
   {{else}}
-    <div class="btn-toggle-item {{if (eq comparisonMode 'diff') 'is-selected'}}" role="button"
-      {{action updateComparisonMode 'diff'}} data-test-comparison-mode-switcher-diff>Diff</div>
-    <div class="btn-toggle-item {{if (eq comparisonMode 'base') 'is-selected'}}" role="button"
-      {{action updateComparisonMode 'base'}} data-test-comparison-mode-switcher-base>Original</div>
-    <div class="btn-toggle-item {{if (eq comparisonMode 'head') 'is-selected'}}" role="button"
-      {{action updateComparisonMode 'head'}} data-test-comparison-mode-switcher-head>New</div>
+    <div class="btn-toggle-item {{if (eq comparisonMode 'diff') 'is-selected'}}" role="button" {{action updateComparisonMode 'diff'}} data-test-comparison-mode-switcher-diff>Diff</div>
+    <div class="btn-toggle-item {{if (eq comparisonMode 'base') 'is-selected'}}" role="button" {{action updateComparisonMode 'base'}} data-test-comparison-mode-switcher-base>Original</div>
+    <div class="btn-toggle-item {{if (eq comparisonMode 'head') 'is-selected'}}" role="button" {{action updateComparisonMode 'head'}} data-test-comparison-mode-switcher-head>New</div>
   {{/if}}
 </div>

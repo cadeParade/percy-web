@@ -1,4 +1,3 @@
-
 <section class="w-90vw max-w-xl mx-auto pt-4">
   {{#unless project.isEnabled}}
     <div class="Alert Alert--warning mt-2">
@@ -10,7 +9,8 @@
     {{#if project.isDemo}}
       <div class="bg-blue-100 p-2 border justify-start items-center sticky top-0 z-10 flex rounded border border-blue-500 mb-3">
         <div class="mr-3">{{inline-svg 'build-info-icon'}}</div>
-        <div>This is the integrations page for a <strong>demo project</strong>. The demo settings are not editable here, but <strong><LinkTo @route="organizations.organization.projects.new" @model={{project.organization.slug}}> create your own project </LinkTo></strong> to start customizing your Percy experience.
+        <div>
+          This is the integrations page for a <strong>demo project</strong>. The demo settings are not editable here, but <strong><LinkTo @route="organizations.organization.projects.new" @model={{project.organization.slug}}> create your own project </LinkTo></strong> to start customizing your Percy experience.
         </div>
       </div>
     {{/if}}

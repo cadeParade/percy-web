@@ -3,9 +3,9 @@
     <div class="quote-block-headshot relative border rounded-full mx-auto mb-4 sm:mb-0 sm:mr-9"
       style={{html-safe "background-image: url('" quote.headshot.file.url "?w=200&q=90');"}}>
       {{#if quote.logo.file.url}}
-      <div class="quote-logo absolute bottom-0 p-1 bg-white border rounded-full">
-        <ContentfulImage @file={{quote.logo.file}} />
-      </div>
+        <div class="quote-logo absolute bottom-0 p-1 bg-white border rounded-full">
+          <ContentfulImage @file={{quote.logo.file}} />
+        </div>
       {{/if}}
     </div>
   </div>

@@ -22,13 +22,13 @@
             @user={{currentUser}}
             @organization={{organization}}
           >
-          <div class="mb-2">
-            <Organizations::BitbucketCloudIntegrator @organization={{organization}} />
+            <div class="mb-2">
+              <Organizations::BitbucketCloudIntegrator @organization={{organization}} />
 
-            {{#if organization.bitbucketCloudIntegration}}
-              <Organizations::Integrations::RepoLinkerList @organization={{organization}} />
-            {{/if}}
-          </div>
+              {{#if organization.bitbucketCloudIntegration}}
+                <Organizations::Integrations::RepoLinkerList @organization={{organization}} />
+              {{/if}}
+            </div>
           </Organizations::RequireRole>
         </div>
       </div>

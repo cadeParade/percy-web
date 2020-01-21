@@ -26,7 +26,7 @@
               <strong data-test-monthly-cost>${{displayAmount}}/month</strong>
               {{#if plan.allowOverages}}<span data-test-overages> plus additional snapshots at ${{plan.overageUnitCost}}/snapshot</span>{{/if}}.
             {{else if shouldShowOverageInfo}}
-               <span data-test-overages>Additional snapshots at ${{plan.overageUnitCost}}/snapshot.</span>
+              <span data-test-overages>Additional snapshots at ${{plan.overageUnitCost}}/snapshot.</span>
             {{/if}}
           </div>
         </div>

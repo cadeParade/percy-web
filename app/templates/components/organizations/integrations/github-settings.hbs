@@ -21,17 +21,17 @@
           @user={{currentUser}}
           @organization={{organization}}
         >
-        <div class="mb-2">
-          {{#if (not (await isEligibleForGithubIntegration))}}
-            To install the GitHub integration you first need to <LinkTo @route="settings.connected-accounts"> connect your GitHub account</LinkTo>.
-          {{else}}
-            <Organizations::GithubIntegrator @organization={{organization}} />
+          <div class="mb-2">
+            {{#if (not (await isEligibleForGithubIntegration))}}
+              To install the GitHub integration you first need to <LinkTo @route="settings.connected-accounts"> connect your GitHub account</LinkTo>.
+            {{else}}
+              <Organizations::GithubIntegrator @organization={{organization}} />
 
-            {{#if organization.githubIntegration}}
-              <Organizations::Integrations::RepoLinkerList @organization={{organization}} />
+              {{#if organization.githubIntegration}}
+                <Organizations::Integrations::RepoLinkerList @organization={{organization}} />
+              {{/if}}
             {{/if}}
-          {{/if}}
-        </div>
+          </div>
         </Organizations::RequireRole>
       </div>
 

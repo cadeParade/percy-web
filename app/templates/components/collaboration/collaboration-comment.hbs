@@ -33,13 +33,13 @@
     {{/if}}
   </header>
 
- {{#if (and isFirstComment isReview)}}
+  {{#if (and isFirstComment isReview)}}
     <div class="collaboration-content-inset py-sm">
       <div class="px-1 py-sm tracking-px rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{unless  isOnOriginatingSnapshot 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}" data-test-request-changes-badge>
         Changes requested
         {{#unless isOnOriginatingSnapshot}}
           from
-            {{#link-to data-test-originating-snapshot-link 'organization.project.builds.default-comparison' commentThread.originatingSnapshotId class="font-mono font-normal tracking-sm"}}{{commentThread.originatingBuildNumber}}{{/link-to}}
+          {{#link-to data-test-originating-snapshot-link 'organization.project.builds.default-comparison' commentThread.originatingSnapshotId class="font-mono font-normal tracking-sm"}}{{commentThread.originatingBuildNumber}}{{/link-to}}
         {{/unless}}
       </div>
     </div>

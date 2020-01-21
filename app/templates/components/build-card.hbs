@@ -28,7 +28,7 @@
           {{#if build.commit}}
             {{#if build.isPullRequest}}
               {{inline-svg "pull-request-icon" class="mr-1"}}
-                <a href="{{build.pullRequestHtmlUrl}}" class="whitespace-no-wrap font-semibold mr-1" onclick={{action "stopPropagation"}}>#{{build.pullRequestNumber}}</a>
+              <a href="{{build.pullRequestHtmlUrl}}" class="whitespace-no-wrap font-semibold mr-1" onclick={{action "stopPropagation"}}>#{{build.pullRequestNumber}}</a>
               <span class="truncate" data-test-pull-request-link>
                 <a href="{{build.pullRequestHtmlUrl}}" class="whitespace-no-wrap font-semibold mr-1" onclick={{action "stopPropagation"}}>{{build.pullRequestTitle}}</a>
               </span>

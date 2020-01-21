@@ -17,10 +17,10 @@
     <div class="p-2 bg-secondary bordert">
       <strong>
         {{#if (gt build.browsersUpgraded.length 1) }}
-        Multiple browsers were
+          Multiple browsers were
         {{else}}
-        {{build.browsersUpgraded.firstObject.browserFamily.name}}
-        was
+          {{build.browsersUpgraded.firstObject.browserFamily.name}}
+          was
         {{/if}}
         upgraded to the latest version in this build.
       </strong>
@@ -64,10 +64,11 @@
         {{#if (eq build.buildNumber 1)}}
           <span>Snapshots from</span>
         {{else}}
-        <span class="pt-px">Changes from</span>
+          <span class="pt-px">Changes from</span>
         {{/if}}
         {{#if build.isPullRequestPresent}}
-          <a href="{{build.pullRequestHtmlUrl}}" class="font-semibold truncate ml-sm">#{{build.pullRequestNumber}} -
+          <a href="{{build.pullRequestHtmlUrl}}" class="font-semibold truncate ml-sm">
+            #{{build.pullRequestNumber}} -
             {{build.pullRequestTitle}}
           </a>
         {{else}}
@@ -135,7 +136,8 @@
   {{else if build.isExpired}}
     {{#if build.project.isEnabled}}
       <div class="p-2 m-2 bg-secondary rounded border">
-        <div class="font-semibold mb-1">Build history on the
+        <div class="font-semibold mb-1">
+          Build history on the
           <strong>{{build.project.organization.subscription.plan.name}}</strong> is limited to <strong>{{build.project.organization.subscription.plan.historyLimitDays}} days</strong>.
         </div>
         You can easily <LinkTo @route="organizations.organization.billing" @model={{build.project.organization.slug}}>upgrade your plan</LinkTo> for more build history.

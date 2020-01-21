@@ -1,6 +1,11 @@
 <div class="px-2 py-sm rounded-r font-semibold {{buttonClasses}}">
-    {{#link-to data-test-link linkRoute organization.slug class=(concat "hover:underline " linkClasses)}}
-      {{yield}}
-    {{/link-to}}
-  </div>
+  <LinkTo
+    @data-test-link={{true}}
+    @route={{linkRoute}}
+    @model={{organization.slug}}
+    class={{concat "hover:underline " linkClasses}}
+  >
+    {{yield}}
+  </LinkTo>
+</div>
 
