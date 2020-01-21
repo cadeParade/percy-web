@@ -2,7 +2,7 @@ import {it, describe, beforeEach} from 'mocha';
 import {setupRenderingTest} from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
-import {makeList} from 'ember-data-factory-guy';
+import {make, makeList} from 'ember-data-factory-guy';
 import {click, typeIn, findAll, render} from '@ember/test-helpers';
 import MentionableTextarea from 'percy-web/tests/pages/components/mentionable-textarea';
 import percySnapshot from '@percy/ember';
@@ -24,7 +24,13 @@ describe('Integration: MentionableTextarea', function() {
   beforeEach(async function() {
     setupFactoryGuy(this);
 
-    const mentionableUsers = makeList('user', numUsers);
+    const mentionableUsers = makeList('user', numUsers - 1);
+    const maliciousUser = make('user', {
+      name:
+        '<img src="xx:x" onerror="document.body.innerHTML=\'hacked: you should never see this\'"',
+    });
+    mentionableUsers.push(maliciousUser);
+
     const collections = [
       generateTributeUserConfig((text, cb) => cb(mentionableUsers)),
       generateTributeEmojiConfig((text, cb) => cb(emojis)),

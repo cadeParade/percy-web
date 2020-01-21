@@ -80,10 +80,12 @@ export function generateTributeUserConfig(fetchFn) {
     },
     lookup: 'name',
     menuItemTemplate(user) {
+      const userName = sanitizeUserName(user.original.name);
+      const avatarLocation = encodeURI(user.original.avatarUrl);
       return `
         <div class="flex items-center">
           <img
-            src=${user.original.avatarUrl}
+            src=${avatarLocation}
             class="
               flex-shrink-0
               w-20
@@ -94,13 +96,17 @@ export function generateTributeUserConfig(fetchFn) {
               overflow-hidden
               mr-1">
           <div class="font-semibold truncate">
-            ${user.original.name}
+            ${userName}
           </div>
         </div>
       `;
     },
     selectTemplate(user) {
-      return `@${user.original.name}`;
+      return `@${sanitizeUserName(user.original.name)}`;
     },
   };
+}
+
+function sanitizeUserName(name) {
+  return encodeURI(name).replace(/%20/g, ' ');
 }
