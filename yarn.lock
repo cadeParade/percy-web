@@ -6184,7 +6184,7 @@ ember-attacher@^1.0.2:
     ember-truth-helpers "^2.0.0"
     sass "^1.13.2"
 
-ember-auto-import@^1.2.15, ember-auto-import@^1.2.19, ember-auto-import@^1.3.0, ember-auto-import@^1.5.3:
+ember-auto-import@^1.2.19, ember-auto-import@^1.3.0, ember-auto-import@^1.5.2, ember-auto-import@^1.5.3:
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/ember-auto-import/-/ember-auto-import-1.5.3.tgz#b32936f874d1ed7057ad2ed3f6116357820be44b"
   integrity sha512-7JfdunM1BmLy/lyUXu7uEoi0Gi4+dxkGM23FgIEyW5g7z4MidhP53Fc61t49oPSnq7+J4lLpbH1f6C+mDMgb4A==
@@ -7102,23 +7102,25 @@ ember-ignore-children-helper@^1.0.0:
   dependencies:
     ember-cli-babel "^6.8.2"
 
-ember-in-viewport@~3.5.8:
-  version "3.5.10"
-  resolved "https://registry.yarnpkg.com/ember-in-viewport/-/ember-in-viewport-3.5.10.tgz#afa6eca2ac925d81fadeaf1992862fa21110a4d4"
-  integrity sha512-I3wGVefpM4A3ChmtlIAx5zGLEPGYM58MaCI61zlV+hl96tlZ/D83b3EaQ1hnFESmNPFkVge1gvlE3atu6EWiSg==
+ember-in-viewport@~3.7.1:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/ember-in-viewport/-/ember-in-viewport-3.7.1.tgz#8bbef5039bc02351b023bb5689b59ab2246ecb2f"
+  integrity sha512-ZOyCBmMKk2uRIqvWCbJmeN5Ay4iDMc5R0DxePq0adtSQh6Rp4M3RQaGpguhcZveW8ibfJVfD+K7r6lXe4Eu1sA==
   dependencies:
-    ember-auto-import "^1.2.15"
+    ember-auto-import "^1.5.2"
     ember-cli-babel "^7.7.3"
-    intersection-observer-admin "~0.2.5"
-    raf-pool "~0.1.3"
+    ember-modifier "^1.0.2"
+    fast-deep-equal "^2.0.1"
+    intersection-observer-admin "~0.2.10"
+    raf-pool "~0.1.4"
 
-ember-infinity@^1.4.9:
-  version "1.4.9"
-  resolved "https://registry.yarnpkg.com/ember-infinity/-/ember-infinity-1.4.9.tgz#9c340f2230c945e433be7e9ac558d23be29cc0a7"
-  integrity sha512-76fgBk6HiAn96KwZTDohVWOp6wdEwZjI3Ca7jwPT/l4AnJ2P7b0UAi1Y4a44ExtKwhg7fOgsaIqSH+hPOSyxNw==
+ember-infinity@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/ember-infinity/-/ember-infinity-2.0.3.tgz#bbe4bbc7fc441a681b270652b5f82d1a31ff3216"
+  integrity sha512-AzpZg3p1G1FtT2u5W7NTOXZRli8pKiqYl6VUqdB6hsWNoA16nEOPVQr4BW149bGZT7M/5XlTQofWsz0KkxSy7w==
   dependencies:
     ember-cli-babel "~7.11.0"
-    ember-in-viewport "~3.5.8"
+    ember-in-viewport "~3.7.1"
 
 "ember-inflector@^2.0.0 || ^3.0.0", ember-inflector@^3.0.0, ember-inflector@^3.0.1:
   version "3.0.1"
@@ -7226,7 +7228,7 @@ ember-modal-dialog@^3.0.0:
     ember-ignore-children-helper "^1.0.0"
     ember-wormhole "^0.5.1"
 
-ember-modifier-manager-polyfill@^1.0.1, ember-modifier-manager-polyfill@^1.1.0:
+ember-modifier-manager-polyfill@^1.0.1, ember-modifier-manager-polyfill@^1.1.0, ember-modifier-manager-polyfill@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/ember-modifier-manager-polyfill/-/ember-modifier-manager-polyfill-1.2.0.tgz#cf4444e11a42ac84f5c8badd85e635df57565dda"
   integrity sha512-bnaKF1LLKMkBNeDoetvIJ4vhwRPKIIumWr6dbVuW6W6p4QV8ZiO+GdF8J7mxDNlog9CeL9Z/7wam4YS86G8BYA==
@@ -7234,6 +7236,17 @@ ember-modifier-manager-polyfill@^1.0.1, ember-modifier-manager-polyfill@^1.1.0:
     ember-cli-babel "^7.10.0"
     ember-cli-version-checker "^2.1.2"
     ember-compatibility-helpers "^1.2.0"
+
+ember-modifier@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/ember-modifier/-/ember-modifier-1.0.2.tgz#475ca6d0a5b47cde8077903328ad1ec99e562be8"
+  integrity sha512-YyZ6etJpeMTcrtNJvP+NmyJ+uA2DsYAIg4Mxg9ndYPbe6oXnNTnYQbvF7VIIUuY0Z7zfZ0CwCukFVQESBlJ6Eg==
+  dependencies:
+    ember-cli-babel "^7.11.1"
+    ember-cli-is-package-missing "^1.0.0"
+    ember-cli-normalize-entity-name "^1.0.0"
+    ember-cli-string-utils "^1.1.0"
+    ember-modifier-manager-polyfill "^1.2.0"
 
 ember-moment@^8.0.0:
   version "8.0.0"
@@ -9886,7 +9899,7 @@ inquirer@^7.0.0, inquirer@^7.0.1:
     strip-ansi "^5.1.0"
     through "^2.3.6"
 
-intersection-observer-admin@~0.2.5:
+intersection-observer-admin@~0.2.10:
   version "0.2.10"
   resolved "https://registry.yarnpkg.com/intersection-observer-admin/-/intersection-observer-admin-0.2.10.tgz#f5577240c8713612e7df68e71528e986a84b8c8a"
   integrity sha512-qQo6SDLSSJYMDYo46b9rDA47VFiCn4pOhEMb97I4+iuFJBRfB28+nWpFtlAfkMwUyST30YNlovtebQOwsGKX1g==
@@ -13758,7 +13771,7 @@ quick-temp@^0.1.2, quick-temp@^0.1.3, quick-temp@^0.1.5, quick-temp@^0.1.8:
     rimraf "^2.5.4"
     underscore.string "~3.3.4"
 
-raf-pool@~0.1.3:
+raf-pool@~0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/raf-pool/-/raf-pool-0.1.4.tgz#6b9f75ea1903c16e162ffe8c76688f5a625bc2cd"
   integrity sha512-BBPamTVuSprPq7CUmgxc+ycbsYUtUYnQtJYEfMHXMaostPaNpQzipLfSa/rwjmlgjBPiD7G+I+8W340sLOPu6g==
