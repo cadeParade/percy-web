@@ -99,7 +99,7 @@
     "ember-sinon": "4.1.1",
     "ember-source": "~3.15.0",
     "ember-stripe-elements": "^0.4.0",
-    "ember-test-selectors": "^2.1.0",
+    "ember-test-selectors": "^3.0.0",
     "ember-tether": "^1.0.0",
     "ember-truth-helpers": "^2.1.0",
     "ember-watson": "^0.9.2",
