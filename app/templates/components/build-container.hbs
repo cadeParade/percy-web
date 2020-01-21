@@ -24,7 +24,7 @@
     </div>
   {{/if}}
 
-  {{#if (and (variation 'show-removed-snapshots') build.isFinished (not build.partial))}}
+  {{#if (and build.isFinished (not build.partial))}}
     <RemovedSnapshots @build={{build}} />
   {{/if}}
 
