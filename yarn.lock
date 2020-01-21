@@ -16096,10 +16096,10 @@ treeify@^1.1.0:
   resolved "https://registry.yarnpkg.com/treeify/-/treeify-1.1.0.tgz#4e31c6a463accd0943879f30667c4fdaff411bb8"
   integrity sha512-1m4RA7xVAJrSGrrXGs0L3YTwyvBs2S8PbRHaLZAkFw7JR8oIFwYtysxlBZhYIa7xSyiYJKZ3iGrrk55cGA3i9A==
 
-tributejs@^3.7.3:
-  version "3.7.3"
-  resolved "https://registry.yarnpkg.com/tributejs/-/tributejs-3.7.3.tgz#24f0405aff6383db5e1dc76b9dc1e503e71db9b9"
-  integrity sha512-0al6SLgRjSEvdy4/DCz44Zgq6PzXFsOoYuwyg9obuUnneu5xDfASw2xU0Ww4KKCWH1Fb25gVGQz+B6VZmaNcEQ==
+tributejs@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/tributejs/-/tributejs-4.1.1.tgz#f169a4ad12e485241140ec1ab987b460950c974c"
+  integrity sha512-jc+PcaiNzMjCn2LAQb3i4ic94EsSfLW8Jlk1sK2cb6hLcZFalU9ThcF8rxuKkTUKv1GIvTwN8XseLzCXLxB4lw==
 
 trim-newlines@^1.0.0:
   version "1.0.0"
