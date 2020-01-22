@@ -249,8 +249,8 @@ module.exports = function(environment) {
 
     ENV.APP.bitbucketCloudUrls = {
       integration:
-        'https://bitbucket.org/site/addons/authorize?descriptor_uri=' +
-        'https%3A%2F%2Fpercy.io%2Fapi%2Fbitbucket_cloud%2Fdescriptor&' +
+        'https://bitbucket.org/site/addons/authorize?addon_key=' +
+        'percy-visual-testing&' +
         'redirect_uri=https%3A%2F%2Fpercy.io%2Fapi%2Fbitbucket_cloud' +
         '%2F%@%2Fsetup_redirect',
     };
