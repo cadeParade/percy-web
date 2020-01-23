@@ -1,5 +1,5 @@
 <div class="text-center px-4 py-8">
-  {{#if invitation.isExpired}}
+  {{#if (and invitation.isExpired (not accept.isRunning))}}
     <h3 class="text-2xl font-semibold"><strong>Whoops!</strong> This invite has expired or already been used</h3>
 
     <p>
@@ -8,9 +8,16 @@
   {{else}}
     <h3 class="text-2xl font-semibold mb-2">Join <strong>{{invitation.organization.name}}</strong> on Percy</h3>
 
-    <p>
-      <button class="percy-btn percy-btn-primary" type="button" {{action "accept"}} data-test-accept-invitation>Accept invitation</button>
-    </p>
+    <div class="flex justify-center mb-2">
+      <PercyBtn
+        @handleClick={{perform accept}}
+        @isPrimaryButton={{true}}
+        @isSaving={{accept.isRunning}}
+        @testLabel='invite-accept-button'
+      >
+        Accept invitation
+      </PercyBtn>
+    </div>
     <p>
       Joining as <strong>{{currentUser.name}}</strong>. You can <a href="#" {{action "logout"}}>logout</a> and login as a different user.
     </p>

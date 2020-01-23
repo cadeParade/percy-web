@@ -73,8 +73,15 @@ export default SessionService.extend({
     });
   },
 
-  async forceReloadUser() {
-    return await this.store.queryRecord('user', {});
+  async forceReloadUser({include = ''} = {}) {
+    if (include) {
+      // If there are includes, use the include param
+      return await this.store.queryRecord('user', {include});
+    } else {
+      // If there are no includes specified, do not send any include param.
+      // The empty include param dangles and makes mirage sad.
+      return await this.store.queryRecord('user', {});
+    }
   },
 
   _setupThirdPartyUserContexts(user) {

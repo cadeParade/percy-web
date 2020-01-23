@@ -13,6 +13,7 @@ const SELECTORS = {
   SDK_REQUEST_FIELD: '[data-test-sdk-request-field]',
   PUBLIC_PROJECT_ICON: '[data-test-public-project-icon]',
   NEW_PROJECT_SIDEBAR_LINK: '[data-test-resource-wiget-sidebar-link]',
+  PUBLIC_BUILD_NOTICE: '[data-test-public-project-notice]',
 };
 
 const ProjectPage = {
@@ -47,6 +48,7 @@ const ProjectPage = {
   isFrameworkDocsButtonVisible: isVisible(SELECTORS.FRAMEWORK_DOCS_BUTTON),
 
   isSdkRequestFieldVisible: isVisible(SELECTORS.SDK_REQUEST_FIELD),
+  publicBuildNotice: {scope: SELECTORS.PUBLIC_BUILD_NOTICE},
 };
 
 export default create(ProjectPage);
