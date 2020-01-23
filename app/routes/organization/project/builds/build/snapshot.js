@@ -5,6 +5,7 @@ import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
 
 export default Route.extend(ResetScrollMixin, {
+  snapshotQuery: service(),
   store: service(),
   flashMessages: service(),
   session: service(),
@@ -17,7 +18,7 @@ export default Route.extend(ResetScrollMixin, {
     this.set('params', params);
     const organization = this.modelFor('organization');
     return hash({
-      snapshot: this.store.findRecord('snapshot', params.snapshot_id, {reload: true}),
+      snapshot: this.snapshotQuery.getSnapshot(params.snapshot_id),
       isUserMember: isUserMember(this.session.currentUser, organization),
     });
   },

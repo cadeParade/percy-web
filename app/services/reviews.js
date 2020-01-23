@@ -7,6 +7,7 @@ export default Service.extend({
   store: service(),
   analytics: service(),
   snapshotQuery: service(),
+  commentThreadQuery: service(),
 
   async createApprovalReview(build, snapshots, eventData) {
     const review = this.store.createRecord('review', {
@@ -32,8 +33,9 @@ export default Service.extend({
       reload: true,
       include: 'approved-by',
     });
-    const refreshedSnapshots = this.snapshotQuery.getChangedSnapshotsWithComments(build);
-    await Promise.all([refreshedBuild, refreshedSnapshots]);
+    const refreshedSnapshots = this.snapshotQuery.getChangedSnapshots(build);
+    const snapshotsComments = this.commentThreadQuery.getCommentsForSnapshots(review.snapshots);
+    await Promise.all([refreshedBuild, refreshedSnapshots, snapshotsComments]);
 
     if (eventData && eventData.title) {
       this._trackEventData(eventData, build);

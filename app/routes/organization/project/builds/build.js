@@ -8,6 +8,7 @@ import {SNAPSHOT_REJECTED_STATE, SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/
 
 export default Route.extend({
   snapshotQuery: service(),
+  commentThreadQuery: service(),
   reviews: service(),
   confirm: service(),
   session: service(),
@@ -19,12 +20,7 @@ export default Route.extend({
       // Note: passing {reload: true} here to ensure a full reload including all sideloaded data.
       build: this.store.findRecord('build', params.build_id, {reload: true}),
       isUserMember: isUserMember(this.session.currentUser, org),
-      commentThreads: this.store.query('commentThread', {
-        filter: {
-          build: params.build_id,
-        },
-        include: 'comments,comments.author',
-      }),
+      commentThreads: this.commentThreadQuery.getCommentsForBuild(params.build_id),
     });
   },
 
