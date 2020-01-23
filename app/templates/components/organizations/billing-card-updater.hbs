@@ -1,7 +1,7 @@
 <StripeCard
   data-test-billing-card-updater-stripe-card={{true}}
-  options={{stripeOptions}}
-  change={{action 'checkCard'}}
+  @options={{stripeOptions}}
+  @change={{action 'checkCard'}}
   as |stripeElement stripeError|
 >
   {{#if stripeError}}
