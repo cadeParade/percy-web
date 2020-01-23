@@ -22,9 +22,12 @@ export default Service.extend({
   },
 
   getChangedSnapshots(build) {
+    const isBuildId = typeof build === 'number' || typeof build === 'string';
+    const buildId = isBuildId ? build : build.get('id');
+
     return this.store.loadRecords('snapshot', {
       filter: {
-        build: build.get('id'),
+        build: buildId,
         'review-state-reason': DIFF_REVIEW_STATE_REASONS.join(','),
       },
     });
@@ -43,6 +46,15 @@ export default Service.extend({
         snapshot_ids: [snapshotId],
       },
       include: 'comments,comments.author',
+    });
+  },
+
+  getSnapshotsNoIncludes(buildId) {
+    return this.store.query('snapshot', {
+      filter: {
+        build: buildId,
+      },
+      include: 'null',
     });
   },
 });

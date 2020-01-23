@@ -144,6 +144,9 @@ Router.map(function() {
           // Deprecated -- forwards to ^
           this.route('deprecated-snapshot', {path: '/view/:snapshot_id/:width'});
         });
+        this.route('build2', {path: 'builds2/:build_id'}, function() {
+          this.route('snapshot', {path: '/view/:snapshot_id'});
+        });
         this.route('default-comparison', {path: 'snapshot/:snapshot_id/default-comparison'});
       });
     });

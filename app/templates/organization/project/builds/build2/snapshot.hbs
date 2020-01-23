@@ -1,0 +1,16 @@
+{{snapshot.name}}
+<SnapshotViewerFull
+  @snapshot={{snapshot}}
+  @snapshotSelectedWidth={{snapshotSelectedWidth}}
+  @comparisonMode={{comparisonMode}}
+  @activeBrowser={{activeBrowser}}
+  @isBuildApprovable={{isBuildApprovable}}
+  @updateComparisonMode={{route-action "updateComparisonMode"}}
+  @transitionRouteToWidth={{route-action "transitionRouteToWidth"}}
+  @createReview={{route-action "noop"}}
+  @updateActiveBrowser={{route-action "updateActiveBrowser"}}
+  @createCommentThread={{route-action "noop"}}
+  @closeCommentThread={{route-action "noop"}}
+  @createComment={{route-action "noop"}}
+
+/>

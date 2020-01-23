@@ -1,0 +1,25 @@
+{{title model.build.buildTitle}}
+<div class="p2">
+  <div>{{model.build.buildNumber}}</div>
+  <div class="flex">
+    <div class="w-2/5">
+      <ul>
+        {{#each model.snapshots as |snapshot|}}
+          <li>
+            <LinkTo
+              @route="organization.project.builds.default-comparison"
+              @models={{array
+                snapshot.id
+              }}
+            >
+              {{snapshot.name}}
+            </LinkTo>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+    <div class="w-3/5">
+      {{outlet}}
+    </div>
+  </div>
+</div>

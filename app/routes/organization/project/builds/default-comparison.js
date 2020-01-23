@@ -12,7 +12,7 @@ export default Route.extend({
       const comparisons = snapshot.comparisons.toArray();
       const sortedComparisons = comparisonSort(comparisons);
       const comparisonToShow = sortedComparisons.firstObject;
-      this.transitionTo('organization.project.builds.build.snapshot', buildId, snapshot.id, {
+      this.transitionTo('organization.project.builds.build2.snapshot', buildId, snapshot.id, {
         queryParams: {
           width: comparisonToShow.width,
           mode: comparisonToShow.diffRatio > 0 ? 'diff' : 'head',
