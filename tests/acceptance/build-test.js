@@ -1199,7 +1199,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       server.create('commentThread', 'withTwoComments', {snapshot});
       server.create('commentThread', 'withOneComment', {snapshot});
       server.create('commentThread', 'withTenComments', 'note', {snapshot});
-
+      snapshot.update({totalOpenComments: 13});
       await BuildPage.visitFullPageSnapshot(urlParams);
     });
 
@@ -1303,6 +1303,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
         snapshot,
         createdAt: '2019-09-06T08:18:49-06:00',
       });
+      snapshot.update({totalOpenComments: 2});
       websocketService = this.owner.lookup('service:websocket');
       const pusherMock = new PusherMock();
       websocketService.set('_socket', pusherMock);

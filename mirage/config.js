@@ -393,6 +393,9 @@ export default function() {
 
     snapshots.models.forEach(snapshot => {
       snapshot.update({reviewState, reviewStateReason});
+      if (reviewState === SNAPSHOT_REJECTED_STATE) {
+        snapshot.update({totalOpenComments: snapshot.totalOpenComments + 1});
+      }
     });
 
     if (attrs.action === REVIEW_ACTIONS.REJECT) {

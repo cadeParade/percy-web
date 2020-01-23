@@ -195,6 +195,7 @@ describe('Integration: SnapshotViewerFull', function() {
       describe('when there are open comments', function() {
         beforeEach(async function() {
           makeList('comment-thread', 2, 'withTwoComments', {snapshot});
+          snapshot.set('totalOpenComments', 2);
         });
 
         it('shows panel by default', async function() {
@@ -210,6 +211,7 @@ describe('Integration: SnapshotViewerFull', function() {
         beforeEach(async function() {
           make('comment-thread', 'withTwoComments', 'closed', {snapshot});
           make('comment-thread', 'withTwoComments', 'closed', 'note', {snapshot});
+          snapshot.set('totalOpenComments', 0);
         });
 
         it('hides panel by default', async function() {

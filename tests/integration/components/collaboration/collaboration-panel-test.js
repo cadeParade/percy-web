@@ -29,11 +29,13 @@ describe('Integration: CollaborationPanel', function() {
       user = make('user');
       const commentThreads = [];
       const isCommentingAllowed = true;
-      this.setProperties({commentThreads, user, saveStub, isCommentingAllowed});
+      const snapshot = make('snapshot', {totalOpenComments: 0});
+      this.setProperties({commentThreads, user, saveStub, isCommentingAllowed, snapshot});
 
       await render(hbs`<Collaboration::CollaborationPanel
         @commentThreads={{commentThreads}}
         @isCommentingAllowed={{isCommentingAllowed}}
+        @snapshot={{snapshot}}
       />`);
     });
 
@@ -71,9 +73,12 @@ describe('Integration: CollaborationPanel', function() {
         newOpenCommentThread,
       ];
 
-      this.setProperties({commentThreads});
+      const snapshot = make('snapshot', {commentThreads, totalOpenComments: 8});
+
+      this.setProperties({commentThreads, snapshot});
       await render(hbs`<Collaboration::CollaborationPanel
         @commentThreads={{commentThreads}}
+        @snapshot={{snapshot}}
       />`);
 
       expect(CollaborationPanel.newComment.isNewThreadButtonVisible).to.equal(true);
@@ -96,10 +101,13 @@ describe('Integration: CollaborationPanel', function() {
     });
 
     it('does not show "New Comment" button when isCommentingAllowed is false', async function() {
-      this.set('commentThreads', makeList('comment-thread', 2, 'withOneComment'));
+      const commentThreads = makeList('comment-thread', 2, 'withOneComment');
+      const snapshot = make('snapshot', {commentThreads, totalOpenComments: 2});
+      this.setProperties({commentThreads, snapshot});
       await render(hbs`<Collaboration::CollaborationPanel
         @commentThreads={{commentThreads}}
         @isCommentingAllowed={{false}}
+        @snapshot={{snapshot}}
       />`);
 
       expect(CollaborationPanel.newComment.isNewThreadButtonVisible).to.equal(false);
