@@ -1,5 +1,5 @@
 import {computed} from '@ember/object';
-import {alias, filterBy, notEmpty, readOnly} from '@ember/object/computed';
+import {alias, filterBy, gt, readOnly} from '@ember/object/computed';
 import Component from '@ember/component';
 import filteredComparisons from 'percy-web/lib/filtered-comparisons';
 import {EKMixin, keyDown} from 'ember-keyboard';
@@ -31,7 +31,7 @@ export default Component.extend(EKMixin, {
 
   commentThreads: readOnly('snapshot.commentThreads'),
   openCommentThreads: filterBy('commentThreads', 'isOpen'),
-  defaultIsCommentPanelShowing: notEmpty('openCommentThreads'),
+  defaultIsCommentPanelShowing: gt('snapshot.totalOpenComments', 0),
   isCommentPanelShowing: computed('userIsCommentPanelShowing', 'openCommentThreads.[]', function() {
     if (this.userIsCommentPanelShowing !== undefined) {
       return this.userIsCommentPanelShowing;

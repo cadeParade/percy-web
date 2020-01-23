@@ -1,6 +1,10 @@
 <div class="collaboration-panel p-2 lg:p-0 lg:border-b" data-test-collaboration-panel>
   <div class="collaboration-container">
-    {{#if isCommentingAllowed}}
+    {{#if areCommentsLoading}}
+      <div class="LoadingPage">
+        {{fa-icon 'spinner fa-pulse'}}
+      </div>
+    {{else if isCommentingAllowed}}
       <Collaboration::NewThread
         @shouldShowNewCommentInput={{not hasCommentThreads}}
         @currentUser={{currentUser}}

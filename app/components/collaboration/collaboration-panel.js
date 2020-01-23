@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import {computed} from '@ember/object';
 import {filterBy, notEmpty, readOnly, sort} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
 
@@ -19,6 +20,15 @@ export default Component.extend({
   openThreads: filterBy('_dateOrderedCommentThreads', 'isOpen'),
   closedThreads: filterBy('_dateOrderedCommentThreads', 'isClosed'),
   hasClosedThreads: notEmpty('closedThreads'),
+
+  areCommentsLoading: computed('snapshot.totalOpenComments', 'commentThreads.[]', function() {
+    const numCachedComments = parseInt(this.snapshot.totalOpenComments);
+    const numLoadedComments = this.commentThreads.reduce((acc, thread) => {
+      acc += thread.comments.length;
+      return acc;
+    }, 0);
+    return numCachedComments > numLoadedComments;
+  }),
 
   actions: {
     showClosedComments() {
