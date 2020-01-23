@@ -1,8 +1,26 @@
 {{title model.build.buildTitle}}
 <div class="p2">
-  <div>{{model.build.buildNumber}}</div>
+  <BuildToolbar
+    @build={{model.build}}
+    @project={{model.build.project}}
+    @organization={{model.build.project.organization}}
+    @allDiffsShown={{true}}
+    @toggleAllDiffs={{route-action "noop"}}
+    @createReview={{route-action "noop"}}
+    @approvableSnapshots={{model.snapshots}}
+    @updateActiveBrowser={{route-action "noop"}}
+    @isSnapshotsLoading={{false}}
+    @isBuildApprovable={{false}}
+  />
+  <BuildHeader
+    @build={{model.build}}
+    @isBuildApprovable={{false}}
+  />
+  <div class="p-2 w-full">
+    <div>build {{model.build.buildNumber}}</div>
+  </div>
   <div class="flex">
-    <div class="w-2/5">
+    <div class="w-1/5 h-screen overflow-y-scroll">
       <ul>
         {{#each model.snapshots as |snapshot|}}
           <li>
@@ -18,7 +36,7 @@
         {{/each}}
       </ul>
     </div>
-    <div class="w-3/5">
+    <div class="w-4/5 h-screen overflow-y-scroll">
       {{outlet}}
     </div>
   </div>
