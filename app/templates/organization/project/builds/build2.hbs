@@ -21,20 +21,7 @@
   </div>
   <div class="flex">
     <div class="w-1/5 h-screen overflow-y-scroll">
-      <ul>
-        {{#each model.snapshots as |snapshot|}}
-          <li>
-            <LinkTo
-              @route="organization.project.builds.default-comparison"
-              @models={{array
-                snapshot.id
-              }}
-            >
-              {{snapshot.name}}
-            </LinkTo>
-          </li>
-        {{/each}}
-      </ul>
+      <SnapshotNameList @snapshots={{model.snapshots}} />
     </div>
     <div class="w-4/5 h-screen overflow-y-scroll">
       {{outlet}}

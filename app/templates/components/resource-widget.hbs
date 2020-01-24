@@ -36,7 +36,8 @@
               Request framework:
             </div>
             <Input
-              @type="text" class="form-control h-10 m-0"
+              @type="text"
+              class="form-control h-10 m-0"
               @value={{mut requestedFramework}} data-test-sdk-request-field={{true}}
               @enter={{action "saveRequest"}}
             />
