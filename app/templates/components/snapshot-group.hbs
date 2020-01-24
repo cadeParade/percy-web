@@ -30,13 +30,22 @@
     <div class="flex justify-end">
       <div class="btn-toolbar">
         {{#if isGroupCollapsed}}
-          <div class="btn-group" role="group" aria-label="Second Group">
-            <button type="button" class="ToggleFullViewButton btn btn-square maximize-snapshot" {{action showSnapshotFullModalTriggered snapshots.firstObject.id blockSelectedWidth activeBrowser}} data-test-snapshot-header-dropdown-toggle>
-              <figure class="svg-container">
-                <ThemeSvg @svg="maximize-icon" />
-              </figure>
-            </button>
-          </div>
+
+          <LinkTo
+            @route="organization.project.builds.default-comparison"
+            @model={{snapshots.firstObject.id}}
+            @query={{hash
+              currentWidth=blockSelectedWidth
+              activeBrowserFamilySlug=activeBrowser.familySlug
+            }}
+            class="ToggleFullViewButton btn btn-square maximize-snapshot"
+            aria-label="Maximize snapshot"
+            data-test-snapshot-header-dropdown-toggle
+          >
+            <figure class="svg-container">
+              <ThemeSvg @svg="maximize-icon" />
+            </figure>
+          </LinkTo>
         {{/if}}
 
         <div class="btn-toolbar">
@@ -163,7 +172,6 @@
                 @allDiffsShown={{allDiffsShown}}
                 @activeSnapshotBlockId={{activeSnapshotBlockId}}
                 @shouldDeferRendering={{shouldDeferRendering}}
-                @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
                 @createReview={{createReview}}
                 @updateActiveSnapshotBlockId={{updateActiveSnapshotBlockId}}
                 @activeBrowser={{activeBrowser}}

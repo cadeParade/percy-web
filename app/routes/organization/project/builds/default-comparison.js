@@ -12,18 +12,13 @@ export default Route.extend({
       const comparisons = snapshot.comparisons.toArray();
       const sortedComparisons = comparisonSort(comparisons);
       const comparisonToShow = sortedComparisons.firstObject;
-      this.transitionTo(
-        'organization.project.builds.build.snapshot',
-        buildId,
-        snapshot.id,
-        comparisonToShow.width,
-        {
-          queryParams: {
-            mode: comparisonToShow.diffRatio > 0 ? 'diff' : 'head',
-            activeBrowserFamilySlug: comparisonToShow.browser.familySlug,
-          },
+      this.transitionTo('organization.project.builds.build.snapshot', buildId, snapshot.id, {
+        queryParams: {
+          width: comparisonToShow.width,
+          mode: comparisonToShow.diffRatio > 0 ? 'diff' : 'head',
+          activeBrowserFamilySlug: comparisonToShow.browser.familySlug,
         },
-      );
+      });
     });
   },
 });

@@ -4,6 +4,7 @@ import Component from '@ember/component';
 import filteredComparisons from 'percy-web/lib/filtered-comparisons';
 import {EKMixin, keyDown} from 'ember-keyboard';
 import {on} from '@ember/object/evented';
+import {inject as service} from '@ember/service';
 
 const KEYS = {
   RIGHT_ARROW: 39,
@@ -12,6 +13,8 @@ const KEYS = {
 const GALLERY_MAP = ['diff', 'base', 'head'];
 
 export default Component.extend(EKMixin, {
+  router: service(),
+
   classNames: ['SnapshotViewerFull', 'overflow-y-scroll'],
   attributeBindings: ['data-test-snapshot-viewer-full'],
   'data-test-snapshot-viewer-full': true,
@@ -20,7 +23,6 @@ export default Component.extend(EKMixin, {
   comparisonMode: null,
   updateComparisonMode: null,
   transitionRouteToWidth: null,
-  closeSnapshotFullModal: null,
   createReview: null,
   snapshot: null,
   snapshotSelectedWidth: null,
@@ -84,7 +86,10 @@ export default Component.extend(EKMixin, {
   },
 
   onEscKeyPress: on(keyDown('Escape'), function() {
-    this.closeSnapshotFullModal();
+    this.router.transitionTo(
+      'organization.project.builds.build.index',
+      this.snapshot.build.get('id'),
+    );
   }),
 
   onLeftRightArrowPress: on(keyDown('ArrowRight'), keyDown('ArrowLeft'), function(event) {
@@ -92,13 +97,5 @@ export default Component.extend(EKMixin, {
       return;
     }
     this.send('cycleComparisonMode', event.keyCode);
-  }),
-
-  onUpArrowPress: on(keyDown('ArrowUp'), function() {
-    this.updateSnapshotId({isNext: false});
-  }),
-
-  onDownArrowPress: on(keyDown('ArrowDown'), function() {
-    this.updateSnapshotId({isNext: true});
   }),
 });

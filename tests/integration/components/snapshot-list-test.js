@@ -44,7 +44,6 @@ describe('Integration: SnapshotList', function() {
         @snapshotsChanged={{snapshotsChanged}}
         @build={{build}}
         @createReview={{stub}}
-        @showSnapshotFullModalTriggered={{stub}}
         @activeBrowser={{browser}}
         @shouldDeferRendering={{shouldDeferRendering}}
         @toggleUnchangedSnapshotsVisible={{stub}}
@@ -103,7 +102,6 @@ describe('Integration: SnapshotList', function() {
         @snapshotsChanged={{snapshotsChanged}}
         @build={{build}}
         @createReview={{stub}}
-        @showSnapshotFullModalTriggered={{stub}}
         @isKeyboardNavEnabled={{isKeyboardNavEnabled}}
         @activeBrowser={{browser}}
         @toggleUnchangedSnapshotsVisible={{stub}}
@@ -341,9 +339,8 @@ describe('Integration: SnapshotList', function() {
         @snapshotsUnchanged={{snapshotsUnchanged}}
         @build={{build}}
         @createReview={{stub}}
-        @showSnapshotFullModalTriggered={{stub}}
-        @activeBrowser={{browser}}
         @toggleUnchangedSnapshotsVisible={{stub}}
+        @activeBrowser={{browser}}
         @isBuildApprovable={{true}}
       />`);
     });

@@ -20,14 +20,12 @@ describe('Integration: SnapshotViewer', function() {
   });
 
   let snapshotTitle;
-  let showSnapshotFullModalTriggeredStub;
   let snapshot;
   let createReviewStub;
 
   beforeEach(function() {
     setupFactoryGuy(this);
 
-    showSnapshotFullModalTriggeredStub = sinon.stub();
     createReviewStub = sinon.stub().returns(resolve());
     snapshotTitle = 'Awesome snapshot title';
     snapshot = make('snapshot', 'withComparisons', {name: snapshotTitle});
@@ -42,7 +40,6 @@ describe('Integration: SnapshotViewer', function() {
       build,
       browser,
       userSelectedWidth: null,
-      showSnapshotFullModalTriggered: showSnapshotFullModalTriggeredStub,
       createReview: createReviewStub,
       isBuildApprovable: true,
     });
@@ -52,7 +49,6 @@ describe('Integration: SnapshotViewer', function() {
     await render(hbs`<SnapshotViewer
       @snapshot={{snapshot}}
       @build={{build}}
-      @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
       @userSelectedWidth={{userSelectedWidth}}
       @createReview={{createReview}}
       @activeBrowser={{browser}}
@@ -68,7 +64,6 @@ describe('Integration: SnapshotViewer', function() {
     await render(hbs`<SnapshotViewer
       @snapshot={{snapshot}}
       @build={{build}}
-      @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
       @userSelectedWidth={{userSelectedWidth}}
       @activeBrowser={{browser}}
       @createReview={{createReview}}
@@ -83,7 +78,6 @@ describe('Integration: SnapshotViewer', function() {
       await render(hbs`<SnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @userSelectedWidth={{userSelectedWidth}}
         @activeBrowser={{browser}}
         @createReview={{createReview}}
@@ -112,7 +106,6 @@ describe('Integration: SnapshotViewer', function() {
       await render(hbs`<SnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @userSelectedWidth={{userSelectedWidth}}
         @activeBrowser={{browser}}
         @createReview={{createReview}}
@@ -130,7 +123,6 @@ describe('Integration: SnapshotViewer', function() {
       await render(hbs`<SnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @userSelectedWidth={{userSelectedWidth}}
         @activeBrowser={{browser}}
         @createReview={{createReview}}
@@ -146,7 +138,6 @@ describe('Integration: SnapshotViewer', function() {
       await render(hbs`<SnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @userSelectedWidth={{userSelectedWidth}}
         @createReview={{createReview}}
         @activeBrowser={{browser}}
@@ -177,7 +168,6 @@ describe('Integration: SnapshotViewer', function() {
       await render(hbs`<SnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @userSelectedWidth={{userSelectedWidth}}
         @createReview={{createReview}}
         @updateActiveSnapshotBlockId={{stub}}
@@ -189,17 +179,6 @@ describe('Integration: SnapshotViewer', function() {
     it('displays', async function() {
       expect(SnapshotViewer.header.isFullScreenToggleVisible).to.equal(true);
     });
-
-    it('sends closeSnapshotFullModal when toggle fullscreen button is clicked', async function() {
-      const selectedWidth = snapshot.get('comparisons.firstObject.width');
-      this.set('userSelectedWidth', selectedWidth);
-
-      await SnapshotViewer.header.clickToggleFullscreen();
-      expect(showSnapshotFullModalTriggeredStub).to.have.been.calledWith(
-        this.get('snapshot.id'),
-        selectedWidth,
-      );
-    });
   });
 
   describe('expand/collapse', function() {
@@ -209,7 +188,6 @@ describe('Integration: SnapshotViewer', function() {
       await render(hbs`<SnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @userSelectedWidth={{userSelectedWidth}}
         @createReview={{createReview}}
         @activeSnapshotBlockId={{activeSnapshotBlockId}}
@@ -255,7 +233,6 @@ describe('Integration: SnapshotViewer', function() {
       await render(hbs`<SnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @createReview={{createReview}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
@@ -279,7 +256,6 @@ describe('Integration: SnapshotViewer', function() {
       await render(hbs`<SnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @createReview={{createReview}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
@@ -305,13 +281,12 @@ describe('Integration: SnapshotViewer', function() {
         await render(hbs`<SnapshotViewer
           @snapshot={{snapshot}}
           @build={{build}}
-          @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
           @userSelectedWidth={{userSelectedWidth}}
           @createReview={{createReview}}
           @activeBrowser={{browser}}
           @isBuildApprovable={{isBuildApprovable}}
           @updateActiveSnapshotBlockId={{stub}}
-          createCommentThread=stub
+          @createCommentThread={{stub}}
         />`);
       });
 
@@ -335,13 +310,12 @@ describe('Integration: SnapshotViewer', function() {
           await render(hbs`<SnapshotViewer
             @snapshot={{snapshot}}
             @build={{build}}
-            @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
             @userSelectedWidth={{userSelectedWidth}}
             @createReview={{createReview}}
             @activeBrowser={{browser}}
             @isBuildApprovable={{isBuildApprovable}}
             @updateActiveSnapshotBlockId={{stub}}
-            createCommentThread=stub
+            @createCommentThread={{stub}}
           />`);
         });
 
@@ -360,13 +334,12 @@ describe('Integration: SnapshotViewer', function() {
           await render(hbs`<SnapshotViewer
             @snapshot={{snapshot}}
             @build={{build}}
-            @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
             @userSelectedWidth={{userSelectedWidth}}
             @createReview={{createReview}}
             @activeBrowser={{browser}}
             @isBuildApprovable={{isBuildApprovable}}
             @updateActiveSnapshotBlockId={{stub}}
-            createCommentThread=stub
+            @createCommentThread={{stub}}
           />`);
         });
 
@@ -386,13 +359,12 @@ describe('Integration: SnapshotViewer', function() {
           await render(hbs`<SnapshotViewer
             @snapshot={{snapshot}}
             @build={{build}}
-            @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
             @userSelectedWidth={{userSelectedWidth}}
             @createReview={{createReview}}
             @activeBrowser={{browser}}
             @isBuildApprovable={{isBuildApprovable}}
             @updateActiveSnapshotBlockId={{stub}}
-            createCommentThread=stub
+            @createCommentThread={{stub}}
           />`);
         });
 

@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import {equal, mapBy, max, not, or, notEmpty, filterBy} from '@ember/object/computed';
+import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 
 export const SNAPSHOT_APPROVED_STATE = 'approved';
 export const SNAPSHOT_UNAPPROVED_STATE = 'unreviewed';
@@ -25,7 +26,7 @@ export const DIFF_REVIEW_STATE_REASONS = [
   SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED_PREVIOUSLY,
 ];
 
-export default DS.Model.extend({
+export default DS.Model.extend(LoadableModel, {
   comparisons: DS.hasMany('comparisons', {
     async: false,
     inverse: 'headSnapshot',

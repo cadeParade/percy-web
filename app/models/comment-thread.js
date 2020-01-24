@@ -1,10 +1,11 @@
 import DS from 'ember-data';
 import {and, empty, equal, notEmpty} from '@ember/object/computed';
+import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 
 export const REVIEW_COMMENT_TYPE = 'request_changes';
 export const NOTE_COMMENT_TYPE = 'note';
 
-export default DS.Model.extend({
+export default DS.Model.extend(LoadableModel, {
   snapshot: DS.belongsTo('snapshot', {async: false}),
   comments: DS.hasMany('comment', {async: false}),
   type: DS.attr('string'),

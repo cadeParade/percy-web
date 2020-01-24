@@ -1,17 +1,6 @@
 {{!-- template-lint-disable no-nested-interactive --}}
 <header class="SnapshotViewer-header {{if fullscreen 'SnapshotViewer-header-full w-screen z-2'}}" data-test-SnapshotViewer-header {{action expandSnapshot}} role="button">
   <div style="min-width: 0;" class="flex items-center">
-    {{#if fullscreen}}
-      <div class="btn-group mr-2">
-        <button type="button" class="btn btn-square" {{action updateSnapshotId (hash isNext=false)}} data-test-previous-snapshot aria-label="Navigate to next snapshot">
-          {{inline-svg "gray-arrow-up"}}
-        </button>
-        <button type="button" class="btn btn-square" {{action updateSnapshotId}} data-test-next-snapshot aria-label="Navigate to previous snapshot">
-          {{inline-svg "gray-arrow-down"}}
-        </button>
-      </div>
-    {{/if}}
-
     <div class="flex items-center overflow-hidden">
       {{#if snapshot.isRejected}}
         <div class="mr-1">
@@ -135,15 +124,35 @@
       </div>
 
       <div class="btn-group" role="group" aria-label="Second Group">
-        <button type="button" class="ToggleFullViewButton btn btn-square {{if fullscreen 'minimize-snapshot' 'maximize-snapshot'}}" {{action toggleViewMode}} aria-label="{{if fullscreen "Minimize" "Maximize"}} snapshot" data-test-SnapshotViewer-toggleFullScreen>
-          <figure class="svg-container">
-            {{#if fullscreen}}
+        {{#if fullscreen}}
+          <LinkTo
+            @route="organization.project.builds.build.index"
+            @models={{array snapshot.build.project.organization.slug snapshot.build.project.slug snapshot.build.id}}
+            class="ToggleFullViewButton btn btn-square minimize-snapshot"
+            aria-label="Minimize snapshot"
+            data-test-SnapshotViewer-toggleFullScreen
+          >
+            <figure class="svg-container">
               <ThemeSvg @svg="minimize-icon" />
-            {{else}}
+            </figure>
+          </LinkTo>
+        {{else}}
+          <LinkTo
+            @route="organization.project.builds.build.snapshot"
+            @model={{snapshot.id}}
+            @query={{hash
+              currentWidth=snapshotSelectedWidth
+              activeBrowserFamilySlug=activeBrowser.familySlug
+            }}
+            class="ToggleFullViewButton btn btn-square maximize-snapshot"
+            aria-label="Maximize snapshot"
+            data-test-SnapshotViewer-toggleFullScreen
+          >
+            <figure class="svg-container">
               <ThemeSvg @svg="maximize-icon" />
-            {{/if}}
-          </figure>
-        </button>
+            </figure>
+          </LinkTo>
+        {{/if}}
       </div>
 
       {{#if snapshot.build.isFinished}}

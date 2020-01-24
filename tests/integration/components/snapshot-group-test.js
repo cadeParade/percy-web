@@ -18,7 +18,6 @@ describe('Integration: SnapshotGroup', function() {
     integration: true,
   });
 
-  let showSnapshotFullModalTriggeredStub;
   let snapshots;
   let approvedSnapshots;
   let createReviewStub;
@@ -26,7 +25,6 @@ describe('Integration: SnapshotGroup', function() {
   beforeEach(function() {
     setupFactoryGuy(this);
 
-    showSnapshotFullModalTriggeredStub = sinon.stub();
     createReviewStub = sinon.stub().returns(resolve());
     snapshots = makeList('snapshot', 5, 'withComparisons', {fingerprint: 'fingerprint'});
     approvedSnapshots = makeList('snapshot', 5, 'withComparisons', 'approved', {
@@ -43,7 +41,6 @@ describe('Integration: SnapshotGroup', function() {
       build,
       browser,
       userSelectedWidth: null,
-      showSnapshotFullModalTriggered: showSnapshotFullModalTriggeredStub,
       createReview: createReviewStub,
       isBuildApprovable: true,
     });
@@ -65,7 +62,6 @@ describe('Integration: SnapshotGroup', function() {
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @userSelectedWidth={{userSelectedWidth}}
         @activeBrowser={{browser}}
         @createReview={{createReview}}
@@ -81,7 +77,6 @@ describe('Integration: SnapshotGroup', function() {
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @userSelectedWidth={{userSelectedWidth}}
         @createReview={{createReview}}
         @activeBrowser={{browser}}
@@ -101,7 +96,6 @@ describe('Integration: SnapshotGroup', function() {
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @userSelectedWidth={{userSelectedWidth}}
         @createReview={{createReview}}
         @updateActiveSnapshotBlockId={{stub}}
@@ -113,17 +107,6 @@ describe('Integration: SnapshotGroup', function() {
     it('displays', async function() {
       expect(SnapshotGroup.header.isFullScreenToggleVisible).to.equal(true);
     });
-
-    it('sends showSnapshotFullModalTriggered toggle fullscreen button', async function() {
-      const selectedWidth = snapshots.get('firstObject.comparisons.firstObject.width');
-      this.set('userSelectedWidth', selectedWidth);
-
-      await SnapshotGroup.header.clickToggleFullscreen();
-      expect(showSnapshotFullModalTriggeredStub).to.have.been.calledWith(
-        this.get('snapshots.firstObject.id'),
-        selectedWidth,
-      );
-    });
   });
 
   describe('expand/collapse', function() {
@@ -133,7 +116,6 @@ describe('Integration: SnapshotGroup', function() {
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @userSelectedWidth={{userSelectedWidth}}
         @createReview={{createReview}}
         @activeSnapshotBlockId={{activeSnapshotBlockId}}
@@ -193,7 +175,6 @@ describe('Integration: SnapshotGroup', function() {
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @userSelectedWidth={{userSelectedWidth}}
         @createReview={{createReview}}
         @activeSnapshotBlockId={{activeSnapshotBlockId}}
@@ -232,7 +213,6 @@ describe('Integration: SnapshotGroup', function() {
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @createReview={{createReview}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
@@ -251,7 +231,6 @@ describe('Integration: SnapshotGroup', function() {
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @userSelectedWidth={{userSelectedWidth}}
         @activeBrowser={{browser}}
         @createReview={{createReview}}
@@ -315,7 +294,6 @@ describe('Integration: SnapshotGroup', function() {
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @createReview={{createReview}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
@@ -338,7 +316,6 @@ describe('Integration: SnapshotGroup', function() {
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @createReview={{createReview}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
@@ -354,7 +331,6 @@ describe('Integration: SnapshotGroup', function() {
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @userSelectedWidth={{userSelectedWidth}}
         @createReview={{createReview}}
         @activeSnapshotBlockId={{activeSnapshotBlockId}}
@@ -398,7 +374,6 @@ describe('Integration: SnapshotGroup', function() {
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @showSnapshotFullModalTriggered={{showSnapshotFullModalTriggered}}
         @userSelectedWidth={{userSelectedWidth}}
         @createReview={{createReview}}
         @activeSnapshotBlockId={{activeSnapshotBlockId}}

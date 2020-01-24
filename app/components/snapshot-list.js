@@ -20,7 +20,6 @@ export default Component.extend(EKMixin, {
   snapshotsChanged: null,
   build: null,
   isKeyboardNavEnabled: null,
-  showSnapshotFullModalTriggered: null,
   createReview: null,
   allDiffsShown: null,
   toggleAllDiffs: null,

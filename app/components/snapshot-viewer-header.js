@@ -23,7 +23,6 @@ export default Component.extend({
   tagName: '',
 
   // required actions
-  toggleViewMode: null,
   updateSelectedWidth: null,
 
   // optional actions

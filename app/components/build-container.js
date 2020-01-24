@@ -102,10 +102,6 @@ export default Component.extend(PollingMixin, {
     this.snapshotsUnchanged = this.snapshotsUnchanged || [];
   },
   actions: {
-    showSnapshotFullModalTriggered(snapshotId, snapshotSelectedWidth, activeBrowser) {
-      this.openSnapshotFullModal(snapshotId, snapshotSelectedWidth, activeBrowser);
-    },
-
     updateActiveBrowser(newBrowser) {
       this.set('chosenBrowser', newBrowser);
       this._resetUnchangedSnapshots();

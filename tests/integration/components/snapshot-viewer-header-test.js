@@ -28,7 +28,6 @@ describe('Integration: SnapshotViewerHeader', function() {
     it('shows dropdown toggle', async function() {
       await render(hbs`<SnapshotViewerHeader
         @snapshot={{snapshot}}
-        @toggleViewMode={{stub}}
         @updateSelectedWidth={{stub}}
         @expandSnapshot={{stub}}
         @activeBrowser={{browser}}
@@ -40,7 +39,6 @@ describe('Integration: SnapshotViewerHeader', function() {
     it('toggles dropdown pane when dropdown toggle is clicked', async function() {
       await render(hbs`<SnapshotViewerHeader
         @snapshot={{snapshot}}
-        @toggleViewMode={{stub}}
         @updateSelectedWidth={{stub}}
         @activeBrowser={{browser}}
       />`);
@@ -55,7 +53,6 @@ describe('Integration: SnapshotViewerHeader', function() {
     it('shows copy url option', async function() {
       await render(hbs`<SnapshotViewerHeader
         @snapshot={{snapshot}}
-        @toggleViewMode={{stub}}
         @updateSelectedWidth={{stub}}
         @activeBrowser={{browser}}
       />`);
@@ -78,7 +75,6 @@ describe('Integration: SnapshotViewerHeader', function() {
 
         await render(hbs`<SnapshotViewerHeader
           @snapshot={{snapshot}}
-          @toggleViewMode={{stub}}
           @updateSelectedWidth={{stub}}
           @selectedComparison={{comparison}}
           @activeBrowser={{browser}}
@@ -127,7 +123,6 @@ describe('Integration: SnapshotViewerHeader', function() {
 
           await render(hbs`<SnapshotViewerHeader
             @snapshot={{snapshot}}
-            @toggleViewMode={{stub}}
             @updateSelectedWidth={{stub}}
             @selectedComparison={{comparison}}
             @activeBrowser={{browser}}
@@ -156,7 +151,6 @@ describe('Integration: SnapshotViewerHeader', function() {
 
           await render(hbs`<SnapshotViewerHeader
             @snapshot={{snapshot}}
-            @toggleViewMode={{stub}}
             @updateSelectedWidth={{stub}}
             @selectedComparison={{comparison}}
             @activeBrowser={{browser}}
@@ -182,7 +176,6 @@ describe('Integration: SnapshotViewerHeader', function() {
 
           await render(hbs`<SnapshotViewerHeader
             @snapshot={{snapshot}}
-            @toggleViewMode={{stub}}
             @updateSelectedWidth={{stub}}
             @selectedComparison={{comparison}}
             @activeBrowser={{browser}}
@@ -208,7 +201,6 @@ describe('Integration: SnapshotViewerHeader', function() {
         this.set('snapshot', snapshot);
         await render(hbs`<SnapshotViewerHeader
           @snapshot={{snapshot}}
-          @toggleViewMode={{stub}}
           @updateSelectedWidth={{stub}}
           @expandSnapshot={{stub}}
           @activeBrowser={{browser}}
@@ -250,7 +242,6 @@ describe('Integration: SnapshotViewerHeader', function() {
         this.set('snapshot', snapshot);
         await render(hbs`<SnapshotViewerHeader
           @snapshot={{snapshot}}
-          @toggleViewMode={{stub}}
           @updateSelectedWidth={{stub}}
           @expandSnapshot={{stub}}
           @activeBrowser={{browser}}
@@ -298,7 +289,6 @@ describe('Integration: SnapshotViewerHeader', function() {
         this.set('snapshot', snapshot);
         await render(hbs`<SnapshotViewerHeader
           @snapshot={{snapshot}}
-          @toggleViewMode={{stub}}
           @updateSelectedWidth={{stub}}
           @expandSnapshot={{stub}}
           @activeBrowser={{browser}}
@@ -352,7 +342,6 @@ describe('Integration: SnapshotViewerHeader', function() {
       this.set('browser', browser);
       await render(hbs`<SnapshotViewerHeader
         @snapshot={{snapshot}}
-        @toggleViewMode={{stub}}
         @updateSelectedWidth={{stub}}
         @expandSnapshot={{stub}}
         @activeBrowser={{browser}}
@@ -369,7 +358,6 @@ describe('Integration: SnapshotViewerHeader', function() {
       this.set('browser', browser);
       await render(hbs`<SnapshotViewerHeader
         @snapshot={{snapshot}}
-        @toggleViewMode={{stub}}
         @updateSelectedWidth={{stub}}
         @expandSnapshot={{stub}}
         @activeBrowser={{browser}}
@@ -392,7 +380,6 @@ describe('Integration: SnapshotViewerHeader', function() {
 
       await render(hbs`<SnapshotViewerHeader
         @snapshot={{snapshot}}
-        @toggleViewMode={{stub}}
         @updateSelectedWidth={{stub}}
         @expandSnapshot={{stub}}
         @activeBrowser={{browser}}

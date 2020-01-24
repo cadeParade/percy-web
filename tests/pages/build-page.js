@@ -18,9 +18,7 @@ const SELECTORS = {
 
 const BuildPage = {
   visitBuild: visitable('/:orgSlug/:projectSlug/builds/:buildId'),
-  visitFullPageSnapshot: visitable(
-    '/:orgSlug/:projectSlug/builds/:buildId/view/:snapshotId/:width',
-  ),
+  visitFullPageSnapshot: visitable('/:orgSlug/:projectSlug/builds/:buildId/view/:snapshotId'),
 
   buildToolbar: BuildToolbar,
   removedSnapshots: RemovedSnapshots,

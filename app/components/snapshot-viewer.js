@@ -7,7 +7,6 @@ import localStorageProxy from 'percy-web/lib/localstorage';
 export default SnapshotListItem.extend({
   launchDarkly: service(),
   snapshot: null,
-  showSnapshotFullModalTriggered: null,
   createReview: null,
   externalIsCommentPanelShowing: false,
   userIsCommentPanelShowing: undefined,

@@ -16,7 +16,6 @@ describe('Integration: SnapshotViewerFull', function() {
     integration: true,
   });
 
-  let closeSnapshotFullModalStub;
   let updateComparisonModeStub;
   let createReviewStub;
   let addedSnapshot;
@@ -36,7 +35,6 @@ describe('Integration: SnapshotViewerFull', function() {
 
     addedSnapshot = make('snapshot', 'new', {build});
 
-    closeSnapshotFullModalStub = sinon.stub();
     updateComparisonModeStub = sinon.stub();
     createReviewStub = sinon.stub().returns(resolve());
 
@@ -51,7 +49,6 @@ describe('Integration: SnapshotViewerFull', function() {
       browser,
       snapshot: snapshot,
       comparisonMode: 'diff',
-      closeSnapshotFullModal: closeSnapshotFullModalStub,
       updateComparisonMode: updateComparisonModeStub,
       createReview: createReviewStub,
       isBuildApprovable: true,
@@ -64,7 +61,6 @@ describe('Integration: SnapshotViewerFull', function() {
       @comparisonMode={{comparisonMode}}
       @transitionRouteToWidth={{stub}}
       @updateComparisonMode={{updateComparisonMode}}
-      @closeSnapshotFullModal={{closeSnapshotFullModal}}
       @createReview={{createReview}}
       @activeBrowser={{browser}}
       @isBuildApprovable={{isBuildApprovable}}
@@ -148,11 +144,6 @@ describe('Integration: SnapshotViewerFull', function() {
   describe('full screen toggle button', function() {
     it('displays', function() {
       expect(FullSnapshotPage.header.isFullScreenToggleVisible).to.equal(true);
-    });
-
-    it('sends closeSnapshotFullModal when toggle fullscreen button is clicked', async function() {
-      await FullSnapshotPage.header.clickToggleFullscreen();
-      expect(closeSnapshotFullModalStub).to.have.been.called;
     });
   });
 

@@ -1072,7 +1072,6 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   let snapshot;
   let urlParams;
   let noDiffSnapshot;
-  let secondSnapshot;
   let build;
 
   setupSession(function(server) {
@@ -1088,7 +1087,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     snapshot = server.create('snapshot', 'withComparison', {build});
     // Make some other snapshots for the build that should appear when closing the fullscreen view.
     noDiffSnapshot = server.create('snapshot', 'noDiffs', {build});
-    secondSnapshot = server.create('snapshot', 'withComparison', {build});
+    server.create('snapshot', 'withComparison', {build});
 
     urlParams = {
       orgSlug: organization.slug,
@@ -1128,68 +1127,6 @@ describe('Acceptance: Fullscreen Snapshot', function() {
 
     await BuildPage.snapshotFullscreen.clickDiffComparisonMode();
     expect(BuildPage.snapshotFullscreen.diffImageUrl).to.equal(TEST_IMAGE_URLS.DIFF_URL);
-  });
-
-  describe('next/previous snapshot navigation', function() {
-    beforeEach(async function() {});
-
-    it('loops through snapshots with changes', async function() {
-      function expectFirstSnapshotURL() {
-        expect(currentURL().includes(snapshot.id)).to.equal(true);
-        expect(currentURL().includes(secondSnapshot.id)).to.equal(false);
-      }
-
-      function expectSecondSnapshotURL() {
-        expect(currentURL().includes(snapshot.id)).to.equal(false);
-        expect(currentURL().includes(secondSnapshot.id)).to.equal(true);
-      }
-
-      await BuildPage.visitFullPageSnapshot(urlParams);
-      expectFirstSnapshotURL();
-
-      await BuildPage.snapshotFullscreen.clickNextSnapshot();
-      expectSecondSnapshotURL();
-
-      await BuildPage.snapshotFullscreen.clickPreviousSnapshot();
-      expectFirstSnapshotURL();
-
-      // Should wrap around
-      await BuildPage.snapshotFullscreen.typeUpArrow();
-      expectSecondSnapshotURL();
-
-      await BuildPage.snapshotFullscreen.typeUpArrow();
-      expectFirstSnapshotURL();
-    });
-
-    it('loops through changed + unchanged snapshots', async function() {
-      await BuildPage.visitBuild(urlParams);
-      await BuildPage.clickToggleNoDiffsSection();
-      await BuildPage.snapshots.objectAt(0).header.clickToggleFullscreen();
-      expect(currentURL().includes(snapshot.id)).to.equal(true);
-      await BuildPage.snapshotFullscreen.clickPreviousSnapshot();
-      expect(currentURL().includes(noDiffSnapshot.id)).to.equal(true);
-    });
-
-    // eslint-disable-next-line
-    it('shows flash message when directly viewing an unchanged snapshot when a build has no changed snapshots', async function() {
-      const buildWithNoChanges = server.create('build', {
-        totalSnapshots: 1,
-        totalSnapshotsUnreviewed: 0,
-        project,
-      });
-      noDiffSnapshot = server.create('snapshot', 'noDiffs', {build: buildWithNoChanges});
-
-      const buildWithNoChangesUrlParams = Object.assign(urlParams, {
-        buildId: buildWithNoChanges.id,
-      });
-      await BuildPage.visitFullPageSnapshot(buildWithNoChangesUrlParams);
-      await BuildPage.snapshotFullscreen.clickPreviousSnapshot();
-      const flashMessages = findAll('.flash-message.flash-message-info');
-      expect(flashMessages).to.have.length(1);
-      expect(
-        flashMessages[0].innerText.includes("There's no other snapshots to navigate through"),
-      ).to.equal(true);
-    });
   });
 
   it('displays the dropdown', async function() {

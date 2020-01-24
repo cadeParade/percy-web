@@ -100,7 +100,6 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
 
     if (requestType === 'query' && modelName === 'snapshot') {
       const buildId = query.filter.build;
-      delete query.filter.build;
       return utils.buildApiUrl('buildSnapshots', buildId);
     }
 
@@ -141,7 +140,6 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
     // /api/v1/builds/:build_id/comment-threads/
     if (requestType === 'query' && modelName === 'comment-thread') {
       const buildId = query.filter.build;
-      delete query.filter.build;
       return utils.buildApiUrl('buildCommentThreads', buildId);
     }
 
