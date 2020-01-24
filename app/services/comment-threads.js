@@ -6,7 +6,7 @@ import {REVIEW_COMMENT_TYPE, NOTE_COMMENT_TYPE} from 'percy-web/models/comment-t
 export default Service.extend({
   store: service(),
   getCommentsForBuild(buildId) {
-    return this.store.query('commentThread', {
+    return this.store.loadRecords('commentThread', {
       filter: {
         build: buildId,
       },
@@ -15,7 +15,7 @@ export default Service.extend({
   },
 
   getCommentsForSnapshotIds(snapshotIds, build) {
-    return this.store.query('commentThread', {
+    return this.store.loadRecords('commentThread', {
       filter: {
         build: build.get('id'),
         snapshot_ids: [snapshotIds],

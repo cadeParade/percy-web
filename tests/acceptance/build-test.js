@@ -1,6 +1,6 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import freezeMoment from '../helpers/freeze-moment';
-import {currentRouteName, currentURL, findAll} from '@ember/test-helpers';
+import {currentRouteName, currentURL, findAll, visit} from '@ember/test-helpers';
 import {isVisible as attacherIsVisible} from 'ember-attacher';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {beforeEach} from 'mocha';
@@ -1480,6 +1480,12 @@ describe('Acceptance: Fullscreen Snapshot', function() {
 
       expectFlashMessage('There was a problem fetching the latest changed snapshot.');
     });
+  });
+
+  it('forwards to fullscreen snapshot when hitting old route', async function() {
+    // eslint-disable-next-line
+    await visit(`/${urlParams.orgSlug}/${urlParams.projectSlug}/builds/${urlParams.buildId}/view/${urlParams.snapshotId}/${urlParams.width}?mode=${urlParams.mode}&browser=${urlParams.browser}`);
+    expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
   });
 });
 
