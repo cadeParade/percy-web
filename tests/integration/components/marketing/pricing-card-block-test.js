@@ -16,7 +16,7 @@ describe('Integration: Marketing/PricingCardBlock', function() {
 
   it('displays correct initial values', async function() {
     expect(PricingCardBlock.slider.value).to.equal('10000');
-    expect(PricingCardBlock.snapshotCount).to.equal('10,000 snapshots / month');
+    expect(PricingCardBlock.snapshotCount).to.equal('10,000 screenshots / month');
     expect(PricingCardBlock.calculatedPrice).to.equal('$29');
     expect(PricingCardBlock.priceText.includes('Your price')).to.equal(true);
     await percySnapshot(this.test);
@@ -24,7 +24,7 @@ describe('Integration: Marketing/PricingCardBlock', function() {
 
   it('updates values correctly', async function() {
     await PricingCardBlock.slider.setValue(80000);
-    expect(PricingCardBlock.snapshotCount).to.equal('80,000 snapshots / month');
+    expect(PricingCardBlock.snapshotCount).to.equal('80,000 screenshots / month');
     expect(PricingCardBlock.calculatedPrice).to.equal('$349');
     expect(PricingCardBlock.priceText.includes('Your price')).to.equal(true);
     await percySnapshot(this.test);

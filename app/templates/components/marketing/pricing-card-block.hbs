@@ -17,7 +17,7 @@
           </div>
           <div class="flex items-center font-semibold">
             {{inline-svg "check-green-icon" class="mr-sm"}}
-            {{format-number freePlan.usageIncluded}} snapshots / month
+            {{format-number freePlan.usageIncluded}} screenshots / month
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@
         <div class="mb-2">
           <div class="flex">
             <div style="width: 85px;" class="leading-tight flex items-end p-1 text-sm font-normal text-gray-300">Plan</div>
-            <div class="leading-tight flex items-end flex-2 p-1 text-sm font-normal text-gray-300">Snapshots Included</div>
+            <div class="leading-tight flex items-end flex-2 p-1 text-sm font-normal text-gray-300">Screenshots Included</div>
             <div class="leading-tight flex items-end flex-1 p-1 text-sm font-normal text-gray-300">Base price</div>
           </div>
           <div class="flex rounded items-center {{if (eq selectedPlanRange 'Small') "bg-purple-200 border border-purple-600" "border border-transparent"}}">
@@ -61,7 +61,7 @@
         </div>
 
         <div class="font-semibold text-lg mb-1 text-primary" data-test-snapshot-count>
-          {{format-number displaySnapshotCount}} snapshots / month
+          {{format-number displaySnapshotCount}} screenshots / month
         </div>
       </div>
 
@@ -84,7 +84,7 @@
         {{/if}}
         <br>
         {{#if (not-eq selectedPlanRange "Enterprise")}}
-          <span class="text-sm font-normal text-gray-300">Additional snapshots at $0.006/snapshot</span>
+          <span class="text-sm font-normal text-gray-300">Additional screenshots at $0.006/screenshot</span>
         {{/if}}
       </div>
 

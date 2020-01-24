@@ -47,7 +47,7 @@
       {{else if build.isRejected}}
         <span class="text-primary font-semibold">{{build.totalSnapshotsUnreviewed}}</span> unreviewed snapshots
       {{else}}
-        in <span class="text-primary font-semibold">{{build.totalSnapshots}}</span> {{pluralize build.totalSnapshots "total snapshot" without-count=true}}
+        in <span class="text-primary font-semibold">{{build.totalSnapshots}}</span> {{pluralize build.totalSnapshots "snapshot" without-count=true}}
       {{/if}}
     </div>
   {{else if build.isFailed}}

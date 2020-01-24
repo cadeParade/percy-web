@@ -10,7 +10,7 @@
       <div class="flex-1">
         <div class="mb-3">
           <div>
-            <strong data-test-snapshots-included>{{format-number plan.usageIncluded}} snapshots/month included.</strong>
+            <strong data-test-snapshots-included>{{format-number plan.usageIncluded}} screenshots/month included.</strong>
 
             <span data-test-user-limit>
               {{#if plan.userLimit}}
@@ -24,9 +24,9 @@
           <div>
             {{#if shouldShowMonthlyCost}}
               <strong data-test-monthly-cost>${{displayAmount}}/month</strong>
-              {{#if plan.allowOverages}}<span data-test-overages> plus additional snapshots at ${{plan.overageUnitCost}}/snapshot</span>{{/if}}.
+              {{#if plan.allowOverages}}<span data-test-overages> plus additional screenshots at ${{plan.overageUnitCost}}/snapshot</span>{{/if}}.
             {{else if shouldShowOverageInfo}}
-              <span data-test-overages>Additional snapshots at ${{plan.overageUnitCost}}/snapshot.</span>
+              <span data-test-overages>Additional screenshots at ${{plan.overageUnitCost}}/snapshot.</span>
             {{/if}}
           </div>
         </div>
@@ -47,7 +47,7 @@
           </div>
         {{else if plan.isFree}}
           <div data-test-free-blurb>
-            You're currently on the <strong>free plan</strong>, which provides {{format-number plan.usageIncluded}} snapshots per month. You can upgrade below or feel free to <a href="#" {{action "showIntercom"}} data-test-free-plan-support>reach out</a> with any questions.
+            You're currently on the <strong>free plan</strong>, which provides {{format-number plan.usageIncluded}} screenshots per month. You can upgrade below or feel free to <a href="#" {{action "showIntercom"}} data-test-free-plan-support>reach out</a> with any questions.
           </div>
         {{else if plan.isDeprecated}}
           <div data-test-deprecated-blurb>
