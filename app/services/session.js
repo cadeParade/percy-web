@@ -36,11 +36,15 @@ export default SessionService.extend({
         try {
           return await this.authenticate('authenticator:auth0-silent-auth');
         } catch (e) {
+          this.raven.captureException(e, {tags: {auth: true}});
+
           // If there's a problem with silent auth, log us all the way out.
           this.invalidateAndLogout();
         }
       }
     } catch (e) {
+      this.raven.captureException(e, {tags: {auth: true}});
+
       // If there's a problem with getting the user (most likely a 403
       // if there is no logged in user) return a resolved promise.
       // This needs to return a resolved promise because beforeModel in
@@ -60,6 +64,8 @@ export default SessionService.extend({
         // fails. If we don't have a user, the site will be very broken
         // so kick them out.
         .catch(e => {
+          this.raven.captureException(e, {tags: {auth: true}});
+
           this.invalidateAndLogout();
           reject(e);
         })
@@ -97,7 +103,9 @@ export default SessionService.extend({
         this._setupIntercom(user);
         await this._setupLaunchDarkly(user);
         return resolve();
-      } catch (_) {
+      } catch (e) {
+        this.raven.captureException(e, {tags: {auth: true}});
+
         return resolve();
       }
     });
