@@ -74,7 +74,7 @@
     "ember-data-factory-guy": "^3.9.4",
     "ember-data-storefront": "^0.17.1",
     "ember-diff-attrs": "^0.2.2",
-    "ember-exam": "4.0.0",
+    "ember-exam": "4.0.9",
     "ember-export-application-global": "^2.0.0",
     "ember-fetch": "7.0.0",
     "ember-font-awesome": "^3.1.1",
