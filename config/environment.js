@@ -206,6 +206,7 @@ module.exports = function(environment) {
     ENV.launchDarkly.localFeatureFlags = {
       'allow-demo-projects': true,
       'only-admins-edit-settings': false,
+      'show-state-of-vt-link': true,
     };
 
     ENV.APP.bitbucketCloudUrls = {

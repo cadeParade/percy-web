@@ -14,21 +14,21 @@
             <Marketing::MenuBarDropdownItem
               @tagName=""
               @text="Features"
-              @linkRoute="features"
+              @linkRoute={{href-to "features"}}
               @icon="marketing/conveyor"
               @linkColor="text-purple-600"
             />
             <Marketing::MenuBarDropdownItem
               @tagName=""
               @text="How it works"
-              @linkRoute="how-it-works"
+              @linkRoute={{href-to "how-it-works"}}
               @icon="marketing/green-tag-page"
               @linkColor="text-green-600"
             />
             <Marketing::MenuBarDropdownItem
               @tagName=""
               @text="Integrations"
-              @linkRoute="integrations"
+              @linkRoute={{href-to "integrations"}}
               @icon="marketing/funnel"
               @linkColor="text-blue-500"
             />
@@ -36,6 +36,45 @@
         </div>
 
         <LinkTo @route="pricing" class="block p-2 lg:px-2 lg:py-1 text-purple-600 text-lg lg:text-nav border-b border-purple-300 lg:border-none hover:no-underline hover:text-purple-800">Pricing</LinkTo>
+
+        <div class="menu-bar-item cursor-default relative p-2 lg:px-2 lg:py-1 text-purple-600 border-b border-purple-300 lg:border-none lg:hover:text-purple-800">
+          <div class="block text-lg lg:text-nav text-purple-600 mb-1 lg:mb-0">Resources</div>
+          <ul style="top: 100%; left: 50%;" class="menu-bar-dropdown lg:shadow-purple-xl lg:w-64 lg:absolute lg:hidden mb-0 bg-white rounded list-none">
+            <Marketing::MenuBarDropdownItem
+              @tagName=""
+              @text="Blog"
+              @linkRoute="https://blog.percy.io/"
+              @target="_blank"
+              @icon="marketing/blog-icon"
+              @linkColor="text-green-500"
+            />
+            <Marketing::MenuBarDropdownItem
+              @tagName=""
+              @text="Case studies"
+              @linkRoute={{href-to "customers"}}
+              @icon="marketing/case-study-icon"
+              @linkColor="text-purple-600"
+            />
+            <Marketing::MenuBarDropdownItem
+              @tagName=""
+              @text="Tutorials"
+              @linkRoute="https://docs.percy.io/docs/example-apps"
+              @target="_blank"
+              @icon="marketing/tutorials-icon"
+              @linkColor="text-blue-500"
+            />
+            {{#if (variation 'show-state-of-vt-link')}}
+              <Marketing::MenuBarDropdownItem
+                @tagName=""
+                @text="State of Visual Testing"
+                @linkRoute="https://go.percy.io/state-of-visual-testing-report-2020"
+                @target="_blank"
+                @icon="marketing/sovt-icon"
+                @linkColor="text-orange-500"
+              />
+            {{/if}}
+          </ul>
+        </div>
         <a href="https://docs.percy.io" target="_blank" rel="noopener noreferrer" class="block p-2 lg:px-2 lg:py-1 text-purple-600 text-lg lg:text-nav hover:no-underline hover:text-purple-800">Docs</a>
       </div>
     </div>

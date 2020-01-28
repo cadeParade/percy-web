@@ -1,4 +1,4 @@
-<header class="marketing-header overflow-hidden lg:overflow-visible {{classes}} {{unless image.file.url "-mb-4 lg:-mb-6"}}">
+<header class="marketing-header {{classes}} {{unless image.file.url "-mb-4 lg:-mb-6"}}">
   <div class="relative w-90vw max-w-xl mx-auto pb-8">
     <div style="bottom: -178px; left: -48px;" class="absolute">
       {{inline-svg "marketing/bubbles-1"}}
@@ -9,7 +9,7 @@
     <div style="top: 128px; right: 128px;" class="absolute">
       {{inline-svg "marketing/bubbles-3" class="absolute right-0"}}
     </div>
-    <div style="bottom: -178px; right: -48px;" class="absolute">
+    <div style="bottom: -178px; right: -48px;" class="absolute hidden lg:block">
       {{inline-svg "marketing/bubbles-4"}}
     </div>
     <Marketing::MenuBar @logomark={{logomark}} />

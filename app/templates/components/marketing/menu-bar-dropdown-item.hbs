@@ -1,5 +1,5 @@
 <li class="menu-bar-dropdown-item lg:border-b border-purple-300 mb-1 lg:mb-0">
-  <LinkTo @route={{linkRoute}} @classNames="hover:no-underline" @target={{target}}>
+  <a href={{linkRoute}} class="hover:no-underline" target={{target}} rel={{if (eq target "_blank") "noopener noreferrer"}}>
     <div class="w-full flex items-center flex items-center cursor-pointer font-semibold py-sm lg:py-2 lg:px-2 lg:hover:bg-purple-100">
       <div class="flex justify-center items-center mr-2" style="width: 30px;">
         {{inline-svg icon}}
@@ -11,5 +11,5 @@
         {{/if}}
       </div>
     </div>
-  </LinkTo>
+  </a>
 </li>
