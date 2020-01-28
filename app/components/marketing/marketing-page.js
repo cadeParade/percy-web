@@ -1,7 +1,8 @@
 import Component from '@ember/component';
+import {inject as service} from '@ember/service';
 
 export default Component.extend({
-  transitionTo: null,
+  router: service(),
 
   click(event) {
     // Support third-party relative links that Ember doesn't know about. This emulates the behavior
@@ -15,7 +16,7 @@ export default Component.extend({
       if (event.ctrlKey || event.metaKey) {
         return true;
       } else {
-        this.transitionTo(path);
+        this.router.transitionTo(path);
         return false;
       }
     }

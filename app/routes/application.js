@@ -91,10 +91,6 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
       this.session.invalidateAndLogout();
     },
 
-    transitionTo(path) {
-      this.transitionTo(path);
-    },
-
     navigateToProject(project) {
       let organizationSlug = project.get('organization.slug');
       let projectSlug = project.get('slug');
