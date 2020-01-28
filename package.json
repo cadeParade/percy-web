@@ -32,7 +32,7 @@
     "@ember/jquery": "^1.1.0",
     "@ember/optional-features": "^1.0.0",
     "@ember/test-helpers": "1.6.1",
-    "@percy/agent": "^0.20.6",
+    "@percy/agent": "^0.20.12",
     "@percy/ember": "2.0.0-beta.2",
     "accounting": "^0.4.1",
     "autoprefixer": "^9.7.4",
