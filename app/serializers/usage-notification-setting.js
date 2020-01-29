@@ -1,6 +1,6 @@
-import DS from 'ember-data';
+import JSONAPISerializer from '@ember-data/serializer/json-api';
 
-export default DS.JSONAPISerializer.extend({
+export default JSONAPISerializer.extend({
   normalize(modelClass, resourceHash) {
     // This model receives a nested json object from the API. The nested key (`snapshot_count`) is
     // not a top level key, and therefore originally does not go through Ember's default key

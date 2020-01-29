@@ -1,15 +1,15 @@
-import DS from 'ember-data';
+import Model, {attr, belongsTo} from '@ember-data/model';
 import {computed} from '@ember/object';
 import {readOnly} from '@ember/object/computed';
 import {typeOf} from '@ember/utils';
 import Formatting from '../lib/formatting';
 
-export default DS.Model.extend({
-  organization: DS.belongsTo('organization', {async: false}),
+export default Model.extend({
+  organization: belongsTo('organization', {async: false}),
 
-  isEnabled: DS.attr(),
-  thresholds: DS.attr(),
-  emails: DS.attr(),
+  isEnabled: attr(),
+  thresholds: attr(),
+  emails: attr(),
 
   // These are needed by the changeset in the form
   displayEmails: computed('emails.[]', function() {

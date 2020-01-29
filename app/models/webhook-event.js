@@ -1,19 +1,19 @@
-import DS from 'ember-data';
+import Model, {attr, belongsTo} from '@ember-data/model';
 import {computed} from '@ember/object';
 import {not} from '@ember/object/computed';
 
-export default DS.Model.extend({
-  webhookConfig: DS.belongsTo('webhook-config'),
-  event: DS.attr(),
-  url: DS.attr(),
-  requestHeaders: DS.attr(),
-  requestPayload: DS.attr('string'),
-  responseHeaders: DS.attr(),
-  responsePayload: DS.attr(),
-  responseStatus: DS.attr('number'),
-  responseTimeMs: DS.attr('number'),
-  failureReason: DS.attr(),
-  createdAt: DS.attr('date'),
+export default Model.extend({
+  webhookConfig: belongsTo('webhook-config'),
+  event: attr(),
+  url: attr(),
+  requestHeaders: attr(),
+  requestPayload: attr('string'),
+  responseHeaders: attr(),
+  responsePayload: attr(),
+  responseStatus: attr('number'),
+  responseTimeMs: attr('number'),
+  failureReason: attr(),
+  createdAt: attr('date'),
 
   isSuccess: not('isFailure'),
 

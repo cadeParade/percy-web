@@ -1,6 +1,6 @@
-import DS from 'ember-data';
+import Model, {attr, belongsTo} from '@ember-data/model';
 
-export default DS.Model.extend({
-  state: DS.attr(),
-  createdBy: DS.belongsTo('user', {async: false}),
+export default Model.extend({
+  state: attr(),
+  createdBy: belongsTo('user', {async: false}),
 });

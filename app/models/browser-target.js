@@ -1,6 +1,6 @@
-import DS from 'ember-data';
+import Model, {attr, belongsTo} from '@ember-data/model';
 
-export default DS.Model.extend({
-  browserFamily: DS.belongsTo('browserFamily', {async: false, inverse: null}),
-  versionTarget: DS.attr(),
+export default Model.extend({
+  browserFamily: belongsTo('browserFamily', {async: false, inverse: null}),
+  versionTarget: attr(),
 });

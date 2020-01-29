@@ -1,18 +1,18 @@
 import {inject as service} from '@ember/service';
 import {and, lt, not, readOnly} from '@ember/object/computed';
 import {computed} from '@ember/object';
-import DS from 'ember-data';
+import Model, {attr, belongsTo} from '@ember-data/model';
 import moment from 'moment';
 
-export default DS.Model.extend({
-  organization: DS.belongsTo('organization', {async: false}),
-  plan: DS.belongsTo('plan', {async: false}),
-  paymentMethod: DS.belongsTo('payment-method', {async: false}),
-  billingEmail: DS.attr(),
-  currentUsageStats: DS.belongsTo('usage-stat', {async: false}),
-  status: DS.attr(),
-  currentPeriodStart: DS.attr('date'),
-  currentPeriodEnd: DS.attr('date'),
+export default Model.extend({
+  organization: belongsTo('organization', {async: false}),
+  plan: belongsTo('plan', {async: false}),
+  paymentMethod: belongsTo('payment-method', {async: false}),
+  billingEmail: attr(),
+  currentUsageStats: belongsTo('usage-stat', {async: false}),
+  status: attr(),
+  currentPeriodStart: attr('date'),
+  currentPeriodEnd: attr('date'),
   currentPeriodEndDisplayed: computed('currentPeriodEnd', function() {
     const currentPeriodEnd = this.currentPeriodEnd;
     return (
@@ -22,8 +22,8 @@ export default DS.Model.extend({
         .toDate()
     );
   }),
-  trialStart: DS.attr('date'),
-  trialEnd: DS.attr('date'),
+  trialStart: attr('date'),
+  trialEnd: attr('date'),
   isTrial: readOnly('plan.isTrial'),
   isFree: readOnly('plan.isFree'),
   isTrialOrFree: readOnly('plan.isTrialOrFree'),
@@ -33,13 +33,13 @@ export default DS.Model.extend({
 
   // This is only here so that ember-data will send the token on create, it will never be populated
   // in API responses.
-  token: DS.attr(),
+  token: attr(),
 
   subscriptionData: service(),
   trialDaysRemaining: computed('trialEnd', function() {
     return Math.round(moment(this.trialEnd).diff(moment(), 'days', true));
   }),
-  currentUsageRatio: DS.attr(),
+  currentUsageRatio: attr(),
   currentUsagePercentage: computed('currentUsageRatio', function() {
     const percentage = parseFloat(this.currentUsageRatio) * 100;
     return percentage < 1 ? Math.ceil(percentage) : Math.floor(percentage);

@@ -1,7 +1,7 @@
-import DS from 'ember-data';
+import Model, {attr} from '@ember-data/model';
 
-export default DS.Model.extend({
-  url: DS.attr(),
-  width: DS.attr('number'),
-  height: DS.attr('number'),
+export default Model.extend({
+  url: attr(),
+  width: attr('number'),
+  height: attr('number'),
 });

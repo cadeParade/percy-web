@@ -1,6 +1,5 @@
 import Contentful from 'ember-data-contentful/models/contentful';
-import attr from 'ember-data/attr';
-import DS from 'ember-data';
+import {attr, belongsTo, hasMany} from '@ember-data/model';
 import {equal, and, notEmpty} from '@ember/object/computed';
 
 export default Contentful.extend({
@@ -8,14 +7,14 @@ export default Contentful.extend({
 
   page: attr(),
   order: attr(),
-  mainImage: DS.belongsTo('contentful-asset'), // model here: https://bit.ly/2MoN7fD
+  mainImage: belongsTo('contentful-asset'), // model here: https://bit.ly/2MoN7fD
   imagePosition: attr(),
   superheader: attr(),
   header: attr(),
   subheader: attr(),
   bodyText: attr(),
   bodyImages: attr(),
-  supportingTextSections: DS.hasMany('supporting-content'),
+  supportingTextSections: hasMany('supporting-content'),
   callToActionText: attr(),
   callToActionLink: attr(),
   classes: attr(),

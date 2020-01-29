@@ -1,5 +1,5 @@
 import {equal} from '@ember/object/computed';
-import DS from 'ember-data';
+import Model, {attr, belongsTo} from '@ember-data/model';
 import {computed} from '@ember/object';
 import {
   BITBUCKET_CLOUD_INTEGRATION_TYPE,
@@ -10,22 +10,22 @@ import {
   INTEGRATION_TYPES,
 } from 'percy-web/lib/integration-types';
 
-export default DS.Model.extend({
-  organization: DS.belongsTo('organization'),
-  integrationType: DS.attr(),
-  bitbucketCloudClientKey: DS.attr(),
-  githubInstallationId: DS.attr(),
-  githubHtmlUrl: DS.attr(),
-  githubEnterpriseInstallationId: DS.attr(),
-  githubEnterpriseIntegrationId: DS.attr(),
-  gitlabIntegrationId: DS.attr(),
-  gitlabHost: DS.attr(),
-  gitlabPersonalAccessToken: DS.attr(),
-  isGitlabPersonalAccessTokenPresent: DS.attr('boolean'),
-  status: DS.attr(),
+export default Model.extend({
+  organization: belongsTo('organization'),
+  integrationType: attr(),
+  bitbucketCloudClientKey: attr(),
+  githubInstallationId: attr(),
+  githubHtmlUrl: attr(),
+  githubEnterpriseInstallationId: attr(),
+  githubEnterpriseIntegrationId: attr(),
+  gitlabIntegrationId: attr(),
+  gitlabHost: attr(),
+  gitlabPersonalAccessToken: attr(),
+  isGitlabPersonalAccessTokenPresent: attr('boolean'),
+  status: attr(),
 
-  isSyncing: DS.attr(),
-  lastUpdatedAt: DS.attr(),
+  isSyncing: attr(),
+  lastUpdatedAt: attr(),
 
   isBitbucketCloudIntegration: equal('integrationType', BITBUCKET_CLOUD_INTEGRATION_TYPE),
   isGithubIntegration: equal('integrationType', GITHUB_INTEGRATION_TYPE),

@@ -1,5 +1,5 @@
 import {equal, or} from '@ember/object/computed';
-import DS from 'ember-data';
+import Model, {attr} from '@ember-data/model';
 import {
   BITBUCKET_CLOUD_INTEGRATION_TYPE,
   GITHUB_INTEGRATION_TYPE,
@@ -8,12 +8,12 @@ import {
   GITLAB_SELF_HOSTED_INTEGRATION_TYPE,
 } from 'percy-web/lib/integration-types';
 
-export default DS.Model.extend({
-  name: DS.attr(),
-  slug: DS.attr(),
-  hostname: DS.attr(),
-  source: DS.attr(),
-  htmlUrl: DS.attr(),
+export default Model.extend({
+  name: attr(),
+  slug: attr(),
+  hostname: attr(),
+  source: attr(),
+  htmlUrl: attr(),
 
   isBitbucketCloudRepo: equal('source', BITBUCKET_CLOUD_INTEGRATION_TYPE),
   isGithubRepo: equal('source', GITHUB_INTEGRATION_TYPE),

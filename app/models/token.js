@@ -1,8 +1,8 @@
-import DS from 'ember-data';
+import Model, {attr, belongsTo} from '@ember-data/model';
 
-export default DS.Model.extend({
-  token: DS.attr(),
-  role: DS.attr(),
+export default Model.extend({
+  token: attr(),
+  role: attr(),
 
-  project: DS.belongsTo('project', {inverse: 'tokens'}),
+  project: belongsTo('project', {inverse: 'tokens'}),
 });

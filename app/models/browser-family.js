@@ -1,7 +1,7 @@
-import DS from 'ember-data';
+import Model, {attr, hasMany} from '@ember-data/model';
 
-export default DS.Model.extend({
-  browsers: DS.hasMany('browser', {async: false}),
-  name: DS.attr(),
-  slug: DS.attr(),
+export default Model.extend({
+  browsers: hasMany('browser', {async: false}),
+  name: attr(),
+  slug: attr(),
 });

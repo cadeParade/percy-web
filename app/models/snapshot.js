@@ -1,4 +1,4 @@
-import DS from 'ember-data';
+import Model, {attr, belongsTo, hasMany} from '@ember-data/model';
 import {equal, mapBy, max, not, or, notEmpty, filterBy} from '@ember/object/computed';
 import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 
@@ -26,29 +26,29 @@ export const DIFF_REVIEW_STATE_REASONS = [
   SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED_PREVIOUSLY,
 ];
 
-export default DS.Model.extend(LoadableModel, {
-  comparisons: DS.hasMany('comparisons', {
+export default Model.extend(LoadableModel, {
+  comparisons: hasMany('comparisons', {
     async: false,
     inverse: 'headSnapshot',
   }),
 
-  totalOpenComments: DS.attr(),
-  commentThreads: DS.hasMany('commentThreads', {async: false}),
+  totalOpenComments: attr(),
+  commentThreads: hasMany('commentThreads', {async: false}),
   openCommentThreads: filterBy('commentThreads', 'isOpen'),
   hasOpenCommentThreads: notEmpty('openCommentThreads'),
 
-  name: DS.attr(),
+  name: attr(),
 
-  build: DS.belongsTo('build', {async: true}),
-  screenshots: DS.hasMany('screenshot', {async: false}),
+  build: belongsTo('build', {async: true}),
+  screenshots: hasMany('screenshot', {async: false}),
 
-  fingerprint: DS.attr(),
+  fingerprint: attr(),
 
-  latestChangedAncestor: DS.belongsTo('snapshot', {async: true, inverse: null}),
-  isReintroduced: DS.attr('boolean'),
+  latestChangedAncestor: belongsTo('snapshot', {async: true, inverse: null}),
+  isReintroduced: attr('boolean'),
 
   // Review state.
-  reviewState: DS.attr(),
+  reviewState: attr(),
   isUnreviewed: equal('reviewState', SNAPSHOT_UNAPPROVED_STATE),
   isApproved: equal('reviewState', SNAPSHOT_APPROVED_STATE),
   isRejected: equal('reviewState', SNAPSHOT_REJECTED_STATE),
@@ -68,7 +68,7 @@ export default DS.Model.extend(LoadableModel, {
   // - 'rejected' --> 'user_requested_changes': User clicked "Request changes" button
   //.   in current build
   // - 'rejected' --> 'user_requested_changes_previously':'rejected' status has carried forward
-  reviewStateReason: DS.attr(),
+  reviewStateReason: attr(),
   isApprovedByUser: equal('reviewStateReason', SNAPSHOT_REVIEW_STATE_REASONS.USER_APPROVED),
   isApprovedByUserPreviously: equal(
     'reviewStateReason',

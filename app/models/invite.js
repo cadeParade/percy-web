@@ -1,22 +1,22 @@
-import DS from 'ember-data';
+import Model, {attr, belongsTo} from '@ember-data/model';
 import {computed} from '@ember/object';
 import {readOnly} from '@ember/object/computed';
 import {ROLE_ID_TO_TITLE} from './organization-user';
 
-export default DS.Model.extend({
-  fromUser: DS.belongsTo('user', {async: false}),
-  organization: DS.belongsTo('organization', {async: false}),
+export default Model.extend({
+  fromUser: belongsTo('user', {async: false}),
+  organization: belongsTo('organization', {async: false}),
 
-  createdAt: DS.attr(),
-  email: DS.attr(),
-  expiresAt: DS.attr(),
-  inviteLink: DS.attr(),
+  createdAt: attr(),
+  email: attr(),
+  expiresAt: attr(),
+  inviteLink: attr(),
   inviterName: readOnly('fromUser.name'),
-  isExpired: DS.attr('boolean'),
-  role: DS.attr(),
+  isExpired: attr('boolean'),
+  role: attr(),
 
   // Only for creation:
-  emails: DS.attr(),
+  emails: attr(),
   roleTitle: computed('role', function() {
     return ROLE_ID_TO_TITLE[this.role];
   }),

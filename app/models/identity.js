@@ -1,14 +1,14 @@
-import DS from 'ember-data';
+import Model, {attr, belongsTo} from '@ember-data/model';
 import {equal} from '@ember/object/computed';
 import {computed} from '@ember/object';
 
 export const SELF_MANAGED_IDENTITY_PROVIDERS = ['github', 'auth0'];
 
-export default DS.Model.extend({
-  user: DS.belongsTo('user', {async: false}),
-  provider: DS.attr(),
-  uid: DS.attr(),
-  nickname: DS.attr(),
+export default Model.extend({
+  user: belongsTo('user', {async: false}),
+  provider: attr(),
+  uid: attr(),
+  nickname: attr(),
 
   isGithubIdentity: equal('provider', 'github'),
   isAuth0Identity: equal('provider', 'auth0'),

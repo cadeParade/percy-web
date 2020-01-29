@@ -1,4 +1,4 @@
-import DS from 'ember-data';
+import Model, {attr, belongsTo} from '@ember-data/model';
 import {computed} from '@ember/object';
 
 export const USER_NOTIFICATION_SETTING_OPTIONS = [
@@ -16,9 +16,9 @@ export const USER_NOTIFICATION_SETTING_OPTIONS = [
   },
 ];
 
-export default DS.Model.extend({
-  user: DS.belongsTo('user', {async: false}),
-  notificationTypes: DS.attr({
+export default Model.extend({
+  user: belongsTo('user', {async: false}),
+  notificationTypes: attr({
     defaultValue() {
       return USER_NOTIFICATION_SETTING_OPTIONS.mapBy('value');
     },

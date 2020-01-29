@@ -1,6 +1,6 @@
+import Model, {attr, hasMany, belongsTo} from '@ember-data/model';
 import {computed} from '@ember/object';
 import {alias, bool, and, equal, not, or, gt} from '@ember/object/computed';
-import DS from 'ember-data';
 import moment from 'moment';
 import {countDiffsWithSnapshotsPerBrowser} from 'percy-web/lib/filtered-comparisons';
 
@@ -38,10 +38,10 @@ const PROCESSING_LABEL = 'Processing';
 const UNREVIEWED_LABEL = 'Unreviewed';
 const REJECTED_LABEL = 'Changes requested';
 
-export default DS.Model.extend({
-  project: DS.belongsTo('project', {async: false}),
-  repo: DS.belongsTo('repo', {async: false}),
-  partial: DS.attr('boolean'),
+export default Model.extend({
+  project: belongsTo('project', {async: false}),
+  repo: belongsTo('repo', {async: false}),
+  partial: attr('boolean'),
 
   // Check isRepoLinked before accessing repo.
   isRepoLinked: bool('repo'),
@@ -53,24 +53,24 @@ export default DS.Model.extend({
   isGithubEnterpriseRepo: alias('repo.isGithubEnterpriseRepo'),
   isGitlabRepo: alias('repo.isGitlabRepo'),
 
-  buildNumber: DS.attr('number'),
+  buildNumber: attr('number'),
   buildTitle: computed('buildNumber', function() {
     return `Build #${this.buildNumber}`;
   }),
-  branch: DS.attr(),
-  browsers: DS.hasMany('browser', {async: false}),
+  branch: attr(),
+  browsers: hasMany('browser', {async: false}),
   hasMultipleBrowsers: gt('browsers.length', 1),
 
-  removedSnapshots: DS.hasMany('snapshot', {async: true, inverse: null}),
+  removedSnapshots: hasMany('snapshot', {async: true, inverse: null}),
 
   // Processing state.
-  state: DS.attr(),
+  state: attr(),
   isPending: equal('state', BUILD_STATES.PENDING),
   isProcessing: equal('state', BUILD_STATES.PROCESSING),
   isFinished: equal('state', BUILD_STATES.FINISHED),
   isFailed: equal('state', BUILD_STATES.FAILED),
   isExpired: equal('state', BUILD_STATES.EXPIRED),
-  failureReason: DS.attr(),
+  failureReason: attr(),
   failureReasonHumanized: computed('failureReason', function() {
     let failureReason = this.failureReason;
     if (failureReason === 'missing_resources') {
@@ -88,12 +88,12 @@ export default DS.Model.extend({
 
   // failureDetails will be a POJO of form `{something: [strings, strings, etc]}` and therefore
   // will not be able to trigger computed property recomputes
-  failureDetails: DS.attr(),
+  failureDetails: attr(),
 
   isRunning: or('isPending', 'isProcessing'),
 
   // Review state, aggregated across all reviews. This will only be set for finished builds.
-  reviewState: DS.attr(),
+  reviewState: attr(),
   isUnreviewed: equal('reviewState', BUILD_UNREVIEWED_STATE),
   isApproved: equal('reviewState', BUILD_APPROVED_STATE),
   isRejected: equal('reviewState', BUILD_REJECTED_STATE),
@@ -115,19 +115,19 @@ export default DS.Model.extend({
   //    in this build
   // - 'changes_requested' --> changes_requested_snapshot_previously: snapshot(s) rejected
   //    in previous build
-  reviewStateReason: DS.attr(),
+  reviewStateReason: attr(),
 
   // Aggregate numbers for snapshots and comparisons. These will only be set for finished builds.
   // Each snapshot is a top-level UI state that may encompass multiple comparisons.
   // Each comparison represents a single individual rendering at a width and browser.
-  totalSnapshots: DS.attr('number'),
-  totalSnapshotsUnreviewed: DS.attr('number'),
-  totalSnapshotsRequestingChanges: DS.attr('number'),
+  totalSnapshots: attr('number'),
+  totalSnapshotsUnreviewed: attr('number'),
+  totalSnapshotsRequestingChanges: attr('number'),
 
-  totalComparisons: DS.attr('number'),
-  totalComparisonsFinished: DS.attr('number'),
-  totalComparisonsDiff: DS.attr('number'),
-  totalOpenComments: DS.attr('number'),
+  totalComparisons: attr('number'),
+  totalComparisonsFinished: attr('number'),
+  totalComparisonsDiff: attr('number'),
+  totalOpenComments: attr('number'),
   buildCompletionPercent: computed(
     'totalComparisons',
     'totalComparisonsFinished',
@@ -181,9 +181,9 @@ export default DS.Model.extend({
     return '';
   }),
 
-  commit: DS.belongsTo('commit', {async: false}), // Might be null.
-  baseBuild: DS.belongsTo('build', {async: false, inverse: null}),
-  snapshots: DS.hasMany('snapshot', {async: true}),
+  commit: belongsTo('commit', {async: false}), // Might be null.
+  baseBuild: belongsTo('build', {async: false, inverse: null}),
+  snapshots: hasMany('snapshot', {async: true}),
 
   comparisons: computed('snapshots', function() {
     return this.snapshots.reduce((acc, snapshot) => {
@@ -192,12 +192,12 @@ export default DS.Model.extend({
   }),
 
   hasNoDiffs: not('hasDiffs'),
-  commitHtmlUrl: DS.attr(),
-  branchHtmlUrl: DS.attr(),
-  isPullRequest: DS.attr('boolean'),
-  pullRequestNumber: DS.attr('number'),
-  pullRequestHtmlUrl: DS.attr(),
-  pullRequestTitle: DS.attr(),
+  commitHtmlUrl: attr(),
+  branchHtmlUrl: attr(),
+  isPullRequest: attr('boolean'),
+  pullRequestNumber: attr('number'),
+  pullRequestHtmlUrl: attr(),
+  pullRequestTitle: attr(),
   pullRequestLabel: computed('repo.source', function() {
     if (this.get('repo.isGitlabRepoFamily')) {
       return 'Merge Request';
@@ -206,12 +206,12 @@ export default DS.Model.extend({
     }
   }),
 
-  finishedAt: DS.attr('date'),
-  approvedAt: DS.attr('date'),
-  approvedBy: DS.belongsTo('user', {async: false}),
-  createdAt: DS.attr('date'),
-  updatedAt: DS.attr('date'),
-  userAgent: DS.attr(),
+  finishedAt: attr('date'),
+  approvedAt: attr('date'),
+  approvedBy: belongsTo('user', {async: false}),
+  createdAt: attr('date'),
+  updatedAt: attr('date'),
+  userAgent: attr(),
 
   duration: computed('finishedAt', 'createdAt', function() {
     var finished = this.finishedAt;

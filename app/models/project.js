@@ -1,34 +1,34 @@
 import {computed} from '@ember/object';
 import {and, bool, not} from '@ember/object/computed';
-import DS from 'ember-data';
+import Model, {attr, belongsTo, hasMany} from '@ember-data/model';
 
-export default DS.Model.extend({
-  organization: DS.belongsTo('organization', {async: false}),
-  name: DS.attr(),
-  slug: DS.attr(),
-  fullSlug: DS.attr(),
-  defaultBaseBranch: DS.attr(),
-  isEnabled: DS.attr('boolean'),
+export default Model.extend({
+  organization: belongsTo('organization', {async: false}),
+  name: attr(),
+  slug: attr(),
+  fullSlug: attr(),
+  defaultBaseBranch: attr(),
+  isEnabled: attr('boolean'),
   isDisabled: not('isEnabled'),
-  diffBase: DS.attr(), // Either "automatic" or "manual".
-  autoApproveBranchFilter: DS.attr(),
-  updatedAt: DS.attr('date'),
-  publiclyReadable: DS.attr('boolean'),
-  isDemo: DS.attr('boolean'),
+  diffBase: attr(), // Either "automatic" or "manual".
+  autoApproveBranchFilter: attr(),
+  updatedAt: attr('date'),
+  publiclyReadable: attr('boolean'),
+  isDemo: attr('boolean'),
 
   // Repo will be set if this project is linked to a repository.
-  repo: DS.belongsTo('repo', {async: false}),
+  repo: belongsTo('repo', {async: false}),
   isRepoConnected: bool('repo'),
   isGithubRepo: and('isRepoConnected', 'repo.isGithubRepo'),
   isGithubEnterpriseRepo: and('isRepoConnected', 'repo.isGithubEnterpriseRepo'),
   isGitlabRepo: and('isRepoConnected', 'repo.isGitlabRepo'),
   isGithubRepoFamily: and('isRepoConnected', 'repo.isGithubRepoFamily'),
 
-  builds: DS.hasMany('build', {async: true}),
-  tokens: DS.hasMany('token', {async: true}),
-  webhookConfigs: DS.hasMany('webhookConfig', {async: false}),
+  builds: hasMany('build', {async: true}),
+  tokens: hasMany('token', {async: true}),
+  webhookConfigs: hasMany('webhookConfig', {async: false}),
 
-  projectBrowserTargets: DS.hasMany('projectBrowserTargets', {async: false}),
+  projectBrowserTargets: hasMany('projectBrowserTargets', {async: false}),
 
   writeOnlyToken: computed('tokens', function() {
     return this.tokens.findBy('role', 'write_only');

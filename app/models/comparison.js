@@ -1,23 +1,23 @@
 import {and, equal} from '@ember/object/computed';
 import {computed} from '@ember/object';
-import DS from 'ember-data';
+import Model, {attr, belongsTo} from '@ember-data/model';
 
-export default DS.Model.extend({
-  state: DS.attr(),
-  width: DS.attr('number'),
+export default Model.extend({
+  state: attr(),
+  width: attr('number'),
 
-  headBuild: DS.belongsTo('build', {async: false}),
-  headSnapshot: DS.belongsTo('snapshot', {async: true}),
-  baseSnapshot: DS.belongsTo('snapshot', {async: true}),
+  headBuild: belongsTo('build', {async: false}),
+  headSnapshot: belongsTo('snapshot', {async: true}),
+  baseSnapshot: belongsTo('snapshot', {async: true}),
 
   // If headScreenshot is null, the comparison was removed (compared to the base build).
-  headScreenshot: DS.belongsTo('screenshot', {async: false}),
+  headScreenshot: belongsTo('screenshot', {async: false}),
   // If baseScreenshot is null, the comparison was added and is new (compared to the base build).
-  baseScreenshot: DS.belongsTo('screenshot', {async: false}),
-  diffImage: DS.belongsTo('image', {async: false}),
-  diffRatio: DS.attr('number'),
+  baseScreenshot: belongsTo('screenshot', {async: false}),
+  diffImage: belongsTo('image', {async: false}),
+  diffRatio: attr('number'),
 
-  browser: DS.belongsTo('browser', {async: false, inverse: false}),
+  browser: belongsTo('browser', {async: false, inverse: false}),
 
   wasAdded: computed('headScreenshot', 'baseScreenshot', function() {
     return !!this.headScreenshot && !this.baseScreenshot;

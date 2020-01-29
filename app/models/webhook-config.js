@@ -1,20 +1,20 @@
-import DS from 'ember-data';
+import Model, {attr, belongsTo, hasMany} from '@ember-data/model';
 import utils from 'percy-web/lib/utils';
 
-export default DS.Model.extend({
-  project: DS.belongsTo('project'),
-  webhookEvents: DS.hasMany('webhook-event'),
-  url: DS.attr(),
-  description: DS.attr(),
-  status: DS.attr(),
-  subscribedEvents: DS.attr({
+export default Model.extend({
+  project: belongsTo('project'),
+  webhookEvents: hasMany('webhook-event'),
+  url: attr(),
+  description: attr(),
+  status: attr(),
+  subscribedEvents: attr({
     defaultValue() {
       return ['ping'];
     },
   }),
-  deliveryEnabled: DS.attr('boolean', {defaultValue: true}),
-  sslVerificationEnabled: DS.attr('boolean', {defaultValue: true}),
-  authToken: DS.attr({
+  deliveryEnabled: attr('boolean', {defaultValue: true}),
+  sslVerificationEnabled: attr('boolean', {defaultValue: true}),
+  authToken: attr({
     defaultValue() {
       return utils.generateRandomToken();
     },

@@ -1,7 +1,7 @@
-import DS from 'ember-data';
+import Model, {belongsTo} from '@ember-data/model';
 
-export default DS.Model.extend({
-  snapshot: DS.belongsTo('snapshot', {async: false}),
-  image: DS.belongsTo('image', {async: false, inverse: null}),
-  lossyImage: DS.belongsTo('image', {async: false, inverse: null}),
+export default Model.extend({
+  snapshot: belongsTo('snapshot', {async: false}),
+  image: belongsTo('image', {async: false, inverse: null}),
+  lossyImage: belongsTo('image', {async: false, inverse: null}),
 });

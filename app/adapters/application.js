@@ -1,10 +1,10 @@
+import JSONAPIAdapter from '@ember-data/adapter/json-api';
 import {computed} from '@ember/object';
-import DS from 'ember-data';
 import utils from 'percy-web/lib/utils';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 import AdminMode from 'percy-web/lib/admin-mode';
 
-export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
+export default JSONAPIAdapter.extend(DataAdapterMixin, {
   namespace: 'api/v1',
   authorizer: 'authorizer:jwt',
 

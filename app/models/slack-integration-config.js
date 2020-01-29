@@ -1,4 +1,4 @@
-import DS from 'ember-data';
+import Model, {attr, belongsTo} from '@ember-data/model';
 
 export const ALL_PROJECTS_ID = 'allProjects';
 export const ALL_PROJECTS_LABEL = 'All projects';
@@ -27,8 +27,8 @@ export const SLACK_NOTIFICATION_OPTIONS = [
   },
 ];
 
-export default DS.Model.extend({
-  slackIntegration: DS.belongsTo('slack-integration', {async: false}),
-  projectId: DS.attr(),
-  notificationTypes: DS.attr(),
+export default Model.extend({
+  slackIntegration: belongsTo('slack-integration', {async: false}),
+  projectId: attr(),
+  notificationTypes: attr(),
 });

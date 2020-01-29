@@ -1,17 +1,17 @@
-import DS from 'ember-data';
+import Model, {attr, belongsTo, hasMany} from '@ember-data/model';
 import {computed} from '@ember/object';
 
-export default DS.Model.extend({
-  userHash: DS.attr(),
-  name: DS.attr(),
-  email: DS.attr(),
-  avatarUrl: DS.attr(),
-  unverifiedEmail: DS.attr(),
-  webTheme: DS.attr(),
+export default Model.extend({
+  userHash: attr(),
+  name: attr(),
+  email: attr(),
+  avatarUrl: attr(),
+  unverifiedEmail: attr(),
+  webTheme: attr(),
 
-  userNotificationSetting: DS.belongsTo('userNotificationSetting', {async: false}),
-  identities: DS.hasMany('identities', {async: false}),
-  organizationUsers: DS.hasMany('organizationUser', {async: false}),
+  userNotificationSetting: belongsTo('userNotificationSetting', {async: false}),
+  identities: hasMany('identities', {async: false}),
+  organizationUsers: hasMany('organizationUser', {async: false}),
 
   hasGithubIdentity: computed('identities.@each.provider', function() {
     return this._hasIdentityType('github');
@@ -26,9 +26,9 @@ export default DS.Model.extend({
   }),
 
   // These endpoints are only available on the current user and should not be accessed otherwise.
-  organizations: DS.hasMany('organizations', {inverse: null}),
+  organizations: hasMany('organizations', {inverse: null}),
 
-  createdAt: DS.attr('date'),
+  createdAt: attr('date'),
   isVerified: computed.notEmpty('email'),
 
   _hasIdentityType(provider) {

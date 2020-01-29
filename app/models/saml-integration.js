@@ -1,13 +1,13 @@
-import DS from 'ember-data';
+import Model, {attr, belongsTo} from '@ember-data/model';
 import {equal} from '@ember/object/computed';
 
-export default DS.Model.extend({
-  organization: DS.belongsTo('organization', {async: false}),
-  provider: DS.attr('string'),
-  auth0ConnectionName: DS.attr('string'),
-  providerLoginUrl: DS.attr('string'),
-  emailDomain: DS.attr('string'),
-  forceSso: DS.attr('boolean'),
+export default Model.extend({
+  organization: belongsTo('organization', {async: false}),
+  provider: attr('string'),
+  auth0ConnectionName: attr('string'),
+  providerLoginUrl: attr('string'),
+  emailDomain: attr('string'),
+  forceSso: attr('boolean'),
 
   isOktaIntegration: equal('provider', 'okta'),
 });

@@ -1,6 +1,5 @@
 import Contentful from 'ember-data-contentful/models/contentful';
-import attr from 'ember-data/attr';
-import DS from 'ember-data';
+import {attr, belongsTo} from '@ember-data/model';
 
 export default Contentful.extend({
   contentType: 'heroBlock',
@@ -10,7 +9,7 @@ export default Contentful.extend({
   header: attr(),
   subheadText: attr(),
   videoEmbedUrl: attr(),
-  mainImage: DS.belongsTo('contentful-asset'), // model here: https://bit.ly/2MoN7fD
-  logomark: DS.belongsTo('contentful-asset'), // model here: https://bit.ly/2MoN7fD
+  mainImage: belongsTo('contentful-asset'), // model here: https://bit.ly/2MoN7fD
+  logomark: belongsTo('contentful-asset'), // model here: https://bit.ly/2MoN7fD
   classes: attr(),
 });

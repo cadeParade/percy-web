@@ -1,6 +1,6 @@
 import {computed} from '@ember/object';
 import {bool, not, notEmpty, or, filterBy, gt, mapBy, readOnly, uniq} from '@ember/object/computed';
-import DS from 'ember-data';
+import Model, {attr, belongsTo, hasMany} from '@ember-data/model';
 import {
   INTEGRATION_TYPES,
   SLACK_INTEGRATION_TYPE,
@@ -18,17 +18,17 @@ const DISPLAY_NAMES = {
   gitlabSelfHosted: 'GitLab Self-Managed',
 };
 
-export default DS.Model.extend(LoadableModel, {
+export default Model.extend(LoadableModel, {
   session: service(),
-  name: DS.attr(),
-  slug: DS.attr(),
-  isSyncing: DS.attr(),
-  lastSyncedAt: DS.attr(),
-  slackIntegrations: DS.hasMany('slackIntegrations', {async: false}),
-  versionControlIntegrations: DS.hasMany('version-control-integrations', {async: false}),
-  samlIntegration: DS.belongsTo('samlIntegration', {async: false}),
-  invites: DS.hasMany('invite'),
-  usageNotificationSetting: DS.belongsTo('usageNotificationSetting', {async: false}),
+  name: attr(),
+  slug: attr(),
+  isSyncing: attr(),
+  lastSyncedAt: attr(),
+  slackIntegrations: hasMany('slackIntegrations', {async: false}),
+  versionControlIntegrations: hasMany('version-control-integrations', {async: false}),
+  samlIntegration: belongsTo('samlIntegration', {async: false}),
+  invites: hasMany('invite'),
+  usageNotificationSetting: belongsTo('usageNotificationSetting', {async: false}),
 
   bitbucketCloudIntegration: computed(
     'versionControlIntegrations.@each.bitbucketCloudIntegrationId',
@@ -56,30 +56,30 @@ export default DS.Model.extend(LoadableModel, {
     return this.versionControlIntegrations.findBy('gitlabHost');
   }),
 
-  githubIntegrationRequest: DS.belongsTo('github-integration-request', {
+  githubIntegrationRequest: belongsTo('github-integration-request', {
     async: false,
   }),
-  subscription: DS.belongsTo('subscription', {async: false}),
-  projects: DS.hasMany('project'),
-  billingProvider: DS.attr(),
-  billingProviderData: DS.attr(),
-  billingLocked: DS.attr('boolean'),
+  subscription: belongsTo('subscription', {async: false}),
+  projects: hasMany('project'),
+  billingProvider: attr(),
+  billingProviderData: attr(),
+  billingLocked: attr('boolean'),
 
   // Filtered down to saved projects, does not include unsaved project objects:
   savedProjects: filterBy('projects', 'isNew', false),
 
-  organizationUsers: DS.hasMany('organization-user'),
+  organizationUsers: hasMany('organization-user'),
 
-  seatLimit: DS.attr(),
-  seatsUsed: DS.attr(),
-  seatsRemaining: DS.attr(),
+  seatLimit: attr(),
+  seatsUsed: attr(),
+  seatsRemaining: attr(),
   hasSeatsRemaining: gt('seatsRemaining', 0),
 
-  isSponsored: DS.attr(),
+  isSponsored: attr(),
 
   // These are GitHub repositories that the organization has access permissions to. These are not
   // useful on their own other than for listing. A repo must be linked to a project.
-  repos: DS.hasMany('repo'),
+  repos: hasMany('repo'),
 
   isBitbucketCloudIntegrated: bool('bitbucketCloudIntegration'),
   isGithubIntegrated: bool('githubIntegration'),

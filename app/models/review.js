@@ -1,12 +1,12 @@
-import DS from 'ember-data';
+import Model, {attr, belongsTo, hasMany} from '@ember-data/model';
 
 export const REVIEW_ACTIONS = {
   APPROVE: 'approve',
   REJECT: 'request_changes',
 };
 
-export default DS.Model.extend({
-  build: DS.belongsTo('build'),
-  snapshots: DS.hasMany('snapshot'),
-  action: DS.attr(),
+export default Model.extend({
+  build: belongsTo('build'),
+  snapshots: hasMany('snapshot'),
+  action: attr(),
 });

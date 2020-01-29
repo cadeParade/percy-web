@@ -1,11 +1,11 @@
-import DS from 'ember-data';
+import Model, {attr} from '@ember-data/model';
 import {computed} from '@ember/object';
 import moment from 'moment';
 
-export default DS.Model.extend({
-  total: DS.attr(),
-  dayStats: DS.attr(),
-  currentCost: DS.attr(),
+export default Model.extend({
+  total: attr(),
+  dayStats: attr(),
+  currentCost: attr(),
 
   dayStatsFormatted: computed('dayStats', function() {
     const dayStats = this.dayStats;

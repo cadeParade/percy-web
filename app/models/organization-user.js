@@ -1,5 +1,5 @@
 import {computed} from '@ember/object';
-import DS from 'ember-data';
+import Model, {attr, belongsTo} from '@ember-data/model';
 import {equal} from '@ember/object/computed';
 
 export const ROLE_ID_TO_TITLE = {
@@ -8,12 +8,12 @@ export const ROLE_ID_TO_TITLE = {
   billing_admin: 'Billing Admin',
 };
 
-export default DS.Model.extend({
-  organization: DS.belongsTo('organization', {async: false}),
-  user: DS.belongsTo('user', {async: false, inverse: null}),
+export default Model.extend({
+  organization: belongsTo('organization', {async: false}),
+  user: belongsTo('user', {async: false, inverse: null}),
 
-  createdAt: DS.attr(),
-  role: DS.attr(),
+  createdAt: attr(),
+  role: attr(),
 
   roleTitle: computed('role', function() {
     return ROLE_ID_TO_TITLE[this.role];

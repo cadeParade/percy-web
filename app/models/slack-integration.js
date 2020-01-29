@@ -1,10 +1,10 @@
-import DS from 'ember-data';
+import Model, {attr, belongsTo, hasMany} from '@ember-data/model';
 
-export default DS.Model.extend({
-  organization: DS.belongsTo('organization', {async: false}),
-  slackIntegrationConfigs: DS.hasMany('slack-integration-config', {async: false}),
-  teamName: DS.attr(),
-  channelName: DS.attr(),
-  code: DS.attr(), // only used during create
-  state: DS.attr(), // only used during create
+export default Model.extend({
+  organization: belongsTo('organization', {async: false}),
+  slackIntegrationConfigs: hasMany('slack-integration-config', {async: false}),
+  teamName: attr(),
+  channelName: attr(),
+  code: attr(), // only used during create
+  state: attr(), // only used during create
 });
