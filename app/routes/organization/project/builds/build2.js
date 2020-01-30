@@ -10,6 +10,7 @@ export default Route.extend(EKMixin, {
   snapshotQuery: service(),
   session: service(),
   launchDarkly: service(),
+  router: service(),
   keyboardActivated: true,
 
   model(params) {
@@ -35,14 +36,14 @@ export default Route.extend(EKMixin, {
 
   //TODO refactor this
   _findActiveSnapshotIndex(snapshots) {
-    const activeSnapshotId = this._router.currentRoute.params.snapshot_id;
+    const activeSnapshotId = this.router.currentRoute.params.snapshot_id;
     return snapshots.mapBy('id').indexOf(activeSnapshotId);
   },
 
   onUpArrowPress: on(keyDown('ArrowUp'), function(event) {
     console.log('UP');
 
-    if (this._router.currentRoute.name === 'organization.project.builds.build2.snapshot') {
+    if (this.router.currentRoute.name === 'organization.project.builds.build2.snapshot') {
       event.preventDefault();
       const snapshots = this.modelFor(this.routeName).snapshots;
       const activeSnapshotIndex = this._findActiveSnapshotIndex(snapshots);
@@ -57,7 +58,7 @@ export default Route.extend(EKMixin, {
 
   onDownArrowPress: on(keyDown('ArrowDown'), function(event) {
     console.log("DOWN")
-    if (this._router.currentRoute.name === 'organization.project.builds.build2.snapshot') {
+    if (this.router.currentRoute.name === 'organization.project.builds.build2.snapshot') {
       event.preventDefault();
       const snapshots = this.modelFor(this.routeName).snapshots;
       const activeSnapshotIndex = this._findActiveSnapshotIndex(snapshots);
