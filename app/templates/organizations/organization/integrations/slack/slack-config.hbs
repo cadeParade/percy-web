@@ -1,8 +1,8 @@
-{{#if isAdmin}}
+{{#if this.isAdmin}}
   <Organizations::Integrations::SlackDetailsContainer
     @showSlackIntegrationConfig={{true}}
-    @organization={{organization}}
-    @slackIntegrationConfig={{slackIntegrationConfig}}
+    @organization={{this.organization}}
+    @slackIntegrationConfig={{this.slackIntegrationConfig}}
     @deleteSlackIntegrationConfig={{route-action "deleteSlackIntegrationConfig"}}
   />
 {{else}}

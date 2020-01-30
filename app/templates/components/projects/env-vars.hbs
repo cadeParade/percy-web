@@ -1,10 +1,10 @@
-{{#if project.isDemo}}
-  {{#code-block data-test-env-var-demo lang="nohighlight"}}PERCY_TOKEN=[This is a demo project. Create your own project to get a PERCY_TOKEN]{{/code-block}}
+{{#if this.project.isDemo}}
+  <CodeBlock @data-test-env-var-demo={{true}} @lang="nohighlight">PERCY_TOKEN=[This is a demo project. Create your own project to get a PERCY_TOKEN]</CodeBlock>
 {{else}}
-  {{#if project.tokens.isPending}}
+  {{#if this.project.tokens.isPending}}
     <CodeBlock><em>Loading...</em></CodeBlock>
   {{/if}}
-  {{#with project.writeOnlyToken.token as |token|}}
+  {{#with this.project.writeOnlyToken.token as |token|}}
     <CodeBlock @lang="nohighlight">PERCY_TOKEN={{token}}</CodeBlock>
   {{/with}}
 {{/if}}

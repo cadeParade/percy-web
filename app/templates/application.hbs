@@ -4,13 +4,13 @@
 <DarkMode />
 {{outlet}}
 
-{{#if confirm.showPrompt}}
+{{#if this.confirm.showPrompt}}
   <ConfirmDialog />
 {{/if}}
 
-{{#if flashMessages.queue}}
+{{#if this.flashMessages.queue}}
   <div class="flash-message-container z-top">
-    {{#each flashMessages.queue as |flash|}}
+    {{#each this.flashMessages.queue as |flash|}}
       <FlashMessage @flash={{flash}} @classNames={{concat "flash-message-" flash.type (if flash.sticky " flash-message-sticky")}} as |component flash|>
         <div class="flash-message-detail flash-message-detail-{{flash.type}} flex justify-center items-center">
           <figure class="svg-container">

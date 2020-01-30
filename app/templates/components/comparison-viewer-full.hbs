@@ -1,25 +1,25 @@
-{{#if isDiff}}
-  {{#if comparison.isSame}}
-    <p>No visual changes at {{comparison.width}}px.</p>
+{{#if this.isDiff}}
+  {{#if this.comparison.isSame}}
+    <p>No visual changes at {{this.comparison.width}}px.</p>
   {{else}}
-    {{#if comparison.wasAdded}}
-      {{simple-image image=headImage}}
+    {{#if this.comparison.wasAdded}}
+      {{simple-image image=this.headImage}}
     {{else}}
       <div class="Viewer-pdiffImageBox">
         <div class="pdiffImageOverlay" data-test-comparison-viewer-full-diff-image-overlay>
-          {{simple-image image=diffImage altText="Diff overlay -- Highlights the areas that are changed between base and head screenshots" classes="Viewer-pdiffImageOverlay"}}
+          {{simple-image image=this.diffImage altText="Diff overlay -- Highlights the areas that are changed between base and head screenshots" classes="Viewer-pdiffImageOverlay"}}
         </div>
-        {{simple-image image=headImage}}
+        {{simple-image image=this.headImage}}
       </div>
     {{/if}}
   {{/if}}
 {{/if}}
 
 
-{{#if isBase}}
-  {{simple-image image=baseImage}}
+{{#if this.isBase}}
+  {{simple-image image=this.baseImage}}
 {{/if}}
 
-{{#if isHead}}
-  {{simple-image image=headImage}}
+{{#if this.isHead}}
+  {{simple-image image=this.headImage}}
 {{/if}}

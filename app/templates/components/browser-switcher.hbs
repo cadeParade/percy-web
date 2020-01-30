@@ -1,16 +1,16 @@
-<div class="btn-toggle {{unless fullscreen 'btn-toggle-lg'}}">
-  {{#each sortedBrowsers as |browser|}}
+<div class="btn-toggle {{unless this.fullscreen 'btn-toggle-lg'}}">
+  {{#each this.sortedBrowsers as |browser|}}
     <div
-      class="btn-toggle-item browser-switcher {{if (eq browser.id activeBrowser.id) "is-selected"}} {{concat "data-test-browser-switcher-" browser.familySlug}}"
-      {{action updateActiveBrowser browser}}
+      class="btn-toggle-item browser-switcher {{if (eq browser.id this.activeBrowser.id) "is-selected"}} {{concat "data-test-browser-switcher-" browser.familySlug}}"
+      {{action this.updateActiveBrowser browser}}
       role="button"
       data-test-browser-switcher-button
     >
       {{inline-svg (concat browser.familySlug "-browser-icon") class="opacity-25"}}
-      {{#if build}}
+      {{#if this.build}}
         <BrowserSwitcherBadge
-          @unnapprovedSnapshotCount={{get (get unapprovedSnapshotsWithDiffForBrowsers browser.id) "length"}}
-          @isActive={{eq browser.id activeBrowser.id}}
+          @unnapprovedSnapshotCount={{get (get this.unapprovedSnapshotsWithDiffForBrowsers browser.id) "length"}}
+          @isActive={{eq browser.id this.activeBrowser.id}}
         />
       {{/if}}
     </div>

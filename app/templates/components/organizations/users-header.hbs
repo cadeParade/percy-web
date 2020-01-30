@@ -3,34 +3,41 @@
     <div>
       <h2 class="mr-2 mb-sm text-xl md:text-xl font-semibold leading-none">Manage users</h2>
       <p class="mb-0">
-        {{#if shouldEnforceSeatLimit}}
-          <span data-test-seat-count-text>You’ve used {{organization.seatsUsed}} of {{organization.seatLimit}} seats available.</span>
-          To add more users, upgrade your plan on your {{#link-to "organizations.organization.billing" organization.slug data-test-billing-link class="py-1 font-semibold"}}billing page{{/link-to}}.
+        {{#if this.shouldEnforceSeatLimit}}
+          <span data-test-seat-count-text>You’ve used {{this.organization.seatsUsed}} of {{this.organization.seatLimit}} seats available.</span>
+          To add more users, upgrade your plan on your
+          <LinkTo @route="organizations.organization.billing" @model={{this.organization.slug}} @data-test-billing-link={{true}} class="py-1 font-semibold">billing page</LinkTo>.
           <br />
         {{/if}}
         If you have any questions about user management, <a class="font-semibold" href="#" {{action "showSupport"}} data-test-users-show-support>let us know!</a>
       </p>
     </div>
-    <div data-test-no-seats-tooltip class="{{if canDisplayTooltip 'hint--left hint--rounded hint--bounce'}}" aria-label="{{if canDisplayTooltip tooltipText}}">
-      {{#link-to data-test-invite-button "organizations.organization.users.invite" organization.slug class="percy-btn percy-btn-primary" disabled=disableInviteButton}}
+    <div data-test-no-seats-tooltip class="{{if this.canDisplayTooltip 'hint--left hint--rounded hint--bounce'}}" aria-label="{{if this.canDisplayTooltip this.tooltipText}}">
+      <LinkTo
+        @data-test-invite-button={{true}}
+        @route="organizations.organization.users.invite"
+        @model={{this.organization.slug}}
+        class="percy-btn percy-btn-primary"
+        @disabled={{this.disableInviteButton}}
+      >
         Invite new users
-      {{/link-to}}
+      </LinkTo>
     </div>
   </div>
 
-  {{#if showInviteForm}}
+  {{#if this.showInviteForm}}
     <div class="pb-4" data-test-invite-form-wrapper>
-      <Forms::OrganizationInvite @organization={{organization}} />
+      <Forms::OrganizationInvite @organization={{this.organization}} />
     </div>
-  {{else if isInviteFormAllowed}}
+  {{else if this.isInviteFormAllowed}}
     <div data-test-invite-permission-error class="pb-3">
-      {{#if isMember}}
+      {{#if this.isMember}}
         <div class="reminder-note">
           <strong>Note:</strong> Inviting new users requires organization admin permissions.
         </div>
-      {{else if cannotAddSeats}}
+      {{else if this.cannotAddSeats}}
         <div class="reminder-note">
-          <strong>Note:</strong> You have no seats remaining on your plan. To add more users, upgrade your plan on your {{#link-to "organizations.organization.billing" organization.slug data-test-billing-link class="py-1 font-semibold"}}billing page{{/link-to}}.
+          <strong>Note:</strong> You have no seats remaining on your plan. To add more users, upgrade your plan on your <LinkTo @route="organizations.organization.billing" @model={{this.organization.slug}} @data-test-billing-link={{true}} class="py-1 font-semibold">billing page</LinkTo>.
         </div>
       {{/if}}
     </div>

@@ -1,17 +1,17 @@
 <button
-  class="{{classes}} relative {{if isSaving 'is-loading'}} {{if isSaveSuccessful 'is-successful'}} {{if (eq isSaveSuccessful false) 'is-failed'}}"
-  disabled={{disabled}}
+  class="{{this.classes}} relative {{if this.isSaving 'is-loading'}} {{if this.isSaveSuccessful 'is-successful'}} {{if (eq this.isSaveSuccessful false) 'is-failed'}}"
+  disabled={{this.disabled}}
   type="submit"
   {{action "perform"}}
   data-test-form-submit-button
 >
-  <span class="trans trans-opacity {{if (or isSaving isSaveSuccessful (eq isSaveSuccessful false)) 'opacity-0'}}">{{value}}</span>
+  <span class="trans trans-opacity {{if (or this.isSaving this.isSaveSuccessful (eq this.isSaveSuccessful false)) 'opacity-0'}}">{{this.value}}</span>
   <figure class="svg-container absolute" style="left: 50%; top: 50%; transform: translate3d(-50%, -50%, 0)">
-    {{#if isSaving}}
+    {{#if this.isSaving}}
       {{inline-svg "loader-icon"}}
-    {{else if isSaveSuccessful}}
+    {{else if this.isSaveSuccessful}}
       {{inline-svg "check-icon" class="scale-15"}}
-    {{else if (eq isSaveSuccessful false)}}
+    {{else if (eq this.isSaveSuccessful false)}}
       Failed!
     {{/if}}
   </figure>

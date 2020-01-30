@@ -1,17 +1,17 @@
-{{title model.build.buildTitle}}
+{{title this.model.build.buildTitle}}
 <BuildContainer
-  @build={{model.build}}
-  @isSnapshotsLoading={{isSnapshotsLoading}}
-  @isHidingBuildContainer={{isHidingBuildContainer}}
+  @build={{this.model.build}}
+  @isSnapshotsLoading={{this.isSnapshotsLoading}}
+  @isHidingBuildContainer={{this.isHidingBuildContainer}}
   @createReview={{route-action "createReview"}}
-  @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
+  @allChangedBrowserSnapshotsSorted={{this.allChangedBrowserSnapshotsSorted}}
   @initializeSnapshotOrdering={{route-action "initializeSnapshotOrdering"}}
-  @isUnchangedSnapshotsVisible={{isUnchangedSnapshotsVisible}}
-  @isBuildApprovable={{isBuildApprovable}}
+  @isUnchangedSnapshotsVisible={{this.isUnchangedSnapshotsVisible}}
+  @isBuildApprovable={{this.isBuildApprovable}}
   @notifyOfUnchangedSnapshots={{action "notifyOfUnchangedSnapshots"}}
   @createCommentThread={{route-action "createCommentThread"}}
   @closeCommentThread={{route-action "closeCommentThread"}}
   @createComment={{route-action "createComment"}}
-  @allApprovableSnapshots={{allApprovableSnapshots}}
+  @allApprovableSnapshots={{this.allApprovableSnapshots}}
 />
 {{outlet}}

@@ -1,9 +1,9 @@
-<div class="px-2 py-sm rounded-r font-semibold {{buttonClasses}}">
+<div class="px-2 py-sm rounded-r font-semibold {{this.buttonClasses}}">
   <LinkTo
     @data-test-link={{true}}
-    @route={{linkRoute}}
-    @model={{organization.slug}}
-    class={{concat "hover:underline " linkClasses}}
+    @route={{this.linkRoute}}
+    @model={{this.organization.slug}}
+    class={{concat "hover:underline " this.linkClasses}}
   >
     {{yield}}
   </LinkTo>

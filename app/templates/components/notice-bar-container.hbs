@@ -1,6 +1,6 @@
 <div data-test-notice-bar class="flex items-center hide-on-laptop">
   {{yield (hash
     body=(component 'notice-bar-body')
-    button=(component 'notice-bar-button' organization=organization text="hi")
+    button=(component 'notice-bar-button' organization=this.organization text="hi")
   )}}
 </div>

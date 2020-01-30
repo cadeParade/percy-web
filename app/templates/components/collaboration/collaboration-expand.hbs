@@ -1,12 +1,12 @@
-<div class="flex items-center font-semibold text-sm -ml-4 mb-2 hover:underline cursor-pointer z-1 {{unless isClosed 'text-purple-600'}}" data-test-collaboration-expand>
+<div class="flex items-center font-semibold text-sm -ml-4 mb-2 hover:underline cursor-pointer z-1 {{unless this.isClosed 'text-purple-600'}}" data-test-collaboration-expand>
   <div class="flex justify-center items-center w-20 h-20 mr-1-1/2 bg-white border rounded-full">
-    {{inline-svg "dot-dot-dot" class=(if isThreadClosed 'fill-gray-700')}}
+    {{inline-svg "dot-dot-dot" class=(if this.isThreadClosed 'fill-gray-700')}}
   </div>
-  <div class="leading-none" role="button" {{action showCollapsedComments}} data-test-expand-comments>
-    {{#if isThreadClosed}}
+  <div class="leading-none" role="button" {{action this.showCollapsedComments}} data-test-expand-comments>
+    {{#if this.isThreadClosed}}
       View conversation
     {{else}}
-      Show {{numCollapsedComments}} additional comments
+      Show {{this.numCollapsedComments}} additional comments
     {{/if}}
   </div>
 </div>

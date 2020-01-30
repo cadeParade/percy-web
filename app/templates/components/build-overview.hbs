@@ -1,56 +1,56 @@
 <div class="grid col-auto gap-1 items-center">
-  <ComparisonIcon @build={{build}} />
+  <ComparisonIcon @build={{this.build}} />
   <div class="text-xl md:text-2xl leading-none">
-    {{#if build.isPending}}
+    {{#if this.build.isPending}}
       Receiving build
-    {{else if build.isProcessing}}
+    {{else if this.build.isProcessing}}
       Processing visual differences
-    {{else if build.isFinished}}
-      {{#if build.isApproved}}
-        {{#if (eq build.reviewStateReason 'all_snapshots_approved')}}
+    {{else if this.build.isFinished}}
+      {{#if this.build.isApproved}}
+        {{#if (eq this.build.reviewStateReason 'all_snapshots_approved')}}
           All changes approved
-        {{else if (eq build.reviewStateReason 'all_snapshots_approved_previously')}}
+        {{else if (eq this.build.reviewStateReason 'all_snapshots_approved_previously')}}
           All changes approved
-        {{else if (eq build.reviewStateReason 'auto_approved_branch')}}
+        {{else if (eq this.build.reviewStateReason 'auto_approved_branch')}}
           All changes approved automatically on this branch
-        {{else if (eq build.reviewStateReason 'no_diffs')}}
+        {{else if (eq this.build.reviewStateReason 'no_diffs')}}
           No changes to review
         {{/if}}
-      {{else if build.isRejected}}
-        {{pluralize build.totalSnapshotsRequestingChanges "requested change"}}
+      {{else if this.build.isRejected}}
+        {{pluralize this.build.totalSnapshotsRequestingChanges "requested change"}}
       {{else}}
-        <span class="font-semibold">{{build.totalSnapshotsUnreviewed}}</span> {{pluralize build.totalSnapshotsUnreviewed "unreviewed change" without-count=true}}
+        <span class="font-semibold">{{this.build.totalSnapshotsUnreviewed}}</span> {{pluralize this.build.totalSnapshotsUnreviewed "unreviewed change" without-count=true}}
       {{/if}}
-    {{else if build.isFailed}}
+    {{else if this.build.isFailed}}
       This build has failed
-    {{else if build.isExpired}}
+    {{else if this.build.isExpired}}
       This build has expired
     {{/if}}
   </div>
 </div>
 <div class="text-secondary">
-  {{#if build.isPending}}
+  {{#if this.build.isPending}}
     Hang tight&hellip;
-  {{else if build.isProcessing}}
-    {{#if (eq progressBarWidth "0%")}}
+  {{else if this.build.isProcessing}}
+    {{#if (eq this.progressBarWidth "0%")}}
       Finishing up&hellip;
     {{else}}
-      <span class="text-primary font-semibold">{{build.totalComparisonsFinished}}</span> of <span class="text-primary">{{build.totalComparisons}}</span> screenshots processed
+      <span class="text-primary font-semibold">{{this.build.totalComparisonsFinished}}</span> of <span class="text-primary">{{this.build.totalComparisons}}</span> screenshots processed
     {{/if}}
-  {{else if build.isFinished}}
+  {{else if this.build.isFinished}}
     <div>
-      {{#if build.isApproved}}
-        {{moment-from-now build.approvedAt interval=60000}}
-        {{#if build.approvedBy}}
-          by {{build.approvedBy.name}}
+      {{#if this.build.isApproved}}
+        {{moment-from-now this.build.approvedAt interval=60000}}
+        {{#if this.build.approvedBy}}
+          by {{this.build.approvedBy.name}}
         {{/if}}
-      {{else if build.isRejected}}
-        <span class="text-primary font-semibold">{{build.totalSnapshotsUnreviewed}}</span> unreviewed snapshots
+      {{else if this.build.isRejected}}
+        <span class="text-primary font-semibold">{{this.build.totalSnapshotsUnreviewed}}</span> unreviewed snapshots
       {{else}}
-        in <span class="text-primary font-semibold">{{build.totalSnapshots}}</span> {{pluralize build.totalSnapshots "snapshot" without-count=true}}
+        in <span class="text-primary font-semibold">{{this.build.totalSnapshots}}</span> {{pluralize this.build.totalSnapshots "snapshot" without-count=true}}
       {{/if}}
     </div>
-  {{else if build.isFailed}}
-    <div>{{build.failureReasonHumanized}}</div>
+  {{else if this.build.isFailed}}
+    <div>{{this.build.failureReasonHumanized}}</div>
   {{/if}}
 </div>

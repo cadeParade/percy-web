@@ -1,53 +1,53 @@
 <BuildToolbar
-  @build={{build}}
-  @project={{build.project}}
-  @organization={{build.project.organization}}
-  @allDiffsShown={{allDiffsShown}}
+  @build={{this.build}}
+  @project={{this.build.project}}
+  @organization={{this.build.project.organization}}
+  @allDiffsShown={{this.allDiffsShown}}
   @toggleAllDiffs={{action "toggleAllDiffs"}}
-  @createReview={{createReview}}
-  @approvableSnapshots={{allApprovableSnapshots}}
-  @activeBrowser={{activeBrowser}}
+  @createReview={{this.createReview}}
+  @approvableSnapshots={{this.allApprovableSnapshots}}
+  @activeBrowser={{this.activeBrowser}}
   @updateActiveBrowser={{action "updateActiveBrowser"}}
-  @isSnapshotsLoading={{isSnapshotsLoading}}
-  @isBuildApprovable={{isBuildApprovable}}
+  @isSnapshotsLoading={{this.isSnapshotsLoading}}
+  @isBuildApprovable={{this.isBuildApprovable}}
 />
 
 <div class="BuildContainer-body w-full">
   <BuildHeader
-    @build={{build}}
-    @isBuildApprovable={{isBuildApprovable}}
+    @build={{this.build}}
+    @isBuildApprovable={{this.isBuildApprovable}}
   />
 
-  {{#if (and build.isFinished build.partial)}}
+  {{#if (and this.build.isFinished this.build.partial)}}
     <div class="public-project-notice p-2 border flex items-center font-semibold">
       Partial build
     </div>
   {{/if}}
 
-  {{#if (and build.isFinished (not build.partial))}}
-    <RemovedSnapshots @build={{build}} />
+  {{#if (and this.build.isFinished (not this.build.partial))}}
+    <RemovedSnapshots @build={{this.build}} />
   {{/if}}
 
-  {{#if isSnapshotsLoading}}
+  {{#if this.isSnapshotsLoading}}
     <LoadingPage />
-  {{else if build.isFinished}}
+  {{else if this.build.isFinished}}
     <SnapshotList
-      @snapshotsChanged={{snapshotsChanged}}
-      @build={{build}}
-      @allDiffsShown={{allDiffsShown}}
+      @snapshotsChanged={{this.snapshotsChanged}}
+      @build={{this.build}}
+      @allDiffsShown={{this.allDiffsShown}}
       @toggleAllDiffs={{action "toggleAllDiffs"}}
-      @isKeyboardNavEnabled={{not isHidingBuildContainer}}
-      @createReview={{createReview}}
-      @activeBrowser={{activeBrowser}}
+      @isKeyboardNavEnabled={{not this.isHidingBuildContainer}}
+      @createReview={{this.createReview}}
+      @activeBrowser={{this.activeBrowser}}
       @updateActiveBrowser={{action "updateActiveBrowser"}}
-      @isUnchangedSnapshotsVisible={{isUnchangedSnapshotsVisible}}
+      @isUnchangedSnapshotsVisible={{this.isUnchangedSnapshotsVisible}}
       @toggleUnchangedSnapshotsVisible={{action "toggleUnchangedSnapshotsVisible"}}
-      @snapshotsUnchanged={{snapshotsUnchanged}}
-      @isUnchangedSnapshotsLoading={{isUnchangedSnapshotsLoading}}
-      @isBuildApprovable={{isBuildApprovable}}
-      @createCommentThread={{createCommentThread}}
-      @closeCommentThread={{closeCommentThread}}
-      @createComment={{createComment}}
+      @snapshotsUnchanged={{this.snapshotsUnchanged}}
+      @isUnchangedSnapshotsLoading={{this.isUnchangedSnapshotsLoading}}
+      @isBuildApprovable={{this.isBuildApprovable}}
+      @createCommentThread={{this.createCommentThread}}
+      @closeCommentThread={{this.closeCommentThread}}
+      @createComment={{this.createComment}}
     />
   {{/if}}
 </div>

@@ -5,11 +5,11 @@
 
     <div class="w-90vw max-w-xl mx-auto flex justify-between items-center">
       <div class="text-2xl font-semibold leading-none">
-        {{organization.name}}
+        {{this.organization.name}}
       </div>
       <div>
-        {{#if shouldShowNewProject}}
-          <LinkTo @route="organizations.organization.projects.new" @model={{organization.slug}} class="data-test-dashboard-nav-new-project">
+        {{#if this.shouldShowNewProject}}
+          <LinkTo @route="organizations.organization.projects.new" @model={{this.organization.slug}} class="data-test-dashboard-nav-new-project">
             <PercyBtn @isPrimaryButton={{true}}>
               New project
             </PercyBtn>
@@ -20,28 +20,28 @@
 
     <div class="w-90vw max-w-xl mx-auto">
       <nav class="tab-bar">
-        <LinkTo @route="organization.index" @model={{organization.slug}} class="tab-bar-tab data-test-dashboard-nav-projects">
+        <LinkTo @route="organization.index" @model={{this.organization.slug}} class="tab-bar-tab data-test-dashboard-nav-projects">
           Projects
         </LinkTo>
 
-        {{#if showMemberLinks}}
-          <LinkTo @route="organizations.organization.settings" @model={{organization.slug}} class="tab-bar-tab data-test-dashboard-nav-org-settings">
+        {{#if this.showMemberLinks}}
+          <LinkTo @route="organizations.organization.settings" @model={{this.organization.slug}} class="tab-bar-tab data-test-dashboard-nav-org-settings">
             Details
           </LinkTo>
 
-          <LinkTo @route="organizations.organization.billing" @model={{organization.slug}} class="tab-bar-tab data-test-dashboard-nav-org-billing">
+          <LinkTo @route="organizations.organization.billing" @model={{this.organization.slug}} class="tab-bar-tab data-test-dashboard-nav-org-billing">
             Billing
           </LinkTo>
 
-          <LinkTo @route="organizations.organization.usage" @model={{organization.slug}} class="tab-bar-tab data-test-dashboard-nav-org-usage">
+          <LinkTo @route="organizations.organization.usage" @model={{this.organization.slug}} class="tab-bar-tab data-test-dashboard-nav-org-usage">
             Usage
           </LinkTo>
 
-          <LinkTo @route="organizations.organization.users" @model={{organization.slug}} class="tab-bar-tab data-test-dashboard-nav-org-users">
-            Users ({{organization.seatsUsed}})
+          <LinkTo @route="organizations.organization.users" @model={{this.organization.slug}} class="tab-bar-tab data-test-dashboard-nav-org-users">
+            Users ({{this.organization.seatsUsed}})
           </LinkTo>
 
-          <LinkTo @route="organizations.organization.integrations" @model={{organization.slug}} class="tab-bar-tab data-test-dashboard-nav-org-integrations">
+          <LinkTo @route="organizations.organization.integrations" @model={{this.organization.slug}} class="tab-bar-tab data-test-dashboard-nav-org-integrations">
             Integrations
           </LinkTo>
         {{/if}}

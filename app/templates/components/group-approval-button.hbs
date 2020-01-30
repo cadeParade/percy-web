@@ -1,19 +1,19 @@
-{{#if isGroupApproved}}
+{{#if this.isGroupApproved}}
   <div class="status-pill is-approved" data-test-group-approved>
-    {{numTotalSnapshots}} changes approved
+    {{this.numTotalSnapshots}} changes approved
   </div>
 {{else}}
-  <div class="{{if isDisabled "hint--left hint--rounded hint--bounce"}}"
-    aria-label="{{if isDisabled "You can't approve this group because you are not a member of this build's organization or are not logged in"}}">
+  <div class="{{if this.isDisabled "hint--left hint--rounded hint--bounce"}}"
+    aria-label="{{if this.isDisabled "You can't approve this group because you are not a member of this build's organization or are not logged in"}}">
     <button
       {{action "approveGroup"}}
       type="button"
       class="btn btn-success
-        {{if isLoading 'is-loading'}}"
-      disabled="{{if isDisabled "disabled"}}"
+        {{if this.isLoading 'is-loading'}}"
+      disabled="{{if this.isDisabled "disabled"}}"
       data-test-group-approval-button
     >
-      Approve {{pluralize numUnapprovedSnapshots "change"}}
+      Approve {{pluralize this.numUnapprovedSnapshots "change"}}
     </button>
   </div>
 {{/if}}

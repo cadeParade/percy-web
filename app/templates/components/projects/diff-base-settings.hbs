@@ -1,6 +1,6 @@
-<div {{action 'setAutomatic'}} role="button" class="ProjectsDiffBaseSettings-setting {{if (eq project.diffBase "automatic") "ProjectsDiffBaseSettings-setting--selected"}}">
-  {{#if (eq project.diffBase "automatic")}}
-    <SavingIndicator @isSaving={{isSaving}} @isSaveSuccessful={{isSaveSuccessful}} />
+<div {{action 'setAutomatic'}} role="button" class="ProjectsDiffBaseSettings-setting {{if (eq this.project.diffBase "automatic") "ProjectsDiffBaseSettings-setting--selected"}}">
+  {{#if (eq this.project.diffBase "automatic")}}
+    <SavingIndicator @isSaving={{this.isSaving}} @isSaveSuccessful={{this.isSaveSuccessful}} />
     {{fa-icon "arrow-right"}}
   {{/if}}
   <span class="ProjectsDiffBaseSettings-title">
@@ -10,9 +10,9 @@
     Automatically use the last <strong>successful</strong> build from the <code>master</code> branch as the baseline for diffs.
   </p>
 </div>
-<div {{action 'setManual'}} role="button" class="ProjectsDiffBaseSettings-setting {{if (eq project.diffBase "manual") "ProjectsDiffBaseSettings-setting--selected"}}">
-  {{#if (eq project.diffBase "manual")}}
-    <SavingIndicator @isSaving={{isSaving}} @isSaveSuccessful={{isSaveSuccessful}} />
+<div {{action 'setManual'}} role="button" class="ProjectsDiffBaseSettings-setting {{if (eq this.project.diffBase "manual") "ProjectsDiffBaseSettings-setting--selected"}}">
+  {{#if (eq this.project.diffBase "manual")}}
+    <SavingIndicator @isSaving={{this.isSaving}} @isSaveSuccessful={{this.isSaveSuccessful}} />
     {{fa-icon "arrow-right"}}
   {{/if}}
   <span class="ProjectsDiffBaseSettings-title">Manual diff base</span>

@@ -1,22 +1,22 @@
 <div class="text-center py-3 sm:pt-6 mx-auto max-w-lg">
-  {{#if content.superheader}}
+  {{#if this.content.superheader}}
     <h2 class="uppercase inline-block py-sm mb-1 text-sm font-bold text-gray-300 tracking-wide border-b hero-block-superheader">
-      {{content.superheader}}
+      {{this.content.superheader}}
     </h2>
   {{/if}}
 
-  <h1 class="hero-block-header text-3xl leading-none md:text-4xl lg:text-5xl font-bold mb-1">{{content.header}}</h1>
+  <h1 class="hero-block-header text-3xl leading-none md:text-4xl lg:text-5xl font-bold mb-1">{{this.content.header}}</h1>
 
-  {{#if content.subheadText}}
+  {{#if this.content.subheadText}}
     <div class="hero-block-subheader text-lg sm:text-xl text-secondary mb-1" >
-      {{content.subheadText}}
+      {{this.content.subheadText}}
     </div>
   {{/if}}
 
-  {{#if content.videoEmbedUrl}}
+  {{#if this.content.videoEmbedUrl}}
     <Marketing::VideoModal
-      @videoEmbedUrl={{content.videoEmbedUrl}}
-      @isVideoModalVisible={{isVideoModalVisible}}
+      @videoEmbedUrl={{this.content.videoEmbedUrl}}
+      @isVideoModalVisible={{this.isVideoModalVisible}}
       @toggleModalVisibility={{action (toggle "isVideoModalVisible" this)}}
     >
       <button class="percy-btn percy-btn-secondary mt-1" type="button" {{action (toggle "isVideoModalVisible" this)}}>

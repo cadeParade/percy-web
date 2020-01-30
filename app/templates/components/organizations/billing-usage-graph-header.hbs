@@ -3,21 +3,21 @@
     {{inline-svg 'comparison-icon-lg' class="mr-2"}}
     <div>
       <div class="leading-none">
-        {{#if currentUsageStats.total}}
-          {{format-number currentUsageStats.total}}
+        {{#if this.currentUsageStats.total}}
+          {{format-number this.currentUsageStats.total}}
         {{else}}
           …
         {{/if}}
       </div>
       <div class="text-sm text-secondary font-semibold">
-        Snapshots since {{moment-format subscription.currentPeriodStart 'MMMM D'}}
+        Snapshots since {{moment-format this.subscription.currentPeriodStart 'MMMM D'}}
         <sup class="hint--top hint--rounded hint--bounce" aria-label="Snapshot counts are performed in UTC and may be delayed">{{fa-icon "info-circle" class="text-gray-300"}}</sup>
       </div>
     </div>
   </div>
   <div class="text-right">
     <div class="font-semibold">
-      {{moment-format subscription.currentPeriodStart 'MMMM D, YYYY'}} - {{moment-format subscription.currentPeriodEndDisplayed
+      {{moment-format this.subscription.currentPeriodStart 'MMMM D, YYYY'}} - {{moment-format this.subscription.currentPeriodEndDisplayed
       'MMMM D, YYYY'}}
     </div>
     <span class="text-sm font-bold bg-purple-600 text-white text-right py-sm px-1" style="border-radius: 11px;">

@@ -20,22 +20,27 @@
       @validateProperty={{action "validateProperty" this.changeset "role"}}
     />
     <p class="m-0 -mt-1">Allow these people to edit organization details, billing information, and invite new members. All normal members can create and manage projects.</p>
-    {{#if errorMessage}}
+    {{#if this.errorMessage}}
       <div class="Form-errors">
-        {{errorMessage}}
+        {{this.errorMessage}}
       </div>
     {{/if}}
   </div>
 
   <div class="flex justify-end">
-    {{#link-to data-test-cancel-button "organizations.organization.users" organization.slug class="percy-btn"}}
+    <LinkTo
+      @route="organizations.organization.users"
+      @model={{this.organization.slug}}
+      @data-test-cancel-button={{true}}
+      class="percy-btn"
+    >
       Cancel
-    {{/link-to}}
+    </LinkTo>
     <FormFields::Submit
       @value="Send Invites"
       @classes="btn btn-primary shadow-purple-lg mb-0 ml-1"
-      @isSaving={{isSaving}}
-      @isSaveSuccessful={{isSaveSuccessful}}
+      @isSaving={{this.isSaving}}
+      @isSaveSuccessful={{this.isSaveSuccessful}}
       @submit={{action "save"}}
     />
   </div>

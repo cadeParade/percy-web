@@ -1,4 +1,4 @@
-{{#if (is-user-admin user organization)}}
+{{#if (is-user-admin this.user this.organization)}}
   {{yield}}
 {{else}}
   <div class="px-2">

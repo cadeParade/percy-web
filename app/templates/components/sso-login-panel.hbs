@@ -1,8 +1,8 @@
 <div class='w-full container-vh bg-white-pattern flex items-center justify-center' data-test-sso-login>
   <StatusPanel
-    @inlineSvgName={{svgName}}
-    @mainText={{mainText}}
-    @secondaryText={{secondaryText}}
+    @inlineSvgName={{this.svgName}}
+    @mainText={{this.mainText}}
+    @secondaryText={{this.secondaryText}}
   >
     <PercyBtn
       @isPrimaryButton={{true}}
@@ -11,7 +11,7 @@
       Login now
     </PercyBtn>
     <p class='mt-2'>
-      To bypass this page in the future, enter your {{or organizationName ''}} email address in the Percy login screen.
+      To bypass this page in the future, enter your {{or this.organizationName ''}} email address in the Percy login screen.
     </p>
 
     <div class='mt-2'>

@@ -1,16 +1,16 @@
-{{#if currentIntegration}}
-  <Organizations::GithubIntegration @organization={{organization}} />
+{{#if this.currentIntegration}}
+  <Organizations::GithubIntegration @organization={{this.organization}} />
 {{else}}
-  {{#if organization.githubIntegrationRequest}}
+  {{#if this.organization.githubIntegrationRequest}}
     <Organizations::GithubIntegration
-      @organization={{organization}}
+      @organization={{this.organization}}
       @cancelIntegrationRequest={{action "cancelIntegrationRequest"}}
     />
   {{else}}
     <div class="mb-2">
       <a
         data-test-github-app-install-button
-        href="{{githubIntegrationUrl}}"
+        href="{{this.githubIntegrationUrl}}"
         class="percy-btn percy-btn-primary"
         target="_blank"
         rel="noopener noreferrer"

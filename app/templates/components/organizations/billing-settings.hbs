@@ -4,27 +4,27 @@
     <div class="flex">
       <div class="BillingSection-left-col mr-3 pr-2"></div>
       <div class="flex-1">
-        {{#if (and (not isEmailEditShowing) (not isCardEditShowing))}}
+        {{#if (and (not this.isEmailEditShowing) (not this.isCardEditShowing))}}
 
-          <div data-test-billing-email>Billing Email: <strong>{{subscription.billingEmail}}</strong> <span class="text-blue-500 cursor-pointer" role="button" {{action "showEmailEdit"}} data-test-open-edit-email>Edit</span></div>
+          <div data-test-billing-email>Billing Email: <strong>{{this.subscription.billingEmail}}</strong> <span class="text-blue-500 cursor-pointer" role="button" {{action "showEmailEdit"}} data-test-open-edit-email>Edit</span></div>
 
-          {{#if subscription.paymentMethod}}
-            <div data-test-billing-card-present>Credit card: <strong>{{subscription.paymentMethod.displayLabel}}</strong> <span class="text-blue-500 cursor-pointer" role="button" {{action "showCardEdit"}} data-test-open-edit-card>Edit</span></div>
+          {{#if this.subscription.paymentMethod}}
+            <div data-test-billing-card-present>Credit card: <strong>{{this.subscription.paymentMethod.displayLabel}}</strong> <span class="text-blue-500 cursor-pointer" role="button" {{action "showCardEdit"}} data-test-open-edit-card>Edit</span></div>
           {{else}}
             <div data-test-billing-card-not-present>Credit card: No credit card found for this organization. <span class="text-blue-500 cursor-pointer" role="button" {{action "showCardEdit"}} data-test-open-edit-card>Add card</span></div>
           {{/if}}
 
-        {{else if isEmailEditShowing}}
+        {{else if this.isEmailEditShowing}}
           <Forms::BillingEdit
-            @subscription={{subscription}}
+            @subscription={{this.subscription}}
             @saveSuccess={{action "afterEmailUpdate"}}
             @hideForm={{action "hideEmailEdit"}}
             @class="mb-2"
           />
-        {{else if isCardEditShowing}}
+        {{else if this.isCardEditShowing}}
           <Organizations::BillingCardUpdater
-            @organization={{organization}}
-            @updateCreditCard={{updateCreditCard}}
+            @organization={{this.organization}}
+            @updateCreditCard={{this.updateCreditCard}}
             @hideForm={{action "hideCardEdit"}}
           />
         {{/if}}

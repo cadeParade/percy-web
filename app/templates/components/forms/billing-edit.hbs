@@ -10,11 +10,11 @@
     <FormFields::Submit
       @value="Save"
       @classes="btn btn-primary shadow-purple-lg mb-0 mr-2"
-      @disabled={{isSubmitDisabled}}
-      @isSaving={{isSaving}}
-      @isSaveSuccessful={{isSaveSuccessful}}
+      @disabled={{this.isSubmitDisabled}}
+      @isSaving={{this.isSaving}}
+      @isSaveSuccessful={{this.isSaveSuccessful}}
       @submit={{action "save"}}
     />
-    <PercyBtn @handleClick={{hideForm}}>Cancel</PercyBtn>
+    <PercyBtn @handleClick={{this.hideForm}}>Cancel</PercyBtn>
   </div>
 </form>

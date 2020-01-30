@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center mb-1">
       <div class="flex items-center">
         {{inline-svg "slack-icon" class="mr-1 mb-1"}}
-        <h2 class="text-xl font-semibold mb-1">{{teamName}}: {{channelName}}</h2>
+        <h2 class="text-xl font-semibold mb-1">{{this.teamName}}: {{this.channelName}}</h2>
       </div>
       <button {{action "deleteSlackIntegration"}} type="button" class="flex center border border-red-100 p-1 h-auto" data-test-delete-integration-button>
         {{inline-svg "delete-icon"}}
@@ -11,14 +11,14 @@
     </div>
 
     <div class="my-2">
-      {{#each slackIntegrationConfigs as |slackIntegrationConfig|}}
+      {{#each this.slackIntegrationConfigs as |slackIntegrationConfig|}}
         <Organizations::Integrations::SlackConfigItem
-          @projectOptions={{projectOptions}}
+          @projectOptions={{this.projectOptions}}
           @slackIntegrationConfig={{slackIntegrationConfig}}
         />
       {{else}}
         <div class="rounded bg-yellow-000 border border-yellow-100 p-1" data-test-reminder>
-          <strong>Note:</strong> There are no projects configured for Slack notifications to {{channelName}}
+          <strong>Note:</strong> There are no projects configured for Slack notifications to {{this.channelName}}
         </div>
       {{/each}}
     </div>
@@ -26,7 +26,7 @@
     <div>
       <LinkTo
         @route="organizations.organization.integrations.slack.slack-config"
-        @models={{array slackIntegration.organization.id slackIntegration.id "new"}}
+        @models={{array this.slackIntegration.organization.id this.slackIntegration.id "new"}}
       >
         <button type="button" class="percy-btn percy-btn-primary" data-test-add-project-button>
           Add project

@@ -1,78 +1,78 @@
-{{#each snapshotBlocks as |block index|}}
+{{#each this.snapshotBlocks as |block index|}}
   <div data-test-snapshot-block>
     {{#if (is-item-array block)}}
       <SnapshotGroup
-        @build={{build}}
+        @build={{this.build}}
         @snapshots={{block}}
-        @allDiffsShown={{allDiffsShown}}
-        @activeSnapshotBlockId={{activeSnapshotBlockId}}
-        @shouldDeferRendering={{shouldDeferRendering}}
-        @createReview={{createReview}}
+        @allDiffsShown={{this.allDiffsShown}}
+        @activeSnapshotBlockId={{this.activeSnapshotBlockId}}
+        @shouldDeferRendering={{this.shouldDeferRendering}}
+        @createReview={{this.createReview}}
         @updateActiveSnapshotBlockId={{action "updateActiveSnapshotBlockId"}}
-        @activeBrowser={{activeBrowser}}
-        @updateActiveBrowser={{updateActiveBrowser}}
-        @isBuildApprovable={{isBuildApprovable}}
-        @createCommentThread={{createCommentThread}}
-        @createComment={{createComment}}
-        @closeCommentThread={{closeCommentThread}}
+        @activeBrowser={{this.activeBrowser}}
+        @updateActiveBrowser={{this.updateActiveBrowser}}
+        @isBuildApprovable={{this.isBuildApprovable}}
+        @createCommentThread={{this.createCommentThread}}
+        @createComment={{this.createComment}}
+        @closeCommentThread={{this.closeCommentThread}}
         @index={{index}}
       />
     {{else}}
       <SnapshotViewer
         @class="data-test-snapshot-viewer"
-        @build={{build}}
+        @build={{this.build}}
         @snapshot={{block}}
-        @allDiffsShown={{allDiffsShown}}
-        @activeSnapshotBlockId={{activeSnapshotBlockId}}
-        @shouldDeferRendering={{shouldDeferRendering}}
-        @createReview={{createReview}}
+        @allDiffsShown={{this.allDiffsShown}}
+        @activeSnapshotBlockId={{this.activeSnapshotBlockId}}
+        @shouldDeferRendering={{this.shouldDeferRendering}}
+        @createReview={{this.createReview}}
         @updateActiveSnapshotBlockId={{action "updateActiveSnapshotBlockId"}}
-        @activeBrowser={{activeBrowser}}
-        @updateActiveBrowser={{updateActiveBrowser}}
-        @isBuildApprovable={{isBuildApprovable}}
-        @createCommentThread={{createCommentThread}}
-        @createComment={{createComment}}
-        @closeCommentThread={{closeCommentThread}}
+        @activeBrowser={{this.activeBrowser}}
+        @updateActiveBrowser={{this.updateActiveBrowser}}
+        @isBuildApprovable={{this.isBuildApprovable}}
+        @createCommentThread={{this.createCommentThread}}
+        @createComment={{this.createComment}}
+        @closeCommentThread={{this.closeCommentThread}}
         @index={{index}}
       />
     {{/if}}
   </div>
 {{/each}}
 
-{{#if numSnapshotsUnchanged}}
-  {{#if isUnchangedSnapshotsVisible}}
-    {{#each snapshotsUnchanged as |snapshot|}}
+{{#if this.numSnapshotsUnchanged}}
+  {{#if this.isUnchangedSnapshotsVisible}}
+    {{#each this.snapshotsUnchanged as |snapshot|}}
       <div data-test-snapshot-block>
         <SnapshotViewer
-          @build={{build}}
-          @allDiffsShown={{allDiffsShown}}
+          @build={{this.build}}
+          @allDiffsShown={{this.allDiffsShown}}
           @snapshot={{snapshot}}
-          @activeSnapshotBlockId={{activeSnapshotBlockId}}
-          @shouldDeferRendering={{shouldDeferRendering}}
-          @createReview={{createReview}}
+          @activeSnapshotBlockId={{this.activeSnapshotBlockId}}
+          @shouldDeferRendering={{this.shouldDeferRendering}}
+          @createReview={{this.createReview}}
           @updateActiveSnapshotBlockId={{action "updateActiveSnapshotBlockId"}}
-          @activeBrowser={{activeBrowser}}
-          @updateActiveBrowser={{updateActiveBrowser}}
-          @isBuildApprovable={{isBuildApprovable}}
-          @closeCommentThread={{closeCommentThread}}
-          @createCommentThread={{createCommentThread}}
-          @createComment={{createComment}}
+          @activeBrowser={{this.activeBrowser}}
+          @updateActiveBrowser={{this.updateActiveBrowser}}
+          @isBuildApprovable={{this.isBuildApprovable}}
+          @closeCommentThread={{this.closeCommentThread}}
+          @createCommentThread={{this.createCommentThread}}
+          @createComment={{this.createComment}}
         />
       </div>
     {{/each}}
   {{else}}
     <div class="SnapshotViewer--actionable">
-      <div class="flex items-center justify-center font-bold p-2 m-2 bg-secondary rounded border border-dashed cursor-pointer" data-test-toggle-unchanged {{action toggleUnchangedSnapshotsVisible}} role="button">
-        {{#if isUnchangedSnapshotsLoading}}
+      <div class="flex items-center justify-center font-bold p-2 m-2 bg-secondary rounded border border-dashed cursor-pointer" data-test-toggle-unchanged {{action this.toggleUnchangedSnapshotsVisible}} role="button">
+        {{#if this.isUnchangedSnapshotsLoading}}
           {{inline-svg "loader-icon" class="mx-2"}} Loading unchanged snapshots
         {{else}}
           <figure class="svg-container">
             {{inline-svg "no-comparison-group-icon" class="mr-1"}}
           </figure>
           <div class="text-blue-500">
-            {{pluralize numSnapshotsUnchanged "unchanged snapshot"}}
-            {{#if build.hasMultipleBrowsers}}
-              in {{activeBrowser.familyName}}
+            {{pluralize this.numSnapshotsUnchanged "unchanged snapshot"}}
+            {{#if this.build.hasMultipleBrowsers}}
+              in {{this.activeBrowser.familyName}}
             {{else}}
               for all widths.
             {{/if}}

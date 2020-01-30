@@ -1,7 +1,7 @@
-{{title (concat model.name " integrations | Percy") replace=true}}
+{{title (concat this.model.name " integrations | Percy") replace=true}}
 
 <DashboardNavWrapper
-  @organization={{model}}
+  @organization={{this.model}}
   @showMemberLinks={{true}}
 >
   {{outlet}}

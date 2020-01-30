@@ -5,8 +5,8 @@
   @onClose={{action "cancel" target=this.confirm}}
 >
   <div class="bg-white rounded border z-top flex flex-col shadow-purple-lg" data-test-confirm-dialog>
-    <div class="flex items-center justify-center bg-purple-200 px-2 py-1 rounded-t font-semibold text-gray-700">{{confirm.title}}</div>
-    <div class="flex items-center px-2 py-1 text-gray-500">{{confirm.message}}</div>
+    <div class="flex items-center justify-center bg-purple-200 px-2 py-1 rounded-t font-semibold text-gray-700">{{this.confirm.title}}</div>
+    <div class="flex items-center px-2 py-1 text-gray-500">{{this.confirm.message}}</div>
     <div class="flex items-center px-2 py-1 justify-end">
       <PercyBtn
         @class="mr-1"

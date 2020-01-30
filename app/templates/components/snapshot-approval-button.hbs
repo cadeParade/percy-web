@@ -1,22 +1,22 @@
-{{#if snapshot.isApproved}}
-  <div class="status-pill {{if snapshot.isUnchanged 'is-unchanged' 'is-approved'}}" data-test-snapshot-approved-pill>
-    {{#if snapshot.isUnchanged}}
+{{#if this.snapshot.isApproved}}
+  <div class="status-pill {{if this.snapshot.isUnchanged 'is-unchanged' 'is-approved'}}" data-test-snapshot-approved-pill>
+    {{#if this.snapshot.isUnchanged}}
       No changes
-    {{else if snapshot.isAutoApprovedBranch}}
+    {{else if this.snapshot.isAutoApprovedBranch}}
       Auto-approved
     {{else}}
       Approved
     {{/if}}
   </div>
-{{else if hasDiffsInBrowser}}
-  <div class="{{if isDisabled "hint--left hint--rounded hint--bounce"}}"
-    aria-label="{{if isDisabled "You can't approve this build because you are not a member of this build's organization or are not logged in"}}">
+{{else if this.hasDiffsInBrowser}}
+  <div class="{{if this.isDisabled "hint--left hint--rounded hint--bounce"}}"
+    aria-label="{{if this.isDisabled "You can't approve this build because you are not a member of this build's organization or are not logged in"}}">
     <button
       {{action "approveSnapshot"}}
       type="button"
       class="btn btn-success
-        {{if isLoading 'is-loading'}}"
-      disabled="{{if isDisabled "disabled"}}"
+        {{if this.isLoading 'is-loading'}}"
+      disabled="{{if this.isDisabled "disabled"}}"
       aria-label="Approve snapshot"
       data-test-SnapshotViewerHeader-approve
     >
@@ -25,6 +25,6 @@
   </div>
 {{else}}
   <div class="status-pill" data-test-no-changes-in-browser>
-    No changes in {{inline-svg (concat activeBrowser.familySlug "-browser-icon") class="opacity-25 ml-1"}}
+    No changes in {{inline-svg (concat this.activeBrowser.familySlug "-browser-icon") class="opacity-25 ml-1"}}
   </div>
 {{/if}}

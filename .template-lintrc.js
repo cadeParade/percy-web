@@ -5,5 +5,6 @@ module.exports = {
   rules: {
     'no-inline-styles': false,
     'block-indentation': true,
+    'no-implicit-this': {allow: ['hash']},
   }
 };

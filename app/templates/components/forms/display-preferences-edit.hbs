@@ -9,7 +9,7 @@
   </div>
 
   <fieldset class="mb-0">
-    {{#each webThemeOptions as |option| }}
+    {{#each this.webThemeOptions as |option| }}
       <Form.label
         data-test-web-theme-option={{option.value}}
         class="cursor-pointer block flex items-start justify-between p-1 mb-2 rounded border {{if (eq option.value 'dark') 'bg-dark-700 border-transparent'}} {{if (eq option.value 'light') 'bg-gray-000'}}"
@@ -17,8 +17,8 @@
         <span class="flex items-center px-2 py-1 {{if (or (eq option.value 'light') (eq option.value 'dark')) 'py-2'}}">
           <Form.radio
             name="webTheme"
-            checked={{eq option.value user.webTheme}}
-            @onChange={{perform saveDisplayPreferences}}
+            checked={{eq option.value this.user.webTheme}}
+            @onChange={{perform this.saveDisplayPreferences}}
             value={{option.value}}
             class="block mr-1"
           />

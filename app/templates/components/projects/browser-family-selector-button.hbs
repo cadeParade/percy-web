@@ -1,17 +1,18 @@
 <div data-test-browser-selector-button-container>
   <div
-    class="browser-family-selector overflow-hidden cursor-pointer flex justify-center bg-white-pattern border border-transparent rounded p-3 shadow-1 {{if isBrowserEnabled "is-selected"}} {{concat "data-test-browser-selector-" browserFamily.slug}} {{if isDisabled "opacity-50"}}"
-    {{action updateProjectBrowserTargets browserFamily}}
-    role="button" data-test-browser-selector-button>
+    class="browser-family-selector overflow-hidden cursor-pointer flex justify-center bg-white-pattern border border-transparent rounded p-3 shadow-1 {{if this.isBrowserEnabled "is-selected"}} {{concat "data-test-browser-selector-" this.browserFamily.slug}} {{if this.isDisabled "opacity-50"}}"
+    {{action this.updateProjectBrowserTargets this.browserFamily}}
+    role="button"
+    data-test-browser-selector-button>
     <div class="browser-family-selector-detail flex flex-col items-center">
-      {{inline-svg (concat browserFamily.slug "-icon-lg") class="browser-family-selector-icon mb-1"}}
+      {{inline-svg (concat this.browserFamily.slug "-icon-lg") class="browser-family-selector-icon mb-1"}}
       <div class="browser-family-selector-name font-semibold leading-none mb-2">
-        {{#unless isBrowserEnabled}}
+        {{#unless this.isBrowserEnabled}}
           <span class="opacity-0">Enable</span>
         {{/unless}}
-        {{capitalize browserFamily.slug}}
+        {{capitalize this.browserFamily.slug}}
       </div>
-      {{#if isBrowserEnabled}}
+      {{#if this.isBrowserEnabled}}
         <div class="border border-purple-400 bg-purple-300 rounded-full text-purple-600 text-sm font-semibold px-2 py-sm">
           Enabled
         </div>
@@ -22,16 +23,16 @@
       {{/if}}
     </div>
   </div>
-  {{#if (and isBrowserUpgradeable isBrowserEnabled)}}
+  {{#if (and this.isBrowserUpgradeable this.isBrowserEnabled)}}
     <PercyBtn
       @class="mt-1 w-full"
       @isPrimaryButton={{true}}
-      @handleClick={{action "upgradeBrowser" browserFamily}}
+      @handleClick={{action "upgradeBrowser" this.browserFamily}}
       @bubbles={{false}}
       @testLabel="browser-upgrade"
-      @isSaving={{isUpgrading}}
+      @isSaving={{this.isUpgrading}}
     >
-      Upgrade {{capitalize browserFamily.slug}}
+      Upgrade {{capitalize this.browserFamily.slug}}
     </PercyBtn>
   {{/if}}
 </div>

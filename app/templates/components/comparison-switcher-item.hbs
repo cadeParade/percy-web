@@ -1,19 +1,19 @@
 <div
   class="
     btn-toggle-item
-    {{if isSelected ' is-selected'}}
-    {{if matchingComparison ' is-disabled'}}
-    {{if matchingComparison.isDifferent ' has-diffs'}}
+    {{if this.isSelected ' is-selected'}}
+    {{if this.matchingComparison ' is-disabled'}}
+    {{if this.matchingComparison.isDifferent ' has-diffs'}}
   "
   {{action 'setWidth'}}
   role="button"
   data-test-ComparisonSwitcher-button>
   <div class="flex items-center">
-    {{#if (and matchingComparison.isDifferent isSelected)}}
+    {{#if (and this.matchingComparison.isDifferent this.isSelected)}}
       {{inline-svg "diff-icon-xs" class="mr-sm"}}
-    {{else if matchingComparison.isDifferent}}
+    {{else if this.matchingComparison.isDifferent}}
       {{inline-svg "diff-icon-unselected-xs" class="mr-sm"}}
     {{/if}}
-    {{width}}px
+    {{this.width}}px
   </div>
 </div>

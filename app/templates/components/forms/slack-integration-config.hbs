@@ -3,29 +3,29 @@
     <div class="flex justify-between items-center mb-1">
       <div class="flex items-center">
         {{inline-svg "slack-icon" class="mr-1 mb-1"}}
-        <h2 class="text-xl font-semibold mb-1">{{teamName}}: {{channelName}}</h2>
+        <h2 class="text-xl font-semibold mb-1">{{this.teamName}}: {{this.channelName}}</h2>
       </div>
       <div class="flex justify-end">
-        {{#link-to
-          data-test-cancel-button
-          "organizations.organization.integrations.slack"
-          slackIntegrationConfig.slackIntegration.organization.slug
+        <LinkTo
+          @route="organizations.organization.integrations.slack"
+          @model={{this.slackIntegrationConfig.slackIntegration.organization.slug}}
+          @data-test-cancel-button={{true}}
           class="percy-btn mr-1"
-        }}
+        >
           Cancel
-        {{/link-to}}
-        {{form-fields/submit
-          data-test-save-button
-          value="Save configuration"
-          classes="percy-btn percy-btn-primary mb-0"
-          isSaving=isSaving
-          isSaveSuccessful=isSaveSuccessful
-          submit=(action "customSave")
-        }}
+        </LinkTo>
+        <FormFields::Submit
+          @value="Save configuration"
+          @classes="percy-btn percy-btn-primary mb-0"
+          @isSaving={{this.isSaving}}
+          @isSaveSuccessful={{this.isSaveSuccessful}}
+          @submit={{action "customSave"}}
+          @data-test-save-button={{true}}
+        />
       </div>
     </div>
 
-    <p class='label-body'>Configure what Percy sends to {{channelName}} in your {{teamName}} Slack team.</p>
+    <p class='label-body'>Configure what Percy sends to {{this.channelName}} in your {{this.teamName}} Slack team.</p>
 
     <form action="javascript:;" class="Form mb-0">
       <div class="p-2 bg-gray-000 rounded border mb-2">
@@ -35,13 +35,13 @@
         <span class="slack-selector flex justify-start flex-1 mb-2">
           <span class="bg-white" data-test-project-box>
             <PowerSelect
-              @selected={{selectedProject}}
+              @selected={{this.selectedProject}}
               @searchEnabled={{true}}
               @searchField='name'
               @placeholder='Select a project'
               @renderInPlace={{true}}
               @matchTriggerWidth={{false}}
-              @options={{projectOptions}}
+              @options={{this.projectOptions}}
               @searchPlaceholder='Type to filter projects'
               @noMatchesMessage='No project found'
               @onChange={{action 'selectProject'}}
@@ -58,22 +58,22 @@
           @changeset={{this.changeset}}
           @title="Notifications"
           @subtitle="Send notifications to Slack when a build has finished processing or is approved."
-          @allOptions={{slackNotificationOptions}}
+          @allOptions={{this.slackNotificationOptions}}
         />
 
-        {{#if errorMessage}}
+        {{#if this.errorMessage}}
           <div class="Form-errors">
-            {{errorMessage}}
+            {{this.errorMessage}}
           </div>
         {{/if}}
 
-        {{#if isEditing}}
+        {{#if this.isEditing}}
           <div data-test-delete-button>
             <PercyBtn
               @handleClick={{action "deleteSlackIntegrationConfig"}}
               @class="percy-btn-danger"
             >
-              Remove project from {{channelName}}
+              Remove project from {{this.channelName}}
             </PercyBtn>
           </div>
         {{/if}}

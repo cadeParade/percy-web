@@ -1,17 +1,17 @@
-<button type="button" class="btn btn-square collaboration-toggle relative" {{action toggleCollaborationPanel}} aria-label="Add a comment or toggle comment panel" data-test-toggle-comment-sidebar>
+<button type="button" class="btn btn-square collaboration-toggle relative" {{action this.toggleCollaborationPanel}} aria-label="Add a comment or toggle comment panel" data-test-toggle-comment-sidebar>
   <figure class="svg-container">
-    {{#if unresolvedCommentThreadCount}}
+    {{#if this.unresolvedCommentThreadCount}}
       <ThemeSvg @svg="conversation-icon-purple" />
-    {{else if isResolved}}
+    {{else if this.isResolved}}
       {{inline-svg "conversation-icon-resolved"}}
     {{else}}
       <ThemeSvg @svg="conversation-icon-add" />
     {{/if}}
   </figure>
 
-  {{#if unresolvedCommentThreadCount}}
+  {{#if this.unresolvedCommentThreadCount}}
     <div class="collaboration-conversation-count" data-test-comment-thread-count>
-      {{unresolvedCommentThreadCount}}
+      {{this.unresolvedCommentThreadCount}}
     </div>
   {{/if}}
 </button>

@@ -1,7 +1,7 @@
 <div class="bg-gray-pattern pt-8 sm:pt-16 pb-4 sm:pb-8 border-b">
   <div class="flex">
     <div class="siema w-90vw max-w-lg mx-auto mb-4">
-      {{#each quoteBlock.customerQuotes as |quote|}}
+      {{#each this.quoteBlock.customerQuotes as |quote|}}
         <Marketing::CustomerQuote @quote={{quote}} />
       {{/each}}
     </div>
@@ -12,8 +12,8 @@
         {{inline-svg "gallery-left" class="cursor-pointer"}}
       </figure>
     </button>
-    {{#each quoteBlock.customerQuotes as |quote index|}}
-      <div class="bg-purple-600 rounded-full mx-sm w-1 h-1 cursor-pointer {{if (eq index currentSlide) "w-2 h-2" "opacity-50"}}" {{action "switchToSlide" index}} role="button" data-test-quote-block-dot></div>
+    {{#each this.quoteBlock.customerQuotes as |quote index|}}
+      <div class="bg-purple-600 rounded-full mx-sm w-1 h-1 cursor-pointer {{if (eq index this.currentSlide) "w-2 h-2" "opacity-50"}}" {{action "switchToSlide" index}} role="button" data-test-quote-block-dot></div>
     {{/each}}
     <button type="button" class="btn-icon-only ml-2 p-0" aria-label="next quote" {{action "next"}}>
       <figure class="svg-container">

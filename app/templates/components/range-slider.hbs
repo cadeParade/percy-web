@@ -1,9 +1,9 @@
 <input
   type="range"
-  min={{min}}
-  max={{max}}
-  value={{value}}
-  step={{step}}
-  oninput={{action handleSliderMoved value="target.value"}}
+  min={{this.min}}
+  max={{this.max}}
+  value={{this.value}}
+  step={{this.step}}
+  oninput={{action this.handleSliderMoved value="target.value"}}
   data-test-range-slider
 >

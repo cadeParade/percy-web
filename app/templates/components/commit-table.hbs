@@ -3,16 +3,16 @@
     <tr>
       <td>Commit</td>
       <td>
-        {{#if isRepoLinked}}
-          <code><a data-test-commit-table-branch-url href="{{build.branchHtmlUrl}}">{{build.branch}}</a></code>
+        {{#if this.isRepoLinked}}
+          <code><a data-test-commit-table-branch-url href="{{this.build.branchHtmlUrl}}">{{this.build.branch}}</a></code>
           @
-          <a data-test-commit-table-commit-url href="{{build.commitHtmlUrl}}">{{commit.shaShort}}</a>
+          <a data-test-commit-table-commit-url href="{{this.build.commitHtmlUrl}}">{{this.commit.shaShort}}</a>
         {{else}}
-          <code>{{build.branch}}</code> @ <code>{{commit.shaShort}}</code>
+          <code>{{this.build.branch}}</code> @ <code>{{this.commit.shaShort}}</code>
         {{/if}}
       </td>
     </tr>
-    <tr><td>Committer</td><td>{{commit.authorName}}</td></tr>
-    <tr><td>Message</td><td class="BuildInfoDropdown-commitMessage">{{commit.message}}</td></tr>
+    <tr><td>Committer</td><td>{{this.commit.authorName}}</td></tr>
+    <tr><td>Message</td><td class="BuildInfoDropdown-commitMessage">{{this.commit.message}}</td></tr>
   </tbody>
 </table>

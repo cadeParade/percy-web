@@ -1,21 +1,21 @@
-{{#percy-form
-  data-test-user-notification-setting-form
-  onSubmit=(perform saveUserNotificationSetting)
+<PercyForm
+  @onSubmit={{perform this.saveUserNotificationSetting}}
+  @data-test-user-notification-setting-form={{true}}
   as |form|
-}}
+>
 
   <h2 class="text-xl font-semibold mb-2">Comment notifications</h2>
 
   <div class="p-2 bg-gray-000 rounded border mb-2">
     <fieldset class="mb-0">
-      {{#each userNotificationSettingOptions as |option|}}
+      {{#each this.userNotificationSettingOptions as |option|}}
         <form.label
           @data-test-notif-option={{option.value}}
           @class="flex mb-sm"
         >
           <form.checkbox
             @data-test-checkbox={{option.value}}
-            @checked={{get userNotificationSetting option.path}}
+            @checked={{get this.userNotificationSetting option.path}}
             @class="mr-2"
           />
 
@@ -33,4 +33,4 @@
     Update notification settings
   </form.submit>
 
-{{/percy-form}}
+</PercyForm>

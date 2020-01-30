@@ -1,4 +1,4 @@
-{{#each page.blocks as |block|}}
+{{#each this.page.blocks as |block|}}
   {{#if block.isContentBlock}}
     <Marketing::ContentBlock @block={{block.contentBlock}} />
   {{else if block.isVideoBlock}}

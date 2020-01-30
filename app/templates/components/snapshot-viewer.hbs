@@ -1,56 +1,56 @@
 <LazyLoadingSnapshotItem
-  @shouldFullyRender={{shouldFullyRender}}
-  @displayTitle={{snapshot.name}}
+  @shouldFullyRender={{this.shouldFullyRender}}
+  @displayTitle={{this.snapshot.name}}
 >
   <SnapshotViewerHeader
     @fullscreen={{false}}
-    @snapshot={{snapshot}}
-    @snapshotSelectedWidth={{blockSelectedWidth}}
-    @selectedComparison={{selectedComparison}}
+    @snapshot={{this.snapshot}}
+    @snapshotSelectedWidth={{this.blockSelectedWidth}}
+    @selectedComparison={{this.selectedComparison}}
     @toggleCollaborationPanel={{action "toggleCollaborationPanel"}}
     @updateSelectedWidth={{action "updateSelectedWidth"}}
-    @createReview={{createReview}}
+    @createReview={{this.createReview}}
     @expandSnapshot={{action "expandBlock"}}
-    @activeBrowser={{activeBrowser}}
-    @updateActiveBrowser={{updateActiveBrowser}}
-    @isBuildApprovable={{isBuildApprovable}}
-    @index={{index}}
-    @openCommentThreads={{openCommentThreads}}
+    @activeBrowser={{this.activeBrowser}}
+    @updateActiveBrowser={{this.updateActiveBrowser}}
+    @isBuildApprovable={{this.isBuildApprovable}}
+    @index={{this.index}}
+    @openCommentThreads={{this.openCommentThreads}}
   />
 
-  {{#if isExpanded}}
-    {{#if selectedComparison}}
+  {{#if this.isExpanded}}
+    {{#if this.selectedComparison}}
       <div class="flex flex-col flex-col-reverse lg:flex-row bg-secondary">
         <ComparisonViewer
           @class="flex-1"
-          @comparison={{selectedComparison}}
-          @allDiffsShown={{allDiffsShown}}
-          @snapshotSelectedWidth={{blockSelectedWidth}}
-          @isDefaultExpanded={{isDefaultExpanded}}
-          @isUnchangedSnapshotExpanded={{isUnchangedSnapshotExpanded}}
+          @comparison={{this.selectedComparison}}
+          @allDiffsShown={{this.allDiffsShown}}
+          @snapshotSelectedWidth={{this.blockSelectedWidth}}
+          @isDefaultExpanded={{this.isDefaultExpanded}}
+          @isUnchangedSnapshotExpanded={{this.isUnchangedSnapshotExpanded}}
           @data-test-SnapshotViewer-comparison={{true}}
-          @activeBrowser={{activeBrowser}}
-          @isSnapshotDiffOverlayShowingClickBadge={{isSnapshotDiffOverlayShowingClickBadge}}
-          @index={{index}}
-          @showDiffOverlay={{isSnapshotShowingDiffOverlay}}
+          @activeBrowser={{this.activeBrowser}}
+          @isSnapshotDiffOverlayShowingClickBadge={{this.isSnapshotDiffOverlayShowingClickBadge}}
+          @index={{this.index}}
+          @showDiffOverlay={{this.isSnapshotShowingDiffOverlay}}
           @toggleOverlay={{action "toggleSnapshotOverlay"}}
         />
 
-        {{#if isCommentPanelShowing}}
+        {{#if this.isCommentPanelShowing}}
           <Collaboration::CollaborationPanel
-            @commentThreads={{commentThreads}}
-            @showCollaborationPanel={{isShowingCollaborationPanel}}
-            @createCommentThread={{createCommentThread}}
-            @createComment={{createComment}}
-            @closeCommentThread={{closeCommentThread}}
-            @isCommentingAllowed={{isBuildApprovable}}
-            @snapshot={{snapshot}}
+            @commentThreads={{this.commentThreads}}
+            @showCollaborationPanel={{this.isShowingCollaborationPanel}}
+            @createCommentThread={{this.createCommentThread}}
+            @createComment={{this.createComment}}
+            @closeCommentThread={{this.closeCommentThread}}
+            @isCommentingAllowed={{this.isBuildApprovable}}
+            @snapshot={{this.snapshot}}
           />
         {{/if}}
       </div>
     {{else}}
       <div class="p-2 text-center bg-gray-000 border-b" data-test-SnapshotViewer-noComparison>
-        No snapshot taken at {{blockSelectedWidth}}px.
+        No snapshot taken at {{this.blockSelectedWidth}}px.
       </div>
     {{/if}}
   {{/if}}

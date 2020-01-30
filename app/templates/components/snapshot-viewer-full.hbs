@@ -1,48 +1,48 @@
-{{#unless isBuildApprovable}}
+{{#unless this.isBuildApprovable}}
   <PublicProjectNotice />
 {{/unless}}
 
 <SnapshotViewerHeader
   @fullscreen={{true}}
-  @snapshot={{snapshot}}
-  @snapshotSelectedWidth={{snapshotSelectedWidth}}
-  @selectedComparison={{selectedComparison}}
+  @snapshot={{this.snapshot}}
+  @snapshotSelectedWidth={{this.snapshotSelectedWidth}}
+  @selectedComparison={{this.selectedComparison}}
   @updateSelectedWidth={{action "updateSelectedWidth"}}
   @toggleCollaborationPanel={{action "toggleCollaborationPanel"}}
-  @updateComparisonMode={{updateComparisonMode}}
-  @comparisonMode={{comparisonMode}}
-  @createReview={{action createReview}}
-  @activeBrowser={{activeBrowser}}
-  @updateActiveBrowser={{updateActiveBrowser}}
-  @isBuildApprovable={{isBuildApprovable}}
-  @openCommentThreads={{openCommentThreads}}
+  @updateComparisonMode={{this.updateComparisonMode}}
+  @comparisonMode={{this.comparisonMode}}
+  @createReview={{action this.createReview}}
+  @activeBrowser={{this.activeBrowser}}
+  @updateActiveBrowser={{this.updateActiveBrowser}}
+  @isBuildApprovable={{this.isBuildApprovable}}
+  @openCommentThreads={{this.openCommentThreads}}
 />
 
 <div class="flex flex-col flex-col-reverse lg:flex-row bg-primary">
-  {{#if selectedComparison}}
+  {{#if this.selectedComparison}}
     <ComparisonViewerFull
-      @comparison={{selectedComparison}}
-      @comparisonMode={{comparisonMode}}
+      @comparison={{this.selectedComparison}}
+      @comparisonMode={{this.comparisonMode}}
       @cycleComparisonMode={{action "cycleComparisonMode"}}
       @data-test-SnapshotViewerFull-comparison-viewer={{true}}
-      @class={{unless isBuildApprovable "pb-9"}}
+      @class={{unless this.isBuildApprovable "pb-9"}}
     />
-    {{#if isCommentPanelShowing}}
+    {{#if this.isCommentPanelShowing}}
       <Collaboration::CollaborationPanel
-        @commentThreads={{commentThreads}}
-        @showCollaborationPanel={{isShowingCollaborationPanel}}
-        @createCommentThread={{createCommentThread}}
-        @createComment={{createComment}}
-        @closeCommentThread={{closeCommentThread}}
-        @isCommentingAllowed={{isBuildApprovable}}
-        @snapshot={{snapshot}}
+        @commentThreads={{this.commentThreads}}
+        @showCollaborationPanel={{this.isShowingCollaborationPanel}}
+        @createCommentThread={{this.createCommentThread}}
+        @createComment={{this.createComment}}
+        @closeCommentThread={{this.closeCommentThread}}
+        @isCommentingAllowed={{this.isBuildApprovable}}
+        @snapshot={{this.snapshot}}
       />
     {{/if}}
   {{else}}
     <div class="SnapshotViewerFull-noComparison">
       <div>
         {{fa-icon "remove" class="LargeXIcon"}}
-        No snapshot taken at {{snapshotSelectedWidth}}px.
+        No snapshot taken at {{this.snapshotSelectedWidth}}px.
       </div>
     </div>
   {{/if}}

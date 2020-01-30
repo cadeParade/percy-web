@@ -1,16 +1,16 @@
-{{title (concat model.name " edit profile | Percy") replace=true}}
+{{title (concat this.model.name " edit profile | Percy") replace=true}}
 <div class="w-90vw max-w-sm mx-auto">
   <section class="form-section mb-3">
-    <Forms::ProfileEdit @user={{model}} />
+    <Forms::ProfileEdit @user={{this.model}} />
   </section>
 
-  {{#if model.hasEmailPasswordIdentity}}
+  {{#if this.model.hasEmailPasswordIdentity}}
     <section class="form-section">
       <label>
         <span class="label-body">Password</span>
       </label>
       <div>
-        <PasswordChangeButton @user={{model}} />
+        <PasswordChangeButton @user={{this.model}} />
       </div>
     </section>
   {{/if}}

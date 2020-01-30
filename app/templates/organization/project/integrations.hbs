@@ -1,15 +1,15 @@
-{{title (concat model.project.fullSlug " integrations | Percy") replace=true}}
+{{title (concat this.model.project.fullSlug " integrations | Percy") replace=true}}
 
 <FixedTopHeader
-  @currentOrganization={{model.organization}}
-  @project={{model.project}}
+  @currentOrganization={{this.model.organization}}
+  @project={{this.model.project}}
 />
 
 <section>
 
   <div class="flex-1 pb-8 bg-gray-000">
     <Projects::ProjectHeader
-      @project={{model.project}}
+      @project={{this.model.project}}
       @shouldShowLinks={{true}}
       @shouldDisplayBottomBorder={{true}}
     />

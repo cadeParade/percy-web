@@ -1,10 +1,10 @@
 <div data-test-slack-settings>
-  {{#if organization.isSlackIntegrated}}
-    {{#each organization.slackIntegrations as |slackIntegration|}}
+  {{#if this.organization.isSlackIntegrated}}
+    {{#each this.organization.slackIntegrations as |slackIntegration|}}
       <Organizations::Integrations::SlackIntegrationItem
-        @projectOptions={{projectOptions}}
+        @projectOptions={{this.projectOptions}}
         @slackIntegration={{slackIntegration}}
-        @deleteSlackIntegration={{deleteSlackIntegration}}
+        @deleteSlackIntegration={{this.deleteSlackIntegration}}
       />
     {{/each}}
   {{/if}}

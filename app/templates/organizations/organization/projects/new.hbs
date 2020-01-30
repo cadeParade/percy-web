@@ -7,7 +7,7 @@
           Projects are how we group related builds in Percy. Usually, you'll want to use the name of your repository or the name of your site.
         </p>
 
-        {{#if model.isSponsored}}
+        {{#if this.model.isSponsored}}
           <div class="rounded public-project-notice border border-blue-100 p-2 mb-2 flex items-center">
             {{fa-icon "globe" class="fa-2x text-blue-500 mr-2"}}
 
@@ -16,7 +16,7 @@
         {{/if}}
 
         <Forms::ProjectNew
-          @organization={{model}}
+          @organization={{this.model}}
           @saveSuccess={{route-action "projectCreated"}}
         />
       </section>

@@ -1,21 +1,27 @@
-{{#if removedSnapshots.length}}
+{{#if this.removedSnapshots.length}}
   <div class="m-2 rounded border border-yellow-500 p-2" data-test-removed-snapshots>
     <div class="mb-1 flex">
       <strong>
-        Heads up! {{removedSnapshotText}}
+        Heads up! {{this.removedSnapshotText}}
         <sup class="hint--top hint--rounded hint--bounce" aria-label="There are a few reasons this might happen. &#10;(1) A snapshot was removed intentionally. &#10;(2) A snapshot was renamed.&#10;(3) Your CI run failed or errored and did not take all expected snapshots.">{{fa-icon "question-circle" class="text-gray-300"}}</sup>
       </strong>
     </div>
     <ul class="ml-2 mb-2">
-      {{#each snapshotsToShow as |snapshot|}}
+      {{#each this.snapshotsToShow as |snapshot|}}
         <li>
-          {{#link-to data-test-removed-snapshot-link 'organization.project.builds.default-comparison' snapshot.id}}{{snapshot.name}}{{/link-to}}
+          <LinkTo
+            @route='organization.project.builds.default-comparison'
+            @model={{snapshot.id}}
+            @data-test-removed-snapshot-link={{true}}
+          >
+            {{snapshot.name}}
+          </LinkTo>
         </li>
       {{/each}}
     </ul>
-    {{#if areSnapshotsTruncated}}
+    {{#if this.areSnapshotsTruncated}}
       <div class="link-blue cursor-pointer" {{action (toggle "areAllRemovedSnapshotsShowing" this)}} role="button" data-test-toggle-snapshots>
-        {{#if areAllRemovedSnapshotsShowing}}
+        {{#if this.areAllRemovedSnapshotsShowing}}
           Collapse
         {{else}}
           See all missing snapshots

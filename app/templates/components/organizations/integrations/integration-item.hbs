@@ -1,22 +1,22 @@
 <div class="integration-item flex justify-between items-center p-2 border-b" data-test-integration-item>
   <div class="grid col-auto gap-1 text-xl font-semibold">
-    <div class="flex items-center">{{inline-svg iconName}}</div>
-    <div class="flex items-center leading-none" data-test-integration-name="{{routeSlug}}">
-      {{textName}}
-      {{#if hasBetaBadge}}
+    <div class="flex items-center">{{inline-svg this.iconName}}</div>
+    <div class="flex items-center leading-none" data-test-integration-name="{{this.routeSlug}}">
+      {{this.textName}}
+      {{#if this.hasBetaBadge}}
         <span class="badge" data-test-integration-beta-badge>Beta</span>
       {{/if}}
-      {{#if isIntegrationDisabled}}
+      {{#if this.isIntegrationDisabled}}
         <span class="status-pill mx-1" data-test-integration-disabled-badge>Disabled</span>
       {{/if}}
     </div>
   </div>
 
-  {{#if isEnabled}}
-    <PercyBtn @handleClick={{action "installButtonAction"}} @class={{buttonClasses}}>
-      {{buttonText}}
+  {{#if this.isEnabled}}
+    <PercyBtn @handleClick={{action "installButtonAction"}} @class={{this.buttonClasses}}>
+      {{this.buttonText}}
     </PercyBtn>
-  {{else if (and isBeta isInstalled)}}
+  {{else if (and this.isBeta this.isInstalled)}}
     <button
       class="btn btn-primary"
       type="button"
@@ -25,9 +25,9 @@
     >
       Contact Us
     </button>
-  {{else if isBeta}}
+  {{else if this.isBeta}}
     <a
-      href="{{betaLink}}"
+      href="{{this.betaLink}}"
       target="_blank"
       rel="noopener noreferrer"
       class="percy-btn percy-btn-primary"

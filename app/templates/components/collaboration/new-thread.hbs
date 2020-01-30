@@ -1,16 +1,16 @@
-{{#if shouldShowNewCommentInput}}
+{{#if this.shouldShowNewCommentInput}}
   <div class="collaboration-comment mb-3" data-test-new-comment>
     <div data-test-new-comment-container>
       <div class="flex items-center">
-        <UserAvatar @user={{currentUser}} @class="mr-1" @isSmallAvatar={{true}} />
+        <UserAvatar @user={{this.currentUser}} @class="mr-1" @isSmallAvatar={{true}} />
         <div class="font-semibold leading-none">
-          {{currentUser.name}}
+          {{this.currentUser.name}}
         </div>
       </div>
       <div class="flex-1 collaboration-content-inset">
         <div class="relative">
           <MentionableTextarea
-            @tributeConfigs={{tributeConfigs}}
+            @tributeConfigs={{this.tributeConfigs}}
             @handleItemSelected={{action "handleAtMentionUser"}}
           >
             <PercyTextarea
@@ -19,7 +19,7 @@
               @onCmdEnter={{action "saveComment"}}
               @onEscape={{action "toggleShouldShowNewCommentInput"}}
               @placeholder="Add comment..."
-              @value={{commentBody}}
+              @value={{this.commentBody}}
               class="percy-input collaboration-new-thread relative pb-5"
             />
           </MentionableTextarea>
@@ -27,8 +27,8 @@
             class="
               absolute right-0 bottom-0 left-0 bg-action border-t border-quaternary p-1-1/2
               m-px rounded-b font-semibold text-sm text-secondary leading-none
-              {{if isRequestChangesDisabled "hint--left hint--rounded hint--bounce"}}"
-            aria-label="{{if isRequestChangesDisabled "You can't request changes on this snapshot beacause the snapshot is already approved."}}"
+              {{if this.isRequestChangesDisabled "hint--left hint--rounded hint--bounce"}}"
+            aria-label="{{if this.isRequestChangesDisabled "You can't request changes on this snapshot beacause the snapshot is already approved."}}"
           >
             <label class="flex items-center justify-end m-0">
               <span>Request changes</span>
@@ -36,8 +36,8 @@
                 data-test-request-changes-checkbox={{true}}
                 @type="checkbox"
                 @name="isRequestChanges"
-                @checked={{areChangesRequested}}
-                @disabled={{isRequestChangesDisabled}}
+                @checked={{this.areChangesRequested}}
+                @disabled={{this.isRequestChangesDisabled}}
                 @maxLength="6000"
                 class="ml-1"
               />
@@ -57,8 +57,9 @@
         @handleClick={{action "saveComment"}}
         @class="ml-1"
         @isPrimaryButton={{true}}
-        @isDisabled={{is-empty commentBody}}
-        @isSaving={{isThreadSaving}} @testLabel="saveNewComment"
+        @isDisabled={{is-empty this.commentBody}}
+        @isSaving={{this.isThreadSaving}}
+        @testLabel="saveNewComment"
       >
         Comment
       </PercyBtn>

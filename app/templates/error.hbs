@@ -1,7 +1,7 @@
 {{title "Error"}}
 <FixedTopHeader />
 <div class="w-full container-vh bg-white-pattern flex items-center justify-center">
-  {{#if (is-substring-present model '403')}}
+  {{#if (is-substring-present this.model '403')}}
 
     <StatusPanel
       @inlineSvgName="error-large-icon"
@@ -19,7 +19,7 @@
         Please feel welcome to <a href="#" {{action "showSupport"}}>contact us</a> if you believe you have reached this in error.
       </p>
     </StatusPanel>
-  {{else if (is-substring-present model '404')}}
+  {{else if (is-substring-present this.model '404')}}
 
     <StatusPanel
       @inlineSvgName="error-large-icon"
@@ -30,7 +30,7 @@
         Feel free to <a href="#" {{action "showSupport"}}>contact us</a> if you believe you have reached this in error.
       </p>
       <ErrorToggle
-        @error={{model}} />
+        @error={{this.model}} />
     </StatusPanel>
   {{else}}
 
@@ -43,7 +43,7 @@
         Feel free to <a href="#" {{action "showSupport"}}>contact us</a> if you believe you have reached this in error.
       </p>
       <ErrorToggle
-        @error={{model}} />
+        @error={{this.model}} />
     </StatusPanel>
   {{/if}}
 </div>

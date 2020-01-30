@@ -2,9 +2,9 @@
 <FixedTopHeader />
 
 <Organizations::NewOrganization
-  @newOrganization={{newOrganization}}
-  @organizationsForUser={{organizationsForUser}}
-  @userIdentities={{identities}}
-  @githubMarketplacePlanId={{githubMarketplacePlanId}}
+  @newOrganization={{this.newOrganization}}
+  @organizationsForUser={{this.organizationsForUser}}
+  @userIdentities={{this.identities}}
+  @githubMarketplacePlanId={{this.githubMarketplacePlanId}}
   @organizationCreated={{route-action "organizationCreated"}}
 />

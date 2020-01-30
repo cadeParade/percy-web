@@ -1,15 +1,15 @@
-{{#if showNoticeBar}}
+{{#if this.showNoticeBar}}
   <div class="hidden sm:block flex-shrink-0 mr-4">
-    <NoticeBarContainer @organization={{organization}} as |bar|>
-      {{#if shouldShowNewProjectPrompt}}
+    <NoticeBarContainer @organization={{this.organization}} as |bar|>
+      {{#if this.shouldShowNewProjectPrompt}}
         <bar.body>Get started with your own project.</bar.body>
         <bar.button @linkRoute="organizations.organization.projects.new">
           Create project
         </bar.button>
-      {{else if isSubscriptionFree}}
-        {{#if hasRemainingSnapshots}}
+      {{else if this.isSubscriptionFree}}
+        {{#if this.hasRemainingSnapshots}}
           <bar.body @classes="notice-bar-black-on-white">
-            You have used <strong data-test-percentage>{{currentUsagePercentage}}%</strong> of your free screenshots this month.
+            You have used <strong data-test-percentage>{{this.currentUsagePercentage}}%</strong> of your free screenshots this month.
           </bar.body>
           <bar.button @buttonClasses="notice-bar-button-gray border" @linkClasses="text-blue-500">
             More Info
@@ -23,12 +23,12 @@
           </bar.button>
         {{/if}}
 
-      {{else if isSubscriptionTrial}}
+      {{else if this.isSubscriptionTrial}}
         <bar.body @classes="notice-bar-black-on-gray">
-          {{#if isTrialEndingToday}}
+          {{#if this.isTrialEndingToday}}
             Your trial ends today!
           {{else}}
-            You have <strong>{{pluralize trialDaysRemaining "day"}}</strong> left in your trial.
+            You have <strong>{{pluralize this.trialDaysRemaining "day"}}</strong> left in your trial.
           {{/if}}
         </bar.body>
         <bar.button @buttonClasses="notice-bar-button-gray" @linkClasses="text-blue-500">

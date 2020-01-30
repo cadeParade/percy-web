@@ -5,14 +5,14 @@
       We’ll need just a bit of information to get Percy set up on your GitLab account.
       If you need some help, check out our
       <strong>
-        {{#if currentGitlabIntegration.isGitlabSelfHostedIntegration}}
+        {{#if this.currentGitlabIntegration.isGitlabSelfHostedIntegration}}
           <a href="https://docs.percy.io/docs/gitlab-self-managed" target="_blank" rel="noopener noreferrer">Percy + GitLab</a>
         {{else}}
           <a href="https://docs.percy.io/docs/gitlab" target="_blank" rel="noopener noreferrer">Percy + GitLab</a>
         {{/if}}
       </strong>
       doc to guide you through the set up process.
-      {{#if currentGitlabIntegration.isGitlabSelfHostedIntegration}}
+      {{#if this.currentGitlabIntegration.isGitlabSelfHostedIntegration}}
         <span data-test-integration-note>
           If you’re running GitLab behind a firewall, please <a href="#" data-test-integration-contact-support {{action "showSupport"}}>get in touch</a>.
         </span>
@@ -24,14 +24,14 @@
 <section>
   <div data-test-gitlab-settings class="bg-white rounded shadow-1 border-t p-2 mb-2">
     <Organizations::RequireRole
-      @user={{currentUser}}
-      @organization={{organization}}
+      @user={{this.currentUser}}
+      @organization={{this.organization}}
     >
       <Forms::GitlabSettingsEdit
-        @organization={{organization}}
-        @currentGitlabIntegration={{currentGitlabIntegration}}
-        @isNewRecord={{isNewRecord}}
-        @afterDelete={{afterDelete}}
+        @organization={{this.organization}}
+        @currentGitlabIntegration={{this.currentGitlabIntegration}}
+        @isNewRecord={{this.isNewRecord}}
+        @afterDelete={{this.afterDelete}}
       />
     </Organizations::RequireRole>
   </div>

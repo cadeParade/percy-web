@@ -1,21 +1,21 @@
 <section class="w-90vw max-w-xl mx-auto pt-4">
-  {{#unless project.isEnabled}}
+  {{#unless this.project.isEnabled}}
     <div class="Alert Alert--warning mt-2">
       <strong>This project is archived.</strong>
     </div>
   {{/unless}}
 
-  {{#if project.isEnabled}}
-    {{#if project.isDemo}}
+  {{#if this.project.isEnabled}}
+    {{#if this.project.isDemo}}
       <div class="bg-blue-100 p-2 border justify-start items-center sticky top-0 z-10 flex rounded border border-blue-500 mb-3">
         <div class="mr-3">{{inline-svg 'build-info-icon'}}</div>
         <div>
-          This is the settings page for a <strong>demo project</strong>. The demo settings are not editable here, but <strong><LinkTo @route="organizations.organization.projects.new" @model={{project.organization.slug}}> create your own project </LinkTo></strong> to start customizing your Percy experience.
+          This is the settings page for a <strong>demo project</strong>. The demo settings are not editable here, but <strong><LinkTo @route="organizations.organization.projects.new" @model={{this.project.organization.slug}}> create your own project </LinkTo></strong> to start customizing your Percy experience.
         </div>
       </div>
     {{/if}}
 
-    {{#if (and (variation 'only-admins-edit-settings') (not isUserOrgAdmin))}}
+    {{#if (and (variation 'only-admins-edit-settings') (not this.isUserOrgAdmin))}}
       <div data-test-member-view class="Alert Alert--error">
         <strong>Editing this organization's project settings requires organization admin permissions.</strong>
       </div>
@@ -25,7 +25,7 @@
         <p class="text-secondary mb-2">See the <LinkTo @route="docs" class="font-semibold">docs</LinkTo> for how to set up client authentication for your app.</p>
         <div class="p-2 bg-gray-000 rounded border">
           <div class="mb-2">
-            <Projects::EnvVars @project={{project}} />
+            <Projects::EnvVars @project={{this.project}} />
           </div>
           <div class="rounded bg-yellow-000 border border-yellow-100 p-2">
             <strong>Note:</strong> <code>PERCY_TOKEN</code> is a project-specific, write-only API key that only has access to create builds, snapshots, and upload resources to this project. It should be kept secret.
@@ -41,18 +41,18 @@
         </p>
         <div class="p-2 bg-gray-000 rounded border">
           <Projects::BrowserFamilySelector
-            @allBrowserFamilies={{browserFamilies}}
-            @areAnyBrowsersUpgradeable={{areAnyBrowsersUpgradeable}}
-            @project={{project}}
+            @allBrowserFamilies={{this.browserFamilies}}
+            @areAnyBrowsersUpgradeable={{this.areAnyBrowsersUpgradeable}}
+            @project={{this.project}}
           />
         </div>
       </div>
       <div class="bg-white rounded shadow-1 p-2 mb-2">
         <h2 class="text-xl font-semibold mb-1">Project details</h2>
-        <Forms::ProjectEdit @project={{project}} />
+        <Forms::ProjectEdit @project={{this.project}} />
       </div>
 
-      {{#unless project.isDemo}}
+      {{#unless this.project.isDemo}}
         <div class="bg-white rounded shadow-1 p-2 mb-2">
           <h2 class="text-xl font-semibold mb-1">Percy badge</h2>
           <img src="https://percy.io/static/images/percy-badge.svg" alt="visual testing by Percy badge">
@@ -60,10 +60,10 @@
             <label>
               <div class="mb-1">Show the world that you're using Percy for visual testing. Place this badge in your README by copying the markdown snippet below:</div>
               <div class="flex justify-between">
-                <textarea readonly="true" class="flex-1 px-1 py-sm font-mono font-normal tracking-sm text-sm">{{badgeMarkdown}}</textarea>
+                <textarea readonly="true" class="flex-1 px-1 py-sm font-mono font-normal tracking-sm text-sm">{{this.badgeMarkdown}}</textarea>
                 <CopyButton
                   @class="percy-btn ml-1"
-                  @clipboardText={{badgeMarkdown}}
+                  @clipboardText={{this.badgeMarkdown}}
                   @success={{route-action "onCopyBadgeMarkdown"}}
                 >
                   {{inline-svg "copy-icon"}}
@@ -76,7 +76,7 @@
 
       <div class="bg-white rounded shadow-1 p-2 mb-2">
         <h2 class="text-xl font-semibold mb-1">Actions</h2>
-        <Projects::EnabledToggle @project={{project}} />
+        <Projects::EnabledToggle @project={{this.project}} />
       </div>
     {{/if}}
   {{/if}}

@@ -1,17 +1,17 @@
 <Projects::ProjectHeader
-  @project={{project}}
-  @shouldShowLinks={{isUserMember}}
+  @project={{this.project}}
+  @shouldShowLinks={{this.isUserMember}}
   @shouldDisplayBottomBorder={{false}}
 >
-  {{#if shouldShowBranchFilter}}
+  {{#if this.shouldShowBranchFilter}}
     <div class="flex justify-end mt-1" data-test-project-container-branch-filter>
       <PowerSelect
         @triggerClass="ember-power-select-branch-filter-trigger"
-        @selected={{selectedBranch}}
+        @selected={{this.selectedBranch}}
         @placeholder="Filter by branch"
         @renderInPlace={{true}}
         @horizontalPosition="right"
-        @options={{projectBranches}}
+        @options={{this.projectBranches}}
         @searchEnabled={{true}}
         @searchPlaceholder="Type to filter branches"
         @noMatchesMessage="No branches found"
@@ -21,7 +21,7 @@
         {{branch}}
       </PowerSelect>
     </div>
-  {{else if (not project.organization.isVersionControlIntegrated)}}
+  {{else if (not this.project.organization.isVersionControlIntegrated)}}
     <div class="flex items-center p-1 pl-2 border bg-gray-000 rounded font-semibold text-sm" data-test-integration-prompt>
       <div class="flex items-center">
         {{inline-svg "github-icon" class="mr-1"}}
@@ -29,33 +29,40 @@
         {{inline-svg "bitbucket-icon" class="mr-1"}}
       </div>
       <div>Integrate your SCM for repo features</div>
-      {{#link-to data-test-add-integration "organizations.organization.integrations" project.organization.slug class="percy-btn percy-btn-primary percy-btn-sm ml-2"}}Add integration{{/link-to}}
+      <LinkTo
+        @route="organizations.organization.integrations"
+        @model={{this.project.organization.slug}}
+        @data-test-add-integration={{true}}
+        class="percy-btn percy-btn-primary percy-btn-sm ml-2"
+      >
+        Add integration
+      </LinkTo>
     </div>
   {{/if}}
 </Projects::ProjectHeader>
 
 <main class="project-container flex-1 pb-8 bg-gray-000">
-  {{#if (and builds.isPending (not isRefreshing))}}
+  {{#if (and this.builds.isPending (not this.isRefreshing))}}
     <LoadingPage />
   {{else}}
-    {{#if builds}}
+    {{#if this.builds}}
       <div class="build-list">
-        {{#each branchFilteredBuilds as |build|}}
-          <BuildCard @build={{build}} @project={{project}} />
+        {{#each this.branchFilteredBuilds as |build|}}
+          <BuildCard @build={{build}} @project={{this.project}} />
         {{/each}}
-        {{#if shouldLoadMore}}
-          <InfinityLoader @infinityModel={{infinityBuilds}}>
+        {{#if this.shouldLoadMore}}
+          <InfinityLoader @infinityModel={{this.infinityBuilds}}>
             <LoadingBuildCard />
           </InfinityLoader>
-        {{else if isBranchSelected}}
+        {{else if this.isBranchSelected}}
           <div class="p-4 bg-white border-b flex justify-center text-secondary">
             To load more builds, select "All branches" from the select menu above
           </div>
         {{/if}}
       </div>
     {{else}}
-      {{#if project.isEnabled}}
-        {{#if isUserMember}}
+      {{#if this.project.isEnabled}}
+        {{#if this.isUserMember}}
           <div class="w-90vw max-w-xl mx-auto mb-3">
             <div class="build-card-placeholder">
               <div class="mr-3">
@@ -71,37 +78,36 @@
           <div class="w-90vw max-w-xl mx-auto">
             <div class="bg-white rounded shadow-1">
               <div class="px-2 py-3 border-b">
-                <ResourceWidget @project={{project}} />
+                <ResourceWidget @project={{this.project}} />
               </div>
               <div class="px-2 py-3">
                 <h2 class="text-xl font-semibold mb-sm">Project token</h2>
                 <p class="text-secondary mb-2">Configure your local or CI environment with PERCY-TOKEN. This is a project-specific write-only API key that only has access to create builds, snapshots, and upload resources to this project. It should be kept secret.</p>
 
-                {{#if project.isDemo}}
+                {{#if this.project.isDemo}}
                   <div class="percy-code-snippet" data-test-env-var-demo>
                     <pre>
                       <span class="percy-code-bash">PERCY_TOKEN=[This is a demo project. Create your own project to get a PERCY_TOKEN]</span>
                     </pre>
                   </div>
                 {{else}}
-                  {{#if project.tokens.isPending}}
+                  {{#if this.project.tokens.isPending}}
                     <div class="percy-code-snippet">
                       <pre>
                         <span class="percy-code-comment percy-code-bash">Loading...</span>
                       </pre>
                     </div>
                   {{/if}}
-                  {{#with project.writeOnlyToken.token as |token|}}
+                  {{#with this.project.writeOnlyToken.token as |token|}}
                     <div>
                       <div class="flex justify-start mb-1">
                         <div class="btn-toggle">
-                          <div class="btn-toggle-item {{if showUnixBash 'is-selected'}}" role="button" {{action "switchBashSyntax"}}>Mac/Linux</div>
-                          <div class="btn-toggle-item {{unless  showUnixBash 'is-selected'}}" role="button" {{action "switchBashSyntax"}}>Windows</div>
+                          <div class="btn-toggle-item {{if this.showUnixBash 'is-selected'}}" role="button" {{action "switchBashSyntax"}}>Mac/Linux</div>
+                          <div class="btn-toggle-item {{unless  this.showUnixBash 'is-selected'}}" role="button" {{action "switchBashSyntax"}}>Windows</div>
                         </div>
                       </div>
                       <div class="percy-code-snippet">
-                        <pre>
-                          <span class="percy-code-bash">{{if showUnixBash "export" "set"}} PERCY_TOKEN={{token}}</span>
+                        <pre>                          <span class="percy-code-bash">{{if this.showUnixBash "export" "set"}} PERCY_TOKEN={{token}}</span>
                         </pre>
                       </div>
                     </div>

@@ -1,5 +1,5 @@
 <div class="changelog-post-list">
-  {{#each changelogPosts as |changelogPost|}}
+  {{#each this.changelogPosts as |changelogPost|}}
     <ChangelogPost
       @postId={{changelogPost.id}}
       @tag={{changelogPost.tag}}

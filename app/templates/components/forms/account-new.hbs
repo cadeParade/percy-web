@@ -1,7 +1,7 @@
 <form action="javascript:;" data-test-account-new-form>
   <label class="block mb-2">
     <span class="label-body">Email</span> - you can change this later in your profile.
-    <input type="input" class="form-control" disabled value={{session.currentUser.email}}>
+    <input type="input" class="form-control" disabled value={{this.session.currentUser.email}}>
   </label>
 
   <FormFields::Input
@@ -16,8 +16,8 @@
   <FormFields::Submit
     @value="Create account"
     @classes="btn btn-primary shadow-purple-lg mb-2"
-    @isSaving={{isSaving}}
-    @isSaveSuccessful={{isSaveSuccessful}}
+    @isSaving={{this.isSaving}}
+    @isSaveSuccessful={{this.isSaveSuccessful}}
     @submit={{action "save"}}
     @data-test-account-new-submit={{true}}
   />

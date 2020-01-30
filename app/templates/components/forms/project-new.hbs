@@ -11,9 +11,9 @@
       @placeholder="widgets-web-app"
       @testLabel="project-name-input"
     />
-    {{#if organization.isVersionControlIntegrated}}
+    {{#if this.organization.isVersionControlIntegrated}}
       <strong>Link a repository</strong>
-      <Projects::RepoIntegrator @project={{model}} />
+      <Projects::RepoIntegrator @project={{this.model}} />
     {{/if}}
   </div>
   <div class="flex justify-end">

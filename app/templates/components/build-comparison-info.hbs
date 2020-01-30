@@ -1,9 +1,9 @@
-{{#if build.baseBuild}}
-  <div role="button" {{action onLinkClick}}>
-    <LinkTo @route="organization.project.builds.build" @models={{array build.project.organization.slug build.project.slug build.baseBuild.id}} class="data-test-baseline-build-link">{{build.baseBuild.buildTitle}}</LinkTo>
+{{#if this.build.baseBuild}}
+  <div role="button" {{action this.onLinkClick}}>
+    <LinkTo @route="organization.project.builds.build" @models={{array this.build.project.organization.slug this.build.project.slug this.build.baseBuild.id}} class="data-test-baseline-build-link">{{this.build.baseBuild.buildTitle}}</LinkTo>
   </div>
 {{else}}
-  {{#if build.isFinished}}
+  {{#if this.build.isFinished}}
     No baseline to compare against
   {{else}}
     --

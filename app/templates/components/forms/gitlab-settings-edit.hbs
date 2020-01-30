@@ -2,7 +2,7 @@
   <div class="flex items-center mb-2">
     {{inline-svg "gitlab-icon-lg" class="mr-1"}}
     <h2 data-test-gitlab-settings-integration-name class="text-xl font-semibold m-0">
-      {{#if isSelfHosted}}
+      {{#if this.isSelfHosted}}
         GitLab Self-Managed Integration
       {{else}}
         GitLab integration
@@ -10,12 +10,12 @@
     </h2>
   </div>
   <div class="mb-2">
-    {{#if errorMessage}}
+    {{#if this.errorMessage}}
       <div class="Form-errors">
-        {{errorMessage}}
+        {{this.errorMessage}}
       </div>
     {{/if}}
-    {{#if isSelfHosted}}
+    {{#if this.isSelfHosted}}
       <FormFields::Input
         @data-test-gitlab-host-field={{true}}
         @type="input"
@@ -32,35 +32,35 @@
       @property="gitlabPersonalAccessToken"
       @title="Personal access token"
       @changeset={{this.changeset}}
-      @placeholder={{gitlabPersonalAccessTokenPlaceholder}}
+      @placeholder={{this.gitlabPersonalAccessTokenPlaceholder}}
     />
     <div class="rounded border p-2 mb-2">
       <strong>Note:</strong> The <a href="https://gitlab.com/profile/personal_access_tokens" target="_blank" rel="noopener noreferrer">personal access token</a> is used to update commit statuses in GitLab. These updates will be made on behalf of this user. You may wish to create a specialized GitLab user for this purpose.
     </div>
-    {{#unless isNewRecord}}
+    {{#unless this.isNewRecord}}
       <div class="rounded bg-yellow-000 border border-yellow-100 p-2 mb-2">
         <strong>Note:</strong> Each project must be linked to a GitLab repository for <strong><a href="https://docs.percy.io/docs/gitlab" target="_blank" rel="noopener noreferrer">Merge Request integration</a></strong> to work. You can verify the link below or in each project's settings.
       </div>
     {{/unless}}
-    {{#if isGitlabPersonalAccessTokenPresent}}
-      <Organizations::Integrations::RepoLinkerList @organization={{organization}} />
+    {{#if this.isGitlabPersonalAccessTokenPresent}}
+      <Organizations::Integrations::RepoLinkerList @organization={{this.organization}} />
     {{/if}}
   </div>
   <div data-test-gitlab-settings-edit-form-toolbar class="flex justify-between">
-    <button type="button" disabled={{if isNewRecord true false}} data-test-gitlab-settings-delete class="btn btn-danger" {{action "delete" "Are you sure you want to remove the GitLab integration?"}}>Remove Integration</button>
+    <button type="button" disabled={{if this.isNewRecord true false}} data-test-gitlab-settings-delete class="btn btn-danger" {{action "delete" "Are you sure you want to remove the GitLab integration?"}}>Remove Integration</button>
     <div class="flex align-center">
       <LinkTo
         @route="organizations.organization.integrations.index"
-        @model={{organization.slug}}
+        @model={{this.organization.slug}}
         class="btn back"
       >
         Back
       </LinkTo>
       <FormFields::Submit
         @value="Save"
-        @isSaving={{isSaving}}
-        @isSaveSuccessful={{isSaveSuccessful}}
-        @disabled={{isSubmitDisabled}}
+        @isSaving={{this.isSaving}}
+        @isSaveSuccessful={{this.isSaveSuccessful}}
+        @disabled={{this.isSubmitDisabled}}
         @classes="btn btn-primary shadow-purple-lg mb-0 ml-1"
         @submit={{action "save"}}
       />

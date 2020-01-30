@@ -1,11 +1,11 @@
-{{title (concat "Changelog " post.title)}}
+{{title (concat "Changelog " this.post.title)}}
 
 <Marketing::MarketingHeader
-  @logomark={{hero.logomark}}
-  @image={{hero.mainImage}}
-  @classes={{hero.classes}}
+  @logomark={{this.hero.logomark}}
+  @image={{this.hero.mainImage}}
+  @classes={{this.hero.classes}}
 >
-  <Marketing::HeroBlock @content={{hero}} />
+  <Marketing::HeroBlock @content={{this.hero}} />
 </Marketing::MarketingHeader>
 
 <section class="bg-gray-pattern border-t">
@@ -14,14 +14,14 @@
     <div class="hidden sm:block absolute h-full bg-gray-100" style="width: 1px; top: 0; left: 116px;"></div>
 
     <ChangelogPost
-      @postId={{post.id}}
-      @tag={{post.tag}}
-      @date={{moment-format post.date "MMM D, YYYY"}}
+      @postId={{this.post.id}}
+      @tag={{this.post.tag}}
+      @date={{moment-format this.post.date "MMM D, YYYY"}}
     >
-      <h2>{{post.title}}</h2>
-      <MarkdownToHtml @markdown={{post.content}} />
-      {{#if post.image}}
-        <img src="{{post.image.file.url}}" alt="{{post.image.description}}">
+      <h2>{{this.post.title}}</h2>
+      <MarkdownToHtml @markdown={{this.post.content}} />
+      {{#if this.post.image}}
+        <img src="{{this.post.image.file.url}}" alt="{{this.post.image.description}}">
       {{/if}}
       <LinkTo
         @route="changelog.index"
