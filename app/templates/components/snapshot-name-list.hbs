@@ -1,11 +1,11 @@
 <Input
   @type="text"
-  @value={{searchTerm}}
+  @value={{this.searchTerm}}
   @key-up={{action "updateSearchTerm"}}
   class="form-control h-10 m-0"
 />
 <ul class="snapshot-name-list">
-  {{#each filteredSnapshots as |snapshot|}}
+  {{#each this.filteredSnapshots as |snapshot|}}
     <li>
       <LinkTo
         @route="organization.project.builds.build2.snapshot"
