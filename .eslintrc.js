@@ -1,8 +1,13 @@
+prettierConfig = require('./.prettierrc.js');
+
 module.exports = {
   root: true,
   parserOptions: {
     ecmaVersion: 2017,
     sourceType: 'module',
+    "ecmaFeatures": {
+      "legacyDecorators": true
+    }
   },
   env: {
     browser: true,
@@ -14,12 +19,7 @@ module.exports = {
   rules: {
     'prettier/prettier': [
       'error',
-      {
-        singleQuote: true,
-        trailingComma: 'all',
-        bracketSpacing: false,
-        printWidth: 100,
-      },
+      prettierConfig,
     ],
     'brace-style': ['error', '1tbs', {allowSingleLine: false}],
     'max-len': ['error', 100],
