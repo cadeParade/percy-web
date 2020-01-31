@@ -32,6 +32,12 @@ export default Route.extend(EKMixin, {
 
   actions: {
     noop() {},
+    goToNextSnapshot() {
+      this.goToNext();
+    },
+    goToPreviousSnapshot() {
+      this.goToPrevious();
+    },
   },
 
   //TODO refactor this
@@ -40,34 +46,41 @@ export default Route.extend(EKMixin, {
     return snapshots.mapBy('id').indexOf(activeSnapshotId);
   },
 
+  goToNext() {
+    const snapshots = this.modelFor(this.routeName).snapshots;
+    const activeSnapshotIndex = this._findActiveSnapshotIndex(snapshots);
+    const nextSnapshotIndex = activeSnapshotIndex + 1;
+    const isThereNextIndex = nextSnapshotIndex < snapshots.length;
+    if (activeSnapshotIndex > -1 && isThereNextIndex) {
+      const snapshotAtNextIndex = snapshots.toArray()[activeSnapshotIndex + 1];
+      this.transitionTo('organization.project.builds.build2.snapshot', snapshotAtNextIndex.id);
+    }
+  },
+
+  goToPrevious() {
+    const snapshots = this.modelFor(this.routeName).snapshots;
+    const activeSnapshotIndex = this._findActiveSnapshotIndex(snapshots);
+    const prevSnapshotIndex = activeSnapshotIndex - 1;
+    const isTherePrevIndex = prevSnapshotIndex > -1;
+    if (activeSnapshotIndex > -1 && isTherePrevIndex) {
+      const snapshotAtPrevIndex = snapshots.toArray()[activeSnapshotIndex - 1];
+      this.transitionTo('organization.project.builds.build2.snapshot', snapshotAtPrevIndex.id);
+    }
+  },
+
   onUpArrowPress: on(keyDown('ArrowUp'), function(event) {
     console.log('UP');
-
     if (this.router.currentRoute.name === 'organization.project.builds.build2.snapshot') {
       event.preventDefault();
-      const snapshots = this.modelFor(this.routeName).snapshots;
-      const activeSnapshotIndex = this._findActiveSnapshotIndex(snapshots);
-      const prevSnapshotIndex = activeSnapshotIndex - 1;
-      const isTherePrevIndex = prevSnapshotIndex > -1;
-      if (activeSnapshotIndex > -1 && isTherePrevIndex) {
-        const snapshotAtPrevIndex = snapshots.toArray()[activeSnapshotIndex - 1];
-        this.transitionTo('organization.project.builds.build2.snapshot', snapshotAtPrevIndex.id);
-      }
+      this.goToPrevious();
     }
   }),
 
   onDownArrowPress: on(keyDown('ArrowDown'), function(event) {
-    console.log("DOWN")
+    console.log('DOWN');
     if (this.router.currentRoute.name === 'organization.project.builds.build2.snapshot') {
       event.preventDefault();
-      const snapshots = this.modelFor(this.routeName).snapshots;
-      const activeSnapshotIndex = this._findActiveSnapshotIndex(snapshots);
-      const nextSnapshotIndex = activeSnapshotIndex + 1;
-      const isThereNextIndex = nextSnapshotIndex < snapshots.length;
-      if (activeSnapshotIndex > -1 && isThereNextIndex) {
-        const snapshotAtNextIndex = snapshots.toArray()[activeSnapshotIndex + 1];
-        this.transitionTo('organization.project.builds.build2.snapshot', snapshotAtNextIndex.id);
-      }
+      this.goToNext();
     }
   }),
 });
