@@ -1,10 +1,10 @@
 import Route from '@ember/routing/route';
-import ResetScrollMixin from 'percy-web/mixins/reset-scroll';
 import {inject as service} from '@ember/service';
 import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
+import utils from 'percy-web/lib/utils';
 
-export default Route.extend(ResetScrollMixin, {
+export default Route.extend({
   snapshotQuery: service(),
   commentThreads: service(),
   store: service(),
@@ -16,7 +16,14 @@ export default Route.extend(ResetScrollMixin, {
     comparisonMode: {as: 'mode'},
     activeBrowserFamilySlug: {as: 'browser', refreshModel: true},
   },
-  model(params /*transition*/) {
+
+  beforeModel(transition) {
+    if (transition.from) {
+      this.set('_prevRouteName', transition.from.name);
+    }
+  },
+
+  model(params) {
     this.set('params', params);
     const organization = this.modelFor('organization');
     return hash({
@@ -128,6 +135,14 @@ export default Route.extend(ResetScrollMixin, {
     transitionRouteToWidth(width) {
       this._updateQueryParams({newWidth: width});
       this._track('Fullscreen: Width Switched', {width});
+    },
+
+    transitionToBuildPage(url) {
+      if (this._prevRouteName === 'organization.project.builds.build.index') {
+        utils.windowBack();
+      } else {
+        this.transitionTo(url);
+      }
     },
   },
 

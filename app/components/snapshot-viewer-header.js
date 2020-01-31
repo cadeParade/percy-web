@@ -58,6 +58,10 @@ export default Component.extend({
   hasDiffsInBrowser: readOnly('filteredComparisons.anyComparisonsHaveDiffs'),
 
   actions: {
+    handleTransitionToBuildPage(event) {
+      this.transitionToBuildPage(event.currentTarget.pathname);
+    },
+
     onCopySnapshotUrlToClipboard() {
       this.flashMessages.success('Snapshot URL was copied to your clipboard');
     },

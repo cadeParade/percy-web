@@ -78,6 +78,10 @@ export default {
     window.location.replace(url);
   },
 
+  windowBack() {
+    window.history.back();
+  },
+
   confirmMessage(message) {
     return confirm(message);
   },

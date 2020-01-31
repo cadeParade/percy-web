@@ -1,5 +1,4 @@
 import Route from '@ember/routing/route';
-import ResetScrollMixin from 'percy-web/mixins/reset-scroll';
 import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import ExtendedInfinityModel from 'percy-web/lib/paginated-ember-infinity-model';
 import {inject as service} from '@ember/service';
@@ -7,7 +6,7 @@ import {hash} from 'rsvp';
 
 import {INFINITY_SCROLL_LIMIT} from 'percy-web/models/build';
 
-export default Route.extend(ResetScrollMixin, {
+export default Route.extend({
   infinity: service(),
   session: service(),
 

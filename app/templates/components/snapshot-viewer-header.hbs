@@ -128,9 +128,13 @@
 
       <div class="btn-group" role="group" aria-label="Second Group">
         {{#if this.fullscreen}}
-          <LinkTo
-            @route="organization.project.builds.build.index"
-            @models={{array this.snapshot.build.project.organization.slug this.snapshot.build.project.slug this.snapshot.build.id}}
+          <a href={{href-to
+              "organization.project.builds.build.index"
+              this.snapshot.build.project.organization.slug
+              this.snapshot.build.project.slug
+              this.snapshot.build.id
+            }}
+            {{on 'click' (action 'handleTransitionToBuildPage')}}
             class="ToggleFullViewButton btn btn-square minimize-snapshot"
             aria-label="Minimize snapshot"
             data-test-SnapshotViewer-toggleFullScreen
@@ -138,7 +142,7 @@
             <figure class="svg-container">
               <ThemeSvg @svg="minimize-icon" />
             </figure>
-          </LinkTo>
+          </a>
         {{else}}
           <LinkTo
             @route="organization.project.builds.build.snapshot"
