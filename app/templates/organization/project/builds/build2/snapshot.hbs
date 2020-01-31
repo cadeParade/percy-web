@@ -1,4 +1,5 @@
-<SnapshotViewerFull
+<SnapshotViewer
+  @build={{snapshot.build}}
   @snapshot={{snapshot}}
   @snapshotSelectedWidth={{snapshotSelectedWidth}}
   @comparisonMode={{comparisonMode}}
@@ -11,5 +12,4 @@
   @createCommentThread={{route-action "noop"}}
   @closeCommentThread={{route-action "noop"}}
   @createComment={{route-action "noop"}}
-
 />
