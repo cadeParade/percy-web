@@ -4,3 +4,12 @@
     @apply opacity-100;
   }
 }
+
+.master-detail-snapshot-header {
+  @apply sticky top-0;
+  @apply z-1;
+  @apply bg-secondary;
+  @apply pb-2;
+  backdrop-filter: saturate(50%) blur(20px);
+  opacity: 0.98;
+}
