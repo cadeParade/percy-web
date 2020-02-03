@@ -1,12 +1,10 @@
-<div class="p-2 cursor-default font-bold truncate" title="{{snapshot.name}}">
+  <div class="p-2 cursor-default font-bold truncate" title="{{snapshot.name}}">
   {{snapshot.name}}
 </div>
 
 <div class="btn-toolobar px-2">
-  <button type="button" class="percy-btn">Previous</button>
-  <button type="button" class="percy-btn">Next</button>
-  {{!-- {{!-- <button type="button" class="percy-btn" {{action goToPreviousSnapshot}}>Previous</button> --}}
-  {{!-- <button type="button" class="percy-btn" {{action goToNextSnapshot}}>Next</button> --}}
+  <button type="button" class="percy-btn" {{action goToPreviousSnapshot}}>Previous</button>
+  <button type="button" class="percy-btn" {{action goToNextSnapshot}}>Next</button>
 </div>
 
 {{#if selectedComparison}}

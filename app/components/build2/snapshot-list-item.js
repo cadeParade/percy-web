@@ -22,7 +22,6 @@ export default Component.extend(InViewportMixin, {
   allDiffsShown: null,
   build: null,
   userSelectedWidth: null,
-  updateActiveSnapshotBlockId: null,
   // This will be populated if it is a snapshot-viewer component.
   snapshot: null,
 
@@ -57,11 +56,6 @@ export default Component.extend(InViewportMixin, {
 
   didEnterViewport() {
     set(this, '_isInViewport', true);
-  },
-
-  click() {
-    set(this, '_shouldScroll', false);
-    get(this, 'updateActiveSnapshotBlockId')(get(this, 'id'));
   },
 
   filteredComparisons: computed('coverSnapshot', 'activeBrowser', 'userSelectedWidth', function() {
