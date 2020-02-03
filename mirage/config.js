@@ -283,6 +283,14 @@ export default function() {
     return project ? project : _error401;
   });
 
+  this.patch('/projects/:full_slug/', function(schema, request) {
+    const fullSlug = decodeURIComponent(request.params.full_slug);
+    const project = schema.projects.findBy({fullSlug: fullSlug});
+    let attrs = this.normalizedRequestAttrs('project');
+    project.update(attrs);
+    return project;
+  });
+
   this.get('/projects/:organization_slug/:project_slug/tokens', function(schema, request) {
     let fullSlug = `${request.params.organization_slug}/${request.params.project_slug}`;
     let project = schema.projects.findBy({fullSlug: fullSlug});

@@ -74,10 +74,15 @@
         </div>
       {{/unless}}
 
+    {{/if}}
+  {{/if}}
+
+  {{#let (variation 'only-admins-edit-settings') as |isFlagEnabled|}}
+    {{#if (or (and isFlagEnabled this.isUserOrgAdmin) (not isFlagEnabled))}}
       <div class="bg-white rounded shadow-1 p-2 mb-2">
         <h2 class="text-xl font-semibold mb-1">Actions</h2>
         <Projects::EnabledToggle @project={{this.project}} />
       </div>
     {{/if}}
-  {{/if}}
+  {{/let}}
 </section>

@@ -1,5 +1,12 @@
-{{#if this.project.isEnabled}}
-  <button type="button" class="btn btn-primary shadow-purple-lg mb-0" {{action "disable"}}>Archive Project</button>
-{{else}}
-  <button type="button" class="btn btn-primary shadow-purple-lg mb-0" {{action "enable"}}>Enable Project</button>
-{{/if}}
+<PercyBtn
+  @handleClick={{perform this.toggleArchiveState}}
+  @isPrimaryButton={{true}}
+  class="mt-2"
+  @testLabel="project-archive-toggle-button"
+>
+  {{#if this.project.isEnabled}}
+    Archive project
+  {{else}}
+    Enable Project
+  {{/if}}
+</PercyBtn>
