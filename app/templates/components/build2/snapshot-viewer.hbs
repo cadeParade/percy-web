@@ -1,0 +1,33 @@
+<div class="p-2 cursor-default font-bold truncate" title="{{snapshot.name}}">
+  {{snapshot.name}}
+</div>
+
+<div class="btn-toolobar px-2">
+  <button type="button" class="percy-btn">Previous</button>
+  <button type="button" class="percy-btn">Next</button>
+  {{!-- {{!-- <button type="button" class="percy-btn" {{action goToPreviousSnapshot}}>Previous</button> --}}
+  {{!-- <button type="button" class="percy-btn" {{action goToNextSnapshot}}>Next</button> --}}
+</div>
+
+{{#if selectedComparison}}
+  <div class="flex flex-col flex-col-reverse lg:flex-row">
+    <Build2::ComparisonViewer
+      @class="flex-1"
+      @comparison={{selectedComparison}}
+      @allDiffsShown={{allDiffsShown}}
+      @snapshotSelectedWidth={{blockSelectedWidth}}
+      @isDefaultExpanded={{isDefaultExpanded}}
+      @isUnchangedSnapshotExpanded={{isUnchangedSnapshotExpanded}}
+      @data-test-SnapshotViewer-comparison={{true}}
+      @activeBrowser={{activeBrowser}}
+      @isSnapshotDiffOverlayShowingClickBadge={{isSnapshotDiffOverlayShowingClickBadge}}
+      @index={{index}}
+      @showDiffOverlay={{isSnapshotShowingDiffOverlay}}
+      @toggleOverlay={{action "toggleSnapshotOverlay"}}
+    />
+  </div>
+{{else}}
+  <div class="p-2 text-center bg-gray-000 border-b">
+    No snapshot taken at {{blockSelectedWidth}}px.
+  </div>
+{{/if}}

@@ -1,4 +1,4 @@
-<SnapshotViewer
+<Build2::SnapshotViewer
   @build={{snapshot.build}}
   @snapshot={{snapshot}}
   @snapshotSelectedWidth={{snapshotSelectedWidth}}
@@ -9,6 +9,8 @@
   @transitionRouteToWidth={{route-action "transitionRouteToWidth"}}
   @createReview={{route-action "noop"}}
   @updateActiveBrowser={{route-action "updateActiveBrowser"}}
+  {{!-- @goToPreviousSnapshot={{route-action "goToPrevious"}} --}}
+  {{!-- @goToNextSnapshot={{route-action "goToNext"}} --}}
   @createCommentThread={{route-action "noop"}}
   @closeCommentThread={{route-action "noop"}}
   @createComment={{route-action "noop"}}

@@ -1,5 +1,6 @@
 .snapshot-name-list {
   a.active {
-    color: black;
+    @apply font-bold;
+    @apply opacity-100;
   }
 }
