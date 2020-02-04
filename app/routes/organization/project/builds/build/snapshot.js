@@ -3,6 +3,7 @@ import {inject as service} from '@ember/service';
 import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
 import utils from 'percy-web/lib/utils';
+import {get} from '@ember/object';
 
 export default Route.extend({
   snapshotQuery: service(),
@@ -20,6 +21,7 @@ export default Route.extend({
   beforeModel(transition) {
     if (transition.from) {
       this.set('_prevRouteName', transition.from.name);
+      this.set('_prevBuildId', get(transition, 'from.parent.params.build_id'));
     }
   },
 
@@ -137,8 +139,11 @@ export default Route.extend({
       this._track('Fullscreen: Width Switched', {width});
     },
 
-    transitionToBuildPage(url) {
-      if (this._prevRouteName === 'organization.project.builds.build.index') {
+    transitionToBuildPage(url, buildId) {
+      if (
+        this._prevRouteName === 'organization.project.builds.build.index' &&
+        this._prevBuildId === buildId
+      ) {
         utils.windowBack();
       } else {
         this.transitionTo(url);
