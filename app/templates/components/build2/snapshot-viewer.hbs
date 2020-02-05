@@ -14,14 +14,6 @@
     <Build2::ComparisonViewer
       @class="flex-1"
       @comparison={{this.selectedComparison}}
-      @allDiffsShown={{this.allDiffsShown}}
-      @snapshotSelectedWidth={{this.blockSelectedWidth}}
-      @isDefaultExpanded={{this.isDefaultExpanded}}
-      @isUnchangedSnapshotExpanded={{this.isUnchangedSnapshotExpanded}}
-      @data-test-SnapshotViewer-comparison={{true}}
-      @activeBrowser={{this.activeBrowser}}
-      @isSnapshotDiffOverlayShowingClickBadge={{this.isSnapshotDiffOverlayShowingClickBadge}}
-      @index={{this.index}}
       @showDiffOverlay={{this.isSnapshotShowingDiffOverlay}}
       @toggleOverlay={{action "toggleSnapshotOverlay"}}
     />

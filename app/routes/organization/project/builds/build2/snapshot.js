@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import {inject as service} from '@ember/service';
 import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
+import {SNAPSHOT_COMPARISON_INCLUDES} from 'percy-web/services/snapshot-query';
 
 export default Route.extend({
   snapshotQuery: service(),
@@ -9,16 +10,16 @@ export default Route.extend({
   flashMessages: service(),
   session: service(),
   params: null,
-  queryParams: {
-    comparisonMode: {as: 'mode'},
-    activeBrowserFamilySlug: {as: 'browser', refreshModel: true},
-    currentWidth: {as: 'width'},
-  },
+
   model(params /*transition*/) {
     this.set('params', params);
     const organization = this.modelFor('organization');
+    const snapshot = this.store.loadRecord('snapshot', params.snapshot_id, {
+      include: SNAPSHOT_COMPARISON_INCLUDES.join(','),
+      backgroundReload: false,
+    });
     return hash({
-      snapshot: this.snapshotQuery.getSnapshot(params.snapshot_id),
+      snapshot,
       isUserMember: isUserMember(this.session.currentUser, organization),
     });
   },
@@ -43,7 +44,7 @@ export default Route.extend({
 
       controller.setProperties({
         build,
-        activeBrowser,
+        activeBrowser: validatedBrowser,
         snapshot: model.snapshot,
         isBuildApprovable: model.isUserMember,
         snapshotId: params.snapshot_id,
@@ -78,72 +79,13 @@ export default Route.extend({
     const isBrowserForBuild = browser && buildBrowserIds.includes(browser.get('id'));
     if (!browser || !isBrowserForBuild) {
       const allowedBrowser = build.get('browsers.firstObject');
-      this._updateActiveBrowser(allowedBrowser);
+      return allowedBrowser;
     } else {
       return browser;
     }
   },
 
-  _updateActiveBrowser(newBrowser) {
-    this.controllerFor(this.routeName).set('activeBrowser', newBrowser);
-    this._updateQueryParams({newBrowserSlug: newBrowser.get('familySlug')});
-  },
-
-  activate() {
-    this._track('Snapshot Fullscreen Viewed');
-  },
-
-  _track(actionName, extraProps) {
-    let build = this.modelFor('organization.project.builds.build2').build;
-    const genericProps = {
-      project_id: build.get('project.id'),
-      project_slug: build.get('project.slug'),
-      build_id: build.get('id'),
-      snapshot_id: this.params.snapshot_id,
-    };
-    const organization = build.get('project.organization');
-
-    const props = Object.assign({}, extraProps, genericProps);
-    this.analytics.track(actionName, organization, props);
-  },
-
   actions: {
     noop() {},
-    updateComparisonMode(mode) {
-      this._updateQueryParams({comparisonMode: mode});
-      this._track('Fullscreen: Comparison Mode Switched', {mode});
-    },
-    updateActiveBrowser(newBrowser) {
-      this._updateActiveBrowser(newBrowser);
-      this._track('Fullscreen: Browser Switched', {
-        browser_id: newBrowser.get('id'),
-        browser_family_slug: newBrowser.get('browserFamily.slug'),
-      });
-    },
-    transitionRouteToWidth(width) {
-      this._updateQueryParams({newWidth: width});
-      this._track('Fullscreen: Width Switched', {width});
-    },
-  },
-
-  _updateQueryParams(params) {
-    const controller = this.controllerFor(this.routeName);
-    const snapshot = this.modelFor(this.routeName).snapshot;
-    const comparisonMode = params.comparisonMode || controller.comparisonMode;
-    const browser = params.newBrowserSlug || controller.get('activeBrowser.familySlug');
-    const width = params.newWidth || controller.snapshotSelectedWidth || this.params.width;
-
-    this.transitionTo(
-      'organization.project.builds.build2.snapshot',
-      snapshot.get('build.id'),
-      snapshot.get('id'),
-      {
-        queryParams: {
-          currentWidth: width,
-          mode: comparisonMode,
-          activeBrowserFamilySlug: browser,
-        },
-      },
-    );
   },
 });
