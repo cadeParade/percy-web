@@ -34,19 +34,24 @@ export default Route.extend(EKMixin, {
   afterModel(model) {
     const firstSnapshot = model.snapshots.firstObject;
     this.transitionTo('organization.project.builds.build2.snapshot', firstSnapshot.id);
+    this.loadNextSnapshots(firstSnapshot.id);
+  },
+
+  loadNextSnapshots(currentSnapshotId) {
+    const snapshotIds = this.modelFor(this.routeName).snapshots.mapBy('id');
+    const currentIndex = snapshotIds.indexOf(currentSnapshotId);
+    const next3Snapshots = snapshotIds.slice(currentIndex + 1, currentIndex + 4);
+    next3Snapshots.forEach(snapshotId => {
+      this.store.loadRecord('snapshot', snapshotId, {
+        include: SNAPSHOT_COMPARISON_INCLUDES.join(','),
+        backgroundReload: false,
+      });
+    });
   },
 
   actions: {
     loadNextSnapshots(currentSnapshotId) {
-      const snapshotIds = this.modelFor(this.routeName).snapshots.mapBy('id');
-      const currentIndex = snapshotIds.indexOf(currentSnapshotId);
-      const next3Snapshots = snapshotIds.slice(currentIndex + 1, currentIndex + 4);
-      next3Snapshots.forEach(snapshotId => {
-        this.store.loadRecord('snapshot', snapshotId, {
-          include: SNAPSHOT_COMPARISON_INCLUDES.join(','),
-          backgroundReload: false,
-        });
-      });
+      this.loadNextSnapshots(currentSnapshotId);
     },
     noop() {},
     goToNextSnapshot() {
