@@ -10,10 +10,15 @@ export default Component.extend({
       return this.snapshots;
     } else {
       return this.snapshots.filter(snapshot => {
-        return snapshot.name.includes(this.searchTerm);
+        return this.caseInsensitiveIncludes(snapshot.name, this.searchTerm);
       });
     }
   }),
+
+  caseInsensitiveIncludes(string, substring) {
+    const regex = new RegExp(substring, 'i');
+    return regex.test(string);
+  },
 
   actions: {
     updateSearchTerm(updatedSearchTerm) {
