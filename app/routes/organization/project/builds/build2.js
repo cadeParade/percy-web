@@ -5,6 +5,7 @@ import {hash} from 'rsvp';
 import {on} from '@ember/object/evented';
 import {EKMixin, keyDown} from 'ember-keyboard';
 import {DIFF_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
+import {SNAPSHOT_COMPARISON_INCLUDES} from 'percy-web/services/snapshot-query';
 
 export default Route.extend(EKMixin, {
   snapshotQuery: service(),
@@ -36,6 +37,17 @@ export default Route.extend(EKMixin, {
   },
 
   actions: {
+    loadNextSnapshots(currentSnapshotId) {
+      const snapshotIds = this.modelFor(this.routeName).snapshots.mapBy('id');
+      const currentIndex = snapshotIds.indexOf(currentSnapshotId);
+      const next3Snapshots = snapshotIds.slice(currentIndex + 1, currentIndex + 4);
+      next3Snapshots.forEach(snapshotId => {
+        this.store.loadRecord('snapshot', snapshotId, {
+          include: SNAPSHOT_COMPARISON_INCLUDES.join(','),
+          backgroundReload: false,
+        });
+      });
+    },
     noop() {},
     goToNextSnapshot() {
       this.goToNext();

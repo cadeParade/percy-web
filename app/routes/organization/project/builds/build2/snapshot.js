@@ -86,6 +86,12 @@ export default Route.extend({
   },
 
   actions: {
+    willTransition(transition) {
+      this.controllerFor('organization.project.builds.build2').send(
+        'loadNextSnapshots',
+        transition.from.params.snapshot_id,
+      );
+    },
     noop() {},
   },
 });
