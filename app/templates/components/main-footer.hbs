@@ -1,6 +1,6 @@
 <footer class="marketing-footer bg-gray-700 text-white w-full py-8">
   <div class="w-90vw max-w-lg mx-auto grid col-4 mb-8">
-    {{#each (await footerGroups) as |column|}}
+    {{#each (await this.footerGroups) as |column|}}
       <div>
         <div class="inline-block border-b border-gray-400 text-lg font-semibold leading-loosest mb-2">
           {{column.category}}

@@ -5,16 +5,26 @@ import {Promise as EmberPromise} from 'rsvp';
 import localStorageProxy from 'percy-web/lib/localstorage';
 import utils from 'percy-web/lib/utils';
 import AdminMode from 'percy-web/lib/admin-mode';
+import {get, set} from '@ember/object';
 
-export default SessionService.extend({
-  store: service(),
-  analytics: service(),
-  raven: service(),
-  launchDarkly: service(),
-  websocket: service(),
+export default class _SessionService extends SessionService {
+  @service
+  store;
+
+  @service
+  analytics;
+
+  @service
+  raven;
+
+  @service
+  launchDarkly;
+
+  @service
+  websocket;
 
   // set by load method
-  currentUser: null,
+  currentUser = null;
 
   async loadCurrentUser() {
     if (this.isAuthenticated) {
@@ -22,7 +32,7 @@ export default SessionService.extend({
     } else {
       return this._trySilentAuth();
     }
-  },
+  }
 
   async _trySilentAuth() {
     // If we are not authenticated according to the FE, we try to fetch the user from the API.
@@ -51,13 +61,13 @@ export default SessionService.extend({
       // ember-simple-auth application route mixin needs a resolved promise.
       return resolve();
     }
-  },
+  }
 
   async _loadAndSetCurrentUser() {
     return (
       this.forceReloadUser()
         .then(async user => {
-          this.set('currentUser', user);
+          set(this, 'currentUser', user);
           await this._setupThirdPartyUserContexts(user);
         })
         // This catch will be triggered if the queryRecord or set currentUser
@@ -70,14 +80,14 @@ export default SessionService.extend({
           reject(e);
         })
     );
-  },
+  }
 
   invalidateAndLogout() {
     this.invalidate().then(() => {
       this._clearThirdPartyUserContext();
       utils.replaceWindowLocation('/api/auth/logout');
     });
-  },
+  }
 
   async forceReloadUser({include = ''} = {}) {
     if (include) {
@@ -88,7 +98,7 @@ export default SessionService.extend({
       // The empty include param dangles and makes mirage sad.
       return await this.store.queryRecord('user', {});
     }
-  },
+  }
 
   _setupThirdPartyUserContexts(user) {
     if (!user) {
@@ -109,7 +119,7 @@ export default SessionService.extend({
         return resolve();
       }
     });
-  },
+  }
 
   _clearThirdPartyUserContext() {
     this._clearSentry();
@@ -117,32 +127,32 @@ export default SessionService.extend({
     this._clearIntercom();
     this._clearWebsockets();
     AdminMode.clear();
-  },
+  }
 
   _setupSentry(user) {
-    if (this.get('raven.isRavenUsable')) {
+    if (get(this, 'raven.isRavenUsable')) {
       this.raven.callRaven('setUserContext', {id: user.get('id')});
     }
-  },
+  }
 
   _clearSentry() {
-    if (this.get('raven.isRavenUsable')) {
+    if (get(this, 'raven.isRavenUsable')) {
       this.raven.callRaven('setUserContext');
     }
-  },
+  }
 
   _setupAnalytics(user) {
     this.analytics.identifyUser(user);
-  },
+  }
 
   _clearAnalytics() {
     this.analytics.invalidate();
     localStorageProxy.removeKeysWithString('amplitude');
-  },
+  }
 
   _clearWebsockets() {
     this.websocket.disconnect();
-  },
+  }
 
   _setupIntercom(user) {
     if (window.Intercom) {
@@ -154,14 +164,14 @@ export default SessionService.extend({
         created_at: user.get('createdAt').getTime() / 1000,
       });
     }
-  },
+  }
 
   _clearIntercom() {
     if (window.Intercom) {
       window.Intercom('shutdown');
     }
     localStorageProxy.removeKeysWithString('intercom');
-  },
+  }
 
   async _setupLaunchDarkly(user) {
     const organizations = await user.get('organizations');
@@ -173,5 +183,5 @@ export default SessionService.extend({
       },
     };
     return this.launchDarkly.identify(launchDarklyUser);
-  },
-});
+  }
+}

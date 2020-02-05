@@ -1,6 +1,6 @@
 <BasicDropdown
   @horizontalPosition="auto-right"
-  @preventScroll={{true}}
+  @preventScroll={{false}}
   @verticalPosition="below"
   as |dropdown|
 >
@@ -12,44 +12,44 @@
   </dropdown.Trigger>
 
   <dropdown.Content class="BuildInfoDropdown-modal">
-    <BuildStateBadge @build={{build}} />
+    <BuildStateBadge @build={{this.build}} />
 
-    <h3 class="mb-2 text-2xl font-bold">{{build.buildTitle}}</h3>
+    <h3 class="mb-2 text-2xl font-bold">{{this.build.buildTitle}}</h3>
     <table class="w-full">
       <tbody>
         <tr>
           <td>Created</td>
-          <td><BuildStarted @build={{build}} /></td>
+          <td><BuildStarted @build={{this.build}} /></td>
         </tr>
         <tr>
           <td>Build time</td>
-          <td><BuildDuration @build={{build}} /></td>
+          <td><BuildDuration @build={{this.build}} /></td>
         </tr>
         <tr>
           <td>Baseline build</td>
-          <td><BuildComparisonInfo @build={{build}} @onLinkClick={{action dropdown.actions.close}} /></td>
+          <td><BuildComparisonInfo @build={{this.build}} @onLinkClick={{action dropdown.actions.close}} /></td>
         </tr>
 
-        {{#if build.isFinished}}
+        {{#if this.build.isFinished}}
           <tr>
             <td>Total screenshots:</td>
-            <td>{{build.totalComparisons}} across all browsers and widths</td>
+            <td>{{this.build.totalComparisons}} across all browsers and widths</td>
           </tr>
         {{/if}}
 
-        {{#if build.isPullRequestPresent}}
+        {{#if this.build.isPullRequestPresent}}
           <tr>
-            <td data-test-pull-request-label>{{build.pullRequestLabel}}</td>
+            <td data-test-pull-request-label>{{this.build.pullRequestLabel}}</td>
             <td>
-              {{#if build.pullRequestTitle}}
-                <a href="{{build.pullRequestHtmlUrl}}">{{build.pullRequestTitle}}</a>
+              {{#if this.build.pullRequestTitle}}
+                <a href="{{this.build.pullRequestHtmlUrl}}">{{this.build.pullRequestTitle}}</a>
               {{/if}}
-              {{#if build.pullRequestNumber}}
+              {{#if this.build.pullRequestNumber}}
                 <span class="text-secondary">
-                  {{#if build.pullRequestTitle}}
-                    #{{build.pullRequestNumber}}
+                  {{#if this.build.pullRequestTitle}}
+                    #{{this.build.pullRequestNumber}}
                   {{else}}
-                    <a href="{{build.pullRequestHtmlUrl}}">#{{build.pullRequestNumber}}</a>
+                    <a href="{{this.build.pullRequestHtmlUrl}}">#{{this.build.pullRequestNumber}}</a>
                   {{/if}}
                 </span>
               {{/if}}
@@ -57,25 +57,25 @@
           </tr>
         {{/if}}
 
-        {{#if build.userAgent}}
+        {{#if this.build.userAgent}}
           <tr class="border-0">
             <td colspan="2">Environment</td>
           </tr>
           <tr class="BuildInfoDropdown-fullWidthValue">
-            <td colspan="2"><pre>{{build.userAgent}}</pre></td>
+            <td colspan="2"><pre>{{this.build.userAgent}}</pre></td>
           </tr>
         {{/if}}
       </tbody>
     </table>
 
-    {{#if build.commit}}
+    {{#if this.build.commit}}
       <h4 class="mb-2 mt-4 font-bold">Head commit</h4>
-      <CommitTable @build={{build}} @commit={{build.commit}} />
+      <CommitTable @build={{this.build}} @commit={{this.build.commit}} />
     {{/if}}
 
-    {{#if build.baseBuild.commit}}
+    {{#if this.build.baseBuild.commit}}
       <h4 class="mb-2 mt-4 font-bold">Base commit</h4>
-      <CommitTable @build={{build.baseBuild}} @commit={{build.baseBuild.commit}} />
+      <CommitTable @build={{this.build.baseBuild}} @commit={{this.build.baseBuild.commit}} />
     {{/if}}
 
     {{#if (is-admin)}}
@@ -83,7 +83,7 @@
         <h4 class="mb-2 mt-4 font-bold">Admin Info</h4>
         <table>
           <tbody>
-            {{#each build.browsers as |browser|}}
+            {{#each this.build.browsers as |browser|}}
               <tr>
                 <td>{{browser.familyName}} Version</td>
                 <td><pre>{{browser.version}}</pre></td>

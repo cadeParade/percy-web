@@ -1,13 +1,13 @@
 <figure class="svg-container">
-  {{#if (or build.isPending build.isProcessing)}}
+  {{#if (or this.build.isPending this.build.isProcessing)}}
     {{inline-svg "loader-icon"}}
-  {{else if build.isFailed}}
+  {{else if this.build.isFailed}}
     {{inline-svg "null-comparison-icon"}}
-  {{else if build.isRejected}}
+  {{else if this.build.isRejected}}
     {{inline-svg "comparison-icon-requested-changes"}}
-  {{else if build.hasNoDiffs}}
+  {{else if this.build.hasNoDiffs}}
     {{inline-svg "no-comparison-icon"}}
-  {{else if build.isApproved}}
+  {{else if this.build.isApproved}}
     {{inline-svg "comparison-approved-icon"}}
   {{else}}
     {{inline-svg "comparison-icon"}}

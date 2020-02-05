@@ -1,43 +1,78 @@
-import Contentful from 'ember-data-contentful/models/contentful';
-import {bool} from '@ember/object/computed';
 import {computed} from '@ember/object';
+import {bool} from '@ember/object/computed';
+import Contentful from 'ember-data-contentful/models/contentful';
 
-export default Contentful.extend({
-  contentType: 'pageBlock',
+export default class Block extends Contentful {
+  get contentType() {
+    return 'pageBlock';
+  }
 
-  contentBlock: lookupContentfulModel('id', 'content-block'),
-  isContentBlock: bool('contentBlock'),
+  @lookupContentfulModel('id', 'content-block')
+  contentBlock;
 
-  videoBlock: lookupContentfulModel('id', 'videoBlock'),
-  isVideoBlock: bool('videoBlock'),
+  @bool('contentBlock')
+  isContentBlock;
 
-  quoteBlock: lookupContentfulModel('id', 'customer-quote-block'),
-  isQuoteBlock: bool('quoteBlock'),
+  @lookupContentfulModel('id', 'videoBlock')
+  videoBlock;
 
-  logoBlock: lookupContentfulModel('id', 'customer-logo-block'),
-  isLogoBlock: bool('logoBlock'),
+  @bool('videoBlock')
+  isVideoBlock;
 
-  footerCta: lookupContentfulModel('id', 'footer-cta'),
-  isFooter: bool('footerCta'),
+  @lookupContentfulModel('id', 'customer-quote-block')
+  quoteBlock;
 
-  hero: lookupContentfulModel('id', 'hero-block'),
-  isHero: bool('hero'),
+  @bool('quoteBlock')
+  isQuoteBlock;
 
-  faqBlock: lookupContentfulModel('id', 'faq-block'),
-  isFaqBlock: bool('faqBlock'),
+  @lookupContentfulModel('id', 'customer-logo-block')
+  logoBlock;
 
-  profileBlock: lookupContentfulModel('id', 'profile-block'),
-  isProfileBlock: bool('profileBlock'),
+  @bool('logoBlock')
+  isLogoBlock;
 
-  pricingCardBlock: lookupContentfulModel('id', 'pricing-card-block'),
-  isPricingCardBlock: bool('pricingCardBlock'),
+  @lookupContentfulModel('id', 'footer-cta')
+  footerCta;
 
-  pricingTableBlock: lookupContentfulModel('id', 'pricing-table'),
-  isPricingTableBlock: bool('pricingTableBlock'),
+  @bool('footerCta')
+  isFooter;
 
-  caseStudyBlock: lookupContentfulModel('id', 'case-study-block'),
-  isCaseStudyBlock: bool('caseStudyBlock'),
-});
+  @lookupContentfulModel('id', 'hero-block')
+  hero;
+
+  @bool('hero')
+  isHero;
+
+  @lookupContentfulModel('id', 'faq-block')
+  faqBlock;
+
+  @bool('faqBlock')
+  isFaqBlock;
+
+  @lookupContentfulModel('id', 'profile-block')
+  profileBlock;
+
+  @bool('profileBlock')
+  isProfileBlock;
+
+  @lookupContentfulModel('id', 'pricing-card-block')
+  pricingCardBlock;
+
+  @bool('pricingCardBlock')
+  isPricingCardBlock;
+
+  @lookupContentfulModel('id', 'pricing-table')
+  pricingTableBlock;
+
+  @bool('pricingTableBlock')
+  isPricingTableBlock;
+
+  @lookupContentfulModel('id', 'case-study-block')
+  caseStudyBlock;
+
+  @bool('caseStudyBlock')
+  isCaseStudyBlock;
+}
 
 function lookupContentfulModel(idKey, modelName) {
   return computed(idKey, function() {

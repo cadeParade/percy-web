@@ -1,9 +1,9 @@
-{{#if build.project.isDemo}}
-  <div data-test-tooltip-wrapper class="{{if shouldHideWholeTooltip 'hidden'}} {{unless isLastTooltip 'data-test-nextable-tooltip-wrapper'}}" style="position:relative;">
-    <div class="tip-anchor {{anchorPlacement}}" data-test-tooltip-anchor>
+{{#if this.build.project.isDemo}}
+  <div data-test-tooltip-wrapper class="{{if this.shouldHideWholeTooltip 'hidden'}} {{unless this.isLastTooltip 'data-test-nextable-tooltip-wrapper'}}" style="position:relative;">
+    <div class="tip-anchor {{this.anchorPlacement}}" data-test-tooltip-anchor>
       <AttachPopover
-        @class={{if isLastTooltip "tip-container" "nextable tip-container"}}
-        @isShown={{shouldShowTooltip}}
+        @class={{if this.isLastTooltip "tip-container" "nextable tip-container"}}
+        @isShown={{this.shouldShowTooltip}}
         @showOn="click"
         @hideOn="clickout"
         @interactive={{true}}
@@ -17,7 +17,7 @@
         <p>{{this.message}}</p>
 
         <div class="flex justify-between">
-          {{#if isLastTooltip}}
+          {{#if this.isLastTooltip}}
             <button
               type="button"
               name="button"

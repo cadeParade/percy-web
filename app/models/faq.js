@@ -1,12 +1,23 @@
 import Contentful from 'ember-data-contentful/models/contentful';
 import attr from 'ember-data/attr';
 
-export default Contentful.extend({
-  contentType: 'faq',
+export default class Faq extends Contentful {
+  get contentType() {
+    return 'faq';
+  }
 
-  category: attr(),
-  question: attr(),
-  answer: attr(),
-  page: attr(),
-  order: attr(),
-});
+  @attr()
+  category;
+
+  @attr()
+  question;
+
+  @attr()
+  answer;
+
+  @attr()
+  page;
+
+  @attr()
+  order;
+}

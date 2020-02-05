@@ -1,12 +1,13 @@
+import classic from 'ember-classic-decorator';
 import {computed} from '@ember/object';
-import {bool, not, notEmpty, or, filterBy, gt, mapBy, readOnly, uniq} from '@ember/object/computed';
+import {inject as service} from '@ember/service';
+import {uniq, readOnly, mapBy, gt, filterBy, or, notEmpty, not, bool} from '@ember/object/computed';
 import Model, {attr, belongsTo, hasMany} from '@ember-data/model';
 import {
   INTEGRATION_TYPES,
   SLACK_INTEGRATION_TYPE,
   OKTA_INTEGRATION_TYPE,
 } from 'percy-web/lib/integration-types';
-import {inject as service} from '@ember/service';
 import {isUserAdminOfOrg} from 'percy-web/lib/is-user-member-of-org';
 import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 
@@ -18,84 +19,152 @@ const DISPLAY_NAMES = {
   gitlabSelfHosted: 'GitLab Self-Managed',
 };
 
-export default Model.extend(LoadableModel, {
-  session: service(),
-  name: attr(),
-  slug: attr(),
-  isSyncing: attr(),
-  lastSyncedAt: attr(),
-  slackIntegrations: hasMany('slackIntegrations', {async: false}),
-  versionControlIntegrations: hasMany('version-control-integrations', {async: false}),
-  samlIntegration: belongsTo('samlIntegration', {async: false}),
-  invites: hasMany('invite'),
-  usageNotificationSetting: belongsTo('usageNotificationSetting', {async: false}),
+// Remove @classic when we can refactor away from mixins
+@classic
+export default class Organization extends Model.extend(LoadableModel) {
+  @service
+  session;
 
-  bitbucketCloudIntegration: computed(
-    'versionControlIntegrations.@each.bitbucketCloudIntegrationId',
-    function() {
-      return this.versionControlIntegrations.findBy('isBitbucketCloudIntegration');
-    },
-  ),
+  @attr()
+  name;
 
-  githubIntegration: computed('versionControlIntegrations.@each.githubIntegrationId', function() {
+  @attr()
+  slug;
+
+  @attr()
+  isSyncing;
+
+  @attr()
+  lastSyncedAt;
+
+  @hasMany('slackIntegrations', {async: false})
+  slackIntegrations;
+
+  @hasMany('version-control-integrations', {async: false})
+  versionControlIntegrations;
+
+  @belongsTo('samlIntegration', {async: false})
+  samlIntegration;
+
+  @hasMany('invite')
+  invites;
+
+  @belongsTo('usageNotificationSetting', {async: false})
+  usageNotificationSetting;
+
+  @computed('versionControlIntegrations.@each.bitbucketCloudIntegrationId')
+  get bitbucketCloudIntegration() {
+    return this.versionControlIntegrations.findBy('isBitbucketCloudIntegration');
+  }
+
+  @computed('versionControlIntegrations.@each.githubIntegrationId')
+  get githubIntegration() {
     return this.versionControlIntegrations.findBy('isGithubIntegration');
-  }),
+  }
 
-  githubEnterpriseIntegration: computed(
-    'versionControlIntegrations.@each.githubEnterpriseIntegrationId',
-    function() {
-      return this.versionControlIntegrations.findBy('githubEnterpriseIntegrationId');
-    },
-  ),
+  @computed('versionControlIntegrations.@each.githubEnterpriseIntegrationId')
+  get githubEnterpriseIntegration() {
+    return this.versionControlIntegrations.findBy('githubEnterpriseIntegrationId');
+  }
 
-  gitlabIntegration: computed('versionControlIntegrations.@each.gitlabIntegrationId', function() {
+  @computed('versionControlIntegrations.@each.gitlabIntegrationId')
+  get gitlabIntegration() {
     return this.versionControlIntegrations.findBy('gitlabIntegrationId');
-  }),
+  }
 
-  gitlabSelfHostedIntegration: computed('versionControlIntegrations.@each.gitlabHost', function() {
+  @computed('versionControlIntegrations.@each.gitlabHost')
+  get gitlabSelfHostedIntegration() {
     return this.versionControlIntegrations.findBy('gitlabHost');
-  }),
+  }
 
-  githubIntegrationRequest: belongsTo('github-integration-request', {
+  @belongsTo('github-integration-request', {
     async: false,
-  }),
-  subscription: belongsTo('subscription', {async: false}),
-  projects: hasMany('project'),
-  billingProvider: attr(),
-  billingProviderData: attr(),
-  billingLocked: attr('boolean'),
+  })
+  githubIntegrationRequest;
+
+  @belongsTo('subscription', {async: false})
+  subscription;
+
+  @hasMany('project')
+  projects;
+
+  @attr()
+  billingProvider;
+
+  @attr()
+  billingProviderData;
+
+  @attr('boolean')
+  billingLocked;
 
   // Filtered down to saved projects, does not include unsaved project objects:
-  savedProjects: filterBy('projects', 'isNew', false),
+  @filterBy('projects', 'isNew', false)
+  savedProjects;
 
-  organizationUsers: hasMany('organization-user'),
+  @hasMany('organization-user')
+  organizationUsers;
 
-  seatLimit: attr(),
-  seatsUsed: attr(),
-  seatsRemaining: attr(),
-  hasSeatsRemaining: gt('seatsRemaining', 0),
+  @attr()
+  seatLimit;
 
-  isSponsored: attr(),
+  @attr()
+  seatsUsed;
+
+  @attr()
+  seatsRemaining;
+
+  @gt('seatsRemaining', 0)
+  hasSeatsRemaining;
+
+  @attr()
+  isSponsored;
 
   // These are GitHub repositories that the organization has access permissions to. These are not
   // useful on their own other than for listing. A repo must be linked to a project.
-  repos: hasMany('repo'),
+  @hasMany('repo')
+  repos;
 
-  isBitbucketCloudIntegrated: bool('bitbucketCloudIntegration'),
-  isGithubIntegrated: bool('githubIntegration'),
-  isGithubEnterpriseIntegrated: bool('githubEnterpriseIntegration'),
-  isGitlabIntegrated: bool('gitlabIntegration'),
-  isGitlabSelfHostedIntegrated: bool('gitlabSelfHostedIntegration'),
-  isVersionControlIntegrated: bool('versionControlIntegrations.length'),
-  isIntegrated: or('isVersionControlIntegrated', 'isSlackIntegrated', 'isOktaIntegrated'),
-  isSlackIntegrated: gt('slackIntegrations.length', 0),
-  isNotSlackIntegrated: not('isSlackIntegrated'),
-  isSamlIntegrated: notEmpty('samlIntegration'),
-  isNotSamlIntegrated: not('isSamlIntegrated'),
-  isOktaIntegrated: readOnly('samlIntegration.isOktaIntegration'),
-  isNotOktaIntegrated: not('isOktaIntegrated'),
+  @bool('bitbucketCloudIntegration')
+  isBitbucketCloudIntegrated;
 
-  availableIntegrations: computed('versionControlIntegrations.[]', function() {
+  @bool('githubIntegration')
+  isGithubIntegrated;
+
+  @bool('githubEnterpriseIntegration')
+  isGithubEnterpriseIntegrated;
+
+  @bool('gitlabIntegration')
+  isGitlabIntegrated;
+
+  @bool('gitlabSelfHostedIntegration')
+  isGitlabSelfHostedIntegrated;
+
+  @bool('versionControlIntegrations.length')
+  isVersionControlIntegrated;
+
+  @or('isVersionControlIntegrated', 'isSlackIntegrated', 'isOktaIntegrated')
+  isIntegrated;
+
+  @gt('slackIntegrations.length', 0)
+  isSlackIntegrated;
+
+  @not('isSlackIntegrated')
+  isNotSlackIntegrated;
+
+  @notEmpty('samlIntegration')
+  isSamlIntegrated;
+
+  @not('isSamlIntegrated')
+  isNotSamlIntegrated;
+
+  @readOnly('samlIntegration.isOktaIntegration')
+  isOktaIntegrated;
+
+  @not('isOktaIntegrated')
+  isNotOktaIntegrated;
+
+  @computed('versionControlIntegrations.[]')
+  get availableIntegrations() {
     let integrations = [];
     for (const key of Object.keys(INTEGRATION_TYPES)) {
       let item = INTEGRATION_TYPES[key];
@@ -107,56 +176,71 @@ export default Model.extend(LoadableModel, {
       }
     }
     return integrations;
-  }),
+  }
 
-  githubAuthMechanism: computed('githubIntegration', function() {
+  @computed('githubIntegration')
+  get githubAuthMechanism() {
     if (this.githubIntegration) {
       return 'github-integration';
     }
     return 'no-access';
-  }),
+  }
 
   // Not ideal to have computed properties based on a service and relationships,
   // but better than previous async computed property.
-  currentUserIsAdmin: computed('session.currentUser', function() {
+  @computed('session.currentUser')
+  get currentUserIsAdmin() {
     return isUserAdminOfOrg(this.session.currentUser, this);
-  }),
+  }
 
-  bitbucketCloudRepos: filterBy('repos', 'source', 'bitbucket_cloud'),
-  githubRepos: filterBy('repos', 'source', 'github'),
-  githubEnterpriseRepos: filterBy('repos', 'source', 'github_enterprise'),
-  gitlabRepos: filterBy('repos', 'source', 'gitlab'),
-  gitlabSelfHostedRepos: filterBy('repos', 'source', 'gitlab_self_hosted'),
-  repoSources: mapBy('repos', 'source'),
-  uniqueRepoSources: uniq('repoSources'),
+  @filterBy('repos', 'source', 'bitbucket_cloud')
+  bitbucketCloudRepos;
+
+  @filterBy('repos', 'source', 'github')
+  githubRepos;
+
+  @filterBy('repos', 'source', 'github_enterprise')
+  githubEnterpriseRepos;
+
+  @filterBy('repos', 'source', 'gitlab')
+  gitlabRepos;
+
+  @filterBy('repos', 'source', 'gitlab_self_hosted')
+  gitlabSelfHostedRepos;
+
+  @mapBy('repos', 'source')
+  repoSources;
+
+  @uniq('repoSources')
+  uniqueRepoSources;
 
   // Return repos grouped by source:
   // groupedRepos: [
   //   { groupName: 'GitHub', options: [repo:model, repo:model, ...] },
   //   { groupName: 'GitHub Enterprise', options: [repo:model, repo:model, ...] },
   // ]
-  groupedRepos: computed(
+  @computed(
     'bitbucketCloudRepos.[]',
     'githubRepos.[]',
     'githubEnterpriseRepos.[]',
     'gitlabRepos.[]',
     'gitlabSelfHostedRepos.[]',
     'uniqueRepoSources.[]',
-    function() {
-      const groups = [];
-      this.uniqueRepoSources.forEach(source => {
-        if (source) {
-          const displayName = source.camelize();
-          const reposForGroup = this.get(`${displayName}Repos`);
-          if (reposForGroup) {
-            groups.push({
-              groupName: DISPLAY_NAMES[displayName],
-              options: this.get(`${displayName}Repos`),
-            });
-          }
+  )
+  get groupedRepos() {
+    const groups = [];
+    this.uniqueRepoSources.forEach(source => {
+      if (source) {
+        const displayName = source.camelize();
+        const reposForGroup = this.get(`${displayName}Repos`);
+        if (reposForGroup) {
+          groups.push({
+            groupName: DISPLAY_NAMES[displayName],
+            options: this.get(`${displayName}Repos`),
+          });
         }
-      });
-      return groups;
-    },
-  ),
-});
+      }
+    });
+    return groups;
+  }
+}

@@ -1,5 +1,7 @@
-import {alias} from '@ember/object/computed';
+import classic from 'ember-classic-decorator';
+import {action} from '@ember/object';
 import {inject as service} from '@ember/service';
+import {alias} from '@ember/object/computed';
 import Route from '@ember/routing/route';
 import ApplicationRouteMixin from 'ember-simple-auth-auth0/mixins/application-route-mixin';
 import localStorageProxy from 'percy-web/lib/localstorage';
@@ -9,18 +11,38 @@ import isDevWithProductionAPI from 'percy-web/lib/dev-auth';
 import {AUTH_REDIRECT_LOCALSTORAGE_KEY} from 'percy-web/router';
 import {resolve, reject} from 'rsvp';
 
-export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
-  session: service(),
-  confirm: service(),
-  flashMessages: service(),
-  raven: service(),
-  currentUser: alias('session.currentUser'),
-  launchDarkly: service(),
-  redirects: service(),
-  intercom: service(),
+// Remove @classic when we can refactor away from mixins
+@classic
+export default class ApplicationRoute extends Route.extend(
+  ApplicationRouteMixin,
+  EnsureStatefulLogin,
+) {
+  @service
+  session;
+
+  @service
+  confirm;
+
+  @service
+  flashMessages;
+
+  @service
+  raven;
+
+  @alias('session.currentUser')
+  currentUser;
+
+  @service
+  launchDarkly;
+
+  @service
+  redirects;
+
+  @service
+  intercom;
 
   beforeModel(transition) {
-    this._super(...arguments);
+    super.beforeModel(...arguments);
     this._storeTargetTransition(transition);
     if (!this.get('session.isAuthenticated')) {
       // When running our development environment with a production API, we need to shortcut the
@@ -34,7 +56,7 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
     return this._loadLaunchDarkly().then(() => {
       return this._loadCurrentUser();
     });
-  },
+  }
 
   // Special case: turn off ember-simple-auth-auth0's application-route-mixin expiration timer.
   // This fixes a specific "mixed auth state" bug where the frontend session can be expired
@@ -47,7 +69,7 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
   // frontend/backend sessions will be in sync. See authenticators/auth0-url-hash.js for more info.
   beforeSessionExpired() {
     return reject();
-  },
+  }
 
   async _loadLaunchDarkly() {
     const anonUser = {key: 'anon', anonymous: true};
@@ -58,7 +80,7 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
       // just return a resolved promise so the app can keep loading.
       return resolve();
     }
-  },
+  }
 
   sessionAuthenticated() {
     // This method is called after the session is authenticated by ember-simple-auth.
@@ -68,54 +90,59 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
       this.closeLock();
       this._decideRedirect();
     });
-  },
+  }
 
   _loadCurrentUser() {
     return this.session.loadCurrentUser().catch(() => {
       return this._showLoginFailedFlashMessage();
     });
-  },
+  }
 
-  actions: {
-    showSupport() {
-      // This is necessary for some controller templates and the error template, but otherwise,
-      // please import use the service locally.
-      this.intercom.showIntercom();
-    },
+  @action
+  showSupport() {
+    // This is necessary for some controller templates and the error template, but otherwise,
+    // please import use the service locally.
+    this.intercom.showIntercom();
+  }
 
-    showLoginModal() {
-      this.showLoginModalEnsuringState();
-    },
+  @action
+  showLoginModal() {
+    this.showLoginModalEnsuringState();
+  }
 
-    logout() {
-      this.session.invalidateAndLogout();
-    },
+  @action
+  logout() {
+    this.session.invalidateAndLogout();
+  }
 
-    navigateToProject(project) {
-      let organizationSlug = project.get('organization.slug');
-      let projectSlug = project.get('slug');
-      this.transitionTo('organization.project.index', organizationSlug, projectSlug);
-    },
+  @action
+  navigateToProject(project) {
+    let organizationSlug = project.get('organization.slug');
+    let projectSlug = project.get('slug');
+    this.transitionTo('organization.project.index', organizationSlug, projectSlug);
+  }
 
-    navigateToOrganizationBilling(organization) {
-      let organizationSlug = organization.get('slug');
-      this.transitionTo('organizations.organization.billing', organizationSlug);
-    },
+  @action
+  navigateToOrganizationBilling(organization) {
+    let organizationSlug = organization.get('slug');
+    this.transitionTo('organizations.organization.billing', organizationSlug);
+  }
 
-    navigateToProjectSettings(project) {
-      let organizationSlug = project.get('organization.slug');
-      let projectSlug = project.get('slug');
-      this.transitionTo('organization.project.settings', organizationSlug, projectSlug);
-    },
+  @action
+  navigateToProjectSettings(project) {
+    let organizationSlug = project.get('organization.slug');
+    let projectSlug = project.get('slug');
+    this.transitionTo('organization.project.settings', organizationSlug, projectSlug);
+  }
 
-    // See: https://github.com/damiencaselli/ember-cli-sentry/issues/105
-    error(error) {
-      if (this.get('raven.isRavenUsable')) {
-        this.raven.captureException(error);
-      }
-      return true; // Let the route above this handle the error.
-    },
-  },
+  // See: https://github.com/damiencaselli/ember-cli-sentry/issues/105
+  @action
+  error(error) {
+    if (this.get('raven.isRavenUsable')) {
+      this.raven.captureException(error);
+    }
+    return true; // Let the route above this handle the error.
+  }
 
   _storeTargetTransition(transition) {
     const attemptedRoute = transition.targetName;
@@ -125,7 +152,7 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
         useSessionStorage: true,
       });
     }
-  },
+  }
 
   _decideRedirect() {
     const redirectAddress = localStorageProxy.get(AUTH_REDIRECT_LOCALSTORAGE_KEY, '/', {
@@ -141,11 +168,11 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
     } else {
       this.redirects.redirectToDefaultOrganization();
     }
-  },
+  }
 
   activate() {
     this.flashMessages.displayLocalStorageMessages();
-  },
+  }
 
   _showLoginFailedFlashMessage() {
     this.flashMessages.createPersistentFlashMessage(
@@ -158,5 +185,5 @@ export default Route.extend(ApplicationRouteMixin, EnsureStatefulLogin, {
       },
       {persistentReloads: 1},
     );
-  },
-});
+  }
+}

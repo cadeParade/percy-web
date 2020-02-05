@@ -1,17 +1,18 @@
-import Service from '@ember/service';
 import {computed} from '@ember/object';
+import Service from '@ember/service';
 import {task} from 'ember-concurrency';
 import emojis from 'percy-web/lib/emoji';
 
 // This file relies heavily on the tributejs api.
 // Docs for which can be found here: perhaps a link to https://github.com/zurb/tribute#a-collection
-export default Service.extend({
-  _emojis: computed(function() {
+export default class MentionablesService extends Service {
+  @computed
+  get _emojis() {
     return emojis.filter(emoji => {
       // Include versions up to 12. Version 12 is not yet well supported.
       return parseFloat(emoji.unicode_version) < 12;
     });
-  }),
+  }
 
   generateOrgUserConfig(organization) {
     const fetchFn = async (text, cb) => {
@@ -21,7 +22,7 @@ export default Service.extend({
     };
 
     return generateTributeUserConfig(fetchFn);
-  },
+  }
 
   generateEmojiConfig() {
     const fetchFn = async (text, cb) => {
@@ -29,13 +30,14 @@ export default Service.extend({
     };
 
     return generateTributeEmojiConfig(fetchFn);
-  },
+  }
 
-  _getOrgUsers: task(function*(organization) {
+  @task(function*(organization) {
     const orgUsersRef = organization.hasMany('organizationUsers');
     let orgUsers = yield orgUsersRef.load();
     return orgUsers.mapBy('user');
-  }),
+  })
+  _getOrgUsers;
 
   // We only can listen to when a user adds an @mention. We have no way of telling if they
   // have consequently deleted the text of the @mention. So this function checks that
@@ -47,8 +49,8 @@ export default Service.extend({
       }
       return acc;
     }, []);
-  },
-});
+  }
+}
 
 export function generateTributeEmojiConfig(fetchFn) {
   return {

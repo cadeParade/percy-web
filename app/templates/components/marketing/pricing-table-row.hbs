@@ -1,19 +1,19 @@
-<td class="font-semibold p-1 pl-2">{{row.rowTitle}}</td>
+<td class="font-semibold p-1 pl-2">{{this.row.rowTitle}}</td>
 
 <td class="text-center text-gray-500 p-1">
-  {{#if row.xsmallCell}}
-    <MarkdownToHtml @markdown={{row.xsmallCell}} @class="pricing-table-markdown" />
+  {{#if this.row.xsmallCell}}
+    <MarkdownToHtml @markdown={{this.row.xsmallCell}} @class="pricing-table-markdown" />
   {{/if}}
 </td>
 
 <td class="text-center text-gray-500 p-1">
-  {{#if row.smallCell}}
-    <MarkdownToHtml @markdown={{row.smallCell}} @class="pricing-table-markdown" />
+  {{#if this.row.smallCell}}
+    <MarkdownToHtml @markdown={{this.row.smallCell}} @class="pricing-table-markdown" />
   {{/if}}
 </td>
 
 <td class="text-center text-gray-500 p-1">
-  {{#if row.largeCell}}
-    <MarkdownToHtml @markdown={{row.largeCell}} @class="pricing-table-markdown" />
+  {{#if this.row.largeCell}}
+    <MarkdownToHtml @markdown={{this.row.largeCell}} @class="pricing-table-markdown" />
   {{/if}}
 </td>

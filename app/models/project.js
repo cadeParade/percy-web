@@ -1,36 +1,77 @@
 import {computed} from '@ember/object';
-import {and, bool, not} from '@ember/object/computed';
+import {not, bool, and} from '@ember/object/computed';
 import Model, {attr, belongsTo, hasMany} from '@ember-data/model';
 
-export default Model.extend({
-  organization: belongsTo('organization', {async: false}),
-  name: attr(),
-  slug: attr(),
-  fullSlug: attr(),
-  defaultBaseBranch: attr(),
-  isEnabled: attr('boolean'),
-  isDisabled: not('isEnabled'),
-  diffBase: attr(), // Either "automatic" or "manual".
-  autoApproveBranchFilter: attr(),
-  updatedAt: attr('date'),
-  publiclyReadable: attr('boolean'),
-  isDemo: attr('boolean'),
+export default class Project extends Model {
+  @belongsTo('organization', {async: false})
+  organization;
+
+  @attr()
+  name;
+
+  @attr()
+  slug;
+
+  @attr()
+  fullSlug;
+
+  @attr()
+  defaultBaseBranch;
+
+  @attr('boolean')
+  isEnabled;
+
+  @not('isEnabled')
+  isDisabled;
+
+  @attr()
+  diffBase; // Either "automatic" or "manual".
+
+  @attr()
+  autoApproveBranchFilter;
+
+  @attr('date')
+  updatedAt;
+
+  @attr('boolean')
+  publiclyReadable;
+
+  @attr('boolean')
+  isDemo;
 
   // Repo will be set if this project is linked to a repository.
-  repo: belongsTo('repo', {async: false}),
-  isRepoConnected: bool('repo'),
-  isGithubRepo: and('isRepoConnected', 'repo.isGithubRepo'),
-  isGithubEnterpriseRepo: and('isRepoConnected', 'repo.isGithubEnterpriseRepo'),
-  isGitlabRepo: and('isRepoConnected', 'repo.isGitlabRepo'),
-  isGithubRepoFamily: and('isRepoConnected', 'repo.isGithubRepoFamily'),
+  @belongsTo('repo', {async: false})
+  repo;
 
-  builds: hasMany('build', {async: true}),
-  tokens: hasMany('token', {async: true}),
-  webhookConfigs: hasMany('webhookConfig', {async: false}),
+  @bool('repo')
+  isRepoConnected;
 
-  projectBrowserTargets: hasMany('projectBrowserTargets', {async: false}),
+  @and('isRepoConnected', 'repo.isGithubRepo')
+  isGithubRepo;
 
-  writeOnlyToken: computed('tokens', function() {
+  @and('isRepoConnected', 'repo.isGithubEnterpriseRepo')
+  isGithubEnterpriseRepo;
+
+  @and('isRepoConnected', 'repo.isGitlabRepo')
+  isGitlabRepo;
+
+  @and('isRepoConnected', 'repo.isGithubRepoFamily')
+  isGithubRepoFamily;
+
+  @hasMany('build', {async: true})
+  builds;
+
+  @hasMany('token', {async: true})
+  tokens;
+
+  @hasMany('webhookConfig', {async: false})
+  webhookConfigs;
+
+  @hasMany('projectBrowserTargets', {async: false})
+  projectBrowserTargets;
+
+  @computed('tokens')
+  get writeOnlyToken() {
     return this.tokens.findBy('role', 'write_only');
-  }),
-});
+  }
+}

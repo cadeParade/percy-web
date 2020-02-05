@@ -1,21 +1,21 @@
 <div class="border-b leading-none" data-test-project-list-item>
   <div class="flex justify-between items-center">
-    <LinkTo @route="organization.project" @models={{array organization.slug project.slug}} class="flex-1 block py-3 text-primary hover:no-underline hover:text-purple-600" data-test-project-link={{true}}>
+    <LinkTo @route="organization.project" @models={{array this.organization.slug this.project.slug}} class="flex-1 block py-3 text-primary hover:no-underline hover:text-purple-600" data-test-project-link={{true}}>
       <div class="flex items-center mb-1">
-        {{#if project.publiclyReadable}}
+        {{#if this.project.publiclyReadable}}
           <div class="mr-1 hint--top hint--rounded hint--bounce" aria-label="Public project">
-            {{fa-icon data-test-public-project-icon "globe" class="text-lg text-blue-500"}}
+            <FaIcon @icon="globe" @data-test-public-project-icon={{true}} class="text-lg text-blue-500" />
           </div>
         {{/if}}
         <div class="text-2xl mr-1">
-          {{project.name}}
+          {{this.project.name}}
         </div>
-        {{#if project.isDisabled}}
+        {{#if this.project.isDisabled}}
           <LabelTag @class="mr-2">
             archived
           </LabelTag>
         {{/if}}
-        {{#if project.isDemo}}
+        {{#if this.project.isDemo}}
           <LabelTag @class="mr-2">
             demo
           </LabelTag>
@@ -23,19 +23,19 @@
       </div>
 
       <div class="text-sm text-secondary font-semibold">
-        Updated {{moment-from-now project.updatedAt interval=60000}}
+        Updated {{moment-from-now this.project.updatedAt interval=60000}}
       </div>
     </LinkTo>
 
-    {{#if project.repo}}
+    {{#if this.project.repo}}
       <div class="flex items-center">
         <figure class="svg-container mr-1">
-          {{#if (repo-logo project.repo)}}
-            {{inline-svg (repo-logo project.repo)}}
+          {{#if (repo-logo this.project.repo)}}
+            {{inline-svg (repo-logo this.project.repo)}}
           {{/if}}
         </figure>
         <span class="whitespace-no-wrap font-semibold mr-1">Linked to</span>
-        <a href="{{project.repo.htmlUrl}}"><code>{{project.repo.slug}}</code></a>
+        <a href="{{this.project.repo.htmlUrl}}"><code>{{this.project.repo.slug}}</code></a>
       </div>
     {{/if}}
   </div>

@@ -1,9 +1,9 @@
 {{fa-icon 'clock-o'}}
 
-{{#if build.finishedAt}}
-  {{#if build.durationHours}}{{build.durationHours}} h{{/if}}
-  {{#if build.durationMinutes}}{{build.durationMinutes}} min{{/if}}
-  {{#if build.durationSeconds}}{{build.durationSeconds}} sec{{/if}}
+{{#if this.build.finishedAt}}
+  {{#if this.build.durationHours}}{{this.build.durationHours}} h{{/if}}
+  {{#if this.build.durationMinutes}}{{this.build.durationMinutes}} min{{/if}}
+  {{#if this.build.durationSeconds}}{{this.build.durationSeconds}} sec{{/if}}
 {{else}}
   --
 {{/if}}

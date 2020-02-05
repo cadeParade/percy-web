@@ -3,20 +3,20 @@
     <div class="bg-white rounded shadow-1 border-t p-2 mb-2" style="min-height: 363px;" data-test-graph-container>
       <h2 class="text-xl font-semibold mb-1">Usage history</h2>
       <Organizations::BillingUsageGraphHeader
-        @currentUsageStats={{currentUsageStats}}
-        @subscription={{subscription}}
+        @currentUsageStats={{this.currentUsageStats}}
+        @subscription={{this.subscription}}
       />
       <Organizations::BillingUsageGraph
-        @currentUsageStats={{currentUsageStats}}
-        @subscription={{subscription}}
+        @currentUsageStats={{this.currentUsageStats}}
+        @subscription={{this.subscription}}
       />
     </div>
 
-    {{#if subscription.isPaid}}
+    {{#if this.subscription.isPaid}}
       <div class="bg-white rounded shadow-1 border-t p-2 mb-2">
         <Forms::UsageNotificationSetting
-          @organization={{organization}}
-          @setting={{usageNotificationSetting}}
+          @organization={{this.organization}}
+          @setting={{this.usageNotificationSetting}}
         />
       </div>
     {{/if}}

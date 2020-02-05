@@ -4,38 +4,38 @@
       <GravatarImage
         @class="rounded-full overflow-hidden flex-none mr-2"
         @defaultImage="mp"
-        @email={{invite.email}}
+        @email={{this.invite.email}}
         @size={{36}}
       />
       <div class="truncate">
         <div data-test-invite-email class="font-semibold leading-none truncate">
-          {{invite.email}}
+          {{this.invite.email}}
         </div>
-        <div class="text-sm text-secondary italic truncate">Expires <span data-test-invite-expiration>{{moment-format invite.expiresAt 'MMM D, Y'}}</span></div>
+        <div class="text-sm text-secondary italic truncate">Expires <span data-test-invite-expiration>{{moment-format this.invite.expiresAt 'MMM D, Y'}}</span></div>
       </div>
     </div>
     <div data-test-invite-role style="min-width: 100px" class="flex-1 leading-none">
-      <LabelTag @isPrimaryTag={{eq "Administrator" invite.roleTitle}}>
-        {{invite.roleTitle}}
+      <LabelTag @isPrimaryTag={{eq "Administrator" this.invite.roleTitle}}>
+        {{this.invite.roleTitle}}
       </LabelTag>
     </div>
     <div class="flex-1 leading-none">
-      <div>Invited on <span data-test-invite-date>{{moment-format invite.createdAt 'MMM D, Y'}}</span></div>
-      <div class="text-sm text-secondary italic truncate">by <span data-test-invite-inviter-name>{{invite.inviterName}}</span></div>
+      <div>Invited on <span data-test-invite-date>{{moment-format this.invite.createdAt 'MMM D, Y'}}</span></div>
+      <div class="text-sm text-secondary italic truncate">by <span data-test-invite-inviter-name>{{this.invite.inviterName}}</span></div>
     </div>
     <div style="min-width: 100px" class="flex-1 leading-none"></div>
     <div class="flex-1 flex justify-end">
       <div data-test-invite-button-toolbar class="btn-toolbar">
-        {{#copy-button
-          data-test-invite-copy-url-button
-          clipboardText=invite.inviteLink
-          success=(action "onCopyInviteUrlToClipboard")
+        <CopyButton
+          @clipboardText={{this.invite.inviteLink}}
+          @success={{action "onCopyInviteUrlToClipboard"}}
+          disabled={{unless this.isAdmin true}}
           class="percy-btn"
-          disabled=(unless isAdmin true)
-        }}
+          @data-test-invite-copy-url-button={{true}}
+        >
           Copy invite link
-        {{/copy-button}}
-        <PercyBtn @isDisabled={{unless isAdmin true}} @handleClick={{action "cancelInvite"}}>
+        </CopyButton>
+        <PercyBtn @isDisabled={{unless this.isAdmin true}} @handleClick={{action "cancelInvite"}}>
           Cancel
         </PercyBtn>
       </div>

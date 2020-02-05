@@ -4,17 +4,17 @@
     <div class="flex">
 
       <div class="BillingSection-left-col items-start mr-3 pr-2 text-xl font-semibold">
-        {{plan.name}} {{#if plan.isDeprecated}}(Legacy){{/if}}
+        {{this.plan.name}} {{#if this.plan.isDeprecated}}(Legacy){{/if}}
       </div>
 
       <div class="flex-1">
         <div class="mb-3">
           <div>
-            <strong data-test-snapshots-included>{{format-number plan.usageIncluded}} screenshots/month included.</strong>
+            <strong data-test-snapshots-included>{{format-number this.plan.usageIncluded}} screenshots/month included.</strong>
 
             <span data-test-user-limit>
-              {{#if plan.userLimit}}
-                {{plan.userLimit}} team members.
+              {{#if this.plan.userLimit}}
+                {{this.plan.userLimit}} team members.
               {{else}}
                 Unlimited team members.
               {{/if}}
@@ -22,38 +22,38 @@
           </div>
 
           <div>
-            {{#if shouldShowMonthlyCost}}
-              <strong data-test-monthly-cost>${{displayAmount}}/month</strong>
-              {{#if plan.allowOverages}}<span data-test-overages> plus additional screenshots at ${{plan.overageUnitCost}}/snapshot</span>{{/if}}.
-            {{else if shouldShowOverageInfo}}
-              <span data-test-overages>Additional screenshots at ${{plan.overageUnitCost}}/screenshot.</span>
+            {{#if this.shouldShowMonthlyCost}}
+              <strong data-test-monthly-cost>${{this.displayAmount}}/month</strong>
+              {{#if this.plan.allowOverages}}<span data-test-overages> plus additional screenshots at ${{this.plan.overageUnitCost}}/snapshot</span>{{/if}}.
+            {{else if this.shouldShowOverageInfo}}
+              <span data-test-overages>Additional screenshots at ${{this.plan.overageUnitCost}}/screenshot.</span>
             {{/if}}
           </div>
         </div>
 
-        {{#if shouldDisplayUsageStats}}
+        {{#if this.shouldDisplayUsageStats}}
           <div class="mb-3" data-test-current-usage-stats>
             <div class="font-semibold">This billing period:</div>
-            <div>Current usage: <span class="font-semibold">{{format-number currentUsageStats.total}} snapshots</span><SnapshotExplanationTooltip /></div>
-            <div>Estimated cost: <span class="font-semibold">{{format-currency currentUsageStats.currentCostDollars}}</span></div>
+            <div>Current usage: <span class="font-semibold">{{format-number this.currentUsageStats.total}} snapshots</span><SnapshotExplanationTooltip /></div>
+            <div>Estimated cost: <span class="font-semibold">{{format-currency this.currentUsageStats.currentCostDollars}}</span></div>
           </div>
         {{/if}}
 
-        {{#if plan.isTrial}}
+        {{#if this.plan.isTrial}}
           <div data-test-trial-blurb>
-            <strong>Trial ends {{moment-from-now subscription.trialEnd}}</strong>.
+            <strong>Trial ends {{moment-from-now this.subscription.trialEnd}}</strong>.
             <br>
             After the trial expires, you will be moved to the free plan which includes 5,000 snapshots per month. You can upgrade to a paid plan at any time below.
           </div>
-        {{else if plan.isFree}}
+        {{else if this.plan.isFree}}
           <div data-test-free-blurb>
-            You're currently on the <strong>free plan</strong>, which provides {{format-number plan.usageIncluded}} screenshots per month. You can upgrade below or feel free to <a href="#" {{action "showIntercom"}} data-test-free-plan-support>reach out</a> with any questions.
+            You're currently on the <strong>free plan</strong>, which provides {{format-number this.plan.usageIncluded}} screenshots per month. You can upgrade below or feel free to <a href="#" {{action "showIntercom"}} data-test-free-plan-support>reach out</a> with any questions.
           </div>
-        {{else if plan.isDeprecated}}
+        {{else if this.plan.isDeprecated}}
           <div data-test-deprecated-blurb>
             You are on a legacy pricing plan, you can change to a modern plan below.
           </div>
-        {{else if (not plan.isFree)}}
+        {{else if (not this.plan.isFree)}}
           <div data-test-contact-us-blurb>
             Please <span class="text-blue-500 cursor-pointer" {{action "showIntercom"}} role="button" data-test-plan-support>contact us</span> with any questions about your plan.
           </div>

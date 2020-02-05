@@ -2,25 +2,25 @@
   <div class="pt-2 px-2 bg-gray-000 rounded border mb-3">
     <FormFields::Input
       @property="name"
-      @title={{if isFirstOrganization "Company name" "Organization name"}}
+      @title={{if this.isFirstOrganization "Company name" "Organization name"}}
       @changeset={{this.changeset}}
-      @autofocus={{isInputFocused}}
+      @autofocus={{this.isInputFocused}}
       @placeholder="Acme Co."
       @testLabel="organization-name"
     />
-    {{#if errorMessage}}
+    {{#if this.errorMessage}}
       <div class="Form-errors">
-        {{errorMessage}}
+        {{this.errorMessage}}
       </div>
     {{/if}}
 
-    {{#if (and hasOnlyGithubIdentity isFirstOrganization)}}
+    {{#if (and this.hasOnlyGithubIdentity this.isFirstOrganization)}}
       <FormFields::Input
         @property="email"
         @title="Confirm email address"
-        @changeset={{userChangeset}}
+        @changeset={{this.userChangeset}}
         @placeholder="name@acme.co"
-        @validateProperty={{action "validateProperty" userChangeset "email"}}
+        @validateProperty={{action "validateProperty" this.userChangeset "email"}}
         @testLabel="user-email"
       />
     {{/if}}
@@ -40,8 +40,8 @@
         @value="Try demo project"
         @classes="percy-btn percy-btn-primary data-test-demo-submit-button"
         @submit={{action "handleSubmit" "demo"}}
-        @isSaving={{isDemoSaving}}
-        @disabled={{isDemoDisabled}}
+        @isSaving={{this.isDemoSaving}}
+        @disabled={{this.isDemoDisabled}}
       />
     </div>
   {{/if}}
@@ -59,8 +59,8 @@
       @value="Start new project"
       @classes="percy-btn data-test-project-submit-button"
       @submit={{action "handleSubmit" "project"}}
-      @isSaving={{isCustomProjectSaving}}
-      @disabled={{isCustomProjectDisabled}}
+      @isSaving={{this.isCustomProjectSaving}}
+      @disabled={{this.isCustomProjectDisabled}}
     />
   </div>
 </form>

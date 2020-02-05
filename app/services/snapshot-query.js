@@ -1,5 +1,6 @@
 import Service, {inject as service} from '@ember/service';
 import {SNAPSHOT_REVIEW_STATE_REASONS, DIFF_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
+import {get} from '@ember/object';
 
 const SNAPSHOT_COMPARISON_INCLUDES = Object.freeze([
   'comparisons.head-screenshot.image',
@@ -10,8 +11,10 @@ const SNAPSHOT_COMPARISON_INCLUDES = Object.freeze([
   'comparisons.browser',
 ]);
 
-export default Service.extend({
-  store: service(),
+export default class SnapshotQueryService extends Service {
+  @service
+  store;
+
   getUnchangedSnapshots(build) {
     return this.store.loadRecords('snapshot', {
       filter: {
@@ -19,7 +22,7 @@ export default Service.extend({
         'review-state-reason': SNAPSHOT_REVIEW_STATE_REASONS.NO_DIFFS,
       },
     });
-  },
+  }
 
   getChangedSnapshots(build) {
     const isBuildId = typeof build === 'number' || typeof build === 'string';
@@ -31,13 +34,13 @@ export default Service.extend({
         'review-state-reason': DIFF_REVIEW_STATE_REASONS.join(','),
       },
     });
-  },
+  }
 
   getSnapshot(snapshotId) {
-    return this.get('store').loadRecord('snapshot', snapshotId, {
+    return get(this, 'store').loadRecord('snapshot', snapshotId, {
       include: SNAPSHOT_COMPARISON_INCLUDES.join(','),
     });
-  },
+  }
 
   getCommentsForSnapshot(snapshotId, buildId) {
     return this.store.loadRecords('commentThread', {
@@ -47,7 +50,7 @@ export default Service.extend({
       },
       include: 'comments,comments.author',
     });
-  },
+  }
 
   getSnapshotsNoIncludes(buildId) {
     return this.store.query('snapshot', {
@@ -56,5 +59,5 @@ export default Service.extend({
       },
       include: 'null',
     });
-  },
-});
+  }
+}

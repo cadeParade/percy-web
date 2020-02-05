@@ -1,18 +1,18 @@
 <label>
-  <span class="label-body">{{title}}</span>
+  <span class="label-body">{{this.title}}</span>
   <textarea
-    class="form-control {{if fieldErrors 'error'}}"
-    value={{get changeset property}}
-    oninput={{action (mut (get changeset property)) value="target.value"}}
-    onblur={{action validateProperty}}
-    autofocus={{autofocus}}
-    placeholder={{placeholder}}
-    data-test-textarea-input={{testLabel}}
+    class="form-control {{if this.fieldErrors 'error'}}"
+    value={{get this.changeset this.property}}
+    oninput={{action (mut (get this.changeset this.property)) value="target.value"}}
+    onblur={{action this.validateProperty}}
+    autofocus={{this.autofocus}}
+    placeholder={{this.placeholder}}
+    data-test-textarea-input={{this.testLabel}}
   ></textarea>
 </label>
-{{#if fieldErrors}}
+{{#if this.fieldErrors}}
   <ul class="Form-errors">
-    {{#each (get fieldErrors "validation") as |message|}}
+    {{#each (get this.fieldErrors "validation") as |message|}}
       <li>{{message}}</li>
     {{/each}}
   </ul>

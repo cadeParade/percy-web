@@ -33,9 +33,9 @@
       @testLabel="usage-notification-thresholds"
     />
 
-    {{#if errorMessage}}
+    {{#if this.errorMessage}}
       <div class="Form-errors">
-        {{errorMessage}}
+        {{this.errorMessage}}
       </div>
     {{/if}}
 
@@ -45,8 +45,8 @@
         @classes="percy-btn percy-btn-primary mb-0"
         @submit={{action "customSave"}}
         @testLabel="usage-notification-save"
-        @isSaving={{isSaving}}
-        @isSaveSuccessful={{isSaveSuccessful}}
+        @isSaving={{this.isSaving}}
+        @isSaveSuccessful={{this.isSaveSuccessful}}
       />
     </div>
   </form>

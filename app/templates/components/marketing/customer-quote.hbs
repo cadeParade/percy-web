@@ -1,10 +1,10 @@
 <div class="sm:flex items-center">
   <div>
     <div class="quote-block-headshot relative border rounded-full mx-auto mb-4 sm:mb-0 sm:mr-9"
-      style={{html-safe "background-image: url('" quote.headshot.file.url "?w=200&q=90');"}}>
-      {{#if quote.logo.file.url}}
+      style={{html-safe "background-image: url('" this.quote.headshot.file.url "?w=200&q=90');"}}>
+      {{#if this.quote.logo.file.url}}
         <div class="quote-logo absolute bottom-0 p-1 bg-white border rounded-full">
-          <ContentfulImage @file={{quote.logo.file}} />
+          <ContentfulImage @file={{this.quote.logo.file}} />
         </div>
       {{/if}}
     </div>
@@ -14,10 +14,10 @@
       <div style="left: -40px;" class="hidden absolute top-0 sm:block">
         {{inline-svg "quotes"}}
       </div>
-      {{quote.customerQuote}}
+      {{this.quote.customerQuote}}
     </p>
     <div class="font-semibold mt-3 text-lg">
-      {{quote.quoteAttribution}}
+      {{this.quote.quoteAttribution}}
     </div>
   </div>
 </div>

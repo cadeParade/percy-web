@@ -1,7 +1,7 @@
 <div class="Header flex items-center px-2 border-b bg-secondary" data-test-fixed-top-header>
   <div class="w-90vw max-w-xl mx-auto flex justify-between items-center">
     <div class="flex items-center truncate">
-      {{#if session.isAuthenticated}}
+      {{#if this.session.isAuthenticated}}
         <LinkTo @route="index">
           <figure class="svg-container">
             {{inline-svg "percy-logo-on-light" class="mr-2"}}
@@ -20,18 +20,18 @@
         </LinkTo>
       {{/if}}
 
-      {{#if session.isAuthenticated}}
-        {{#if currentOrganization}}
+      {{#if this.session.isAuthenticated}}
+        {{#if this.currentOrganization}}
           <div class="flex items-center text-lg mr-3 truncate">
             <span class="truncate">
-              <LinkTo @route="organization" @model={{currentOrganization.slug}} class="link-purple data-test-organization-dashboard-link">
-                {{currentOrganization.name}}
+              <LinkTo @route="organization" @model={{this.currentOrganization.slug}} class="link-purple data-test-organization-dashboard-link">
+                {{this.currentOrganization.name}}
               </LinkTo>
             </span>
-            {{#if project}}
+            {{#if this.project}}
               <span class="font-semibold text-primary mx-sm">/</span>
-              <LinkTo @route="organization.project" @models={{array currentOrganization.slug project}} class="link-purple truncate">
-                {{project.name}}
+              <LinkTo @route="organization.project" @models={{array this.currentOrganization.slug this.project}} class="link-purple truncate">
+                {{this.project.name}}
               </LinkTo>
             {{/if}}
           </div>
@@ -40,15 +40,15 @@
     </div>
 
     <NoticeBar
-      @organization={{currentOrganization}}
-      @shouldShowNewProjectPrompt={{project.isDemo}}
+      @organization={{this.currentOrganization}}
+      @shouldShowNewProjectPrompt={{this.project.isDemo}}
     />
 
-    {{#if session.isAuthenticated}}
+    {{#if this.session.isAuthenticated}}
       <NavMenu
-        @user={{session.currentUser}}
-        @currentOrganization={{currentOrganization}}
-        @isTransparentHeader={{isTransparentHeader}}
+        @user={{this.session.currentUser}}
+        @currentOrganization={{this.currentOrganization}}
+        @isTransparentHeader={{this.isTransparentHeader}}
       />
     {{else}}
       <NavMenu />

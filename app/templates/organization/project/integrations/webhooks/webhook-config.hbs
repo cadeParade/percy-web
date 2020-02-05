@@ -3,7 +3,7 @@
     <h1 class="text-xl font-semibold mb-sm">Edit webhook</h1>
     <LinkTo
       @route="organization.project.integrations.index"
-      @models={{array model.organization.slug model.project.slug}}
+      @models={{array this.model.organization.slug this.model.project.slug}}
       @classNames="btn btn-secondary"
     >
       Back to integration settings
@@ -11,19 +11,19 @@
   </div>
   <div class="bg-white rounded shadow-1 p-2 mb-2">
     <Forms::WebhookConfigEdit
-      @webhookConfig={{model.webhookConfig}}
-      @isSaving={{isSaving}}
-      @isSaveSuccessful={{isSaveSuccessful}}
+      @webhookConfig={{this.model.webhookConfig}}
+      @isSaving={{this.isSaving}}
+      @isSaveSuccessful={{this.isSaveSuccessful}}
       @saveSuccess={{route-action "webhookConfigUpdated"}}
     />
   </div>
 
-  {{#if (await model.webhookConfig.webhookEvents)}}
+  {{#if (await this.model.webhookConfig.webhookEvents)}}
     <div class="bg-white rounded shadow-1 px-2 py-2 mb-2">
       <h2 class="text-lg font-semibold mb-2">Recent Deliveries</h2>
       <div class="mb-2 rounded border">
-        {{#each model.webhookConfig.webhookEvents as |webhookEvent|}}
-          <div class="{{if (not-eq webhookEvent model.webhookConfig.webhookEvents.lastObject) "border-b"}}">
+        {{#each this.model.webhookConfig.webhookEvents as |webhookEvent|}}
+          <div class="{{if (not-eq webhookEvent this.model.webhookConfig.webhookEvents.lastObject) "border-b"}}">
             <WebhookEvent @webhookEvent={{webhookEvent}} />
           </div>
         {{/each}}

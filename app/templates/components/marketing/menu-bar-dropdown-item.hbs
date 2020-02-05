@@ -1,12 +1,12 @@
 <li class="menu-bar-dropdown-item lg:border-b border-purple-300 mb-1 lg:mb-0">
-  <a href={{linkRoute}} class="hover:no-underline" target={{target}} rel={{if (eq target "_blank") "noopener noreferrer"}}>
+  <a href={{this.linkRoute}} class="hover:no-underline" target={{this.target}} rel={{if (eq this.target "_blank") "noopener noreferrer"}}>
     <div class="w-full flex items-center flex items-center cursor-pointer font-semibold py-sm lg:py-2 lg:px-2 lg:hover:bg-purple-100">
       <div class="flex justify-center items-center mr-2" style="width: 30px;">
-        {{inline-svg icon}}
+        {{inline-svg this.icon}}
       </div>
-      <div class="flex items-center font-semibold {{linkColor}}">
-        {{text}}
-        {{#if isExternal}}
+      <div class="flex items-center font-semibold {{this.linkColor}}">
+        {{this.text}}
+        {{#if this.isExternal}}
           {{fa-icon "external-link" style=(html-safe "top: 1px;") class="relative text-gray-200 ml-1"}}
         {{/if}}
       </div>

@@ -1,13 +1,12 @@
 import Service from '@ember/service';
-import {setProperties} from '@ember/object';
+import {setProperties, action} from '@ember/object';
 import {defer} from 'rsvp';
 
-export default Service.extend({
-  showPrompt: false,
-  title: null,
-  message: null,
-
-  _deferred: null,
+export default class ConfirmService extends Service {
+  showPrompt = false;
+  title = null;
+  message = null;
+  _deferred = null;
 
   ask({title, message}) {
     setProperties(this, {
@@ -18,33 +17,33 @@ export default Service.extend({
     });
 
     return this._deferred.promise;
-  },
+  }
 
-  confirm() {
+  promiseConfirm() {
     this._deferred.resolve(true);
 
     setProperties(this, {
       showPrompt: false,
       _deferred: null,
     });
-  },
+  }
 
-  cancel() {
+  promiseCancel() {
     this._deferred.resolve(false);
 
     setProperties(this, {
       showPrompt: false,
       _deferred: null,
     });
-  },
+  }
 
-  actions: {
-    confirm() {
-      this.confirm();
-    },
+  @action
+  confirm() {
+    this.promiseConfirm();
+  }
 
-    cancel() {
-      this.cancel();
-    },
-  },
-});
+  @action
+  cancel() {
+    this.promiseCancel();
+  }
+}

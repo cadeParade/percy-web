@@ -1,8 +1,8 @@
 <div class="flex h-screen-header">
   <div class="flex flex-1 items-center md:max-w-sm bg-white border-r">
     <div>
-      {{#if isGithubPurchase}}
-        <section class="px-4 mb-4 {{unless needsGithubIdentity 'opacity-25 pointer-events-none'}}" data-test-setup-github-section>
+      {{#if this.isGithubPurchase}}
+        <section class="px-4 mb-4 {{unless this.needsGithubIdentity 'opacity-25 pointer-events-none'}}" data-test-setup-github-section>
           <h2 class="text-xl font-semibold mb-sm">Continue your Marketplace Setup</h2>
           <p class="text-secondary">
             Link your GitHub account to complete your Marketplace Purchase.
@@ -10,15 +10,15 @@
           <div class="flex items-center justify-between">
             <div class="flex items-center">
               {{inline-svg "github-icon-lg" class="mr-1"}}
-              {{#if hasGithubIdentity}}
+              {{#if this.hasGithubIdentity}}
                 <div
                   class="font-mono font-normal tracking-sm flex items-center mr-1"
                   data-test-setup-github-account
                 >
-                  {{#if githubIdentity.nickname}}
-                    {{githubIdentity.nickname}}
+                  {{#if this.githubIdentity.nickname}}
+                    {{this.githubIdentity.nickname}}
                   {{else}}
-                    {{githubIdentity.user.name}}
+                    {{this.githubIdentity.user.name}}
                   {{/if}}
                 </div>
 
@@ -35,7 +35,7 @@
               {{/if}}
             </div>
             <div>
-              {{#if hasGithubIdentity}}
+              {{#if this.hasGithubIdentity}}
                 {{inline-svg "check-green-icon"}}
               {{/if}}
             </div>
@@ -43,8 +43,8 @@
         </section>
       {{/if}}
 
-      <section class="px-4 {{if needsGithubIdentity "opacity-25 pointer-events-none"}}">
-        {{#if isFirstOrganization}}
+      <section class="px-4 {{if this.needsGithubIdentity "opacity-25 pointer-events-none"}}">
+        {{#if this.isFirstOrganization}}
           <h2 class="text-xl font-semibold mb-sm">Let's get started</h2>
           <p class="text-secondary">
             We need you to answer just a few questions so that we can get you tailored instructions to setup Percy for your specific environment.
@@ -62,11 +62,11 @@
           </p>
         {{/if}}
         <Forms::OrganizationNew
-          @isFirstOrganization={{isFirstOrganization}}
-          @model={{newOrganization}}
-          @userIdentities={{userIdentities}}
-          @saveSuccess={{organizationCreated}}
-          @needsGithubIdentity={{needsGithubIdentity}}
+          @isFirstOrganization={{this.isFirstOrganization}}
+          @model={{this.newOrganization}}
+          @userIdentities={{this.userIdentities}}
+          @saveSuccess={{this.organizationCreated}}
+          @needsGithubIdentity={{this.needsGithubIdentity}}
         />
       </section>
     </div>

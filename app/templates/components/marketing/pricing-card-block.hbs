@@ -3,13 +3,13 @@
   <div class="pricing-card-container pricing-card-container-short md:mx-1 md:mt-3">
     <div class="pricing-card md:h-full bg-white-gradient-pattern shadow-purple-2">
       <div class="pt-2 px-2">
-        <h3 class="pricing-card-name text-green-600">{{freePlan.name}}</h3>
+        <h3 class="pricing-card-name text-green-600">{{this.freePlan.name}}</h3>
         <p>Get started with visual testing for free with access to Percy's core features.</p>
 
         <div class="mb-2">
           <div class="flex items-center font-semibold">
             {{inline-svg "check-green-icon" class="mr-sm"}}
-            {{freePlan.numTeamMembersTitle}}
+            {{this.freePlan.numTeamMembersTitle}}
           </div>
           <div class="flex items-center font-semibold">
             {{inline-svg "check-green-icon" class="mr-sm"}}
@@ -17,7 +17,7 @@
           </div>
           <div class="flex items-center font-semibold">
             {{inline-svg "check-green-icon" class="mr-sm"}}
-            {{format-number freePlan.usageIncluded}} screenshots / month
+            {{format-number this.freePlan.usageIncluded}} screenshots / month
           </div>
         </div>
       </div>
@@ -43,52 +43,52 @@
             <div class="leading-tight flex items-end flex-2 p-1 text-sm font-normal text-gray-300">Screenshots Included</div>
             <div class="leading-tight flex items-end flex-1 p-1 text-sm font-normal text-gray-300">Base price</div>
           </div>
-          <div class="flex rounded items-center {{if (eq selectedPlanRange 'Small') "bg-purple-200 border border-purple-600" "border border-transparent"}}">
-            <div style="width: 85px; line-height: 1.2;" class="p-1">{{smallPlan.name}}</div>
-            <div class="flex-2 p-1">{{format-thousands smallPlan.usageIncluded}}</div>
-            <div class="flex-1 p-1">{{format-currency smallPlan.amount (hash precision=0)}}</div>
+          <div class="flex rounded items-center {{if (eq this.selectedPlanRange 'Small') "bg-purple-200 border border-purple-600" "border border-transparent"}}">
+            <div style="width: 85px; line-height: 1.2;" class="p-1">{{this.smallPlan.name}}</div>
+            <div class="flex-2 p-1">{{format-thousands this.smallPlan.usageIncluded}}</div>
+            <div class="flex-1 p-1">{{format-currency this.smallPlan.amount (hash precision=0)}}</div>
           </div>
-          <div class="flex rounded items-center {{if (eq selectedPlanRange 'Medium') "bg-purple-200 border border-purple-600" "border border-transparent"}}">
-            <div style="width: 85px;" class="p-1">{{mediumPlan.name}}</div>
-            <div class="flex-2 p-1">{{format-thousands mediumPlan.usageIncluded}}</div>
-            <div class="flex-1 p-1">{{format-currency mediumPlan.amount (hash precision=0)}}</div>
+          <div class="flex rounded items-center {{if (eq this.selectedPlanRange 'Medium') "bg-purple-200 border border-purple-600" "border border-transparent"}}">
+            <div style="width: 85px;" class="p-1">{{this.mediumPlan.name}}</div>
+            <div class="flex-2 p-1">{{format-thousands this.mediumPlan.usageIncluded}}</div>
+            <div class="flex-1 p-1">{{format-currency this.mediumPlan.amount (hash precision=0)}}</div>
           </div>
-          <div class="flex rounded items-center {{if (eq selectedPlanRange 'Large') "bg-purple-200 border border-purple-600" "border border-transparent"}}">
-            <div style="width: 85px;" class="p-1">{{largePlan.name}}</div>
-            <div class="flex-2 p-1">{{format-thousands largePlan.usageIncluded}}</div>
-            <div class="flex-1 p-1">{{format-currency largePlan.amount (hash precision=0)}}</div>
+          <div class="flex rounded items-center {{if (eq this.selectedPlanRange 'Large') "bg-purple-200 border border-purple-600" "border border-transparent"}}">
+            <div style="width: 85px;" class="p-1">{{this.largePlan.name}}</div>
+            <div class="flex-2 p-1">{{format-thousands this.largePlan.usageIncluded}}</div>
+            <div class="flex-1 p-1">{{format-currency this.largePlan.amount (hash precision=0)}}</div>
           </div>
         </div>
 
         <div class="font-semibold text-lg mb-1 text-primary" data-test-snapshot-count>
-          {{format-number displaySnapshotCount}} screenshots / month
+          {{format-number this.displaySnapshotCount}} screenshots / month
         </div>
       </div>
 
       <div class="px-2">
         <RangeSlider
-          @min={{sliderSetup.minRange}}
-          @max={{sliderSetup.maxRange}}
-          @step={{sliderSetup.step}}
-          @value={{displaySnapshotCount}}
+          @min={{this.sliderSetup.minRange}}
+          @max={{this.sliderSetup.maxRange}}
+          @step={{this.sliderSetup.step}}
+          @value={{this.displaySnapshotCount}}
           @handleSliderMoved={{action "handleSliderMoved"}}
         />
       </div>
 
       <div class="font-semibold text-gray-500 text-right" style="height: 70px;" data-test-price-text>
-        {{#if (eq selectedPlanRange "Enterprise")}}
-          <div class="text-lg">{{priceText}}</div>
+        {{#if (eq this.selectedPlanRange "Enterprise")}}
+          <div class="text-lg">{{this.priceText}}</div>
         {{else}}
-          {{priceText}}
-          <span class="tabular-nums text-purple-600 text-3xl" data-test-calculated-price>${{format-number sliderCalculatedPrice}}</span>/mo
+          {{this.priceText}}
+          <span class="tabular-nums text-purple-600 text-3xl" data-test-calculated-price>${{format-number this.sliderCalculatedPrice}}</span>/mo
         {{/if}}
         <br>
-        {{#if (not-eq selectedPlanRange "Enterprise")}}
+        {{#if (not-eq this.selectedPlanRange "Enterprise")}}
           <span class="text-sm font-normal text-gray-300">Additional screenshots at $0.006/screenshot</span>
         {{/if}}
       </div>
 
-      {{#if isEnterpriseSelected}}
+      {{#if this.isEnterpriseSelected}}
         <LinkTo @route="enterprise" class="btn btn-md btn-purple btn-scale text-center w-full" data-test-pricing-card-cta={{true}}>
           Learn more
         </LinkTo>

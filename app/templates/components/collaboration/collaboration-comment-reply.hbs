@@ -1,16 +1,16 @@
 <div class="collaboration-comment-reply" data-test-comment-reply>
-  <div class="items-center {{unless isExpanded 'flex'}}">
+  <div class="items-center {{unless this.isExpanded 'flex'}}">
     <div class="flex items-center">
-      <UserAvatar @user={{currentUser}} @class="mr-1" @isSmallAvatar={{true}} />
-      {{#if isExpanded}}
+      <UserAvatar @user={{this.currentUser}} @class="mr-1" @isSmallAvatar={{true}} />
+      {{#if this.isExpanded}}
         <div class="font-semibold leading-none">
-          {{currentUser.name}}
+          {{this.currentUser.name}}
         </div>
       {{/if}}
     </div>
-    <div class="flex-1 {{if isExpanded 'collaboration-content-inset'}}" {{action "expandReply"}} data-test-comment-reply-textarea-container role="button">
+    <div class="flex-1 {{if this.isExpanded 'collaboration-content-inset'}}" {{action "expandReply"}} data-test-comment-reply-textarea-container role="button">
       <MentionableTextarea
-        @tributeConfigs={{tributeConfigs}}
+        @tributeConfigs={{this.tributeConfigs}}
         @handleItemSelected={{action "handleAtMentionUser"}}
       >
         <PercyTextarea
@@ -18,14 +18,14 @@
           @onCmdEnter={{action "saveReply"}}
           @onEscape={{action "collapseReply"}}
           @placeholder="Add reply..."
-          @value={{commentBody}}
-          class="percy-input px-1 py-sm {{if isExpanded "h-24" "collaboration-collapsed-comment-reply"}}"
+          @value={{this.commentBody}}
+          class="percy-input px-1 py-sm {{if this.isExpanded "h-24" "collaboration-collapsed-comment-reply"}}"
         />
       </MentionableTextarea>
     </div>
   </div>
 
-  {{#if isExpanded}}
+  {{#if this.isExpanded}}
     <div class="flex justify-end mt-1">
       <PercyBtn
         @handleClick={{action "collapseReply"}}
@@ -37,9 +37,9 @@
         @handleClick={{action "saveReply"}}
         @class="ml-1"
         @isPrimaryButton={{true}}
-        @isDisabled={{is-empty commentBody}}
+        @isDisabled={{is-empty this.commentBody}}
         @testLabel="submit"
-        @isSaving={{isCommentSaving}}
+        @isSaving={{this.isCommentSaving}}
       >
         Comment
       </PercyBtn>

@@ -8,38 +8,38 @@
 
     <div class="flex items-center text-lg font-semibold mr-3 truncate hide-on-mobile">
       <span class="truncate">
-        <LinkTo @route="organization" @model={{organization}} class="link-purple hide-on-tablet">
-          {{organization.name}}
+        <LinkTo @route="organization" @model={{this.organization}} class="link-purple hide-on-tablet">
+          {{this.organization.name}}
         </LinkTo>
       </span>
       <span class="font-semibold text-secondary mx-sm hide-on-tablet">/</span>
-      <LinkTo @route="organization.project" @models={{array organization.slug project}} class="link-purple truncate" data-test-build-toolbar-project-link={{true}}>
-        {{project.name}}
+      <LinkTo @route="organization.project" @models={{array this.organization.slug this.project}} class="link-purple truncate" data-test-build-toolbar-project-link={{true}}>
+        {{this.project.name}}
       </LinkTo>
     </div>
-    {{#if organization.isSponsored}}
-      {{fa-icon data-test-build-public-project "globe" class="text-blue-500 ml-sm"}}
+    {{#if this.organization.isSponsored}}
+      <FaIcon @data-test-build-public-project={{true}} @icon="globe" class="text-blue-500 ml-sm" />
     {{/if}}
   </div>
 
-  <NoticeBar @organization={{organization}} @shouldShowNewProjectPrompt={{project.isDemo}} />
+  <NoticeBar @organization={{this.organization}} @shouldShowNewProjectPrompt={{this.project.isDemo}} />
 
   <div class="flex items-center">
-    {{#if (and build.isFinished (not isSnapshotsLoading))}}
-      {{#if build.hasMultipleBrowsers}}
+    {{#if (and this.build.isFinished (not this.isSnapshotsLoading))}}
+      {{#if this.build.hasMultipleBrowsers}}
         <div class="mr-1">
           <BrowserSwitcher
-            @browsers={{build.browsers}}
-            @activeBrowser={{activeBrowser}}
+            @browsers={{this.build.browsers}}
+            @activeBrowser={{this.activeBrowser}}
             @updateActiveBrowser={{action "switchBrowsers"}}
-            @build={{build}}
+            @build={{this.build}}
           />
         </div>
       {{/if}}
 
       <button type="button" class="btn btn-square hint--bottom hint--rounded hint--bounce" aria-label="Toggle all diffs (d)" {{action 'toggleOverlay'}} data-test-toggle-diffs-button>
         <figure class="svg-container">
-          {{#if allDiffsShown}}
+          {{#if this.allDiffsShown}}
             <ThemeSvg @svg="diff-toggle-on" />
           {{else}}
             {{inline-svg "diff-toggle-off"}}
@@ -48,17 +48,17 @@
       </button>
     {{/if}}
 
-    {{#if build.isFinished}}
-      <div class="{{unless isBuildApprovable "hint--left hint--rounded hint--bounce"}}" aria-label="{{unless  isBuildApprovable "You can't approve this build because you are not a member of this build's organization or are not logged in"}}">
+    {{#if this.build.isFinished}}
+      <div class="{{unless this.isBuildApprovable "hint--left hint--rounded hint--bounce"}}" aria-label="{{unless  this.isBuildApprovable "You can't approve this build because you are not a member of this build's organization or are not logged in"}}">
         <DemoTooltip
-          @build={{build}}
+          @build={{this.build}}
           @key="build-approval-button"
         />
         <BuildApprovalButton
-          @build={{build}}
-          @createReview={{createReview}}
-          @approvableSnapshots={{approvableSnapshots}}
-          @isDisabled={{not isBuildApprovable}}
+          @build={{this.build}}
+          @createReview={{this.createReview}}
+          @approvableSnapshots={{this.approvableSnapshots}}
+          @isDisabled={{not this.isBuildApprovable}}
         />
       </div>
     {{/if}}

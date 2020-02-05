@@ -1,25 +1,25 @@
 <div data-test-user-card class="user-card bg-white border-b">
   <div class="px-4 py-3 flex items-center">
     <div style="min-width: 200px" class="flex flex-1 items-center pr-2">
-      <UserAvatar @class="flex-none mr-2" @user={{organizationUser.user}} />
+      <UserAvatar @class="flex-none mr-2" @user={{this.organizationUser.user}} />
       <div class="truncate">
         <div data-test-user-name class="font-semibold truncate leading-none">
-          {{organizationUser.user.name}}
+          {{this.organizationUser.user.name}}
         </div>
-        <div class="text-sm truncate">{{email}}</div>
+        <div class="text-sm truncate">{{this.email}}</div>
       </div>
     </div>
     <div data-test-user-role style="min-width: 100px" class="flex-1 leading-none">
-      <LabelTag @isPrimaryTag={{eq "Administrator" roleTitle}}>
-        {{roleTitle}}
+      <LabelTag @isPrimaryTag={{eq "Administrator" this.roleTitle}}>
+        {{this.roleTitle}}
       </LabelTag>
     </div>
     <div data-test-user-join-date class="flex-1 leading-none text-secondary" style="min-width: 100px;">
-      {{moment-format organizationUser.createdAt 'MMM D, Y'}}
+      {{moment-format this.organizationUser.createdAt 'MMM D, Y'}}
     </div>
-    {{#if isViewerAdmin}}
+    {{#if this.isViewerAdmin}}
       <div class="flex-1 leading-none">
-        {{#each orderedIdentities as |identity|}}
+        {{#each this.orderedIdentities as |identity|}}
           {{#if identity.isAuth0Identity}}
             <span data-test-user-identity-icon class="hint--top hint--rounded hint--bounce test-auth0-identity" aria-label="Username/Password identity">
               {{inline-svg "percy-logo-tiny-on-light" class="mr-1 opacity-50"}}
@@ -38,28 +38,28 @@
     {{/if}}
     <div class="user-card-actions flex-1 opacity-0 flex justify-end">
       <div data-test-user-button-toolbar class=" btn-toolbar">
-        {{#if isCurrentUser}}
+        {{#if this.isCurrentUser}}
           <PercyBtn @handleClick={{action "removeUser"}}>
             Leave organization
           </PercyBtn>
         {{else}}
-          {{#if (eq "member" role)}}
+          {{#if (eq "member" this.role)}}
             <PercyBtn
-              @isDisabled={{not isViewerAdmin}}
+              @isDisabled={{not this.isViewerAdmin}}
               @handleClick={{action "setRole" "admin"}}
             >
               Make admin
             </PercyBtn>
           {{else}}
             <PercyBtn
-              @isDisabled={{not isViewerAdmin}}
+              @isDisabled={{not this.isViewerAdmin}}
               @handleClick={{action "setRole" "member"}}
             >
               Make member
             </PercyBtn>
           {{/if}}
           <PercyBtn
-            @isDisabled={{not isViewerAdmin}}
+            @isDisabled={{not this.isViewerAdmin}}
             @handleClick={{action "removeUser"}}
           >
             Remove

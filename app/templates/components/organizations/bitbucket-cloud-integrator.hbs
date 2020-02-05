@@ -1,10 +1,10 @@
-{{#if currentIntegration}}
-  <Organizations::BitbucketCloudIntegration @organization={{organization}} />
+{{#if this.currentIntegration}}
+  <Organizations::BitbucketCloudIntegration @organization={{this.organization}} />
 {{else}}
   <div class="mb-2">
     <a
       data-test-bitbucket-cloud-app-install-button
-      href="{{bitbucketCloudIntegrationUrl}}"
+      href="{{this.bitbucketCloudIntegrationUrl}}"
       class="percy-btn percy-btn-primary"
       rel="noopener">
       {{fa-icon "bitbucket" classNames="fa--left"}}

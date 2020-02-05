@@ -1,44 +1,44 @@
 <p class="text-secondary mb-2">To link a project to a repository you must first add that repo's source code integration for your organization. This comes with several benefits, including better <a class="font-semibold" href="https://docs.percy.io/docs/github">pull request integration</a> support, contextual UI, and baseline picking.</p>
 
-{{#if project.isDemo}}
+{{#if this.project.isDemo}}
   <div class="Alert Alert--info" data-test-repo-integrator-demo-project>
-    <strong>Missing organization source code integration.</strong> {{#link-to data-test-repo-integrator-demo-link 'organizations.organization.projects.new' organization.slug}}Set up your own project {{/link-to}}to install a source code integration.
+    <strong>Missing organization source code integration.</strong> <LinkTo @data-test-repo-integrator-demo-link={{true}} @route='organizations.organization.projects.new' @model={{this.organization.slug}}>Set up your own project </LinkTo>to install a source code integration.
   </div>
 {{else}}
-  {{#if organization.isVersionControlIntegrated}}
+  {{#if this.organization.isVersionControlIntegrated}}
     <div class="mb-2">
-      <RepoSelector @project={{project}} />
+      <RepoSelector @project={{this.project}} />
     </div>
     <div class="rounded border p-2">
-      <strong>Note:</strong> Missing a repository? Check your organization's <LinkTo @route="organizations.organization.integrations" @model={{organization.slug}} class="font-semibold"> integration settings</LinkTo>.
+      <strong>Note:</strong> Missing a repository? Check your organization's <LinkTo @route="organizations.organization.integrations" @model={{this.organization.slug}} class="font-semibold"> integration settings</LinkTo>.
     </div>
   {{else}}
 
     <div class="grid gap-2 text-center col-3" data-test-repo-integrator-no-integrations>
-      {{#link-to data-test-github "organizations.organization.integrations.github" organization.slug class="flex justify-center link-dark border rounded p-3 hover:no-underline hover:bg-purple-200 hover:border-purple-600"}}
+      <LinkTo @data-test-github={{true}} @route="organizations.organization.integrations.github" @model={{this.organization.slug}} class="flex justify-center link-dark border rounded p-3 hover:no-underline hover:bg-purple-200 hover:border-purple-600">
         <div>
           <div class="flex justify-center mb-1">
             {{inline-svg "github-icon-xl"}}
           </div>
           <div class="font-semibold">Connect to Github</div>
         </div>
-      {{/link-to}}
-      {{#link-to data-test-gitlab "organizations.organization.integrations.gitlab" organization.slug class="flex justify-center link-dark border rounded p-3 hover:no-underline hover:bg-purple-200 hover:border-purple-600"}}
+      </LinkTo>
+      <LinkTo @data-test-gitlab={{true}} @route="organizations.organization.integrations.gitlab" @model={{this.organization.slug}} class="flex justify-center link-dark border rounded p-3 hover:no-underline hover:bg-purple-200 hover:border-purple-600">
         <div>
           <div class="flex justify-center mb-1">
             {{inline-svg "gitlab-icon-xl"}}
           </div>
           <div class="font-semibold">Connect to Gitlab</div>
         </div>
-      {{/link-to}}
-      {{#link-to data-test-bitbucket "organizations.organization.integrations.bitbucket-cloud" organization.slug class="flex justify-center link-dark border rounded p-3 hover:no-underline hover:bg-purple-200 hover:border-purple-600"}}
+      </LinkTo>
+      <LinkTo @data-test-bitbucket={{true}} @route="organizations.organization.integrations.bitbucket-cloud" @model={{this.organization.slug}} class="flex justify-center link-dark border rounded p-3 hover:no-underline hover:bg-purple-200 hover:border-purple-600">
         <div>
           <div class="flex justify-center mb-1">
             {{inline-svg "bitbucket-icon-xl"}}
           </div>
           <div class="font-semibold">Connect to Bitbucket</div>
         </div>
-      {{/link-to}}
+      </LinkTo>
     </div>
   {{/if}}
 {{/if}}

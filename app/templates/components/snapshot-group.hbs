@@ -1,7 +1,7 @@
 {{!-- template-lint-disable no-nested-interactive --}}
 <LazyLoadingSnapshotItem
-  @shouldFullyRender={{shouldFullyRender}}
-  @displayTitle={{groupTitle}}
+  @shouldFullyRender={{this.shouldFullyRender}}
+  @displayTitle={{this.groupTitle}}
 >
   <header
     class="SnapshotViewer-header sticky grid gap-4 px-2 py-1 bg-secondary border-b border-t"
@@ -9,19 +9,19 @@
     role="button"
     data-test-snapshot-group-header>
     <div style="min-width: 0;" class="flex items-center">
-      <div class="Viewer-header-title SnapshotViewer-title flex items-center overflow-hidden cursor-default font-bold" title="{{snapshots.length}} matching changes" data-test-snapshot-group-name>
-        {{#if isGroupRejected}}
+      <div class="Viewer-header-title SnapshotViewer-title flex items-center overflow-hidden cursor-default font-bold" title="{{this.snapshots.length}} matching changes" data-test-snapshot-group-name>
+        {{#if this.isGroupRejected}}
           <div class="mr-1">
             <div class="px-1 py-sm tracking-px rounded bg-orange-500 text-xs text-center uppercase font-bold text-white whitespace-no-wrap" data-test-group-rejected-badge>Changes requested</div>
           </div>
         {{/if}}
 
         <div class="truncate">
-          {{groupTitle}}
+          {{this.groupTitle}}
         </div>
       </div>
       <DemoTooltip
-        @build={{build}}
+        @build={{this.build}}
         @isFirstInstance={{true}}
         @key="group-overview"
       />
@@ -29,14 +29,14 @@
 
     <div class="flex justify-end">
       <div class="btn-toolbar">
-        {{#if isGroupCollapsed}}
+        {{#if this.isGroupCollapsed}}
 
           <LinkTo
             @route="organization.project.builds.default-comparison"
-            @model={{snapshots.firstObject.id}}
+            @model={{this.snapshots.firstObject.id}}
             @query={{hash
-              currentWidth=blockSelectedWidth
-              activeBrowserFamilySlug=activeBrowser.familySlug
+              currentWidth=this.blockSelectedWidth
+              activeBrowserFamilySlug=this.activeBrowser.familySlug
             }}
             class="ToggleFullViewButton btn btn-square maximize-snapshot"
             aria-label="Maximize snapshot"
@@ -50,14 +50,14 @@
 
         <div class="btn-toolbar">
           <button type="button" class="btn" {{action "toggleAreAllSnapshotsExpanded"}} data-test-show-group-snapshots>
-            {{#if isGroupCollapsed}}
+            {{#if this.isGroupCollapsed}}
               Expand matches
             {{else}}
               Collapse matches
             {{/if}}
           </button>
 
-          {{#if noSnapshotsWithOpenCommentThreads}}
+          {{#if this.noSnapshotsWithOpenCommentThreads}}
             <button type="button" class="btn btn-square collaboration-toggle relative" {{action "handleCommentClick"}} data-test-group-comment-btn>
               <figure class="svg-container">
                 <ThemeSvg @svg="conversation-icon-add" />
@@ -65,42 +65,42 @@
             </button>
           {{/if}}
 
-          {{#if isGroupCollapsed}}
+          {{#if this.isGroupCollapsed}}
             <div class="btn-group btn-group-alt">
               <ComparisonSwitcher
-                @comparisons={{filteredComparisons.comparisonsWithDiffs}}
-                @selectedWidth={{blockSelectedWidth}}
+                @comparisons={{this.filteredComparisons.comparisonsWithDiffs}}
+                @selectedWidth={{this.blockSelectedWidth}}
                 @updateSelectedWidth={{action "updateSelectedWidth"}}
               />
             </div>
           {{/if}}
 
-          {{#if isGroupUnreviewed}}
+          {{#if this.isGroupUnreviewed}}
             <DemoTooltip
-              @build={{build}}
-              @isFirstInstance={{eq index 0}}
+              @build={{this.build}}
+              @isFirstInstance={{eq this.index 0}}
               @anchorPlacement='left-corner'
               @key="group-request-changes-button"
             />
             <SnapshotRejectButton
-              @snapshots={{snapshots}}
-              @isDisabled={{not isBuildApprovable}}
+              @snapshots={{this.snapshots}}
+              @isDisabled={{not this.isBuildApprovable}}
             />
           {{/if}}
 
           <DemoTooltip
-            @build={{build}}
-            @isFirstInstance={{eq index 0}}
+            @build={{this.build}}
+            @isFirstInstance={{eq this.index 0}}
             @anchorPlacement='left-corner'
             @key="group-approval-button"
           />
           <GroupApprovalButton
-            @createReview={{createReview}}
-            @approvableSnapshots={{approvableSnapshots}}
-            @numTotalSnapshots={{snapshots.length}}
-            @numUnapprovedSnapshots={{numUnapprovedSnapshots}}
-            @isGroupApproved={{isGroupApproved}}
-            @isDisabled={{not isBuildApprovable}}
+            @createReview={{this.createReview}}
+            @approvableSnapshots={{this.approvableSnapshots}}
+            @numTotalSnapshots={{this.snapshots.length}}
+            @numUnapprovedSnapshots={{this.numUnapprovedSnapshots}}
+            @isGroupApproved={{this.isGroupApproved}}
+            @isDisabled={{not this.isBuildApprovable}}
           />
         </div>
       </div>
@@ -108,17 +108,17 @@
   </header>
 
   <div>
-    {{#if isExpanded}}
-      {{#if displaySingleSnapshotGroupCover}}
+    {{#if this.isExpanded}}
+      {{#if this.displaySingleSnapshotGroupCover}}
         <div class="relative border-b">
-          <div style="left: 28px;" class="snapshot-group-indent-line {{if isGroupRejected 'snapshot-group-indent-line-changes-requested-gradient' 'snapshot-group-indent-line-gradient'}} {{if isGroupApproved 'snapshot-group-indent-line-approved-gradient'}}"></div>
+          <div style="left: 28px;" class="snapshot-group-indent-line {{if this.isGroupRejected 'snapshot-group-indent-line-changes-requested-gradient' 'snapshot-group-indent-line-gradient'}} {{if this.isGroupApproved 'snapshot-group-indent-line-approved-gradient'}}"></div>
           <div class="flex bg-secondary">
             <div style="padding: 22px 16px 10px;" class="mb-2">
               <div style="top: 126px;" class="sticky">
                 <figure class="svg-container">
-                  {{#if isGroupApproved}}
+                  {{#if this.isGroupApproved}}
                     <ThemeSvg @svg="comparison-icon-group-approved" />
-                  {{else if isGroupRejected}}
+                  {{else if this.isGroupRejected}}
                     <ThemeSvg @svg="comparison-icon-group-changes-requested" />
                   {{else}}
                     <ThemeSvg @svg="comparison-icon-group-snapshot" />
@@ -131,16 +131,16 @@
               <div class="absolute bg-primary rounded border pin-t-3 pin-r-3 pin-l-1 pin-b-3 shadow-lg"></div>
               <div class="relative pl-0 pb-2">
                 <ComparisonViewer
-                  @comparison={{selectedComparison}}
-                  @allDiffsShown={{allDiffsShown}}
-                  @snapshotSelectedWidth={{blockSelectedWidth}}
+                  @comparison={{this.selectedComparison}}
+                  @allDiffsShown={{this.allDiffsShown}}
+                  @snapshotSelectedWidth={{this.blockSelectedWidth}}
                   @isDefaultExpanded={{true}}
                   @isUnchangedSnapshotExpanded={{true}}
-                  @activeBrowser={{activeBrowser}}
+                  @activeBrowser={{this.activeBrowser}}
                   @toggleOverlay={{action "toggleGroupOverlay"}}
-                  @showDiffOverlay={{isGroupShowingDiffOverlay}}
+                  @showDiffOverlay={{this.isGroupShowingDiffOverlay}}
                   @class="snapshot-group-comparison-viewer shadow-lg"
-                  @index={{index}}
+                  @index={{this.index}}
                 />
               </div>
             </div>
@@ -149,8 +149,8 @@
 
       {{else}}
         <div class="relative pt-2 bg-secondary">
-          <div style="left: 28px;" class="snapshot-group-indent-line {{if isGroupRejected 'bg-orange-500' 'bg-purple-600'}}  {{if isGroupApproved 'snapshot-group-indent-line-approved-gradient'}}"></div>
-          {{#each snapshotsToDisplay as |snapshot index|}}
+          <div style="left: 28px;" class="snapshot-group-indent-line {{if this.isGroupRejected 'bg-orange-500' 'bg-purple-600'}}  {{if this.isGroupApproved 'snapshot-group-indent-line-approved-gradient'}}"></div>
+          {{#each this.snapshotsToDisplay as |snapshot index|}}
             <div class="flex bg-secondary">
               <div style="padding: 11px 16px 10px;" class="mb-2">
                 <div style="top: 132px;" class="sticky">
@@ -166,22 +166,22 @@
                 </div>
               </div>
               <SnapshotViewer
-                @build={{build}}
+                @build={{this.build}}
                 @snapshot={{snapshot}}
-                @externalIsCommentPanelShowing={{if (and shouldOpenFirstCommentPanel (eq index 0)) true false}}
-                @allDiffsShown={{allDiffsShown}}
-                @activeSnapshotBlockId={{activeSnapshotBlockId}}
-                @shouldDeferRendering={{shouldDeferRendering}}
-                @createReview={{createReview}}
-                @updateActiveSnapshotBlockId={{updateActiveSnapshotBlockId}}
-                @activeBrowser={{activeBrowser}}
-                @updateActiveBrowser={{updateActiveBrowser}}
-                @isBuildApprovable={{isBuildApprovable}}
-                @createCommentThread={{createCommentThread}}
-                @createComment={{createComment}}
-                @closeCommentThread={{closeCommentThread}}
+                @externalIsCommentPanelShowing={{if (and this.shouldOpenFirstCommentPanel (eq index 0)) true false}}
+                @allDiffsShown={{this.allDiffsShown}}
+                @activeSnapshotBlockId={{this.activeSnapshotBlockId}}
+                @shouldDeferRendering={{this.shouldDeferRendering}}
+                @createReview={{this.createReview}}
+                @updateActiveSnapshotBlockId={{this.updateActiveSnapshotBlockId}}
+                @activeBrowser={{this.activeBrowser}}
+                @updateActiveBrowser={{this.updateActiveBrowser}}
+                @isBuildApprovable={{this.isBuildApprovable}}
+                @createCommentThread={{this.createCommentThread}}
+                @createComment={{this.createComment}}
+                @closeCommentThread={{this.closeCommentThread}}
                 @toggleOverlay={{action "toggleGroupOverlay"}}
-                @showDiffOverlay={{isGroupShowingDiffOverlay}}
+                @showDiffOverlay={{this.isGroupShowingDiffOverlay}}
                 @index={{index}}
                 @class="snapshot-group-snapshot rounded-l flex-1 border-l"
               />

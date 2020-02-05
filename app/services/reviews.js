@@ -3,15 +3,25 @@ import {inject as service} from '@ember/service';
 import {Promise} from 'rsvp';
 import {REVIEW_ACTIONS} from 'percy-web/models/review';
 import {task} from 'ember-concurrency';
+import {get} from '@ember/object';
 
-export default Service.extend({
-  store: service(),
-  analytics: service(),
-  snapshotQuery: service(),
-  commentThreads: service(),
-  confirm: service(),
+export default class ReviewsService extends Service {
+  @service
+  store;
 
-  createReview: task(function*({snapshots, build, eventData}) {
+  @service
+  analytics;
+
+  @service
+  snapshotQuery;
+
+  @service
+  commentThreads;
+
+  @service
+  confirm;
+
+  @task(function*({snapshots, build, eventData}) {
     const hasOpenReviewThreads = this._snapshotsHaveOpenReviewThreads(snapshots);
     const hasRejectedSnapshots = snapshots.any(snapshot => snapshot.isRejected);
 
@@ -26,7 +36,8 @@ export default Service.extend({
     } else {
       return yield this.createApprovalReview(build, snapshots, eventData);
     }
-  }),
+  })
+  createReview;
 
   async createApprovalReview(build, snapshots, eventData) {
     const review = this.store.createRecord('review', {
@@ -35,16 +46,16 @@ export default Service.extend({
       action: REVIEW_ACTIONS.APPROVE,
     });
     return await this._saveReview(review, build, eventData);
-  },
+  }
 
   async createRejectReview(build, snapshots, eventData) {
-    const review = this.get('store').createRecord('review', {
+    const review = get(this, 'store').createRecord('review', {
       build,
       snapshots,
       action: REVIEW_ACTIONS.REJECT,
     });
     return await this._saveReview(review, build, eventData);
-  },
+  }
 
   async _saveReview(review, build, eventData) {
     await review.save();
@@ -64,17 +75,17 @@ export default Service.extend({
     }
 
     return true;
-  },
+  }
 
   _openReviewThreads(snapshots) {
     return snapshots.filterBy('isApproved', false).reduce((acc, snapshot) => {
       return acc.concat(snapshot.commentThreads.filterBy('isResolvable')).toArray();
     }, []);
-  },
+  }
 
   _snapshotsHaveOpenReviewThreads(snapshots) {
     return this._openReviewThreads(snapshots).length > 0;
-  },
+  }
 
   _reviewConfirmMessage(snapshots) {
     const numSnapshotsToApprove = snapshots.length;
@@ -84,13 +95,13 @@ export default Service.extend({
 
     return `The ${snapshotString} you want to approve ${possessionString} changes requested.
       Are you sure you want to approve ${directObjectString}?`;
-  },
+  }
 
   _trackEventData(eventData, build) {
-    this.get('analytics').track(
+    get(this, 'analytics').track(
       eventData.title,
       build.get('project.organization'),
       eventData.properties,
     );
-  },
-});
+  }
+}

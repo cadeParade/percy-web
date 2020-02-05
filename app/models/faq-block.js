@@ -1,9 +1,14 @@
 import Contentful from 'ember-data-contentful/models/contentful';
 import {attr, hasMany} from '@ember-data/model';
 
-export default Contentful.extend({
-  contentType: 'faqBlock',
+export default class FaqBlock extends Contentful {
+  get contentType() {
+    return 'faqBlock';
+  }
 
-  title: attr(),
-  faqs: hasMany('faq'),
-});
+  @attr()
+  title;
+
+  @hasMany('faq')
+  faqs;
+}

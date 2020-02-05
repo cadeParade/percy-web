@@ -1,27 +1,27 @@
-<td class="font-semibold p-1 pl-2">{{rowTitle}}</td>
+<td class="font-semibold p-1 pl-2">{{this.rowTitle}}</td>
 <td class="text-center text-gray-500 p-1">
-  {{#if isStartupPlansTruthy}}
+  {{#if this.isStartupPlansTruthy}}
     {{inline-svg "check-startup"}}
-  {{else if (get plans.startupPlans.firstObject field)}}
-    {{get plans.startupPlans.firstObject field}}
+  {{else if (get this.plans.startupPlans.firstObject this.field)}}
+    {{get this.plans.startupPlans.firstObject this.field}}
   {{else}}
     -
   {{/if}}
 </td>
 <td class="text-center text-gray-500 p-1">
-  {{#if isBusinessPlanTruthy}}
+  {{#if this.isBusinessPlanTruthy}}
     {{inline-svg "check-business"}}
-  {{else if (get plans.businessPlan field)}}
-    {{get plans.businessPlan field}}
+  {{else if (get this.plans.businessPlan this.field)}}
+    {{get this.plans.businessPlan this.field}}
   {{else}}
     -
   {{/if}}
 </td>
 <td class="text-center text-gray-500 p-1">
-  {{#if isEnterprisePlanTruthy}}
+  {{#if this.isEnterprisePlanTruthy}}
     {{inline-svg "check-enterprise"}}
-  {{else if (get plans.enterprisePlan field)}}
-    {{get plans.enterprisePlan field}}
+  {{else if (get this.plans.enterprisePlan this.field)}}
+    {{get this.plans.enterprisePlan this.field}}
   {{else}}
     -
   {{/if}}

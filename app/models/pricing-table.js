@@ -1,8 +1,11 @@
 import Contentful from 'ember-data-contentful/models/contentful';
 import {hasMany} from '@ember-data/model';
 
-export default Contentful.extend({
-  contentType: 'pricingTable',
+export default class PricingTable extends Contentful {
+  get contentType() {
+    return 'pricingTable';
+  }
 
-  pricingTableRows: hasMany('pricing-table-row'),
-});
+  @hasMany('pricing-table-row')
+  pricingTableRows;
+}

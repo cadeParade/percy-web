@@ -166,6 +166,7 @@ describe('Acceptance: Project', function() {
 
           expect(ProjectSettingsPage.projectEditForm.isVisible).to.equal(false);
           expect(ProjectSettingsPage.browserSelector.isVisible).to.equal(false);
+          expect(ProjectSettingsPage.toggleArchiveButton.isVisible).to.equal(false);
         });
 
         it('hides integrations', async function() {
@@ -201,6 +202,7 @@ describe('Acceptance: Project', function() {
 
           expect(ProjectSettingsPage.projectEditForm.isVisible).to.equal(true);
           expect(ProjectSettingsPage.browserSelector.isVisible).to.equal(true);
+          expect(ProjectSettingsPage.toggleArchiveButton.isVisible).to.equal(true);
         });
 
         it('shows integrations', async function() {
@@ -384,6 +386,27 @@ describe('Acceptance: Project', function() {
           });
 
           expect(currentRouteName()).to.equal('organization.project.settings.index');
+        });
+      });
+
+      describe('archiving a project', function() {
+        it('archives and unarchives a project', async function() {
+          function lookupProject() {
+            return server.db.projects.findBy({fullSlug: enabledProject.fullSlug});
+          }
+
+          await ProjectSettingsPage.visitProjectSettings({
+            orgSlug: organization.slug,
+            projectSlug: enabledProject.slug,
+          });
+          expect(lookupProject().isEnabled).to.equal(true);
+
+          await ProjectSettingsPage.toggleArchiveButton.click();
+          expect(lookupProject().isEnabled).to.equal(false);
+          await percySnapshot(this.test);
+
+          await ProjectSettingsPage.toggleArchiveButton.click();
+          expect(lookupProject().isEnabled).to.equal(true);
         });
       });
     });

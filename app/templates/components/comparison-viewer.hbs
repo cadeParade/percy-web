@@ -1,8 +1,8 @@
-{{#if comparison.wasCompared}}
-  {{#if comparison.isDifferent}}
+{{#if this.comparison.wasCompared}}
+  {{#if this.comparison.isDifferent}}
     <div class="flex">
       <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--left">
-        {{#with comparison.baseScreenshot.lossyImage as |image|}}
+        {{#with this.comparison.baseScreenshot.lossyImage as |image|}}
           <div class="Viewer-pdiffImageBox" style={{html-safe "max-width: " image.width "px"}}>
             <ImageSpacer
               @image={{image}}
@@ -13,30 +13,30 @@
         {{/with}}
       </div>
       <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--right">
-        {{#with comparison.headScreenshot.lossyImage as |lossyImage|}}
+        {{#with this.comparison.headScreenshot.lossyImage as |lossyImage|}}
           <DemoTooltip
-            @build={{comparison.headBuild}}
-            @isFirstInstance={{eq index 0}}
+            @build={{this.comparison.headBuild}}
+            @isFirstInstance={{eq this.index 0}}
             @anchorPlacement='left-corner'
             @key="comparison-overview"
           />
           <div class="Viewer-pdiffImageBox Viewer-pdiffImageBox--actionable" style={{html-safe "max-width: " lossyImage.width "px"}} data-test-comparison-viewer-diff-image-container>
             <ImageSpacer
-              @action={{toggleOverlay}}
+              @action={{this.toggleOverlay}}
               @image={{lossyImage}}
               @altText="Head screenshot image -- what it looks like on your new build"
               @imageClass="ComparisonViewer-pdiffImage ComparisonViewer-pdiffImage--actionable"
             />
-            {{#if showDiffOverlay}}
-              {{#with comparison.diffImage as |diffImage|}}
+            {{#if this.showDiffOverlay}}
+              {{#with this.comparison.diffImage as |diffImage|}}
                 <div class="pdiffImageOverlay" data-test-comparison-viewer-full-diff-image-overlay>
                   <ImageSpacer
-                    @action={{toggleOverlay}}
+                    @action={{this.toggleOverlay}}
                     @altText="Diff overlay -- Highlights the areas that are changed between base and head screenshots"
                     @image={{diffImage}}
                     @imageClass="Viewer-pdiffImageOverlay"
                   />
-                  {{#if isSnapshotDiffOverlayShowingClickBadge}}
+                  {{#if this.isSnapshotDiffOverlayShowingClickBadge}}
                     <div class="diff-overlay-badge">Click to toggle</div>
                   {{/if}}
                 </div>
@@ -49,14 +49,14 @@
     </div>
   {{else}}
     {{!-- Compared, but not different. --}}
-    {{#unless isUnchangedSnapshotExpanded}}
+    {{#unless this.isUnchangedSnapshotExpanded}}
       <div class="ComparisonViewer-noDiffBox" data-test-comparison-viewer-unchanged>
-        No visual changes at {{comparison.width}}px.
+        No visual changes at {{this.comparison.width}}px.
         <a {{action "expandUnchangedSnapshot"}} href="#">Show snapshot</a>
       </div>
     {{/unless}}
 
-    {{#if isUnchangedSnapshotExpanded}}
+    {{#if this.isUnchangedSnapshotExpanded}}
       <div class="flex" data-test-comaprison-viewer-show-unchanged-comparisons>
         <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--left">
           <div class="ComparisonViewer-snapshotMissing">
@@ -68,7 +68,7 @@
           </div>
         </div>
         <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--right">
-          {{#with comparison.headScreenshot.lossyImage as |image|}}
+          {{#with this.comparison.headScreenshot.lossyImage as |image|}}
             <div class="Viewer-pdiffImageBox" style={{html-safe "max-width:" image.width "px"}}>
               <ImageSpacer
                 @image={{image}}
@@ -82,13 +82,13 @@
     {{/if}}
   {{/if}}
 {{else}}
-  {{#if comparison.wasAdded}}
+  {{#if this.comparison.wasAdded}}
     {{! New snapshot. }}
     <div class="flex">
       <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--left">
         <div class="ComparisonViewer-snapshotMissing">
           <div>
-            {{#if comparison.headSnapshot.isReintroduced}}
+            {{#if this.comparison.headSnapshot.isReintroduced}}
               {{inline-svg "reintroduced-snapshot" class="mx-auto mb-3 opacity-50"}}
               <div class="mb-1 text-lg md:text-xl leading-none font-semibold">Reintroduced snapshot</div>
               <p class="mb-0 text-secondary">This snapshot existed in an earlier build, but is not in the base build, so a comparison was not run.</p>
@@ -101,7 +101,7 @@
         </div>
       </div>
       <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--right">
-        {{#with comparison.headScreenshot.lossyImage as |image|}}
+        {{#with this.comparison.headScreenshot.lossyImage as |image|}}
           <div class="Viewer-pdiffImageBox" style={{html-safe "max-width: " image.width "px"}}>
             <ImageSpacer
               @image={{image}}
@@ -113,7 +113,7 @@
       </div>
     </div>
   {{/if}}
-  {{#if comparison.wasRemoved}}
+  {{#if this.comparison.wasRemoved}}
     {{!-- TODO: was removed. --}}
   {{/if}}
 {{/if}}

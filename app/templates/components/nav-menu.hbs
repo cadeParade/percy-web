@@ -1,8 +1,8 @@
 <div class="flex items-center">
   <LinkTo @route="docs.index" class="hide-on-tablet link-dark">Docs</LinkTo>
   <a href="https://docs.percy.io/docs/example-apps" class="ml-3 hide-on-tablet link-dark">Tutorials</a>
-  {{#if session.isAuthenticated}}
-    <UserMenu @user={{user}} @class="ml-3" />
+  {{#if this.session.isAuthenticated}}
+    <UserMenu @user={{this.user}} @class="ml-3" />
   {{else}}
     <a href="https://blog.percy.io" class="ml-3 link-dark">Blog</a>
     <LinkTo @route="pricing" class="ml-3 link-dark">Pricing</LinkTo>

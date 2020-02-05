@@ -7,7 +7,7 @@
         </figure>
       </div>
       <div style="min-width: 0;" class="font-mono font-normal tracking-sm truncate">
-        {{webhookConfig.url}}
+        {{this.webhookConfig.url}}
       </div>
     </div>
     <div>
@@ -28,8 +28,8 @@
     <FormFields::Input
       @testLabel="webhook-config-url"
       @property="url"
-      @title={{labels.url.title}}
-      @subtitle={{labels.url.subtitle}}
+      @title={{this.labels.url.title}}
+      @subtitle={{this.labels.url.subtitle}}
       @changeset={{this.changeset}}
       @validateProperty={{action "validateProperty" this.changeset "url"}}
     />
@@ -37,8 +37,8 @@
     <FormFields::Input
       @testLabel="webhook-config-description"
       @property="description"
-      @title={{labels.description.title}}
-      @subtitle={{labels.description.subtitle}}
+      @title={{this.labels.description.title}}
+      @subtitle={{this.labels.description.subtitle}}
       @hint="optional"
       @changeset={{this.changeset}}
       @validateProperty={{action "validateProperty" this.changeset "description"}}
@@ -47,8 +47,8 @@
     <FormFields::Input
       @testLabel="webhook-config-auth-token"
       @property="authToken"
-      @title={{labels.authToken.title}}
-      @subtitle={{labels.authToken.subtitle}}
+      @title={{this.labels.authToken.title}}
+      @subtitle={{this.labels.authToken.subtitle}}
       @hint="optional"
       @changeset={{this.changeset}}
       @validateProperty={{action "validateProperty" this.changeset "authToken"}}
@@ -59,19 +59,19 @@
       @property="subscribedEvents"
       @changeset={{this.changeset}}
       @validateProperty={{action "validateProperty" this.changeset "subscribedEvents"}}
-      @title={{labels.subscribedEvents.title}}
-      @subtitle={{labels.subscribedEvents.subtitle}}
+      @title={{this.labels.subscribedEvents.title}}
+      @subtitle={{this.labels.subscribedEvents.subtitle}}
       @hint="choose at least one"
       @labelClasses="font-mono tracking-sm"
-      @allOptions={{allOptions}}
+      @allOptions={{this.allOptions}}
     />
 
     <FormFields::Checkbox
       @testLabel="webhook-config-ssl-verification-enabled"
       @property="sslVerificationEnabled"
       @changeset={{this.changeset}}
-      @title={{labels.sslVerificationEnabled.title}}
-      @subtitle={{labels.sslVerificationEnabled.subtitle}}
+      @title={{this.labels.sslVerificationEnabled.title}}
+      @subtitle={{this.labels.sslVerificationEnabled.subtitle}}
       @validateProperty={{action "validateProperty" this.changeset "sslVerificationEnabled"}}
       @checkedValue={{true}}
       @uncheckedValue={{false}}
@@ -93,14 +93,14 @@
   <div class="flex justify-end">
     <LinkTo
       @route="organization.project.integrations"
-      @model={{model.project.slug}}>
+      @model={{this.model.project.slug}}>
       <button type="button" class="btn btn-secondary">Back</button>
     </LinkTo>
 
     <FormFields::Submit
-      @value={{saveText}}
+      @value={{this.saveText}}
       @classes="webhook-config-submit btn btn-primary shadow-purple-lg mb-0 ml-1"
-      @disabled={{isSubmitDisabled}}
+      @disabled={{this.isSubmitDisabled}}
       @submit={{action "save"}}
     />
   </div>

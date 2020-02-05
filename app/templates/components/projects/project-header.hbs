@@ -1,4 +1,4 @@
-{{#unless shouldShowLinks}}
+{{#unless this.shouldShowLinks}}
   <PublicProjectNotice />
 {{/unless}}
 
@@ -9,29 +9,29 @@
 
     <div class="w-90vw max-w-xl mx-auto flex justify-between items-center">
       <div class="flex items-center">
-        {{#if project.publiclyReadable}}
-          {{fa-icon data-test-public-project-icon "globe" class="text-lg text-blue-500 mr-1"}}
+        {{#if this.project.publiclyReadable}}
+          <FaIcon @data-test-public-project-icon={{true}} @icon="globe" class="text-lg text-blue-500 mr-1" />
         {{/if}}
 
-        <div class="mr-2 text-xl md:text-2xl font-semibold leading-none">{{project.name}}</div>
-        {{#if project.isDisabled}}
+        <div class="mr-2 text-xl md:text-2xl font-semibold leading-none">{{this.project.name}}</div>
+        {{#if this.project.isDisabled}}
           <div class="label mr-2">archived</div>
         {{/if}}
-        {{#if project.isDemo}}
+        {{#if this.project.isDemo}}
           <div class="label mr-2">demo</div>
         {{/if}}
       </div>
 
       <div data-test-project-container-project-repo-linked>
-        {{#if project.repo}}
+        {{#if this.project.repo}}
           <div class="flex items-center">
             <figure class="svg-container mr-1">
-              {{#if (repo-logo project.repo)}}
-                {{inline-svg (repo-logo project.repo)}}
+              {{#if (repo-logo this.project.repo)}}
+                {{inline-svg (repo-logo this.project.repo)}}
               {{/if}}
             </figure>
             <span class="whitespace-no-wrap font-semibold mr-1">Linked to</span>
-            <a href="{{project.repo.htmlUrl}}"><code>{{project.repo.slug}}</code></a>
+            <a href="{{this.project.repo.htmlUrl}}"><code>{{this.project.repo.slug}}</code></a>
           </div>
         {{/if}}
 
@@ -40,14 +40,14 @@
     </div>
     <div class="w-90vw max-w-xl mx-auto">
       <nav class="tab-bar">
-        <LinkTo @route="organization.project.index" @models={{array project.organization.slug project.slug}} class="tab-bar-tab">
+        <LinkTo @route="organization.project.index" @models={{array this.project.organization.slug this.project.slug}} class="tab-bar-tab">
           Builds
         </LinkTo>
-        {{#if shouldShowLinks}}
-          <LinkTo @route="organization.project.settings" @models={{array project.organization.slug project.slug}} class="tab-bar-tab">
+        {{#if this.shouldShowLinks}}
+          <LinkTo @route="organization.project.settings" @models={{array this.project.organization.slug this.project.slug}} class="tab-bar-tab">
             Project settings
           </LinkTo>
-          <LinkTo @route="organization.project.integrations" @models={{array project.organization.slug project.slug}} class="tab-bar-tab">
+          <LinkTo @route="organization.project.integrations" @models={{array this.project.organization.slug this.project.slug}} class="tab-bar-tab">
             Integrations
           </LinkTo>
         {{/if}}

@@ -1,18 +1,18 @@
-<div class="team-member mb-7" style={{setGridItemOrder}}>
-  <img src="{{profile.img.file.url}}" alt="{{profile.name}}" class="team-member-photo">
+<div class="team-member mb-7" style={{this.setGridItemOrder}}>
+  <img src="{{this.profile.img.file.url}}" alt="{{this.profile.name}}" class="team-member-photo">
   <div class="social-toolbar flex justify-center">
     <div class="social-toolbar-items flex items-center px-1">
-      {{#each profile.iconLinks as |iconLink|}}
+      {{#each this.profile.iconLinks as |iconLink|}}
         <a href="{{iconLink.url}}" class="social-toolbar-item">
           <img src="{{iconLink.icon.file.url}}" alt="{{iconLink.icon.description}}">
         </a>
       {{/each}}
     </div>
   </div>
-  <div class="team-member-name text-lg font-semibold text-center">{{profile.name}}</div>
-  <div class="team-member-title text-secondary text-center mb-1">{{profile.title}}</div>
+  <div class="team-member-name text-lg font-semibold text-center">{{this.profile.name}}</div>
+  <div class="team-member-title text-secondary text-center mb-1">{{this.profile.title}}</div>
   <div class="label-container pr-4">
-    {{#each profile.labels as |label|}}
+    {{#each this.profile.labels as |label|}}
       <div class="label mr-sm mb-sm">{{label}}</div>
     {{/each}}
   </div>

@@ -1,33 +1,72 @@
+import {notEmpty, and, equal} from '@ember/object/computed';
 import Contentful from 'ember-data-contentful/models/contentful';
 import {attr, belongsTo, hasMany} from '@ember-data/model';
-import {equal, and, notEmpty} from '@ember/object/computed';
 
-export default Contentful.extend({
-  contentType: 'contentBlock',
+export default class ContentBlock extends Contentful {
+  get contentType() {
+    return 'contentBlock';
+  }
 
-  page: attr(),
-  order: attr(),
-  mainImage: belongsTo('contentful-asset'), // model here: https://bit.ly/2MoN7fD
-  imagePosition: attr(),
-  superheader: attr(),
-  header: attr(),
-  subheader: attr(),
-  bodyText: attr(),
-  bodyImages: attr(),
-  supportingTextSections: hasMany('supporting-content'),
-  callToActionText: attr(),
-  callToActionLink: attr(),
-  classes: attr(),
+  @attr()
+  page;
 
-  isImagePresent: notEmpty('mainImage.file.url'),
+  @attr()
+  order;
 
-  isImageCentered: equal('imagePosition', 'Center'),
-  isImageLeftAligned: equal('imagePosition', 'Left'),
-  isImageRightAligned: equal('imagePosition', 'Right'),
+  @belongsTo('contentful-asset')
+  mainImage; // model here: https://bit.ly/2MoN7fD
 
-  isRightAlignedImagePresent: and('isImagePresent', 'isImageRightAligned'),
-  isLeftAlignedImagePresent: and('isImagePresent', 'isImageLeftAligned'),
-  isCenterAlignedImagePresent: and('isImagePresent', 'isImageCentered'),
+  @attr()
+  imagePosition;
 
-  isFullCTAPresent: and('callToActionText', 'callToActionLink'),
-});
+  @attr()
+  superheader;
+
+  @attr()
+  header;
+
+  @attr()
+  subheader;
+
+  @attr()
+  bodyText;
+
+  @attr()
+  bodyImages;
+
+  @hasMany('supporting-content')
+  supportingTextSections;
+
+  @attr()
+  callToActionText;
+
+  @attr()
+  callToActionLink;
+
+  @attr()
+  classes;
+
+  @notEmpty('mainImage.file.url')
+  isImagePresent;
+
+  @equal('imagePosition', 'Center')
+  isImageCentered;
+
+  @equal('imagePosition', 'Left')
+  isImageLeftAligned;
+
+  @equal('imagePosition', 'Right')
+  isImageRightAligned;
+
+  @and('isImagePresent', 'isImageRightAligned')
+  isRightAlignedImagePresent;
+
+  @and('isImagePresent', 'isImageLeftAligned')
+  isLeftAlignedImagePresent;
+
+  @and('isImagePresent', 'isImageCentered')
+  isCenterAlignedImagePresent;
+
+  @and('callToActionText', 'callToActionLink')
+  isFullCTAPresent;
+}

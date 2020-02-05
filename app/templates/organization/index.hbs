@@ -1,22 +1,22 @@
-<FixedTopHeader @currentOrganization={{organization}} />
+<FixedTopHeader @currentOrganization={{this.organization}} />
 
 <DashboardNavWrapper
-  @organization={{organization}}
-  @showMemberLinks={{isUserMember}}
+  @organization={{this.organization}}
+  @showMemberLinks={{this.isUserMember}}
 >
-  {{#each enabledProjects as |project|}}
+  {{#each this.enabledProjects as |project|}}
     <Organizations::ProjectCard
       @project={{project}}
-      @organization={{organization}}
+      @organization={{this.organization}}
     />
   {{/each}}
 
-  {{#if (and isUserMember (gt archivedProjects.length 0))}}
-    {{#if isShowingArchivedProjects}}
-      {{#each archivedProjects as |project|}}
+  {{#if (and this.isUserMember (gt this.archivedProjects.length 0))}}
+    {{#if this.isShowingArchivedProjects}}
+      {{#each this.archivedProjects as |project|}}
         <Organizations::ProjectCard
           @project={{project}}
-          @organization={{organization}}
+          @organization={{this.organization}}
         />
       {{/each}}
     {{else}}

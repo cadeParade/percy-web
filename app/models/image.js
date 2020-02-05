@@ -1,7 +1,12 @@
 import Model, {attr} from '@ember-data/model';
 
-export default Model.extend({
-  url: attr(),
-  width: attr('number'),
-  height: attr('number'),
-});
+export default class Image extends Model {
+  @attr()
+  url;
+
+  @attr('number')
+  width;
+
+  @attr('number')
+  height;
+}

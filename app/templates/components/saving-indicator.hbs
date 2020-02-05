@@ -1,9 +1,9 @@
-{{#if isSaving}}
+{{#if this.isSaving}}
   {{fa-icon "fa-spinner fa-pulse"}}
 {{/if}}
-{{#if isSaveSuccessful}}
+{{#if this.isSaveSuccessful}}
   {{fa-icon 'check-circle'}}
 {{/if}}
-{{#if (eq isSaveSuccessful false)}}
+{{#if (eq this.isSaveSuccessful false)}}
   {{fa-icon 'times-circle'}} <strong>Failed!</strong>
 {{/if}}

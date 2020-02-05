@@ -1,19 +1,29 @@
+import classic from 'ember-classic-decorator';
+import {inject as service} from '@ember/service';
 import {alias} from '@ember/object/computed';
 import Route from '@ember/routing/route';
-import {inject as service} from '@ember/service';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-export default Route.extend(AuthenticatedRouteMixin, {
-  session: service(),
-  store: service(),
-  flashMessages: service(),
-  currentUser: alias('session.currentUser'),
+// Remove @classic when we can refactor away from mixins
+@classic
+export default class BitbucketCloudIntegrationRoute extends Route.extend(AuthenticatedRouteMixin) {
+  @service
+  session;
 
-  queryParams: {
+  @service
+  store;
+
+  @service
+  flashMessages;
+
+  @alias('session.currentUser')
+  currentUser;
+
+  queryParams = {
     clientKey: {},
     error: {},
     error_description: {},
-  },
+  };
 
   afterModel() {
     const params = this.paramsFor(this.routeName);
@@ -72,5 +82,5 @@ export default Route.extend(AuthenticatedRouteMixin, {
         this.flashMessages.danger(`Error creating Bitbucket Integration. ${error}`);
       },
     );
-  },
-});
+  }
+}

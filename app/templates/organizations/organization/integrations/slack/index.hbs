@@ -1,8 +1,8 @@
 <div data-test-slack-integration-page>
-  {{#if isAdmin}}
+  {{#if this.isAdmin}}
     <Organizations::Integrations::SlackDetailsContainer
       @showSlackIntegrationList={{true}}
-      @organization={{organization}}
+      @organization={{this.organization}}
       @connectSlackChannel={{route-action "connectSlackChannel"}}
       @deleteSlackIntegration={{route-action "deleteSlackIntegration"}}
     />

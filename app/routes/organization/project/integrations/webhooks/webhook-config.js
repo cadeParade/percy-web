@@ -1,11 +1,15 @@
+import classic from 'ember-classic-decorator';
+import {action} from '@ember/object';
+import {inject as service} from '@ember/service';
 import {hash} from 'rsvp';
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-import ResetScrollMixin from 'percy-web/mixins/reset-scroll';
-import {inject as service} from '@ember/service';
 
-export default Route.extend(AuthenticatedRouteMixin, ResetScrollMixin, {
-  flashMessages: service(),
+// Remove @classic when we can refactor away from mixins
+@classic
+export default class WebhookConfigRoute extends Route.extend(AuthenticatedRouteMixin) {
+  @service
+  flashMessages;
 
   model(params) {
     const organization = this.modelFor('organization');
@@ -22,30 +26,30 @@ export default Route.extend(AuthenticatedRouteMixin, ResetScrollMixin, {
     }
 
     return hash({organization, project, projects, webhookConfig});
-  },
+  }
 
-  actions: {
-    webhookConfigUpdated(webhookConfig) {
-      const organization = this.modelFor('organization');
-      const project = this.modelFor('organization.project');
+  @action
+  webhookConfigUpdated(webhookConfig) {
+    const organization = this.modelFor('organization');
+    const project = this.modelFor('organization.project');
 
-      // Ensures the route is updated with the webhook config's new ID,
-      // in case it was a new record.
-      this.replaceWith(
-        'organization.project.integrations.webhooks.webhook-config',
-        organization.slug,
-        project.slug,
-        webhookConfig.id,
-      );
+    // Ensures the route is updated with the webhook config's new ID,
+    // in case it was a new record.
+    this.replaceWith(
+      'organization.project.integrations.webhooks.webhook-config',
+      organization.slug,
+      project.slug,
+      webhookConfig.id,
+    );
 
-      this.flashMessages.success('Webhook configuration saved');
-    },
+    this.flashMessages.success('Webhook configuration saved');
+  }
 
-    willTransition() {
-      let model = this.store.peekAll('webhook-config').findBy('isNew', true);
-      if (model) {
-        this.store.unloadRecord(model);
-      }
-    },
-  },
-});
+  @action
+  willTransition() {
+    let model = this.store.peekAll('webhook-config').findBy('isNew', true);
+    if (model) {
+      this.store.unloadRecord(model);
+    }
+  }
+}

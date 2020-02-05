@@ -1,6 +1,9 @@
 import Model, {attr, belongsTo} from '@ember-data/model';
 
-export default Model.extend({
-  state: attr(),
-  createdBy: belongsTo('user', {async: false}),
-});
+export default class GithubIntegrationRequest extends Model {
+  @attr()
+  state;
+
+  @belongsTo('user', {async: false})
+  createdBy;
+}

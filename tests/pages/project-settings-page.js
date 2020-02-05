@@ -9,6 +9,7 @@ const SELECTORS = {
   DEMO_ENV_VAR: '[data-test-env-var-demo]',
   SLACK_INFO: '[data-test-slack-info]',
   SLACK_INTEGRATIONS_LINK: '[data-test-slack-organization-integrations-link]',
+  ARCHIVE_TOGGLE_BUTTON: '[data-test-percy-btn-label=project-archive-toggle-button]',
 };
 
 export const ProjectSettingsPage = {
@@ -29,6 +30,8 @@ export const ProjectSettingsPage = {
 
   slackInfo: {scope: SELECTORS.SLACK_INFO},
   slackIntegrationsLink: {scope: SELECTORS.SLACK_INTEGRATIONS_LINK},
+
+  toggleArchiveButton: {scope: SELECTORS.ARCHIVE_TOGGLE_BUTTON},
 };
 
 export default create(ProjectSettingsPage);

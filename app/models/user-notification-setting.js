@@ -1,5 +1,5 @@
-import Model, {attr, belongsTo} from '@ember-data/model';
 import {computed} from '@ember/object';
+import Model, {attr, belongsTo} from '@ember-data/model';
 
 export const USER_NOTIFICATION_SETTING_OPTIONS = [
   {
@@ -16,17 +16,23 @@ export const USER_NOTIFICATION_SETTING_OPTIONS = [
   },
 ];
 
-export default Model.extend({
-  user: belongsTo('user', {async: false}),
-  notificationTypes: attr({
+export default class UserNotificationSetting extends Model {
+  @belongsTo('user', {async: false})
+  user;
+
+  @attr({
     defaultValue() {
       return USER_NOTIFICATION_SETTING_OPTIONS.mapBy('value');
     },
-  }),
+  })
+  notificationTypes;
 
-  isCommentCreatedEmailOn: twoWayArrayToggle('comment_created_email'),
-  isCommentMentionCreatedEmailOn: twoWayArrayToggle('comment_mention_created_email'),
-});
+  @twoWayArrayToggle('comment_created_email')
+  isCommentCreatedEmailOn;
+
+  @twoWayArrayToggle('comment_mention_created_email')
+  isCommentMentionCreatedEmailOn;
+}
 
 // allows us to get and add/subtract an item in an array.
 function twoWayArrayToggle(settingName) {

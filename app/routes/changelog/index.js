@@ -1,9 +1,12 @@
+import {action} from '@ember/object';
 import Route from '@ember/routing/route';
 import metaTagLookup from 'percy-web/lib/meta-tags';
 import {hash} from 'rsvp';
 
-export default Route.extend({
-  headTags: metaTagLookup('changelog'),
+export default class IndexRoute extends Route {
+  @metaTagLookup('changelog')
+  headTags;
+
   model() {
     const hero = this.store.queryRecord('heroBlock', {
       'fields.page': 'Changelog',
@@ -13,19 +16,17 @@ export default Route.extend({
     });
 
     return hash({hero, posts});
-  },
+  }
 
   setupController(controller, model) {
     controller.setProperties({
       hero: model.hero,
       posts: model.posts,
     });
-  },
+  }
 
-  actions: {
-    didTransition() {
-      this._super(...arguments);
-      this.analytics.track('Changelog Page Viewed', null, {path: '/changelog'});
-    },
-  },
-});
+  @action
+  didTransition() {
+    this.analytics.track('Changelog Page Viewed', null, {path: '/changelog'});
+  }
+}

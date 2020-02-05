@@ -1,11 +1,11 @@
 {{!-- TODO: #billingadmins --}}
 <section class="w-90vw max-w-xl mx-auto pt-3 pb-9" data-test-billing-section-container>
-  {{#if (not (or isUserOrgAdmin (is-admin)))}}
+  {{#if (not (or this.isUserOrgAdmin (is-admin)))}}
     <div data-test-member-view class="Alert Alert--error">
       <strong>Changing billing settings requires organization admin permissions.</strong>
     </div>
   {{else}}
-    {{#if (and (not isUserOrgAdmin) (is-admin))}}
+    {{#if (and (not this.isUserOrgAdmin) (is-admin))}}
       <div class="bg-red-300 p-1 mt-1 mb-3 text-center font-bold"
         style="background: linear-gradient(to right, #f8cdc9 25%, #ef8b80 100%, #911f12 50%);">
         This page is only visible to you as a Percy superuser with admin mode enabled.
@@ -14,24 +14,24 @@
 
     <section data-test-admin-view>
       <Organizations::CurrentPlan
-        @organization={{organization}}
-        @currentUsageStats={{currentUsageStats}}
+        @organization={{this.organization}}
+        @currentUsageStats={{this.currentUsageStats}}
       />
 
-      {{#if subscription.plan.isUpgradeable}}
+      {{#if this.subscription.plan.isUpgradeable}}
         <Organizations::SubscriptionList
-          @organization={{organization}}
-          @updateEmail={{updateEmail}}
-          @updateSubscription={{updateSubscription}}
-          @updateCreditCard={{updateCreditCard}}
+          @organization={{this.organization}}
+          @updateEmail={{this.updateEmail}}
+          @updateSubscription={{this.updateSubscription}}
+          @updateCreditCard={{this.updateCreditCard}}
           @updateSavingState={{action "updateSavingState"}}
         />
       {{/if}}
 
-      {{#if (and subscription.isPaid (not isEmailOrCardSaving))}}
+      {{#if (and this.subscription.isPaid (not this.isEmailOrCardSaving))}}
         <Organizations::BillingSettings
-          @organization={{organization}}
-          @updateCreditCard={{updateCreditCard}}
+          @organization={{this.organization}}
+          @updateCreditCard={{this.updateCreditCard}}
         />
       {{/if}}
     </section>

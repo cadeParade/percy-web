@@ -1,11 +1,11 @@
 <div class="public-project-notice md:justify-between md:flex-no-wrap" data-test-public-project-notice>
   <div class="flex items-center">
     {{fa-icon "globe" class="fa-2x text-blue-500 mr-2"}}
-    {{displayText}}
+    {{this.displayText}}
   </div>
-  {{#if currentUser}}
-    <LinkTo @route="default-org" class="btn btn-primary mt-2 ml-5 md:ml-0 md:mt-0">{{btnText}}</LinkTo>
+  {{#if this.currentUser}}
+    <LinkTo @route="default-org" class="btn btn-primary mt-2 ml-5 md:ml-0 md:mt-0">{{this.btnText}}</LinkTo>
   {{else}}
-    <a href="#" {{action "showLoginModal"}} class="btn btn-primary mt-2 ml-5 md:ml-0 md:mt-0">{{btnText}}</a>
+    <a href="#" {{action "showLoginModal"}} class="btn btn-primary mt-2 ml-5 md:ml-0 md:mt-0">{{this.btnText}}</a>
   {{/if}}
 </div>

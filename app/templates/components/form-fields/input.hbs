@@ -1,27 +1,27 @@
 <label>
   <span class="label-body">
-    {{title}}
-    {{#if hint}}<span class="text-gray-300">({{hint}})</span>{{/if}}
+    {{this.title}}
+    {{#if this.hint}}<span class="text-gray-300">({{this.hint}})</span>{{/if}}
   </span>
-  {{#if subtitle}}
-    <div class="mb-1 text-secondary">{{html-safe subtitle}}</div>
+  {{#if this.subtitle}}
+    <div class="mb-1 text-secondary">{{html-safe this.subtitle}}</div>
   {{/if}}
   <input
-    type={{type}}
-    class="form-control mb-2 {{if fieldErrors 'error'}}"
-    value={{get changeset property}}
-    onchange={{action (mut (get changeset property)) value="target.value"}}
-    oninput={{action (mut (get changeset property)) value="target.value"}}
-    autofocus={{autofocus}}
-    autocomplete={{autocomplete}}
-    placeholder={{placeholder}}
-    disabled={{disabled}}
-    data-test-form-input={{testLabel}}
+    type={{this.type}}
+    class="form-control mb-2 {{if this.fieldErrors 'error'}}"
+    value={{get this.changeset this.property}}
+    onchange={{action (mut (get this.changeset this.property)) value="target.value"}}
+    oninput={{action (mut (get this.changeset this.property)) value="target.value"}}
+    autofocus={{this.autofocus}}
+    autocomplete={{this.autocomplete}}
+    placeholder={{this.placeholder}}
+    disabled={{this.disabled}}
+    data-test-form-input={{this.testLabel}}
   >
 </label>
-{{#if fieldErrors}}
+{{#if this.fieldErrors}}
   <ul class="Form-errors" data-test-input-errors>
-    {{#each (get fieldErrors "validation") as |message|}}
+    {{#each (get this.fieldErrors "validation") as |message|}}
       <li>{{message}}</li>
     {{/each}}
   </ul>

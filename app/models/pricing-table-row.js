@@ -1,13 +1,26 @@
 import Contentful from 'ember-data-contentful/models/contentful';
-import DS from 'ember-data';
+import {attr} from '@ember-data/model';
 
-export default Contentful.extend({
-  contentType: 'pricingTableRow',
+export default class PricingTableRow extends Contentful {
+  get contentType() {
+    return 'pricingTableRow';
+  }
 
-  rowTitle: DS.attr(),
-  xsmallCell: DS.attr(),
-  smallCell: DS.attr(),
-  mediumCell: DS.attr(),
-  largeCell: DS.attr(),
-  classes: DS.attr(),
-});
+  @attr()
+  rowTitle;
+
+  @attr()
+  xsmallCell;
+
+  @attr()
+  smallCell;
+
+  @attr()
+  mediumCell;
+
+  @attr()
+  largeCell;
+
+  @attr()
+  classes;
+}

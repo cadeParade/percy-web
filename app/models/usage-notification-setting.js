@@ -1,25 +1,36 @@
-import Model, {attr, belongsTo} from '@ember-data/model';
 import {computed} from '@ember/object';
 import {readOnly} from '@ember/object/computed';
+import Model, {attr, belongsTo} from '@ember-data/model';
 import {typeOf} from '@ember/utils';
 import Formatting from '../lib/formatting';
 
-export default Model.extend({
-  organization: belongsTo('organization', {async: false}),
+export default class UsageNotificationSetting extends Model {
+  @belongsTo('organization', {async: false})
+  organization;
 
-  isEnabled: attr(),
-  thresholds: attr(),
-  emails: attr(),
+  @attr()
+  isEnabled;
+
+  @attr()
+  thresholds;
+
+  @attr()
+  emails;
 
   // These are needed by the changeset in the form
-  displayEmails: computed('emails.[]', function() {
+  @computed('emails.[]')
+  get displayEmails() {
     return returnString(this.emails);
-  }),
-  thresholdSnapshotCount: readOnly('thresholds.snapshot-count'),
-  displayThresholds: computed('thresholdSnapshotCount.[]', function() {
+  }
+
+  @readOnly('thresholds.snapshot-count')
+  thresholdSnapshotCount;
+
+  @computed('thresholdSnapshotCount.[]')
+  get displayThresholds() {
     return returnFormattedThresholds(this.thresholdSnapshotCount);
-  }),
-});
+  }
+}
 
 export function returnFormattedThresholds(input) {
   let thresholds;

@@ -1,10 +1,10 @@
 import Route from '@ember/routing/route';
 
-export default Route.extend({
-  queryParams: {
+export default class DeprecatedSnapshotRoute extends Route {
+  queryParams = {
     comparisonMode: {as: 'mode'},
     activeBrowserFamilySlug: {as: 'browser', refreshModel: true},
-  },
+  };
 
   redirect() {
     const params = this.paramsFor(this.routeName);
@@ -15,5 +15,5 @@ export default Route.extend({
         width: params.width,
       },
     });
-  },
-});
+  }
+}

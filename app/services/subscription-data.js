@@ -66,4 +66,4 @@ export const PLAN_DATA = {
   ],
 };
 
-export default Service.extend(PLAN_DATA);
+export default class SubscriptionDataService extends Service.extend(PLAN_DATA) {}

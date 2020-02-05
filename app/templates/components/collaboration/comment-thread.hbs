@@ -1,41 +1,41 @@
-<div class="collaboration pr-2 lg:pr-0 {{if (gt commentThread.comments.length 1)  'collaboration-comment-replied'}}" data-test-comment-thread data-test-thread-type={{commentThread.type}}>
+<div class="collaboration pr-2 lg:pr-0 {{if (gt this.commentThread.comments.length 1)  'collaboration-comment-replied'}}" data-test-comment-thread data-test-thread-type={{this.commentThread.type}}>
 
-  {{#if areCommentsCollapsed}}
+  {{#if this.areCommentsCollapsed}}
     <Collaboration::CollaborationComment
-      @comment={{firstComment}}
+      @comment={{this.firstComment}}
       @isFirstComment={{true}}
-      @closeCommentThread={{closeCommentThread}}
-      @isCommentingAllowed={{isCommentingAllowed}}
+      @closeCommentThread={{this.closeCommentThread}}
+      @isCommentingAllowed={{this.isCommentingAllowed}}
     />
     <div class="collaboration-content-inset">
       <Collaboration::CollaborationComment
-        @comment={{secondComment}}
+        @comment={{this.secondComment}}
       />
       <Collaboration::CollaborationExpand
-        @isThreadClosed={{commentThread.isClosed}}
-        @numCollapsedComments={{numCollapsedComments}}
+        @isThreadClosed={{this.commentThread.isClosed}}
+        @numCollapsedComments={{this.numCollapsedComments}}
         @showCollapsedComments={{action "showCollapsedComments"}}
       />
       <Collaboration::CollaborationComment
-        @comment={{lastComment}}
+        @comment={{this.lastComment}}
       />
     </div>
   {{else}}
-    {{#each filteredComments as |comment index|}}
+    {{#each this.filteredComments as |comment index|}}
       <div class="{{if (not-eq index 0) "collaboration-content-inset"}}">
         <Collaboration::CollaborationComment
           @comment={{comment}}
           @isFirstComment={{eq index 0}}
-          @closeCommentThread={{closeCommentThread}}
+          @closeCommentThread={{this.closeCommentThread}}
         />
       </div>
     {{/each}}
   {{/if}}
 
-  {{#if shouldShowThreadReplyInput}}
+  {{#if this.shouldShowThreadReplyInput}}
     <Collaboration::CollaborationCommentReply
-      @commentThread={{commentThread}}
-      @createComment={{createComment}}
+      @commentThread={{this.commentThread}}
+      @createComment={{this.createComment}}
     />
   {{/if}}
 </div>

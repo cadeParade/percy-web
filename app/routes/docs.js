@@ -55,7 +55,7 @@ const REDIRECTS = {
   '/docs/api/reference': '/docs/reference',
 };
 
-export default Route.extend({
+export default class DocsRoute extends Route {
   beforeModel(transition) {
     // If the target route contains anything related to the old docs, don't continue.
     // This returns a promise because beforeModel blocks on a returned promise.
@@ -71,5 +71,5 @@ export default Route.extend({
         return utils.setWindowLocation('https://docs.percy.io');
       }
     });
-  },
-});
+  }
+}

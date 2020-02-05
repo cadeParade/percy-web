@@ -1,12 +1,12 @@
 <div data-test-manage-users-list>
   <section class="pb-9">
-    {{#if invites}}
-      <div class="px-4 pt-2 pb-sm text-sm text-gray-300 font-semibold border-b">{{pluralize invites.length "pending invitation"}}</div>
+    {{#if this.invites}}
+      <div class="px-4 pt-2 pb-sm text-sm text-gray-300 font-semibold border-b">{{pluralize this.invites.length "pending invitation"}}</div>
 
-      {{#each invites as |invite|}}
+      {{#each this.invites as |invite|}}
         <Organizations::InviteCard
           @invite={{invite}}
-          @organization={{organization}}
+          @organization={{this.organization}}
         />
       {{/each}}
     {{/if}}
@@ -16,16 +16,16 @@
       <div style="min-width: 200px" class="flex-1 text-sm text-gray-300 font-semibold pr-2">Name</div>
       <div style="min-width: 100px" class="flex-1 text-sm text-gray-300 font-semibold">Role</div>
       <div class="flex-1 text-sm text-gray-300 font-semibold">Joined on</div>
-      {{#if isAdmin}}
+      {{#if this.isAdmin}}
         <div class="flex-1 text-sm text-gray-300 font-semibold">Identities<sup class="hint--left hint--rounded hint--bounce" aria-label="These are the ways in which this user can log in to Percy.&#10;You can manage your own identities on your profile page found via the top right menu.">{{fa-icon "info-circle"}}</sup></div>
       {{/if}}
       <div class="flex-1"></div>
     </div>
 
-    {{#each organizationUsers as |organizationUser|}}
+    {{#each this.organizationUsers as |organizationUser|}}
       <Organizations::UserCard
         @organizationUser={{organizationUser}}
-        @isViewerAdmin={{isAdmin}}
+        @isViewerAdmin={{this.isAdmin}}
       />
     {{/each}}
   </section>

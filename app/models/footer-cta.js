@@ -1,13 +1,26 @@
 import Contentful from 'ember-data-contentful/models/contentful';
 import attr from 'ember-data/attr';
 
-export default Contentful.extend({
-  contentType: 'footerCta',
+export default class FooterCta extends Contentful {
+  get contentType() {
+    return 'footerCta';
+  }
 
-  largerText: attr(),
-  smallerText: attr(),
-  primaryButtonText: attr(),
-  primaryButtonLink: attr(),
-  secondaryButtonText: attr(),
-  secondaryButtonLink: attr(),
-});
+  @attr()
+  largerText;
+
+  @attr()
+  smallerText;
+
+  @attr()
+  primaryButtonText;
+
+  @attr()
+  primaryButtonLink;
+
+  @attr()
+  secondaryButtonText;
+
+  @attr()
+  secondaryButtonLink;
+}

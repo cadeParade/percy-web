@@ -1,33 +1,33 @@
 {{!-- template-lint-disable no-nested-interactive --}}
-<header class="SnapshotViewer-header {{if fullscreen 'SnapshotViewer-header-full w-screen z-2'}}" data-test-SnapshotViewer-header {{action expandSnapshot}} role="button">
+<header class="SnapshotViewer-header {{if this.fullscreen 'SnapshotViewer-header-full w-screen z-2'}}" data-test-SnapshotViewer-header {{action this.expandSnapshot}} role="button">
   <div style="min-width: 0;" class="flex items-center">
     <div class="flex items-center overflow-hidden">
-      {{#if snapshot.isRejected}}
+      {{#if this.snapshot.isRejected}}
         <div class="mr-1">
-          <div class="px-1 py-sm tracking-px rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{if (eq snapshot.reviewStateReason 'user_rejected_previously') 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}" data-test-request-changes-badge>
+          <div class="px-1 py-sm tracking-px rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{if (eq this.snapshot.reviewStateReason 'user_rejected_previously') 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}" data-test-request-changes-badge>
             Changes requested
           </div>
         </div>
       {{/if}}
 
-      <div class="Viewer-header-title SnapshotViewer-title cursor-default font-bold truncate" title="{{snapshot.name}}" data-test-SnapshotViewer-title>
-        {{snapshot.name}}
+      <div class="Viewer-header-title SnapshotViewer-title cursor-default font-bold truncate" title="{{this.snapshot.name}}" data-test-SnapshotViewer-title>
+        {{this.snapshot.name}}
 
       </div>
     </div>
     <DemoTooltip
-      @build={{snapshot.build}}
-      @isFirstInstance={{eq index 0}}
+      @build={{this.snapshot.build}}
+      @isFirstInstance={{eq this.index 0}}
       @key="snapshot-overview"
     />
   </div>
 
-  {{#if fullscreen}}
+  {{#if this.fullscreen}}
     <div class="flex items-center">
       <ComparisonModeSwitcher
-        @comparison={{selectedComparison}}
-        @updateComparisonMode={{updateComparisonMode}}
-        @comparisonMode={{comparisonMode}}
+        @comparison={{this.selectedComparison}}
+        @updateComparisonMode={{this.updateComparisonMode}}
+        @comparisonMode={{this.comparisonMode}}
         @data-test-SnapshotViewer-comparison-mode-switcher={{true}}
       />
     </div>
@@ -50,13 +50,15 @@
             <dropdown.Content>
               <div class="dropdown-menu" data-test-snapshot-header-dropdown-pane>
                 <ul class="mb-0">
-                  {{#if (not (or allComparisonsHaveDiffs noComparisonsHaveDiffs))}}
+                  {{#if (not (or this.allComparisonsHaveDiffs this.noComparisonsHaveDiffs))}}
                     <li class="dropdown-menu-list-item flex justify-between items-center cursor-pointer text-sm font-semibold border-b border-secondary py-1 pl-2 pr-1 mb-0"
                       {{action (pipe-action
                         (action 'toggleFilteredComparisons')
                         dropdown.actions.close
-                      )}} role="button" data-test-toggle-widths-option>
-                      {{#if isShowingFilteredComparisons}}
+                      )}}
+                      role="button"
+                      data-test-toggle-widths-option>
+                      {{#if this.isShowingFilteredComparisons}}
                         <span>Show all widths</span>
                         {{inline-svg "width-icon"}}
                       {{else}}
@@ -68,39 +70,40 @@
                   <li class="dropdown-menu-list-item cursor-pointer text-sm font-semibold py-1 pl-2 pr-1 mb-0">
                     <CopyButton
                       @class="btn-icon-only w-full flex justify-between items-center"
-                      @clipboardText={{generate-fullscreen-snapshot-url snapshot.id snapshotSelectedWidth comparisonMode activeBrowser.familySlug fullscreen}}
+                      @clipboardText={{generate-fullscreen-snapshot-url this.snapshot.id this.snapshotSelectedWidth this.comparisonMode this.activeBrowser.familySlug this.fullscreen}}
                       @success={{pipe-action (action "onCopySnapshotUrlToClipboard") dropdown.actions.close}}
                     >
                       <span>Copy snapshot URL</span>
                       {{inline-svg "link-icon"}}
                     </CopyButton>
                   </li>
-                  {{#if selectedComparison.baseSnapshot}}
+                  {{#if this.selectedComparison.baseSnapshot}}
                     <li class="dropdown-menu-list-item cursor-pointer flex justify-between items-center text-sm font-semibold py-1 pl-2 pr-1 mb-0"
                     {{action (pipe-action
-                      (action 'downloadHTML' 'base' selectedComparison.baseSnapshot)
+                      (action 'downloadHTML' 'base' this.selectedComparison.baseSnapshot)
                       dropdown.actions.close
-                    )}} role="button">
+                    )}}
+                    role="button">
                       <span>Download original source</span>
                       {{inline-svg "download-source-icon"}}
                     </li>
                   {{/if}}
-                  {{#if selectedComparison.headSnapshot}}
+                  {{#if this.selectedComparison.headSnapshot}}
                     <li class="dropdown-menu-list-item cursor-pointer flex justify-between items-center text-sm font-semibold py-1 pl-2 pr-1 mb-0"
                     role="button"
                     {{action (pipe-action
-                      (action 'downloadHTML' 'head' selectedComparison.headSnapshot)
+                      (action 'downloadHTML' 'head' this.selectedComparison.headSnapshot)
                       dropdown.actions.close
                     )}}>
                       <span>Download new source</span>
                       {{inline-svg "download-source-icon"}}
                     </li>
                   {{/if}}
-                  {{#if (and selectedComparison.headSnapshot selectedComparison.baseSnapshot)}}
+                  {{#if (and this.selectedComparison.headSnapshot this.selectedComparison.baseSnapshot)}}
                     <li class="dropdown-menu-list-item cursor-pointer flex justify-between items-center text-sm font-semibold py-1 pl-2 pr-1 mb-0"
                     role="button"
                     {{action (pipe-action
-                      (action 'downloadDiff' selectedComparison)
+                      (action 'downloadDiff' this.selectedComparison)
                       dropdown.actions.close
                     )}}>
                       <span>Download source diff</span>
@@ -124,25 +127,30 @@
       </div>
 
       <div class="btn-group" role="group" aria-label="Second Group">
-        {{#if fullscreen}}
-          <LinkTo
-            @route="organization.project.builds.build.index"
-            @models={{array snapshot.build.project.organization.slug snapshot.build.project.slug snapshot.build.id}}
+        {{#if this.fullscreen}}
+          <a href={{href-to
+              "organization.project.builds.build.index"
+              this.snapshot.build.project.organization.slug
+              this.snapshot.build.project.slug
+              this.snapshot.build.id
+            }}
+            {{on 'click' (action 'handleTransitionToBuildPage' this.snapshot.build.id)}}
             class="ToggleFullViewButton btn btn-square minimize-snapshot"
             aria-label="Minimize snapshot"
             data-test-SnapshotViewer-toggleFullScreen
+            data-href-to-ignore
           >
             <figure class="svg-container">
               <ThemeSvg @svg="minimize-icon" />
             </figure>
-          </LinkTo>
+          </a>
         {{else}}
           <LinkTo
             @route="organization.project.builds.build.snapshot"
-            @model={{snapshot.id}}
+            @model={{this.snapshot.id}}
             @query={{hash
-              currentWidth=snapshotSelectedWidth
-              activeBrowserFamilySlug=activeBrowser.familySlug
+              currentWidth=this.snapshotSelectedWidth
+              activeBrowserFamilySlug=this.activeBrowser.familySlug
             }}
             class="ToggleFullViewButton btn btn-square maximize-snapshot"
             aria-label="Maximize snapshot"
@@ -155,60 +163,60 @@
         {{/if}}
       </div>
 
-      {{#if snapshot.build.isFinished}}
-        {{#if isBuildApprovable}}
+      {{#if this.snapshot.build.isFinished}}
+        {{#if this.isBuildApprovable}}
           <Collaboration::ToggleButton
-            @toggleCollaborationPanel={{toggleCollaborationPanel}}
+            @toggleCollaborationPanel={{this.toggleCollaborationPanel}}
             @isResolved={{false}}
-            @unresolvedCommentThreadCount={{unresolvedCommentThreadCount}}
+            @unresolvedCommentThreadCount={{this.unresolvedCommentThreadCount}}
           />
         {{/if}}
 
-        {{#if (and fullscreen snapshot.build.hasMultipleBrowsers)}}
+        {{#if (and this.fullscreen this.snapshot.build.hasMultipleBrowsers)}}
           <BrowserSwitcher
-            @browsers={{snapshot.build.browsers}}
-            @activeBrowser={{activeBrowser}}
-            @updateActiveBrowser={{updateActiveBrowser}}
-            @fullscreen={{fullscreen}}
+            @browsers={{this.snapshot.build.browsers}}
+            @activeBrowser={{this.activeBrowser}}
+            @updateActiveBrowser={{this.updateActiveBrowser}}
+            @fullscreen={{this.fullscreen}}
           />
         {{/if}}
       {{/if}}
 
       <div class="btn-group btn-group-alt">
         <ComparisonSwitcher
-          @comparisons={{if isShowingAllComparisons filteredComparisons.comparisons filteredComparisons.comparisonsWithDiffs}}
-          @selectedWidth={{snapshotSelectedWidth}}
-          @updateSelectedWidth={{updateSelectedWidth}}
+          @comparisons={{if this.isShowingAllComparisons this.filteredComparisons.comparisons this.filteredComparisons.comparisonsWithDiffs}}
+          @selectedWidth={{this.snapshotSelectedWidth}}
+          @updateSelectedWidth={{this.updateSelectedWidth}}
           @data-test-SnapshotViewer-widthSwitcher={{true}}
         />
       </div>
 
-      {{#if snapshot.build.isFinished}}
+      {{#if this.snapshot.build.isFinished}}
         <div class="btn-toolbar" data-test-snapshot-approval-button>
-          {{#if snapshot.isUnreviewed}}
+          {{#if this.snapshot.isUnreviewed}}
             <DemoTooltip
-              @build={{snapshot.build}}
-              @isFirstInstance={{eq index 0}}
+              @build={{this.snapshot.build}}
+              @isFirstInstance={{eq this.index 0}}
               @anchorPlacement='left-corner'
               @key="snapshot-request-changes-button"
             />
             <SnapshotRejectButton
-              @snapshots={{array snapshot}}
-              @isDisabled={{not isBuildApprovable}}
+              @snapshots={{array this.snapshot}}
+              @isDisabled={{not this.isBuildApprovable}}
             />
           {{/if}}
 
           <SnapshotApprovalTooltips
-            @snapshot={{snapshot}}
-            @index={{index}}
+            @snapshot={{this.snapshot}}
+            @index={{this.index}}
             @tagName=''
           />
           <SnapshotApprovalButton
-            @snapshot={{snapshot}}
-            @hasDiffsInBrowser={{hasDiffsInBrowser}}
-            @activeBrowser={{activeBrowser}}
-            @createReview={{createReview}}
-            @isDisabled={{not isBuildApprovable}}
+            @snapshot={{this.snapshot}}
+            @hasDiffsInBrowser={{this.hasDiffsInBrowser}}
+            @activeBrowser={{this.activeBrowser}}
+            @createReview={{this.createReview}}
+            @isDisabled={{not this.isBuildApprovable}}
           />
         </div>
       {{/if}}

@@ -1,6 +1,6 @@
 <StripeCard
   data-test-billing-card-updater-stripe-card={{true}}
-  @options={{stripeOptions}}
+  @options={{this.stripeOptions}}
   @change={{action 'checkCard'}}
   as |stripeElement stripeError|
 >
@@ -9,10 +9,10 @@
   {{/if}}
   <div class="flex justify-start mt-2">
     <PercyBtn
-      @handleClick={{action "submitCardUpdate" stripeElement planId}}
+      @handleClick={{action "submitCardUpdate" stripeElement this.planId}}
       @isPrimaryButton={{true}}
-      @isDisabled={{not isCardValid}}
-      @isSaving={{isSaving}}
+      @isDisabled={{not this.isCardValid}}
+      @isSaving={{this.isSaving}}
       @class="mr-2"
       @testLabel="submit"
     >

@@ -1,18 +1,18 @@
-{{#if (not-eq file.contentType 'image/svg+xml')}}
+{{#if (not-eq this.file.contentType 'image/svg+xml')}}
   <picture>
     {{!-- webp format --}}
-    <source media="(max-width: 480px)" srcset="{{file.url}}?fm=webp&fit=fill&w=480&q=95 1x, {{file.url}}?fm=webp&fit=fill&w=720&q=95 1.5x, {{file.url}}?fm=webp&fit=fill&w=960&q=90 2x" type="image/webp">
-    <source media="(max-width: 768px)" srcset="{{file.url}}?fm=webp&fit=fill&w=768&q=95 1x, {{file.url}}?fm=webp&fit=fill&w=1152&q=95 1.5x, {{file.url}}?fm=webp&fit=fill&w=1536&q=90 2x" type="image/webp">
-    <source srcset="{{file.url}}?fm=webp&fit=fill&w=1024&q=95 1x, {{file.url}}?fm=webp&fit=fill&w=1536&q=95 1.5x, {{file.url}}?fm=webp&fit=fill&w=2048&q=90 2x" type="image/webp">
+    <source media="(max-width: 480px)" srcset="{{this.file.url}}?fm=webp&fit=fill&w=480&q=95 1x, {{this.file.url}}?fm=webp&fit=fill&w=720&q=95 1.5x, {{this.file.url}}?fm=webp&fit=fill&w=960&q=90 2x" type="image/webp">
+    <source media="(max-width: 768px)" srcset="{{this.file.url}}?fm=webp&fit=fill&w=768&q=95 1x, {{this.file.url}}?fm=webp&fit=fill&w=1152&q=95 1.5x, {{this.file.url}}?fm=webp&fit=fill&w=1536&q=90 2x" type="image/webp">
+    <source srcset="{{this.file.url}}?fm=webp&fit=fill&w=1024&q=95 1x, {{this.file.url}}?fm=webp&fit=fill&w=1536&q=95 1.5x, {{this.file.url}}?fm=webp&fit=fill&w=2048&q=90 2x" type="image/webp">
 
     {{!-- default format --}}
-    <source media="(max-width: 480px)" srcset="{{file.url}}?fit=fill&w=480&q=95 1x, {{file.url}}?fit=fill&w=720&q=95 1.5x, {{file.url}}?fit=fill&w=960&q=90 2x">
-    <source media="(max-width: 768px)" srcset="{{file.url}}?fit=fill&w=768&q=95 1x, {{file.url}}?fit=fill&w=1152&q=95 1.5x, {{file.url}}?fit=fill&w=1536&q=90 2x">
-    <source srcset="{{file.url}}?fit=fill&w=1024&q=95 1x, {{file.url}}?fit=fill&w=1536&q=95 1.5x, {{file.url}}?fit=fill&w=2048&q=90 2x">
+    <source media="(max-width: 480px)" srcset="{{this.file.url}}?fit=fill&w=480&q=95 1x, {{this.file.url}}?fit=fill&w=720&q=95 1.5x, {{this.file.url}}?fit=fill&w=960&q=90 2x">
+    <source media="(max-width: 768px)" srcset="{{this.file.url}}?fit=fill&w=768&q=95 1x, {{this.file.url}}?fit=fill&w=1152&q=95 1.5x, {{this.file.url}}?fit=fill&w=1536&q=90 2x">
+    <source srcset="{{this.file.url}}?fit=fill&w=1024&q=95 1x, {{this.file.url}}?fit=fill&w=1536&q=95 1.5x, {{this.file.url}}?fit=fill&w=2048&q=90 2x">
 
     {{!-- fallback image if <picture> is not supported --}}
-    <img src="{{file.url}}?fit=fill&w=2048&q=90" alt="{{file.description}}" class="{{class}}" />
+    <img src="{{this.file.url}}?fit=fill&w=2048&q=90" alt="{{this.file.description}}" class="{{this.class}}" />
   </picture>
 {{else}}
-  <img src="{{file.url}}" alt="{{file.description}}" class="{{class}}" />
+  <img src="{{this.file.url}}" alt="{{this.file.description}}" class="{{this.class}}" />
 {{/if}}

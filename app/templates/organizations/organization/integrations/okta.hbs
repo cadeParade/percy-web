@@ -11,20 +11,20 @@
 
         <Organizations::RequireRole
           @role="admin"
-          @user={{currentUser}}
-          @organization={{organization}}
+          @user={{this.currentUser}}
+          @organization={{this.organization}}
         >
           <div class="mb-2">
             <div class="px-2 pb-1 -mx-2">
               <div class="mb-2 pt-2">
                 <Organizations::Integrations::OktaSettingsItem
                   @settingName="Provider login url"
-                  @settingValue={{samlIntegration.providerLoginUrl}}
+                  @settingValue={{this.samlIntegration.providerLoginUrl}}
                 />
 
                 <Organizations::Integrations::OktaSettingsItem
                   @settingName="Email domain"
-                  @settingValue={{samlIntegration.emailDomain}}
+                  @settingValue={{this.samlIntegration.emailDomain}}
                 />
               </div>
             </div>
@@ -38,7 +38,7 @@
       <div class="flex justify-end px-2 pb-2">
         <LinkTo
           @route="organizations.organization.integrations.index"
-          @model={{organization.slug}}
+          @model={{this.organization.slug}}
           class="percy-btn"
         >
           Back

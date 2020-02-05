@@ -2,27 +2,27 @@
   <div class="w-90vw max-w-lg mx-auto lg:flex flex-1 items-center">
     <div class="flex-1">
       <div class="mb-3 lg:mb-0">
-        {{#if content.largerText}}
+        {{#if this.content.largerText}}
           <div class="text-2xl font-semibold text-white">
-            {{content.largerText}}
+            {{this.content.largerText}}
           </div>
         {{/if}}
 
-        {{#if content.smallerText}}
+        {{#if this.content.smallerText}}
           <p class="text-lg mb-0 text-white">
-            {{content.smallerText}}
+            {{this.content.smallerText}}
           </p>
         {{/if}}
       </div>
     </div>
     <div class="btn-toolbar flex-1 lg:justify-end">
-      {{#if (and content.secondaryButtonText content.secondaryButtonLink)}}
-        <a href="{{content.secondaryButtonLink}}" class="btn-md border border-purple-500 rounded link-white text-center">
-          {{content.secondaryButtonText}}
+      {{#if (and this.content.secondaryButtonText this.content.secondaryButtonLink)}}
+        <a href="{{this.content.secondaryButtonLink}}" class="btn-md border border-purple-500 rounded link-white text-center">
+          {{this.content.secondaryButtonText}}
         </a>
       {{/if}}
-      <a href="{{content.primaryButtonLink}}" class="btn-md btn-white border border-purple-100 rounded text-center">
-        {{content.primaryButtonText}}
+      <a href="{{this.content.primaryButtonLink}}" class="btn-md btn-white border border-purple-100 rounded text-center">
+        {{this.content.primaryButtonText}}
       </a>
     </div>
   </div>

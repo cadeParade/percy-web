@@ -1,19 +1,19 @@
 <button
   data-test-percy-btn
-  data-test-percy-btn-label={{testLabel}}
-  type="{{if type type "button"}}"
+  data-test-percy-btn-label={{this.testLabel}}
+  type="{{if this.type this.type "button"}}"
   name="button"
-  disabled={{isDisabled}}
+  disabled={{this.isDisabled}}
   onclick={{action "handleClick"}}
   class="
     percy-btn
-    {{class}}
-    {{if isPrimaryButton "percy-btn-primary"}}
-    {{if isSecondaryButton "percy-btn-secondary"}}
-    {{if isNoShadow "shadow-none"}}
-    {{if isNoAnimate "animate-none"}}
-    {{if isSaving "is-loading"}}
-    {{if isSmallButton "percy-btn-sm"}}
+    {{this.class}}
+    {{if this.isPrimaryButton "percy-btn-primary"}}
+    {{if this.isSecondaryButton "percy-btn-secondary"}}
+    {{if this.isNoShadow "shadow-none"}}
+    {{if this.isNoAnimate "animate-none"}}
+    {{if this.isSaving "is-loading"}}
+    {{if this.isSmallButton "percy-btn-sm"}}
   "
 >
   {{yield}}

@@ -1,17 +1,17 @@
 <div class="repo-selector flex items-center flex-1">
   <PowerSelect
-    @selected={{selectedRepo}}
+    @selected={{this.selectedRepo}}
     @searchEnabled={{true}}
     @searchField="slug"
     @placeholder="Select a repository"
     @renderInPlace={{true}}
     @matchTriggerWidth={{false}}
     @allowClear={{true}}
-    @options={{groupedRepos}}
+    @options={{this.groupedRepos}}
     @searchPlaceholder="Type to filter repositories"
     @noMatchesMessage="No repositories found"
     @afterOptionsComponent={{component "repo-refresh-status"
-      isRepoRefreshInProgress=isRepoRefreshInProgress lastSyncedAt=lastSyncedAt
+      isRepoRefreshInProgress=this.isRepoRefreshInProgress lastSyncedAt=this.lastSyncedAt
     }}
     @onChange={{action "chooseRepo"}}
     @onOpen={{action "refreshRepos"}}
@@ -19,5 +19,5 @@
   >
     {{repo.slug}}
   </PowerSelect>
-  <SavingIndicator @isSaving={{isSaving}} @isSaveSuccessful={{isSaveSuccessful}} />
+  <SavingIndicator @isSaving={{this.isSaving}} @isSaveSuccessful={{this.isSaveSuccessful}} />
 </div>

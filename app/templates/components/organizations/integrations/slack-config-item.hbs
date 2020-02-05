@@ -4,10 +4,10 @@
       <div>
         <div class="flex justify-start items-center">
           <div class="text-lg font-semibold mr-2" data-test-project-name>
-            {{projectName}}
+            {{this.projectName}}
           </div>
           <div class="flex-shrink">
-            {{#each notificationLabels as |type|}}
+            {{#each this.notificationLabels as |type|}}
               <code class="mr-1 lowercase" data-test-notification-type>{{type}}</code>
             {{/each}}
           </div>
@@ -16,7 +16,7 @@
     </div>
     <LinkTo
       @route="organizations.organization.integrations.slack.slack-config"
-      @models={{array slackIntegrationConfig.slackIntegration.id slackIntegrationConfig.id}}
+      @models={{array this.slackIntegrationConfig.slackIntegration.id this.slackIntegrationConfig.id}}
     >
       <button type="button" class="percy-btn ml-2" data-test-edit-button>
         Edit Configuration

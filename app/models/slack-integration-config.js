@@ -27,8 +27,13 @@ export const SLACK_NOTIFICATION_OPTIONS = [
   },
 ];
 
-export default Model.extend({
-  slackIntegration: belongsTo('slack-integration', {async: false}),
-  projectId: attr(),
-  notificationTypes: attr(),
-});
+export default class SlackIntegrationConfig extends Model {
+  @belongsTo('slack-integration', {async: false})
+  slackIntegration;
+
+  @attr()
+  projectId;
+
+  @attr()
+  notificationTypes;
+}

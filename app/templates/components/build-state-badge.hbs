@@ -1,19 +1,19 @@
-{{#if build.isPending}}
+{{#if this.build.isPending}}
   Receiving
-{{else if build.isProcessing}}
+{{else if this.build.isProcessing}}
   Processing
-{{else if build.isFinished}}
-  {{#if build.isApproved}}
+{{else if this.build.isFinished}}
+  {{#if this.build.isApproved}}
     Approved
   {{else}}
-    {{#if build.hasDiffs}}
-      {{pluralize build.totalSnapshotsUnreviewed "visual change"}}
+    {{#if this.build.hasDiffs}}
+      {{pluralize this.build.totalSnapshotsUnreviewed "visual change"}}
     {{else}}
       No visual diffs
     {{/if}}
   {{/if}}
-{{else if build.isFailed}}
+{{else if this.build.isFailed}}
   Failed
-{{else if build.isExpired}}
+{{else if this.build.isExpired}}
   Expired
 {{/if}}

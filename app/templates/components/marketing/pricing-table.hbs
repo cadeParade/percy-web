@@ -1,29 +1,29 @@
 <section class="w-90vw max-w-lg mx-auto border-b pt-8 pb-4 md:py-16">
   <table class="w-full" style="table-layout: fixed;">
     <thead>
-      <th class="sticky bg-white py-1">{{tableHeader.rowTitle}}</th>
+      <th class="sticky bg-white py-1">{{this.tableHeader.rowTitle}}</th>
 
       <th class="sticky bg-white py-1 text-lg text-green-600">
-        {{#if tableHeader.xsmallCell}}
-          {{tableHeader.xsmallCell}}
+        {{#if this.tableHeader.xsmallCell}}
+          {{this.tableHeader.xsmallCell}}
         {{/if}}
       </th>
 
       <th class="sticky bg-white py-1 text-lg text-purple-600">
-        {{#if tableHeader.smallCell}}
-          {{tableHeader.smallCell}}
+        {{#if this.tableHeader.smallCell}}
+          {{this.tableHeader.smallCell}}
         {{/if}}
       </th>
 
       <th class="sticky bg-white py-1 text-lg text-gray-600">
-        {{#if tableHeader.largeCell}}
-          {{tableHeader.largeCell}}
+        {{#if this.tableHeader.largeCell}}
+          {{this.tableHeader.largeCell}}
         {{/if}}
       </th>
     </thead>
 
     <tbody class="pricing-feature-table">
-      {{#each table.pricingTableRows as |row index|}}
+      {{#each this.table.pricingTableRows as |row index|}}
         {{#if (gt index 0)}}
           <Marketing::PricingTableRow @row={{row}} />
         {{/if}}

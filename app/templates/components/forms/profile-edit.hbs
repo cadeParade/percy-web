@@ -16,17 +16,17 @@
     @testLabel="profile-edit-email"
   />
 
-  {{#if user.unverifiedEmail}}
+  {{#if this.user.unverifiedEmail}}
     <div class="mb-3" data-test-profile-edit-unverified-email-message>
-      Please check your <strong>{{user.unverifiedEmail}}</strong> email and click the verification link to complete this change.
+      Please check your <strong>{{this.user.unverifiedEmail}}</strong> email and click the verification link to complete this change.
     </div>
   {{/if}}
 
   <FormFields::Submit
     @value="Save"
     @classes="btn btn-primary shadow-purple-lg"
-    @isSaving={{isSaving}}
-    @isSaveSuccessful={{isSaveSuccessful}}
+    @isSaving={{this.isSaving}}
+    @isSaveSuccessful={{this.isSaveSuccessful}}
     @submit={{action "save"}}
     @disabled={{this.changeset.isPristine}}
     @data-test-profile-edit-submit={{true}}

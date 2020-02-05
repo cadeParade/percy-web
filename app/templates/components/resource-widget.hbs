@@ -4,9 +4,9 @@
 </p>
 <div class="flex">
   <div class="px-4 py-2 mr-4 border-r text-right font-semibold whitespace-no-wrap">
-    {{#each-in languages as |key language|}}
+    {{#each-in this.languages as |key language|}}
       <div
-        class="{{if (eq selectedLanguage key) 'cursor-default text-purple-600' 'cursor-pointer'}}"
+        class="{{if (eq this.selectedLanguage key) 'cursor-default text-purple-600' 'cursor-pointer'}}"
         {{action 'selectLanguage' key}}
         role="button"
         data-test-resource-wiget-sidebar-link
@@ -17,12 +17,12 @@
   </div>
   <div class="">
     <div class="flex flex-wrap py-2">
-      {{#each-in frameworkOptions as |key framework|}}
+      {{#each-in this.frameworkOptions as |key framework|}}
         <TechCard
           @label={{framework.name}}
           @classes="mr-2 mb-2"
           @tagname=""
-          @isSelected={{eq selectedFramework key}}
+          @isSelected={{eq this.selectedFramework key}}
           @select={{action "selectFramework" key}}
         />
       {{/each-in}}
@@ -30,15 +30,16 @@
     <div class="flex">
       <div class="btn-toolbar items-center">
 
-        {{#if selectedFramework}}
-          {{#if isOtherSelected}}
+        {{#if this.selectedFramework}}
+          {{#if this.isOtherSelected}}
             <div class="text-sm font-semibold">
               Request framework:
             </div>
             <Input
               @type="text"
               class="form-control h-10 m-0"
-              @value={{mut requestedFramework}} data-test-sdk-request-field={{true}}
+              @value={{mut this.requestedFramework}}
+              data-test-sdk-request-field={{true}}
               @enter={{action "saveRequest"}}
             />
             <input
@@ -51,25 +52,25 @@
 
           {{else}}
             <a
-              href="{{docLink}}"
-              class="percy-btn percy-btn-primary {{docLinkClasses}}"
+              href="{{this.docLink}}"
+              class="percy-btn percy-btn-primary {{this.docLinkClasses}}"
               target="_blank"
               rel="noopener noreferrer"
               onclick={{action 'trackDocsVisit'}}
               data-test-framework-docs-button
             >
-              See {{frameworkName}} docs
+              See {{this.frameworkName}} docs
             </a>
 
             <a
-              href="{{exampleLink}}"
-              class="percy-btn {{exampleLinkClasses}}"
+              href="{{this.exampleLink}}"
+              class="percy-btn {{this.exampleLinkClasses}}"
               target="_blank"
               rel="noopener noreferrer"
               onclick={{action 'trackDemoVisit'}}
               data-test-example-framework-project-button
             >
-              Example {{frameworkName}} project
+              Example {{this.frameworkName}} project
             </a>
           {{/if}}
         {{else}}

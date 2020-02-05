@@ -1,19 +1,19 @@
 <div class="collaboration-comment" data-test-collaboration-comment>
-  <header class="flex justify-between mb-sm {{if isClosed 'items-center' 'items-start'}}">
+  <header class="flex justify-between mb-sm {{if this.isClosed 'items-center' 'items-start'}}">
     <div class="flex items-center">
-      <UserAvatar @user={{author}} @class="mr-1" @isSmallAvatar={{true}} />
+      <UserAvatar @user={{this.author}} @class="mr-1" @isSmallAvatar={{true}} />
       <div class="leading-none">
         <div class="font-semibold">
-          {{author.name}}
+          {{this.author.name}}
         </div>
         <div class="text-sm text-gray-300 font-semibold" data-test-comment-created-at>
-          {{displayCreatedAt}}
+          {{this.displayCreatedAt}}
         </div>
       </div>
     </div>
-    {{#if isFirstComment}}
-      {{#if isCommentingAllowed}}
-        {{#if isClosed}}
+    {{#if this.isFirstComment}}
+      {{#if this.isCommentingAllowed}}
+        {{#if this.isClosed}}
           <div class="flex items-center" data-test-archived>
             <div class="text-purple-600 font-semibold text-sm leading-none">
               Archived
@@ -33,17 +33,24 @@
     {{/if}}
   </header>
 
-  {{#if (and isFirstComment isReview)}}
+  {{#if (and this.isFirstComment this.isReview)}}
     <div class="collaboration-content-inset py-sm">
-      <div class="px-1 py-sm tracking-px rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{unless  isOnOriginatingSnapshot 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}" data-test-request-changes-badge>
+      <div class="px-1 py-sm tracking-px rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{unless  this.isOnOriginatingSnapshot 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}" data-test-request-changes-badge>
         Changes requested
-        {{#unless isOnOriginatingSnapshot}}
+        {{#unless this.isOnOriginatingSnapshot}}
           from
-          {{#link-to data-test-originating-snapshot-link 'organization.project.builds.default-comparison' commentThread.originatingSnapshotId class="font-mono font-normal tracking-sm"}}{{commentThread.originatingBuildNumber}}{{/link-to}}
+          <LinkTo
+            @route='organization.project.builds.default-comparison'
+            @model={{this.commentThread.originatingSnapshotId}}
+            data-test-originating-snapshot-link={{true}}
+            class="font-mono font-normal tracking-sm"
+          >
+            {{this.commentThread.originatingBuildNumber}}
+          </LinkTo>
         {{/unless}}
       </div>
     </div>
   {{/if}}
 
-  <p class="collaboration-content-inset break-words whitespace-pre-line">{{comment.body}}</p>
+  <p class="collaboration-content-inset break-words whitespace-pre-line">{{this.comment.body}}</p>
 </div>

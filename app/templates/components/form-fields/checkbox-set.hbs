@@ -1,34 +1,34 @@
 <fieldset class="mb-1">
   <legend>
     <span class="label-body font-semibold">
-      {{title}}
-      {{#if hint}}<span class="text-gray-300">({{hint}})</span>{{/if}}
+      {{this.title}}
+      {{#if this.hint}}<span class="text-gray-300">({{this.hint}})</span>{{/if}}
     </span>
-    {{#if subtitle}}
-      <div class="mb-1 text-secondary">{{subtitle}}</div>
+    {{#if this.subtitle}}
+      <div class="mb-1 text-secondary">{{this.subtitle}}</div>
     {{/if}}
   </legend>
 
-  {{#each allOptions as |option|}}
+  {{#each this.allOptions as |option|}}
     <label class="flex mb-1 items-start" data-test-checkbox-set-input>
       <input
         name="{{option.value}}"
         type="checkbox"
-        checked={{contains option.value propertyValue}}
-        class="mr-1 {{if fieldErrors 'error'}}"
+        checked={{contains option.value this.propertyValue}}
+        class="mr-1 {{if this.fieldErrors 'error'}}"
         onchange={{action "updateValue"}}
-        onblur={{action validateProperty}}
+        onblur={{action this.validateProperty}}
       >
       <div>
-        <div class="pt-xs font-medium leading-none {{labelClasses}}">{{option.label}}</div>
+        <div class="pt-xs font-medium leading-none {{this.labelClasses}}">{{option.label}}</div>
         <div class="text-secondary">{{option.description}}</div>
       </div>
     </label>
   {{/each}}
 
-  {{#if fieldErrors}}
+  {{#if this.fieldErrors}}
     <ul class="Form-errors">
-      {{#each (get fieldErrors "validation") as |message|}}
+      {{#each (get this.fieldErrors "validation") as |message|}}
         <li>{{message}}</li>
       {{/each}}
     </ul>

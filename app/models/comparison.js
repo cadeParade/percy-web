@@ -1,44 +1,70 @@
-import {and, equal} from '@ember/object/computed';
 import {computed} from '@ember/object';
+import {equal, and} from '@ember/object/computed';
 import Model, {attr, belongsTo} from '@ember-data/model';
 
-export default Model.extend({
-  state: attr(),
-  width: attr('number'),
+export default class Comparison extends Model {
+  @attr()
+  state;
 
-  headBuild: belongsTo('build', {async: false}),
-  headSnapshot: belongsTo('snapshot', {async: true}),
-  baseSnapshot: belongsTo('snapshot', {async: true}),
+  @attr('number')
+  width;
+
+  @belongsTo('build', {async: false})
+  headBuild;
+
+  @belongsTo('snapshot', {async: true})
+  headSnapshot;
+
+  @belongsTo('snapshot', {async: true})
+  baseSnapshot;
 
   // If headScreenshot is null, the comparison was removed (compared to the base build).
-  headScreenshot: belongsTo('screenshot', {async: false}),
+  @belongsTo('screenshot', {async: false})
+  headScreenshot;
+
   // If baseScreenshot is null, the comparison was added and is new (compared to the base build).
-  baseScreenshot: belongsTo('screenshot', {async: false}),
-  diffImage: belongsTo('image', {async: false}),
-  diffRatio: attr('number'),
+  @belongsTo('screenshot', {async: false})
+  baseScreenshot;
 
-  browser: belongsTo('browser', {async: false, inverse: false}),
+  @belongsTo('image', {async: false})
+  diffImage;
 
-  wasAdded: computed('headScreenshot', 'baseScreenshot', function() {
+  @attr('number')
+  diffRatio;
+
+  @belongsTo('browser', {async: false, inverse: false})
+  browser;
+
+  @computed('headScreenshot', 'baseScreenshot')
+  get wasAdded() {
     return !!this.headScreenshot && !this.baseScreenshot;
-  }),
-  wasRemoved: computed('headScreenshot', 'baseScreenshot', function() {
+  }
+
+  @computed('headScreenshot', 'baseScreenshot')
+  get wasRemoved() {
     return !!this.baseScreenshot && !this.headScreenshot;
-  }),
-  wasCompared: and('diffImage'),
+  }
+
+  @and('diffImage')
+  wasCompared;
 
   // Comparison is guaranteed 100% different if head was added or head was removed.
   // Otherwise, rely on the diff ratio to tell us if pixels changed.
-  isDifferent: computed('wasAdded', 'wasRemoved', 'isSame', function() {
+  @computed('wasAdded', 'wasRemoved', 'isSame')
+  get isDifferent() {
     return this.wasAdded || this.wasRemoved || !this.isSame;
-  }),
-  isSame: equal('diffRatio', 0),
-  smartDiffRatio: computed('wasAdded', 'wasRemoved', 'diffRatio', function() {
+  }
+
+  @equal('diffRatio', 0)
+  isSame;
+
+  @computed('wasAdded', 'wasRemoved', 'diffRatio')
+  get smartDiffRatio() {
     if (this.wasAdded || this.wasRemoved) {
       // 100% changed pixels if added or removed.
       return 1;
     } else {
       return this.diffRatio;
     }
-  }),
-});
+  }
+}

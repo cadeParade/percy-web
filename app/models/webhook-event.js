@@ -1,25 +1,48 @@
-import Model, {attr, belongsTo} from '@ember-data/model';
 import {computed} from '@ember/object';
 import {not} from '@ember/object/computed';
+import Model, {attr, belongsTo} from '@ember-data/model';
 
-export default Model.extend({
-  webhookConfig: belongsTo('webhook-config'),
-  event: attr(),
-  url: attr(),
-  requestHeaders: attr(),
-  requestPayload: attr('string'),
-  responseHeaders: attr(),
-  responsePayload: attr(),
-  responseStatus: attr('number'),
-  responseTimeMs: attr('number'),
-  failureReason: attr(),
-  createdAt: attr('date'),
+export default class WebhookEvent extends Model {
+  @belongsTo('webhook-config')
+  webhookConfig;
 
-  isSuccess: not('isFailure'),
+  @attr()
+  event;
 
-  isFailure: computed('failureReason', 'responseStatus', function() {
+  @attr()
+  url;
+
+  @attr()
+  requestHeaders;
+
+  @attr('string')
+  requestPayload;
+
+  @attr()
+  responseHeaders;
+
+  @attr()
+  responsePayload;
+
+  @attr('number')
+  responseStatus;
+
+  @attr('number')
+  responseTimeMs;
+
+  @attr()
+  failureReason;
+
+  @attr('date')
+  createdAt;
+
+  @not('isFailure')
+  isSuccess;
+
+  @computed('failureReason', 'responseStatus')
+  get isFailure() {
     const status = this.responseStatus;
 
     return this.failureReason || !(status >= 200 && status < 300);
-  }),
-});
+  }
+}

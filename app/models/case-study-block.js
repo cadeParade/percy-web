@@ -1,8 +1,11 @@
 import Contentful from 'ember-data-contentful/models/contentful';
 import {hasMany} from '@ember-data/model';
 
-export default Contentful.extend({
-  contentType: 'caseStudyBlock',
+export default class CaseStudyBlock extends Contentful {
+  get contentType() {
+    return 'caseStudyBlock';
+  }
 
-  caseStudies: hasMany('case-study'),
-});
+  @hasMany('case-study')
+  caseStudies;
+}

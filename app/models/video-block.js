@@ -1,26 +1,48 @@
+import {notEmpty, and, equal} from '@ember/object/computed';
 import Contentful from 'ember-data-contentful/models/contentful';
 import {attr, belongsTo} from '@ember-data/model';
-import {equal, and, notEmpty} from '@ember/object/computed';
 
-export default Contentful.extend({
-  contentType: 'videoBlock',
+export default class VideoBlock extends Contentful {
+  get contentType() {
+    return 'videoBlock';
+  }
 
-  mainImage: belongsTo('contentful-asset'), // model here: https://bit.ly/2MoN7fD
-  imagePosition: attr(),
+  @belongsTo('contentful-asset')
+  mainImage; // model here: https://bit.ly/2MoN7fD
 
-  header: attr(),
-  subheader: attr(),
+  @attr()
+  imagePosition;
 
-  videoEmbedUrl: attr(),
-  classes: attr(),
+  @attr()
+  header;
 
-  isImagePresent: notEmpty('mainImage.file.url'),
+  @attr()
+  subheader;
 
-  isImageCentered: equal('imagePosition', 'Center'),
-  isImageLeftAligned: equal('imagePosition', 'Left'),
-  isImageRightAligned: equal('imagePosition', 'Right'),
+  @attr()
+  videoEmbedUrl;
 
-  isRightAlignedImagePresent: and('isImagePresent', 'isImageRightAligned'),
-  isLeftAlignedImagePresent: and('isImagePresent', 'isImageLeftAligned'),
-  isCenterAlignedImagePresent: and('isImagePresent', 'isImageCentered'),
-});
+  @attr()
+  classes;
+
+  @notEmpty('mainImage.file.url')
+  isImagePresent;
+
+  @equal('imagePosition', 'Center')
+  isImageCentered;
+
+  @equal('imagePosition', 'Left')
+  isImageLeftAligned;
+
+  @equal('imagePosition', 'Right')
+  isImageRightAligned;
+
+  @and('isImagePresent', 'isImageRightAligned')
+  isRightAlignedImagePresent;
+
+  @and('isImagePresent', 'isImageLeftAligned')
+  isLeftAlignedImagePresent;
+
+  @and('isImagePresent', 'isImageCentered')
+  isCenterAlignedImagePresent;
+}

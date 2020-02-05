@@ -1,5 +1,7 @@
 import Contentful from 'ember-data-contentful/models/contentful';
 
-export default Contentful.extend({
-  contentType: 'pricingCard',
-});
+export default class PricingCard extends Contentful {
+  get contentType() {
+    return 'pricingCard';
+  }
+}

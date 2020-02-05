@@ -1,19 +1,36 @@
-import {inject as service} from '@ember/service';
-import {and, lt, not, readOnly} from '@ember/object/computed';
 import {computed} from '@ember/object';
+import {inject as service} from '@ember/service';
+import {readOnly, not, lt, and} from '@ember/object/computed';
 import Model, {attr, belongsTo} from '@ember-data/model';
 import moment from 'moment';
 
-export default Model.extend({
-  organization: belongsTo('organization', {async: false}),
-  plan: belongsTo('plan', {async: false}),
-  paymentMethod: belongsTo('payment-method', {async: false}),
-  billingEmail: attr(),
-  currentUsageStats: belongsTo('usage-stat', {async: false}),
-  status: attr(),
-  currentPeriodStart: attr('date'),
-  currentPeriodEnd: attr('date'),
-  currentPeriodEndDisplayed: computed('currentPeriodEnd', function() {
+export default class Subscription extends Model {
+  @belongsTo('organization', {async: false})
+  organization;
+
+  @belongsTo('plan', {async: false})
+  plan;
+
+  @belongsTo('payment-method', {async: false})
+  paymentMethod;
+
+  @attr()
+  billingEmail;
+
+  @belongsTo('usage-stat', {async: false})
+  currentUsageStats;
+
+  @attr()
+  status;
+
+  @attr('date')
+  currentPeriodStart;
+
+  @attr('date')
+  currentPeriodEnd;
+
+  @computed('currentPeriodEnd')
+  get currentPeriodEndDisplayed() {
     const currentPeriodEnd = this.currentPeriodEnd;
     return (
       currentPeriodEnd &&
@@ -21,29 +38,57 @@ export default Model.extend({
         .subtract(1, 'day')
         .toDate()
     );
-  }),
-  trialStart: attr('date'),
-  trialEnd: attr('date'),
-  isTrial: readOnly('plan.isTrial'),
-  isFree: readOnly('plan.isFree'),
-  isTrialOrFree: readOnly('plan.isTrialOrFree'),
-  isCustomer: not('isTrialOrFree'), // this includes sponsored plans
-  isPaid: readOnly('plan.isPaid'),
-  isSponsored: readOnly('plan.isSponsored'),
+  }
+
+  @attr('date')
+  trialStart;
+
+  @attr('date')
+  trialEnd;
+
+  @readOnly('plan.isTrial')
+  isTrial;
+
+  @readOnly('plan.isFree')
+  isFree;
+
+  @readOnly('plan.isTrialOrFree')
+  isTrialOrFree;
+
+  @not('isTrialOrFree')
+  isCustomer; // this includes sponsored plans
+
+  @readOnly('plan.isPaid')
+  isPaid;
+
+  @readOnly('plan.isSponsored')
+  isSponsored;
 
   // This is only here so that ember-data will send the token on create, it will never be populated
   // in API responses.
-  token: attr(),
+  @attr()
+  token;
 
-  subscriptionData: service(),
-  trialDaysRemaining: computed('trialEnd', function() {
+  @service
+  subscriptionData;
+
+  @computed('trialEnd')
+  get trialDaysRemaining() {
     return Math.round(moment(this.trialEnd).diff(moment(), 'days', true));
-  }),
-  currentUsageRatio: attr(),
-  currentUsagePercentage: computed('currentUsageRatio', function() {
+  }
+
+  @attr()
+  currentUsageRatio;
+
+  @computed('currentUsageRatio')
+  get currentUsagePercentage() {
     const percentage = parseFloat(this.currentUsageRatio) * 100;
     return percentage < 1 ? Math.ceil(percentage) : Math.floor(percentage);
-  }),
-  hasIncludedSnapshotsRemaining: lt('currentUsageRatio', 1),
-  hasCreditCard: and('isCustomer', 'plan.isNotSponsored'),
-});
+  }
+
+  @lt('currentUsageRatio', 1)
+  hasIncludedSnapshotsRemaining;
+
+  @and('isCustomer', 'plan.isNotSponsored')
+  hasCreditCard;
+}

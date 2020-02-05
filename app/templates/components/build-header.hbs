@@ -1,25 +1,25 @@
 <div class="build-header" data-test-build-header>
-  {{#unless isBuildApprovable}}
+  {{#unless this.isBuildApprovable}}
     <PublicProjectNotice />
   {{/unless}}
   <div
     class="build-header-state relative flex justify-between items-center py-3 pr-2 pl-3 border-b border-secondary">
-    {{#unless build.isFinished}}
-      <div class="progress-bar-subtle absolute" style={{progressBarWidthStyle}}></div>
-      <div class="progress-bar absolute" style={{progressBarWidthStyle}}></div>
+    {{#unless this.build.isFinished}}
+      <div class="progress-bar-subtle absolute" style={{this.progressBarWidthStyle}}></div>
+      <div class="progress-bar absolute" style={{this.progressBarWidthStyle}}></div>
     {{/unless}}
-    <BuildOverviewInfo @build={{build}} @isBuildApprovable={{isBuildApprovable}} />
+    <BuildOverviewInfo @build={{this.build}} @isBuildApprovable={{this.isBuildApprovable}} />
     <div class="text-right">
-      <BuildOverview @build={{build}} @progressBarWidth={{progressBarWidth}} />
+      <BuildOverview @build={{this.build}} @progressBarWidth={{this.progressBarWidth}} />
     </div>
   </div>
-  {{#if (and build.isFinished build.browsersUpgraded)}}
+  {{#if (and this.build.isFinished this.build.browsersUpgraded)}}
     <div class="p-2 bg-secondary bordert">
       <strong>
-        {{#if (gt build.browsersUpgraded.length 1) }}
+        {{#if (gt this.build.browsersUpgraded.length 1) }}
           Multiple browsers were
         {{else}}
-          {{build.browsersUpgraded.firstObject.browserFamily.name}}
+          {{this.build.browsersUpgraded.firstObject.browserFamily.name}}
           was
         {{/if}}
         upgraded to the latest version in this build.
@@ -30,7 +30,7 @@
   {{/if}}
   <div class="flex items-center border-b -mb-px">
     <div class="w-1/2 text-secondary p-2">
-      {{#if (eq build.buildNumber 1)}}
+      {{#if (eq this.build.buildNumber 1)}}
         <div class="flex items-center whitespace-no-wrap">
           First Build
         </div>
@@ -41,15 +41,15 @@
         <div class="flex items-center whitespace-no-wrap">
           Baseline from
           <code class="ml-sm truncate">
-            {{build.baseBuild.branch}}
+            {{this.build.baseBuild.branch}}
           </code>
         </div>
         <div class="text-sm">
           Build
-          <LinkTo @route="organization.project.builds.build" @models={{array build.project.organization.slug build.project.slug build.baseBuild.id}} class="font-mono font-normal tracking-sm">{{build.baseBuild.buildNumber}}</LinkTo>
+          <LinkTo @route="organization.project.builds.build" @models={{array this.build.project.organization.slug this.build.project.slug this.build.baseBuild.id}} class="font-mono font-normal tracking-sm">{{this.build.baseBuild.buildNumber}}</LinkTo>
           -
-          <span class="cursor-default hint--right hint--rounded" aria-label="{{moment-format build.baseBuild.createdAt 'lll'}}">
-            {{moment-from-now build.baseBuild.createdAt interval=60000}}
+          <span class="cursor-default hint--right hint--rounded" aria-label="{{moment-format this.build.baseBuild.createdAt 'lll'}}">
+            {{moment-from-now this.build.baseBuild.createdAt interval=60000}}
           </span>
         </div>
       {{/if}}
@@ -61,70 +61,70 @@
     </div>
     <div class="w-1/2 text-secondary p-2 -mb-px">
       <div class="flex items-center whitespace-no-wrap -mb-xs">
-        {{#if (eq build.buildNumber 1)}}
+        {{#if (eq this.build.buildNumber 1)}}
           <span>Snapshots from</span>
         {{else}}
           <span class="pt-px">Changes from</span>
         {{/if}}
-        {{#if build.isPullRequestPresent}}
-          <a href="{{build.pullRequestHtmlUrl}}" class="font-semibold truncate ml-sm">
-            #{{build.pullRequestNumber}} -
-            {{build.pullRequestTitle}}
+        {{#if this.build.isPullRequestPresent}}
+          <a href="{{this.build.pullRequestHtmlUrl}}" class="font-semibold truncate ml-sm">
+            #{{this.build.pullRequestNumber}} -
+            {{this.build.pullRequestTitle}}
           </a>
         {{else}}
           <code class="ml-sm truncate">
-            {{build.branch}}
+            {{this.build.branch}}
           </code>
         {{/if}}
       </div>
-      <div class="text-sm cursor-default hint--right hint--rounded" aria-label="{{moment-format build.createdAt 'lll'}}">
-        {{moment-from-now build.createdAt interval=60000}}
+      <div class="text-sm cursor-default hint--right hint--rounded" aria-label="{{moment-format this.build.createdAt 'lll'}}">
+        {{moment-from-now this.build.createdAt interval=60000}}
       </div>
     </div>
   </div>
 
-  {{#if build.isPending}}
+  {{#if this.build.isPending}}
     <div class="p-2 m-2 bg-secondary rounded border">
       <div class="font-semibold mb-1">
         This build has not finished receiving data from your CI service or client.
       </div>
       If this has been pending for a while, your client may have failed to upload or finalize all snapshots. If that's the case, this build can be safely ignored. It will not be used as a baseline for visual diffs.
     </div>
-  {{else if build.isFailed}}
-    {{#if isParallelBuildError}}
+  {{else if this.build.isFailed}}
+    {{#if this.isParallelBuildError}}
       <div class="p-2 m-2 bg-secondary rounded border">
         <div class="font-semibold mb-1">
-          Only {{parallelBuildsReceived}} of the {{parallelBuildsExpected}} parallelized build processes reported they were finished.
+          Only {{this.parallelBuildsReceived}} of the {{this.parallelBuildsExpected}} parallelized build processes reported they were finished.
         </div>
         Check your CI logs to see if there was an error in one of your build pipelines. Make sure your parallel builds are <a href="https://docs.percy.io/docs/parallel-test-suites" target="_blank" rel="noopener noreferrer">configured properly</a>. If you'd like help troubleshooting this, feel free to <a href="#" {{action "showSupport"}} data-test-build-overview-show-support>reach out</a> and we can help get this fixed.
       </div>
     {{else}}
-      {{#if (eq build.failureReason 'missing_finalize')}}
+      {{#if (eq this.build.failureReason 'missing_finalize')}}
         <div class="p-2 m-2 bg-secondary rounded border">
           <div class="font-semibold mb-1">
             Your CI service or client failed to correctly finalize the build. Check your CI or client logs for more information.
           </div>
           This build can be safely ignored. It will not be used as a baseline for visual diffs.
         </div>
-      {{else if (eq build.failureReason 'missing_resources')}}
+      {{else if (eq this.build.failureReason 'missing_resources')}}
         <div class="p-2 m-2 bg-secondary rounded border">
           <div class="font-semibold mb-1">
             Your CI service or client failed to correctly upload build and snapshot resources. Check your CI or client logs for more information.
           </div>
           This build can be safely ignored. It will not be used as a baseline for visual diffs.
         </div>
-      {{else if (eq build.failureReason 'no_snapshots')}}
+      {{else if (eq this.build.failureReason 'no_snapshots')}}
         <div class="p-2 m-2 bg-secondary rounded border">
           <div class="font-semibold mb-1">
             No snapshots were uploaded to this build, so there was nothing to compare. This could happen if your tests failed in your CI environment and nothing was uploaded to Percy.
           </div>
           This build can be safely ignored. It will not be used as a baseline for visual diffs. If these failures happen frequently, check your CI or client logs for failures.
         </div>
-      {{else if (eq build.failureReason 'render_timeout')}}
+      {{else if (eq this.build.failureReason 'render_timeout')}}
         <div class="p-2 m-2 bg-secondary rounded border">
-          {{#with build.failureDetails as |failureDetails|}}
+          {{#with this.build.failureDetails as |failureDetails|}}
             <div class="font-semibold mb-1">
-              {{pluralize failureDetails.failed_snapshots.length "snapshot"}} timed out: {{formattedFailedSnapshots}}.
+              {{pluralize failureDetails.failed_snapshots.length "snapshot"}} timed out: {{this.formattedFailedSnapshots}}.
             </div>
             <div>
               {{pluralize failureDetails.failed_snapshots.length "snapshot"}} in this build took too long to render even after multiple retries. This can happen in rare cases when a page loads an asset that takes too long and hangs the Percy renderer, or if a snapshot is triggering a browser dialog. If you'd like help troubleshooting this, feel free to <a href="#" {{action "showSupport"}}data-test-build-overview-show-support>reach out</a> and we can help get this fixed.
@@ -133,18 +133,18 @@
         </div>
       {{/if}}
     {{/if}}
-  {{else if build.isExpired}}
-    {{#if build.project.isEnabled}}
+  {{else if this.build.isExpired}}
+    {{#if this.build.project.isEnabled}}
       <div class="p-2 m-2 bg-secondary rounded border">
         <div class="font-semibold mb-1">
           Build history on the
-          <strong>{{build.project.organization.subscription.plan.name}}</strong> is limited to <strong>{{build.project.organization.subscription.plan.historyLimitDays}} days</strong>.
+          <strong>{{this.build.project.organization.subscription.plan.name}}</strong> is limited to <strong>{{this.build.project.organization.subscription.plan.historyLimitDays}} days</strong>.
         </div>
-        You can easily <LinkTo @route="organizations.organization.billing" @model={{build.project.organization.slug}}>upgrade your plan</LinkTo> for more build history.
+        You can easily <LinkTo @route="organizations.organization.billing" @model={{this.build.project.organization.slug}}>upgrade your plan</LinkTo> for more build history.
       </div>
     {{else}}
       <div class="p-2 m-2 bg-secondary rounded border">
-        The <strong>{{build.project.name}}</strong> project is not enabled.
+        The <strong>{{this.build.project.name}}</strong> project is not enabled.
       </div>
     {{/if}}
   {{/if}}
