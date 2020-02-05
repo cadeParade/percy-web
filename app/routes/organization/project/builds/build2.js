@@ -2,9 +2,9 @@ import Route from '@ember/routing/route';
 import {inject as service} from '@ember/service';
 import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
-import {defaultComparisonQueryParams} from 'percy-web/routes/organization/project/builds/default-comparison';
 import {on} from '@ember/object/evented';
 import {EKMixin, keyDown} from 'ember-keyboard';
+import {DIFF_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 
 export default Route.extend(EKMixin, {
   snapshotQuery: service(),
@@ -19,15 +19,20 @@ export default Route.extend(EKMixin, {
       // Note: passing {reload: true} here to ensure a full reload including all sideloaded data.
       build: this.store.findRecord('build', params.build_id, {reload: true}),
       isUserMember: isUserMember(this.session.currentUser, org),
-      snapshots: this.snapshotQuery.getChangedSnapshots(params.build_id),
+      // snapshots with diffs
+      snapshots: this.store.loadRecords('snapshot', {
+        filter: {
+          build: params.build_id,
+          'review-state-reason': DIFF_REVIEW_STATE_REASONS.join(','),
+        },
+        include: 'null',
+      }),
     });
   },
 
   afterModel(model) {
     const firstSnapshot = model.snapshots.firstObject;
-    this.transitionTo('organization.project.builds.build2.snapshot', firstSnapshot.id, {
-      queryParams: defaultComparisonQueryParams(firstSnapshot),
-    });
+    this.transitionTo('organization.project.builds.build2.snapshot', firstSnapshot.id);
   },
 
   actions: {

@@ -51,13 +51,4 @@ export default class SnapshotQueryService extends Service {
       include: 'comments,comments.author',
     });
   }
-
-  getSnapshotsNoIncludes(buildId) {
-    return this.store.query('snapshot', {
-      filter: {
-        build: buildId,
-      },
-      include: 'null',
-    });
-  }
 }
