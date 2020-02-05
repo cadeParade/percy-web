@@ -1,10 +1,10 @@
 <Build2::SnapshotViewer
-  @build={{snapshot.build}}
-  @snapshot={{snapshot}}
-  @snapshotSelectedWidth={{snapshotSelectedWidth}}
-  @comparisonMode={{comparisonMode}}
-  @activeBrowser={{activeBrowser}}
-  @isBuildApprovable={{isBuildApprovable}}
+  @build={{this.snapshot.build}}
+  @snapshot={{this.snapshot}}
+  @snapshotSelectedWidth={{this.snapshotSelectedWidth}}
+  @comparisonMode={{this.comparisonMode}}
+  @activeBrowser={{this.activeBrowser}}
+  @isBuildApprovable={{this.isBuildApprovable}}
   @updateComparisonMode={{route-action "updateComparisonMode"}}
   @transitionRouteToWidth={{route-action "transitionRouteToWidth"}}
   @createReview={{route-action "noop"}}

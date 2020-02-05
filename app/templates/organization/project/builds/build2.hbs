@@ -1,8 +1,8 @@
-{{title model.build.buildTitle}}
+{{title this.model.build.buildTitle}}
 
 <div class="flex">
   <div class="w-1/5 h-screen overflow-y-scroll">
-    <SnapshotNameList @snapshots={{model.snapshots}} />
+    <SnapshotNameList @snapshots={{this.model.snapshots}} />
   </div>
   <div class="w-4/5 h-screen overflow-y-scroll">
     {{outlet}}

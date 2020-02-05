@@ -1,10 +1,9 @@
 import Route from '@ember/routing/route';
-import ResetScrollMixin from 'percy-web/mixins/reset-scroll';
 import {inject as service} from '@ember/service';
 import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
 
-export default Route.extend(ResetScrollMixin, {
+export default Route.extend({
   snapshotQuery: service(),
   store: service(),
   flashMessages: service(),
