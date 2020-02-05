@@ -34,6 +34,8 @@ describe('Integration: Marketing/VideoBlock', function() {
     // then check that the modal is present
     expect(await find(VideoBlock.modalScope)).to.exist;
 
-    await percySnapshot(this.test.fullTitle());
+    await percySnapshot(this.test.fullTitle(), {
+      percyCSS: '.ytp-title-beacon { display: none; }',
+    });
   });
 });
