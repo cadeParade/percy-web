@@ -1,16 +1,23 @@
+import classic from 'ember-classic-decorator';
+import {action} from '@ember/object';
+import {inject as service} from '@ember/service';
 import Ember from 'ember';
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import {task, timeout} from 'ember-concurrency';
 import {hash} from 'rsvp';
-import {inject as service} from '@ember/service';
 
 const WAIT_TIME = 10; // in minutes
 const MILLISECONDS_IN_MIN = 60000;
 
-export default Route.extend(AuthenticatedRouteMixin, {
-  redirects: service(),
-  tooltips: service(),
+// Remove @classic when we can refactor away from mixins
+@classic
+export default class NewDemoRoute extends Route.extend(AuthenticatedRouteMixin) {
+  @service
+  redirects;
+
+  @service
+  tooltips;
 
   model() {
     const organization = this.modelFor('organizations.organization');
@@ -19,7 +26,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
       organization,
       projects: organization.get('projects'),
     });
-  },
+  }
 
   // save in afterModel so we can render a loading template while we wait
   afterModel(model) {
@@ -36,7 +43,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
     } else {
       this.redirects.redirectToRecentProjectForOrg(organization);
     }
-  },
+  }
 
   async saveProcess(demoProject) {
     const initialSaveResult = await this.saveDemo(demoProject);
@@ -46,9 +53,9 @@ export default Route.extend(AuthenticatedRouteMixin, {
     } else {
       this.transitionToDemo(demoProject);
     }
-  },
+  }
 
-  saveDemoRetryTask: task(function*() {
+  @(task(function*() {
     if (Ember.testing) {
       // used to test for correct redirect after error in organization acceptance test
       this._testingRefreshOnce();
@@ -57,16 +64,18 @@ export default Route.extend(AuthenticatedRouteMixin, {
 
     yield timeout(WAIT_TIME * MILLISECONDS_IN_MIN);
     this.refresh();
-  }).drop(),
+  }).drop())
+  saveDemoRetryTask;
 
   // only for organization acceptance testing
-  _testingCanRefreshOnce: true,
+  _testingCanRefreshOnce = true;
+
   _testingRefreshOnce() {
     if (this._testingCanRefreshOnce === true) {
       this.set('_testingCanRefreshOnce', false);
       this.refresh();
     }
-  },
+  }
 
   async transitionToDemo(demoProject) {
     const organization = this.modelFor('organizations.organization');
@@ -84,7 +93,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
     } else {
       this.transitionTo('organization.project', organization.get('slug'), demoProject.get('slug'));
     }
-  },
+  }
 
   async saveDemo(demo) {
     return demo.save().then(
@@ -93,11 +102,10 @@ export default Route.extend(AuthenticatedRouteMixin, {
         return {error};
       },
     );
-  },
+  }
 
-  actions: {
-    willTransition() {
-      this.saveDemoRetryTask.cancelAll();
-    },
-  },
-});
+  @action
+  willTransition() {
+    this.saveDemoRetryTask.cancelAll();
+  }
+}

@@ -1,35 +1,47 @@
-import Object, {computed, get, set} from '@ember/object';
-import {alias, or, filterBy, notEmpty} from '@ember/object/computed';
+import {notEmpty, filterBy, or, alias} from '@ember/object/computed';
+import Object, {get, set, computed} from '@ember/object';
 
-export default Object.extend({
-  activeBrowser: null,
-  snapshot: null,
-  snapshotSelectedWidth: null,
+export default class FilteredComparisons extends Object {
+  activeBrowser = null;
+  snapshot = null;
+  snapshotSelectedWidth = null;
 
-  _comparisons: alias('snapshot.comparisons'),
+  @alias('snapshot.comparisons')
+  _comparisons;
 
-  comparisons: computed('_comparisons.@each.browser', 'activeBrowser', function() {
+  @computed('_comparisons.@each.browser', 'activeBrowser')
+  get comparisons() {
     return comparisonsForBrowser(get(this, '_comparisons'), get(this, 'activeBrowser'));
-  }),
+  }
 
-  comparisonForWidth: computed('comparisons.@each.width', 'snapshotSelectedWidth', function() {
+  @computed('comparisons.@each.width', 'snapshotSelectedWidth')
+  get comparisonForWidth() {
     const width = get(this, 'snapshotSelectedWidth') || get(this, 'defaultWidth');
     return comparisonForWidth(get(this, 'comparisons'), width);
-  }),
+  }
 
-  widestComparisonForBrowser: computed('comparisons.@each.width', function() {
+  @computed('comparisons.@each.width')
+  get widestComparisonForBrowser() {
     return widestComparison(get(this, 'comparisons'));
-  }),
+  }
 
-  widestComparisonWithDiff: computed('comparisons.@each.width', function() {
+  @computed('comparisons.@each.width')
+  get widestComparisonWithDiff() {
     return widestComparisonWithDiff(get(this, 'comparisons'));
-  }),
+  }
 
-  selectedComparison: or('comparisonForWidth', 'widestComparisonForBrowser'),
-  defaultWidth: or('widestComparisonWithDiff.width', 'widestComparisonForBrowser.width'),
-  comparisonsWithDiffs: filterBy('comparisons', 'isDifferent'),
-  anyComparisonsHaveDiffs: notEmpty('comparisonsWithDiffs'),
-});
+  @or('comparisonForWidth', 'widestComparisonForBrowser')
+  selectedComparison;
+
+  @or('widestComparisonWithDiff.width', 'widestComparisonForBrowser.width')
+  defaultWidth;
+
+  @filterBy('comparisons', 'isDifferent')
+  comparisonsWithDiffs;
+
+  @notEmpty('comparisonsWithDiffs')
+  anyComparisonsHaveDiffs;
+}
 
 export function widestComparison(comparisons) {
   if (!comparisons) {

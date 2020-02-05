@@ -1,25 +1,40 @@
-import Model, {attr, belongsTo} from '@ember-data/model';
-import {equal} from '@ember/object/computed';
 import {computed} from '@ember/object';
+import {equal} from '@ember/object/computed';
+import Model, {attr, belongsTo} from '@ember-data/model';
 
 export const SELF_MANAGED_IDENTITY_PROVIDERS = ['github', 'auth0'];
 
-export default Model.extend({
-  user: belongsTo('user', {async: false}),
-  provider: attr(),
-  uid: attr(),
-  nickname: attr(),
+export default class Identity extends Model {
+  @belongsTo('user', {async: false})
+  user;
 
-  isGithubIdentity: equal('provider', 'github'),
-  isAuth0Identity: equal('provider', 'auth0'),
-  isSamlIdentity: computed('provider', function() {
+  @attr()
+  provider;
+
+  @attr()
+  uid;
+
+  @attr()
+  nickname;
+
+  @equal('provider', 'github')
+  isGithubIdentity;
+
+  @equal('provider', 'auth0')
+  isAuth0Identity;
+
+  @computed('provider')
+  get isSamlIdentity() {
     return this.provider.includes('samlp|');
-  }),
-  isOktaIdentity: computed('provider', function() {
-    return this.provider.includes('okta');
-  }),
+  }
 
-  isExternallyManaged: computed(function() {
+  @computed('provider')
+  get isOktaIdentity() {
+    return this.provider.includes('okta');
+  }
+
+  @computed
+  get isExternallyManaged() {
     return !SELF_MANAGED_IDENTITY_PROVIDERS.includes(this.provider);
-  }),
-});
+  }
+}

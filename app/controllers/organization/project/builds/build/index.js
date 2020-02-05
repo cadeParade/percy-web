@@ -1,20 +1,19 @@
+import {action} from '@ember/object';
+import {inject as service} from '@ember/service';
 import Controller from '@ember/controller';
 import snapshotSort from 'percy-web/lib/snapshot-sort';
 import {snapshotsWithDiffForBrowser} from 'percy-web/lib/filtered-comparisons';
-import {inject as service} from '@ember/service';
+import {get, set, setProperties} from '@ember/object';
 
 // NOTE: before adding something here, consider adding it to BuildContainer instead.
 // This controller should only be used to maintain the state of which snapshots have been loaded.
-export default Controller.extend({
-  raven: service(),
-  isHidingBuildContainer: false,
+export default class IndexController extends Controller {
+  @service
+  raven;
 
-  allChangedBrowserSnapshotsSorted: null, // Manually managed by initializeSnapshotOrdering.
-
-  init() {
-    this._super(...arguments);
-    this._unchangedSnapshots = this._unchangedSnapshots || [];
-  },
+  isHidingBuildContainer = false;
+  allChangedBrowserSnapshotsSorted = null; // Manually managed by initializeSnapshotOrdering.
+  _unchangedSnapshots = [];
 
   // This breaks the binding for allChangedBrowserSnapshotsSorted,
   // specifically so that when a user clicks
@@ -31,11 +30,11 @@ export default Controller.extend({
     // Get snapshots without making new request
     const buildSnapshotsWithDiffs = this.store
       .peekAll('snapshot')
-      .filterBy('build.id', this.get('build.id'))
+      .filterBy('build.id', get(this, 'build.id'))
       .filterBy('isChanged');
-    const browsers = this.get('build.browsers');
+    const browsers = get(this, 'build.browsers');
 
-    if (!browsers.length && this.get('raven.isRavenUsable')) {
+    if (!browsers.length && get(this, 'raven.isRavenUsable')) {
       // There should always be browsers loaded, but there appears to be a certain race condition
       // when navigating from projects to builds where build relationships are not fully loaded.
       // Capture information about how often a race condition is happening. TODO: drop this.
@@ -56,16 +55,15 @@ export default Controller.extend({
       );
     });
 
-    this.setProperties({
+    setProperties(this, {
       allChangedBrowserSnapshotsSorted: orderedBrowserSnapshots,
       isSnapshotsLoading: false,
       allApprovableSnapshots: buildSnapshotsWithDiffs,
     });
-  },
+  }
 
-  actions: {
-    notifyOfUnchangedSnapshots(unchangedSnapshots) {
-      this.set('_unchangedSnapshots', unchangedSnapshots);
-    },
-  },
-});
+  @action
+  notifyOfUnchangedSnapshots(unchangedSnapshots) {
+    set(this, '_unchangedSnapshots', unchangedSnapshots);
+  }
+}

@@ -1,8 +1,9 @@
-import Model, {attr, hasMany, belongsTo} from '@ember-data/model';
 import {computed} from '@ember/object';
-import {alias, bool, and, equal, not, or, gt} from '@ember/object/computed';
+import {gt, or, not, equal, and, bool, alias} from '@ember/object/computed';
+import Model, {attr, hasMany, belongsTo} from '@ember-data/model';
 import moment from 'moment';
 import {countDiffsWithSnapshotsPerBrowser} from 'percy-web/lib/filtered-comparisons';
+import {get} from '@ember/object';
 
 export const BUILD_APPROVED_STATE = 'approved';
 export const BUILD_UNREVIEWED_STATE = 'unreviewed';
@@ -38,40 +39,82 @@ const PROCESSING_LABEL = 'Processing';
 const UNREVIEWED_LABEL = 'Unreviewed';
 const REJECTED_LABEL = 'Changes requested';
 
-export default Model.extend({
-  project: belongsTo('project', {async: false}),
-  repo: belongsTo('repo', {async: false}),
-  partial: attr('boolean'),
+export default class Build extends Model {
+  @belongsTo('project', {async: false})
+  project;
+
+  @belongsTo('repo', {async: false})
+  repo;
+
+  @attr('boolean')
+  partial;
 
   // Check isRepoLinked before accessing repo.
-  isRepoLinked: bool('repo'),
+  @bool('repo')
+  isRepoLinked;
 
-  isPullRequestPresent: and('isRepoLinked', 'isPullRequest'),
-  repoSource: alias('repo.source'),
-  isGithubRepo: alias('repo.isGithubRepo'),
-  isGithubRepoFamily: alias('repo.isGithubRepoFamily'),
-  isGithubEnterpriseRepo: alias('repo.isGithubEnterpriseRepo'),
-  isGitlabRepo: alias('repo.isGitlabRepo'),
+  @and('isRepoLinked', 'isPullRequest')
+  isPullRequestPresent;
 
-  buildNumber: attr('number'),
-  buildTitle: computed('buildNumber', function() {
+  @alias('repo.source')
+  repoSource;
+
+  @alias('repo.isGithubRepo')
+  isGithubRepo;
+
+  @alias('repo.isGithubRepoFamily')
+  isGithubRepoFamily;
+
+  @alias('repo.isGithubEnterpriseRepo')
+  isGithubEnterpriseRepo;
+
+  @alias('repo.isGitlabRepo')
+  isGitlabRepo;
+
+  @attr('number')
+  buildNumber;
+
+  @computed('buildNumber')
+  get buildTitle() {
     return `Build #${this.buildNumber}`;
-  }),
-  branch: attr(),
-  browsers: hasMany('browser', {async: false}),
-  hasMultipleBrowsers: gt('browsers.length', 1),
+  }
 
-  removedSnapshots: hasMany('snapshot', {async: true, inverse: null}),
+  @attr()
+  branch;
+
+  @hasMany('browser', {async: false})
+  browsers;
+
+  @gt('browsers.length', 1)
+  hasMultipleBrowsers;
+
+  @hasMany('snapshot', {async: true, inverse: null})
+  removedSnapshots;
 
   // Processing state.
-  state: attr(),
-  isPending: equal('state', BUILD_STATES.PENDING),
-  isProcessing: equal('state', BUILD_STATES.PROCESSING),
-  isFinished: equal('state', BUILD_STATES.FINISHED),
-  isFailed: equal('state', BUILD_STATES.FAILED),
-  isExpired: equal('state', BUILD_STATES.EXPIRED),
-  failureReason: attr(),
-  failureReasonHumanized: computed('failureReason', function() {
+  @attr()
+  state;
+
+  @equal('state', BUILD_STATES.PENDING)
+  isPending;
+
+  @equal('state', BUILD_STATES.PROCESSING)
+  isProcessing;
+
+  @equal('state', BUILD_STATES.FINISHED)
+  isFinished;
+
+  @equal('state', BUILD_STATES.FAILED)
+  isFailed;
+
+  @equal('state', BUILD_STATES.EXPIRED)
+  isExpired;
+
+  @attr()
+  failureReason;
+
+  @computed('failureReason')
+  get failureReasonHumanized() {
     let failureReason = this.failureReason;
     if (failureReason === 'missing_resources') {
       return 'Missing resources';
@@ -84,20 +127,31 @@ export default Model.extend({
     } else {
       return '';
     }
-  }),
+  }
 
   // failureDetails will be a POJO of form `{something: [strings, strings, etc]}` and therefore
   // will not be able to trigger computed property recomputes
-  failureDetails: attr(),
+  @attr()
+  failureDetails;
 
-  isRunning: or('isPending', 'isProcessing'),
+  @or('isPending', 'isProcessing')
+  isRunning;
 
   // Review state, aggregated across all reviews. This will only be set for finished builds.
-  reviewState: attr(),
-  isUnreviewed: equal('reviewState', BUILD_UNREVIEWED_STATE),
-  isApproved: equal('reviewState', BUILD_APPROVED_STATE),
-  isRejected: equal('reviewState', BUILD_REJECTED_STATE),
-  isUnapproved: or('isUnreviewed', 'isRejected'),
+  @attr()
+  reviewState;
+
+  @equal('reviewState', BUILD_UNREVIEWED_STATE)
+  isUnreviewed;
+
+  @equal('reviewState', BUILD_APPROVED_STATE)
+  isApproved;
+
+  @equal('reviewState', BUILD_REJECTED_STATE)
+  isRejected;
+
+  @or('isUnreviewed', 'isRejected')
+  isUnapproved;
 
   // reviewStateReason provides disambiguation for how reviewState was set, such as when a
   // build was approved automatically by the system when there are no diffs vs. when it is
@@ -115,45 +169,58 @@ export default Model.extend({
   //    in this build
   // - 'changes_requested' --> changes_requested_snapshot_previously: snapshot(s) rejected
   //    in previous build
-  reviewStateReason: attr(),
+  @attr()
+  reviewStateReason;
 
   // Aggregate numbers for snapshots and comparisons. These will only be set for finished builds.
   // Each snapshot is a top-level UI state that may encompass multiple comparisons.
   // Each comparison represents a single individual rendering at a width and browser.
-  totalSnapshots: attr('number'),
-  totalSnapshotsUnreviewed: attr('number'),
-  totalSnapshotsRequestingChanges: attr('number'),
+  @attr('number')
+  totalSnapshots;
 
-  totalComparisons: attr('number'),
-  totalComparisonsFinished: attr('number'),
-  totalComparisonsDiff: attr('number'),
-  totalOpenComments: attr('number'),
-  buildCompletionPercent: computed(
-    'totalComparisons',
-    'totalComparisonsFinished',
-    'isProcessing',
-    function() {
-      const totalComparisons = this.totalComparisons || 0;
+  @attr('number')
+  totalSnapshotsUnreviewed;
 
-      // Make sure that if totalComparisons returns 0 that we're not dividing against it
-      if (!this.isProcessing || totalComparisons === 0) {
-        return 0;
-      }
+  @attr('number')
+  totalSnapshotsRequestingChanges;
 
-      const totalComparisonsFinished = this.totalComparisonsFinished || 0;
-      return (totalComparisonsFinished / totalComparisons) * 100;
-    },
-  ),
-  hasDiffs: computed('totalComparisonsDiff', 'isFinished', function() {
+  @attr('number')
+  totalComparisons;
+
+  @attr('number')
+  totalComparisonsFinished;
+
+  @attr('number')
+  totalComparisonsDiff;
+
+  @attr('number')
+  totalOpenComments;
+
+  @computed('totalComparisons', 'totalComparisonsFinished', 'isProcessing')
+  get buildCompletionPercent() {
+    const totalComparisons = this.totalComparisons || 0;
+
+    // Make sure that if totalComparisons returns 0 that we're not dividing against it
+    if (!this.isProcessing || totalComparisons === 0) {
+      return 0;
+    }
+
+    const totalComparisonsFinished = this.totalComparisonsFinished || 0;
+    return (totalComparisonsFinished / totalComparisons) * 100;
+  }
+
+  @computed('totalComparisonsDiff', 'isFinished')
+  get hasDiffs() {
     // Only have the chance to return true if the build is finished.
     if (!this.isFinished) {
       return false;
     }
 
     return this.totalComparisonsDiff > 0;
-  }),
+  }
 
-  buildStatusLabel: computed('state', 'reviewState', function() {
+  @computed('state', 'reviewState')
+  get buildStatusLabel() {
     if (this.isPending) {
       return PENDING_LABEL;
     } else if (this.isProcessing) {
@@ -167,9 +234,9 @@ export default Model.extend({
         } else {
           return APPROVED_LABEL;
         }
-      } else if (this.get('isUnreviewed')) {
+      } else if (this.isUnreviewed) {
         return UNREVIEWED_LABEL;
-      } else if (this.get('isRejected')) {
+      } else if (this.isRejected) {
         return REJECTED_LABEL;
       }
     } else if (this.isFailed) {
@@ -179,41 +246,74 @@ export default Model.extend({
     }
 
     return '';
-  }),
+  }
 
-  commit: belongsTo('commit', {async: false}), // Might be null.
-  baseBuild: belongsTo('build', {async: false, inverse: null}),
-  snapshots: hasMany('snapshot', {async: true}),
+  @belongsTo('commit', {async: false})
+  commit; // Might be null.
 
-  comparisons: computed('snapshots', function() {
+  @belongsTo('build', {async: false, inverse: null})
+  baseBuild;
+
+  @hasMany('snapshot', {async: true})
+  snapshots;
+
+  @computed('snapshots')
+  get comparisons() {
     return this.snapshots.reduce((acc, snapshot) => {
       return acc.concat(snapshot.get('comparisons').toArray());
     }, []);
-  }),
+  }
 
-  hasNoDiffs: not('hasDiffs'),
-  commitHtmlUrl: attr(),
-  branchHtmlUrl: attr(),
-  isPullRequest: attr('boolean'),
-  pullRequestNumber: attr('number'),
-  pullRequestHtmlUrl: attr(),
-  pullRequestTitle: attr(),
-  pullRequestLabel: computed('repo.source', function() {
-    if (this.get('repo.isGitlabRepoFamily')) {
+  @not('hasDiffs')
+  hasNoDiffs;
+
+  @attr()
+  commitHtmlUrl;
+
+  @attr()
+  branchHtmlUrl;
+
+  @attr('boolean')
+  isPullRequest;
+
+  @attr('number')
+  pullRequestNumber;
+
+  @attr()
+  pullRequestHtmlUrl;
+
+  @attr()
+  pullRequestTitle;
+
+  @computed('repo.source')
+  get pullRequestLabel() {
+    if (get(this, 'repo.isGitlabRepoFamily')) {
       return 'Merge Request';
     } else {
       return 'Pull Request';
     }
-  }),
+  }
 
-  finishedAt: attr('date'),
-  approvedAt: attr('date'),
-  approvedBy: belongsTo('user', {async: false}),
-  createdAt: attr('date'),
-  updatedAt: attr('date'),
-  userAgent: attr(),
+  @attr('date')
+  finishedAt;
 
-  duration: computed('finishedAt', 'createdAt', function() {
+  @attr('date')
+  approvedAt;
+
+  @belongsTo('user', {async: false})
+  approvedBy;
+
+  @attr('date')
+  createdAt;
+
+  @attr('date')
+  updatedAt;
+
+  @attr()
+  userAgent;
+
+  @computed('finishedAt', 'createdAt')
+  get duration() {
     var finished = this.finishedAt;
     if (!finished) {
       finished = moment();
@@ -221,26 +321,32 @@ export default Model.extend({
     var started = this.createdAt;
     var milliseconds = moment(finished).diff(started);
     return moment.duration(milliseconds);
-  }),
+  }
 
   // Convenience methods for accessing common methods in templates.
-  durationHours: computed('duration', function() {
+  @computed('duration')
+  get durationHours() {
     return this.duration.hours();
-  }),
-  durationMinutes: computed('duration', function() {
+  }
+
+  @computed('duration')
+  get durationMinutes() {
     return this.duration.minutes();
-  }),
-  durationSeconds: computed('duration', function() {
+  }
+
+  @computed('duration')
+  get durationSeconds() {
     return this.duration.seconds();
-  }),
+  }
 
   reloadAll() {
     return this.store.findRecord('build', this.id, {reload: true});
-  },
+  }
 
-  browsersUpgraded: computed('browsers.[]', 'baseBuild.browsers.[]', function() {
+  @computed('browsers.[]', 'baseBuild.browsers.[]')
+  get browsersUpgraded() {
     const headBuildBrowsers = this.browsers || [];
-    const baseBuildBrowsers = this.get('baseBuild.browsers') || [];
+    const baseBuildBrowsers = get(this, 'baseBuild.browsers') || [];
     const browsersUpgraded = [];
     headBuildBrowsers.forEach(headBrowser => {
       baseBuildBrowsers.forEach(baseBrowser => {
@@ -252,29 +358,27 @@ export default Model.extend({
       });
     });
     return browsersUpgraded;
-  }),
+  }
 
-  loadedSnapshots: computed('snapshots.@each.build', function() {
+  @computed('snapshots.@each.build')
+  get loadedSnapshots() {
     // Get snapshots without making new request
     return this.store.peekAll('snapshot').filterBy('build.id', this.id);
-  }),
+  }
 
   // Returns Ember Object with a property for each browser for the build,
   // where the value is an array of snapshots that have diffs for that browser.
   // It is an ember object rather than a POJO so computed properties can observe it, and for ease
   // of use in templates.
-  unapprovedSnapshotsWithDiffForBrowsers: computed(
-    'loadedSnapshots.@each.{isUnreviewed,isUnchanged}',
-    'browsers.[]',
-    function() {
-      const loadedSnapshotsForBuild = this.loadedSnapshots;
-      const unreviewedSnapshotsWithDiffs = loadedSnapshotsForBuild.reduce((acc, snapshot) => {
-        if (snapshot.get('isUnreviewed') && !snapshot.get('isUnchanged')) {
-          acc.push(snapshot);
-        }
-        return acc;
-      }, []);
-      return countDiffsWithSnapshotsPerBrowser(unreviewedSnapshotsWithDiffs, this.browsers);
-    },
-  ),
-});
+  @computed('loadedSnapshots.@each.{isUnreviewed,isUnchanged}', 'browsers.[]')
+  get unapprovedSnapshotsWithDiffForBrowsers() {
+    const loadedSnapshotsForBuild = this.loadedSnapshots;
+    const unreviewedSnapshotsWithDiffs = loadedSnapshotsForBuild.reduce((acc, snapshot) => {
+      if (snapshot.get('isUnreviewed') && !snapshot.get('isUnchanged')) {
+        acc.push(snapshot);
+      }
+      return acc;
+    }, []);
+    return countDiffsWithSnapshotsPerBrowser(unreviewedSnapshotsWithDiffs, this.browsers);
+  }
+}

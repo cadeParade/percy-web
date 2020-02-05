@@ -2,11 +2,20 @@ import Contentful from 'ember-data-contentful/models/contentful';
 import attr from 'ember-data/attr';
 import {belongsTo} from 'ember-data/relationships';
 
-export default Contentful.extend({
-  contentType: 'supportingContent',
+export default class SupportingContent extends Contentful {
+  get contentType() {
+    return 'supportingContent';
+  }
 
-  header: attr(),
-  bodyText: attr(),
-  supportingContentIcon: attr(),
-  supportingContentImageIcon: belongsTo('contentful-asset'), // model here: https://bit.ly/2MoN7fD
-});
+  @attr()
+  header;
+
+  @attr()
+  bodyText;
+
+  @attr()
+  supportingContentIcon;
+
+  @belongsTo('contentful-asset')
+  supportingContentImageIcon; // model here: https://bit.ly/2MoN7fD
+}

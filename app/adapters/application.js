@@ -4,18 +4,19 @@ import utils from 'percy-web/lib/utils';
 import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 import AdminMode from 'percy-web/lib/admin-mode';
 
-export default JSONAPIAdapter.extend(DataAdapterMixin, {
-  namespace: 'api/v1',
-  authorizer: 'authorizer:jwt',
+export default class Application extends JSONAPIAdapter.extend(DataAdapterMixin) {
+  namespace = 'api/v1';
+  authorizer = 'authorizer:jwt';
 
-  headers: computed(function() {
+  @computed
+  get headers() {
     let headers = {};
 
     if (AdminMode.isAdmin()) {
       headers['X-Percy-Mode'] = AdminMode.getAdminMode();
     }
     return headers;
-  }),
+  }
 
   isInvalid(status) {
     // NOTE: right now, the Percy API uses HTTP 400 when it should use HTTP 422 in many cases.
@@ -23,7 +24,7 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
     // correctly.
     // TODO: when the API is changed to be more correct, we should drop this method.
     return status === 422 || status === 400;
-  },
+  }
 
   buildURL(modelName, id, snapshot, requestType, query) {
     // NOTE: for certain objects we don't expose a top-level API object and only operate on the
@@ -173,8 +174,8 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
       }
     }
 
-    return this._super(modelName, id, snapshot, requestType, query);
-  },
+    return super.buildURL(modelName, id, snapshot, requestType, query);
+  }
 
   createRecordManual(store, type, snapshot) {
     let data = {};
@@ -187,5 +188,5 @@ export default JSONAPIAdapter.extend(DataAdapterMixin, {
       store.pushPayload(response);
       return store.peekRecord(type.modelName, response.data.id);
     });
-  },
-});
+  }
+}

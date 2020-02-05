@@ -1,7 +1,11 @@
+import classic from 'ember-classic-decorator';
+import {action} from '@ember/object';
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-export default Route.extend(AuthenticatedRouteMixin, {
+// Remove @classic when we can refactor away from mixins
+@classic
+export default class UsageRoute extends Route.extend(AuthenticatedRouteMixin) {
   // This model loads extra includes, so it requires that we're always using .slug
   // when using link-to into this route so that the model hook always fires.
   model() {
@@ -21,7 +25,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
           usageNotificationSetting: organization.usageNotificationSetting,
         };
       });
-  },
+  }
 
   setupController(controller, model) {
     controller.setProperties({
@@ -29,12 +33,11 @@ export default Route.extend(AuthenticatedRouteMixin, {
       currentUsageStats: model.usageStats,
       usageNotificationSetting: model.usageNotificationSetting,
     });
-  },
+  }
 
-  actions: {
-    didTransition() {
-      const organization = this.controller.organization;
-      this.analytics.track('Usage Viewed', organization);
-    },
-  },
-});
+  @action
+  didTransition() {
+    const organization = this.controller.organization;
+    this.analytics.track('Usage Viewed', organization);
+  }
+}

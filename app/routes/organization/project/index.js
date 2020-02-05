@@ -1,14 +1,18 @@
+import {action} from '@ember/object';
+import {inject as service} from '@ember/service';
 import Route from '@ember/routing/route';
 import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import ExtendedInfinityModel from 'percy-web/lib/paginated-ember-infinity-model';
-import {inject as service} from '@ember/service';
 import {hash} from 'rsvp';
 
 import {INFINITY_SCROLL_LIMIT} from 'percy-web/models/build';
 
-export default Route.extend({
-  infinity: service(),
-  session: service(),
+export default class IndexRoute extends Route {
+  @service
+  infinity;
+
+  @service
+  session;
 
   model() {
     const project = this.modelFor('organization.project');
@@ -34,7 +38,7 @@ export default Route.extend({
       infinityBuilds,
       isUserMemberOfOrg,
     });
-  },
+  }
 
   setupController(controller, model) {
     controller.setProperties({
@@ -43,19 +47,16 @@ export default Route.extend({
       infinityBuilds: model.infinityBuilds,
       isUserMember: model.isUserMemberOfOrg,
     });
-  },
+  }
 
-  actions: {
-    didTransition() {
-      this._super.apply(this, arguments);
-
-      let project = this.modelFor(this.routeName).project;
-      let organization = project.get('organization');
-      let eventProperties = {
-        project_id: project.get('id'),
-        project_slug: project.get('slug'),
-      };
-      this.analytics.track('Project Viewed', organization, eventProperties);
-    },
-  },
-});
+  @action
+  didTransition() {
+    let project = this.modelFor(this.routeName).project;
+    let organization = project.get('organization');
+    let eventProperties = {
+      project_id: project.get('id'),
+      project_slug: project.get('slug'),
+    };
+    this.analytics.track('Project Viewed', organization, eventProperties);
+  }
+}

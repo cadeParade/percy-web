@@ -1,8 +1,12 @@
 import Model, {attr, belongsTo} from '@ember-data/model';
 
-export default Model.extend({
-  token: attr(),
-  role: attr(),
+export default class Token extends Model {
+  @attr()
+  token;
 
-  project: belongsTo('project', {inverse: 'tokens'}),
-});
+  @attr()
+  role;
+
+  @belongsTo('project', {inverse: 'tokens'})
+  project;
+}

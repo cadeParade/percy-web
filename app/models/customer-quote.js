@@ -2,13 +2,26 @@ import Contentful from 'ember-data-contentful/models/contentful';
 import attr from 'ember-data/attr';
 import {belongsTo} from 'ember-data/relationships';
 
-export default Contentful.extend({
-  contentType: 'customerQuote',
+export default class CustomerQuote extends Contentful {
+  get contentType() {
+    return 'customerQuote';
+  }
 
-  customerName: attr(),
-  customerQuote: attr(),
-  quoteAttribution: attr(),
-  headshot: belongsTo('contentful-asset'), // model here: https://bit.ly/2MoN7fD
-  logo: belongsTo('contentful-asset'), // model here: https://bit.ly/2MoN7fD
-  type: attr(),
-});
+  @attr()
+  customerName;
+
+  @attr()
+  customerQuote;
+
+  @attr()
+  quoteAttribution;
+
+  @belongsTo('contentful-asset')
+  headshot; // model here: https://bit.ly/2MoN7fD
+
+  @belongsTo('contentful-asset')
+  logo; // model here: https://bit.ly/2MoN7fD
+
+  @attr()
+  type;
+}

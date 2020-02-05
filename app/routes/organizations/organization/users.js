@@ -1,13 +1,19 @@
+import classic from 'ember-classic-decorator';
+import {inject as service} from '@ember/service';
+import {readOnly} from '@ember/object/computed';
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import {hash} from 'rsvp';
-import {readOnly} from '@ember/object/computed';
-import {inject as service} from '@ember/service';
 import {isUserAdminOfOrg} from 'percy-web/lib/is-user-member-of-org';
 
-export default Route.extend(AuthenticatedRouteMixin, {
-  session: service(),
-  currentUser: readOnly('session.currentUser'),
+// Remove @classic when we can refactor away from mixins
+@classic
+export default class UsersRoute extends Route.extend(AuthenticatedRouteMixin) {
+  @service
+  session;
+
+  @readOnly('session.currentUser')
+  currentUser;
 
   model() {
     const organization = this.modelFor('organizations.organization');
@@ -31,7 +37,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
       organizationUsers,
       invites,
     });
-  },
+  }
 
   setupController(controller, model) {
     controller.setProperties({
@@ -39,5 +45,5 @@ export default Route.extend(AuthenticatedRouteMixin, {
       organization: model.organization,
       invites: model.invites,
     });
-  },
-});
+  }
+}

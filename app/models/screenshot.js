@@ -1,7 +1,12 @@
 import Model, {belongsTo} from '@ember-data/model';
 
-export default Model.extend({
-  snapshot: belongsTo('snapshot', {async: false}),
-  image: belongsTo('image', {async: false, inverse: null}),
-  lossyImage: belongsTo('image', {async: false, inverse: null}),
-});
+export default class Screenshot extends Model {
+  @belongsTo('snapshot', {async: false})
+  snapshot;
+
+  @belongsTo('image', {async: false, inverse: null})
+  image;
+
+  @belongsTo('image', {async: false, inverse: null})
+  lossyImage;
+}

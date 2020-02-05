@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 
-export default Route.extend({
+export default class DefaultComparisonRoute extends Route {
   beforeModel() {
     const snapshotId = this.paramsFor(this.routeName).snapshot_id;
     const snapshot = this.store.findRecord('snapshot', snapshotId, {
@@ -20,8 +20,8 @@ export default Route.extend({
         },
       });
     });
-  },
-});
+  }
+}
 
 function comparisonSort(comparisons) {
   return comparisons.sort(function(a, b) {

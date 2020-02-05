@@ -1,15 +1,22 @@
+import classic from 'ember-classic-decorator';
+import {action} from '@ember/object';
+import {inject as service} from '@ember/service';
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-import {inject as service} from '@ember/service';
 
-export default Route.extend(AuthenticatedRouteMixin, {
-  session: service(),
-  intercom: service(),
+// Remove @classic when we can refactor away from mixins
+@classic
+export default class OktaRoute extends Route.extend(AuthenticatedRouteMixin) {
+  @service
+  session;
+
+  @service
+  intercom;
 
   model() {
     const organization = this.modelFor('organizations.organization');
     return organization.samlIntegration;
-  },
+  }
 
   setupController(controller, resolvedModel) {
     controller.setProperties({
@@ -17,12 +24,11 @@ export default Route.extend(AuthenticatedRouteMixin, {
       organization: resolvedModel.organization,
       currentUser: this.session.currentUser,
     });
-  },
+  }
 
-  actions: {
-    showSupport() {
-      const messageText = "Hi! I have an Okta integration that I'd like to update.";
-      this.intercom.showIntercom('showNewMessage', messageText);
-    },
-  },
-});
+  @action
+  showSupport() {
+    const messageText = "Hi! I have an Okta integration that I'd like to update.";
+    this.intercom.showIntercom('showNewMessage', messageText);
+  }
+}

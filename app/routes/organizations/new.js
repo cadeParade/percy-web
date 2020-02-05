@@ -1,15 +1,19 @@
+import classic from 'ember-classic-decorator';
+import {action, computed} from '@ember/object';
+import {inject as service} from '@ember/service';
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
-import {inject as service} from '@ember/service';
 import {hash} from 'rsvp';
-import {computed} from '@ember/object';
 
-export default Route.extend(AuthenticatedRouteMixin, {
-  session: service(),
+// Remove @classic when we can refactor away from mixins
+@classic
+export default class NewRoute extends Route.extend(AuthenticatedRouteMixin) {
+  @service
+  session;
 
-  queryParams: {
+  queryParams = {
     githubMarketplacePlanId: {as: 'marketplace_listing_plan_id', replace: true},
-  },
+  };
 
   model() {
     const organization = this.store.createRecord('organization', {
@@ -25,7 +29,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
       organizationsForUser,
       identities,
     });
-  },
+  }
 
   setupController(controller, resolvedModel) {
     controller.setProperties({
@@ -33,20 +37,22 @@ export default Route.extend(AuthenticatedRouteMixin, {
       organizationsForUser: resolvedModel.organizationsForUser,
       identities: resolvedModel.identities,
     });
-  },
+  }
 
-  githubMarketplacePlanId: null,
+  githubMarketplacePlanId = null;
 
-  _billingProvider: computed('marketplaceListingPlanId', function() {
+  @computed('marketplaceListingPlanId')
+  get _billingProvider() {
     let marketplaceListingPlanId = this.marketplaceListingPlanId;
     if (marketplaceListingPlanId) {
       return 'github_marketplace';
     } else {
       return '';
     }
-  }),
+  }
 
-  _billingProviderData: computed('marketplaceListingPlanId', function() {
+  @computed('marketplaceListingPlanId')
+  get _billingProviderData() {
     let marketplaceListingPlanId = this.marketplaceListingPlanId;
     if (marketplaceListingPlanId) {
       return JSON.stringify({
@@ -55,18 +61,17 @@ export default Route.extend(AuthenticatedRouteMixin, {
     } else {
       return '';
     }
-  }),
+  }
 
-  actions: {
-    async organizationCreated(organization, options) {
-      const {isDemoRequest} = options;
-      const orgSlug = organization.get('slug');
-      await this.session.forceReloadUser();
-      if (isDemoRequest) {
-        this.transitionTo('organizations.organization.projects.new-demo', orgSlug);
-      } else {
-        this.transitionTo('organizations.organization.index', orgSlug);
-      }
-    },
-  },
-});
+  @action
+  async organizationCreated(organization, options) {
+    const {isDemoRequest} = options;
+    const orgSlug = organization.get('slug');
+    await this.session.forceReloadUser();
+    if (isDemoRequest) {
+      this.transitionTo('organizations.organization.projects.new-demo', orgSlug);
+    } else {
+      this.transitionTo('organizations.organization.index', orgSlug);
+    }
+  }
+}

@@ -3,8 +3,10 @@ import {SNAPSHOT_REJECTED_STATE, SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/
 import {task} from 'ember-concurrency';
 import {REVIEW_COMMENT_TYPE, NOTE_COMMENT_TYPE} from 'percy-web/models/comment-thread';
 
-export default Service.extend({
-  store: service(),
+export default class CommentThreadsService extends Service {
+  @service
+  store;
+
   getCommentsForBuild(buildId) {
     return this.store.loadRecords('commentThread', {
       filter: {
@@ -12,7 +14,7 @@ export default Service.extend({
       },
       include: 'comments,comments.author',
     });
-  },
+  }
 
   getCommentsForSnapshotIds(snapshotIds, build) {
     return this.store.loadRecords('commentThread', {
@@ -22,9 +24,9 @@ export default Service.extend({
       },
       include: 'comments,comments.author',
     });
-  },
+  }
 
-  createComment: task(function*({commentThread, commentBody, mentionedUsers}) {
+  @task(function*({commentThread, commentBody, mentionedUsers}) {
     const newComment = this.store.createRecord('comment', {
       commentThread: commentThread,
       body: commentBody,
@@ -33,14 +35,10 @@ export default Service.extend({
     return yield newComment.save().catch(() => {
       newComment.rollbackAttributes();
     });
-  }),
+  })
+  createComment;
 
-  createCommentThread: task(function*({
-    snapshotId,
-    commentBody,
-    areChangesRequested,
-    mentionedUsers,
-  }) {
+  @task(function*({snapshotId, commentBody, areChangesRequested, mentionedUsers}) {
     const snapshot = this.store.peekRecord('snapshot', snapshotId);
     const newComment = this.store.createRecord('comment', {
       snapshotId,
@@ -63,12 +61,14 @@ export default Service.extend({
         newComment.rollbackAttributes();
         snapshot.rollbackAttributes();
       });
-  }),
+  })
+  createCommentThread;
 
-  closeCommentThread: task(function*({commentThread}) {
+  @task(function*({commentThread}) {
     commentThread.set('closedAt', new Date());
     return yield commentThread.save().catch(() => {
       commentThread.rollbackAttributes();
     });
-  }),
-});
+  })
+  closeCommentThread;
+}

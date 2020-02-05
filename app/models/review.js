@@ -5,8 +5,13 @@ export const REVIEW_ACTIONS = {
   REJECT: 'request_changes',
 };
 
-export default Model.extend({
-  build: belongsTo('build'),
-  snapshots: hasMany('snapshot'),
-  action: attr(),
-});
+export default class Review extends Model {
+  @belongsTo('build')
+  build;
+
+  @hasMany('snapshot')
+  snapshots;
+
+  @attr()
+  action;
+}

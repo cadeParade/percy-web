@@ -1,17 +1,23 @@
+import classic from 'ember-classic-decorator';
 import {alias} from '@ember/object/computed';
 import Service, {inject as service} from '@ember/service';
 import config from '../config/environment';
 import AdminMode from 'percy-web/lib/admin-mode';
 
-export default Service.extend({
-  session: service(),
-  currentUser: alias('session.currentUser'),
+// Remove @classic when we refactor init method
+@classic
+export default class AnalyticsService extends Service {
+  @service
+  session;
 
-  userInstance: null,
-  organizationInstance: null,
+  @alias('session.currentUser')
+  currentUser;
+
+  userInstance = null;
+  organizationInstance = null;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
 
     if (!this.isEnabled()) {
       return;
@@ -40,11 +46,11 @@ export default Service.extend({
     );
 
     window.analytics.load(config.APP.SEGMENT_WRITE_KEY);
-  },
+  }
 
   isEnabled() {
     return window.amplitude && !AdminMode.excludeFromAnalytics();
-  },
+  }
 
   invalidate() {
     if (!this.isEnabled()) {
@@ -62,7 +68,7 @@ export default Service.extend({
     }
 
     window.analytics.reset();
-  },
+  }
 
   identifyUser(user) {
     if (!this.isEnabled()) {
@@ -78,7 +84,7 @@ export default Service.extend({
     this.userInstance.setUserProperties(userProperties);
 
     window.analytics.identify(user.get('id'), userProperties);
-  },
+  }
 
   track(eventName, organization, eventProperties = {}) {
     // window.console.log('Analytics track called:', eventName, organization, eventProperties);
@@ -120,5 +126,5 @@ export default Service.extend({
     }
 
     window.analytics.track(eventName, userEventProperties);
-  },
-});
+  }
+}

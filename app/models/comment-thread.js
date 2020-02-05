@@ -1,30 +1,62 @@
+import classic from 'ember-classic-decorator';
+import {notEmpty, equal, empty, and} from '@ember/object/computed';
 import Model, {attr, belongsTo, hasMany} from '@ember-data/model';
-import {and, empty, equal, notEmpty} from '@ember/object/computed';
 import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 
 export const REVIEW_COMMENT_TYPE = 'request_changes';
 export const NOTE_COMMENT_TYPE = 'note';
 
-export default Model.extend(LoadableModel, {
-  snapshot: belongsTo('snapshot', {async: false}),
-  comments: hasMany('comment', {async: false}),
-  type: attr('string'),
-  closedAt: attr('date'),
-  closedBy: belongsTo('user', {async: false}),
-  createdAt: attr('date'),
-  updatedAt: attr('date'),
-  originatingBuildNumber: attr(),
-  originatingSnapshotId: attr(),
+// Remove @classic when we can refactor away from mixins
+@classic
+export default class CommentThread extends Model.extend(LoadableModel) {
+  @belongsTo('snapshot', {async: false})
+  snapshot;
 
-  isReview: equal('type', REVIEW_COMMENT_TYPE),
-  isNote: equal('type', NOTE_COMMENT_TYPE),
+  @hasMany('comment', {async: false})
+  comments;
 
-  isOpen: empty('closedAt'),
-  isClosed: notEmpty('closedAt'),
+  @attr('string')
+  type;
 
-  isResolvable: and('isReview', 'isOpen'),
-  isArchivable: and('isNote', 'isOpen'),
+  @attr('date')
+  closedAt;
 
-  isResolved: and('isReview', 'isClosed'),
-  isArchived: and('isNote', 'isClosed'),
-});
+  @belongsTo('user', {async: false})
+  closedBy;
+
+  @attr('date')
+  createdAt;
+
+  @attr('date')
+  updatedAt;
+
+  @attr()
+  originatingBuildNumber;
+
+  @attr()
+  originatingSnapshotId;
+
+  @equal('type', REVIEW_COMMENT_TYPE)
+  isReview;
+
+  @equal('type', NOTE_COMMENT_TYPE)
+  isNote;
+
+  @empty('closedAt')
+  isOpen;
+
+  @notEmpty('closedAt')
+  isClosed;
+
+  @and('isReview', 'isOpen')
+  isResolvable;
+
+  @and('isNote', 'isOpen')
+  isArchivable;
+
+  @and('isReview', 'isClosed')
+  isResolved;
+
+  @and('isNote', 'isClosed')
+  isArchived;
+}

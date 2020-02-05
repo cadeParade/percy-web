@@ -1,9 +1,12 @@
 import Service from '@ember/service';
 import {inject as service} from '@ember/service';
 
-export default Service.extend({
-  store: service(),
-  analytics: service(),
+export default class BrowserTargetsService extends Service {
+  @service
+  store;
+
+  @service
+  analytics;
 
   enabledBrowserFamiliesForProject(project) {
     const projectBrowserTargets = project.projectBrowserTargets;
@@ -13,17 +16,17 @@ export default Service.extend({
       }
     });
     return browserFamilies.filter(family => !!family).uniqBy('id');
-  },
+  }
 
   projectBrowserTargetsForFamily(project, browserFamily) {
     return project.projectBrowserTargets.filter(function(pbt) {
       return pbt.browserTarget.browserFamily.id === browserFamily.id;
     });
-  },
+  }
 
   removeProjectBrowserTarget(projectBrowserTarget) {
     return projectBrowserTarget.destroyRecord();
-  },
+  }
 
   async upgradeBrowserFamily(project, browserFamily) {
     const existingProjectBrowserTargetsForFamily = this.projectBrowserTargetsForFamily(
@@ -36,7 +39,7 @@ export default Service.extend({
         return this.removeProjectBrowserTarget(pbt);
       }),
     );
-  },
+  }
 
   removeProjectBrowserTargetForFamily(browserFamilyToRemove, project) {
     const projectBrowserTargetsForFamily = this.projectBrowserTargetsForFamily(
@@ -49,7 +52,7 @@ export default Service.extend({
     });
 
     return Promise.all(destroyPromises);
-  },
+  }
 
   addProjectBrowserTargetForFamily(browserFamilyToAdd, project) {
     const newProjectBrowserTarget = this.store.createRecord('projectBrowserTarget', {
@@ -58,7 +61,7 @@ export default Service.extend({
     });
 
     return newProjectBrowserTarget.save();
-  },
+  }
 
   callAnalytics(project, actionName, extraProps) {
     const organization = project.organization;
@@ -67,5 +70,5 @@ export default Service.extend({
     };
     const allProps = Object.assign({}, extraProps, props);
     this.analytics.track(actionName, organization, allProps);
-  },
-});
+  }
+}

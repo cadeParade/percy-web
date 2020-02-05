@@ -1,12 +1,17 @@
+import classic from 'ember-classic-decorator';
+import {action} from '@ember/object';
+import {inject as service} from '@ember/service';
 import Route from '@ember/routing/route';
 import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 import {hash} from 'rsvp';
 import utils from 'percy-web/lib/utils';
 import {ALL_PROJECTS_ID} from 'percy-web/models/slack-integration-config';
-import {inject as service} from '@ember/service';
 
-export default Route.extend(AuthenticatedRouteMixin, {
-  flashMessages: service(),
+// Remove @classic when we can refactor away from mixins
+@classic
+export default class SlackConfigRoute extends Route.extend(AuthenticatedRouteMixin) {
+  @service
+  flashMessages;
 
   model(params) {
     const organization = this.modelFor('organizations.organization');
@@ -30,7 +35,7 @@ export default Route.extend(AuthenticatedRouteMixin, {
       organization,
       slackIntegrationConfig,
     });
-  },
+  }
 
   setupController(controller, model) {
     controller.setProperties({
@@ -38,35 +43,34 @@ export default Route.extend(AuthenticatedRouteMixin, {
       isAdmin: model.organization.currentUserIsAdmin,
       slackIntegrationConfig: model.slackIntegrationConfig,
     });
-  },
+  }
 
-  actions: {
-    deleteSlackIntegrationConfig(slackIntegrationConfig) {
-      const slackIntegration = slackIntegrationConfig.get('slackIntegration');
-      const confirmationMessage =
-        'Are you sure you want remove this project' +
-        ` from your ${slackIntegration.channelName} Slack integration?`;
-      if (!utils.confirmMessage(confirmationMessage)) {
-        return;
-      }
-      slackIntegrationConfig
-        .destroyRecord()
-        .then(() => {
-          this.flashMessages.success(
-            'Successfully removed project configuration from' +
-              ` your ${slackIntegration.channelName} Slack integration`,
-          );
-          this.transitionTo(
-            'organizations.organization.integrations.slack',
-            slackIntegration.get('organization.slug'),
-          );
-        })
-        .catch(() => {
-          this.flashMessages.danger(
-            'There was a problem deleting this integration.' +
-              ' Please try again or contact customer support.',
-          );
-        });
-    },
-  },
-});
+  @action
+  deleteSlackIntegrationConfig(slackIntegrationConfig) {
+    const slackIntegration = slackIntegrationConfig.get('slackIntegration');
+    const confirmationMessage =
+      'Are you sure you want remove this project' +
+      ` from your ${slackIntegration.channelName} Slack integration?`;
+    if (!utils.confirmMessage(confirmationMessage)) {
+      return;
+    }
+    slackIntegrationConfig
+      .destroyRecord()
+      .then(() => {
+        this.flashMessages.success(
+          'Successfully removed project configuration from' +
+            ` your ${slackIntegration.channelName} Slack integration`,
+        );
+        this.transitionTo(
+          'organizations.organization.integrations.slack',
+          slackIntegration.get('organization.slug'),
+        );
+      })
+      .catch(() => {
+        this.flashMessages.danger(
+          'There was a problem deleting this integration.' +
+            ' Please try again or contact customer support.',
+        );
+      });
+  }
+}

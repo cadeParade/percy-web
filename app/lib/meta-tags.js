@@ -1,8 +1,10 @@
 /* eslint-disable max-len */
-export default metaTagLookup;
+import {computed} from '@ember/object';
 
 function metaTagLookup(headTagKey) {
-  return headTags[headTagKey];
+  return computed(headTagKey, function() {
+    return headTags[headTagKey];
+  });
 }
 
 const headTags = {
@@ -93,3 +95,5 @@ function metaTitle(content) {
     },
   };
 }
+
+export default metaTagLookup;

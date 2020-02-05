@@ -1,7 +1,7 @@
 import FlashMessageService from 'ember-cli-flash/services/flash-messages';
 import localStorageProxy from 'percy-web/lib/localstorage';
 
-export default FlashMessageService.extend({
+export default class FlashMessagesService extends FlashMessageService {
   add(flashMessageOptions) {
     // These set default titles for each type of flash message
     // If a title is sent in with `flashMessageOptions`, these will not override
@@ -19,8 +19,8 @@ export default FlashMessageService.extend({
         flashMessageOptions.title = 'Heads up!';
       }
     }
-    this._super(...arguments);
-  },
+    super.add(...arguments);
+  }
 
   /**
    * @method createPersistentFlashMesssage
@@ -50,7 +50,7 @@ export default FlashMessageService.extend({
     }
 
     this.add(options);
-  },
+  }
 
   displayLocalStorageMessages() {
     const flashMessages = localStorageProxy.keysWithString('flash-message');
@@ -68,5 +68,5 @@ export default FlashMessageService.extend({
         this.add(messageContent.options);
       }
     });
-  },
-});
+  }
+}

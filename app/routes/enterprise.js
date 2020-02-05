@@ -1,21 +1,19 @@
+import {action} from '@ember/object';
 import Route from '@ember/routing/route';
 import metaTagLookup from 'percy-web/lib/meta-tags';
 
-export default Route.extend({
-  headTags: metaTagLookup('enterprise'),
+export default class EnterpriseRoute extends Route {
+  @metaTagLookup('enterprise')
+  headTags;
 
   model() {
     return this.store.queryRecord('marketing-page', {
       'fields.pageName': 'Enterprise',
     });
-  },
+  }
 
-  actions: {
-    didTransition() {
-      this._super.apply(this, arguments);
-
-      // TODO: Add organization tracking
-      this.analytics.track('Enterprise Viewed');
-    },
-  },
-});
+  @action
+  didTransition() {
+    this.analytics.track('Enterprise Viewed');
+  }
+}

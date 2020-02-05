@@ -33,6 +33,8 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     'no-unused-expressions': ["error", { "allowTernary": true }],
     'ember/no-new-mixins': 'off',
+    'ember/classic-decorator-hooks': 'error',
+    'ember/classic-decorator-no-classic-methods': 'error'
   },
   overrides: [
     {

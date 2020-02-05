@@ -1,38 +1,50 @@
-import Route from '@ember/routing/route';
+import {action} from '@ember/object';
 import {inject as service} from '@ember/service';
+import Route from '@ember/routing/route';
 import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
 import utils from 'percy-web/lib/utils';
-import {get} from '@ember/object';
+import {get, set} from '@ember/object';
 
-export default Route.extend({
-  snapshotQuery: service(),
-  commentThreads: service(),
-  store: service(),
-  flashMessages: service(),
-  session: service(),
-  params: null,
-  queryParams: {
+export default class SnapshotRoute extends Route {
+  @service
+  snapshotQuery;
+
+  @service
+  commentThreads;
+
+  @service
+  store;
+
+  @service
+  flashMessages;
+
+  @service
+  session;
+
+  params = null;
+
+  queryParams = {
     currentWidth: {as: 'width'},
     comparisonMode: {as: 'mode'},
     activeBrowserFamilySlug: {as: 'browser', refreshModel: true},
-  },
+  };
 
   beforeModel(transition) {
     if (transition.from) {
-      this.set('_prevRouteName', transition.from.name);
-      this.set('_prevBuildId', get(transition, 'from.parent.params.build_id'));
+      set(this, '_prevRouteName', transition.from.name);
+      set(this, '_prevBuildId', get(transition, 'from.parent.params.build_id'));
     }
-  },
+  }
 
   model(params) {
-    this.set('params', params);
+    set(this, 'params', params);
     const organization = this.modelFor('organization');
     return hash({
       snapshot: this.snapshotQuery.getSnapshot(params.snapshot_id),
       isUserMember: isUserMember(this.session.currentUser, organization),
     });
-  },
+  }
 
   afterModel(resolvedModel) {
     const snapshotId = resolvedModel.snapshot.id;
@@ -40,10 +52,10 @@ export default Route.extend({
     // do not return from this method so comments load in the background and
     // does not block template rendering.
     this.commentThreads.getCommentsForSnapshotIds([snapshotId], build);
-  },
+  }
 
   setupController(controller, model) {
-    this._super(...arguments);
+    super.setupController(...arguments);
     const params = this.params;
     const build = this.modelFor('organization.project.builds.build');
     const activeBrowser = this.store
@@ -69,7 +81,7 @@ export default Route.extend({
         comparisonMode: validatedComparisonMode,
       });
     }
-  },
+  }
 
   _validateComparisonMode(comparisonMode, snapshot, width, browser) {
     const selectedComparison = snapshot.comparisons.find(comparison => {
@@ -81,7 +93,7 @@ export default Route.extend({
     } else {
       return comparisonMode || 'diff';
     }
-  },
+  }
 
   _validateBrowser(browser, build) {
     const buildBrowserIds = build.get('browsers').mapBy('id');
@@ -97,16 +109,16 @@ export default Route.extend({
     } else {
       return browser;
     }
-  },
+  }
 
   _updateActiveBrowser(newBrowser) {
     this.controllerFor(this.routeName).set('activeBrowser', newBrowser);
     this._updateQueryParams({newBrowserSlug: newBrowser.get('familySlug')});
-  },
+  }
 
   activate() {
     this._track('Snapshot Fullscreen Viewed');
-  },
+  }
 
   _track(actionName, extraProps) {
     let build = this.modelFor('organization.project.builds.build');
@@ -120,36 +132,40 @@ export default Route.extend({
 
     const props = Object.assign({}, extraProps, genericProps);
     this.analytics.track(actionName, organization, props);
-  },
+  }
 
-  actions: {
-    updateComparisonMode(mode) {
-      this._updateQueryParams({comparisonMode: mode});
-      this._track('Fullscreen: Comparison Mode Switched', {mode});
-    },
-    updateActiveBrowser(newBrowser) {
-      this._updateActiveBrowser(newBrowser);
-      this._track('Fullscreen: Browser Switched', {
-        browser_id: newBrowser.get('id'),
-        browser_family_slug: newBrowser.get('browserFamily.slug'),
-      });
-    },
-    transitionRouteToWidth(width) {
-      this._updateQueryParams({newWidth: width});
-      this._track('Fullscreen: Width Switched', {width});
-    },
+  @action
+  updateComparisonMode(mode) {
+    this._updateQueryParams({comparisonMode: mode});
+    this._track('Fullscreen: Comparison Mode Switched', {mode});
+  }
 
-    transitionToBuildPage(url, buildId) {
-      if (
-        this._prevRouteName === 'organization.project.builds.build.index' &&
-        this._prevBuildId === buildId
-      ) {
-        utils.windowBack();
-      } else {
-        this.transitionTo(url);
-      }
-    },
-  },
+  @action
+  updateActiveBrowser(newBrowser) {
+    this._updateActiveBrowser(newBrowser);
+    this._track('Fullscreen: Browser Switched', {
+      browser_id: newBrowser.get('id'),
+      browser_family_slug: newBrowser.get('browserFamily.slug'),
+    });
+  }
+
+  @action
+  transitionRouteToWidth(width) {
+    this._updateQueryParams({newWidth: width});
+    this._track('Fullscreen: Width Switched', {width});
+  }
+
+  @action
+  transitionToBuildPage(url, buildId) {
+    if (
+      this._prevRouteName === 'organization.project.builds.build.index' &&
+      this._prevBuildId === buildId
+    ) {
+      utils.windowBack();
+    } else {
+      this.transitionTo(url);
+    }
+  }
 
   _updateQueryParams(params) {
     const controller = this.controllerFor(this.routeName);
@@ -170,5 +186,5 @@ export default Route.extend({
         },
       },
     );
-  },
-});
+  }
+}

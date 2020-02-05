@@ -1,11 +1,20 @@
 import Contentful from 'ember-data-contentful/models/contentful';
 import attr from 'ember-data/attr';
 
-export default Contentful.extend({
-  contentType: 'footerItem',
+export default class FooterItem extends Contentful {
+  get contentType() {
+    return 'footerItem';
+  }
 
-  category: attr(),
-  order: attr(),
-  text: attr(),
-  textLink: attr(),
-});
+  @attr()
+  category;
+
+  @attr()
+  order;
+
+  @attr()
+  text;
+
+  @attr()
+  textLink;
+}

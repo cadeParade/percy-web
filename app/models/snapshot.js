@@ -1,5 +1,6 @@
+import classic from 'ember-classic-decorator';
+import {filterBy, notEmpty, or, not, max, mapBy, equal} from '@ember/object/computed';
 import Model, {attr, belongsTo, hasMany} from '@ember-data/model';
-import {equal, mapBy, max, not, or, notEmpty, filterBy} from '@ember/object/computed';
 import LoadableModel from 'ember-data-storefront/mixins/loadable-model';
 
 export const SNAPSHOT_APPROVED_STATE = 'approved';
@@ -26,32 +27,57 @@ export const DIFF_REVIEW_STATE_REASONS = [
   SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED_PREVIOUSLY,
 ];
 
-export default Model.extend(LoadableModel, {
-  comparisons: hasMany('comparisons', {
+// Remove @classic when we can refactor away from mixins
+@classic
+export default class Snapshot extends Model.extend(LoadableModel) {
+  @hasMany('comparisons', {
     async: false,
     inverse: 'headSnapshot',
-  }),
+  })
+  comparisons;
 
-  totalOpenComments: attr(),
-  commentThreads: hasMany('commentThreads', {async: false}),
-  openCommentThreads: filterBy('commentThreads', 'isOpen'),
-  hasOpenCommentThreads: notEmpty('openCommentThreads'),
+  @attr()
+  totalOpenComments;
 
-  name: attr(),
+  @hasMany('commentThreads', {async: false})
+  commentThreads;
 
-  build: belongsTo('build', {async: true}),
-  screenshots: hasMany('screenshot', {async: false}),
+  @filterBy('commentThreads', 'isOpen')
+  openCommentThreads;
 
-  fingerprint: attr(),
+  @notEmpty('openCommentThreads')
+  hasOpenCommentThreads;
 
-  latestChangedAncestor: belongsTo('snapshot', {async: true, inverse: null}),
-  isReintroduced: attr('boolean'),
+  @attr()
+  name;
+
+  @belongsTo('build', {async: true})
+  build;
+
+  @hasMany('screenshot', {async: false})
+  screenshots;
+
+  @attr()
+  fingerprint;
+
+  @belongsTo('snapshot', {async: true, inverse: null})
+  latestChangedAncestor;
+
+  @attr('boolean')
+  isReintroduced;
 
   // Review state.
-  reviewState: attr(),
-  isUnreviewed: equal('reviewState', SNAPSHOT_UNAPPROVED_STATE),
-  isApproved: equal('reviewState', SNAPSHOT_APPROVED_STATE),
-  isRejected: equal('reviewState', SNAPSHOT_REJECTED_STATE),
+  @attr()
+  reviewState;
+
+  @equal('reviewState', SNAPSHOT_UNAPPROVED_STATE)
+  isUnreviewed;
+
+  @equal('reviewState', SNAPSHOT_APPROVED_STATE)
+  isApproved;
+
+  @equal('reviewState', SNAPSHOT_REJECTED_STATE)
+  isRejected;
 
   // reviewStateReason provides disambiguation for how reviewState was set, such as when a
   // snapshot was approved automatically by the system when there are no diffs vs. when it is
@@ -68,26 +94,31 @@ export default Model.extend(LoadableModel, {
   // - 'rejected' --> 'user_requested_changes': User clicked "Request changes" button
   //.   in current build
   // - 'rejected' --> 'user_requested_changes_previously':'rejected' status has carried forward
-  reviewStateReason: attr(),
-  isApprovedByUser: equal('reviewStateReason', SNAPSHOT_REVIEW_STATE_REASONS.USER_APPROVED),
-  isApprovedByUserPreviously: equal(
-    'reviewStateReason',
-    SNAPSHOT_REVIEW_STATE_REASONS.USER_APPROVED_PREVIOUSLY,
-  ),
-  isAutoApprovedBranch: equal(
-    'reviewStateReason',
-    SNAPSHOT_REVIEW_STATE_REASONS.AUTO_APPROVED_BRANCH,
-  ),
-  isUnchanged: equal('reviewStateReason', SNAPSHOT_REVIEW_STATE_REASONS.NO_DIFFS),
-  isChanged: not('isUnchanged'),
+  @attr()
+  reviewStateReason;
+
+  @equal('reviewStateReason', SNAPSHOT_REVIEW_STATE_REASONS.USER_APPROVED)
+  isApprovedByUser;
+
+  @equal('reviewStateReason', SNAPSHOT_REVIEW_STATE_REASONS.USER_APPROVED_PREVIOUSLY)
+  isApprovedByUserPreviously;
+
+  @equal('reviewStateReason', SNAPSHOT_REVIEW_STATE_REASONS.AUTO_APPROVED_BRANCH)
+  isAutoApprovedBranch;
+
+  @equal('reviewStateReason', SNAPSHOT_REVIEW_STATE_REASONS.NO_DIFFS)
+  isUnchanged;
+
+  @not('isUnchanged')
+  isChanged;
 
   // Is true for approved in build, approved by carry-forward, and auto-approved by branch.
-  isApprovedWithChanges: or(
-    'isApprovedByUser',
-    'isApprovedByUserPreviously',
-    'isAutoApprovedBranch',
-  ),
+  @or('isApprovedByUser', 'isApprovedByUserPreviously', 'isAutoApprovedBranch')
+  isApprovedWithChanges;
 
-  comparisonWidths: mapBy('comparisons', 'width'),
-  maxComparisonWidth: max('comparisonWidths'),
-});
+  @mapBy('comparisons', 'width')
+  comparisonWidths;
+
+  @max('comparisonWidths')
+  maxComparisonWidth;
+}

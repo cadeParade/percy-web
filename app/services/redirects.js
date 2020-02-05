@@ -1,13 +1,20 @@
+import {readOnly} from '@ember/object/computed';
 import Service, {inject as service} from '@ember/service';
 import localStorageProxy from 'percy-web/lib/localstorage';
-import {readOnly} from '@ember/object/computed';
 import {get} from '@ember/object';
 
-export default Service.extend({
-  session: service(),
-  currentUser: readOnly('session.currentUser'),
-  router: service(),
-  store: service(),
+export default class RedirectsService extends Service {
+  @service
+  session;
+
+  @readOnly('session.currentUser')
+  currentUser;
+
+  @service
+  router;
+
+  @service
+  store;
 
   // This method is tested via default-project-test and default-org-test
   redirectToDefaultOrganization({useMostRecentOrg = true} = {}) {
@@ -32,7 +39,7 @@ export default Service.extend({
         }
       });
     }
-  },
+  }
 
   async redirectToRecentProjectForOrg(org, {goToSettings = false} = {}) {
     if (!org) {
@@ -51,7 +58,7 @@ export default Service.extend({
     } else {
       return this._transitionToNewProject(orgSlug);
     }
-  },
+  }
 
   redirectToRecentLocalstorageProject() {
     const lastOrganizationSlug = localStorageProxy.get('lastOrganizationSlug');
@@ -67,7 +74,7 @@ export default Service.extend({
     } else {
       this.redirectToDefaultOrganization();
     }
-  },
+  }
 
   _transitionToProject(orgSlug, projectSlug, goToSettings) {
     if (goToSettings) {
@@ -75,11 +82,11 @@ export default Service.extend({
     } else {
       return this.router.transitionTo('organization.project.index', orgSlug, projectSlug);
     }
-  },
+  }
 
   _transitionToNewProject(orgSlug) {
     return this.router.transitionTo('organizations.organization.projects.new', orgSlug);
-  },
+  }
 
   _defaultProjectForOrg(orgProjects) {
     const length = get(orgProjects, 'length');
@@ -94,5 +101,5 @@ export default Service.extend({
       return projectHasId && isProjectEnabled;
     });
     return get(filteredProjects, 'firstObject');
-  },
-});
+  }
+}

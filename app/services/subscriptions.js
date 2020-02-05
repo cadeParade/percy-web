@@ -2,9 +2,13 @@ import Service, {inject as service} from '@ember/service';
 import {get} from '@ember/object';
 import {task} from 'ember-concurrency';
 
-export default Service.extend({
-  store: service(),
-  flashMessages: service(),
+export default class SubscriptionsService extends Service {
+  @service
+  store;
+
+  @service
+  flashMessages;
+
   changeSubscription(organization, planId, token) {
     // Always create a new POST request to change subscription, don't modify the subscription
     // object directly unless just changing attributes.
@@ -16,9 +20,9 @@ export default Service.extend({
     });
 
     return this._saveSubscription.perform(subscription);
-  },
+  }
 
-  _saveSubscription: task(function*(subscription) {
+  @task(function*(subscription) {
     try {
       yield subscription.save();
     } catch (adapterErrors) {
@@ -37,7 +41,8 @@ export default Service.extend({
       );
       location.reload();
     }
-  }),
+  })
+  _saveSubscription;
 
   _get_or_create_plan(planId) {
     let plan = this.store.peekRecord('plan', planId);
@@ -50,5 +55,5 @@ export default Service.extend({
       });
     }
     return plan;
-  },
-});
+  }
+}

@@ -1,4 +1,4 @@
-import {on} from '@ember/object/evented';
+import {on} from '@ember-decorators/object';
 import config from './config/environment';
 import EmberRouterScroll from 'ember-router-scroll';
 
@@ -27,11 +27,12 @@ export const DO_NOT_FORWARD_REDIRECT_ROUTES = [
   SIGNUP_ROUTE,
 ];
 
-const Router = EmberRouterScroll.extend({
-  location: config.locationType,
-  rootURL: config.rootURL,
+class Router extends EmberRouterScroll {
+  location = config.locationType;
+  rootURL = config.rootURL;
 
-  notifyAnalytics: on('didTransition', function() {
+  @on('didTransition')
+  notifyAnalytics() {
     if (window.ga) {
       window.ga('send', 'pageview', {page: this.url});
     }
@@ -45,8 +46,8 @@ const Router = EmberRouterScroll.extend({
     }
 
     return true;
-  }),
-});
+  }
+}
 
 Router.map(function() {
   this.route('join', {path: '/join/:invite_code'});

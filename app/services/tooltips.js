@@ -1,8 +1,10 @@
+import classic from 'ember-classic-decorator';
+import {computed} from '@ember/object';
 import Service from '@ember/service';
 import localStorageProxy from 'percy-web/lib/localstorage';
 import groupSnapshots from 'percy-web/lib/group-snapshots';
-import {computed} from '@ember/object';
 import {inject as service} from '@ember/service';
+import {set} from '@ember/object';
 
 export const TOOLTIP_MASTER_KEY = 'percy_demo_tooltips_hidden';
 const GROUP_SEQUENCE = [
@@ -32,67 +34,70 @@ const NO_DIFF_SEQUENCE = [
 
 const AUTO_APPROVED_SEQUENCE = ['build-overview', 'snapshot-overview', 'auto-approved-pill'];
 
-export default Service.extend({
-  router: service(),
+// Remove @classic when we refactor `init` to constructor
+@classic
+export default class TooltipsService extends Service {
+  @service
+  router;
 
-  allHidden: false,
+  allHidden = false;
+  currentSequence = null;
+  tooltipSequenceIndex = 0;
+  tooltipKey = 'build-overview';
 
-  currentSequence: null,
-  tooltipSequenceIndex: 0,
-  tooltipKey: 'build-overview',
-
-  currentTooltipKey: computed('tooltipKey', function() {
+  @computed('tooltipKey')
+  get currentTooltipKey() {
     return this.tooltipKey;
-  }),
+  }
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
     const isAllHidden = localStorageProxy.get(TOOLTIP_MASTER_KEY) || false;
-    this.set('allHidden', isAllHidden);
+    set(this, 'allHidden', isAllHidden);
 
     this.router.on('routeDidChange', () => {
       this.setToBeginning();
     });
-  },
+  }
 
   unhideAll() {
     localStorageProxy.removeItem(TOOLTIP_MASTER_KEY);
-  },
+  }
 
   hideAll() {
     localStorageProxy.set(TOOLTIP_MASTER_KEY, true);
-    this.set('allHidden', true);
-  },
+    set(this, 'allHidden', true);
+  }
 
   setCurrentBuild(build) {
-    this.set('build', build);
-  },
+    set(this, 'build', build);
+  }
 
   setToBeginning() {
-    this.set('currentSequence', this._getCurrentSequence(this.build));
-    this.set('tooltipSequenceIndex', 0);
-    this.set('tooltipKey', 'build-overview');
-  },
+    set(this, 'currentSequence', this._getCurrentSequence(this.build));
+    set(this, 'tooltipSequenceIndex', 0);
+    set(this, 'tooltipKey', 'build-overview');
+  }
 
   async resetTooltipFlow(currentKey, build) {
     // pick the correct scenario array for current scenario
     const scenario = await this._getCurrentSequence(build);
-    this.set('currentSequence', scenario);
+    set(this, 'currentSequence', scenario);
     // get index of currentKey
     const index = scenario.indexOf(currentKey);
     // set tooltipSequenceIndex to index of currentKey
-    this.set('tooltipSequenceIndex', index);
+    set(this, 'tooltipSequenceIndex', index);
     // set tooltipKey to updated tooltip
-    this.set('tooltipKey', scenario[index]);
-  },
+    set(this, 'tooltipKey', scenario[index]);
+  }
 
   async next() {
     // pick the correct scenario array for current scenario
     const scenario = this.currentSequence;
     // move to next tooltip by incrementing tooltipSequenceIndex by 1
     const nextTooltip = scenario[this.tooltipSequenceIndex + 1];
-    this.set('tooltipKey', nextTooltip);
-  },
+    set(this, 'tooltipKey', nextTooltip);
+  }
 
   async _getCurrentSequence(build) {
     // assume redirecting to demo project build 2 with groups when no build is present
@@ -116,5 +121,5 @@ export default Service.extend({
     } else {
       return NO_GROUP_SEQUENCE;
     }
-  },
-});
+  }
+}

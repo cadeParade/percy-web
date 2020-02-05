@@ -1,21 +1,19 @@
+import {action} from '@ember/object';
 import Route from '@ember/routing/route';
 import metaTagLookup from 'percy-web/lib/meta-tags';
 
-export default Route.extend({
+export default class PricingRoute extends Route {
   model() {
     return this.store.queryRecord('marketing-page', {
       'fields.pageName': 'Pricing-v2',
     });
-  },
+  }
 
-  headTags: metaTagLookup('pricing'),
+  @metaTagLookup('pricing')
+  headTags;
 
-  actions: {
-    didTransition() {
-      this._super.apply(this, arguments);
-
-      // TODO: Add organization tracking
-      this.analytics.track('Pricing Viewed');
-    },
-  },
-});
+  @action
+  didTransition() {
+    this.analytics.track('Pricing Viewed');
+  }
+}

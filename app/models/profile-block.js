@@ -1,8 +1,14 @@
+import classic from 'ember-classic-decorator';
 import Contentful from 'ember-data-contentful/models/contentful';
 import {hasMany} from 'ember-data/relationships';
 
-export default Contentful.extend({
-  contentType: 'profileBlock',
+// Remove @classic when we can refactor away from mixins
+@classic
+export default class ProfileBlock extends Contentful {
+  get contentType() {
+    return 'profileBlock';
+  }
 
-  profiles: hasMany('person-profile'),
-});
+  @hasMany('person-profile')
+  profiles;
+}

@@ -1,37 +1,61 @@
-import Model, {attr, belongsTo, hasMany} from '@ember-data/model';
 import {computed} from '@ember/object';
+import {notEmpty} from '@ember/object/computed';
+import Model, {attr, belongsTo, hasMany} from '@ember-data/model';
 
-export default Model.extend({
-  userHash: attr(),
-  name: attr(),
-  email: attr(),
-  avatarUrl: attr(),
-  unverifiedEmail: attr(),
-  webTheme: attr(),
+export default class User extends Model {
+  @attr()
+  userHash;
 
-  userNotificationSetting: belongsTo('userNotificationSetting', {async: false}),
-  identities: hasMany('identities', {async: false}),
-  organizationUsers: hasMany('organizationUser', {async: false}),
+  @attr()
+  name;
 
-  hasGithubIdentity: computed('identities.@each.provider', function() {
+  @attr()
+  email;
+
+  @attr()
+  avatarUrl;
+
+  @attr()
+  unverifiedEmail;
+
+  @attr()
+  webTheme;
+
+  @belongsTo('userNotificationSetting', {async: false})
+  userNotificationSetting;
+
+  @hasMany('identities', {async: false})
+  identities;
+
+  @hasMany('organizationUser', {async: false})
+  organizationUsers;
+
+  @computed('identities.@each.provider')
+  get hasGithubIdentity() {
     return this._hasIdentityType('github');
-  }),
+  }
 
-  hasEmailPasswordIdentity: computed('identities.@each.provider', function() {
+  @computed('identities.@each.provider')
+  get hasEmailPasswordIdentity() {
     return this.emailPasswordIdentity;
-  }),
+  }
 
-  emailPasswordIdentity: computed('identities.@each.provider', function() {
+  @computed('identities.@each.provider')
+  get emailPasswordIdentity() {
     return this._hasIdentityType('auth0');
-  }),
+  }
 
   // These endpoints are only available on the current user and should not be accessed otherwise.
-  organizations: hasMany('organizations', {inverse: null}),
+  @hasMany('organizations', {inverse: null})
+  organizations;
 
-  createdAt: attr('date'),
-  isVerified: computed.notEmpty('email'),
+  @attr('date')
+  createdAt;
+
+  @notEmpty('email')
+  isVerified;
 
   _hasIdentityType(provider) {
     return this.identities.findBy('provider', provider);
-  },
-});
+  }
+}

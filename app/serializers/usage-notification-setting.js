@@ -1,6 +1,6 @@
 import JSONAPISerializer from '@ember-data/serializer/json-api';
 
-export default JSONAPISerializer.extend({
+export default class UsageNotificationSetting extends JSONAPISerializer {
   normalize(modelClass, resourceHash) {
     // This model receives a nested json object from the API. The nested key (`snapshot_count`) is
     // not a top level key, and therefore originally does not go through Ember's default key
@@ -12,6 +12,6 @@ export default JSONAPISerializer.extend({
     const counts2 = resourceHash.attributes.thresholds['snapshot-count'];
     resourceHash.attributes.thresholds['snapshot-count'] = counts1 || counts2;
     delete resourceHash.attributes.thresholds['snapshot_count'];
-    return this._super(...arguments);
-  },
-});
+    return super.normalize(...arguments);
+  }
+}

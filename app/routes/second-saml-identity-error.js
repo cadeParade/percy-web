@@ -1,11 +1,11 @@
 import Route from '@ember/routing/route';
 
-export default Route.extend({
-  queryParams: {
+export default class SecondSamlIdentityErrorRoute extends Route {
+  queryParams = {
     connectionName: {},
     newSsoProfileEmail: {},
     organizationName: {},
     provider: {},
     userEmail: {},
-  },
-});
+  };
+}

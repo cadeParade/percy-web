@@ -1,11 +1,17 @@
-import Route from '@ember/routing/route';
-import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
+import classic from 'ember-classic-decorator';
 import {inject as service} from '@ember/service';
 import {alias} from '@ember/object/computed';
+import Route from '@ember/routing/route';
+import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-export default Route.extend(AuthenticatedRouteMixin, {
-  session: service(),
-  currentUser: alias('session.currentUser'),
+// Remove @classic when we can refactor away from mixins
+@classic
+export default class NotificationsRoute extends Route.extend(AuthenticatedRouteMixin) {
+  @service
+  session;
+
+  @alias('session.currentUser')
+  currentUser;
 
   model() {
     const user = this.session.currentUser;
@@ -15,5 +21,5 @@ export default Route.extend(AuthenticatedRouteMixin, {
     } else {
       return this.store.createRecord('user-notification-setting', {user});
     }
-  },
-});
+  }
+}

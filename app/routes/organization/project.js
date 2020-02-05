@@ -1,14 +1,20 @@
-import Route from '@ember/routing/route';
-import localStorageProxy from 'percy-web/lib/localstorage';
 import {inject as service} from '@ember/service';
 import {readOnly} from '@ember/object/computed';
+import Route from '@ember/routing/route';
+import localStorageProxy from 'percy-web/lib/localstorage';
 import {task} from 'ember-concurrency';
 import handleOptionalAuthGetError from 'percy-web/lib/handle-optionally-authenticated-fetch-error';
+import {set} from '@ember/object';
 
-export default Route.extend({
-  session: service(),
-  store: service(),
-  currentUser: readOnly('session.currentUser'),
+export default class ProjectRoute extends Route {
+  @service
+  session;
+
+  @service
+  store;
+
+  @readOnly('session.currentUser')
+  currentUser;
 
   async beforeModel() {
     const currentUser = this.currentUser;
@@ -16,25 +22,25 @@ export default Route.extend({
     try {
       // If we get a project, it is accessible to whoever's asking for it. Keep going.
       const project = await this._getProject.perform();
-      this.set('_project', project);
-      return this._super(...arguments);
+      set(this, '_project', project);
+      return super.beforeModel(...arguments);
     } catch (e) {
       return handleOptionalAuthGetError(e, currentUser, this);
     }
-  },
+  }
 
   model() {
     // set by beforeModel, if successful.
     return this._project;
-  },
+  }
 
   afterModel(model) {
     let recentProjects = localStorageProxy.get('recentProjectSlugs') || {};
     recentProjects[model.get('organization.slug')] = model.get('slug');
     localStorageProxy.set('recentProjectSlugs', recentProjects);
-  },
+  }
 
-  _getProject: task(function*() {
+  @task(function*() {
     const projectSlug = this.paramsFor(this.routeName).project_id;
     const orgSlug = this.paramsFor('organization').organization_id;
 
@@ -52,5 +58,6 @@ export default Route.extend({
     } else {
       return yield this.store.findRecord('project', `${orgSlug}/${projectSlug}`);
     }
-  }),
-});
+  })
+  _getProject;
+}

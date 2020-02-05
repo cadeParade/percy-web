@@ -1,7 +1,7 @@
 import Service from '@ember/service';
 import AdminMode from 'percy-web/lib/admin-mode';
 
-export default Service.extend({
+export default class IntercomService extends Service {
   associateWithCompany(user, organization) {
     if (AdminMode.excludeFromAnalytics()) {
       return;
@@ -17,7 +17,7 @@ export default Service.extend({
         },
       });
     }
-  },
+  }
 
   showIntercom(...args) {
     if (window.Intercom) {
@@ -27,11 +27,11 @@ export default Service.extend({
         window.Intercom('show');
       }
     }
-  },
+  }
 
   update() {
     if (window.Intercom) {
       window.Intercom('update');
     }
-  },
-});
+  }
+}

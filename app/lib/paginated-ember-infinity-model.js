@@ -1,13 +1,16 @@
+import classic from 'ember-classic-decorator';
 import InfinityModel from 'ember-infinity/lib/infinity-model';
 import utils from 'percy-web/lib/utils';
 import {set} from '@ember/object';
 
-const ExtendedInfinityModel = InfinityModel.extend({
+// @classic needs to be here because InfinityModel uses some old Ember apis
+@classic
+class ExtendedInfinityModel extends InfinityModel {
   buildParams() {
-    let params = this._super(...arguments);
+    let params = super.buildParams(...arguments);
     params['page[cursor]'] = this._cursor; // where `this` is the infinityModel instance
     return params;
-  },
+  }
 
   afterInfinityModel(builds, params) {
     // if the server response is less than the request assume we've loaded all the data
@@ -31,7 +34,7 @@ const ExtendedInfinityModel = InfinityModel.extend({
     const oldestBuildId = sortedCleanLocalBuilds.get('lastObject.id');
 
     set(this, '_cursor', oldestBuildId);
-  },
-});
+  }
+}
 
 export default ExtendedInfinityModel;

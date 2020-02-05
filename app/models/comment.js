@@ -1,15 +1,32 @@
+import classic from 'ember-classic-decorator';
 import Model, {attr, belongsTo, hasMany} from '@ember-data/model';
 import SaveManualMixin from 'percy-web/mixins/save-manual-mixin';
 
-export default Model.extend(SaveManualMixin, {
-  commentThread: belongsTo('comment-thread', {async: false}),
-  author: belongsTo('user', {async: false}),
-  body: attr('string'),
-  createdAt: attr('date'),
-  updatedAt: attr('date'),
+// Remove @classic when we can refactor away from mixins
+@classic
+export default class Comment extends Model.extend(SaveManualMixin) {
+  @belongsTo('comment-thread', {async: false})
+  commentThread;
+
+  @belongsTo('user', {async: false})
+  author;
+
+  @attr('string')
+  body;
+
+  @attr('date')
+  createdAt;
+
+  @attr('date')
+  updatedAt;
 
   // Not actual fields - but needed for creating comment threads in the same request as comments.
-  snapshotId: attr('string'),
-  threadType: attr('string'),
-  taggedUsers: hasMany('user'),
-});
+  @attr('string')
+  snapshotId;
+
+  @attr('string')
+  threadType;
+
+  @hasMany('user')
+  taggedUsers;
+}

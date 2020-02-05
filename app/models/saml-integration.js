@@ -1,13 +1,25 @@
-import Model, {attr, belongsTo} from '@ember-data/model';
 import {equal} from '@ember/object/computed';
+import Model, {attr, belongsTo} from '@ember-data/model';
 
-export default Model.extend({
-  organization: belongsTo('organization', {async: false}),
-  provider: attr('string'),
-  auth0ConnectionName: attr('string'),
-  providerLoginUrl: attr('string'),
-  emailDomain: attr('string'),
-  forceSso: attr('boolean'),
+export default class SamlIntegration extends Model {
+  @belongsTo('organization', {async: false})
+  organization;
 
-  isOktaIntegration: equal('provider', 'okta'),
-});
+  @attr('string')
+  provider;
+
+  @attr('string')
+  auth0ConnectionName;
+
+  @attr('string')
+  providerLoginUrl;
+
+  @attr('string')
+  emailDomain;
+
+  @attr('boolean')
+  forceSso;
+
+  @equal('provider', 'okta')
+  isOktaIntegration;
+}
