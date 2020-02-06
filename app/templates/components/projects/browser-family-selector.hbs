@@ -1,4 +1,4 @@
-<div class="grid col-2 gap-2" data-test-browser-family-selector>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-2" data-test-browser-family-selector>
   {{#each this.sortedAllBrowserFamilies as |family|}}
     <Projects::BrowserFamilySelectorButton
       @project={{this.project}}

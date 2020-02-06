@@ -1,7 +1,7 @@
 .btn-toggle {
   @apply relative;
   @apply grid;
-  @apply col-auto;
+  @apply grid-flow-col;
   @apply p-xs;
   @apply rounded-full;
   @apply bg-btn-toggle;

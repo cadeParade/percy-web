@@ -5,6 +5,10 @@
 * See: css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice
 */
 
+html {
+  @apply box-border;
+}
+
 *,
 *::before,
 *::after {
