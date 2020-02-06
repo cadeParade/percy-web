@@ -3,7 +3,7 @@ import freezeMoment from '../helpers/freeze-moment';
 import {currentRouteName, currentURL, findAll, visit} from '@ember/test-helpers';
 import {isVisible as attacherIsVisible} from 'ember-attacher';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
-import {beforeEach, afterEach} from 'mocha';
+import {beforeEach} from 'mocha';
 import moment from 'moment';
 import sinon from 'sinon';
 import {TEST_IMAGE_URLS} from 'percy-web/mirage/factories/screenshot';
@@ -17,7 +17,6 @@ import BuildPage from 'percy-web/tests/pages/build-page';
 import ProjectPage from 'percy-web/tests/pages/project-page';
 import {PusherMock} from 'pusher-js-mock';
 import {settled} from '@ember/test-helpers';
-import utils from 'percy-web/lib/utils';
 
 describe('Acceptance: Build', function() {
   freezeMoment('2018-05-22');
@@ -84,7 +83,6 @@ describe('Acceptance: Build', function() {
 
   setupAcceptance();
 
-  let backStub;
   let project;
   let build;
   let defaultSnapshot;
@@ -94,8 +92,6 @@ describe('Acceptance: Build', function() {
   let urlParams;
 
   setupSession(function(server) {
-    backStub = sinon.stub(utils, 'windowBack');
-
     const organization = server.create('organization', 'withUser');
     project = server.create('project', {name: 'project-with-finished-build', organization});
     build = server.create('build', {
@@ -126,10 +122,6 @@ describe('Acceptance: Build', function() {
       projectSlug: project.slug,
       buildId: build.id,
     };
-  });
-
-  afterEach(function() {
-    backStub.restore();
   });
 
   it('does not display any tooltips if not a demo project', async function() {
@@ -1076,7 +1068,6 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   freezeMoment('2018-05-22');
   setupAcceptance();
 
-  let backStub;
   let project;
   let snapshot;
   let urlParams;
@@ -1084,8 +1075,6 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   let build;
 
   setupSession(function(server) {
-    backStub = sinon.stub(utils, 'windowBack');
-
     const organization = server.create('organization', 'withUser');
     project = server.create('project', {name: 'project-with-finished-build', organization});
     build = server.create('build', {
@@ -1109,10 +1098,6 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       mode: 'diff',
       browser: 'firefox',
     };
-  });
-
-  afterEach(function() {
-    backStub.restore();
   });
 
   it('responds to keystrokes and click in full view', async function() {

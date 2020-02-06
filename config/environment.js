@@ -29,8 +29,6 @@ module.exports = function(environment) {
 
     launchDarkly: {},
 
-    historySupportMiddleware: true,
-
     APP: {
       // Don't use these directly; use utils.buildApiUrl instead.
       apiUrls: {

@@ -1,6 +1,6 @@
 import {on} from '@ember-decorators/object';
+import EmberRouter from '@ember/routing/router';
 import config from './config/environment';
-import EmberRouterScroll from 'ember-router-scroll';
 
 export const AUTH_REDIRECT_LOCALSTORAGE_KEY = 'percyAttemptedTransition';
 export const AUTH_CALLBACK_ROUTE = 'auth-callback';
@@ -27,7 +27,7 @@ export const DO_NOT_FORWARD_REDIRECT_ROUTES = [
   SIGNUP_ROUTE,
 ];
 
-class Router extends EmberRouterScroll {
+class Router extends EmberRouter {
   location = config.locationType;
   rootURL = config.rootURL;
 

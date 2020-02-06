@@ -3,7 +3,6 @@ import {inject as service} from '@ember/service';
 import Route from '@ember/routing/route';
 import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
-import utils from 'percy-web/lib/utils';
 import {set} from '@ember/object';
 
 export default class SnapshotRoute extends Route {
@@ -29,12 +28,6 @@ export default class SnapshotRoute extends Route {
     comparisonMode: {as: 'mode'},
     activeBrowserFamilySlug: {as: 'browser', refreshModel: true},
   };
-
-  beforeModel(transition) {
-    if (transition.from) {
-      set(this, '_prevRouteName', transition.from.name);
-    }
-  }
 
   model(params) {
     set(this, 'params', params);
@@ -152,15 +145,6 @@ export default class SnapshotRoute extends Route {
   transitionRouteToWidth(width) {
     this._updateQueryParams({newWidth: width});
     this._track('Fullscreen: Width Switched', {width});
-  }
-
-  @action
-  transitionToBuildPage(url) {
-    if (this._prevRouteName === 'organization.project.builds.build.index') {
-      utils.windowBack();
-    } else {
-      this.transitionTo(url);
-    }
   }
 
   _updateQueryParams(params) {
