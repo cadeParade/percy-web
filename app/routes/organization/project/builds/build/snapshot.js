@@ -4,7 +4,7 @@ import Route from '@ember/routing/route';
 import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
 import utils from 'percy-web/lib/utils';
-import {get, set} from '@ember/object';
+import {set} from '@ember/object';
 
 export default class SnapshotRoute extends Route {
   @service
@@ -33,7 +33,6 @@ export default class SnapshotRoute extends Route {
   beforeModel(transition) {
     if (transition.from) {
       set(this, '_prevRouteName', transition.from.name);
-      set(this, '_prevBuildId', get(transition, 'from.parent.params.build_id'));
     }
   }
 
@@ -156,11 +155,8 @@ export default class SnapshotRoute extends Route {
   }
 
   @action
-  transitionToBuildPage(url, buildId) {
-    if (
-      this._prevRouteName === 'organization.project.builds.build.index' &&
-      this._prevBuildId === buildId
-    ) {
+  transitionToBuildPage(url) {
+    if (this._prevRouteName === 'organization.project.builds.build.index') {
       utils.windowBack();
     } else {
       this.transitionTo(url);

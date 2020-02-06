@@ -58,8 +58,8 @@ export default Component.extend({
   hasDiffsInBrowser: readOnly('filteredComparisons.anyComparisonsHaveDiffs'),
 
   actions: {
-    handleTransitionToBuildPage(buildId, event) {
-      this.transitionToBuildPage(event.currentTarget.pathname, buildId);
+    handleTransitionToBuildPage(event) {
+      this.transitionToBuildPage(event.currentTarget.pathname);
     },
 
     onCopySnapshotUrlToClipboard() {

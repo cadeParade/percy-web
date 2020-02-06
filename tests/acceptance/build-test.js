@@ -1,13 +1,6 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import freezeMoment from '../helpers/freeze-moment';
-import {
-  currentRouteName,
-  currentURL,
-  findAll,
-  visit,
-  getContext,
-  settled,
-} from '@ember/test-helpers';
+import {currentRouteName, currentURL, findAll, visit} from '@ember/test-helpers';
 import {isVisible as attacherIsVisible} from 'ember-attacher';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {beforeEach, afterEach} from 'mocha';
@@ -23,9 +16,8 @@ import {
 import BuildPage from 'percy-web/tests/pages/build-page';
 import ProjectPage from 'percy-web/tests/pages/project-page';
 import {PusherMock} from 'pusher-js-mock';
+import {settled} from '@ember/test-helpers';
 import utils from 'percy-web/lib/utils';
-// eslint-disable-next-line
-import {setupBrowserNavigationButtons} from 'ember-cli-browser-navigation-button-test-helper/test-support';
 
 describe('Acceptance: Build', function() {
   freezeMoment('2018-05-22');
@@ -102,13 +94,7 @@ describe('Acceptance: Build', function() {
   let urlParams;
 
   setupSession(function(server) {
-    backStub = sinon.stub(utils, 'windowBack').callsFake(async function() {
-      let {owner} = getContext();
-      const history = owner.lookup('service:history');
-      await history.goBack();
-      await settled();
-      return;
-    });
+    backStub = sinon.stub(utils, 'windowBack');
 
     const organization = server.create('organization', 'withUser');
     project = server.create('project', {name: 'project-with-finished-build', organization});
@@ -889,7 +875,6 @@ describe('Acceptance: Build', function() {
   });
 
   it('toggles full view', async function() {
-    setupBrowserNavigationButtons();
     await BuildPage.visitBuild(urlParams);
     await BuildPage.snapshots.objectAt(0).header.clickToggleFullscreen();
     expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
@@ -1099,13 +1084,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   let build;
 
   setupSession(function(server) {
-    backStub = sinon.stub(utils, 'windowBack').callsFake(async function() {
-      let {owner} = getContext();
-      const history = owner.lookup('service:history');
-      await history.goBack();
-      await settled();
-      return;
-    });
+    backStub = sinon.stub(utils, 'windowBack');
 
     const organization = server.create('organization', 'withUser');
     project = server.create('project', {name: 'project-with-finished-build', organization});
