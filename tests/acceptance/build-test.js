@@ -1226,8 +1226,8 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   it('redirects to allowed browser when a browser query param is incorrect', async function() {
     urlParams.browser = 'not-a-real-browser';
     await BuildPage.visitFullPageSnapshot(urlParams);
-    expect(currentURL()).to.include('browser=firefox');
     expect(findAll('.flash-message.flash-message-danger')).to.have.length(1);
+    await percySnapshot(this.test);
   });
 
   describe('commenting', function() {
@@ -1519,8 +1519,10 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   });
 
   it('forwards to fullscreen snapshot when hitting old route', async function() {
-    // eslint-disable-next-line
-    await visit(`/${urlParams.orgSlug}/${urlParams.projectSlug}/builds/${urlParams.buildId}/view/${urlParams.snapshotId}/${urlParams.width}?mode=${urlParams.mode}&browser=${urlParams.browser}`);
+    await visit(
+      // eslint-disable-next-line
+      `/${urlParams.orgSlug}/${urlParams.projectSlug}/builds/${urlParams.buildId}/view/${urlParams.snapshotId}/${urlParams.width}?mode=${urlParams.mode}&browser=${urlParams.browser}`,
+    );
     expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
   });
 });
