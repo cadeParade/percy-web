@@ -4,9 +4,9 @@
 
   .ComparisonViewer-halfColumn {
     @apply flex;
-    @apply float-left;
-    @apply w-1/2;
+    @apply items-start;
     @apply justify-center;
+    @apply w-1/2;
   }
 
   .ComparisonViewer-halfColumn--left {

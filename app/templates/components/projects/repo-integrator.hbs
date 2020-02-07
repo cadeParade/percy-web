@@ -14,7 +14,7 @@
     </div>
   {{else}}
 
-    <div class="grid gap-2 text-center col-3" data-test-repo-integrator-no-integrations>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-center" data-test-repo-integrator-no-integrations>
       <LinkTo @data-test-github={{true}} @route="organizations.organization.integrations.github" @model={{this.organization.slug}} class="flex justify-center link-dark border rounded p-3 hover:no-underline hover:bg-purple-200 hover:border-purple-600">
         <div>
           <div class="flex justify-center mb-1">
