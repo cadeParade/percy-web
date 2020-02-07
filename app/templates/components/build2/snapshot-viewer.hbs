@@ -1,11 +1,30 @@
 <div class="master-detail-snapshot-header">
-  <div class="p-2 cursor-default font-bold truncate" title="{{this.snapshot.name}}">
+  <div class="mb-3 cursor-default font-bold truncate" title="{{this.snapshot.name}}">
     {{this.snapshot.name}}
   </div>
 
-  <div class="btn-toolobar px-2">
-    <button type="button" class="percy-btn" {{action this.goToPreviousSnapshot}}>Previous</button>
-    <button type="button" class="percy-btn" {{action this.goToNextSnapshot}}>Next</button>
+  <div class="flex items-center justify-between">
+    <div class="flex-1 flex justify-start">
+      <div class="btn-group btn-group-alt">
+        <ComparisonSwitcher
+          @comparisons={{if this.isShowingAllComparisons this.filteredComparisons.comparisons this.filteredComparisons.comparisonsWithDiffs}}
+          @selectedWidth={{this.snapshotSelectedWidth}}
+          @updateSelectedWidth={{this.updateSelectedWidth}}
+          @data-test-SnapshotViewer-widthSwitcher={{true}}
+        />
+      </div>
+    </div>
+
+    <div class="flex-1 flex justify-center">
+      <div class="btn-toolbar">
+        <button type="button" class="percy-btn" {{action this.goToPreviousSnapshot}}>Previous</button>
+        <button type="button" class="percy-btn" {{action this.goToNextSnapshot}}>Next</button>
+      </div>
+    </div>
+
+    <div class="flex-1 flex justify-end">
+      <button type="button" class="percy-btn">Diff overlay</button>
+    </div>
   </div>
 </div>
 

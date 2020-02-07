@@ -7,9 +7,14 @@
 
 .master-detail-snapshot-header {
   @apply sticky top-0;
-  @apply z-1;
+  @apply p-3;
   @apply bg-secondary;
-  @apply pb-2;
+  @apply border-b;
+  @apply z-1;
   backdrop-filter: saturate(50%) blur(20px);
   opacity: 0.98;
+}
+
+.master-detail-comparison-viewer {
+  @apply bg-primary;
 }
