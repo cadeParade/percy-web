@@ -1,0 +1,23 @@
+<div class="px-3 pt-3 mb-1">
+  <Input
+    @type="text"
+    @value={{this.searchTerm}}
+    @key-up={{action "updateSearchTerm"}}
+    placeholder="Search snapshots"
+    class="percy-input rounded h-10 m-0 px-1-1/2"
+  />
+</div>
+
+<ul class="snapshot-name-list px-3 list-none">
+  {{#each this.filteredSnapshots as |snapshot|}}
+    <li class="truncate">
+      <LinkTo
+        class="text-primary opacity-50"
+        @route="organization.project.builds.build2.snapshot"
+        @model={{snapshot.id}}
+      >
+        {{snapshot.name}}
+      </LinkTo>
+    </li>
+  {{/each}}
+</ul>
