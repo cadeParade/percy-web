@@ -10,11 +10,29 @@
   @apply p-3;
   @apply bg-secondary;
   @apply border-b;
+  @apply shadow-px;
   @apply z-1;
   backdrop-filter: saturate(50%) blur(20px);
   opacity: 0.98;
+
+  .browser-switcher svg {
+    transform: scale(0.75);
+  }
+
+  .browser-switcher {
+    @apply px-1;
+  }
 }
 
 .master-detail-comparison-viewer {
   @apply bg-primary;
+}
+
+.percy-btn.btn-square {
+  @apply flex;
+  @apply items-center;
+  @apply justify-center;
+  @apply p-0;
+  width: 30px;
+  height: 30px;
 }

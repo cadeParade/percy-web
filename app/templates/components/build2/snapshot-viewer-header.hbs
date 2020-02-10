@@ -1,0 +1,96 @@
+{{!-- template-lint-disable no-nested-interactive --}}
+<header class="master-detail-snapshot-header">
+  <div class="flex items-center justify-between mb-3">
+    <div class="flex items-center">
+      {{#if this.snapshot.isRejected}}
+        <div class="mr-1">
+          <div class="px-1 py-sm tracking-px rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{if (eq this.snapshot.reviewStateReason 'user_rejected_previously') 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}" data-test-request-changes-badge>
+            Changes requested
+          </div>
+        </div>
+      {{/if}}
+
+      <div class="flex items-center" title="{{this.snapshot.name}}">
+        <div class="cursor-default font-bold mr-1">
+          {{this.snapshot.name}}
+        </div>
+        <CopyButton
+          @class="btn-icon-only"
+          @clipboardText={{generate-fullscreen-snapshot-url this.snapshot.id this.snapshotSelectedWidth this.comparisonMode this.activeBrowser.familySlug this.fullscreen}}
+          @success={{pipe-action (action "onCopySnapshotUrlToClipboard") dropdown.actions.close}}
+        >
+          {{inline-svg "link-icon"}}
+        </CopyButton>
+      </div>
+    </div>
+
+    <Build2::BrowserSwitcher />
+  </div>
+
+  <div class="flex items-center justify-between">
+    <div class="flex-1 flex justify-start">
+      <ComparisonSwitcher
+        @comparisons={{if this.isShowingAllComparisons this.filteredComparisons.comparisons this.filteredComparisons.comparisonsWithDiffs}}
+        @selectedWidth={{this.snapshotSelectedWidth}}
+        @updateSelectedWidth={{this.updateSelectedWidth}}
+        @data-test-SnapshotViewer-widthSwitcher={{true}}
+      />
+    </div>
+
+    <div class="flex-1 flex justify-center">
+      <div class="btn-toolbar mx-2">
+        {{#if this.snapshot.build.isFinished}}
+          <div class="btn-toolbar" data-test-snapshot-approval-button>
+            <button type="button" class="percy-btn btn-square" {{action goToPreviousSnapshot}}>
+              <ThemeSvg @svg="snapshot-dropdown-icon" class="transform rotate-180 pb-px" />
+            </button>
+            <SnapshotApprovalButton
+              @snapshot={{this.snapshot}}
+              @hasDiffsInBrowser={{this.hasDiffsInBrowser}}
+              @activeBrowser={{this.activeBrowser}}
+              @createReview={{this.createReview}}
+              @isDisabled={{not this.isBuildApprovable}}
+            />
+            <button type="button" class="percy-btn btn-square" {{action goToNextSnapshot}}>
+              <ThemeSvg @svg="snapshot-dropdown-icon" class="pb-px"/>
+            </button>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="flex-1 flex justify-end">
+      <div class="btn-toolbar">
+        {{#if this.snapshot.build.isFinished}}
+          <div class="btn-toolbar">
+            <button type="button" class="percy-btn" {{action toggleOverlay}}>
+              Diff overlay
+              <span class="text-white">
+                {{#if showDiffOverlay}}
+                  on
+                {{else}}
+                  off
+                {{/if}}
+              </span>
+            </button>
+
+            {{#if this.snapshot.isUnreviewed}}
+              <SnapshotRejectButton
+                @snapshots={{array this.snapshot}}
+                @isDisabled={{not this.isBuildApprovable}}
+              />
+            {{/if}}
+
+            {{#if this.isBuildApprovable}}
+              <button type="button" class="btn btn-square collaboration-toggle relative">
+                <figure class="svg-container">
+                  <ThemeSvg @svg="conversation-icon-add" />
+                </figure>
+              </button>
+            {{/if}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</header>

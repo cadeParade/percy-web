@@ -1,4 +1,4 @@
-<div class="px-3 pt-3 mb-1">
+<div class="p-3 mb-1">
   <Input
     @type="text"
     @value={{this.searchTerm}}
@@ -8,15 +8,20 @@
   />
 </div>
 
-<ul class="snapshot-name-list px-3 list-none">
+<ul class="snapshot-name-list list-none">
   {{#each this.filteredSnapshots as |snapshot|}}
-    <li class="truncate">
+    <li class="px-3 mb-3 border-b">
       <LinkTo
         class="text-primary opacity-50"
         @route="organization.project.builds.build2.snapshot"
         @model={{snapshot.id}}
       >
-        {{snapshot.name}}
+        <div class="w-full mb-1 border rounded-sm">
+          image goes here
+        </div>
+        <div class="mb-3">
+          {{snapshot.name}}
+        </div>
       </LinkTo>
     </li>
   {{/each}}

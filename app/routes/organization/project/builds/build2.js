@@ -91,7 +91,6 @@ export default Route.extend(EKMixin, {
   },
 
   onUpArrowPress: on(keyDown('ArrowUp'), function(event) {
-    console.log('UP');
     if (this.router.currentRoute.name === 'organization.project.builds.build2.snapshot') {
       event.preventDefault();
       this.goToPrevious();
@@ -99,7 +98,6 @@ export default Route.extend(EKMixin, {
   }),
 
   onDownArrowPress: on(keyDown('ArrowDown'), function(event) {
-    console.log('DOWN');
     if (this.router.currentRoute.name === 'organization.project.builds.build2.snapshot') {
       event.preventDefault();
       this.goToNext();
