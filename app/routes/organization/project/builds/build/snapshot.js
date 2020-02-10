@@ -54,17 +54,25 @@ export default class SnapshotRoute extends Route {
 
   setupController(controller, model) {
     super.setupController(...arguments);
+    const params = this._params();
     const build = this.modelFor('organization.project.builds.build');
     const requestedBrowser = this.store
       .peekAll('browser')
-      .findBy('familySlug', this._params().activeBrowserFamilySlug);
+      .findBy('familySlug', params.activeBrowserFamilySlug);
 
     const browser = this._validateBrowser(requestedBrowser, model.snapshot.build);
+    const comparisonMode = this._validateComparisonMode(
+      params.comparisonMode,
+      model.snapshot,
+      params.currentWidth,
+      browser,
+    );
     controller.setProperties({
       build,
       snapshot: model.snapshot,
       isBuildApprovable: model.isUserMember,
       activeBrowserFamilySlug: browser.familySlug,
+      comparisonMode,
     });
   }
 
