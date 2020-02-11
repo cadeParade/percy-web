@@ -63,6 +63,10 @@
   text-shadow: 0 1px 1px rgba(63, 58, 64, 0.2);
 }
 
+.percy-btn.hidden {
+  display: none;
+}
+
 .percy-btn-primary-round {
   @apply w-28;
   @apply h-28;

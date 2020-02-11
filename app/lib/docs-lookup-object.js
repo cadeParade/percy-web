@@ -135,6 +135,11 @@ export default {
         docLink: 'https://docs.percy.io/docs/command-line-client',
         exampleLink: '',
       },
+      gatsby: {
+        name: 'Gatsby',
+        docLink: 'https://docs.percy.io/docs/gatsby',
+        exampleLink: '',
+      },
       jekyll: {
         name: 'Jekyll',
         docLink: 'https://docs.percy.io/docs/jekyll',
