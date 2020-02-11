@@ -25,9 +25,17 @@
   background: url("/images/artboard-bg.svg");
 }
 
+.bg-artboard-approved {
+  background: url("/images/artboard-bg-approved.svg");
+}
+
 .theme-dark {
   .snapshot-name-list-image {
     background: url("/images/artboard-bg-dark.svg");
+  }
+
+  .bg-artboard-approved {
+    background: url("/images/artboard-bg-dark-approved.svg");
   }
 }
 
