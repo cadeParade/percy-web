@@ -1,4 +1,4 @@
-<div class="p-3 mb-1">
+{{!-- <div class="p-3 mb-1">
   <Input
     @type="text"
     @value={{this.searchTerm}}
@@ -6,20 +6,28 @@
     placeholder="Search snapshots"
     class="percy-input rounded h-10 m-0 px-1-1/2"
   />
+</div> --}}
+
+  <div class="p-3 mb-1">
+    <div class="text-xl text-secondary">
+      Build <span class="font-mono font-normal tracking-sm text-primary mr-1">{{this.build.buildNumber}}</span>
+    </div>
 </div>
 
 <ul class="snapshot-name-list list-none">
   {{#each this.filteredSnapshots as |snapshot|}}
     <li class="px-3 mb-3 border-b">
       <LinkTo
-        class="text-primary opacity-50"
+        class="snapshot-name-list-item text-primary opacity-50"
         @route="organization.project.builds.build2.snapshot"
         @model={{snapshot.id}}
       >
-        <div class="w-full mb-1 border rounded-sm">
-          image goes here
+        <div class="snapshot-name-list-image w-full mb-1 border rounded-sm">
+          <div class="snapshot-name-list-image-container">
+            <img src="https://dummyimage.com/300x500" alt="foo">
+          </div>
         </div>
-        <div class="mb-3">
+        <div class="snapshot-name-list-item-title">
           {{snapshot.name}}
         </div>
       </LinkTo>

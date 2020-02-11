@@ -5,6 +5,43 @@
   }
 }
 
+.snapshot-name-list-item-title {
+  @apply mb-3;
+  @apply font-bold;
+}
+
+.snapshot-name-list-item:hover {
+  @apply text-primary;
+  @apply no-underline;
+}
+
+.snapshot-name-list-item.active .snapshot-name-list-image {
+  box-shadow: 0 0 0 4px var(--bg-color-primary), 0 0 0 6px theme("colors.blue.500");
+}
+
+.snapshot-name-list-image {
+  @apply relative;
+  padding-bottom: 100%;
+  background: url("/images/artboard-bg.svg");
+}
+
+.theme-dark {
+  .snapshot-name-list-image {
+    background: url("/images/artboard-bg-dark.svg");
+  }
+}
+
+.snapshot-name-list-image-container {
+  @apply flex items-center justify-center;
+  @apply absolute top-0 left-0;
+  @apply w-full h-full;
+  @apply text-center;
+
+  img {
+    @apply max-h-full;
+  }
+}
+
 .master-detail-snapshot-header {
   @apply sticky top-0;
   @apply p-3;
