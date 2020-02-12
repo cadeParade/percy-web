@@ -32,7 +32,8 @@
       >
         <div class="snapshot-name-list-image w-full mb-1 border rounded-sm {{if snapshot.isApproved 'border-green-500 bg-artboard-approved'}}">
           <div class="snapshot-name-list-image-container">
-            <img src="https://dummyimage.com/300x500" alt="foo">
+            {{simple-image image=snapshot.comparisons.firstObject.diffImage}}
+            {{simple-image image=snapshot.comparisons.firstObject.headScreenshot.lossyImage}}
           </div>
           {{#if snapshot.isApproved}}
             <div class="absolute" style="top: 16px; right: 16px;">
