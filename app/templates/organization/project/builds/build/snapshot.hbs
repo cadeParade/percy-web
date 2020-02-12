@@ -1,14 +1,14 @@
 <ModalDialog @wrapperClass="SnapshotViewerFullModalWrapper" >
   <SnapshotViewerFull
-    @snapshot={{this.model.snapshot}}
+    @snapshot={{this.snapshot}}
+    @isBuildApprovable={{this.isBuildApprovable}}
     @snapshotSelectedWidth={{this.snapshotSelectedWidth}}
     @comparisonMode={{this.comparisonMode}}
-    @updateComparisonMode={{route-action "updateComparisonMode"}}
-    @transitionRouteToWidth={{route-action "transitionRouteToWidth"}}
-    @createReview={{route-action "createReview"}}
     @activeBrowser={{this.activeBrowser}}
-    @updateActiveBrowser={{route-action "updateActiveBrowser"}}
-    @isBuildApprovable={{this.isBuildApprovable}}
+    @transitionRouteToWidth={{action "updateActiveWidth"}}
+    @updateComparisonMode={{action "updateComparisonMode"}}
+    @updateActiveBrowser={{action "updateActiveBrowser"}}
+    @createReview={{route-action "createReview"}}
     @createCommentThread={{route-action "createCommentThread"}}
     @closeCommentThread={{route-action "closeCommentThread"}}
     @createComment={{route-action "createComment"}}
