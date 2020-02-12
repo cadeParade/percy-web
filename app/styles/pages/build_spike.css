@@ -111,7 +111,7 @@
 
   &:hover {
     .menu-icon-line-alt {
-      @apply bg-white;
+      @apply opacity-100;
 
       &:nth-child(1) {
         transform: translateX(6px);
@@ -130,7 +130,8 @@
 
 .menu-icon-line-alt {
   @apply rounded-sm;
-  @apply bg-dark-400;
+  @apply bg-dark-900;
+  @apply opacity-50;
   height: 2px;
   transition: background 250ms, transform 250ms;
 
@@ -149,6 +150,10 @@
   &:nth-child(3) {
     width: 8px;
   }
+}
+
+.theme-dark .menu-icon-line-alt {
+  @apply bg-white;
 }
 
 .master-detail-comparison-viewer {
