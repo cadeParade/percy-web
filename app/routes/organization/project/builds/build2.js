@@ -26,7 +26,8 @@ export default Route.extend(EKMixin, {
           build: params.build_id,
           'review-state-reason': DIFF_REVIEW_STATE_REASONS.join(','),
         },
-        include: 'null',
+        // currently required for thumbnails but hurts initial load performance
+        // include: 'null',
       }),
     });
   },
