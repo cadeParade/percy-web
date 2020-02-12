@@ -1,5 +1,6 @@
 <Build2::SnapshotViewerHeader
   @fullscreen={{false}}
+  @build={{this.build}}
   @snapshot={{this.snapshot}}
   @snapshotSelectedWidth={{this.blockSelectedWidth}}
   @selectedComparison={{this.selectedComparison}}
@@ -12,6 +13,7 @@
   @isBuildApprovable={{this.isBuildApprovable}}
   @goToNextSnapshot={{this.goToNextSnapshot}}
   @goToPreviousSnapshot={{this.goToPreviousSnapshot}}
+  {{!-- @toggleSnapshotListVisibility={{this.toggleSnapshotListVisibility}} --}}
   @index={{this.index}}
   @openCommentThreads={{this.openCommentThreads}}
   @toggleOverlay={{action "toggleSnapshotOverlay"}}
