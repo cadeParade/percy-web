@@ -45,7 +45,6 @@
   @apply flex items-center justify-center;
   @apply absolute top-0 left-0;
   @apply w-full h-full;
-  @apply text-center;
 
   img {
     @apply max-h-full;
