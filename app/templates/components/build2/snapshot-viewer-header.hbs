@@ -10,43 +10,40 @@
         </div>
       </div>
     
-      <div class="flex items-center">
-        {{#if this.snapshot.isRejected}}
-          <div class="mr-1">
-            <div class="px-1 py-sm tracking-px rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{if (eq this.snapshot.reviewStateReason 'user_rejected_previously') 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}">
-              Changes requested
-            </div>
+      <div>
+        <div class="flex items-center">
+          <div class="flex items-center text-sm font-bold">
+            <LinkTo @route="organization" @model={{this.build.project.organization}} class="link-purple hide-on-tablet">
+              {{this.build.project.organization.name}}
+            </LinkTo>
+            <span class="font-bold text-secondary mx-sm hide-on-tablet">/</span>
+            <LinkTo @route="organization.project" @models={{array this.build.project.organization.slug this.project}} class="link-purple">
+              {{this.build.project.name}}
+            </LinkTo>
           </div>
-        {{/if}}
-
-        <div>
-          <div class="flex items-center">
-            <div class="flex items-center text-sm font-bold">
-              <LinkTo @route="organization" @model={{this.build.project.organization}} class="link-purple hide-on-tablet">
-                {{this.build.project.organization.name}}
-              </LinkTo>
-              <span class="font-bold text-secondary mx-sm hide-on-tablet">/</span>
-              <LinkTo @route="organization.project" @models={{array this.build.project.organization.slug this.project}} class="link-purple">
-                {{this.build.project.name}}
-              </LinkTo>
+          {{#if this.build.project.organization.isSponsored}}
+            <FaIcon @icon="globe" class="text-blue-500 ml-sm mr-3 pb-px" />
+          {{/if}}
+        </div>
+        <div class="flex items-center" title="{{this.snapshot.name}}">
+          {{#if this.snapshot.isRejected}}
+            <div class="mr-1">
+              <div class="px-1 py-sm tracking-px leading-none rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{if (eq this.snapshot.reviewStateReason 'user_rejected_previously') 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}">
+                Changes requested
+              </div>
             </div>
-            {{#if this.build.project.organization.isSponsored}}
-              <FaIcon @icon="globe" class="text-blue-500 ml-sm mr-3 pb-px" />
-            {{/if}}
+          {{/if}}
+          <div class="cursor-default font-bold mr-1 text-md">
+            {{this.snapshot.name}}
           </div>
-          <div class="flex items-center" title="{{this.snapshot.name}}">
-            <div class="cursor-default font-bold mr-1 text-md">
-              {{this.snapshot.name}}
-            </div>
-            <CopyButton
-              @class="btn-icon-only opacity-25 hover:opacity-100"
-              @clipboardText={{generate-fullscreen-snapshot-url this.snapshot.id this.snapshotSelectedWidth this.comparisonMode this.activeBrowser.familySlug this.fullscreen}}
-              @success={{pipe-action (action "onCopySnapshotUrlToClipboard") dropdown.actions.close}}
-              title="Copy link to snapshot"
-            >
-              <ThemeSvg @svg="snapshot-link-icon" />
-            </CopyButton>
-          </div>
+          <CopyButton
+            @class="btn-icon-only opacity-25 hover:opacity-100"
+            @clipboardText={{generate-fullscreen-snapshot-url this.snapshot.id this.snapshotSelectedWidth this.comparisonMode this.activeBrowser.familySlug this.fullscreen}}
+            @success={{pipe-action (action "onCopySnapshotUrlToClipboard") dropdown.actions.close}}
+            title="Copy link to snapshot"
+          >
+            <ThemeSvg @svg="snapshot-link-icon" />
+          </CopyButton>
         </div>
       </div>
     </div>
