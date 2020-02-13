@@ -4,9 +4,8 @@
   @model={{this.snapshot.id}}
 >
   <div class="snapshot-name-list-image w-full mb-1 border rounded-sm {{if this.snapshot.isApproved 'border-green-500 bg-artboard-approved'}} {{if this.snapshot.isRejected 'border-orange-500'}}">
-    <div class="snapshot-name-list-image-container">
-      <img src="{{this.snapshot.comparisons.firstObject.headScreenshot.lossyImage.url}}" alt="foo">
-      {{!-- <img src="{{this.snapshot.comparisons.firstObject.diffImage.url}}" class="absolute top-0 left-0 z-1" alt="foo"> --}}
+    <div class="snapshot-name-list-image-container" style="background-image: url('{{this.snapshot.comparisons.firstObject.headScreenshot.lossyImage.url}}');">
+      <img src="{{this.snapshot.comparisons.firstObject.diffImage.url}}" alt="foo">
     </div>
     {{#if (or this.snapshot.isApproved this.snapshot.isRejected)}}
       <div class="absolute" style="top: 16px; right: 16px;">

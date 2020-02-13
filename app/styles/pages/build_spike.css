@@ -45,6 +45,9 @@
   @apply flex items-center justify-center;
   @apply absolute top-0 left-0;
   @apply w-full h-full;
+  @apply bg-center;
+  @apply bg-contain;
+  @apply bg-no-repeat;
 
   img {
     @apply max-h-full;
