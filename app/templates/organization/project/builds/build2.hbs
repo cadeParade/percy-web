@@ -1,10 +1,9 @@
 {{title this.model.build.buildTitle}}
-{{log this.isSnapshotListVisible}}
+
 <div class="flex">
   {{#if this.isSnapshotListVisible}}
-    <div class="w-1/5 h-screen overflow-y-scroll border-r border-ternary" id="snapshot-list-sidebar">
+    <div style="scroll-behavior: smooth;" class="w-1/5 h-screen overflow-y-scroll border-r border-ternary" id="snapshot-list-sidebar">
       <div class="p-3 mb-1 leading-none bg-primary sticky top-0 z-1">
-
         <div class="flex items-center justify-between text-2xl text-secondary mb-1">
           <div>
             Build <span class="font-mono font-normal tracking-sm text-primary mr-1">{{this.build.buildNumber}}</span>
