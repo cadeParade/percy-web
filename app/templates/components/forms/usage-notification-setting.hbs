@@ -11,7 +11,7 @@
       @testLabel="usage-notification-enabled-slider"
     />
   </div>
-  <p>Receive emails based on how many Percy snapshots you've used in your current billing cycle.</p>
+  <p>Receive emails based on how many Percy screenshots you've used in your current billing cycle.</p>
 
   <form action="javascript:;" class="Form mb-0">
     <FormFields::Textarea
@@ -26,7 +26,7 @@
 
     <FormFields::Input
       @property="displayThresholds"
-      @title="Number of snapshots reached to receive notification (separated by spaces)"
+      @title="Number of screenshots reached to receive notification (separated by spaces)"
       @placeholder="Separate each number with a space: 5000 30000"
       @changeset={{this.changeset}}
       @validateProperty={{action "validateProperty" this.changeset "displayThresholds"}}
