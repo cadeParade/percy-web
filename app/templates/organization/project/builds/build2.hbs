@@ -12,6 +12,12 @@
         </div>
       </div>
       <div class="mb-2">
+        <p {{action "toggleSearchInput"}}>Toggle search</p>
+        {{#if this.isSearchVisible}}
+          search is visible
+        {{else}}
+          search is not visible
+        {{/if}}
         <Input
           @type="text"
           @value={{this.searchTerm}}
