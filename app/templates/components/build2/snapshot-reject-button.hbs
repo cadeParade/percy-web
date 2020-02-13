@@ -1,0 +1,10 @@
+<button
+  class="percy-btn btn-square snapshot-reject-button {{if this.isLoading "is-loading"}}"
+  type="button"
+  {{action 'rejectSnapshots'}}
+  disabled="{{if this.isDisabled "disabled"}}"
+  aria-label="Request changes on this snapshot"
+  data-test-snapshot-reject-button
+>
+  {{inline-svg "comparison-icon-requested-changes-sm"}}
+</button>

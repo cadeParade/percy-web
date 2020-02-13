@@ -10,7 +10,7 @@ export default Component.extend({
     if (this.router.currentURL.includes(this.snapshot.id)) {
       var myElement = document.getElementById(this.elementId);
       var topPos = myElement.offsetTop;
-      document.getElementById('snapshot-list-sidebar').scrollTop = topPos - 190;
+      document.getElementById('snapshot-list-sidebar').scrollTop = topPos - 320;
     }
   }),
 
