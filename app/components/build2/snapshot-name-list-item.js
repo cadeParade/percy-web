@@ -16,6 +16,8 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
+    // Call this here so the observer can know that someone is asking
+    // for currentURL
     // eslint-disable-next-line
     this.router.currentURL;
   },

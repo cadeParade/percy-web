@@ -57,6 +57,9 @@ export default Route.extend(EKMixin, {
   },
 
   actions: {
+    toggleSnapshotList() {
+      this.controller.toggleProperty('isSnapshotListVisible');
+    },
     loadNextSnapshots(currentSnapshotId) {
       this.loadNextSnapshots(currentSnapshotId);
     },

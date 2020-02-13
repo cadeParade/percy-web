@@ -1,33 +1,33 @@
 {{title this.model.build.buildTitle}}
-
+{{log this.isSnapshotListVisible}}
 <div class="flex">
-  {{!-- {{#if isSnapshotListVisible}} --}}
-  <div class="w-1/5 h-screen overflow-y-scroll border-r border-ternary" id="snapshot-list-sidebar">
-    <div class="p-3 mb-1 leading-none bg-primary sticky top-0 z-1">
+  {{#if this.isSnapshotListVisible}}
+    <div class="w-1/5 h-screen overflow-y-scroll border-r border-ternary" id="snapshot-list-sidebar">
+      <div class="p-3 mb-1 leading-none bg-primary sticky top-0 z-1">
 
-      <div class="flex items-center justify-between text-2xl text-secondary mb-1">
-        <div>
-          Build <span class="font-mono font-normal tracking-sm text-primary mr-1">{{this.build.buildNumber}}</span>
+        <div class="flex items-center justify-between text-2xl text-secondary mb-1">
+          <div>
+            Build <span class="font-mono font-normal tracking-sm text-primary mr-1">{{this.build.buildNumber}}</span>
+          </div>
+          <div class="opacity-25 hover:opacity-100 cursor-pointer">
+            <ThemeSvg @svg="search-icon" />
+          </div>
         </div>
-        <div class="opacity-25 hover:opacity-100 cursor-pointer">
-          <ThemeSvg @svg="search-icon" />
+        <div class="text-lg mb-sm">
+          <span class="font-semibold">{{this.build.totalSnapshotsUnreviewed}}</span> {{pluralize this.build.totalSnapshotsUnreviewed "unreviewed change" without-count=true}}
         </div>
-      </div>
-      <div class="text-lg mb-sm">
-        <span class="font-semibold">{{this.build.totalSnapshotsUnreviewed}}</span> {{pluralize this.build.totalSnapshotsUnreviewed "unreviewed change" without-count=true}}
-      </div>
-      <div class="mb-2">
-        <span class="text-primary font-semibold">{{this.build.totalSnapshots}}</span> {{pluralize this.build.totalSnapshots "total snapshot" without-count=true}}
+        <div class="mb-2">
+          <span class="text-primary font-semibold">{{this.build.totalSnapshots}}</span> {{pluralize this.build.totalSnapshots "total snapshot" without-count=true}}
+        </div>
+
+        <Build2::BuildApprovalButton
+          @build={{this.build}}
+        />
       </div>
 
-      <Build2::BuildApprovalButton
-        @build={{this.build}}
-      />
+      <Build2::SnapshotNameList @snapshots={{this.snapshots}} @build={{this.model.build}}/>
     </div>
-
-    <Build2::SnapshotNameList @snapshots={{this.snapshots}} @build={{this.model.build}}/>
-  </div>
-  {{!-- {{/if}} --}}
+  {{/if}}
   <div class="w-4/5 h-screen overflow-y-scroll">
     {{outlet}}
   </div>
