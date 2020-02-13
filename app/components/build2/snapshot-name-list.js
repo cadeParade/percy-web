@@ -19,10 +19,4 @@ export default Component.extend({
     const regex = new RegExp(substring, 'i');
     return regex.test(string);
   },
-
-  actions: {
-    updateSearchTerm(updatedSearchTerm) {
-      this.set('searchTerm', updatedSearchTerm);
-    },
-  },
 });

@@ -14,8 +14,8 @@
       <div class="mb-2">
         <Input
           @type="text"
-          {{!-- @value={{this.searchTerm}} --}}
-          {{!-- @key-up={{action "updateSearchTerm"}} --}}
+          @value={{this.searchTerm}}
+          @key-up={{action "updateSearchTerm"}}
           placeholder="Search snapshots"
           class="percy-input rounded h-10 m-0 px-1-1/2"
         />
@@ -31,7 +31,11 @@
       <Build2::BuildApprovalButton @build={{this.build}} />
     </div>
 
-    <Build2::SnapshotNameList @snapshots={{this.snapshots}} @build={{this.model.build}}/>
+    <Build2::SnapshotNameList
+      @snapshots={{this.snapshots}}
+      @build={{this.model.build}}
+      @searchTerm={{this.searchTerm}}
+    />
   </div>
 
   <div class="h-screen overflow-y-scroll {{if this.isSnapshotListVisible 'w-4/5' 'w-full'}}">
