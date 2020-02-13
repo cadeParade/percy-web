@@ -2,7 +2,7 @@
 
 <div class="flex">
   {{!-- {{#if isSnapshotListVisible}} --}}
-  <div class="w-1/5 h-screen overflow-y-scroll border-r border-ternary">
+  <div class="w-1/5 h-screen overflow-y-scroll border-r border-ternary" id="snapshot-list-sidebar">
     <Build2::SnapshotNameList @snapshots={{this.model.snapshots}} @build={{this.model.build}}/>
   </div>
   {{!-- {{/if}} --}}

@@ -30,26 +30,10 @@
 <ul class="snapshot-name-list list-none">
   {{#each this.filteredSnapshots as |snapshot|}}
     <li class="px-3 mb-3 border-b">
-      <LinkTo
+      <Build2::SnapshotNameListItem
+        @snapshot={{snapshot}}
         class="snapshot-name-list-item text-primary opacity-50"
-        @route="organization.project.builds.build2.snapshot"
-        @model={{snapshot.id}}
-      >
-        <div class="snapshot-name-list-image w-full mb-1 border rounded-sm {{if snapshot.isApproved 'border-green-500 bg-artboard-approved'}}">
-          <div class="snapshot-name-list-image-container">
-            <img src="{{snapshot.comparisons.firstObject.headScreenshot.lossyImage.url}}" alt="foo">
-            {{!-- <img src="{{snapshot.comparisons.firstObject.diffImage.url}}" class="absolute top-0 left-0 z-1" alt="foo"> --}}
-          </div>
-          {{#if snapshot.isApproved}}
-            <div class="absolute" style="top: 16px; right: 16px;">
-              {{inline-svg "artboard-snapshot-approved"}}
-            </div>
-          {{/if}}
-        </div>
-        <div class="snapshot-name-list-item-title">
-          {{snapshot.name}}
-        </div>
-      </LinkTo>
+      />
     </li>
   {{/each}}
 </ul>
