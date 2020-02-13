@@ -2,7 +2,6 @@ import Component from '@ember/component';
 import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
 import {equal, not, or, readOnly} from '@ember/object/computed';
-import utils from 'percy-web/lib/utils';
 import filteredComparisons from 'percy-web/lib/filtered-comparisons';
 
 export default Component.extend({
@@ -73,46 +72,7 @@ export default Component.extend({
     toggleFilteredComparisons() {
       this.toggleProperty('isShowingFilteredComparisons');
     },
-
-    downloadHTML(type, snapshot) {
-      const options = {includePercyMode: true};
-      const url = utils.buildApiUrl(`${type}Asset`, snapshot.get('id'), options);
-
-      utils.replaceWindowLocation(url);
-    },
-
-    downloadDiff(selectedComparison) {
-      const options = {includePercyMode: true};
-      const url = utils.buildApiUrl('snapshotSourceDiff', selectedComparison.get('id'), options);
-
-      utils.replaceWindowLocation(url);
-    },
-    async goToLastChangedSnapshot() {
-      const latestChangedAncestorRef = this.snapshot.belongsTo('latestChangedAncestor');
-      try {
-        const latestChangedAncestor = await latestChangedAncestorRef.reload();
-        this.router.transitionTo(
-          'organization.project.builds.default-comparison',
-          latestChangedAncestor.id,
-        );
-      } catch (e) {
-        try {
-          let message = 'There was a problem fetching the latest changed snapshot.';
-          if (e.errors[0].status === 'not_found') {
-            message = 'This is the earliest change we have on record for this snapshot.';
-          }
-          if (e.errors[0].status === 'conflict') {
-            message = e.errors[0].detail;
-          }
-          this.flashMessages.info(message);
-        } catch (e) {
-          // If the error is other than 404 or the error did not come back in the right format.
-          this.flashMessages.info('There was a problem fetching the latest changed snapshot.');
-        }
-      }
-    },
   },
-
   init() {
     this._super(...arguments);
     this.openCommentThreads = this.openCommentThreads || [];

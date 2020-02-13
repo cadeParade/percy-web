@@ -10,7 +10,7 @@ export default class DefaultComparisonRoute extends Route {
     return snapshot.then(snapshot => {
       const buildId = snapshot.belongsTo('build').id();
       const queryParams = defaultComparisonQueryParams(snapshot);
-      this.transitionTo('organization.project.builds.build2.snapshot', buildId, snapshot.id, {
+      this.transitionTo('organization.project.builds.build.snapshot', buildId, snapshot.id, {
         queryParams,
       });
     });
