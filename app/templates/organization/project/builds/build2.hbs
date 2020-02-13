@@ -7,24 +7,20 @@
         <div>
           Build <span class="font-mono font-normal tracking-sm text-primary mr-1">{{this.build.buildNumber}}</span>
         </div>
-        <div class="opacity-25 hover:opacity-100 cursor-pointer">
+        <button type="button" class="btn-icon-only opacity-25 hover:opacity-100 cursor-pointer" {{action "toggleSearchInput"}}>
           <ThemeSvg @svg="search-icon" />
-        </div>
+        </button>
       </div>
       <div class="mb-2">
-        <p {{action "toggleSearchInput"}}>Toggle search</p>
         {{#if this.isSearchVisible}}
-          search is visible
-        {{else}}
-          search is not visible
+          <Input
+            @type="text"
+            @value={{this.searchTerm}}
+            @key-up={{action "updateSearchTerm"}}
+            placeholder="Search snapshots"
+            class="percy-input rounded h-10 m-0 px-1-1/2"
+          />
         {{/if}}
-        <Input
-          @type="text"
-          @value={{this.searchTerm}}
-          @key-up={{action "updateSearchTerm"}}
-          placeholder="Search snapshots"
-          class="percy-input rounded h-10 m-0 px-1-1/2"
-        />
       </div>
 
       <div class="text-lg mb-sm">
