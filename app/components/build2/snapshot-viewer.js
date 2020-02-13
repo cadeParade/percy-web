@@ -1,10 +1,10 @@
 import {filterBy, notEmpty, or, readOnly} from '@ember/object/computed';
-import {computed} from '@ember/object';
-import SnapshotListItem from 'percy-web/components/build2/snapshot-list-item';
 import {inject as service} from '@ember/service';
-import localStorageProxy from 'percy-web/lib/localstorage';
+import {computed, get} from '@ember/object';
+import Component from '@ember/component';
+import filteredComparisons from 'percy-web/lib/filtered-comparisons';
 
-export default SnapshotListItem.extend({
+export default Component.extend({
   launchDarkly: service(),
   snapshot: null,
   createReview: null,
@@ -15,7 +15,6 @@ export default SnapshotListItem.extend({
   'data-test-snapshot-viewer': true,
 
   id: readOnly('snapshot.id'),
-  coverSnapshot: readOnly('snapshot'),
   _isApproved: readOnly('snapshot.isApproved'),
   isUnchangedSnapshotExpanded: or('isFocus', 'isExpanded'),
 
@@ -43,30 +42,49 @@ export default SnapshotListItem.extend({
 
   isSnapshotShowingDiffOverlay: true,
 
-  setHiddenClickBadge() {
-    this.set('isSnapshotDiffOverlayShowingClickBadge', false);
-  },
+  _browsers: readOnly('snapshot.build.browsers'),
 
-  isSnapshotDiffOverlayShowingClickBadge: true,
-  diffOverlayToggleClickAmount: 0,
+  defaultBrowser: computed('_browsers', function() {
+    const chromeBrowser = this._browsers.findBy('familySlug', 'chrome');
+    const firefoxBrowser = this._browsers.findBy('familySlug', 'firefox');
 
-  didInsertElement() {
-    this._super(...arguments);
-    if (localStorageProxy.get('diffOverlayToggleClickAmount') > 2) {
-      this.setHiddenClickBadge();
+    const chromeComparisons = this.snapshot.comparisons.filterBy('browser.familySlug', 'chrome');
+    const firefoxComparisons = this.snapshot.comparisons.filterBy('browser.familySlug', 'firefox');
+    if (chromeComparisons.length > 0) {
+      return chromeBrowser;
+    } else if (firefoxComparisons.length > 0) {
+      return firefoxBrowser;
+    } else {
+      return this.get('_browsers.firstObject');
     }
-  },
+  }),
+
+  chosenBrowser: null,
+  activeBrowser: or('chosenBrowser', 'defaultBrowser'),
+
+  selectedComparison: readOnly('filteredComparisons.selectedComparison'),
+  filteredComparisons: computed('snapshot', 'activeBrowser', 'userSelectedWidth', function() {
+    return filteredComparisons.create({
+      snapshot: get(this, 'snapshot'),
+      activeBrowser: get(this, 'activeBrowser'),
+      snapshotSelectedWidth: get(this, 'userSelectedWidth'),
+    });
+  }),
+
+  snapshotSelectedWidth: or('userSelectedWidth', 'filteredComparisons.defaultWidth'),
+  userSelectedWidth: null,
 
   actions: {
+    updateActiveBrowser(browser) {
+      this.set('chosenBrowser', browser);
+    },
+
+    updateSelectedWidth(value) {
+      this.set('userSelectedWidth', value);
+    },
+
     toggleSnapshotOverlay() {
       this.toggleProperty('isSnapshotShowingDiffOverlay');
-      this.trackToggleOverlay(this.isSnapshotShowingDiffOverlay);
-
-      if (localStorageProxy.get('diffOverlayToggleClickAmount') > 2) {
-        this.setHiddenClickBadge();
-      }
-      this.diffOverlayToggleClickAmount++;
-      localStorageProxy.set('diffOverlayToggleClickAmount', this.diffOverlayToggleClickAmount);
     },
 
     toggleCollaborationPanel() {

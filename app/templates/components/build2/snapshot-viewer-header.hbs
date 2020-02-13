@@ -9,7 +9,7 @@
           <div class="menu-icon-line-alt"></div>
         </div>
       </div>
-    
+
       <div>
         <div class="flex items-center">
           <div class="flex items-center text-sm font-bold">
@@ -39,7 +39,7 @@
           <CopyButton
             @class="btn-icon-only opacity-25 hover:opacity-100"
             @clipboardText={{generate-fullscreen-snapshot-url this.snapshot.id this.snapshotSelectedWidth this.comparisonMode this.activeBrowser.familySlug this.fullscreen}}
-            @success={{pipe-action (action "onCopySnapshotUrlToClipboard") dropdown.actions.close}}
+            @success={{pipe-action (action "onCopySnapshotUrlToClipboard") this.dropdown.actions.close}}
             title="Copy link to snapshot"
           >
             <ThemeSvg @svg="snapshot-link-icon" />
@@ -47,7 +47,12 @@
         </div>
       </div>
     </div>
-    <Build2::BrowserSwitcher />
+    <Build2::BrowserSwitcher
+      @browsers={{this.snapshot.build.browsers}}
+      @activeBrowser={{this.activeBrowser}}
+      @updateActiveBrowser={{this.updateActiveBrowser}}
+      @build={{this.snapshot.build}}
+    />
   </div>
 
   <div class="flex items-center justify-between">
@@ -63,17 +68,17 @@
       <div class="btn-toolbar mx-2">
         {{#if this.snapshot.build.isFinished}}
           <div class="btn-toolbar">
-            <button type="button" class="percy-btn btn-square" {{action goToPreviousSnapshot}}>
+            <button type="button" class="percy-btn btn-square" {{action this.goToPreviousSnapshot}}>
               <ThemeSvg @svg="snapshot-dropdown-icon" class="transform rotate-180 pb-px" />
             </button>
             <SnapshotApprovalButton
               @snapshot={{this.snapshot}}
               @hasDiffsInBrowser={{this.hasDiffsInBrowser}}
               @activeBrowser={{this.activeBrowser}}
-              @createReview={{this.createReview}}
+              @createReview={{action "approveSnapshot"}}
               @isDisabled={{not this.isBuildApprovable}}
             />
-            <button type="button" class="percy-btn btn-square" {{action goToNextSnapshot}}>
+            <button type="button" class="percy-btn btn-square" {{action this.goToNextSnapshot}}>
               <ThemeSvg @svg="snapshot-dropdown-icon" class="pb-px"/>
             </button>
           </div>
@@ -85,10 +90,10 @@
       <div class="btn-toolbar">
         {{#if this.snapshot.build.isFinished}}
           <div class="btn-toolbar">
-            <button type="button" class="percy-btn" {{action toggleOverlay}}>
+            <button type="button" class="percy-btn" {{action this.toggleOverlay}}>
               Diff overlay
               <span class="text-primary">
-                {{#if showDiffOverlay}}
+                {{#if this.showDiffOverlay}}
                   on
                 {{else}}
                   off

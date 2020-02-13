@@ -2,14 +2,11 @@
   @fullscreen={{false}}
   @build={{this.build}}
   @snapshot={{this.snapshot}}
-  @snapshotSelectedWidth={{this.blockSelectedWidth}}
+  @snapshotSelectedWidth={{this.snapshotSelectedWidth}}
   @selectedComparison={{this.selectedComparison}}
   @toggleCollaborationPanel={{action "toggleCollaborationPanel"}}
   @updateSelectedWidth={{action "updateSelectedWidth"}}
-  @createReview={{this.createReview}}
-  @expandSnapshot={{action "expandBlock"}}
-  @activeBrowser={{this.activeBrowser}}
-  @updateActiveBrowser={{this.updateActiveBrowser}}
+  @updateActiveBrowser={{action "updateActiveBrowser"}}
   @isBuildApprovable={{this.isBuildApprovable}}
   @goToNextSnapshot={{this.goToNextSnapshot}}
   @goToPreviousSnapshot={{this.goToPreviousSnapshot}}
@@ -18,6 +15,7 @@
   @openCommentThreads={{this.openCommentThreads}}
   @toggleOverlay={{action "toggleSnapshotOverlay"}}
   @showDiffOverlay={{this.isSnapshotShowingDiffOverlay}}
+  @activeBrowser={{this.activeBrowser}}
 />
 
 {{#if this.selectedComparison}}

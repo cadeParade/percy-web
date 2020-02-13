@@ -10,11 +10,11 @@ export default Component.extend({
   flashMessages: service(),
   launchDarkly: service(),
   router: service(),
+  reviews: service(),
   selectedWidth: null,
   selectedComparison: null,
   snapshot: null,
   snapshotSelectedWidth: null,
-  activeBrowser: null,
   openCommentThreads: null, // set by init
 
   // optional params
@@ -58,6 +58,10 @@ export default Component.extend({
   hasDiffsInBrowser: readOnly('filteredComparisons.anyComparisonsHaveDiffs'),
 
   actions: {
+    approveSnapshot() {
+      return this.reviews.createApprovalReview(this.snapshot.build, [this.snapshot]);
+    },
+
     handleTransitionToBuildPage(buildId, event) {
       this.transitionToBuildPage(event.currentTarget.pathname, buildId);
     },
