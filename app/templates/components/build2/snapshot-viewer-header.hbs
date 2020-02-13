@@ -46,12 +46,14 @@
         </div>
       </div>
     </div>
-    <Build2::BrowserSwitcher
-      @browsers={{this.snapshot.build.browsers}}
-      @activeBrowser={{this.activeBrowser}}
-      @updateActiveBrowser={{this.updateActiveBrowser}}
-      @build={{this.snapshot.build}}
-    />
+    {{#if this.snapshot.build.hasMultipleBrowsers}}
+      <Build2::BrowserSwitcher
+        @browsers={{this.snapshot.build.browsers}}
+        @activeBrowser={{this.activeBrowser}}
+        @updateActiveBrowser={{this.updateActiveBrowser}}
+        @build={{this.snapshot.build}}
+      />
+    {{/if}}
   </div>
 
   <div class="flex items-center justify-between">
