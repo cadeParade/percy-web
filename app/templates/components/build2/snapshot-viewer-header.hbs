@@ -17,7 +17,7 @@
               {{this.build.project.organization.name}}
             </LinkTo>
             <span class="font-bold text-secondary mx-sm hide-on-tablet">/</span>
-            <LinkTo @route="organization.project" @models={{array this.build.project.organization.slug this.project}} class="link-purple">
+            <LinkTo @route="organization.project" @models={{array this.build.project.organization.slug this.build.project.slug}} class="link-purple">
               {{this.build.project.name}}
             </LinkTo>
           </div>

@@ -31,7 +31,13 @@ export default Route.extend(EKMixin, {
       }),
     });
   },
-
+  setupController(controller, model) {
+    controller.setProperties({
+      build: model.build,
+      isUserMember: model.isUserMember,
+      snapshots: model.snapshots,
+    });
+  },
   afterModel(model) {
     const firstSnapshot = model.snapshots.firstObject;
     this.transitionTo('organization.project.builds.build2.snapshot', firstSnapshot.id);
