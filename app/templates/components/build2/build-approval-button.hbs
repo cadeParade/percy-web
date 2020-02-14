@@ -1,0 +1,11 @@
+{{#if this.build.isApproved}}
+  <div style="height: 30px;" class="status-pill is-approved">Build approved</div>
+{{else}}
+  <button
+    type="button"
+    class="btn btn-success w-full {{if this.isLoading 'is-loading'}}"
+    {{action this.approveBuild}}
+  >
+    Approve build
+  </button>
+{{/if}}

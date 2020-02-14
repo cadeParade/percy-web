@@ -1,0 +1,35 @@
+<Build2::SnapshotViewerHeader
+  @fullscreen={{false}}
+  @build={{this.build}}
+  @snapshot={{this.snapshot}}
+  @snapshotSelectedWidth={{this.snapshotSelectedWidth}}
+  @selectedComparison={{this.selectedComparison}}
+  @toggleCollaborationPanel={{action "toggleCollaborationPanel"}}
+  @updateSelectedWidth={{action "updateSelectedWidth"}}
+  @updateActiveBrowser={{action "updateActiveBrowser"}}
+  @isBuildApprovable={{this.isBuildApprovable}}
+  @goToNextSnapshot={{this.goToNextSnapshot}}
+  @goToPreviousSnapshot={{this.goToPreviousSnapshot}}
+  @toggleSnapshotListVisibility={{this.toggleSnapshotListVisibility}}
+  @index={{this.index}}
+  @openCommentThreads={{this.openCommentThreads}}
+  @toggleOverlay={{action "toggleSnapshotOverlay"}}
+  @showDiffOverlay={{this.isSnapshotShowingDiffOverlay}}
+  @activeBrowser={{this.activeBrowser}}
+  @isSnapshotListVisible={{this.isSnapshotListVisible}}
+/>
+
+{{#if this.selectedComparison}}
+  <div class="flex flex-col flex-col-reverse lg:flex-row">
+    <Build2::ComparisonViewer
+      @class="flex-1"
+      @comparison={{this.selectedComparison}}
+      @showDiffOverlay={{this.isSnapshotShowingDiffOverlay}}
+      @toggleOverlay={{action "toggleSnapshotOverlay"}}
+    />
+  </div>
+{{else}}
+  <div class="p-2 text-center bg-gray-000 border-b">
+    No snapshot taken at {{this.blockSelectedWidth}}px.
+  </div>
+{{/if}}

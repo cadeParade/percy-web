@@ -1,0 +1,10 @@
+<ul class="snapshot-name-list list-none">
+  {{#each this.filteredSnapshots as |snapshot|}}
+    <li class="px-3 mb-3 border-b">
+      <Build2::SnapshotNameListItem
+        @snapshot={{snapshot}}
+        class="text-primary"
+      />
+    </li>
+  {{/each}}
+</ul>

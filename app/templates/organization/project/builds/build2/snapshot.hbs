@@ -1,0 +1,13 @@
+<Build2::SnapshotViewer
+  @build={{this.snapshot.build}}
+  @snapshot={{this.snapshot}}
+  @isBuildApprovable={{this.isBuildApprovable}}
+  @createReview={{route-action "noop"}}
+  @goToPreviousSnapshot={{route-action "goToPreviousSnapshot"}}
+  @goToNextSnapshot={{route-action "goToNextSnapshot"}}
+  @toggleSnapshotListVisibility={{action "toggleSnapshotListVisibility"}}
+  @isSnapshotListVisible={{this.isSnapshotListVisible}}
+  @createCommentThread={{route-action "noop"}}
+  @closeCommentThread={{route-action "noop"}}
+  @createComment={{route-action "noop"}}
+/>

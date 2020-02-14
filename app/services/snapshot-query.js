@@ -2,7 +2,7 @@ import Service, {inject as service} from '@ember/service';
 import {SNAPSHOT_REVIEW_STATE_REASONS, DIFF_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 import {get} from '@ember/object';
 
-const SNAPSHOT_COMPARISON_INCLUDES = Object.freeze([
+export const SNAPSHOT_COMPARISON_INCLUDES = Object.freeze([
   'comparisons.head-screenshot.image',
   'comparisons.head-screenshot.lossy-image',
   'comparisons.base-screenshot.image',
@@ -25,9 +25,12 @@ export default class SnapshotQueryService extends Service {
   }
 
   getChangedSnapshots(build) {
+    const isBuildId = typeof build === 'number' || typeof build === 'string';
+    const buildId = isBuildId ? build : build.get('id');
+
     return this.store.loadRecords('snapshot', {
       filter: {
-        build: build.get('id'),
+        build: buildId,
         'review-state-reason': DIFF_REVIEW_STATE_REASONS.join(','),
       },
     });
