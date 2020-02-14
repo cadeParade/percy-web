@@ -1,5 +1,11 @@
 /* stylelint-disable */
 
+.snapshot-name-list-sidebar {
+  .status-pill {
+    @apply rounded;
+  }
+}
+
 .snapshot-name-list {
   a.active {
     @apply font-bold;
