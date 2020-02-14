@@ -24,7 +24,7 @@ export default class Builds2Controller extends Controller {
   }
 
   @action
-  clearSearchTerm(updatedSearchTerm) {
+  clearSearchTerm() {
     this.set('searchTerm', '');
   }
 }
