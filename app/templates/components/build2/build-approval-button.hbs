@@ -3,7 +3,7 @@
 {{else}}
   <button
     type="button"
-    class="btn btn-success w-full {{if this.build.isLoading 'is-loading'}}"
+    class="btn btn-success w-full {{if this.isLoading 'is-loading'}}"
     {{action this.approveBuild}}
   >
     Approve build

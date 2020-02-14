@@ -1,9 +1,14 @@
 import {action} from '@ember/object';
+import {readOnly} from '@ember/object/computed';
 import Component from '@ember/component';
 import {inject as service} from '@ember/service';
 
 export default class BuildApprovalButton extends Component {
-  reviews = service();
+  @service
+  reviews;
+
+  @readOnly('reviews.createReview.isRunning')
+  isLoading;
 
   @action
   approveBuild() {
