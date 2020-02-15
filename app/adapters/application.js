@@ -128,15 +128,6 @@ export default class Application extends JSONAPIAdapter.extend(DataAdapterMixin)
       let integrationId = snapshot.record.get('slackIntegration.id');
       return utils.buildApiUrl('slackIntegrationConfig', integrationId, id);
     }
-    // /api/v1/comments
-    if (requestType === 'createRecord' && modelName === 'comment') {
-      return utils.buildApiUrl('comments');
-    }
-
-    // /api/v1/comment-threads/:id
-    if (requestType === 'updateRecord' && modelName === 'comment-thread' && id) {
-      return utils.buildApiUrl('commentThreads', id);
-    }
 
     // /api/v1/builds/:build_id/comment-threads/
     if (requestType === 'query' && modelName === 'comment-thread') {
