@@ -29,7 +29,10 @@
   {{#if this.isSnapshotsLoading}}
     <LoadingPage />
   {{else if this.build.isFinished}}
-    <SnapshotList
+    <InfiniteSnapshotList />
+
+
+{{!--     <SnapshotList
       @snapshotsChanged={{this.snapshotsChanged}}
       @build={{this.build}}
       @allDiffsShown={{this.allDiffsShown}}

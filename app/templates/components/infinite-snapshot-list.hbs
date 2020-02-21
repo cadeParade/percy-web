@@ -1,0 +1,17 @@
+Infinite snapshot list
+page = {{this.page}}
+limit = {{this.limit}}
+{{#each (range 0 this.page true) as |pageToLoad|}}
+  <LoadSnapshots
+    @page={{pageToLoad}}
+    as |orderItems|
+  >
+    {{#each orderItems as |orderItem|}}
+      <div class="p-3 border border-purple-500 m-2" style="height: 300px;">
+        <br>{{orderItem.index}} -- {{orderItem.type}}<br>
+      </div>
+    {{/each}}
+  </LoadSnapshots>
+{{/each}}
+
+<div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
