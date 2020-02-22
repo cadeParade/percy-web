@@ -1,17 +1,52 @@
 Infinite snapshot list
 page = {{this.page}}
-limit = {{this.limit}}
 {{#each (range 0 this.page true) as |pageToLoad|}}
   <LoadSnapshots
+    @build={{build}}
+    @orderItems={{this.orderItems}}
     @page={{pageToLoad}}
-    as |orderItems|
+    as |blocks|
   >
-    {{#each orderItems as |orderItem|}}
-      <div class="p-3 border border-purple-500 m-2" style="height: 300px;">
-        <br>{{orderItem.index}} -- {{orderItem.type}}<br>
-      </div>
+    {{#each blocks as |block|}}
+      {{#if (is-item-array block)}}
+        <SnapshotGroup
+          @build={{this.build}}
+          @snapshots={{block}}
+          @allDiffsShown={{this.allDiffsShown}}
+          @activeSnapshotBlockId={{this.activeSnapshotBlockId}}
+          @shouldDeferRendering={{this.shouldDeferRendering}}
+          @createReview={{this.createReview}}
+          @updateActiveSnapshotBlockId={{action "noop"}}
+          @activeBrowser={{this.activeBrowser}}
+          @updateActiveBrowser={{this.updateActiveBrowser}}
+          @isBuildApprovable={{this.isBuildApprovable}}
+          @createCommentThread={{this.createCommentThread}}
+          @createComment={{this.createComment}}
+          @closeCommentThread={{this.closeCommentThread}}
+          @index={{index}}
+        />
+      {{else}}
+        <SnapshotViewer
+          @class="data-test-snapshot-viewer"
+          @build={{this.build}}
+          @snapshot={{block}}
+          @allDiffsShown={{this.allDiffsShown}}
+          @activeSnapshotBlockId={{this.activeSnapshotBlockId}}
+          @shouldDeferRendering={{this.shouldDeferRendering}}
+          @createReview={{this.createReview}}
+          @updateActiveSnapshotBlockId={{action "noop"}}
+          @activeBrowser={{this.activeBrowser}}
+          @updateActiveBrowser={{this.updateActiveBrowser}}
+          @isBuildApprovable={{this.isBuildApprovable}}
+          @createCommentThread={{this.createCommentThread}}
+          @createComment={{this.createComment}}
+          @closeCommentThread={{this.closeCommentThread}}
+          @index={{index}}
+        />
+      {{/if}}
     {{/each}}
   </LoadSnapshots>
 {{/each}}
 
 <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
+<div style="height: 100px;"></div>

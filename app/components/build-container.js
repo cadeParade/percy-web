@@ -6,6 +6,7 @@ import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
 import {snapshotsWithNoDiffForBrowser} from 'percy-web/lib/filtered-comparisons';
 import {task} from 'ember-concurrency';
+import metadataSort from 'percy-web/lib/metadata-sort';
 
 export default Component.extend(PollingMixin, {
   classNames: ['BuildContainer'],
@@ -21,6 +22,7 @@ export default Component.extend(PollingMixin, {
   isUnchangedSnapshotsVisible: false,
   isBuildApprovable: true,
   allApprovableSnapshots: null,
+  orderItems: metadataSort,
 
   snapshotsChanged: computed('allChangedBrowserSnapshotsSorted', 'activeBrowser.id', function () {
     if (!this.allChangedBrowserSnapshotsSorted) return;

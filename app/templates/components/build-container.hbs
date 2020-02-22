@@ -29,7 +29,24 @@
   {{#if this.isSnapshotsLoading}}
     <LoadingPage />
   {{else if this.build.isFinished}}
-    <InfiniteSnapshotList />
+    <InfiniteSnapshotList
+      @orderItems={{this.orderItems}}
+      @build={{this.build}}
+      @allDiffsShown={{this.allDiffsShown}}
+      @toggleAllDiffs={{action "toggleAllDiffs"}}
+      @isKeyboardNavEnabled={{not this.isHidingBuildContainer}}
+      @createReview={{this.createReview}}
+      @activeBrowser={{this.activeBrowser}}
+      @updateActiveBrowser={{action "updateActiveBrowser"}}
+      @isUnchangedSnapshotsVisible={{this.isUnchangedSnapshotsVisible}}
+      @toggleUnchangedSnapshotsVisible={{action "toggleUnchangedSnapshotsVisible"}}
+      @snapshotsUnchanged={{this.snapshotsUnchanged}}
+      @isUnchangedSnapshotsLoading={{this.isUnchangedSnapshotsLoading}}
+      @isBuildApprovable={{this.isBuildApprovable}}
+      @createCommentThread={{this.createCommentThread}}
+      @closeCommentThread={{this.closeCommentThread}}
+      @createComment={{this.createComment}}
+    />
 
 
 {{!--     <SnapshotList

@@ -51,4 +51,14 @@ export default class SnapshotQueryService extends Service {
       include: 'comments,comments.author',
     });
   }
+
+  getSnapshots(snapshotIds, buildId) {
+    const ids = snapshotIds.join(',');
+    return this.store.loadRecords('snapshot', {
+      filter: {
+        build: buildId,
+        'snapshot-ids': ids,
+      },
+    });
+  }
 }
