@@ -39,7 +39,11 @@ export default Component.extend({
 
     const snapshots = yield this.snapshotQuery.getSnapshots(idsToLoad, this.build.id);
 
-    return snapshotsToBlocks(orderItemsToLoad, snapshots);
+    // [
+    //   {block: [snapshot, snapshot], orderItem: <orderItem>}
+    //   {block: snapshot, orderItem: <orderItem>}
+    // ]
+    return snapshotsToBlocks(orderItemsToLoad, snapshots)
   })
 });
 
@@ -49,12 +53,13 @@ export default Component.extend({
 function snapshotsToBlocks(orderItems, snapshots) {
   return orderItems.map(item => {
     if (item.type === 'group') {
-      return item['snapshot-ids'].map(id => {
+      const blockSnapshots = item['snapshot-ids'].map(id => {
         // TODO: protect against a snapshot not being found (findBy will error?)
-        return snapshots.findBy('id', id.toString());
+        return snapshots.findBy('id', id.toString())
       })
+      return {block: blockSnapshots, orderItem: item};
     } else {
-      return snapshots.findBy('id', item.id.toString())
+      return {block: snapshots.findBy('id', item.id.toString()), orderItem: item};
     }
   });
 }

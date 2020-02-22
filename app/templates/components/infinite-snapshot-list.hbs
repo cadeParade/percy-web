@@ -5,13 +5,13 @@ page = {{this.page}}
     @build={{build}}
     @orderItems={{this.orderItems}}
     @page={{pageToLoad}}
-    as |blocks|
+    as |items|
   >
-    {{#each blocks as |block|}}
-      {{#if (is-item-array block)}}
+    {{#each items as |item|}}
+      {{#if (is-item-array item.block)}}
         <SnapshotGroup
           @build={{this.build}}
-          @snapshots={{block}}
+          @snapshots={{item.block}}
           @allDiffsShown={{this.allDiffsShown}}
           @activeSnapshotBlockId={{this.activeSnapshotBlockId}}
           @shouldDeferRendering={{this.shouldDeferRendering}}
@@ -23,13 +23,13 @@ page = {{this.page}}
           @createCommentThread={{this.createCommentThread}}
           @createComment={{this.createComment}}
           @closeCommentThread={{this.closeCommentThread}}
-          @index={{index}}
+          @index={{orderItem.index}}
         />
       {{else}}
         <SnapshotViewer
           @class="data-test-snapshot-viewer"
           @build={{this.build}}
-          @snapshot={{block}}
+          @snapshot={{item.block}}
           @allDiffsShown={{this.allDiffsShown}}
           @activeSnapshotBlockId={{this.activeSnapshotBlockId}}
           @shouldDeferRendering={{this.shouldDeferRendering}}
@@ -41,7 +41,7 @@ page = {{this.page}}
           @createCommentThread={{this.createCommentThread}}
           @createComment={{this.createComment}}
           @closeCommentThread={{this.closeCommentThread}}
-          @index={{index}}
+          @index={{orderItem.index}}
         />
       {{/if}}
     {{/each}}
