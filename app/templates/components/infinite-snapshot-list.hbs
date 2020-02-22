@@ -49,4 +49,47 @@ page = {{this.page}}
 {{/each}}
 
 <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
-<div style="height: 100px;"></div>
+
+{{#if this.numSnapshotsUnchanged}}
+  {{#if this.isUnchangedSnapshotsVisible}}
+    {{#each this.snapshotsUnchanged as |snapshot|}}
+      <div data-test-snapshot-block>
+        <SnapshotViewer
+          @build={{this.build}}
+          @allDiffsShown={{this.allDiffsShown}}
+          @snapshot={{snapshot}}
+          @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
+          @shouldDeferRendering={{this.shouldDeferRendering}}
+          @createReview={{this.createReview}}
+          @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}
+          @activeBrowser={{this.activeBrowser}}
+          @updateActiveBrowser={{this.updateActiveBrowser}}
+          @isBuildApprovable={{this.isBuildApprovable}}
+          @closeCommentThread={{this.closeCommentThread}}
+          @createCommentThread={{this.createCommentThread}}
+          @createComment={{this.createComment}}
+        />
+      </div>
+    {{/each}}
+  {{else}}
+    <div class="SnapshotViewer--actionable">
+      <div class="flex items-center justify-center font-bold p-2 m-2 bg-secondary rounded border border-dashed cursor-pointer" data-test-toggle-unchanged {{action this.toggleUnchangedSnapshotsVisible}} role="button">
+        {{#if this.isUnchangedSnapshotsLoading}}
+          {{inline-svg "loader-icon" class="mx-2"}} Loading unchanged snapshots
+        {{else}}
+          <figure class="svg-container">
+            {{inline-svg "no-comparison-group-icon" class="mr-1"}}
+          </figure>
+          <div class="text-blue-500">
+            {{pluralize this.numSnapshotsUnchanged "unchanged snapshot"}}
+            {{#if this.build.hasMultipleBrowsers}}
+              in {{this.activeBrowser.familyName}}
+            {{else}}
+              for all widths.
+            {{/if}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
+{{/if}}
