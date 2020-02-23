@@ -26,6 +26,11 @@ export default Component.extend(EKMixin, {
     this.set('keyboardActivated', true);
   },
 
+  onDKeyPress: on(keyDown('KeyD'), function() {
+    this.toggleAllDiffs({trackSource: 'keypress'});
+    this._trackKeyPress();
+  }),
+
   onDownKeyPress: on(keyDown('ArrowDown'), function() {
     this.newIndex({isNext: true});
   }),
@@ -36,13 +41,23 @@ export default Component.extend(EKMixin, {
 
   newIndex({isNext = true} = {}) {
     const numItems = this.orderItems.items.length;
-    const currentIndex = this.activeSnapshotBlockIndex;
     if (!this.isUnchangedSnapshotsVisible) {
       if (!this.isActiveSnapshotIndex) {
         this._updateActiveBlockIndex(0);
       } else {
+        let currentIndex = this.activeSnapshotBlockIndex;
+
+        // // will not work with infinite scroll, as snapshots may not be loaded yet
+        // // if we are moving forward and are on the last snapshot, wrap to beginning of list
+        // if (isNext && currentIndex === numItems - 1) {
+        //   currentIndex = -1;
+        // } else if (!isNext && currentIndex === 0) {
+        //   // if we are moving backward and are on the first snapshot, wrap to end of list
+        //   currentIndex = numItems;
+        // }
+
+        // There's an off-by-one error somewhere here...when it hits the bottom it skips the last one
         const newIndex = isNext ? currentIndex + 1 : currentIndex - 1;
-        // const nextIndex = this.activeSnapshotBlockIndex + 1;
         if (newIndex < numItems && newIndex >= 0) {
           this._updateActiveBlockIndex(newIndex);
         }
