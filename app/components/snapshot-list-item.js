@@ -18,11 +18,11 @@ const SNAPSHOT_HEADER_HEIGHT = 48; //px
 // - expand/collapse of list item
 export default Component.extend(InViewportMixin, {
   activeBrowser: null,
-  activeSnapshotBlockId: null,
+  activeSnapshotBlockIndex: null,
   allDiffsShown: null,
   build: null,
   userSelectedWidth: null,
-  updateActiveSnapshotBlockId: null,
+  updateActiveSnapshotBlockIndex: null,
   // This will be populated if it is a snapshot-viewer component.
   snapshot: null,
 
@@ -51,8 +51,8 @@ export default Component.extend(InViewportMixin, {
   shouldRenderImmediately: not('shouldDeferRendering'),
   shouldFullyRender: or('shouldRenderImmediately', '_isInViewport'),
 
-  isActiveSnapshotBlock: computed('activeSnapshotBlockId', 'id', function () {
-    return get(this, 'activeSnapshotBlockId') === get(this, 'id');
+  isActiveSnapshotBlock: computed('activeSnapshotBlockIndex', 'index', function () {
+    return this.activeSnapshotBlockIndex === this.index;
   }),
 
   didEnterViewport() {
@@ -61,7 +61,7 @@ export default Component.extend(InViewportMixin, {
 
   click() {
     set(this, '_shouldScroll', false);
-    get(this, 'updateActiveSnapshotBlockId')(get(this, 'id'));
+    this.updateActiveSnapshotBlockIndex(this.index);
   },
 
   filteredComparisons: computed('coverSnapshot', 'activeBrowser', 'userSelectedWidth', function () {

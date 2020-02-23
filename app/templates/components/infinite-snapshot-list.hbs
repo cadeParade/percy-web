@@ -7,48 +7,55 @@ page = {{this.page}}
     @page={{pageToLoad}}
     as |items|
   >
-    {{#each items as |item|}}
+    {{#each items as |item index|}}
       {{#if (is-item-array item.block)}}
+        {{#if (eq index (dec 1 items.length))}}
+          <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
+        {{/if}}
+
         <SnapshotGroup
           @build={{this.build}}
           @snapshots={{item.block}}
           @allDiffsShown={{this.allDiffsShown}}
-          @activeSnapshotBlockId={{this.activeSnapshotBlockId}}
+          @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
           @shouldDeferRendering={{this.shouldDeferRendering}}
           @createReview={{this.createReview}}
-          @updateActiveSnapshotBlockId={{action "noop"}}
+          @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}
           @activeBrowser={{this.activeBrowser}}
           @updateActiveBrowser={{this.updateActiveBrowser}}
           @isBuildApprovable={{this.isBuildApprovable}}
           @createCommentThread={{this.createCommentThread}}
           @createComment={{this.createComment}}
           @closeCommentThread={{this.closeCommentThread}}
-          @index={{orderItem.index}}
+          @index={{item.orderItem.index}}
         />
       {{else}}
+        {{#if (eq index (dec 1 items.length))}}
+          <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
+        {{/if}}
+
         <SnapshotViewer
           @class="data-test-snapshot-viewer"
           @build={{this.build}}
           @snapshot={{item.block}}
           @allDiffsShown={{this.allDiffsShown}}
-          @activeSnapshotBlockId={{this.activeSnapshotBlockId}}
+          @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
           @shouldDeferRendering={{this.shouldDeferRendering}}
           @createReview={{this.createReview}}
-          @updateActiveSnapshotBlockId={{action "noop"}}
+          @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}
           @activeBrowser={{this.activeBrowser}}
           @updateActiveBrowser={{this.updateActiveBrowser}}
           @isBuildApprovable={{this.isBuildApprovable}}
           @createCommentThread={{this.createCommentThread}}
           @createComment={{this.createComment}}
           @closeCommentThread={{this.closeCommentThread}}
-          @index={{orderItem.index}}
+          @index={{item.orderItem.index}}
         />
       {{/if}}
     {{/each}}
   </LoadSnapshots>
 {{/each}}
 
-<div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
 
 {{#if this.numSnapshotsUnchanged}}
   {{#if this.isUnchangedSnapshotsVisible}}
@@ -61,7 +68,7 @@ page = {{this.page}}
           @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
           @shouldDeferRendering={{this.shouldDeferRendering}}
           @createReview={{this.createReview}}
-          @updateActiveSnapshotBlockId={{action "noop"}}
+          @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}
           @activeBrowser={{this.activeBrowser}}
           @updateActiveBrowser={{this.updateActiveBrowser}}
           @isBuildApprovable={{this.isBuildApprovable}}
