@@ -3,6 +3,8 @@ import {notEmpty, readOnly} from '@ember/object/computed';
 import {computed} from '@ember/object';
 import {EKMixin, keyDown} from 'ember-keyboard';
 import {on} from '@ember/object/evented';
+import config from '../config/environment';
+import {assert} from '@ember/debug';
 
 export default Component.extend(EKMixin, {
   page: 0,
@@ -79,4 +81,24 @@ export default Component.extend(EKMixin, {
       build_id: this.build.id,
     });
   },
+
+  // TODO remove this and all references to it when unchanged snapshots
+  // have orderItems
+  shouldDeferRendering: computed(
+    'orderItems.items.length',
+    'snapshotsUnchanged.length',
+    'isUnchangedSnapshotsVisible',
+    {
+    get(/*key*/) {
+      if (this.isUnchangedSnapshotsVisible) {
+        return this.orderItems.items.length + this.snapshotsUnchanged.length > 75;
+      } else {
+        return false
+      }
+    },
+    set(key, value) {
+      assert('Only set `shouldDeferRendering` for tests.', config.environment === 'test');
+      return value;
+    },
+  }),
 });

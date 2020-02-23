@@ -12,7 +12,6 @@ export default SnapshotListItem.extend({
   'data-test-snapshot-group': true,
 
   isGroupShowingDiffOverlay: true,
-  id: readOnly('snapshots.firstObject.fingerprint'),
   coverSnapshot: readOnly('snapshots.firstObject'),
   approvableSnapshots: filterBy('snapshots', 'isApproved', false),
   _unapprovedSnapshots: filterBy('snapshots', 'isApproved', false),

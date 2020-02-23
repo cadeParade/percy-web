@@ -13,7 +13,6 @@ export default SnapshotListItem.extend({
   attributeBindings: ['data-test-snapshot-viewer'],
   'data-test-snapshot-viewer': true,
 
-  id: readOnly('snapshot.id'),
   coverSnapshot: readOnly('snapshot'),
   _isApproved: readOnly('snapshot.isApproved'),
   isUnchangedSnapshotExpanded: or('isFocus', 'isExpanded'),
