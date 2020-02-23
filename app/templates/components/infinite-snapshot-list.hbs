@@ -1,6 +1,7 @@
 Infinite snapshot list
 page = {{this.page}}
-{{#each (range 0 this.page true) as |pageToLoad|}}
+{{log 'activeSnapshotBlockIndex' this.activeSnapshotBlockIndex}}
+{{#each (range 0 (inc 1 this.page) true) as |pageToLoad|}}
   <LoadSnapshots
     @build={{build}}
     @orderItems={{this.orderItems}}
@@ -9,7 +10,7 @@ page = {{this.page}}
   >
     {{#each items as |item index|}}
       {{#if (is-item-array item.block)}}
-        {{#if (eq index (dec 1 items.length))}}
+        {{#if (eq this.page pageToLoad)}}
           <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
         {{/if}}
 
@@ -30,7 +31,7 @@ page = {{this.page}}
           @index={{item.orderItem.index}}
         />
       {{else}}
-        {{#if (eq index (dec 1 items.length))}}
+        {{#if (eq this.page pageToLoad)}}
           <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
         {{/if}}
 
