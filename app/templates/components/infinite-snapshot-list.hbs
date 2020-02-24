@@ -35,7 +35,7 @@ page = {{this.page}}
           <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
         {{/if}}
 
-        <SnapshotViewer
+        <InfiniteSnapshotViewer
           @class="data-test-snapshot-viewer"
           @build={{this.build}}
           @snapshot={{item.block}}
