@@ -3,6 +3,7 @@ import {inject as service} from '@ember/service';
 import Route from '@ember/routing/route';
 import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
+import metadataSort from 'percy-web/lib/metadata-sort';
 
 export default class IndexRoute extends Route {
   @service
@@ -25,6 +26,7 @@ export default class IndexRoute extends Route {
     const build = this.modelFor('organization.project.builds.build');
     return hash({
       build,
+      metadataSort,
       isUserMember: isUserMember(this.session.currentUser, org),
       commentThreads: this.commentThreads.getCommentsForBuild(build.id),
     });
@@ -36,11 +38,11 @@ export default class IndexRoute extends Route {
     controller.set('build', build);
 
     if (build && build.get('isFinished')) {
-      controller.set('isSnapshotsLoading', true);
+      // controller.set('isSnapshotsLoading', true);
 
-      this.snapshotQuery.getChangedSnapshots(build).then(() => {
-        return this._initializeSnapshotOrdering();
-      });
+      // this.snapshotQuery.getChangedSnapshots(build).then(() => {
+      //   return this._initializeSnapshotOrdering();
+      // });
     }
   }
 
@@ -48,6 +50,7 @@ export default class IndexRoute extends Route {
     super.setupController(...arguments);
     controller.setProperties({
       build: model.build,
+      metadataSort: model.metadataSort,
       isBuildApprovable: model.isUserMember,
       isUnchangedSnapshotsVisible: false,
     });

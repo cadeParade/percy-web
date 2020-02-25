@@ -6,73 +6,150 @@
 // https://percy.io/percy/percy-web/builds/4024410
 
 export default {
-  items: [
-    {
-      index: 0,
-      type: 'snapshot',
-      id: 238806340,
+  browsers: {
+    firefox: {
+      default: 'true',
+      unreviewed_count: 10,
+      items: [
+        {
+          index: 0,
+          type: 'group',
+          fingerprint: 'slkjrwelkrjwe',
+          cover: {
+            type: 'snapshot',
+            id: 238806297,
+          },
+          'snapshot-ids': [238806297, 238806312],
+        },
+        {
+          index: 1,
+          type: 'snapshot',
+          id: 238806340,
+        },
+        {
+          index: 2,
+          type: 'snapshot',
+          id: 238804587,
+        },
+        {
+          index: 3,
+          type: 'snapshot',
+          id: 238804346,
+        },
+        {
+          index: 3,
+          type: 'snapshot',
+          id: 238804614,
+        },
+        {
+          index: 4,
+          type: 'snapshot',
+          id: 238804627,
+        },
+        {
+          index: 5,
+          type: 'snapshot',
+          id: 238804403,
+        },
+        {
+          index: 6,
+          type: 'snapshot',
+          id: 238804415,
+        },
+        {
+          index: 7,
+          type: 'snapshot',
+          id: 238804485,
+        },
+        {
+          index: 8,
+          type: 'snapshot',
+          id: 238804412,
+        },
+        {
+          index: 9,
+          type: 'snapshot',
+          id: 238804400,
+        },
+        {
+          index: 8,
+          type: 'snapshot',
+          id: 238804622,
+        },
+      ],
     },
-    {
-      index: 1,
-      type: 'group',
-      fingerprint: 'slkjrwelkrjwe',
-      cover: {
-        type: 'snapshot',
-        id: 238806297,
-      },
-      'snapshot-ids': [238806297, 238806312],
+    chrome: {
+      default: 'false',
+      unreviewed_count: 21,
+      items: [
+        {
+          index: 0,
+          type: 'snapshot',
+          id: 238806340,
+        },
+        {
+          index: 1,
+          type: 'group',
+          fingerprint: 'slkjrwelkrjwe',
+          cover: {
+            type: 'snapshot',
+            id: 238806297,
+          },
+          'snapshot-ids': [238806297, 238806312],
+        },
+        {
+          index: 2,
+          type: 'snapshot',
+          id: 238804587,
+        },
+        {
+          index: 3,
+          type: 'snapshot',
+          id: 238804346,
+        },
+        {
+          index: 3,
+          type: 'snapshot',
+          id: 238804614,
+        },
+        {
+          index: 4,
+          type: 'snapshot',
+          id: 238804627,
+        },
+        {
+          index: 5,
+          type: 'snapshot',
+          id: 238804403,
+        },
+        {
+          index: 6,
+          type: 'snapshot',
+          id: 238804415,
+        },
+        {
+          index: 7,
+          type: 'snapshot',
+          id: 238804485,
+        },
+        {
+          index: 8,
+          type: 'snapshot',
+          id: 238804412,
+        },
+        {
+          index: 9,
+          type: 'snapshot',
+          id: 238804400,
+        },
+        {
+          index: 8,
+          type: 'snapshot',
+          id: 238804622,
+        },
+      ],
     },
-    {
-      index: 2,
-      type: 'snapshot',
-      id: 238804587,
-    },
-    {
-      index: 3,
-      type: 'snapshot',
-      id: 238804346,
-    },
-    {
-      index: 3,
-      type: 'snapshot',
-      id: 238804614,
-    },
-    {
-      index: 4,
-      type: 'snapshot',
-      id: 238804627,
-    },
-    {
-      index: 5,
-      type: 'snapshot',
-      id: 238804403,
-    },
-    {
-      index: 6,
-      type: 'snapshot',
-      id: 238804415,
-    },
-    {
-      index: 7,
-      type: 'snapshot',
-      id: 238804485,
-    },
-    {
-      index: 8,
-      type: 'snapshot',
-      id: 238804412,
-    },
-    {
-      index: 9,
-      type: 'snapshot',
-      id: 238804400,
-    },
-    {
-      index: 8,
-      type: 'snapshot',
-      id: 238804622,
-    },
-  ],
+  }
 };
 
 // percy-web build number 8622

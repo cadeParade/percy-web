@@ -2,6 +2,7 @@ Infinite snapshot list
 page = {{this.page}}
 {{log 'activeSnapshotBlockIndex' this.activeSnapshotBlockIndex}}
 {{#each (range 0 (inc 1 this.page) true) as |pageToLoad|}}
+  {{log 'in snapshot list' this.orderItems}}
   <LoadSnapshots
     @build={{build}}
     @orderItems={{this.orderItems}}

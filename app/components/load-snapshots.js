@@ -32,7 +32,7 @@ export default Component.extend({
     const offset = this.page * this.limit;
     const endIndex = (this.page + 1) * this.limit
 
-    const orderItemsToLoad = this.orderItems.items.slice(offset, endIndex);
+    const orderItemsToLoad = this.orderItems.slice(offset, endIndex);
     const idsToLoad = snapshotIdsToLoad(orderItemsToLoad);
 
     if (idsToLoad.length === 0) return;

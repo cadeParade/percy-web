@@ -7,10 +7,9 @@ import config from '../config/environment';
 import {assert} from '@ember/debug';
 
 export default Component.extend(EKMixin, {
-  page: 0,
   activeSnapshotBlockIndex: null,
 
-  numSnapshotsChanged: readOnly('orderItems.items.length'),
+  numSnapshotsChanged: readOnly('orderItems.length'),
   numSnapshotsUnchanged: computed('build.totalSnapshots', 'numSnapshotsChanged', function() {
     return this.build.totalSnapshots - this.numSnapshotsChanged;
   }),
@@ -42,7 +41,7 @@ export default Component.extend(EKMixin, {
   }),
 
   newIndex({isNext = true} = {}) {
-    const numItems = this.orderItems.items.length;
+    const numItems = this.orderItems.length;
     if (!this.isUnchangedSnapshotsVisible) {
       if (!this.isActiveSnapshotIndex) {
         this._updateActiveBlockIndex(0);
@@ -85,13 +84,13 @@ export default Component.extend(EKMixin, {
   // TODO remove this and all references to it when unchanged snapshots
   // have orderItems
   shouldDeferRendering: computed(
-    'orderItems.items.length',
+    'orderItems.length',
     'snapshotsUnchanged.length',
     'isUnchangedSnapshotsVisible',
     {
     get(/*key*/) {
       if (this.isUnchangedSnapshotsVisible) {
-        return this.orderItems.items.length + this.snapshotsUnchanged.length > 75;
+        return this.orderItems.length + this.snapshotsUnchanged.length > 75;
       } else {
         return false
       }
