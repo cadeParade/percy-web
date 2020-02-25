@@ -11,7 +11,7 @@ export default class IndexController extends Controller {
   @service
   raven;
 
-  isHidingBuildContainer = false;
+  metadataSort = null; // set by controller
   allChangedBrowserSnapshotsSorted = null; // Manually managed by initializeSnapshotOrdering.
   _unchangedSnapshots = [];
 

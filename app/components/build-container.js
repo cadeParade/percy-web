@@ -6,15 +6,12 @@ import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
 import {snapshotsWithNoDiffForBrowser} from 'percy-web/lib/filtered-comparisons';
 import {task} from 'ember-concurrency';
-import metadataSort from 'percy-web/lib/metadata-sort';
 
 export default Component.extend(PollingMixin, {
   classNames: ['BuildContainer'],
-  classNameBindings: ['isHidingBuildContainer:BuildContainer--snapshotModalOpen'],
 
   store: service(),
   build: null,
-  isHidingBuildContainer: false,
   snapshotQuery: service(),
   snapshotsUnchanged: null,
   allDiffsShown: true,
