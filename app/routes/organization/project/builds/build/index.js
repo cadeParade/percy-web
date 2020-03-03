@@ -26,23 +26,22 @@ export default class IndexRoute extends Route {
     const build = this.modelFor('organization.project.builds.build');
     return hash({
       build,
-      metadataSort,
       isUserMember: isUserMember(this.session.currentUser, org),
       commentThreads: this.commentThreads.getCommentsForBuild(build.id),
     });
   }
 
-  afterModel(model) {
+  async afterModel(model) {
     const controller = this.controllerFor(this.routeName);
     const build = model.build;
     controller.set('build', build);
-
+    // TODO figure out what to do about polling, how to refresh with polling??
     if (build && build.get('isFinished')) {
-      // controller.set('isSnapshotsLoading', true);
-
-      // this.snapshotQuery.getChangedSnapshots(build).then(() => {
-      //   return this._initializeSnapshotOrdering();
-      // });
+      controller.set('isSnapshotsLoading', true);
+      const snapshotsAndMeta = await this.snapshotQuery.getSnapshotsWithSortMeta(build);
+      const meta = snapshotsAndMeta.meta['sorted-items']
+      controller.set('metadataSort', meta);
+      controller.set('isSnapshotsLoading', false);
     }
   }
 
@@ -50,7 +49,6 @@ export default class IndexRoute extends Route {
     super.setupController(...arguments);
     controller.setProperties({
       build: model.build,
-      metadataSort: model.metadataSort,
       isBuildApprovable: model.isUserMember,
       isUnchangedSnapshotsVisible: false,
     });

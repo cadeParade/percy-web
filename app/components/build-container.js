@@ -34,7 +34,7 @@ export default Component.extend(PollingMixin, {
       }
     }
 
-    return this.buildBrowsers.findBy('familySlug', defaultBrowserSlug);
+    return this.buildBrowsers.findBy('familySlug', defaultBrowserInfo.browser);
   }),
 
   orderItems: computed('metadataSort', 'activeBrowser.familySlug', function () {

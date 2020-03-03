@@ -61,4 +61,13 @@ export default class SnapshotQueryService extends Service {
       },
     });
   }
+
+  getSnapshotsWithSortMeta(build) {
+    return this.store.loadRecords('snapshot', {
+      filter: {
+        build: build.get('id'),
+      },
+      'include-sort-data': true,
+    });
+  }
 }

@@ -59,7 +59,7 @@ function snapshotsToBlocks(orderItems, snapshots) {
       })
       return {block: blockSnapshots, orderItem: item};
     } else {
-      return {block: snapshots.findBy('id', item.id.toString()), orderItem: item};
+      return {block: snapshots.findBy('id', item['snapshot-id'].toString()), orderItem: item};
     }
   });
 }
@@ -70,7 +70,7 @@ function snapshotIdsToLoad(orderItems) {
       if (item.type === 'group') {
         return acc.concat(item['snapshot-ids']);
       } else {
-        acc.push(item.id);
+        acc.push(item['snapshot-id']);
         return acc;
       }
     }, []);
