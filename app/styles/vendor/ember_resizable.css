@@ -1,0 +1,25 @@
+:root {
+  --ember-resizable-resizer-size: 10px;
+}
+
+.re-sizable {
+  position: relative;
+  user-select: auto;
+
+  &.is-active {
+    user-select: none;
+  }
+
+  .resizer {
+    position: absolute;
+    z-index: 2;
+
+    &.right {
+      top: 0;
+      right: -5px;
+      width: var(--ember-resizable-resizer-size);
+      height: 100%;
+      cursor: col-resize;
+    }
+  }
+}

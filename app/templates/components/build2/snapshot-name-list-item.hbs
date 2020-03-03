@@ -18,6 +18,8 @@
     {{/if}}
   </div>
   <div class="snapshot-name-list-item-title">
-    {{this.snapshot.name}}
+    {{#unless this.isCompactSidebar}}
+      {{this.snapshot.name}}
+    {{/unless}}
   </div>
 </LinkTo>

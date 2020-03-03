@@ -94,6 +94,7 @@
     "ember-page-title": "5.1.0",
     "ember-power-select": "^3.0.4",
     "ember-promise-helpers": "^1.0.9",
+    "ember-resizable": "^0.4.6",
     "ember-resolver": "^7.0.0",
     "ember-route-action-helper": "^2.0.7",
     "ember-router-scroll": "^2.0.0",

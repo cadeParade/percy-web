@@ -1,7 +1,7 @@
 {{#if this.comparison.wasCompared}}
   {{#if this.comparison.isDifferent}}
     <div class="flex">
-      <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--left">
+      <div style="padding-top: 0;" class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--left">
         {{#with this.comparison.baseScreenshot.lossyImage as |image|}}
           <div class="Viewer-pdiffImageBox" style={{html-safe "max-width: " image.width "px"}}>
             <ImageSpacer
@@ -12,7 +12,7 @@
           </div>
         {{/with}}
       </div>
-      <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--right">
+      <div style="padding-top: 0;" class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--right">
         {{#with this.comparison.headScreenshot.lossyImage as |lossyImage|}}
           <div class="Viewer-pdiffImageBox Viewer-pdiffImageBox--actionable" style={{html-safe "max-width: " lossyImage.width "px"}} data-test-comparison-viewer-diff-image-container>
             <ImageSpacer

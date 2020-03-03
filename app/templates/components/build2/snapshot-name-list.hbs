@@ -1,8 +1,9 @@
-<ul class="snapshot-name-list list-none">
+<ul class="snapshot-name-list list-none {{if this.isCompactSidebar 'px-2' 'px-3'}}">
   {{#each this.filteredSnapshots as |snapshot|}}
-    <li class="px-3 mb-3 border-b">
+    <li class="mb-3 border-b">
       <Build2::SnapshotNameListItem
         @snapshot={{snapshot}}
+        @isCompactSidebar={{this.isCompactSidebar}}
         class="text-primary"
       />
     </li>

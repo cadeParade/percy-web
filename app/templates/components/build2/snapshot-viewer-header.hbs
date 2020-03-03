@@ -1,77 +1,71 @@
 {{!-- template-lint-disable no-nested-interactive --}}
-<header class="master-detail-snapshot-header">
-  <div class="flex items-center justify-between mb-3">
-    <div class="flex items-center w-4/5">
-      <div class="menu-icon-alt p-1 mr-2 cursor-pointer {{if this.isSnapshotListVisible 'is-closeable'}}" role="button" {{action this.toggleSnapshotListVisibility}}>
-        <div style="width: 18px; height: 14px;">
-          <div class="menu-icon-line-alt"></div>
-          <div class="menu-icon-line-alt"></div>
-          <div class="menu-icon-line-alt"></div>
-        </div>
-      </div>
-
-      <div style="min-width: 0;">
-        <div class="flex items-center">
-          <div class="flex items-center text-sm font-bold">
-            <LinkTo @route="organization" @model={{this.build.project.organization}} class="link-purple hide-on-tablet">
-              {{this.build.project.organization.name}}
-            </LinkTo>
-            <span class="font-bold text-secondary mx-sm hide-on-tablet">/</span>
-            <LinkTo @route="organization.project" @models={{array this.build.project.organization.slug this.build.project.slug}} class="link-purple">
-              {{this.build.project.name}}
-            </LinkTo>
+<header>
+  <div class="master-detail-snapshot-header">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center w-2/3">
+        <div class="menu-icon-alt p-1 mr-2 cursor-pointer {{if this.isSnapshotListVisible 'is-closeable'}}" role="button" {{action this.toggleSnapshotListVisibility}}>
+          <div style="width: 18px; height: 14px;">
+            <div class="menu-icon-line-alt"></div>
+            <div class="menu-icon-line-alt"></div>
+            <div class="menu-icon-line-alt"></div>
           </div>
-          {{#if this.build.project.organization.isSponsored}}
-            <FaIcon @icon="globe" class="text-blue-500 ml-sm mr-3 pb-px" />
-          {{/if}}
         </div>
-        <div class="flex items-center" title="{{this.snapshot.name}}">
-          {{#if this.snapshot.isRejected}}
-            <div class="mr-1">
-              <div class="px-1 py-sm tracking-px leading-none rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{if (eq this.snapshot.reviewStateReason 'user_rejected_previously') 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}">
-                Changes requested
-              </div>
+
+        <div style="min-width: 0;">
+          {{!-- <div class="flex items-center">
+            <div class="flex items-center text-sm font-bold">
+              <LinkTo @route="organization" @model={{this.build.project.organization}} class="link-purple hide-on-tablet">
+                {{this.build.project.organization.name}}
+              </LinkTo>
+              <span class="font-bold text-secondary mx-sm hide-on-tablet">/</span>
+              <LinkTo @route="organization.project" @models={{array this.build.project.organization.slug this.build.project.slug}} class="link-purple">
+                {{this.build.project.name}}
+              </LinkTo>
             </div>
-          {{/if}}
-          <div class="cursor-default font-bold mr-1 text-md truncate">
-            {{this.snapshot.name}}
+            {{#if this.build.project.organization.isSponsored}}
+              <FaIcon @icon="globe" class="text-blue-500 ml-sm mr-3 pb-px" />
+            {{/if}}
+          </div> --}}
+          <div class="flex items-center" title="{{this.snapshot.name}}">
+            {{#if this.snapshot.isRejected}}
+              <div class="mr-1">
+                <div class="px-1 py-sm tracking-px leading-none rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{if (eq this.snapshot.reviewStateReason 'user_rejected_previously') 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}">
+                  Changes requested
+                </div>
+              </div>
+            {{/if}}
+            <div class="cursor-default font-bold mr-1 text-md truncate">
+              {{this.snapshot.name}}
+            </div>
+            <button
+              type="button"
+              class="btn-icon-only opacity-25 hover:opacity-100"
+              title="Copy link to snapshot"
+            >
+              <ThemeSvg @svg="snapshot-link-icon" />
+            </button>
           </div>
-          <button
-            type="button"
-            class="btn-icon-only opacity-25 hover:opacity-100"
-            title="Copy link to snapshot"
-          >
-            <ThemeSvg @svg="snapshot-link-icon" />
-          </button>
         </div>
       </div>
-    </div>
-    {{#if this.snapshot.build.hasMultipleBrowsers}}
-      <Build2::BrowserSwitcher
-        @browsers={{this.snapshot.build.browsers}}
-        @activeBrowser={{this.activeBrowser}}
-        @updateActiveBrowser={{this.updateActiveBrowser}}
-        @build={{this.snapshot.build}}
-      />
-    {{/if}}
-  </div>
 
-  <div class="flex items-center justify-between">
-    <div class="flex-1 flex justify-start">
-      <ComparisonSwitcher
-        @comparisons={{if this.isShowingAllComparisons this.filteredComparisons.comparisons this.filteredComparisons.comparisonsWithDiffs}}
-        @selectedWidth={{this.snapshotSelectedWidth}}
-        @updateSelectedWidth={{this.updateSelectedWidth}}
-      />
-    </div>
+      <div class="btn-toolbar">
+        {{#if this.isBuildApprovable}}
+          <button type="button" class="percy-btn btn-square collaboration-toggle relative">
+            <figure class="svg-container pt-xs">
+              <ThemeSvg @svg="conversation-icon-add" />
+            </figure>
+          </button>
+        {{/if}}
 
-    <div class="flex-1 flex justify-center">
-      <div class="btn-toolbar mx-2">
+        {{#if this.snapshot.isUnreviewed}}
+          <Build2::SnapshotRejectButton
+            @snapshots={{array this.snapshot}}
+            @isDisabled={{not this.isBuildApprovable}}
+          />
+        {{/if}}
+
         {{#if this.snapshot.build.isFinished}}
           <div class="btn-toolbar">
-            <button type="button" class="percy-btn btn-square" {{action this.goToPreviousSnapshot}}>
-              <ThemeSvg @svg="snapshot-dropdown-icon" class="transform rotate-180 pb-px" />
-            </button>
             <SnapshotApprovalButton
               @snapshot={{this.snapshot}}
               @hasDiffsInBrowser={{this.hasDiffsInBrowser}}
@@ -79,43 +73,57 @@
               @createReview={{action "approveSnapshot"}}
               @isDisabled={{not this.isBuildApprovable}}
             />
-            <button type="button" class="percy-btn btn-square" {{action this.goToNextSnapshot}}>
-              <ThemeSvg @svg="snapshot-dropdown-icon" class="pb-px"/>
-            </button>
           </div>
         {{/if}}
       </div>
     </div>
+  </div>
+  <div class="master-detail-snapshot-sub-header">
+    <div class="flex items-center justify-between">
+      {{#if this.snapshot.build.isFinished}}
+        <div class="btn-toolbar">
+          <button type="button" class="percy-btn" {{action this.toggleOverlay}}>
+            Diff overlay
+            <span class="text-primary">
+              {{#if this.showDiffOverlay}}
+                on
+              {{else}}
+                off
+              {{/if}}
+            </span>
+          </button>
+        </div>
+      {{/if}}
 
-    <div class="flex-1 flex justify-end">
-      <div class="btn-toolbar">
+      <div class="flex-1 flex justify-end">
         {{#if this.snapshot.build.isFinished}}
           <div class="btn-toolbar">
-            <button type="button" class="percy-btn" {{action this.toggleOverlay}}>
-              Diff overlay
-              <span class="text-primary">
-                {{#if this.showDiffOverlay}}
-                  on
-                {{else}}
-                  off
-                {{/if}}
-              </span>
-            </button>
-
-            {{#if this.snapshot.isUnreviewed}}
-              <Build2::SnapshotRejectButton
-                @snapshots={{array this.snapshot}}
-                @isDisabled={{not this.isBuildApprovable}}
+            {{#if this.snapshot.build.hasMultipleBrowsers}}
+              <Build2::BrowserSwitcher
+                @browsers={{this.snapshot.build.browsers}}
+                @activeBrowser={{this.activeBrowser}}
+                @updateActiveBrowser={{this.updateActiveBrowser}}
+                @build={{this.snapshot.build}}
               />
             {{/if}}
 
-            {{#if this.isBuildApprovable}}
-              <button type="button" class="percy-btn btn-square collaboration-toggle relative">
-                <figure class="svg-container pt-xs">
-                  <ThemeSvg @svg="conversation-icon-add" />
-                </figure>
+            <div class="flex-1 flex justify-start">
+              <Build2::ComparisonSwitcher
+                @comparisons={{if this.isShowingAllComparisons this.filteredComparisons.comparisons this.filteredComparisons.comparisonsWithDiffs}}
+                @selectedWidth={{this.snapshotSelectedWidth}}
+                @updateSelectedWidth={{this.updateSelectedWidth}}
+              />
+            </div>
+
+            <div class="btn-toolbar gap-sm">
+              <button type="button" class="percy-btn btn-square" {{action this.goToPreviousSnapshot}}>
+                <ThemeSvg @svg="previous" />
               </button>
-            {{/if}}
+
+              <button type="button" class="percy-btn btn-square" {{action this.goToNextSnapshot}}>
+                <ThemeSvg @svg="next" />
+              </button>
+            </div>
           </div>
         {{/if}}
       </div>

@@ -1,0 +1,14 @@
+<div
+  class="
+    btn-toggle-item
+    {{if this.isSelected ' is-selected'}}
+    {{if this.matchingComparison ' is-disabled'}}
+    {{if this.matchingComparison.isDifferent ' has-diffs'}}
+  "
+  {{action 'setWidth'}}
+  role="button"
+  data-test-ComparisonSwitcher-button>
+  <div class="btn-toggle-item-content flex items-center">
+    {{this.width}}px
+  </div>
+</div>

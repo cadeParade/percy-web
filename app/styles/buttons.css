@@ -516,6 +516,10 @@ button .fa--left,
   grid-gap: theme("spacing.1");
 }
 
+.btn-toolbar .gap-sm {
+  grid-gap: theme("spacing.sm");
+}
+
 .btn-scale {
   transition: transform 250ms;
   backface-visibility: hidden;

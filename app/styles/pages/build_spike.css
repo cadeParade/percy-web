@@ -1,8 +1,19 @@
 /* stylelint-disable */
 
 .snapshot-name-list-sidebar {
+  @apply h-screen;
+  @apply overflow-y-scroll;
+  @apply overflow-x-hidden;
+  @apply border-r;
+  @apply border-ternary;
+  scroll-behavior: smooth;
+
   .status-pill {
     @apply rounded;
+  }
+
+  .percy-btn svg {
+    @apply block;
   }
 }
 
@@ -61,14 +72,24 @@
 }
 
 .master-detail-snapshot-header {
-  @apply sticky top-0;
-  @apply p-3;
+  @apply px-3 py-2;
   @apply bg-secondary;
   @apply border-b;
   @apply shadow-px;
   @apply z-1;
   backdrop-filter: saturate(50%) blur(10px);
   opacity: 0.98;
+
+  .marketing-hero-dark {
+    .menu-icon-line {
+      @apply bg-white;
+    }
+  }
+}
+
+.master-detail-snapshot-sub-header {
+  @apply px-3 py-2;
+  @apply bg-primary;
 
   .browser-switcher svg {
     transform: scale(0.75);
@@ -78,10 +99,23 @@
     @apply px-1;
   }
 
-  .marketing-hero-dark {
-    .menu-icon-line {
-      @apply bg-white;
-    }
+  .btn-toggle-item-content {
+    @apply relative;
+  }
+
+  .btn-toggle-item.has-diffs .btn-toggle-item-content::after {
+    content: '';
+    @apply absolute left-0;
+    @apply block;
+    @apply rounded;
+    @apply bg-purple-600;
+    @apply w-full;
+    height: 2px;
+    bottom: -13px;
+  }
+
+  .percy-btn svg {
+    @apply block;
   }
 }
 
