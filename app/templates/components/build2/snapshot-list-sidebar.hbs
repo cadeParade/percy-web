@@ -7,28 +7,89 @@
   @onResize={{action "onResize"}}
   @onResizeStop={{action "onResizeStop"}}
 >
-  <div class="py-3 mb-3 leading-none bg-primary sticky top-0 z-1 border-b {{if this.isCompactSidebar 'px-2' 'px-3'}}">
-    <div class="text-lg text-secondary mb-1">
-      Build <span class="font-mono font-normal tracking-sm text-primary mr-1">{{this.build.buildNumber}}</span>
+  <div class="py-3 mb-3 leading-none bg-primary sticky top-0 z-1 border-b">
+    <div class="{{if this.isCompactSidebar 'px-2' 'px-3'}}">
+      <div class="text-lg text-secondary mb-1">
+        Build <span class="font-mono font-normal tracking-sm text-primary mr-1">{{this.build.buildNumber}}</span>
+      </div>
+
+      <div class="text-lg mb-sm">
+        <span class="font-semibold">{{this.build.totalSnapshotsUnreviewed}}</span> {{pluralize this.build.totalSnapshotsUnreviewed "unreviewed change" without-count=true}}
+      </div>
+      <div class="mb-3">
+        <span class="text-primary font-semibold">{{this.build.totalSnapshots}}</span> {{pluralize this.build.totalSnapshots "total snapshot" without-count=true}}
+      </div>
+
+      {{!-- <Build2::BuildApprovalButton @build={{this.build}} /> --}}
+
+      <div class="flex justify-between">
+        <button type="button" class="percy-btn btn-square">
+          <ThemeSvg @svg="filter" />
+        </button>
+
+        <button type="button" class="btn-icon-only opacity-25 hover:opacity-100 cursor-pointer" {{action this.toggleSearchInput}}>
+          <ThemeSvg @svg="search-icon" />
+        </button>
+      </div>
     </div>
 
-    <div class="text-lg mb-sm">
-      <span class="font-semibold">{{this.build.totalSnapshotsUnreviewed}}</span> {{pluralize this.build.totalSnapshotsUnreviewed "unreviewed change" without-count=true}}
-    </div>
-    <div class="mb-3">
-      <span class="text-primary font-semibold">{{this.build.totalSnapshots}}</span> {{pluralize this.build.totalSnapshots "total snapshot" without-count=true}}
-    </div>
+    <div class="bg-secondary border-t border-b text-sm font-semibold">
+      <div class="border-b {{if this.isCompactSidebar 'p-2' 'p-3'}}">
+        <div class="flex items-center justify-between mb-1 cursor-pointer">
+          <div>Unreviewed</div>
+          <div class="px-sm py-px rounded-xl bg-purple-600 leading-none">26</div>
+        </div>
+        <div class="flex items-center justify-between mb-1 cursor-pointer">
+          <div>Changes requested</div>
+          <div class="px-sm py-px rounded-xl bg-orange-500 leading-none">3</div>
+        </div>
+        <div class="flex items-center justify-between mb-1 cursor-pointer">
+          <div>Approved</div>
+          <div class="px-sm py-px rounded-xl bg-green-500 leading-none">18</div>
+        </div>
+        <div class="flex items-center justify-between cursor-pointer opacity-25">
+          <div>No changes</div>
+          <div class="px-sm py-px rounded-xl bg-blue-500 leading-none">264</div>
+        </div>
+      </div>
 
-    {{!-- <Build2::BuildApprovalButton @build={{this.build}} /> --}}
+      <div class="border-b {{if this.isCompactSidebar 'p-2' 'p-3'}}">
+        <div class="flex items-center justify-between mb-1 cursor-pointer">
+          <div>Chrome</div>
+          <div></div>
+        </div>
+        <div class="flex items-center justify-between mb-1 cursor-pointer">
+          <div>Firefox</div>
+          <div></div>
+        </div>
+        <div class="flex items-center justify-between cursor-pointer opacity-25">
+          <div>Edge</div>
+          <div>
+            <ThemeSvg @svg="hidden"/>
+          </div>
+        </div>
+      </div>
 
-    <div class="flex justify-between">
-      <button type="button" class="percy-btn btn-square">
-        <ThemeSvg @svg="filter" />
-      </button>
-
-      <button type="button" class="btn-icon-only opacity-25 hover:opacity-100 cursor-pointer" {{action this.toggleSearchInput}}>
-        <ThemeSvg @svg="search-icon" />
-      </button>
+      <div class="{{if this.isCompactSidebar 'p-2' 'p-3'}}">
+        <div class="flex items-center justify-between mb-1 cursor-pointer">
+          <div>375px</div>
+          <div></div>
+        </div>
+        <div class="flex items-center justify-between mb-1 cursor-pointer">
+          <div>768px</div>
+          <div></div>
+        </div>
+        <div class="flex items-center justify-between mb-1 cursor-pointer opacity-25">
+          <div>1100px</div>
+          <div>
+            <ThemeSvg @svg="hidden"/>
+          </div>
+        </div>
+        <div class="flex items-center justify-between cursor-pointer">
+          <div>1280px</div>
+          <div></div>
+        </div>
+      </div>
     </div>
 
     {{#if this.isSearchVisible}}

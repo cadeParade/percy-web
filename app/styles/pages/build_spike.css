@@ -41,20 +41,12 @@
 .snapshot-name-list-image {
   @apply relative;
   padding-bottom: 100%;
-  background: url("/images/artboard-bg.svg");
-}
-
-.bg-artboard-approved {
-  background: url("/images/artboard-bg-approved.svg");
+  @apply bg-gray-000;
 }
 
 .theme-dark {
   .snapshot-name-list-image {
-    background: url("/images/artboard-bg-dark.svg");
-  }
-
-  .bg-artboard-approved {
-    background: url("/images/artboard-bg-dark-approved.svg");
+    @apply bg-dark-900;
   }
 }
 

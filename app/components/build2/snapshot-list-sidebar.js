@@ -9,7 +9,12 @@ export default class SnapshotListSidebar extends Component {
 
   didInsertElement() {
     if (localStorageProxy.get('sidebarWidth')) {
-      this.sidebarWidth = localStorageProxy.get('sidebarWidth');
+      var sidebarWidth = localStorageProxy.get('sidebarWidth');
+
+      this.sidebarWidth = sidebarWidth;
+      if (sidebarWidth < 220) {
+        this.isCompactSidebar = true;
+      }
     }
   }
 
