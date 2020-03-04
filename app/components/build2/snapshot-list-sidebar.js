@@ -6,6 +6,7 @@ import localStorageProxy from 'percy-web/lib/localstorage';
 export default class SnapshotListSidebar extends Component {
   @tracked isCompactSidebar = false;
   @tracked sidebarWidth = 260;
+  @tracked isFilterOpen = false;
 
   didInsertElement() {
     if (localStorageProxy.get('sidebarWidth')) {
@@ -32,5 +33,10 @@ export default class SnapshotListSidebar extends Component {
   @action
   onResizeStop() {
     localStorageProxy.set('sidebarWidth', this.sidebarWidth);
+  }
+
+  @action
+  toggleFilters() {
+    this.isFilterOpen = !this.isFilterOpen;
   }
 }

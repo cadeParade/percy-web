@@ -1,9 +1,8 @@
 /* stylelint-disable */
 
 .snapshot-name-list-sidebar {
+  @apply flex flex-col;
   @apply h-screen;
-  @apply overflow-y-scroll;
-  @apply overflow-x-hidden;
   @apply border-r;
   @apply border-ternary;
   scroll-behavior: smooth;
@@ -12,8 +11,19 @@
     @apply rounded;
   }
 
-  .percy-btn svg {
-    @apply block;
+  .percy-btn {
+    &.filter-dropdown-active {
+      @apply rounded-b-none;
+      box-shadow: 0 4px 0 var(--bg-color-action);
+
+      &:hover {
+        @apply bg-action;
+      }
+    }
+
+    svg {
+      @apply block;
+    }
   }
 }
 
