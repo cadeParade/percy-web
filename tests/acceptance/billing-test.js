@@ -31,7 +31,7 @@ describe('Acceptance: Billing', function () {
 
     it('shows the correct card expiration date', async function () {
       // Static date at beginning of month to ensure time localization doesn't change display date
-      const expirationDate = new Date('2055-11-1 UTC');
+      const expirationDate = new Date('Nov 1 2055 00:00:00 UTC');
       const expectedDate = /11\/55/;
       organization.subscription.paymentMethod.update({cardExpiresAt: expirationDate});
 
