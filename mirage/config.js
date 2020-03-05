@@ -8,6 +8,7 @@ import {
 } from 'percy-web/models/snapshot';
 import {REVIEW_ACTIONS} from 'percy-web/models/review';
 import {get} from '@ember/object';
+import createSortMetadata from 'percy-web/tests/helpers/create-sort-metadata';
 
 export default function () {
   // Enable this to see verbose request logging from mirage:
@@ -342,14 +343,24 @@ export default function () {
   this.get('/snapshots', function (schema, request) {
     const build = schema.builds.findBy({id: request.queryParams.build_id});
     const queryParams = request.queryParams;
+    let snapshots;
+
     if (queryParams['filter[review-state-reason]']) {
       const reasons = queryParams['filter[review-state-reason]'].split(',');
-      return schema.snapshots.where(snapshot => {
+      snapshots = schema.snapshots.where(snapshot => {
         return snapshot.buildId === build.id && reasons.includes(snapshot.reviewStateReason);
       });
     } else {
-      return schema.snapshots.where({buildId: build.id});
+      snapshots = schema.snapshots.where({buildId: build.id});
     }
+
+    const jsonResponse = this.serialize(snapshots);
+
+    if (queryParams['include-sort-data'] === 'true') {
+      jsonResponse.meta = createSortMetadata(snapshots, build)
+    }
+
+    return jsonResponse;
   });
 
   this.get('/builds/:build_id/removed-snapshots', function (schema, request) {
