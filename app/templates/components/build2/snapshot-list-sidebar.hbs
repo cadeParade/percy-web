@@ -9,21 +9,36 @@
 >
   <div class="py-3 leading-none bg-primary border-b">
     <div class="{{if this.isCompactSidebar 'px-2' 'px-3'}}">
-      <div class="text-lg text-secondary mb-1">
+      <div class="flex items-center mb-1-1/2">
+        <div class="flex items-center text-sm font-bold">
+          <LinkTo @route="organization" @model={{this.build.project.organization}} class="link-purple hide-on-tablet">
+            {{this.build.project.organization.name}}
+          </LinkTo>
+          <span class="font-bold text-secondary mx-sm hide-on-tablet">/</span>
+          <LinkTo @route="organization.project" @models={{array this.build.project.organization.slug this.build.project.slug}} class="link-purple">
+            {{this.build.project.name}}
+          </LinkTo>
+        </div>
+        {{#if this.build.project.organization.isSponsored}}
+          <FaIcon @icon="globe" class="text-blue-500 ml-sm mr-3 pb-px" />
+        {{/if}}
+      </div>
+
+      <div class="text-lg text-secondary mb-2">
         Build <span class="font-mono font-normal tracking-sm text-primary mr-1">{{this.build.buildNumber}}</span>
       </div>
 
-      <div class="text-lg mb-sm">
+      {{!-- <div class="text-lg mb-sm">
         <span class="font-semibold">{{this.build.totalSnapshotsUnreviewed}}</span> {{pluralize this.build.totalSnapshotsUnreviewed "unreviewed change" without-count=true}}
       </div>
       <div class="mb-3">
         <span class="text-primary font-semibold">{{this.build.totalSnapshots}}</span> {{pluralize this.build.totalSnapshots "total snapshot" without-count=true}}
-      </div>
+      </div> --}}
 
       {{!-- <Build2::BuildApprovalButton @build={{this.build}} /> --}}
 
       <div class="flex justify-between mb-sm">
-        <button type="button" class="percy-btn btn-square filter-dropdown-active" {{action "toggleFilters"}}>
+        <button type="button" class="percy-btn btn-square {{if this.isFilterOpen 'filter-dropdown-active'}}" {{action "toggleFilters"}}>
           <ThemeSvg @svg="filter" />
         </button>
 
@@ -111,11 +126,16 @@
   </div>
 
   <Build2::SnapshotNameList
-    class="flex-1 overflow-scroll pt-3"
+    style="scroll-behavior: smooth;"
+    class="flex-1 pt-3 overflow-scroll"
     id="snapshot-list-sidebar"
     @snapshots={{this.snapshots}}
     @build={{this.buildModel}}
     @searchTerm={{this.searchTerm}}
     @isCompactSidebar={{this.isCompactSidebar}}
   />
+
+  <div class="py-1 bg-primary border-t border-ternary text-center font-semibold {{if this.isCompactSidebar 'px-2' 'px-3'}}">
+    2 <span class="text-secondary font-normal">of</span> 47
+  </div>
 </ReSizable>

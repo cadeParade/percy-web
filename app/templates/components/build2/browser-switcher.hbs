@@ -5,7 +5,9 @@
       {{action this.updateActiveBrowser browser}}
       role="button"
     >
-      {{inline-svg (concat browser.familySlug "-browser-icon") class="opacity-25"}}
+      <div class="btn-toggle-item-content">
+        {{inline-svg (concat browser.familySlug "-browser-icon") class="opacity-25"}}
+      </div>
     </div>
   {{/each}}
 </div>

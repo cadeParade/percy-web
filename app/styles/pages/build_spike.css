@@ -5,7 +5,6 @@
   @apply h-screen;
   @apply border-r;
   @apply border-ternary;
-  scroll-behavior: smooth;
 
   .status-pill {
     @apply rounded;
@@ -14,6 +13,7 @@
   .percy-btn {
     &.filter-dropdown-active {
       @apply rounded-b-none;
+      @apply transition-none;
       box-shadow: 0 4px 0 var(--bg-color-action);
 
       &:hover {
@@ -24,6 +24,14 @@
     svg {
       @apply block;
     }
+
+    &:focus {
+      @apply bg-action;
+    }
+  }
+
+  &.hidden {
+    @apply hidden;
   }
 }
 
@@ -114,6 +122,16 @@
     @apply w-full;
     height: 2px;
     bottom: -13px;
+  }
+
+  .btn-toggle-item.browser-switcher.has-diffs .btn-toggle-item-content::after {
+    bottom: -7px;
+  }
+
+  .percy-btn {
+    &:focus {
+      @apply bg-action;
+    }
   }
 
   .percy-btn svg {
@@ -220,4 +238,8 @@
 
 .theme-dark .snapshot-reject-button:hover .has-stroke {
   stroke: white;
+}
+
+.btn-toggle-item.icon-only {
+  @apply px-1-1/2;
 }

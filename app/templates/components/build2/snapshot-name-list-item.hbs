@@ -3,12 +3,15 @@
   @route="organization.project.builds.build2.snapshot"
   @model={{this.snapshot.id}}
 >
-  <div class="snapshot-name-list-image w-full mb-1 border rounded-sm {{if this.snapshot.isApproved 'border-green-500'}} {{if this.snapshot.isRejected 'border-orange-500'}}">
+  <div class="snapshot-name-list-image w-full mb-1 border rounded-sm">
     <div class="snapshot-name-list-image-container" style={{html-safe "background-image: url('" this.snapshot.comparisons.firstObject.headScreenshot.lossyImage.url "');"}}>
       <img style="background: rgba(255, 255, 255, .5)" src="{{this.snapshot.comparisons.firstObject.diffImage.url}}" alt="foo">
     </div>
     {{#if (or this.snapshot.isApproved this.snapshot.isRejected)}}
-      <div class="absolute w-4 h-4 rounded-full {{if this.snapshot.isApproved 'bg-green-500' 'bg-orange-500'}}" style="top: -8px; right: -8px;"></div>
+      <div
+        class="absolute rounded-full {{if this.snapshot.isApproved 'bg-green-500' 'bg-orange-500'}}"
+        style="top: -6px; right: -6px; width: 14px; height: 14px;">
+      </div>
     {{/if}}
   </div>
   <div class="snapshot-name-list-item-title">

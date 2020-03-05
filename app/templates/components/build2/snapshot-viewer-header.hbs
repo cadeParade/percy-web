@@ -12,25 +12,17 @@
         </div>
 
         <div style="min-width: 0;">
-          {{!-- <div class="flex items-center">
-            <div class="flex items-center text-sm font-bold">
-              <LinkTo @route="organization" @model={{this.build.project.organization}} class="link-purple hide-on-tablet">
-                {{this.build.project.organization.name}}
-              </LinkTo>
-              <span class="font-bold text-secondary mx-sm hide-on-tablet">/</span>
-              <LinkTo @route="organization.project" @models={{array this.build.project.organization.slug this.build.project.slug}} class="link-purple">
-                {{this.build.project.name}}
-              </LinkTo>
-            </div>
-            {{#if this.build.project.organization.isSponsored}}
-              <FaIcon @icon="globe" class="text-blue-500 ml-sm mr-3 pb-px" />
-            {{/if}}
-          </div> --}}
           <div class="flex items-center" title="{{this.snapshot.name}}">
             {{#if this.snapshot.isRejected}}
               <div class="mr-1">
                 <div class="px-1 py-sm tracking-px leading-none rounded text-xs text-center uppercase font-bold whitespace-no-wrap {{if (eq this.snapshot.reviewStateReason 'user_rejected_previously') 'border border-orange-500 text-orange-500' 'bg-orange-500 text-white'}}">
                   Changes requested
+                </div>
+              </div>
+            {{else if this.snapshot.isApproved}}
+              <div class="mr-1">
+                <div class="px-1 py-sm tracking-px leading-none rounded text-xs text-center uppercase font-bold whitespace-no-wrap bg-green-500 text-white">
+                  Approved
                 </div>
               </div>
             {{/if}}
@@ -92,6 +84,19 @@
               {{/if}}
             </span>
           </button>
+
+          <div class="btn-toggle">
+            <div class="btn-toggle-item icon-only is-selected" role="button">
+              <div class="btn-toggle-item-content">
+                <ThemeSvg @svg="split-view" />
+              </div>
+            </div>
+            <div class="btn-toggle-item icon-only" role="button">
+              <div class="btn-toggle-item-content">
+                <ThemeSvg @svg="full-view" />
+              </div>
+            </div>
+          </div>
         </div>
       {{/if}}
 
