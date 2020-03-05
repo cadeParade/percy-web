@@ -12,6 +12,7 @@ export default Component.extend(PollingMixin, {
   classNames: ['BuildContainer'],
 
   store: service(),
+  launchDarkly: service(),
   build: null,
   snapshotQuery: service(),
   snapshotsUnchanged: null,
@@ -24,17 +25,42 @@ export default Component.extend(PollingMixin, {
   chosenBrowser: null,
   page: 0,
 
-  buildBrowsers: readOnly('build.browsers'),
-  defaultBrowser: computed('buildBrowsers.@each.familySlug', 'metadataSort.browsers', function () {
-    let defaultBrowserSlug;
-    const browserData = this.metadataSort.browsers;
-    for (const browserSlug in browserData) {
-      if (browserData[browserSlug].default === 'true') {
-        defaultBrowserSlug = browserSlug;
+  snapshotsChanged: computed('allChangedBrowserSnapshotsSorted', 'activeBrowser.id', function () {
+    if (!this.allChangedBrowserSnapshotsSorted) return;
+
+    return this.allChangedBrowserSnapshotsSorted[this.get('activeBrowser.id')];
+  }),
+
+  browserWithMostDiffs: computed('_browsers', 'allChangedBrowserSnapshotsSorted.[]', function () {
+    const snapshots = this.allChangedBrowserSnapshotsSorted;
+    if (!snapshots) {
+      return;
+    }
+    const browserWithMostDiffsId = _browserWithMostUnreviewedDiffsId(snapshots);
+    return this._browsers.findBy('id', browserWithMostDiffsId);
+  }),
+
+  _browsers: readOnly('build.browsers'),
+
+  defaultBrowser: computed('_browsers', 'browserWithMostDiffs', function() {
+    if (this.launchDarkly.variation('snapshot-sort-api')) {
+      let defaultBrowserInfo = this.metadataSort.findBy('default_browser_family_slug', true);
+      if (!defaultBrowserInfo) {
+        defaultBrowserInfo = {default_browser_family_slug: 'chrome'};
+      }
+
+      return this._browsers.findBy('familySlug', defaultBrowserInfo.browser_family_slug);
+    } else {
+      const chromeBrowser = this._browsers.findBy('familySlug', 'chrome');
+      const browserWithMostDiffs = this.browserWithMostDiffs;
+      if (browserWithMostDiffs) {
+        return browserWithMostDiffs;
+      } else if (chromeBrowser) {
+        return chromeBrowser;
+      } else {
+        return this.get('_browsers.firstObject');
       }
     }
-
-    return this.buildBrowsers.findBy('familySlug', defaultBrowserInfo.browser);
   }),
 
   orderItems: computed('metadataSort', 'activeBrowser.familySlug', function () {
@@ -97,23 +123,27 @@ export default Component.extend(PollingMixin, {
 
   actions: {
     updateActiveBrowser(newBrowser) {
-      // TODO do this somehow else
-      this.set('isSnapshotsLoading', true);
+      if (this.launchDarkly.variation('snapshot-sort-api')) {
+        // TODO do this somehow else
+        this.set('isSnapshotsLoading', true);
 
-      this.set('chosenBrowser', newBrowser);
-      this.set('page', 0);
-      next(() => {
-        this.set('isSnapshotsLoading', false);
-      });
+        this.set('chosenBrowser', newBrowser);
+        this.set('page', 0);
+        next(() => {
+          this.set('isSnapshotsLoading', false);
+        });
+      } else {
+        this.set('chosenBrowser', newBrowser);
+      }
+
       this._resetUnchangedSnapshots();
-      // TODO
-      // const organization = this.get('build.project.organization');
-      // const eventProperties = {
-      //   browser_id: newBrowser.get('id'),
-      //   browser_family_slug: newBrowser.get('browserFamily.slug'),
-      //   build_id: this.get('build.id'),
-      // };
-      // this.analytics.track('Browser Switched', organization, eventProperties);
+      const organization = this.get('build.project.organization');
+      const eventProperties = {
+        browser_id: newBrowser.get('id'),
+        browser_family_slug: newBrowser.get('browserFamily.slug'),
+        build_id: this.get('build.id'),
+      };
+      this.analytics.track('Browser Switched', organization, eventProperties);
     },
 
     //TODO
@@ -141,3 +171,33 @@ export default Component.extend(PollingMixin, {
     },
   },
 });
+
+function _browserWithMostUnreviewedDiffsId(allChangedBrowserSnapshotsSorted) {
+  // need to convert the object of arrays to an array of objects
+  // [{browserId: foo, len: int1}, {browserId: bar, len: int2}]
+  const browserCounts = Object.keys(allChangedBrowserSnapshotsSorted).map(browserId => {
+    const unreviewedSnapshotsForBrowser = allChangedBrowserSnapshotsSorted[browserId].filterBy(
+      'isUnreviewed',
+    );
+    return {
+      browserId: browserId,
+      len: unreviewedSnapshotsForBrowser.length,
+    };
+  });
+
+  let maxCount = 0;
+  let maxCountId = null;
+
+  // Use vanilla `for` loop so we can return early if we want.
+  for (let i = 0; i < browserCounts.length; i++) {
+    const browserCount = browserCounts[i];
+    if (browserCount.len > maxCount) {
+      maxCount = browserCount.len;
+      maxCountId = browserCount.browserId;
+    } else if (browserCount.len === maxCount) {
+      return;
+    }
+  }
+
+  return maxCountId;
+}

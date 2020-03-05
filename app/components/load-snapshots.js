@@ -1,10 +1,6 @@
 import Component from '@ember/component';
-import {or, alias, readOnly} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
-import {computed} from '@ember/object';
 import {task} from 'ember-concurrency';
-import metadataSort from 'percy-web/lib/metadata-sort';
-import diffAttrs from 'ember-diff-attrs';
 
 export default Component.extend({
   tagName: '',
@@ -20,8 +16,6 @@ export default Component.extend({
   // page 2, limit 2 -- offset 4, end is 6
   // page 3, limit 2 -- offset 6, end is 8
 
-  // orderItems: metadataSort,
-
   didInsertElement() {
     this._super(...arguments);
 
@@ -30,7 +24,7 @@ export default Component.extend({
 
   query: task(function*() {
     const offset = this.page * this.limit;
-    const endIndex = (this.page + 1) * this.limit
+    const endIndex = (this.page + 1) * this.limit;
 
     const orderItemsToLoad = this.orderItems.slice(offset, endIndex);
     const idsToLoad = snapshotIdsToLoad(orderItemsToLoad);
@@ -43,8 +37,8 @@ export default Component.extend({
     //   {block: [snapshot, snapshot], orderItem: <orderItem>}
     //   {block: snapshot, orderItem: <orderItem>}
     // ]
-    return snapshotsToBlocks(orderItemsToLoad, snapshots)
-  })
+    return snapshotsToBlocks(orderItemsToLoad, snapshots);
+  }),
 });
 
 // Take an array of snapshots we just fetched and map them back to the structure provided
@@ -55,8 +49,8 @@ function snapshotsToBlocks(orderItems, snapshots) {
     if (item.type === 'group') {
       const blockSnapshots = item['snapshot-ids'].map(id => {
         // TODO: protect against a snapshot not being found (findBy will error?)
-        return snapshots.findBy('id', id.toString())
-      })
+        return snapshots.findBy('id', id.toString());
+      });
       return {block: blockSnapshots, orderItem: item};
     } else {
       return {block: snapshots.findBy('id', item['snapshot-id'].toString()), orderItem: item};
@@ -67,11 +61,11 @@ function snapshotsToBlocks(orderItems, snapshots) {
 // Take a set of orderItems and parse out all the ids we need to fetch.
 function snapshotIdsToLoad(orderItems) {
   return orderItems.reduce((acc, item) => {
-      if (item.type === 'group') {
-        return acc.concat(item['snapshot-ids']);
-      } else {
-        acc.push(item['snapshot-id']);
-        return acc;
-      }
-    }, []);
+    if (item.type === 'group') {
+      return acc.concat(item['snapshot-ids']);
+    } else {
+      acc.push(item['snapshot-id']);
+      return acc;
+    }
+  }, []);
 }

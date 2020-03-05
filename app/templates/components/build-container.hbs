@@ -29,19 +29,36 @@
   {{#if this.isSnapshotsLoading}}
     <LoadingPage />
   {{else if this.build.isFinished}}
-    <InfiniteSnapshotList
-      @orderItems={{this.orderItems}}
-      @build={{this.build}}
-      @allDiffsShown={{this.allDiffsShown}}
-      @toggleAllDiffs={{action "toggleAllDiffs"}}
-      @activeBrowser={{this.activeBrowser}}
-      @updateActiveBrowser={{action "updateActiveBrowser"}}
-      @isUnchangedSnapshotsVisible={{this.isUnchangedSnapshotsVisible}}
-      @toggleUnchangedSnapshotsVisible={{action "toggleUnchangedSnapshotsVisible"}}
-      @snapshotsUnchanged={{this.snapshotsUnchanged}}
-      @isUnchangedSnapshotsLoading={{this.isUnchangedSnapshotsLoading}}
-      @isBuildApprovable={{this.isBuildApprovable}}
-      @page={{this.page}}
-    />
+    {{#if (variation "snapshot-sort-api")}}
+      <InfiniteSnapshotList
+        @orderItems={{this.orderItems}}
+        @build={{this.build}}
+        @allDiffsShown={{this.allDiffsShown}}
+        @toggleAllDiffs={{action "toggleAllDiffs"}}
+        @activeBrowser={{this.activeBrowser}}
+        @updateActiveBrowser={{action "updateActiveBrowser"}}
+        @isUnchangedSnapshotsVisible={{this.isUnchangedSnapshotsVisible}}
+        @toggleUnchangedSnapshotsVisible={{action "toggleUnchangedSnapshotsVisible"}}
+        @snapshotsUnchanged={{this.snapshotsUnchanged}}
+        @isUnchangedSnapshotsLoading={{this.isUnchangedSnapshotsLoading}}
+        @isBuildApprovable={{this.isBuildApprovable}}
+        @page={{this.page}}
+      />
+    {{else}}
+      <SnapshotList
+        @snapshotsChanged={{this.snapshotsChanged}}
+        @build={{this.build}}
+        @allDiffsShown={{this.allDiffsShown}}
+        @toggleAllDiffs={{action "toggleAllDiffs"}}
+        @isKeyboardNavEnabled={{not this.isHidingBuildContainer}}
+        @activeBrowser={{this.activeBrowser}}
+        @updateActiveBrowser={{action "updateActiveBrowser"}}
+        @isUnchangedSnapshotsVisible={{this.isUnchangedSnapshotsVisible}}
+        @toggleUnchangedSnapshotsVisible={{action "toggleUnchangedSnapshotsVisible"}}
+        @snapshotsUnchanged={{this.snapshotsUnchanged}}
+        @isUnchangedSnapshotsLoading={{this.isUnchangedSnapshotsLoading}}
+        @isBuildApprovable={{this.isBuildApprovable}}
+      />
+    {{/if}}
   {{/if}}
 </div>

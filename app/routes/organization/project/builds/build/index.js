@@ -3,7 +3,6 @@ import {inject as service} from '@ember/service';
 import Route from '@ember/routing/route';
 import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
-import metadataSort from 'percy-web/lib/metadata-sort';
 
 export default class IndexRoute extends Route {
   @service
@@ -21,6 +20,9 @@ export default class IndexRoute extends Route {
   @service
   session;
 
+  @service
+  launchDarkly;
+
   model() {
     const org = this.modelFor('organization');
     const build = this.modelFor('organization.project.builds.build');
@@ -35,13 +37,24 @@ export default class IndexRoute extends Route {
     const controller = this.controllerFor(this.routeName);
     const build = model.build;
     controller.set('build', build);
-    // TODO figure out what to do about polling, how to refresh with polling??
-    if (build && build.get('isFinished')) {
-      controller.set('isSnapshotsLoading', true);
-      const snapshotsAndMeta = await this.snapshotQuery.getSnapshotsWithSortMeta(build);
-      const meta = snapshotsAndMeta.meta['sorted-items']
-      controller.set('metadataSort', meta);
-      controller.set('isSnapshotsLoading', false);
+
+    if (this.launchDarkly.variation('snapshot-sort-api')) {
+      // TODO figure out what to do about polling, how to refresh with polling??
+      if (build && build.get('isFinished')) {
+        controller.set('isSnapshotsLoading', true);
+        const snapshotsAndMeta = await this.snapshotQuery.getSnapshotsWithSortMeta(build);
+        const meta = snapshotsAndMeta.meta['sorted-items'];
+        controller.set('metadataSort', meta);
+        controller.set('isSnapshotsLoading', false);
+      }
+    } else {
+      if (build && build.get('isFinished')) {
+        controller.set('isSnapshotsLoading', true);
+
+        this.snapshotQuery.getChangedSnapshots(build).then(() => {
+          return this._initializeSnapshotOrdering();
+        });
+      }
     }
   }
 

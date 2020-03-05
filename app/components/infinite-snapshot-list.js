@@ -57,7 +57,8 @@ export default Component.extend(EKMixin, {
         //   currentIndex = numItems;
         // }
 
-        // There's an off-by-one error somewhere here...when it hits the bottom it skips the last one
+        // There's an off-by-one error somewhere here
+        // ...when it hits the bottom it skips the last one
         const newIndex = isNext ? currentIndex + 1 : currentIndex - 1;
         if (newIndex < numItems && newIndex >= 0) {
           this._updateActiveBlockIndex(newIndex);
@@ -88,16 +89,17 @@ export default Component.extend(EKMixin, {
     'snapshotsUnchanged.length',
     'isUnchangedSnapshotsVisible',
     {
-    get(/*key*/) {
-      if (this.isUnchangedSnapshotsVisible) {
-        return this.orderItems.length + this.snapshotsUnchanged.length > 75;
-      } else {
-        return false
-      }
+      get(/*key*/) {
+        if (this.isUnchangedSnapshotsVisible) {
+          return this.orderItems.length + this.snapshotsUnchanged.length > 75;
+        } else {
+          return false;
+        }
+      },
+      set(key, value) {
+        assert('Only set `shouldDeferRendering` for tests.', config.environment === 'test');
+        return value;
+      },
     },
-    set(key, value) {
-      assert('Only set `shouldDeferRendering` for tests.', config.environment === 'test');
-      return value;
-    },
-  }),
+  ),
 });
