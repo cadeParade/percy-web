@@ -2,7 +2,7 @@
 export default function createSortMetadata(mirageSnapshots, mirageBuild) {
   var sortMetadata = {'sorted-items': []};
   var browsers = mirageBuild.browsers.models;
-  browsers.forEach((browser) => {
+  browsers.forEach(browser => {
     const browserData = {
       browser_family_slug: browser.id.split('-')[0],
       default_browser_family_slug: true,
