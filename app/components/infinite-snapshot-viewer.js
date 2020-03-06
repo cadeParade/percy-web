@@ -1,11 +1,11 @@
 import {filterBy, notEmpty, or, readOnly} from '@ember/object/computed';
 import {computed} from '@ember/object';
-import SnapshotListItem from 'percy-web/components/snapshot-list-item';
+import InfiniteSnapshotListItem from 'percy-web/components/infinite-snapshot-list-item';
 import {inject as service} from '@ember/service';
 import localStorageProxy from 'percy-web/lib/localstorage';
 import layout from 'percy-web/templates/components/snapshot-viewer';
 
-export default SnapshotListItem.extend({
+export default InfiniteSnapshotListItem.extend({
   layout,
   launchDarkly: service(),
   snapshot: null,

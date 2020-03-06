@@ -11,7 +11,7 @@
           <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
         {{/if}}
 
-        <SnapshotGroup
+        <InfiniteSnapshotGroup
           @build={{this.build}}
           @snapshots={{item.block}}
           @allDiffsShown={{this.allDiffsShown}}

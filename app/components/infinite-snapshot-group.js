@@ -1,9 +1,9 @@
 import {computed, get} from '@ember/object';
 import {filterBy, readOnly, notEmpty, not, and} from '@ember/object/computed';
-import SnapshotListItem from 'percy-web/components/snapshot-list-item';
-import layout from 'percy-web/templates/components/snapshot-viewer';
+import InfiniteSnapshotListItem from 'percy-web/components/infinite-snapshot-list-item';
+import layout from 'percy-web/templates/components/snapshot-group';
 
-export default SnapshotListItem.extend({
+export default InfiniteSnapshotListItem.extend({
   layout,
   snapshots: null,
   createCommentThread: null,
