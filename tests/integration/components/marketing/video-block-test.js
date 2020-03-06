@@ -35,7 +35,7 @@ describe('Integration: Marketing/VideoBlock', function() {
     expect(await find(VideoBlock.modalScope)).to.exist;
 
     await percySnapshot(this.test.fullTitle(), {
-      percyCSS: '.ytp-title-beacon { display: none; }',
+      percyCSS: '.ytp-title-channel { display: none; }',
     });
   });
 });
