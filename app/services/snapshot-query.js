@@ -68,6 +68,7 @@ export default class SnapshotQueryService extends Service {
         build: build.get('id'),
       },
       'include-sort-data': true,
+      'sort-item-limit': 2,
     });
   }
 }

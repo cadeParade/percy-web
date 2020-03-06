@@ -8,14 +8,6 @@ export default Component.extend({
   snapshotQuery: service(),
   limit: 2,
 
-  // orderItems: null
-  // build: null
-
-  // page 0, limit 2 -- offset 0, end is 2
-  // page 1, limit 2 -- offset 2, end is 4
-  // page 2, limit 2 -- offset 4, end is 6
-  // page 3, limit 2 -- offset 6, end is 8
-
   didInsertElement() {
     this._super(...arguments);
 
@@ -27,45 +19,69 @@ export default Component.extend({
     const endIndex = (this.page + 1) * this.limit;
 
     const orderItemsToLoad = this.orderItems.slice(offset, endIndex);
-    const idsToLoad = snapshotIdsToLoad(orderItemsToLoad);
+    const idsToLoad = this._snapshotIdsToLoad(orderItemsToLoad);
 
-    if (idsToLoad.length === 0) return;
-
-    const snapshots = yield this.snapshotQuery.getSnapshots(idsToLoad, this.build.id);
-
+    let fetchedSnapshots;
+    if (idsToLoad.length > 0) {
+      fetchedSnapshots = yield this.snapshotQuery.getSnapshots(idsToLoad, this.build.id);
+    }
     // [
     //   {block: [snapshot, snapshot], orderItem: <orderItem>}
     //   {block: snapshot, orderItem: <orderItem>}
     // ]
-    return snapshotsToBlocks(orderItemsToLoad, snapshots);
+    return this._snapshotsToBlocks(orderItemsToLoad, fetchedSnapshots);
   }),
-});
 
-// Take an array of snapshots we just fetched and map them back to the structure provided
-// by orderItems.
-// This will be an array for groups, or just a single snapshot otherwise.
-function snapshotsToBlocks(orderItems, snapshots) {
-  return orderItems.map(item => {
-    if (item.type === 'group') {
-      const blockSnapshots = item['snapshot-ids'].map(id => {
-        // TODO: protect against a snapshot not being found (findBy will error?)
-        return snapshots.findBy('id', id.toString());
-      });
-      return {block: blockSnapshots, orderItem: item};
-    } else {
-      return {block: snapshots.findBy('id', item['snapshot-id'].toString()), orderItem: item};
-    }
-  });
-}
+  // Take a set of orderItems and parse out all the ids we need to fetch.
+  _snapshotIdsToLoad(orderItems) {
+    // Take our complex data structure and flatten all the ids.
+    const ids = orderItems.reduce((acc, item) => {
+      if (item.type === 'group') {
+        return acc.concat(item['snapshot-ids']);
+      } else {
+        acc.push(item['snapshot-id']);
+        return acc;
+      }
+    }, []);
 
-// Take a set of orderItems and parse out all the ids we need to fetch.
-function snapshotIdsToLoad(orderItems) {
-  return orderItems.reduce((acc, item) => {
-    if (item.type === 'group') {
-      return acc.concat(item['snapshot-ids']);
-    } else {
-      acc.push(item['snapshot-id']);
+    // exclude ids that are already in the store. Don't re-fetch them.
+    return ids.reduce((acc, id) => {
+      const snapshot = this._peekSnapshot(id);
+      if (!snapshot) {
+        acc.push(id);
+      }
       return acc;
+    }, []);
+  },
+
+  // Take an array of snapshots we just fetched and map them back to the structure provided
+  // by orderItems.
+  // This will be an array for groups, or just a single snapshot otherwise.
+  _snapshotsToBlocks(orderItems, snapshots) {
+    return orderItems.map(item => {
+      if (item.type === 'group') {
+        const blockSnapshots = item['snapshot-ids'].map(id => {
+          // TODO(sort): protect against a snapshot not being found (findBy will error?)
+          return this._cachedOrFetchedSnapshot(snapshots, id.toString());
+        });
+        return {block: blockSnapshots, orderItem: item};
+      } else {
+        const snapshot = this._cachedOrFetchedSnapshot(snapshots, item['snapshot-id'].toString());
+        return {block: snapshot, orderItem: item};
+      }
+    });
+  },
+
+  _cachedOrFetchedSnapshot(fetchedSnapshots, id) {
+    let snapshot;
+    snapshot = this._peekSnapshot(id);
+    if (!snapshot) {
+      snapshot = fetchedSnapshots.findBy('id', id);
     }
-  }, []);
-}
+    return snapshot;
+  },
+
+  _peekSnapshot(id) {
+    return this.store.peekRecord('snapshot', id);
+  },
+});
