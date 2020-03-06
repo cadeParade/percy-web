@@ -14,10 +14,24 @@ export default class IndexController extends Controller {
   @service
   launchDarkly;
 
-  metadataSort = null; // set by route
+  @service
+  snapshotQuery;
+
   isHidingBuildContainer = false;
   allChangedBrowserSnapshotsSorted = null; // Manually managed by initializeSnapshotOrdering.
   _unchangedSnapshots = [];
+
+  @action
+  async fetchSnapshots(build) {
+    await this.fetchSnapshotsWithSortOrder(build);
+  }
+
+  async fetchSnapshotsWithSortOrder(build) {
+    const snapshotsAndMeta = await this.snapshotQuery.getSnapshotsWithSortMeta(build);
+    const meta = snapshotsAndMeta.meta['sorted-items'];
+    this.metadataSort = meta;
+    this.isSnapshotsLoading = false;
+  }
 
   // This breaks the binding for allChangedBrowserSnapshotsSorted,
   // specifically so that when a user clicks

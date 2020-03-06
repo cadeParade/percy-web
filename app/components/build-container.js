@@ -71,20 +71,24 @@ export default Component.extend(PollingMixin, {
 
   shouldPollForUpdates: or('build.isPending', 'build.isProcessing'),
 
-  // TODO update what endpoint is hit by polling
   pollRefresh() {
     this.build.reload().then(build => {
       if (build.get('isFinished')) {
         this.set('isSnapshotsLoading', true);
-        const changedSnapshots = this.snapshotQuery.getChangedSnapshots(build);
-        changedSnapshots.then(() => {
-          this.initializeSnapshotOrdering();
-        });
+
+        if (this.launchDarkly.variation('snapshot-sort-api')) {
+          this.fetchSnapshots(build);
+        } else {
+          const changedSnapshots = this.snapshotQuery.getChangedSnapshots(build);
+          changedSnapshots.then(() => {
+            this.initializeSnapshotOrdering();
+          });
+        }
       }
     });
   },
 
-  // TODO is this relevant anymore?
+  // TODO(sort) is this relevant anymore?
   _getLoadedSnapshots() {
     // Get snapshots without making new request
     return this.store.peekAll('snapshot').filterBy('build.id', this.get('build.id'));
@@ -109,7 +113,7 @@ export default Component.extend(PollingMixin, {
     this.notifyOfUnchangedSnapshots(alreadyLoadedSnapshotsWithNoDiff);
   }),
 
-  // TODO
+  // TODO(sort)
   _resetUnchangedSnapshots() {
     this.set('snapshotsUnchanged', []);
     this.set('isUnchangedSnapshotsVisible', false);
@@ -124,7 +128,7 @@ export default Component.extend(PollingMixin, {
   actions: {
     updateActiveBrowser(newBrowser) {
       if (this.launchDarkly.variation('snapshot-sort-api')) {
-        // TODO do this somehow else
+        // TODO(sort) do this somehow else
         this.set('isSnapshotsLoading', true);
 
         this.set('chosenBrowser', newBrowser);
@@ -146,7 +150,7 @@ export default Component.extend(PollingMixin, {
       this.analytics.track('Browser Switched', organization, eventProperties);
     },
 
-    //TODO
+    //TODO(sort)
     toggleUnchangedSnapshotsVisible() {
       this._toggleUnchangedSnapshotsVisible.perform();
     },

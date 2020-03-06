@@ -208,6 +208,7 @@ module.exports = function (environment) {
       'allow-demo-projects': true,
       'only-admins-edit-settings': false,
       'show-state-of-vt-link': true,
+      'snapshot-sort-api': false,
     };
 
     ENV.APP.bitbucketCloudUrls = {

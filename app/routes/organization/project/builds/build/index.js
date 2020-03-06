@@ -38,19 +38,12 @@ export default class IndexRoute extends Route {
     const build = model.build;
     controller.set('build', build);
 
-    if (this.launchDarkly.variation('snapshot-sort-api')) {
-      // TODO figure out what to do about polling, how to refresh with polling??
-      if (build && build.get('isFinished')) {
-        controller.set('isSnapshotsLoading', true);
-        const snapshotsAndMeta = await this.snapshotQuery.getSnapshotsWithSortMeta(build);
-        const meta = snapshotsAndMeta.meta['sorted-items'];
-        controller.set('metadataSort', meta);
-        controller.set('isSnapshotsLoading', false);
-      }
-    } else {
-      if (build && build.get('isFinished')) {
-        controller.set('isSnapshotsLoading', true);
+    if (build && build.get('isFinished')) {
+      controller.set('isSnapshotsLoading', true);
 
+      if (this.launchDarkly.variation('snapshot-sort-api')) {
+        await controller.fetchSnapshotsWithSortOrder(build);
+      } else {
         this.snapshotQuery.getChangedSnapshots(build).then(() => {
           return this._initializeSnapshotOrdering();
         });
