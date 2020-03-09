@@ -110,7 +110,7 @@
     {{/if}}
 
     {{#if this.isSearchVisible}}
-      <div class="relative mb-2 mt-1">
+      <div class="relative mb-2 mt-1 {{if this.isCompactSidebar 'px-2' 'px-3'}}">
         <Input
           @type="text"
           @value={{this.searchTerm}}
