@@ -33,9 +33,10 @@ describe('Integration: Marketing/VideoBlock', function() {
 
     // then check that the modal is present
     expect(await find(VideoBlock.modalScope)).to.exist;
-
-    await percySnapshot(this.test.fullTitle(), {
-      percyCSS: '.ytp-title-channel { display: none; }',
-    });
+    const avatar = document.getElementsByClassName('ytp-title-channel')[0];
+    if (avatar && avatar.remove) {
+      avatar.remove();
+    }
+    await percySnapshot(this.test.fullTitle());
   });
 });
