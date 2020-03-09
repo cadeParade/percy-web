@@ -131,7 +131,7 @@
     "raven-js": "^3.27.2",
     "seedrandom": "^3.0.3",
     "siema": "^1.5.1",
-    "sinon-chai": "^3.3.0",
+    "sinon-chai": "^3.5.0",
     "stylelint": "^13.2.0",
     "stylelint-config-recommended": "^3.0.0",
     "stylelint-order": "^4.0.0",
