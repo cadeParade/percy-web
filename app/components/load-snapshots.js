@@ -35,14 +35,7 @@ export default Component.extend({
   // Take a set of orderItems and parse out all the ids we need to fetch.
   _snapshotIdsToLoad(orderItems) {
     // Take our complex data structure and flatten all the ids.
-    const ids = orderItems.reduce((acc, item) => {
-      if (item.type === 'group') {
-        return acc.concat(item['snapshot-ids']);
-      } else {
-        acc.push(item['snapshot-id']);
-        return acc;
-      }
-    }, []);
+    const ids = idsFromOrderItems(orderItems);
 
     // exclude ids that are already in the store. Don't re-fetch them.
     return ids.reduce((acc, id) => {
@@ -85,3 +78,15 @@ export default Component.extend({
     return this.store.peekRecord('snapshot', id);
   },
 });
+
+export function idsFromOrderItems(orderItems) {
+  // Take our complex data structure and flatten all the ids.
+  return orderItems.reduce((acc, item) => {
+    if (item.type === 'group') {
+      return acc.concat(item['snapshot-ids']);
+    } else {
+      acc.push(item['snapshot-id']);
+      return acc;
+    }
+  }, []);
+}

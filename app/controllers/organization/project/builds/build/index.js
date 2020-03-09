@@ -29,8 +29,8 @@ export default class IndexController extends Controller {
   async fetchSnapshotsWithSortOrder(build) {
     const snapshotsAndMeta = await this.snapshotQuery.getSnapshotsWithSortMeta(build);
     const meta = snapshotsAndMeta.meta['sorted-items'];
-    this.metadataSort = meta;
-    this.isSnapshotsLoading = false;
+    set(this, 'metadataSort', meta);
+    set(this, 'isSnapshotsLoading', false);
   }
 
   // This breaks the binding for allChangedBrowserSnapshotsSorted,

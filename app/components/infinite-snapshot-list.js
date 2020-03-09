@@ -5,13 +5,14 @@ import {EKMixin, keyDown} from 'ember-keyboard';
 import {on} from '@ember/object/evented';
 import config from '../config/environment';
 import {assert} from '@ember/debug';
+import {idsFromOrderItems} from 'percy-web/components/load-snapshots';
 
 export default Component.extend(EKMixin, {
   activeSnapshotBlockIndex: null,
 
   numSnapshotsChanged: readOnly('orderItems.length'),
-  numSnapshotsUnchanged: computed('build.totalSnapshots', 'numSnapshotsChanged', function() {
-    return this.build.totalSnapshots - this.numSnapshotsChanged;
+  numSnapshotsUnchanged: computed('build.totalSnapshots', 'orderItems', function() {
+    return this.build.totalSnapshots - idsFromOrderItems(this.orderItems).length;
   }),
 
   isActiveSnapshotIndex: notEmpty('activeSnapshotBlockIndex'),
@@ -48,16 +49,7 @@ export default Component.extend(EKMixin, {
       } else {
         let currentIndex = this.activeSnapshotBlockIndex;
 
-        // // will not work with infinite scroll, as snapshots may not be loaded yet
-        // // if we are moving forward and are on the last snapshot, wrap to beginning of list
-        // if (isNext && currentIndex === numItems - 1) {
-        //   currentIndex = -1;
-        // } else if (!isNext && currentIndex === 0) {
-        //   // if we are moving backward and are on the first snapshot, wrap to end of list
-        //   currentIndex = numItems;
-        // }
-
-        // There's an off-by-one error somewhere here
+        // TODO(sort) There's an off-by-one error somewhere here
         // ...when it hits the bottom it skips the last one
         const newIndex = isNext ? currentIndex + 1 : currentIndex - 1;
         if (newIndex < numItems && newIndex >= 0) {
@@ -66,7 +58,7 @@ export default Component.extend(EKMixin, {
       }
       this._trackKeyPress();
     } else {
-      // TODO: what if unchanged snapshots _are_ visible?
+      // TODO(sort): what if unchanged snapshots _are_ visible?
     }
   },
 
@@ -82,7 +74,7 @@ export default Component.extend(EKMixin, {
     });
   },
 
-  // TODO remove this and all references to it when unchanged snapshots
+  // TODO(sort) remove this and all references to it when unchanged snapshots
   // have orderItems
   shouldDeferRendering: computed(
     'orderItems.length',
