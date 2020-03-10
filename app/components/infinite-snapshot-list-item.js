@@ -4,7 +4,6 @@ import {computed, get, set, setProperties, observer} from '@ember/object';
 import Component from '@ember/component';
 import {next} from '@ember/runloop';
 import filteredComparisons, {hasDiffForBrowser} from 'percy-web/lib/filtered-comparisons';
-import InViewportMixin from 'ember-in-viewport';
 
 const SNAPSHOT_HEADER_HEIGHT = 48; //px
 
@@ -16,18 +15,18 @@ const SNAPSHOT_HEADER_HEIGHT = 48; //px
 // - switching widths
 // - keyboard nav up and down the list
 // - expand/collapse of list item
-export default Component.extend(InViewportMixin, {
+export default Component.extend({
   activeBrowser: null,
   activeSnapshotBlockIndex: null,
   allDiffsShown: null,
   build: null,
   userSelectedWidth: null,
-  updateActiveSnapshotBlockIndex: null,
+  updateActiveSnapshotBlockIndex() {},
   // This will be populated if it is a snapshot-viewer component.
   snapshot: null,
 
+  // TODO(sort) remove when old version is deprecated
   shouldDeferRendering: false,
-  _isInViewport: false,
   _shouldScroll: true,
 
   classNames: ['SnapshotViewer mb-2'],
@@ -48,16 +47,11 @@ export default Component.extend(InViewportMixin, {
   isExpanded: or('isUserExpanded', '_isDefaultGroupExpanded'),
   isBlockApproved: readOnly('_isApproved'),
 
-  shouldRenderImmediately: not('shouldDeferRendering'),
-  shouldFullyRender: or('shouldRenderImmediately', '_isInViewport'),
+  shouldFullyRender: true,
 
   isActiveSnapshotBlock: computed('activeSnapshotBlockIndex', 'index', function() {
     return this.activeSnapshotBlockIndex === this.index;
   }),
-
-  didEnterViewport() {
-    set(this, '_isInViewport', true);
-  },
 
   click() {
     set(this, '_shouldScroll', false);
@@ -73,7 +67,6 @@ export default Component.extend(InViewportMixin, {
   }),
 
   _isDefaultGroupExpanded: computed(
-    'shouldDeferRendering',
     'isBlockApproved',
     'build.isApproved',
     'isActiveSnapshotBlock',
