@@ -33,6 +33,7 @@ export default class IndexController extends Controller {
     set(this, 'isSnapshotsLoading', false);
   }
 
+  // TODO(sort) remove this when old style is deprecated
   // This breaks the binding for allChangedBrowserSnapshotsSorted,
   // specifically so that when a user clicks
   // approve, the snapshot stays in place until reload.

@@ -8,7 +8,11 @@ import {assert} from '@ember/debug';
 import {idsFromOrderItems} from 'percy-web/components/load-snapshots';
 
 export default Component.extend(EKMixin, {
+  attributeBindings: ['data-test-snapshot-list'],
+  'data-test-snapshot-list': true,
+
   activeSnapshotBlockIndex: null,
+  orderItems: [],
 
   numSnapshotsChanged: readOnly('orderItems.length'),
   numSnapshotsUnchanged: computed('build.totalSnapshots', 'orderItems', function() {
@@ -77,16 +81,16 @@ export default Component.extend(EKMixin, {
   // TODO(sort) remove this and all references to it when unchanged snapshots
   // have orderItems
   shouldDeferRendering: computed(
-    'orderItems.length',
     'snapshotsUnchanged.length',
     'isUnchangedSnapshotsVisible',
     {
       get(/*key*/) {
-        if (this.isUnchangedSnapshotsVisible) {
-          return this.orderItems.length + this.snapshotsUnchanged.length > 75;
-        } else {
-          return false;
-        }
+        return this.isUnchangedSnapshotsVisible ? this.snapshotsUnchanged.length > 75 : false;
+        // if (this.isUnchangedSnapshotsVisible) {
+        //   return this.snapshotsUnchanged.length > 75;
+        // } else {
+        //   return false;
+        // }
       },
       set(key, value) {
         assert('Only set `shouldDeferRendering` for tests.', config.environment === 'test');

@@ -15,5 +15,7 @@ export default Component.extend({
 
   build: null,
   updateActiveBrowser() {},
+  // TODO(sort) fix this count
+  // ex: https://percy.io/percy/percy-web/builds/4449087
   unapprovedSnapshotsWithDiffForBrowsers: alias('build.unapprovedSnapshotsWithDiffForBrowsers'),
 });

@@ -11,42 +11,45 @@
           <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
         {{/if}}
 
-        <InfiniteSnapshotGroup
-          @build={{this.build}}
-          @snapshots={{item.block}}
-          @allDiffsShown={{this.allDiffsShown}}
-          @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
-          @createReview={{this.createReview}}
-          @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}
-          @activeBrowser={{this.activeBrowser}}
-          @updateActiveBrowser={{this.updateActiveBrowser}}
-          @isBuildApprovable={{this.isBuildApprovable}}
-          @createCommentThread={{this.createCommentThread}}
-          @createComment={{this.createComment}}
-          @closeCommentThread={{this.closeCommentThread}}
-          @index={{item.orderItem.index}}
-        />
+        <div data-test-snapshot-block>
+          <InfiniteSnapshotGroup
+            @build={{this.build}}
+            @snapshots={{item.block}}
+            @allDiffsShown={{this.allDiffsShown}}
+            @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
+            @createReview={{this.createReview}}
+            @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}
+            @activeBrowser={{this.activeBrowser}}
+            @updateActiveBrowser={{this.updateActiveBrowser}}
+            @isBuildApprovable={{this.isBuildApprovable}}
+            @createCommentThread={{this.createCommentThread}}
+            @createComment={{this.createComment}}
+            @closeCommentThread={{this.closeCommentThread}}
+            @index={{item.orderItem.index}}
+          />
+        </div>
       {{else}}
         {{#if (eq this.page pageToLoad)}}
           <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
         {{/if}}
-
-        <InfiniteSnapshotViewer
-          @class="data-test-snapshot-viewer"
-          @build={{this.build}}
-          @snapshot={{item.block}}
-          @allDiffsShown={{this.allDiffsShown}}
-          @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
-          @createReview={{this.createReview}}
-          @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}
-          @activeBrowser={{this.activeBrowser}}
-          @updateActiveBrowser={{this.updateActiveBrowser}}
-          @isBuildApprovable={{this.isBuildApprovable}}
-          @createCommentThread={{this.createCommentThread}}
-          @createComment={{this.createComment}}
-          @closeCommentThread={{this.closeCommentThread}}
-          @index={{item.orderItem.index}}
-        />
+        <div data-test-snapshot-block>
+          <InfiniteSnapshotViewer
+            @class="data-test-snapshot-viewer"
+            @build={{this.build}}
+            @snapshot={{item.block}}
+            @allDiffsShown={{this.allDiffsShown}}
+            @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
+            @createReview={{this.createReview}}
+            @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}
+            @activeBrowser={{this.activeBrowser}}
+            @updateActiveBrowser={{this.updateActiveBrowser}}
+            @isBuildApprovable={{this.isBuildApprovable}}
+            @createCommentThread={{this.createCommentThread}}
+            @createComment={{this.createComment}}
+            @closeCommentThread={{this.closeCommentThread}}
+            @index={{item.orderItem.index}}
+          />
+        </div>
       {{/if}}
     {{/each}}
   </LoadSnapshots>
