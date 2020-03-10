@@ -8,7 +8,7 @@ import {
 } from 'percy-web/models/snapshot';
 import {REVIEW_ACTIONS} from 'percy-web/models/review';
 import {get} from '@ember/object';
-import createSortMetadata from 'percy-web/tests/helpers/create-sort-metadata';
+import createSortMetadata from 'percy-web/mirage/helpers/create-sort-metadata';
 
 export default function () {
   // Enable this to see verbose request logging from mirage:
