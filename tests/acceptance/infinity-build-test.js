@@ -1,19 +1,10 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
-import {
-  currentRouteName,
-  currentURL,
-  findAll,
-  visit,
-  getContext,
-  settled,
-} from '@ember/test-helpers';
-import {isVisible as attacherIsVisible} from 'ember-attacher';
+import {currentRouteName, currentURL, findAll, getContext, settled} from '@ember/test-helpers';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {beforeEach, afterEach} from 'mocha';
 import moment from 'moment';
 import sinon from 'sinon';
-import {TEST_IMAGE_URLS} from 'percy-web/mirage/factories/screenshot';
 import {BUILD_STATES} from 'percy-web/models/build';
 import {
   SNAPSHOT_APPROVED_STATE,
@@ -22,7 +13,6 @@ import {
 } from 'percy-web/models/snapshot';
 import BuildPage from 'percy-web/tests/pages/build-page';
 import ProjectPage from 'percy-web/tests/pages/project-page';
-import {PusherMock} from 'pusher-js-mock';
 import utils from 'percy-web/lib/utils';
 // eslint-disable-next-line
 import {setupBrowserNavigationButtons} from 'ember-cli-browser-navigation-button-test-helper/test-support';
@@ -31,6 +21,7 @@ import withVariation from 'percy-web/tests/helpers/with-variation';
 describe('Acceptance: InfiniteBuild', function() {
   freezeMoment('2018-05-22');
 
+  // TODO(sort) do i need this
   function scrollTestContainer(px) {
     const testContainer = document.getElementById('ember-testing-container');
     testContainer.scroll(0, px);
@@ -495,14 +486,15 @@ describe('Acceptance: InfiniteBuild', function() {
       highDiffComparison.update({diffRatio: 0.89});
 
       await BuildPage.visitBuild(urlParams);
+
       // Same order as above
-      expect(BuildPage.snapshots.objectAt(0).name).to.equal(defaultSnapshot.name);
-      expect(BuildPage.snapshots.objectAt(1).name).to.equal(twoWidthsSnapshot.name);
+      expect(BuildPage.snapshots.objectAt(0).name).to.equal(twoWidthsSnapshot.name);
+      expect(BuildPage.snapshots.objectAt(1).name).to.equal(defaultSnapshot.name);
       await BuildPage.browserSwitcher.switchBrowser();
 
       // Previously first snapshot should now be second.
-      expect(BuildPage.snapshots.objectAt(0).name).to.equal(twoWidthsSnapshot.name);
-      expect(BuildPage.snapshots.objectAt(1).name).to.equal(defaultSnapshot.name);
+      expect(BuildPage.snapshots.objectAt(0).name).to.equal(defaultSnapshot.name);
+      expect(BuildPage.snapshots.objectAt(1).name).to.equal(twoWidthsSnapshot.name);
     });
 
     it('approves all snapshots when "Approve build" button is clicked', async function() {
@@ -580,16 +572,15 @@ describe('Acceptance: InfiniteBuild', function() {
       it('can comment on a grouped snapshot that does not have any comments yet', async function() {
         const firstSnapshotGroup = BuildPage.snapshotBlocks[0].snapshotGroup;
         await firstSnapshotGroup.toggleShowAllSnapshots();
-        const secondSnapshot = BuildPage.snapshots[1];
-
-        await secondSnapshot.header.toggleCommentSidebar();
-        await secondSnapshot.collaborationPanel.newComment.typeNewComment(
+        const thirdSnapshot = BuildPage.snapshots[2];
+        await thirdSnapshot.header.toggleCommentSidebar();
+        await thirdSnapshot.collaborationPanel.newComment.typeNewComment(
           'wow, what a great thread',
         );
-        await secondSnapshot.collaborationPanel.newComment.submitNewThread();
+        await thirdSnapshot.collaborationPanel.newComment.submitNewThread();
 
-        expect(secondSnapshot.commentThreads.length).to.equal(1);
-        expect(secondSnapshot.header.numOpenCommentThreads).to.equal('1');
+        expect(thirdSnapshot.commentThreads.length).to.equal(1);
+        expect(thirdSnapshot.header.numOpenCommentThreads).to.equal('1');
 
         await percySnapshot(this.test, {darkMode: true});
       });
@@ -786,8 +777,6 @@ describe('Acceptance: InfiniteBuild', function() {
     await BuildPage.visitBuild(urlParams);
     expect(currentRouteName()).to.equal('organization.project.builds.build.index');
 
-    scrollTestContainer(10000);
-
     const snapshot = BuildPage.findSnapshotByName(defaultSnapshot.name);
     await snapshot.clickDiffImage();
     expect(BuildPage.isDiffsVisibleForAllSnapshots).to.equal(false);
@@ -861,7 +850,6 @@ describe('Acceptance: InfiniteBuild', function() {
     const snapshotName = noDiffsSnapshot.name;
 
     await BuildPage.visitBuild(urlParams);
-    scrollTestContainer(10000);
 
     expect(BuildPage.isUnchangedPanelVisible).to.equal(true);
     expect(BuildPage.findSnapshotByName(snapshotName)).to.not.exist;

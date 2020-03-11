@@ -3,12 +3,46 @@ import {get} from '@ember/object';
 // TODO groups
 // TODO(sort) divide by browser :/
 // TODO(sort) correct default browser??
+
+// This method creates the sort metadata object that comes back when a snapshot request includes
+// include-sort-data: true query param.
+// The API has LOADS of sort logic that goes into the sort metadata object, and we don't want to
+// duplicate it ALL here. So we have comprimised and are sorting here only by group and diff ratio.
+// The things we are NOT sorting by here are: changes requested, comment count, comparison width.
+// The ouput takes this form:
+
+// 'sorted-items': [
+//   {
+//     browser_family_slug: 'firefox',
+//     default_browser_family_slug: false,
+//     items: [
+//       {
+//         index: 0,
+//         type: 'group',
+//         'snapshot-ids': [1,2,3]
+//       }
+//     ]
+//   },
+//   {
+//     browser_family_slug: 'chrome',
+//     default_browser_family_slug: true,
+//     items: [
+//       {
+//         index: 0,
+//         type: 'snapshot',
+//         'snapshot-id': 4,
+//       }
+//     ]
+//   },
+// ]
+
 export default function createSortMetadata(mirageSnapshots, mirageBuild) {
-  var sortMetadata = {'sorted-items': []};
-  var browsers = mirageBuild.browsers.models;
-  const fingerprintDictOfIndexes = _groupSnapshotIndexesByFingerprint(mirageSnapshots.models);
-  const {singleIndexes, groupedIndexes} = _separateSingleIndexes(fingerprintDictOfIndexes);
+  const sortMetadata = {'sorted-items': []};
+  const browsers = mirageBuild.browsers.models;
   browsers.forEach((browser, i) => {
+    const snapshotsForBrowser = sortedSnapshotsWithDiffForBrowser(mirageSnapshots.models, browser);
+    const fingerprintDictOfIndexes = _groupSnapshotIndexesByFingerprint(snapshotsForBrowser);
+    const {singleIndexes, groupedIndexes} = _separateSingleIndexes(fingerprintDictOfIndexes);
     const groups = Object.keys(groupedIndexes).map((key, i) => {
       return {
         index: i,
@@ -33,19 +67,41 @@ export default function createSortMetadata(mirageSnapshots, mirageBuild) {
     sortMetadata['sorted-items'].push(browserData);
   });
 
-  // 'sorted-items': [
-  //   browser_family_slug: 'firefox',
-  //   default_browser_family_slug: false,
-  //   items: [
-  //     {
-  //       index: 0,
-  //       type: 'group',
-  //       'snapshot-ids': [1,2,3]
-  //     }
-  //   ]
-  // ]
-
   return sortMetadata;
+}
+
+function sortedSnapshotsWithDiffForBrowser(snapshots, browser) {
+  const snapshotsWithDiffs = snapshots.filter(snapshot => {
+    return hasDiffForBrowser(snapshot, browser);
+  });
+  return snapshotSort(snapshotsWithDiffs, browser);
+}
+
+function hasDiffForBrowser(snapshot, browser) {
+  return comparisonsForBrowser(snapshot.comparisons.models, browser).any(comparison => {
+    return comparison.diffRatio && comparison.diffRatio > 0;
+  });
+}
+
+function comparisonsForBrowser(comparisons, browser) {
+  return comparisons.filterBy('browser.id', browser.id);
+}
+
+function snapshotSort(snapshots, browser) {
+  const x = snapshots.sort((a, b) => {
+    const maxDiffRatioA = maxDiffRatioForBrowser(a, browser);
+    const maxDiffRatioB = maxDiffRatioForBrowser(b, browser);
+    return maxDiffRatioB - maxDiffRatioA;
+  });
+  return x;
+}
+
+function maxDiffRatioForBrowser(snapshot, browser) {
+  const ratios = comparisonsForBrowser(snapshot.comparisons.models, browser).map(comparison => {
+    return comparison.diffRatio;
+  });
+  const x = _numericSort(ratios).reverse();
+  return x[0];
 }
 
 function _groupSnapshotIndexesByFingerprint(snapshots) {
@@ -76,4 +132,8 @@ function _separateSingleIndexes(groupedSnapshotIndexes) {
   });
 
   return {singleIndexes, groupedIndexes: groupedSnapshotIndexes};
+}
+
+function _numericSort(list) {
+  return list.sort((a, b) => a - b);
 }
