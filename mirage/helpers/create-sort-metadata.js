@@ -70,7 +70,6 @@ export default function createSortMetadata(mirageSnapshots, mirageBuild) {
     };
     sortMetadata['sorted-items'].push(browserData);
   });
-  console.log(sortMetadata);
   return sortMetadata;
 }
 
@@ -114,7 +113,9 @@ function sortedSnapshotsWithDiffForBrowser(snapshots, browser) {
 
 function hasDiffForBrowser(snapshot, browser) {
   return comparisonsForBrowser(snapshot.comparisons.models, browser).any(comparison => {
-    return comparison.diffRatio && comparison.diffRatio > 0;
+    const hasDiff = comparison.diffRatio && comparison.diffRatio > 0;
+    const isNew = !comparison.baseScreenshot;
+    return hasDiff || isNew;
   });
 }
 
