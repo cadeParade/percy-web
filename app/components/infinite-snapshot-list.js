@@ -12,7 +12,6 @@ export default Component.extend(EKMixin, {
   'data-test-snapshot-list': true,
 
   activeSnapshotBlockIndex: null,
-  orderItems: [],
 
   numSnapshotsChanged: readOnly('orderItems.length'),
   numSnapshotsUnchanged: computed('build.totalSnapshots', 'orderItems', function() {
@@ -31,6 +30,7 @@ export default Component.extend(EKMixin, {
 
   init() {
     this._super(...arguments);
+    this.orderItems = this.orderItems || [];
     this.set('keyboardActivated', true);
   },
 
@@ -82,22 +82,13 @@ export default Component.extend(EKMixin, {
 
   // TODO(sort) remove this and all references to it when unchanged snapshots
   // have orderItems
-  shouldDeferRendering: computed(
-    'snapshotsUnchanged.length',
-    'isUnchangedSnapshotsVisible',
-    {
-      get(/*key*/) {
-        return this.isUnchangedSnapshotsVisible ? this.snapshotsUnchanged.length > 75 : false;
-        // if (this.isUnchangedSnapshotsVisible) {
-        //   return this.snapshotsUnchanged.length > 75;
-        // } else {
-        //   return false;
-        // }
-      },
-      set(key, value) {
-        assert('Only set `shouldDeferRendering` for tests.', config.environment === 'test');
-        return value;
-      },
+  shouldDeferRendering: computed('snapshotsUnchanged.length', 'isUnchangedSnapshotsVisible', {
+    get(/*key*/) {
+      return this.isUnchangedSnapshotsVisible ? this.snapshotsUnchanged.length > 75 : false;
     },
-  ),
+    set(key, value) {
+      assert('Only set `shouldDeferRendering` for tests.', config.environment === 'test');
+      return value;
+    },
+  }),
 });
