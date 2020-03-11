@@ -48,9 +48,26 @@ export default class ReviewsService extends Service {
   createReview;
 
   async createApprovalReview(build, snapshots, eventData) {
+    // TODO(sort) how to create records without full models :(
+    const fakeSnapshots = snapshots.map(snapshot => {
+      const isString = typeof snapshot === 'string';
+      const isNumber = typeof snapshot === 'number';
+
+      if (isString || isNumber) {
+        const record = this.store.peekRecord('snapshot', snapshot);
+        if (!record) {
+          return this.store.createRecord('snapshot', {id: snapshot});
+        } else {
+          return record;
+        }
+      } else {
+        return snapshot;
+      }
+    });
+
     const review = this.store.createRecord('review', {
       build,
-      snapshots,
+      snapshots: fakeSnapshots,
       action: REVIEW_ACTIONS.APPROVE,
     });
     return await this._saveReview(review, build, eventData);
@@ -71,7 +88,10 @@ export default class ReviewsService extends Service {
       reload: true,
       include: 'approved-by',
     });
-    const refreshedSnapshots = this.snapshotQuery.getChangedSnapshots(build);
+    const refreshedSnapshots = this.snapshotQuery.getSnapshots(
+      review.snapshots.mapBy('id'),
+      build.get('id'),
+    );
     const snapshotsComments = this.commentThreads.getCommentsForSnapshotIds(
       review.snapshots.mapBy('id'),
       build,

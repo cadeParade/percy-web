@@ -1,5 +1,17 @@
-import {notEmpty, filterBy, or, alias} from '@ember/object/computed';
-import Object, {get, set, computed} from '@ember/object';
+import Object, {computed} from '@ember/object';
+
+// metadataSort
+// [
+//   browser_family_slug: 'firefox',
+//   default_browser_family_slug: false,
+//   items: [
+//     {
+//       index: 0,
+//       type: 'group',
+//       'snapshot-ids': [1,2,3]
+//     }
+//   ]
+// ]
 
 export default class MetadataSort extends Object {
   metadataSort = null;
@@ -20,7 +32,18 @@ export default class MetadataSort extends Object {
   }
 
   snapshotIdsForBrowser(browserSlug) {
-    // const
+    const orderItems = this.orderItemsForBrowser(browserSlug);
+    return idsFromOrderItems(orderItems);
+  }
+
+  @computed()
+  get allSnapshotsWithDiffsIds() {
+    const ids = this.metadataSort.reduce((acc, browserData) => {
+      const ids = this.snapshotIdsForBrowser(browserData.browser_family_slug);
+      return acc.concat(ids);
+    }, []);
+    // TODO(sort) Make this more efficient?
+    return ids.uniq();
   }
 }
 

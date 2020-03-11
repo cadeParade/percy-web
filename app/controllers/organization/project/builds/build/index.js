@@ -33,7 +33,7 @@ export default class IndexController extends Controller {
     const sortObject = metadataSort.create({metadataSort: meta});
     this.build.set('sortMetadata', sortObject);
     set(this, 'isSnapshotsLoading', false);
-    // set(this, 'allApprovableSnapshots', )
+    set(this, 'allApprovableSnapshots', this.build.sortMetadata.allSnapshotsWithDiffsIds);
   }
 
   // TODO(sort) remove this when old style is deprecated

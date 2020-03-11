@@ -357,7 +357,7 @@ export default function () {
     const jsonResponse = this.serialize(snapshots);
 
     if (queryParams['include-sort-data'] === 'true') {
-      jsonResponse.meta = createSortMetadata(snapshots, build)
+      jsonResponse.meta = createSortMetadata(snapshots, build);
     }
 
     return jsonResponse;

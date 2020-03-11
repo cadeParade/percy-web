@@ -7,7 +7,6 @@ import {
   visit,
   getContext,
   settled,
-  triggerEvent,
 } from '@ember/test-helpers';
 import {isVisible as attacherIsVisible} from 'ember-attacher';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
