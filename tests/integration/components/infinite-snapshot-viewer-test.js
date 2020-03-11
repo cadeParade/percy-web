@@ -13,7 +13,6 @@ import {SNAPSHOT_APPROVED_STATE, SNAPSHOT_UNAPPROVED_STATE} from 'percy-web/mode
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import faker from 'faker';
 import {render} from '@ember/test-helpers';
-import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Integration: InfiniteSnapshotViewer', function() {
   setupRenderingTest('snapshot-viewer', {
@@ -26,7 +25,6 @@ describe('Integration: InfiniteSnapshotViewer', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    withVariation(this.owner, 'snapshot-sort-api', true);
 
     createReviewStub = sinon.stub().returns(resolve());
     snapshotTitle = 'Awesome snapshot title';
@@ -103,8 +101,8 @@ describe('Integration: InfiniteSnapshotViewer', function() {
         .set('diffRatio', 0);
     });
 
-    it('shows widest width with diff as active by default when some comparisons have diffs', async function() { // eslint-disable-line
-
+    // eslint-disable-next-line
+    it('shows widest width with diff as active by default when some comparisons have diffs', async function() {
       await render(hbs`<InfiniteSnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
@@ -118,7 +116,8 @@ describe('Integration: InfiniteSnapshotViewer', function() {
       expect(SnapshotViewer.header.widthSwitcher.buttons.objectAt(1).isActive).to.equal(true);
     });
 
-    it('shows widest width with diff as active by default when no comparisons have diffs', async function() { // eslint-disable-line
+    // eslint-disable-next-line
+    it('shows widest width with diff as active by default when no comparisons have diffs', async function() {
       const snapshot = make('snapshot', 'withNoDiffs');
       this.set('snapshot', snapshot);
 
@@ -246,7 +245,8 @@ describe('Integration: InfiniteSnapshotViewer', function() {
       />`);
     });
 
-    it('sends createReview with correct arguments when approve button is clicked', async function() { //eslint-disable-line
+    // eslint-disable-next-line
+    it('sends createReview with correct arguments when approve button is clicked', async function() {
       await SnapshotViewer.header.clickApprove();
       expect(createReviewStub).to.have.been.calledWith([this.get('build.snapshots.firstObject')]);
     });

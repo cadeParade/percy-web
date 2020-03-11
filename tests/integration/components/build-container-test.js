@@ -11,7 +11,6 @@ import BuildPage from 'percy-web/tests/pages/build-page';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import mockSnapshotQueryService from 'percy-web/tests/helpers/mock-snapshot-query-service';
 import {render} from '@ember/test-helpers';
-import withVariation from 'percy-web/tests/helpers/with-variation';
 
 describe('Integration: BuildContainer', function () {
   setupRenderingTest('build-container', {

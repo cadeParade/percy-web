@@ -16,16 +16,10 @@ import ProjectPage from 'percy-web/tests/pages/project-page';
 import utils from 'percy-web/lib/utils';
 // eslint-disable-next-line
 import {setupBrowserNavigationButtons} from 'ember-cli-browser-navigation-button-test-helper/test-support';
-import withVariation from 'percy-web/tests/helpers/with-variation';
+import mockPusher from 'percy-web/tests/helpers/mock-pusher';
 
 describe('Acceptance: InfiniteBuild', function() {
   freezeMoment('2018-05-22');
-
-  // TODO(sort) do i need this
-  function scrollTestContainer(px) {
-    const testContainer = document.getElementById('ember-testing-container');
-    testContainer.scroll(0, px);
-  }
 
   async function displaysCommentsOnFirstSnapshot(context) {
     const firstSnapshot = BuildPage.snapshots[0];
@@ -87,7 +81,7 @@ describe('Acceptance: InfiniteBuild', function() {
     expect(button['isLoading']).to.equal(false);
   }
 
-  let hooks = setupAcceptance();
+  setupAcceptance();
 
   let backStub;
   let project;
@@ -99,10 +93,8 @@ describe('Acceptance: InfiniteBuild', function() {
   let urlParams;
 
   setupSession(function(server) {
-
-    // withVariation(this.owner, hooks, 'snapshot-sort-api', true);
-    console.log('setting snapshot-sort-api to true')
-    this.owner.lookup('service:launch-darkly-client').setVariation('snapshot-sort-api', true)
+    this.withVariation('snapshot-sort-api', true);
+    mockPusher(this);
 
     backStub = sinon.stub(utils, 'windowBack').callsFake(async function() {
       let {owner} = getContext();
@@ -158,11 +150,6 @@ describe('Acceptance: InfiniteBuild', function() {
   });
 
   it('fetches only snapshots with diffs on initial load', async function() {
-
-    let client = this.owner.lookup('service:launch-darkly-client')
-    console.log('the variation is: ', client.variation('snapshot-sort-api'))
-
-
     // add some snapshots (to the four above) to cover every review state reason.
     server.create('snapshot', 'withComparison', 'userApproved', {build});
     server.create('snapshot', 'withComparison', 'userApprovedPreviously', {build});

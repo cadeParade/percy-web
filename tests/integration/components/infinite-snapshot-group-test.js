@@ -12,12 +12,13 @@ import {resolve} from 'rsvp';
 import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render} from '@ember/test-helpers';
-import withVariation from 'percy-web/tests/helpers/with-variation';
+import setupLaunchDarkly from 'percy-web/tests/helpers/setup-launch-darkly';
 
 describe('Integration: InfiniteSnapshotGroup', function() {
-  setupRenderingTest('snapshot-group', {
+  const hooks = setupRenderingTest('snapshot-group', {
     integration: true,
   });
+  setupLaunchDarkly(hooks);
 
   let snapshots;
   let approvedSnapshots;
@@ -25,7 +26,7 @@ describe('Integration: InfiniteSnapshotGroup', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
-    withVariation(this.owner, 'snapshot-sort-api', true);
+    this.withVariation('snapshot-sort-api', true);
 
     createReviewStub = sinon.stub().returns(resolve());
     snapshots = makeList('snapshot', 5, 'withComparisons', {fingerprint: 'fingerprint'});

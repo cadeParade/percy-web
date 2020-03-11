@@ -1534,6 +1534,7 @@ describe('Acceptance: Auto-approved Branch Build', function () {
 
   setupSession(function (server) {
     mockPusher(this);
+
     let organization = server.create('organization', 'withUser');
     let project = server.create('project', {name: 'auto-approved-branch build', organization});
     let build = server.create('build', 'approvedAutoBranch', {project});
@@ -1560,6 +1561,7 @@ describe('Acceptance: Pending Build', function () {
 
   setupSession(function (server) {
     mockPusher(this);
+
     let organization = server.create('organization', 'withUser');
     let project = server.create('project', {name: 'pending build', organization});
     let build = server.create('build', {
@@ -1593,6 +1595,7 @@ describe('Acceptance: Processing Build', function () {
 
   setupSession(function (server) {
     mockPusher(this);
+
     let organization = server.create('organization', 'withUser');
     let project = server.create('project', {name: 'project-with-processing-build', organization});
     let build = server.create('build', 'processing', {
@@ -1626,6 +1629,7 @@ describe('Acceptance: Failed Build', function () {
 
   setupSession(function (server) {
     mockPusher(this);
+
     let organization = server.create('organization', 'withUser');
     let project = server.create('project', {name: 'project-with-failed-build', organization});
     let build = server.create('build', {
@@ -1666,6 +1670,7 @@ describe('Acceptance: Demo Project Build', function () {
 
   setupSession(function (server) {
     mockPusher(this);
+
     const organization = server.create('organization', 'withUser');
 
     const project = server.create('project', 'demo', {
