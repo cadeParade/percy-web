@@ -44,12 +44,8 @@ export default Component.extend(PollingMixin, {
 
   defaultBrowser: computed('_browsers', 'browserWithMostDiffs', function() {
     if (this.launchDarkly.variation('snapshot-sort-api')) {
-      let defaultBrowserInfo = this.metadataSort.findBy('default_browser_family_slug', true);
-      if (!defaultBrowserInfo) {
-        defaultBrowserInfo = {default_browser_family_slug: 'chrome'};
-      }
-
-      return this._browsers.findBy('familySlug', defaultBrowserInfo.browser_family_slug);
+      const defaultBrowserSlug = this.build.sortMetadata.defaultBrowserSlug;
+      return this._browsers.findBy('familySlug', defaultBrowserSlug);
     } else {
       const chromeBrowser = this._browsers.findBy('familySlug', 'chrome');
       const browserWithMostDiffs = this.browserWithMostDiffs;
@@ -63,8 +59,8 @@ export default Component.extend(PollingMixin, {
     }
   }),
 
-  orderItems: computed('metadataSort', 'activeBrowser.familySlug', function () {
-    return this.metadataSort.browsers[this.activeBrowser.familySlug].items;
+  orderItems: computed('build.sortMetadata', 'activeBrowser.familySlug', function () {
+    return this.build.sortMetadata.orderItemsForBrowser(this.activeBrowser.familySlug);
   }),
 
   activeBrowser: or('chosenBrowser', 'defaultBrowser'),

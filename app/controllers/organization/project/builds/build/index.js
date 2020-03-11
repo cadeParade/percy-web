@@ -4,6 +4,7 @@ import Controller from '@ember/controller';
 import snapshotSort from 'percy-web/lib/snapshot-sort';
 import {snapshotsWithDiffForBrowser} from 'percy-web/lib/filtered-comparisons';
 import {get, set, setProperties} from '@ember/object';
+import metadataSort from 'percy-web/lib/metadata-sort';
 
 // NOTE: before adding something here, consider adding it to BuildContainer instead.
 // This controller should only be used to maintain the state of which snapshots have been loaded.
@@ -29,8 +30,10 @@ export default class IndexController extends Controller {
   async fetchSnapshotsWithSortOrder(build) {
     const snapshotsAndMeta = await this.snapshotQuery.getSnapshotsWithSortMeta(build);
     const meta = snapshotsAndMeta.meta['sorted-items'];
-    set(this, 'metadataSort', meta);
+    const sortObject = metadataSort.create({metadataSort: meta});
+    this.build.set('sortMetadata', sortObject);
     set(this, 'isSnapshotsLoading', false);
+    // set(this, 'allApprovableSnapshots', )
   }
 
   // TODO(sort) remove this when old style is deprecated

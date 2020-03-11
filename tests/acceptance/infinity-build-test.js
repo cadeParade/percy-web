@@ -32,6 +32,11 @@ import withVariation from 'percy-web/tests/helpers/with-variation';
 describe('Acceptance: InfiniteBuild', function() {
   freezeMoment('2018-05-22');
 
+  function scrollTestContainer(px) {
+    const testContainer = document.getElementById('ember-testing-container');
+    testContainer.scroll(0, px);
+  }
+
   async function displaysCommentsOnFirstSnapshot(context) {
     const firstSnapshot = BuildPage.snapshots[0];
     expect(firstSnapshot.collaborationPanel.isVisible).to.equal(true);
@@ -148,8 +153,6 @@ describe('Acceptance: InfiniteBuild', function() {
       buildId: build.id,
     };
   });
-
-
 
   afterEach(function() {
     backStub.restore();
@@ -780,12 +783,13 @@ describe('Acceptance: InfiniteBuild', function() {
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  it.skip('toggles the image and pdiff', async function() {
+  it('toggles the image and pdiff', async function() {
     await BuildPage.visitBuild(urlParams);
     expect(currentRouteName()).to.equal('organization.project.builds.build.index');
 
+    scrollTestContainer(10000);
+
     const snapshot = BuildPage.findSnapshotByName(defaultSnapshot.name);
-    debugger;
     await snapshot.clickDiffImage();
     expect(BuildPage.isDiffsVisibleForAllSnapshots).to.equal(false);
 
@@ -858,7 +862,8 @@ describe('Acceptance: InfiniteBuild', function() {
     const snapshotName = noDiffsSnapshot.name;
 
     await BuildPage.visitBuild(urlParams);
-    debugger
+    scrollTestContainer(10000);
+
     expect(BuildPage.isUnchangedPanelVisible).to.equal(true);
     expect(BuildPage.findSnapshotByName(snapshotName)).to.not.exist;
 
@@ -1102,5 +1107,3 @@ describe('Acceptance: InfiniteBuild', function() {
     await percySnapshot(this.test, {darkMode: true});
   });
 });
-
-

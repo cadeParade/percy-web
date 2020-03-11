@@ -381,4 +381,6 @@ export default class Build extends Model {
     }, []);
     return countDiffsWithSnapshotsPerBrowser(unreviewedSnapshotsWithDiffs, this.browsers);
   }
+
+  sortMetadata = null;
 }

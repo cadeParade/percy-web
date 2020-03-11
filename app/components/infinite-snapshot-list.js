@@ -25,6 +25,8 @@ export default Component.extend(EKMixin, {
     updateActiveSnapshotBlockIndex(newIndex) {
       this._updateActiveBlockIndex(newIndex);
     },
+    // TODO(sort) should this be fixed?
+    updateActiveSnapshotBlockId() {},
   },
 
   init() {

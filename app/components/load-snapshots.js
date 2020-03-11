@@ -1,12 +1,13 @@
 import Component from '@ember/component';
 import {inject as service} from '@ember/service';
 import {task} from 'ember-concurrency';
+import {SNAPSHOT_PAGINATION_COUNT} from 'percy-web/services/snapshot-query';
 
 export default Component.extend({
   tagName: '',
   store: service(),
   snapshotQuery: service(),
-  limit: 2,
+  limit: SNAPSHOT_PAGINATION_COUNT,
 
   didInsertElement() {
     this._super(...arguments);
