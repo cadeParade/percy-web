@@ -42,8 +42,12 @@ export default Component.extend(PollingMixin, {
 
   _browsers: readOnly('build.browsers'),
 
-  defaultBrowser: computed('_browsers', 'browserWithMostDiffs', function() {
-    if (this.launchDarkly.variation('snapshot-sort-api')) {
+  defaultBrowser: computed('_browsers', 'build.isFinished', 'browserWithMostDiffs', function() {
+    if (
+      this.launchDarkly.variation('snapshot-sort-api') &&
+      this.build.isFinished &&
+      this.build.sortMetadata
+    ) {
       const defaultBrowserSlug = this.build.sortMetadata.defaultBrowserSlug;
       return this._browsers.findBy('familySlug', defaultBrowserSlug);
     } else {

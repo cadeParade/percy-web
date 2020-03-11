@@ -1,5 +1,5 @@
 import {get} from '@ember/object';
-
+import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
 // TODO groups
 // TODO(sort) divide by browser :/
 // TODO(sort) correct default browser??
@@ -57,7 +57,11 @@ export default function createSortMetadata(mirageSnapshots, mirageBuild) {
         'snapshot-id': snapshotId,
       };
     });
-    const items = groups.concat(singles);
+
+    const {approvedSnapshots, unapprovedSnapshots} = separateSnapshots(singles);
+    const {approvedGroups, unapprovedGroups} = separateGroups(groups);
+
+    const items = unapprovedGroups.concat(unapprovedSnapshots, approvedGroups, approvedSnapshots);
 
     const browserData = {
       browser_family_slug: browser.id.split('-')[0],
@@ -66,8 +70,39 @@ export default function createSortMetadata(mirageSnapshots, mirageBuild) {
     };
     sortMetadata['sorted-items'].push(browserData);
   });
-
+  console.log(sortMetadata);
   return sortMetadata;
+}
+
+function separateGroups(groupOrderItems) {
+  return groupOrderItems.reduce(
+    (acc, groupOrderItem) => {
+      const snapshots = groupOrderItem['snapshot-ids'].map(snapshotId => {
+        return server.db.snapshots.find(snapshotId);
+      });
+      const areAllApproved = snapshots.every(snapshot => {
+        return snapshot.reviewState === SNAPSHOT_APPROVED_STATE;
+      });
+      areAllApproved
+        ? acc.approvedGroups.push(groupOrderItem)
+        : acc.unapprovedGroups.push(groupOrderItem);
+      return acc;
+    },
+    {approvedGroups: [], unapprovedGroups: []},
+  );
+}
+
+function separateSnapshots(snapshotsOrderItems) {
+  return snapshotsOrderItems.reduce(
+    (acc, snapshotOrderItem) => {
+      const snapshot = server.db.snapshots.find(snapshotOrderItem['snapshot-id']);
+      snapshot.reviewState === SNAPSHOT_APPROVED_STATE
+        ? acc.approvedSnapshots.push(snapshotOrderItem)
+        : acc.unapprovedSnapshots.push(snapshotOrderItem);
+      return acc;
+    },
+    {approvedSnapshots: [], unapprovedSnapshots: []},
+  );
 }
 
 function sortedSnapshotsWithDiffForBrowser(snapshots, browser) {

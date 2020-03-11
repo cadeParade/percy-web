@@ -49,7 +49,18 @@ export default class ReviewsService extends Service {
 
   async createApprovalReview(build, snapshots, eventData) {
     // TODO(sort) how to create records without full models :(
-    const fakeSnapshots = snapshots.map(snapshot => {
+    const fakeSnapshots = this.fakeSnapshots(snapshots);
+
+    const review = this.store.createRecord('review', {
+      build,
+      snapshots: fakeSnapshots,
+      action: REVIEW_ACTIONS.APPROVE,
+    });
+    return await this._saveReview(review, build, eventData);
+  }
+
+  fakeSnapshots(snapshots) {
+    return snapshots.map(snapshot => {
       const isString = typeof snapshot === 'string';
       const isNumber = typeof snapshot === 'number';
 
@@ -64,13 +75,6 @@ export default class ReviewsService extends Service {
         return snapshot;
       }
     });
-
-    const review = this.store.createRecord('review', {
-      build,
-      snapshots: fakeSnapshots,
-      action: REVIEW_ACTIONS.APPROVE,
-    });
-    return await this._saveReview(review, build, eventData);
   }
 
   async createRejectReview(build, snapshots, eventData) {
