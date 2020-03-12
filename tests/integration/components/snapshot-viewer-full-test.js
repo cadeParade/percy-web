@@ -6,7 +6,6 @@ import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
 import sinon from 'sinon';
-import {resolve} from 'rsvp';
 import FullSnapshotPage from 'percy-web/tests/pages/components/snapshot-viewer-full';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render} from '@ember/test-helpers';
@@ -17,7 +16,6 @@ describe('Integration: SnapshotViewerFull', function() {
   });
 
   let updateComparisonModeStub;
-  let createReviewStub;
   let addedSnapshot;
   let snapshot;
   let build;
@@ -36,7 +34,6 @@ describe('Integration: SnapshotViewerFull', function() {
     addedSnapshot = make('snapshot', 'new', {build});
 
     updateComparisonModeStub = sinon.stub();
-    createReviewStub = sinon.stub().returns(resolve());
 
     const snapshotSelectedWidth = snapshot
       .get('comparisons')
@@ -50,7 +47,6 @@ describe('Integration: SnapshotViewerFull', function() {
       snapshot: snapshot,
       comparisonMode: 'diff',
       updateComparisonMode: updateComparisonModeStub,
-      createReview: createReviewStub,
       isBuildApprovable: true,
       stub: sinon.stub(),
     });
@@ -61,7 +57,6 @@ describe('Integration: SnapshotViewerFull', function() {
       @comparisonMode={{comparisonMode}}
       @transitionRouteToWidth={{stub}}
       @updateComparisonMode={{updateComparisonMode}}
-      @createReview={{createReview}}
       @activeBrowser={{browser}}
       @isBuildApprovable={{isBuildApprovable}}
       @updateSnapshotId={{stub}}
@@ -148,11 +143,6 @@ describe('Integration: SnapshotViewerFull', function() {
   });
 
   describe('approve snapshot button', function() {
-    it('sends createReview with correct arguments when approve button is clicked', async function() { //eslint-disable-line
-      await FullSnapshotPage.header.clickApprove();
-      expect(createReviewStub).to.have.been.calledWith([snapshot]);
-    });
-
     it('does not display when build is not finished', function() {
       this.set('snapshot.build.state', 'pending');
       expect(FullSnapshotPage.header.snapshotApprovalButton.isVisible).to.equal(false);

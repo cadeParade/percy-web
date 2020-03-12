@@ -14,12 +14,6 @@ export default class BuildRoute extends Route {
   }
 
   @action
-  async createReview(snapshots, eventData) {
-    const build = this.modelFor('organization.project.builds.build');
-    return this.reviews.createReview.perform({snapshots, build, eventData});
-  }
-
-  @action
   createCommentThread({snapshotId, commentBody, areChangesRequested, mentionedUsers}) {
     return this.commentThreads.createCommentThread.perform({
       snapshotId,

@@ -11,39 +11,49 @@ import {resolve, defer} from 'rsvp';
 import SnapshotApprovalButton from 'percy-web/tests/pages/components/snapshot-approval-button';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render} from '@ember/test-helpers';
+import stubService from 'percy-web/tests/helpers/stub-service-integration';
 
 describe('Integration: SnapshotApprovalButton', function() {
   setupRenderingTest('snapshot-approval-button', {
     integration: true,
   });
 
+  function stubCreateReview(context, stub) {
+    const service = context.owner.lookup('service:reviews');
+    service.set('createReview', {perform: stub});
+  }
+
   let snapshot;
-  let createReview;
+  let createReviewStub;
 
   beforeEach(function() {
     setupFactoryGuy(this);
+    createReviewStub = sinon.stub().returns(resolve('resolve'));
+    stubService(this, 'reviews', 'reviews', {
+      createReview: {perform: createReviewStub},
+    });
+
     snapshot = make('snapshot', 'withTwoBrowsers');
-    createReview = sinon.stub().returns(resolve());
     const activeBrowser = make('browser');
     const hasDiffsInBrowser = true;
-    this.setProperties({snapshot, createReview, activeBrowser, hasDiffsInBrowser});
+    this.setProperties({snapshot, activeBrowser, hasDiffsInBrowser});
   });
 
-  it('displays correctly when snapshot is not approved and has diffs in active browser', async function() {  //eslint-disable-line
+  //eslint-disable-next-line
+  it('displays correctly when snapshot is not approved and has diffs in active browser', async function() {
     await render(hbs`<SnapshotApprovalButton
       @snapshot={{snapshot}}
-      @createReview={{createReview}}
       @activeBrowser={{activeBrowser}}
       @hasDiffsInBrowser={{hasDiffsInBrowser}}
     />`);
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  it('displays correctly when snapshot is not approved does not have diffs in active browser ', async function() {  //eslint-disable-line
+  //eslint-disable-next-line
+  it('displays correctly when snapshot is not approved does not have diffs in active browser ', async function() {
     this.set('hasDiffsInBrowser', false);
     await render(hbs`<SnapshotApprovalButton
       @snapshot={{snapshot}}
-      @createReview={{createReview}}
       @activeBrowser={{activeBrowser}}
       @hasDiffsInBrowser={{hasDiffsInBrowser}}
     />`);
@@ -54,7 +64,6 @@ describe('Integration: SnapshotApprovalButton', function() {
   it('displays correctly when snapshot is approved', async function() {
     await render(hbs`<SnapshotApprovalButton
       @snapshot={{snapshot}}
-      @createReview={{createReview}}
       @activeBrowser={{activeBrowser}}
       @hasDiffsInBrowser={{hasDiffsInBrowser}}
     />`);
@@ -65,21 +74,22 @@ describe('Integration: SnapshotApprovalButton', function() {
   it('calls createReview with correct args when clicked', async function() {
     await render(hbs`<SnapshotApprovalButton
       @snapshot={{snapshot}}
-      @createReview={{createReview}}
       @hasDiffsInBrowser={{hasDiffsInBrowser}}
     />`);
     await SnapshotApprovalButton.clickButton();
 
-    expect(createReview).to.have.been.calledWith([snapshot]);
+    expect(createReviewStub).to.have.been.calledWith({
+      snapshots: [snapshot],
+      build: snapshot.build,
+    });
   });
 
   it('displays correctly when in loading state ', async function() {
     const deferred = defer();
-    const createReview = sinon.stub().returns(deferred.promise);
-    this.set('createReview', createReview);
+    const createReviewStub = sinon.stub().returns(deferred.promise);
+    stubCreateReview(this, createReviewStub);
     await render(hbs`<SnapshotApprovalButton
       @snapshot={{snapshot}}
-      @createReview={{action createReview}}
       @hasDiffsInBrowser={{hasDiffsInBrowser}}
     />`);
     await SnapshotApprovalButton.clickButton();
@@ -90,34 +100,34 @@ describe('Integration: SnapshotApprovalButton', function() {
   it('is enabled when isDisabled is false', async function() {
     await render(hbs`<SnapshotApprovalButton
       @snapshot={{snapshot}}
-      @createReview={{createReview}}
       @activeBrowser={{activeBrowser}}
       @hasDiffsInBrowser={{hasDiffsInBrowser}}
       @isDisabled={{false}}
     />`);
     expect(SnapshotApprovalButton.isDisabled).to.equal(false);
     await SnapshotApprovalButton.clickButton();
-    expect(createReview).to.have.been.calledWith([snapshot]);
+    expect(createReviewStub).to.have.been.calledWith({
+      snapshots: [snapshot],
+      build: snapshot.build,
+    });
   });
 
   it('is disabled when isDisabled is true', async function() {
     await render(hbs`<SnapshotApprovalButton
       @snapshot={{snapshot}}
-      @createReview={{createReview}}
       @activeBrowser={{activeBrowser}}
       @hasDiffsInBrowser={{hasDiffsInBrowser}}
       @isDisabled={{true}}
     />`);
     expect(SnapshotApprovalButton.isDisabled).to.equal(true);
     await SnapshotApprovalButton.clickButton();
-    expect(createReview).to.not.have.been.called;
+    expect(createReviewStub).to.not.have.been.called;
   });
 
   it('shows approvalBadge when createReview returns true', async function() {
     this.set('createReview', sinon.stub().returns(resolve(true)));
     await render(hbs`<SnapshotApprovalButton
       @snapshot={{snapshot}}
-      @createReview={{createReview}}
       @hasDiffsInBrowser={{hasDiffsInBrowser}}
     />`);
 
@@ -126,13 +136,13 @@ describe('Integration: SnapshotApprovalButton', function() {
   });
 
   it('does not show approval badge when createReview returns false', async function() {
-    this.set('createReview', sinon.stub().returns(resolve(false)));
+    const createReviewStub = sinon.stub().returns(resolve(false));
+    stubCreateReview(this, createReviewStub);
+
     await render(hbs`<SnapshotApprovalButton
       @snapshot={{snapshot}}
-      @createReview={{createReview}}
       @hasDiffsInBrowser={{hasDiffsInBrowser}}
     />`);
-
     await SnapshotApprovalButton.clickButton();
     expect(SnapshotApprovalButton.isApproved).to.equal(false);
   });

@@ -8,7 +8,6 @@ import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import SnapshotGroup from 'percy-web/tests/pages/components/snapshot-group';
-import {resolve} from 'rsvp';
 import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render} from '@ember/test-helpers';
@@ -20,12 +19,10 @@ describe('Integration: SnapshotGroup', function() {
 
   let snapshots;
   let approvedSnapshots;
-  let createReviewStub;
 
   beforeEach(function() {
     setupFactoryGuy(this);
 
-    createReviewStub = sinon.stub().returns(resolve());
     snapshots = makeList('snapshot', 5, 'withComparisons', {fingerprint: 'fingerprint'});
     approvedSnapshots = makeList('snapshot', 5, 'withComparisons', 'approved', {
       fingerprint: 'fingerprint',
@@ -41,7 +38,6 @@ describe('Integration: SnapshotGroup', function() {
       build,
       browser,
       userSelectedWidth: null,
-      createReview: createReviewStub,
       isBuildApprovable: true,
     });
   });
@@ -64,7 +60,6 @@ describe('Integration: SnapshotGroup', function() {
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
         @activeBrowser={{browser}}
-        @createReview={{createReview}}
         @isBuildApprovable={{isBuildApprovable}}
       />`);
 
@@ -78,7 +73,6 @@ describe('Integration: SnapshotGroup', function() {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @createReview={{createReview}}
         @activeBrowser={{browser}}
         @updateActiveSnapshotBlockId={{stub}}
         @isBuildApprovable={{isBuildApprovable}}
@@ -97,7 +91,6 @@ describe('Integration: SnapshotGroup', function() {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @createReview={{createReview}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
@@ -117,7 +110,6 @@ describe('Integration: SnapshotGroup', function() {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @createReview={{createReview}}
         @activeSnapshotBlockId={{activeSnapshotBlockId}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
@@ -176,7 +168,6 @@ describe('Integration: SnapshotGroup', function() {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @createReview={{createReview}}
         @activeSnapshotBlockId={{activeSnapshotBlockId}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
@@ -208,24 +199,6 @@ describe('Integration: SnapshotGroup', function() {
     });
   });
 
-  describe('approve snapshot button', function() {
-    beforeEach(async function() {
-      await render(hbs`<SnapshotGroup
-        @snapshots={{snapshots}}
-        @build={{build}}
-        @createReview={{createReview}}
-        @updateActiveSnapshotBlockId={{stub}}
-        @activeBrowser={{browser}}
-        @isBuildApprovable={{isBuildApprovable}}
-      />`);
-    });
-
-    it('sends createReview with correct args when approve button is clicked', async function() {
-      await SnapshotGroup.header.clickApprove();
-      expect(createReviewStub).to.have.been.calledWith(snapshots);
-    });
-  });
-
   describe('diff toggling', function() {
     beforeEach(async function() {
       await render(hbs`<SnapshotGroup
@@ -233,7 +206,6 @@ describe('Integration: SnapshotGroup', function() {
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
         @activeBrowser={{browser}}
-        @createReview={{createReview}}
         @isBuildApprovable={{isBuildApprovable}}
         @updateActiveSnapshotBlockId={{stub}}
       />`);
@@ -294,7 +266,6 @@ describe('Integration: SnapshotGroup', function() {
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @createReview={{createReview}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
@@ -316,7 +287,6 @@ describe('Integration: SnapshotGroup', function() {
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @createReview={{createReview}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
@@ -332,7 +302,6 @@ describe('Integration: SnapshotGroup', function() {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @createReview={{createReview}}
         @activeSnapshotBlockId={{activeSnapshotBlockId}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
@@ -375,7 +344,6 @@ describe('Integration: SnapshotGroup', function() {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @createReview={{createReview}}
         @activeSnapshotBlockId={{activeSnapshotBlockId}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}

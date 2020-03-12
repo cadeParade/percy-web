@@ -1,13 +1,15 @@
 import Component from '@ember/component';
 import {get, set} from '@ember/object';
+import {inject as service} from '@ember/service';
 
 export default Component.extend({
+  reviews: service(),
   numTotalSnapshots: null,
   numUnapprovedSnapshots: null,
   isGroupApproved: false,
-  isLoading: false,
   isDisabled: false,
   tagName: '',
+  isLoading: false,
 
   init() {
     this._super(...arguments);
@@ -16,15 +18,21 @@ export default Component.extend({
 
   actions: {
     async approveGroup() {
-      set(this, 'isLoading', true);
-      const areSnapshotsApproved = await this.createReview(this.approvableSnapshots, {
+      const eventData = {
         title: 'Group Approved',
         properties: {
           build_id: get(this, 'approvableSnapshots.firstObject.build.id'),
         },
+      };
+
+      this.set('isLoading', true);
+      const areSnapshotsApproved = await this.reviews.createReview.perform({
+        snapshots: this.approvableSnapshots,
+        build: this.approvableSnapshots.firstObject.build,
+        eventData,
       });
 
-      set(this, 'isLoading', false);
+      this.set('isLoading', false);
 
       if (areSnapshotsApproved) {
         // The time between when we get the response back from the server and the time

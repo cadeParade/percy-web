@@ -7,7 +7,6 @@ import filteredComparisons from 'percy-web/lib/filtered-comparisons';
 export default Component.extend({
   launchDarkly: service(),
   snapshot: null,
-  createReview: null,
   externalIsCommentPanelShowing: false,
   userIsCommentPanelShowing: undefined,
 

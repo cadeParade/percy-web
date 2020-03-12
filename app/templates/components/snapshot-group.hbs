@@ -95,7 +95,6 @@
             @key="group-approval-button"
           />
           <GroupApprovalButton
-            @createReview={{this.createReview}}
             @approvableSnapshots={{this.approvableSnapshots}}
             @numTotalSnapshots={{this.snapshots.length}}
             @numUnapprovedSnapshots={{this.numUnapprovedSnapshots}}
@@ -172,7 +171,6 @@
                 @allDiffsShown={{this.allDiffsShown}}
                 @activeSnapshotBlockId={{this.activeSnapshotBlockId}}
                 @shouldDeferRendering={{this.shouldDeferRendering}}
-                @createReview={{this.createReview}}
                 @updateActiveSnapshotBlockId={{this.updateActiveSnapshotBlockId}}
                 @activeBrowser={{this.activeBrowser}}
                 @updateActiveBrowser={{this.updateActiveBrowser}}

@@ -43,7 +43,6 @@ describe('Integration: SnapshotList', function() {
       await render(hbs`<SnapshotList
         @snapshotsChanged={{snapshotsChanged}}
         @build={{build}}
-        @createReview={{stub}}
         @activeBrowser={{browser}}
         @shouldDeferRendering={{shouldDeferRendering}}
         @toggleUnchangedSnapshotsVisible={{stub}}
@@ -101,7 +100,6 @@ describe('Integration: SnapshotList', function() {
       await render(hbs`<SnapshotList
         @snapshotsChanged={{snapshotsChanged}}
         @build={{build}}
-        @createReview={{stub}}
         @isKeyboardNavEnabled={{isKeyboardNavEnabled}}
         @activeBrowser={{browser}}
         @toggleUnchangedSnapshotsVisible={{stub}}
@@ -338,7 +336,6 @@ describe('Integration: SnapshotList', function() {
         @snapshotsChanged={{snapshotsChanged}}
         @snapshotsUnchanged={{snapshotsUnchanged}}
         @build={{build}}
-        @createReview={{stub}}
         @toggleUnchangedSnapshotsVisible={{stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{true}}

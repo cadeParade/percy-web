@@ -9,17 +9,23 @@ import sinon from 'sinon';
 import {resolve, defer} from 'rsvp';
 import GroupApprovalButton from 'percy-web/tests/pages/components/group-approval-button';
 import {render} from '@ember/test-helpers';
+import stubService from 'percy-web/tests/helpers/stub-service-integration';
+import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
+import {make, makeList} from 'ember-data-factory-guy';
 
 describe('Integration: GroupApprovalButton', function() {
   setupRenderingTest('group-approval-button', {
     integration: true,
   });
 
-  let createReview;
+  let createReviewStub;
 
   beforeEach(async function() {
-    createReview = sinon.stub().returns(resolve());
-    this.setProperties({createReview});
+    setupFactoryGuy(this);
+    createReviewStub = sinon.stub().returns(resolve('resolve'));
+    stubService(this, 'reviews', 'reviews', {
+      createReview: {perform: createReviewStub},
+    });
   });
 
   describe('when isGroupApproved is true', function() {
@@ -29,7 +35,6 @@ describe('Integration: GroupApprovalButton', function() {
       await render(hbs`<GroupApprovalButton
         @isGroupApproved={{true}}
         @numTotalSnapshots={{numTotalSnapshots}}
-        @createReview={{createReview}}
       />`);
     });
 
@@ -52,7 +57,6 @@ describe('Integration: GroupApprovalButton', function() {
         await render(hbs`<GroupApprovalButton
           @isGroupApproved={{isGroupApproved}}
           @isDisabled={{true}}
-          @createReview={{createReview}}
           @numUnapprovedSnapshots={{40}}
         />`);
       });
@@ -64,20 +68,22 @@ describe('Integration: GroupApprovalButton', function() {
 
       it('does not take any action when clicking the disabled button', async function() {
         await GroupApprovalButton.clickButton();
-        expect(createReview).to.not.have.been.called;
+        expect(createReviewStub).to.not.have.been.called;
       });
     });
 
     describe('when isDisabled is false', function() {
       const numUnapprovedSnapshots = 40;
-      const approvableSnapshots = ['a', 'b', 'c'];
+      let approvableSnapshots;
+      let build;
 
       beforeEach(async function() {
+        build = make('build');
+        approvableSnapshots = makeList('snapshot', 3, {build});
         this.setProperties({approvableSnapshots, numUnapprovedSnapshots});
         await render(hbs`<GroupApprovalButton
           @isGroupApproved={{isGroupApproved}}
           @isDisabled={{false}}
-          @createReview={{createReview}}
           @numUnapprovedSnapshots={{numUnapprovedSnapshots}}
           @approvableSnapshots={{approvableSnapshots}}
         />`);
@@ -91,14 +97,18 @@ describe('Integration: GroupApprovalButton', function() {
 
       it('calls approveGroup with unapproved snapshots', async function() {
         await GroupApprovalButton.clickButton();
-        expect(createReview).to.have.been.calledWith(approvableSnapshots);
+        expect(createReviewStub).to.have.been.calledWith({
+          snapshots: approvableSnapshots,
+          build: sinon.match.object,
+          eventData: sinon.match.object,
+        });
       });
 
       it('displays a loading state', async function() {
         const deferred = defer();
-        const createReview = sinon.stub().returns(deferred.promise);
-        this.set('createReview', createReview);
-
+        const createReviewStub = sinon.stub().returns(deferred.promise);
+        const service = this.owner.lookup('service:reviews');
+        service.set('createReview', {perform: createReviewStub});
         await GroupApprovalButton.clickButton();
         expect(GroupApprovalButton.isButtonLoading).to.equal(true);
         await percySnapshot(this.test);

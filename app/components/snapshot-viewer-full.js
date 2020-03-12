@@ -23,7 +23,6 @@ export default Component.extend(EKMixin, {
   comparisonMode: null,
   updateComparisonMode: null,
   transitionRouteToWidth: null,
-  createReview: null,
   snapshot: null,
   snapshotSelectedWidth: null,
   activeBrowser: null,

@@ -35,7 +35,6 @@ describe('Integration: BuildContainer', function() {
       // but we can't have the component make requests in this integration test
       await render(hbs`<BuildContainer
         @build={{build}}
-        @createReview={{stub}}
         @pollRefresh={{stub}}
         @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
         @notifyOfUnchangedSnapshots={{stub}}
@@ -84,7 +83,6 @@ describe('Integration: BuildContainer', function() {
     await render(hbs`<BuildContainer
       @build={{build}}
       @isSnapshotsLoading={{true}}
-      @createReview={{stub}}
       @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
       @notifyOfUnchangedSnapshots={{stub}}
     />`);
@@ -107,7 +105,6 @@ describe('Integration: BuildContainer', function() {
     await render(hbs`<BuildContainer
       @build={{build}}
       @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
-      @createReview={{stub}}
       @notifyOfUnchangedSnapshots={{stub}}
     />`);
     await percySnapshot(this.test, {darkMode: true});
@@ -133,7 +130,6 @@ describe('Integration: BuildContainer', function() {
     await render(hbs`<BuildContainer
       @build={{build}}
       @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
-      @createReview={{stub}}
       @notifyOfUnchangedSnapshots={{stub}}
     />`);
 
@@ -159,7 +155,6 @@ describe('Integration: BuildContainer', function() {
     await render(hbs`<BuildContainer
       @build={{build}}
       @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
-      @createReview={{stub}}
       @notifyOfUnchangedSnapshots={{stub}}
     />`);
 
@@ -228,7 +223,6 @@ describe('Integration: BuildContainer', function() {
       await render(hbs`<BuildContainer
         @build={{build}}
         @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
-        @createReview={{stub}}
         @analytics={{analyticsStub}}
         @notifyOfUnchangedSnapshots={{stub}}
       />`);
@@ -253,7 +247,8 @@ describe('Integration: BuildContainer', function() {
       expect(BuildPage.snapshots.length).to.equal(3);
     });
 
-    it('resets unchanged snapshots when unchanged snapshots are visible and browser is switched', async function() { // eslint-disable-line
+    // eslint-disable-next-line
+    it('resets unchanged snapshots when unchanged snapshots are visible and browser is switched', async function() {
       await BuildPage.clickToggleNoDiffsSection();
       expect(BuildPage.isUnchangedPanelVisible).to.equal(false);
       await BuildPage.browserSwitcher.switchBrowser();
@@ -270,7 +265,8 @@ describe('Integration: BuildContainer', function() {
       expect(BuildPage.browserSwitcher.firefoxButton.isActive).to.equal(true);
     });
 
-    it('selects chrome by default when both browsers have equal snapshots with diffs', async function() { // eslint-disable-line
+    // eslint-disable-next-line
+    it('selects chrome by default when both browsers have equal snapshots with diffs', async function() {
       this.set('allChangedBrowserSnapshotsSorted', {
         'chrome-id': [{foo: 'bar'}],
         'firefox-id': [{bar: 'foo'}],
@@ -308,7 +304,6 @@ describe('Integration: BuildContainer', function() {
       await render(hbs`<BuildContainer
         @build={{build}}
         @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
-        @createReview={{stub}}
         @isBuildApprovable={{isBuildApprovable}}
         @notifyOfUnchangedSnapshots={{stub}}
       />`);
@@ -336,7 +331,6 @@ describe('Integration: BuildContainer', function() {
       await render(hbs`<BuildContainer
         @build={{build}}
         @allChangedBrowserSnapshotsSorted={{allChangedBrowserSnapshotsSorted}}
-        @createReview={{stub}}
         @notifyOfUnchangedSnapshots={{stub}}
       />`);
     });
