@@ -22,10 +22,10 @@ import {
 } from 'percy-web/models/snapshot';
 import BuildPage from 'percy-web/tests/pages/build-page';
 import ProjectPage from 'percy-web/tests/pages/project-page';
-import {PusherMock} from 'pusher-js-mock';
 import utils from 'percy-web/lib/utils';
 // eslint-disable-next-line
 import {setupBrowserNavigationButtons} from 'ember-cli-browser-navigation-button-test-helper/test-support';
+import mockPusher from 'percy-web/tests/helpers/mock-pusher';
 
 describe('Acceptance: Build', function() {
   freezeMoment('2018-05-22');
@@ -102,6 +102,7 @@ describe('Acceptance: Build', function() {
   let urlParams;
 
   setupSession(function(server) {
+    mockPusher(this);
     backStub = sinon.stub(utils, 'windowBack').callsFake(async function() {
       let {owner} = getContext();
       const history = owner.lookup('service:history');
@@ -1097,8 +1098,10 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   let urlParams;
   let noDiffSnapshot;
   let build;
+  let websocketService;
 
   setupSession(function(server) {
+    websocketService = mockPusher(this);
     backStub = sinon.stub(utils, 'windowBack').callsFake(async function() {
       let {owner} = getContext();
       const history = owner.lookup('service:history');
@@ -1324,7 +1327,6 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   });
 
   describe('websockets', function() {
-    let websocketService;
     let commentThread;
     let fullscreenSnapshot;
     let organizationChannel;
@@ -1339,10 +1341,6 @@ describe('Acceptance: Fullscreen Snapshot', function() {
         snapshot,
         createdAt: '2019-09-06T08:18:49-06:00',
       });
-      websocketService = this.owner.lookup('service:websocket');
-      const pusherMock = new PusherMock();
-      websocketService.set('_socket', pusherMock);
-      sinon.stub(websocketService, '_isSubscribed').returns(false);
 
       // Start test and verify initial state
       await BuildPage.visitFullPageSnapshot(urlParams);
@@ -1534,6 +1532,7 @@ describe('Acceptance: Auto-approved Branch Build', function() {
   let urlParams;
 
   setupSession(function(server) {
+    mockPusher(this);
     let organization = server.create('organization', 'withUser');
     let project = server.create('project', {name: 'auto-approved-branch build', organization});
     let build = server.create('build', 'approvedAutoBranch', {project});
@@ -1559,6 +1558,7 @@ describe('Acceptance: Pending Build', function() {
   let urlParams;
 
   setupSession(function(server) {
+    mockPusher(this);
     let organization = server.create('organization', 'withUser');
     let project = server.create('project', {name: 'pending build', organization});
     let build = server.create('build', {
@@ -1591,6 +1591,7 @@ describe('Acceptance: Processing Build', function() {
   let urlParams;
 
   setupSession(function(server) {
+    mockPusher(this);
     let organization = server.create('organization', 'withUser');
     let project = server.create('project', {name: 'project-with-processing-build', organization});
     let build = server.create('build', 'processing', {
@@ -1623,6 +1624,7 @@ describe('Acceptance: Failed Build', function() {
   let urlParams;
 
   setupSession(function(server) {
+    mockPusher(this);
     let organization = server.create('organization', 'withUser');
     let project = server.create('project', {name: 'project-with-failed-build', organization});
     let build = server.create('build', {
@@ -1662,6 +1664,7 @@ describe('Acceptance: Demo Project Build', function() {
   let urlParams;
 
   setupSession(function(server) {
+    mockPusher(this);
     const organization = server.create('organization', 'withUser');
 
     const project = server.create('project', 'demo', {
