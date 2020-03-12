@@ -17,8 +17,8 @@ export default class SnapshotQueryService extends Service {
 
   getUnchangedSnapshots(build) {
     return this.store.loadRecords('snapshot', {
+      build_id: build.get('id'),
       filter: {
-        build: build.get('id'),
         'review-state-reason': SNAPSHOT_REVIEW_STATE_REASONS.NO_DIFFS,
       },
     });
@@ -29,8 +29,8 @@ export default class SnapshotQueryService extends Service {
     const buildId = isBuildId ? build : build.get('id');
 
     return this.store.loadRecords('snapshot', {
+      build_id: buildId,
       filter: {
-        build: buildId,
         'review-state-reason': DIFF_REVIEW_STATE_REASONS.join(','),
       },
     });
@@ -44,8 +44,8 @@ export default class SnapshotQueryService extends Service {
 
   getCommentsForSnapshot(snapshotId, buildId) {
     return this.store.loadRecords('commentThread', {
+      build_id: buildId,
       filter: {
-        build: buildId,
         snapshot_ids: [snapshotId],
       },
       include: 'comments,comments.author',

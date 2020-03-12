@@ -339,8 +339,8 @@ export default function() {
     return schema.invites.new({id: 'created'});
   });
 
-  this.get('/builds/:build_id/snapshots', function(schema, request) {
-    const build = schema.builds.findBy({id: request.params.build_id});
+  this.get('/snapshots', function(schema, request) {
+    const build = schema.builds.findBy({id: request.queryParams.build_id});
     const queryParams = request.queryParams;
     if (queryParams['filter[review-state-reason]']) {
       const reasons = queryParams['filter[review-state-reason]'].split(',');

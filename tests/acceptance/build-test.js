@@ -999,8 +999,8 @@ describe('Acceptance: Build', function() {
     const stub = sinon.stub();
 
     await BuildPage.visitBuild(urlParams);
-    server.get('/builds/:build_id/snapshots', function(schema, request) {
-      const build = server.schema.builds.findBy({id: request.params.build_id});
+    server.get('/snapshots', function(schema, request) {
+      const build = server.schema.builds.findBy({id: request.queryParams.build_id});
       const snapshots = server.schema.snapshots.where({buildId: build.id});
 
       stub(build.id, snapshots.models.mapBy('id'));

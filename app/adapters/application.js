@@ -99,11 +99,6 @@ export default class Application extends JSONAPIAdapter.extend(DataAdapterMixin)
       return utils.buildApiUrl('subscription', snapshot.record.get('organization.slug'));
     }
 
-    if (requestType === 'query' && modelName === 'snapshot') {
-      const buildId = query.filter.build;
-      return utils.buildApiUrl('buildSnapshots', buildId);
-    }
-
     if (requestType === 'query' && modelName === 'organization' && query.user) {
       delete query.user;
       return utils.buildApiUrl('userOrganizations');

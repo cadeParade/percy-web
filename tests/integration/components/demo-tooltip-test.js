@@ -9,6 +9,7 @@ import hbs from 'htmlbars-inline-precompile';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import DemoTooltip from 'percy-web/tests/pages/components/demo-tooltip';
 import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage-sandbox';
+import stubService from 'percy-web/tests/helpers/stub-service-integration';
 
 describe('Integration: DemoTooltipComponent', function() {
   SetupLocalStorageSandbox();
@@ -19,6 +20,11 @@ describe('Integration: DemoTooltipComponent', function() {
 
   beforeEach(function() {
     setupFactoryGuy(this);
+    stubService(this, 'snapshotQuery', 'snapshot-query', {
+      getChangedSnapshots(build) {
+        return build.snapshots;
+      },
+    });
     // create a build with snapshots
     const snapshots = makeList('snapshot', 5, 'withComparisons', {fingerprint: 'fingerprint'});
     const build = make('build', 'finished', {project: {isDemo: true}});

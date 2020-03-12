@@ -40,6 +40,9 @@ export default class TooltipsService extends Service {
   @service
   router;
 
+  @service
+  snapshotQuery;
+
   allHidden = false;
   currentSequence = null;
   tooltipSequenceIndex = 0;
@@ -104,8 +107,7 @@ export default class TooltipsService extends Service {
     if (!build) {
       return GROUP_SEQUENCE;
     }
-
-    const snapshots = await build.get('snapshots');
+    const snapshots = await this.snapshotQuery.getChangedSnapshots(build);
 
     // only need to know if there is a group, don't need them to be in order
     const groupedSnapshots = groupSnapshots(snapshots);
