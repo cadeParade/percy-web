@@ -8,7 +8,6 @@ import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import SnapshotViewer from 'percy-web/tests/pages/components/snapshot-viewer';
-import {resolve} from 'rsvp';
 import {SNAPSHOT_APPROVED_STATE, SNAPSHOT_UNAPPROVED_STATE} from 'percy-web/models/snapshot';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import faker from 'faker';
@@ -21,12 +20,10 @@ describe('Integration: InfiniteSnapshotViewer', function() {
 
   let snapshotTitle;
   let snapshot;
-  let createReviewStub;
 
   beforeEach(function() {
     setupFactoryGuy(this);
 
-    createReviewStub = sinon.stub().returns(resolve());
     snapshotTitle = 'Awesome snapshot title';
     snapshot = make('snapshot', 'withComparisons', {name: snapshotTitle});
     const build = make('build', 'finished');
@@ -40,7 +37,6 @@ describe('Integration: InfiniteSnapshotViewer', function() {
       build,
       browser,
       userSelectedWidth: null,
-      createReview: createReviewStub,
       isBuildApprovable: true,
     });
   });
@@ -50,7 +46,6 @@ describe('Integration: InfiniteSnapshotViewer', function() {
       @snapshot={{snapshot}}
       @build={{build}}
       @userSelectedWidth={{userSelectedWidth}}
-      @createReview={{createReview}}
       @activeBrowser={{browser}}
       @isBuildApprovable={{isBuildApprovable}}
     />`);
@@ -66,7 +61,6 @@ describe('Integration: InfiniteSnapshotViewer', function() {
       @build={{build}}
       @userSelectedWidth={{userSelectedWidth}}
       @activeBrowser={{browser}}
-      @createReview={{createReview}}
       @isBuildApprovable={{isBuildApprovable}}
     />`);
 
@@ -80,7 +74,6 @@ describe('Integration: InfiniteSnapshotViewer', function() {
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
         @activeBrowser={{browser}}
-        @createReview={{createReview}}
         @isBuildApprovable={{isBuildApprovable}}
       />`);
     });
@@ -108,7 +101,6 @@ describe('Integration: InfiniteSnapshotViewer', function() {
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
         @activeBrowser={{browser}}
-        @createReview={{createReview}}
         @isBuildApprovable={{isBuildApprovable}}
       />`);
 
@@ -126,7 +118,6 @@ describe('Integration: InfiniteSnapshotViewer', function() {
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
         @activeBrowser={{browser}}
-        @createReview={{createReview}}
         @isBuildApprovable={{isBuildApprovable}}
       />`);
 
@@ -140,7 +131,6 @@ describe('Integration: InfiniteSnapshotViewer', function() {
         @snapshot={{snapshot}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @createReview={{createReview}}
         @activeBrowser={{browser}}
         @updateActiveSnapshotBlockId={{stub}}
         @isBuildApprovable={{isBuildApprovable}}
@@ -170,7 +160,6 @@ describe('Integration: InfiniteSnapshotViewer', function() {
         @snapshot={{snapshot}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @createReview={{createReview}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
@@ -192,7 +181,6 @@ describe('Integration: InfiniteSnapshotViewer', function() {
         @snapshot={{snapshot}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @createReview={{createReview}}
         @activeSnapshotBlockIndex={{activeSnapshotBlockIndex}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
@@ -233,36 +221,11 @@ describe('Integration: InfiniteSnapshotViewer', function() {
     });
   });
 
-  describe('approve snapshot button', function() {
-    beforeEach(async function() {
-      await render(hbs`<InfiniteSnapshotViewer
-        @snapshot={{snapshot}}
-        @build={{build}}
-        @createReview={{createReview}}
-        @updateActiveSnapshotBlockId={{stub}}
-        @activeBrowser={{browser}}
-        @isBuildApprovable={{isBuildApprovable}}
-      />`);
-    });
-
-    // eslint-disable-next-line
-    it('sends createReview with correct arguments when approve button is clicked', async function() {
-      await SnapshotViewer.header.clickApprove();
-      expect(createReviewStub).to.have.been.calledWith([this.get('build.snapshots.firstObject')]);
-    });
-
-    it('does not display when build is not finished', async function() {
-      this.set('build.state', 'pending');
-      expect(SnapshotViewer.header.snapshotApprovalButton.isVisible).to.equal(false);
-    });
-  });
-
   describe('diff toggling', function() {
     beforeEach(async function() {
       await render(hbs`<InfiniteSnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
-        @createReview={{createReview}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
@@ -288,7 +251,6 @@ describe('Integration: InfiniteSnapshotViewer', function() {
           @snapshot={{snapshot}}
           @build={{build}}
           @userSelectedWidth={{userSelectedWidth}}
-          @createReview={{createReview}}
           @activeBrowser={{browser}}
           @isBuildApprovable={{isBuildApprovable}}
           @updateActiveSnapshotBlockId={{stub}}
@@ -317,7 +279,6 @@ describe('Integration: InfiniteSnapshotViewer', function() {
             @snapshot={{snapshot}}
             @build={{build}}
             @userSelectedWidth={{userSelectedWidth}}
-            @createReview={{createReview}}
             @activeBrowser={{browser}}
             @isBuildApprovable={{isBuildApprovable}}
             @updateActiveSnapshotBlockId={{stub}}
@@ -341,7 +302,6 @@ describe('Integration: InfiniteSnapshotViewer', function() {
             @snapshot={{snapshot}}
             @build={{build}}
             @userSelectedWidth={{userSelectedWidth}}
-            @createReview={{createReview}}
             @activeBrowser={{browser}}
             @isBuildApprovable={{isBuildApprovable}}
             @updateActiveSnapshotBlockId={{stub}}
@@ -366,7 +326,6 @@ describe('Integration: InfiniteSnapshotViewer', function() {
             @snapshot={{snapshot}}
             @build={{build}}
             @userSelectedWidth={{userSelectedWidth}}
-            @createReview={{createReview}}
             @activeBrowser={{browser}}
             @isBuildApprovable={{isBuildApprovable}}
             @updateActiveSnapshotBlockId={{stub}}

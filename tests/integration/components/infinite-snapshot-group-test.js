@@ -8,7 +8,6 @@ import hbs from 'htmlbars-inline-precompile';
 import {make, makeList} from 'ember-data-factory-guy';
 import sinon from 'sinon';
 import SnapshotGroup from 'percy-web/tests/pages/components/snapshot-group';
-import {resolve} from 'rsvp';
 import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render} from '@ember/test-helpers';
@@ -22,13 +21,11 @@ describe('Integration: InfiniteSnapshotGroup', function() {
 
   let snapshots;
   let approvedSnapshots;
-  let createReviewStub;
 
   beforeEach(function() {
     setupFactoryGuy(this);
     this.withVariation('snapshot-sort-api', true);
 
-    createReviewStub = sinon.stub().returns(resolve());
     snapshots = makeList('snapshot', 5, 'withComparisons', {fingerprint: 'fingerprint'});
     approvedSnapshots = makeList('snapshot', 5, 'withComparisons', 'approved', {
       fingerprint: 'fingerprint',
@@ -44,7 +41,6 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       build,
       browser,
       userSelectedWidth: null,
-      createReview: createReviewStub,
       isBuildApprovable: true,
     });
   });
@@ -67,7 +63,6 @@ describe('Integration: InfiniteSnapshotGroup', function() {
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
         @activeBrowser={{browser}}
-        @createReview={{createReview}}
         @isBuildApprovable={{isBuildApprovable}}
       />`);
 
@@ -81,7 +76,6 @@ describe('Integration: InfiniteSnapshotGroup', function() {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @createReview={{createReview}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
       />`);
@@ -99,7 +93,6 @@ describe('Integration: InfiniteSnapshotGroup', function() {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @createReview={{createReview}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
       />`);
@@ -120,7 +113,6 @@ describe('Integration: InfiniteSnapshotGroup', function() {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @createReview={{createReview}}
         @activeSnapshotBlockIndex={{activeSnapshotBlockIndex}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
@@ -179,7 +171,6 @@ describe('Integration: InfiniteSnapshotGroup', function() {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @createReview={{createReview}}
         @activeSnapshotBlockIndex={{activeSnapshotBlockIndex}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
@@ -210,23 +201,6 @@ describe('Integration: InfiniteSnapshotGroup', function() {
     });
   });
 
-  describe('approve snapshot button', function() {
-    beforeEach(async function() {
-      await render(hbs`<InfiniteSnapshotGroup
-        @snapshots={{snapshots}}
-        @build={{build}}
-        @createReview={{createReview}}
-        @activeBrowser={{browser}}
-        @isBuildApprovable={{isBuildApprovable}}
-      />`);
-    });
-
-    it('sends createReview with correct args when approve button is clicked', async function() {
-      await SnapshotGroup.header.clickApprove();
-      expect(createReviewStub).to.have.been.calledWith(snapshots);
-    });
-  });
-
   describe('diff toggling', function() {
     beforeEach(async function() {
       await render(hbs`<InfiniteSnapshotGroup
@@ -234,7 +208,6 @@ describe('Integration: InfiniteSnapshotGroup', function() {
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
         @activeBrowser={{browser}}
-        @createReview={{createReview}}
         @isBuildApprovable={{isBuildApprovable}}
       />`);
     });
@@ -294,7 +267,6 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       await render(hbs`<InfiniteSnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @createReview={{createReview}}
         @updateActiveSnapshotBlockIndex={{stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
@@ -316,7 +288,6 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       await render(hbs`<InfiniteSnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @createReview={{createReview}}
         @updateActiveSnapshotBlockIndex={{stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
@@ -332,7 +303,6 @@ describe('Integration: InfiniteSnapshotGroup', function() {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @createReview={{createReview}}
         @activeSnapshotBlockIndex={{activeSnapshotBlockIndex}}
         @updateActiveSnapshotBlockIndex={{stub}}
         @activeBrowser={{browser}}
@@ -375,7 +345,6 @@ describe('Integration: InfiniteSnapshotGroup', function() {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @createReview={{createReview}}
         @activeSnapshotBlockIndex={{activeSnapshotBlockIndex}}
         @updateActiveSnapshotBlockIndex={{stub}}
         @activeBrowser={{browser}}

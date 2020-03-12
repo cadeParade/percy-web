@@ -9,7 +9,6 @@ export default InfiniteSnapshotListItem.extend({
   layout,
   launchDarkly: service(),
   snapshot: null,
-  createReview: null,
   externalIsCommentPanelShowing: false,
   userIsCommentPanelShowing: undefined,
 
