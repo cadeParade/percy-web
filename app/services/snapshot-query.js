@@ -57,8 +57,8 @@ export default class SnapshotQueryService extends Service {
   getSnapshots(snapshotIds, buildId) {
     const ids = snapshotIds.join(',');
     return this.store.loadRecords('snapshot', {
+      build_id: buildId,
       filter: {
-        build: buildId,
         'snapshot-ids': ids,
       },
     });
@@ -66,8 +66,8 @@ export default class SnapshotQueryService extends Service {
 
   getSnapshotsWithSortMeta(build) {
     return this.store.loadRecords('snapshot', {
+      build_id: build.get('id'),
       filter: {
-        build: build.get('id'),
         'review-state-reason': DIFF_REVIEW_STATE_REASONS.join(','),
       },
       'include-sort-data': true,
