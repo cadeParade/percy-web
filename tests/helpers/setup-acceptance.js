@@ -9,12 +9,13 @@ import mockStripeService from 'percy-web/tests/helpers/mock-stripe-service';
 /*eslint no-unused-vars: ["error", { "varsIgnorePattern": "it|describe" }]*/
 import {describe, it, beforeEach, afterEach} from 'mocha';
 import {expect} from 'chai';
-import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-client-test';
+import setupLaunchDarkly from 'percy-web/tests/helpers/setup-launch-darkly';
 
 export default function setupAcceptance({authenticate = true} = {}) {
   SetupLocalStorageSandbox();
-  setupApplicationTest();
+  let hooks = setupApplicationTest();
   setupMirage();
+  setupLaunchDarkly(hooks);
   beforeEach(function() {
     window.localStorage.clear();
     seedFaker();
@@ -22,7 +23,6 @@ export default function setupAcceptance({authenticate = true} = {}) {
     if (authenticate) {
       authenticateSession();
     }
-    this.owner.__container__.registry.register('service:launch-darkly-client', StubClient);
   });
 
   afterEach(function() {
@@ -30,6 +30,8 @@ export default function setupAcceptance({authenticate = true} = {}) {
       server.shutdown();
     }
   });
+
+  return hooks;
 }
 
 // setupSession sets up the session, the createData should set create mirage models.

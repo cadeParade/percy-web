@@ -5,7 +5,7 @@ import ProjectPage from 'percy-web/tests/pages/project-page';
 import ProjectSettingsPage from 'percy-web/tests/pages/project-settings-page';
 import NewProjectPage from 'percy-web/tests/pages/new-project-page';
 import sinon from 'sinon';
-import {beforeEach, afterEach} from 'mocha';
+import {beforeEach} from 'mocha';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {visit, findAll, currentRouteName, settled} from '@ember/test-helpers';
 import {selectChoose} from 'ember-power-select/test-support/helpers';
@@ -13,7 +13,7 @@ import UserMenu from 'percy-web/tests/pages/components/user-menu';
 import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
 import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
 import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
-import withVariation from 'percy-web/tests/helpers/with-variation';
+
 describe('Acceptance: Project', function() {
   setupAcceptance();
 
@@ -147,11 +147,7 @@ describe('Acceptance: Project', function() {
 
     describe('with the only-admins-edit-settings feature flag on', function() {
       beforeEach(function() {
-        withVariation(this.owner, 'only-admins-edit-settings', true);
-      });
-
-      afterEach(function() {
-        withVariation(this.owner, 'only-admins-edit-settings', false);
+        this.withVariation('only-admins-edit-settings', true);
       });
 
       describe('user is member', function() {
