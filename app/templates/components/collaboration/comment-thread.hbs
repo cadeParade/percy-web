@@ -4,7 +4,6 @@
     <Collaboration::CollaborationComment
       @comment={{this.firstComment}}
       @isFirstComment={{true}}
-      @closeCommentThread={{this.closeCommentThread}}
       @isCommentingAllowed={{this.isCommentingAllowed}}
     />
     <div class="collaboration-content-inset">
@@ -26,7 +25,6 @@
         <Collaboration::CollaborationComment
           @comment={{comment}}
           @isFirstComment={{eq index 0}}
-          @closeCommentThread={{this.closeCommentThread}}
         />
       </div>
     {{/each}}

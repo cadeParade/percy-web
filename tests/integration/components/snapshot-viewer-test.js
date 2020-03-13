@@ -267,7 +267,6 @@ describe('Integration: SnapshotViewer', function() {
           @activeBrowser={{browser}}
           @isBuildApprovable={{isBuildApprovable}}
           @updateActiveSnapshotBlockId={{stub}}
-          @createCommentThread={{stub}}
         />`);
       });
 
@@ -295,7 +294,6 @@ describe('Integration: SnapshotViewer', function() {
             @activeBrowser={{browser}}
             @isBuildApprovable={{isBuildApprovable}}
             @updateActiveSnapshotBlockId={{stub}}
-            @createCommentThread={{stub}}
           />`);
         });
 
@@ -318,7 +316,6 @@ describe('Integration: SnapshotViewer', function() {
             @activeBrowser={{browser}}
             @isBuildApprovable={{isBuildApprovable}}
             @updateActiveSnapshotBlockId={{stub}}
-            @createCommentThread={{stub}}
           />`);
         });
 
@@ -342,7 +339,6 @@ describe('Integration: SnapshotViewer', function() {
             @activeBrowser={{browser}}
             @isBuildApprovable={{isBuildApprovable}}
             @updateActiveSnapshotBlockId={{stub}}
-            @createCommentThread={{stub}}
           />`);
         });
 

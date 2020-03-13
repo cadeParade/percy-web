@@ -7,12 +7,12 @@ import {computed, get} from '@ember/object';
 export default Component.extend({
   mentionables: service(),
   flashMessages: service(),
+  commentThreads: service(),
   tagName: '',
   shouldShowNewCommentInput: false,
   currentUser: null,
   areChangesRequested: false,
   commentBody: '',
-  createCommentThread: null,
   snapshot: null,
   mentionedUsers: null,
   isThreadSaving: readOnly('threadSaveTask.isRunning'),
@@ -41,10 +41,11 @@ export default Component.extend({
 
     async saveComment() {
       if (isEmpty(this.commentBody)) return;
-      const task = this.createCommentThread({
+
+      const task = this.commentThreads.createCommentThread.perform({
+        snapshotId: this.snapshot.id,
         commentBody: this.commentBody,
         areChangesRequested: this.areChangesRequested,
-        snapshotId: this.snapshot.id,
         mentionedUsers: this.mentionables.verifyMentions(this.mentionedUsers, this.commentBody),
       });
 

@@ -4,7 +4,6 @@
       <Collaboration::NewThread
         @shouldShowNewCommentInput={{not this.hasCommentThreads}}
         @currentUser={{this.currentUser}}
-        @createCommentThread={{this.createCommentThread}}
         @isSnapshotApproved={{this.isSnapshotApproved}}
         @snapshot={{this.snapshot}}
       />
@@ -12,8 +11,6 @@
     {{#each this.openThreads as |thread|}}
       <Collaboration::CommentThread
         @commentThread={{thread}}
-        @createComment={{this.createComment}}
-        @closeCommentThread={{this.closeCommentThread}}
         @isCommentingAllowed={{this.isCommentingAllowed}}
       />
     {{/each}}
@@ -23,8 +20,6 @@
         {{#each this.closedThreads as |thread|}}
           <Collaboration::CommentThread
             @commentThread={{thread}}
-            @createComment={{this.createComment}}
-            @closeCommentThread={{this.closeCommentThread}}
             @isCommentingAllowed={{this.isCommentingAllowed}}
           />
         {{/each}}

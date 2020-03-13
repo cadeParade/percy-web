@@ -7,10 +7,10 @@ import {inject as service} from '@ember/service';
 export default Component.extend({
   tagName: '',
   flashMessages: service(),
+  commentThreads: service(),
   comment: null,
   isFirstComment: false,
   isCommentingAllowed: true,
-  closeCommentThread() {},
 
   commentThread: readOnly('comment.commentThread'),
   commentThreadSnapshot: readOnly('commentThread.snapshot'),
@@ -39,7 +39,7 @@ export default Component.extend({
   actions: {
     async closeCommentThread() {
       const commentThread = this.comment.commentThread;
-      const task = this.closeCommentThread({commentThread});
+      const task = this.commentThreads.closeCommentThread.perform({commentThread});
 
       this.set('closeThreadTask', task);
       await task;

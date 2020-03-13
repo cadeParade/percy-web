@@ -4,9 +4,6 @@ import SnapshotListItem from 'percy-web/components/snapshot-list-item';
 
 export default SnapshotListItem.extend({
   snapshots: null,
-  createCommentThread: null,
-  createComment: null,
-  closeCommentThread: null,
 
   areAllSnapshotsExpanded: false,
   isGroupCollapsed: not('areAllSnapshotsExpanded'),

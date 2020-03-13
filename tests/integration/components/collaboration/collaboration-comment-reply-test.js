@@ -10,14 +10,27 @@ import Service from '@ember/service';
 import sinon from 'sinon';
 import {initialize as initializeEmberKeyboard} from 'ember-keyboard';
 import {fillIn, render} from '@ember/test-helpers';
+import stubService from 'percy-web/tests/helpers/stub-service-integration';
 
 describe('Integration: CollaborationCommentReply', function() {
   setupRenderingTest('collaboration-comment-reply', {
     integration: true,
   });
 
+  function stubCreateComment(context, stub) {
+    const service = context.owner.lookup('service:comment-threads');
+    service.set('createComment', {perform: stub});
+  }
+
+  let createCommentStub;
+
   beforeEach(async function() {
     setupFactoryGuy(this);
+
+    createCommentStub = sinon.stub().resolves();
+    stubService(this, 'commentThreads', 'comment-threads', {
+      createComment: {perform: createCommentStub},
+    });
 
     const currentUser = make('user');
     const sessionServiceStub = Service.extend({currentUser});
@@ -44,7 +57,7 @@ describe('Integration: CollaborationCommentReply', function() {
 
   describe('when the reply is expanded', function() {
     let commentThread;
-    let submitStub;
+
     beforeEach(async function() {
       initializeEmberKeyboard();
       const organization = make('organization', 'withUsers');
@@ -52,12 +65,10 @@ describe('Integration: CollaborationCommentReply', function() {
       const build = make('build', {project});
       const snapshot = make('snapshot', {build});
       commentThread = make('comment-thread', {snapshot});
-      submitStub = sinon.stub().returns({isSuccessful: true});
 
-      this.setProperties({commentThread, submitStub, organization});
+      this.setProperties({commentThread, organization});
       await render(hbs`<Collaboration::CollaborationCommentReply
         @commentThread={{commentThread}}
-        @createComment={{submitStub}}
       />`);
 
       await CommentReply.expandTextarea();
@@ -91,7 +102,7 @@ describe('Integration: CollaborationCommentReply', function() {
       await CommentReply.typeComment(commentText);
       await CommentReply.submit.click();
 
-      expect(submitStub).to.have.been.calledWith({
+      expect(createCommentStub).to.have.been.calledWith({
         commentThread,
         commentBody: commentText,
         mentionedUsers: [],
@@ -102,7 +113,7 @@ describe('Integration: CollaborationCommentReply', function() {
       const commentText = 'hello there';
       await CommentReply.typeComment(commentText);
       await CommentReply.percyTextarea.cmdEnter();
-      expect(submitStub).to.have.been.calledWith({
+      expect(createCommentStub).to.have.been.calledWith({
         commentThread,
         commentBody: commentText,
         mentionedUsers: [],
@@ -117,7 +128,7 @@ describe('Integration: CollaborationCommentReply', function() {
       await CommentReply.mentionableTextarea.selectSecondUser();
       await CommentReply.percyTextarea.cmdEnter();
 
-      expect(submitStub).to.have.been.calledWith({
+      expect(createCommentStub).to.have.been.calledWith({
         commentThread,
         commentBody: `${commentText}@${orgUsers[0].name} @${orgUsers[1].name} `,
         mentionedUsers: [orgUsers[0], orgUsers[1]],
@@ -137,7 +148,7 @@ describe('Integration: CollaborationCommentReply', function() {
       await fillIn('textarea', commentText);
       await CommentReply.percyTextarea.cmdEnter();
 
-      expect(submitStub).to.have.been.calledWith({
+      expect(createCommentStub).to.have.been.calledWith({
         commentThread,
         commentBody: commentText,
         mentionedUsers: [],
@@ -145,7 +156,8 @@ describe('Integration: CollaborationCommentReply', function() {
     });
 
     it('shows saving indicator when saving', async function() {
-      submitStub.returns({isRunning: true});
+      const createCommentStub = sinon.stub().returns({isRunning: true});
+      stubCreateComment(this, createCommentStub);
       const commentText = 'When you play the game of thrones, you win or you die';
       await CommentReply.typeComment(commentText);
       await CommentReply.submit.click();
@@ -154,7 +166,8 @@ describe('Integration: CollaborationCommentReply', function() {
     });
 
     it('resets reply when comment is successfully saved', async function() {
-      submitStub.returns({isSuccessful: true});
+      const createCommentStub = sinon.stub().returns({isSuccessful: true});
+      stubCreateComment(this, createCommentStub);
       const commentText = 'That’s what I do: I drink and I know things.';
       await CommentReply.typeComment(commentText);
       await CommentReply.submit.click();
@@ -164,12 +177,14 @@ describe('Integration: CollaborationCommentReply', function() {
     });
 
     it('shows flash message when comment save fails', async function() {
+      const createCommentStub = sinon.stub().returns({isSuccessful: false});
+      stubCreateComment(this, createCommentStub);
+
       const flashMessageService = this.owner
         .lookup('service:flash-messages')
         .registerTypes(['danger']);
       sinon.stub(flashMessageService, 'danger');
 
-      submitStub.returns({isSuccessful: false});
       const commentText = 'That’s what I do: I drink and I know things.';
       await CommentReply.typeComment(commentText);
       await CommentReply.submit.click();

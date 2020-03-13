@@ -8,31 +8,40 @@ import sinon from 'sinon';
 import CollaborationComment from 'percy-web/tests/pages/components/collaboration/collaboration-comment'; // eslint-disable-line
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render} from '@ember/test-helpers';
+import stubService from 'percy-web/tests/helpers/stub-service-integration';
 
 describe('Integration: CollaborationComment', function() {
   setupRenderingTest('collaboration-comment', {
     integration: true,
   });
 
-  beforeEach(async function() {
-    setupFactoryGuy(this);
-  });
+  function stubCloseComment(context, stub) {
+    const service = context.owner.lookup('service:comment-threads');
+    service.set('closeCommentThread', {perform: stub});
+  }
 
   let closeCommentThreadStub;
+
+  beforeEach(async function() {
+    setupFactoryGuy(this);
+
+    closeCommentThreadStub = sinon.stub().resolves();
+    stubService(this, 'commentThreads', 'comment-threads', {
+      closeCommentThread: {perform: closeCommentThreadStub},
+    });
+  });
+
   describe('when `isFirstComment` is true', function() {
     beforeEach(async function() {
-      closeCommentThreadStub = sinon.stub();
       const comment = make('comment', 'fromReviewThread');
       this.setProperties({
         isFirstComment: true,
         comment,
-        closeCommentThreadStub,
         isCommentingAllowed: true,
       });
       await render(hbs`<Collaboration::CollaborationComment
         @comment={{comment}}
         @isFirstComment={{isFirstComment}}
-        @closeCommentThread={{closeCommentThreadStub}}
         @isCommentingAllowed={{isCommentingAllowed}}
       />`);
     });
@@ -76,7 +85,8 @@ describe('Integration: CollaborationComment', function() {
         });
 
         it('shows flash message if save fails', async function() {
-          closeCommentThreadStub.returns({isSuccessful: false});
+          const closeCommentThreadStub = sinon.stub().returns({isSuccessful: false});
+          stubCloseComment(this, closeCommentThreadStub);
           const flashMessageService = this.owner
             .lookup('service:flash-messages')
             .registerTypes(['danger']);
@@ -101,7 +111,9 @@ describe('Integration: CollaborationComment', function() {
         });
 
         it('shows flash message if save fails', async function() {
-          closeCommentThreadStub.returns({isSuccessful: false});
+          const closeCommentThreadStub = sinon.stub().returns({isSuccessful: false});
+          stubCloseComment(this, closeCommentThreadStub);
+
           const flashMessageService = this.owner
             .lookup('service:flash-messages')
             .registerTypes(['danger']);

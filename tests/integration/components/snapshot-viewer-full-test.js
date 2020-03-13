@@ -60,9 +60,6 @@ describe('Integration: SnapshotViewerFull', function() {
       @activeBrowser={{browser}}
       @isBuildApprovable={{isBuildApprovable}}
       @updateSnapshotId={{stub}}
-      @createCommentThread={{stub}}
-      @closeCommentThread={{stub}}
-      @createComment={{stub}}
     />`);
   });
 

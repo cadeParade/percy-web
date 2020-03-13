@@ -6,11 +6,11 @@ import {computed, get} from '@ember/object';
 
 export default Component.extend({
   mentionables: service(),
+  commentThreads: service(),
   tagName: '',
   isExpanded: false,
   commentBody: '',
   commentThread: null,
-  createComment: null,
   mentionedUsers: null,
 
   session: service(),
@@ -40,9 +40,10 @@ export default Component.extend({
     async saveReply() {
       if (isEmpty(this.commentBody)) return;
       const commentBody = this.commentBody;
-      const task = this.createComment({
-        commentBody: commentBody,
+
+      const task = this.commentThreads.createComment.perform({
         commentThread: this.commentThread,
+        commentBody: commentBody,
         mentionedUsers: this.mentionables.verifyMentions(this.mentionedUsers, this.commentBody),
       });
 

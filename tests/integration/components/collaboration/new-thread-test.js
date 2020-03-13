@@ -8,11 +8,17 @@ import sinon from 'sinon';
 import CollaborationNewThread from 'percy-web/tests/pages/components/collaboration/new-thread';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render, fillIn} from '@ember/test-helpers';
+import stubService from 'percy-web/tests/helpers/stub-service-integration';
 
 describe('Integration: CollaborationNewThread', function() {
   setupRenderingTest('collaboration-new-thread', {
     integration: true,
   });
+
+  function stubCreateCommentThread(context, stub) {
+    const service = context.owner.lookup('service:comment-threads');
+    service.set('createCommentThread', {perform: stub});
+  }
 
   beforeEach(async function() {
     setupFactoryGuy(this);
@@ -20,22 +26,25 @@ describe('Integration: CollaborationNewThread', function() {
 
   describe('when shouldShowNewCommentInput is true', function() {
     let user;
-    let saveStub;
     let snapshot;
+    let createCommentThreadStub;
 
     beforeEach(async function() {
+      createCommentThreadStub = sinon.stub().resolves({isSuccessful: true});
+      stubService(this, 'commentThreads', 'comment-threads', {
+        createCommentThread: {perform: createCommentThreadStub},
+      });
+
       const organization = make('organization', 'withUsers');
       const project = make('project', {organization});
       const build = make('build', {project});
       snapshot = make('snapshot', {build});
       user = make('user');
-      saveStub = sinon.stub().returns({isSuccessful: true});
 
-      this.setProperties({user, saveStub, snapshot, organization});
+      this.setProperties({user, snapshot, organization});
 
       await render(hbs`<Collaboration::NewThread
         @currentUser={{user}}
-        @createCommentThread={{saveStub}}
         @shouldShowNewCommentInput={{true}}
         @snapshot={{snapshot}}
       />`);
@@ -52,12 +61,13 @@ describe('Integration: CollaborationNewThread', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('sends save action with correct args when "request changes" is not checked', async function() { // eslint-disable-line
+    // eslint-disable-next-line
+    it('sends save action with correct args when "request changes" is not checked', async function() {
       const commentText = 'I am not here to be queen of the ashes';
       await CollaborationNewThread.typeNewComment(commentText);
       await CollaborationNewThread.submitNewThread();
 
-      expect(saveStub).to.have.been.calledWith({
+      expect(createCommentThreadStub).to.have.been.calledWith({
         snapshotId: snapshot.id,
         commentBody: commentText,
         areChangesRequested: false,
@@ -65,13 +75,14 @@ describe('Integration: CollaborationNewThread', function() {
       });
     });
 
-    it('sends save action with correct args when "request changes" is checked', async function() { // eslint-disable-line
+    // eslint-disable-next-line
+    it('sends save action with correct args when "request changes" is checked', async function() {
       const commentText = 'I am not here to be queen of the ashes';
       await CollaborationNewThread.typeNewComment(commentText);
       await CollaborationNewThread.checkRequestChangesBox();
       await CollaborationNewThread.submitNewThread();
 
-      expect(saveStub).to.have.been.calledWith({
+      expect(createCommentThreadStub).to.have.been.calledWith({
         snapshotId: snapshot.id,
         commentBody: commentText,
         areChangesRequested: true,
@@ -87,7 +98,7 @@ describe('Integration: CollaborationNewThread', function() {
       await CollaborationNewThread.mentionableTextarea.selectSecondUser();
       await CollaborationNewThread.percyTextarea.cmdEnter();
 
-      expect(saveStub).to.have.been.calledWith({
+      expect(createCommentThreadStub).to.have.been.calledWith({
         snapshotId: snapshot.id,
         areChangesRequested: false,
         commentBody: `${commentText}@${orgUsers[0].name} @${orgUsers[1].name} `,
@@ -108,7 +119,7 @@ describe('Integration: CollaborationNewThread', function() {
       await fillIn('textarea', commentText);
       await CollaborationNewThread.percyTextarea.cmdEnter();
 
-      expect(saveStub).to.have.been.calledWith({
+      expect(createCommentThreadStub).to.have.been.calledWith({
         snapshotId: snapshot.id,
         areChangesRequested: false,
         commentBody: commentText,
@@ -121,7 +132,7 @@ describe('Integration: CollaborationNewThread', function() {
       await CollaborationNewThread.typeNewComment(commentText);
       await CollaborationNewThread.checkRequestChangesBox();
       await CollaborationNewThread.percyTextarea.cmdEnter();
-      expect(saveStub).to.have.been.calledWith({
+      expect(createCommentThreadStub).to.have.been.calledWith({
         snapshotId: snapshot.id,
         commentBody: commentText,
         areChangesRequested: true,
@@ -150,7 +161,9 @@ describe('Integration: CollaborationNewThread', function() {
     });
 
     it('resets form after comment thread is saved successfully', async function() {
-      saveStub.returns({isSuccessful: true});
+      const createCommentThreadStub = sinon.stub().returns({isSuccessful: true});
+      stubCreateCommentThread(this, createCommentThreadStub);
+
       const commentText = 'What do we say to the god of death? Not today.';
       await CollaborationNewThread.typeNewComment(commentText);
       await CollaborationNewThread.checkRequestChangesBox();
@@ -164,7 +177,9 @@ describe('Integration: CollaborationNewThread', function() {
     });
 
     it('shows flash message after comment thread save errors', async function() {
-      saveStub.returns({isSuccessful: false});
+      const createCommentThreadStub = sinon.stub().returns({isSuccessful: false});
+      stubCreateCommentThread(this, createCommentThreadStub);
+
       const flashMessageService = this.owner
         .lookup('service:flash-messages')
         .registerTypes(['danger']);
