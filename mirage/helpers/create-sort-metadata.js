@@ -1,6 +1,5 @@
 import {get} from '@ember/object';
 import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
-// TODO groups
 // TODO(sort) divide by browser :/
 // TODO(sort) correct default browser??
 
@@ -77,6 +76,7 @@ function separateGroups(groupOrderItems) {
   return groupOrderItems.reduce(
     (acc, groupOrderItem) => {
       const snapshots = groupOrderItem['snapshot-ids'].map(snapshotId => {
+        // eslint-disable-next-line
         return server.db.snapshots.find(snapshotId);
       });
       const areAllApproved = snapshots.every(snapshot => {
@@ -94,6 +94,7 @@ function separateGroups(groupOrderItems) {
 function separateSnapshots(snapshotsOrderItems) {
   return snapshotsOrderItems.reduce(
     (acc, snapshotOrderItem) => {
+      // eslint-disable-next-line
       const snapshot = server.db.snapshots.find(snapshotOrderItem['snapshot-id']);
       snapshot.reviewState === SNAPSHOT_APPROVED_STATE
         ? acc.approvedSnapshots.push(snapshotOrderItem)

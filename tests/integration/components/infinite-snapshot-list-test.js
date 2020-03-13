@@ -26,58 +26,15 @@ describe('Integration: InfiniteSnapshotList', function() {
     this.withVariation('snapshot-sort-api', true);
   });
 
-  describe.skip('when shouldDeferRendering is true', function() {
-    const numSnapshots = 10;
-
-    beforeEach(async function() {
-      const stub = sinon.stub();
-      const build = make('build', 'finished');
-      const browser = make('browser');
-
-      const singleSnapshotsChanged = makeList('snapshot', numSnapshots, 'withComparisons', {build});
-      const group = makeList('snapshot', 2, 'withComparisons', {build, fingerprint: 'aaa'});
-      const orderItems = [{index: 0, type: 'group', 'snapshot-ids': [group.mapBy('id')]}].concat(
-        singleSnapshotsChanged.map((snapshot, i) => {
-          return {index: i + 1, type: 'snapshot', 'snapshot-id': snapshot.id};
-        }),
-      );
-
-      this.setProperties({
-        orderItems,
-        build,
-        stub,
-        browser,
-        shouldDeferRendering: true,
-      });
-
-      await render(hbs`<InfiniteSnapshotList
-        @orderItems={{orderItems}}
-        @build={{build}}
-        @activeBrowser={{browser}}
-        @shouldDeferRendering={{shouldDeferRendering}}
-        @toggleUnchangedSnapshotsVisible={{stub}}
-        @isBuildApprovable={{true}}
-      />`);
-    });
-
-    it('renders snapshot header placeholder', async function() {
-      expect(SnapshotList.snapshotBlocks.length).to.equal(numSnapshots + 1);
-      SnapshotList.snapshotBlocks.forEach(block => {
-        expect(block.isLazyRenderHeaderVisible).to.equal(true);
-      });
-      await percySnapshot(this.test, {darkMode: true});
-    });
-  });
-
-  describe.skip('keyboard nav behavior', function() {
+  describe('keyboard nav behavior', function() {
     beforeEach(async function() {
       initializeEmberKeyboard();
       const stub = sinon.stub();
       const build = make('build', 'finished');
       const browser = make('browser');
 
-      const snapshotsChanged = makeList('snapshot', 1, 'withComparisons', {build});
-      const snapshotsUnchanged = makeList('snapshot', 3, 'withNoDiffs', {build});
+      const snapshotChanged = make('snapshot', 'withComparisons', {build});
+      const approvedSnapshot = make('snapshot', 'approved', 'withComparisons', {build});
       const approvedGroup1 = makeList('snapshot', 5, 'approved', 'withComparisons', {
         build,
         fingerprint: 'approvedGroup1',
@@ -91,102 +48,97 @@ describe('Integration: InfiniteSnapshotList', function() {
         fingerprint: 'unapprovedGroup',
       });
 
-      const orderItems = []
-        .concat([{index: 0, type: 'group', 'snapshot-ids': unapprovedGroup.mapBy('id')}])
-        .concat(
-          snapshotsChanged.map((snapshot, i) => {
-            return {index: i, type: 'snapshot', 'snapshot-id': snapshot.id};
-          }),
-        )
-        .concat([{index: 0, type: 'group', 'snapshot-ids': approvedGroup1.mapBy('id')}])
-        .concat([{index: 0, type: 'group', 'snapshot-ids': approvedGroup2.mapBy('id')}]);
+      const sortMetadata = metadataSort.create({
+        metadataSort: [
+          {
+            browser_family_slug: 'firefox',
+            default_browser_family_slug: true,
+            items: [
+              {
+                index: 0,
+                type: 'group',
+                'snapshot-ids': unapprovedGroup.mapBy('id'),
+              },
+              {
+                index: 1,
+                type: 'snapshot',
+                'snapshot-id': snapshotChanged.id,
+              },
+              {
+                index: 2,
+                type: 'group',
+                'snapshot-ids': approvedGroup1.mapBy('id'),
+              },
+              {
+                index: 3,
+                type: 'group',
+                'snapshot-ids': approvedGroup2.mapBy('id'),
+              },
+              {
+                index: 4,
+                type: 'snapshot',
+                'snapshot-id': approvedSnapshot.id,
+              },
+            ],
+          },
+        ],
+      });
 
       this.setProperties({
         build,
-        orderItems,
-        snapshotsUnchanged,
+        orderItems: sortMetadata.orderItemsForBrowser('firefox'),
         stub,
         browser,
-        isKeyboardNavEnabled: true,
         isUnchangedSnapshotsVisible: false,
       });
 
       await render(hbs`<InfiniteSnapshotList
         @orderItems={{orderItems}}
         @build={{build}}
-        @isKeyboardNavEnabled={{isKeyboardNavEnabled}}
         @activeBrowser={{browser}}
         @toggleUnchangedSnapshotsVisible={{stub}}
-        @isUnchangedSnapshotsVisible={{isUnchangedSnapshotsVisible}}
-        @snapshotsUnchanged={{snapshotsUnchanged}}
         @isBuildApprovable={{true}}
       />`);
     });
 
     it('automatically expands collapsed snapshot blocks if focused', async function() {
-      this.set('isUnchangedSnapshotsVisible', true);
       const firstApprovedGroup = SnapshotList.snapshotBlocks[2].snapshotGroup;
       const secondApprovedGroup = SnapshotList.snapshotBlocks[3].snapshotGroup;
-      const firstNoDiffSnapshot = SnapshotList.snapshotBlocks[4].snapshotViewer;
-      const secondNoDiffSnapshot = SnapshotList.snapshotBlocks[5].snapshotViewer;
-      const thirdNoDiffSnapshot = SnapshotList.snapshotBlocks[6].snapshotViewer;
+      const approvedSnapshot = SnapshotList.snapshotBlocks[4].snapshotViewer;
 
-      // Manaully click the first approved snapshot group and first unchanged snapshot.
-      // Clicking on these objects mean that they should not ever collapse with arrow nav.
+      // Manaully click the first approved snapshot group.
+      // Clicking on this object means that it should not ever collapse with arrow nav.
       // The group was clicked last, so that is where the active snapshot starts.
-      await firstNoDiffSnapshot.header.expandSnapshot();
       await firstApprovedGroup.header.expandGroup();
 
-      expect(firstApprovedGroup.isExpanded).to.equal(true);
-      expect(secondApprovedGroup.isExpanded).to.equal(false);
-      expect(firstNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
-      expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
-      expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
+      expect(firstApprovedGroup.isExpanded, 'a').to.equal(true);
+      expect(secondApprovedGroup.isExpanded, 'b').to.equal(false);
+      expect(approvedSnapshot.isExpanded, 'c').to.equal(false);
 
       // Arrow to second approved group.
       // Since we clicked the first group, it's snapshots should be visible.
       // Since we arrowed to the second group, it's snapshots should be visible.
-      // Since we clicked the first unchanged snapshot, it's comparisons should be visible.
       await SnapshotList.typeDownArrow();
 
-      expect(firstApprovedGroup.isExpanded).to.equal(true);
-      expect(secondApprovedGroup.isExpanded).to.equal(true);
-      expect(firstNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
-      expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
-      expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
+      expect(firstApprovedGroup.isExpanded, 'd').to.equal(true);
+      expect(secondApprovedGroup.isExpanded, 'e').to.equal(true);
+      expect(approvedSnapshot.isExpanded, 'f').to.equal(false);
 
-      // Arrow to first unchanged snapshot.
+      // Arrow to approved snapshot.
       await SnapshotList.typeDownArrow();
 
       // We clicked on the first group, it's snapshots should always visible.
       // We arrowed to and away from the second group, so its snapshots should now be hidden.
-      // We arrowed to the first unchanged snapshots, and it was already expanded,
-      // so its comparisons should be visible.
-      expect(firstApprovedGroup.isExpanded).to.equal(true);
-      expect(secondApprovedGroup.isExpanded).to.equal(false);
-      expect(firstNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
-      expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
-      expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
-
-      // Arrow to the second unchanged snapshot.
-      await SnapshotList.typeDownArrow();
-
-      // We clicked on the first group, its snapshots should always visible.
-      // We arrowed to and away from the second group, so its snapshots should now be hidden.
-      // We arrowed to and away from the first unchanged snapshots,
-      // so its snapshots should now be hidden
-      // We arrowed to the second unchanged snapshot, so its comparisons should now be visible.
-      expect(firstApprovedGroup.isExpanded).to.equal(true);
-      expect(secondApprovedGroup.isExpanded).to.equal(false);
-      expect(firstNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
-      expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
-      expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
+      // We arrowed to the first approved snapshot, so its comparisons should be visible.
+      expect(firstApprovedGroup.isExpanded, 'g').to.equal(true);
+      expect(secondApprovedGroup.isExpanded, 'h').to.equal(false);
+      expect(approvedSnapshot.isExpanded, 'i').to.equal(true);
     });
 
     it('focuses snapshots on arrow presses', async function() {
       const numRenderedSnapshots = SnapshotList.snapshotBlocks.length;
-      // 4 = 1 unapproved group, 1 unapproved snapshot, 2 approved groups
-      expect(numRenderedSnapshots).to.equal(4);
+      // 5 = 1 unapproved group, 1 unapproved snapshot, 2 approved groups, 1 approved snapshot
+      expect(numRenderedSnapshots).to.equal(5);
 
       const firstSnapshotBlock = SnapshotList.snapshotBlocks[0];
       const secondSnapshotBlock = SnapshotList.snapshotBlocks[1];
@@ -194,43 +146,21 @@ describe('Integration: InfiniteSnapshotList', function() {
 
       // select first snapshotBlock
       await SnapshotList.typeDownArrow();
-      expect(firstSnapshotBlock.isFocused).to.equal(true);
-      expect(secondSnapshotBlock.isFocused).to.equal(false);
-      expect(lastSnapshotBlock.isFocused).to.equal(false);
+      expect(firstSnapshotBlock.isFocused, 'a').to.equal(true);
+      expect(secondSnapshotBlock.isFocused, 'b').to.equal(false);
+      expect(lastSnapshotBlock.isFocused, 'c').to.equal(false);
 
       // select second snapshotBlock
       await SnapshotList.typeDownArrow();
-      expect(firstSnapshotBlock.isFocused).to.equal(false);
-      expect(secondSnapshotBlock.isFocused).to.equal(true);
-      expect(lastSnapshotBlock.isFocused).to.equal(false);
+      expect(firstSnapshotBlock.isFocused, 'd').to.equal(false);
+      expect(secondSnapshotBlock.isFocused, 'e').to.equal(true);
+      expect(lastSnapshotBlock.isFocused, 'f').to.equal(false);
 
       // select first snapshotBlock
       await SnapshotList.typeUpArrow();
-      expect(firstSnapshotBlock.isFocused).to.equal(true);
-      expect(secondSnapshotBlock.isFocused).to.equal(false);
-      expect(lastSnapshotBlock.isFocused).to.equal(false);
-
-      // wrap around to select last snapshotBlock
-      await SnapshotList.typeUpArrow();
-      expect(firstSnapshotBlock.isFocused).to.equal(false);
-      expect(secondSnapshotBlock.isFocused).to.equal(false);
-      expect(lastSnapshotBlock.isFocused).to.equal(true);
-      await percySnapshot(this.test, {darkMode: true});
-
-      // wrap around to select first snapshotBlock
-      await SnapshotList.typeDownArrow();
-      expect(firstSnapshotBlock.isFocused).to.equal(true);
-      expect(secondSnapshotBlock.isFocused).to.equal(false);
-      expect(lastSnapshotBlock.isFocused).to.equal(false);
-    });
-
-    it('does not send keyboard actions when isKeyboardNavEnabled is false', async function() {
-      const numRenderedSnapshots = SnapshotList.snapshotBlocks.length;
-      this.set('isKeyboardNavEnabled', false);
-      await SnapshotList.typeDownArrow();
-      expect(SnapshotList.snapshotBlocks[0].isFocused).to.equal(false);
-      expect(SnapshotList.snapshotBlocks[1].isFocused).to.equal(false);
-      expect(SnapshotList.snapshotBlocks[numRenderedSnapshots - 1].isFocused).to.equal(false);
+      expect(firstSnapshotBlock.isFocused, 'g').to.equal(true);
+      expect(secondSnapshotBlock.isFocused, 'h').to.equal(false);
+      expect(lastSnapshotBlock.isFocused, 'i').to.equal(false);
     });
   });
 

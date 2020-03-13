@@ -48,24 +48,19 @@ export default Component.extend(EKMixin, {
   }),
 
   newIndex({isNext = true} = {}) {
+    // TODO(sort): handle when unchanged snapshots are shown
     const numItems = this.orderItems.length;
-    if (!this.isUnchangedSnapshotsVisible) {
-      if (!this.isActiveSnapshotIndex) {
-        this._updateActiveBlockIndex(0);
-      } else {
-        let currentIndex = this.activeSnapshotBlockIndex;
-
-        // TODO(sort) There's an off-by-one error somewhere here
-        // ...when it hits the bottom it skips the last one
-        const newIndex = isNext ? currentIndex + 1 : currentIndex - 1;
-        if (newIndex < numItems && newIndex >= 0) {
-          this._updateActiveBlockIndex(newIndex);
-        }
-      }
-      this._trackKeyPress();
+    if (!this.isActiveSnapshotIndex) {
+      this._updateActiveBlockIndex(0);
     } else {
-      // TODO(sort): what if unchanged snapshots _are_ visible?
+      let currentIndex = this.activeSnapshotBlockIndex;
+
+      const newIndex = isNext ? currentIndex + 1 : currentIndex - 1;
+      if (newIndex < numItems && newIndex >= 0) {
+        this._updateActiveBlockIndex(newIndex);
+      }
     }
+    this._trackKeyPress();
   },
 
   _updateActiveBlockIndex(newIndex) {
