@@ -1080,4 +1080,34 @@ describe('Acceptance: InfiniteBuild', function() {
     await BuildPage.visitBuild(urlParams);
     await percySnapshot(this.test, {darkMode: true});
   });
+
+  it('loads more snapshots on scroll', async function() {
+    const build = server.create('build', {project});
+    server.createList('snapshot', 50, 'withComparison', {build});
+
+    await BuildPage.visitBuild(Object.assign(urlParams, {buildId: build.id}));
+    expect(BuildPage.snapshots.length).to.equal(30);
+
+    async function waitForScroll(snapshotIndex) {
+      return new Promise(resolve => {
+        const element = document.querySelectorAll(BuildPage.snapshots.scope)[snapshotIndex];
+        const intersectionObserver = new IntersectionObserver(entries => {
+          let [entry] = entries;
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              resolve();
+            }, 10);
+          }
+        });
+        intersectionObserver.observe(element);
+        element.scrollIntoView({behavior: 'smooth'});
+      });
+    }
+
+    await waitForScroll(10);
+    expect(BuildPage.snapshots.length).to.equal(40);
+
+    await waitForScroll(20);
+    expect(BuildPage.snapshots.length).to.equal(50);
+  });
 });

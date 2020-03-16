@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import {not, alias, or, readOnly} from '@ember/object/computed';
+// eslint-disable-next-line ember/no-observers
 import {computed, get, set, setProperties, observer} from '@ember/object';
 import Component from '@ember/component';
 import {next} from '@ember/runloop';
@@ -83,7 +84,8 @@ export default Component.extend({
     },
   ),
 
-  _scrollToTop: observer('isActiveSnapshotBlock', function() { // eslint-disable-line
+  // eslint-disable-next-line ember/no-observers
+  _scrollToTop: observer('isActiveSnapshotBlock', function() {
     if (get(this, '_shouldScroll') && get(this, 'isActiveSnapshotBlock') && !Ember.testing) {
       if (get(this, 'snapshot.isUnchanged')) {
         setProperties(this, {
