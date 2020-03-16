@@ -1081,7 +1081,7 @@ describe('Acceptance: InfiniteBuild', function() {
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  it('loads more snapshots on scroll', async function() {
+  it.skip('loads more snapshots on scroll', async function() {
     const build = server.create('build', {project});
     server.createList('snapshot', 50, 'withComparison', {build});
 
