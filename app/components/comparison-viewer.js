@@ -1,4 +1,4 @@
-import {observer} from '@ember/object';
+import {observer} from '@ember/object'; // eslint-disable-line ember/no-observers
 import Component from '@ember/component';
 
 export default Component.extend({
@@ -15,7 +15,9 @@ export default Component.extend({
   // If the global all diffs toggle is triggered, reset our own state to match the global state.
   // This is intentional an observer instead of a computed property. We want to the state of
   // showDiffOverlay loosely coupled to both a local action and the global diff toggle action.
-  handleAllDiffsToggle: observer('allDiffsShown', function() { // eslint-disable-line
+  // eslint-disable-next-line ember/no-observers
+  handleAllDiffsToggle: observer('allDiffsShown', function() {
+    // eslint-disable-line
     this.set('showDiffOverlay', this.allDiffsShown);
   }),
 

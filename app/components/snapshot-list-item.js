@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import {not, alias, or, readOnly} from '@ember/object/computed';
-import {computed, get, set, setProperties, observer} from '@ember/object';
+import {computed, get, set, setProperties, observer} from '@ember/object'; // eslint-disable-line
 import Component from '@ember/component';
 import {next} from '@ember/runloop';
 import filteredComparisons, {hasDiffForBrowser} from 'percy-web/lib/filtered-comparisons';
@@ -90,7 +90,9 @@ export default Component.extend(InViewportMixin, {
     },
   ),
 
-  _scrollToTop: observer('isActiveSnapshotBlock', function() { // eslint-disable-line
+  // eslint-disable-next-line ember/no-observers
+  _scrollToTop: observer('isActiveSnapshotBlock', function() {
+    // eslint-disable-line
     if (get(this, '_shouldScroll') && get(this, 'isActiveSnapshotBlock') && !Ember.testing) {
       if (get(this, 'snapshot.isUnchanged')) {
         setProperties(this, {
