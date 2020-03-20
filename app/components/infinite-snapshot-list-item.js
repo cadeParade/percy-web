@@ -26,7 +26,7 @@ export default Component.extend({
   // This will be populated if it is a snapshot-viewer component.
   snapshot: null,
 
-  // TODO(sort) remove when old version is deprecated
+  // TODO(sort) remove anything related to `deferred` rendering when old version is deprecated
   shouldDeferRendering: false,
   _shouldScroll: true,
 

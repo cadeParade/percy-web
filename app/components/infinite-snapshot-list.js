@@ -24,7 +24,7 @@ export default Component.extend(EKMixin, {
     updateActiveSnapshotBlockIndex(newIndex) {
       this._updateActiveBlockIndex(newIndex);
     },
-    // TODO(sort) should this be fixed?
+    // TODO(sort) remove when unchanged items have indexes
     updateActiveSnapshotBlockId() {},
   },
 
@@ -48,7 +48,7 @@ export default Component.extend(EKMixin, {
   }),
 
   newIndex({isNext = true} = {}) {
-    // TODO(sort): handle when unchanged snapshots are shown
+    // TODO(sort): handle keyboard nav for unchanged snapshots when they have indexes
     const numItems = this.orderItems.length;
     if (!this.isActiveSnapshotIndex) {
       this._updateActiveBlockIndex(0);

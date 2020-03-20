@@ -42,7 +42,6 @@ export default class MetadataSort extends Object {
       const ids = this.snapshotIdsForBrowser(browserData.browser_family_slug);
       return acc.concat(ids);
     }, []);
-    // TODO(sort) Make this more efficient?
     return ids.uniq();
   }
 }

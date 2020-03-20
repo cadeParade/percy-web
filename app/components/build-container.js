@@ -63,7 +63,7 @@ export default Component.extend(PollingMixin, {
     }
   }),
 
-  orderItems: computed('build.sortMetadata', 'activeBrowser.familySlug', function () {
+  orderItems: computed('build.sortMetadata', 'activeBrowser.familySlug', 'page', function () {
     return this.build.sortMetadata.orderItemsForBrowser(this.activeBrowser.familySlug);
   }),
 
@@ -88,7 +88,6 @@ export default Component.extend(PollingMixin, {
     });
   },
 
-  // TODO(sort) is this relevant anymore?
   _getLoadedSnapshots() {
     // Get snapshots without making new request
     return this.store.peekAll('snapshot').filterBy('build.id', this.get('build.id'));
@@ -96,6 +95,7 @@ export default Component.extend(PollingMixin, {
 
   isUnchangedSnapshotsLoading: readOnly('_toggleUnchangedSnapshotsVisible.isRunning'),
 
+  // TODO(sort) update everything about unchanged snapshots when they have meta sort data
   _toggleUnchangedSnapshotsVisible: task(function* () {
     let loadedSnapshots = this._getLoadedSnapshots();
     yield this.snapshotQuery.getUnchangedSnapshots(this.build);
@@ -113,7 +113,6 @@ export default Component.extend(PollingMixin, {
     this.notifyOfUnchangedSnapshots(alreadyLoadedSnapshotsWithNoDiff);
   }),
 
-  // TODO(sort)
   _resetUnchangedSnapshots() {
     this.set('snapshotsUnchanged', []);
     this.set('isUnchangedSnapshotsVisible', false);
@@ -127,18 +126,8 @@ export default Component.extend(PollingMixin, {
 
   actions: {
     updateActiveBrowser(newBrowser) {
-      if (this.launchDarkly.variation('snapshot-sort-api')) {
-        // TODO(sort) do this somehow else
-        this.set('isSnapshotsLoading', true);
-
-        this.set('chosenBrowser', newBrowser);
-        this.set('page', 0);
-        next(() => {
-          this.set('isSnapshotsLoading', false);
-        });
-      } else {
-        this.set('chosenBrowser', newBrowser);
-      }
+      this.set('page', 0);
+      this.set('chosenBrowser', newBrowser);
 
       this._resetUnchangedSnapshots();
       const organization = this.get('build.project.organization');
@@ -150,7 +139,6 @@ export default Component.extend(PollingMixin, {
       this.analytics.track('Browser Switched', organization, eventProperties);
     },
 
-    //TODO(sort)
     toggleUnchangedSnapshotsVisible() {
       this._toggleUnchangedSnapshotsVisible.perform();
     },

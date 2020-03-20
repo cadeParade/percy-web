@@ -55,7 +55,6 @@ export default Component.extend({
     return orderItems.map(item => {
       if (item.type === 'group') {
         const blockSnapshots = item['snapshot-ids'].map(id => {
-          // TODO(sort): protect against a snapshot not being found (findBy will error?)
           return this._cachedOrFetchedSnapshot(snapshots, id.toString());
         });
         return {block: blockSnapshots, orderItem: item};
