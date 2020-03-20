@@ -25,6 +25,22 @@ export default Component.extend({
     return this.browserTargets.enabledBrowserFamiliesForProject(this.project);
   }),
 
+  updatePeriods: computed('projectBrowserTargets.@each.browserTarget', function() {
+    return this.projectBrowserTargets
+      .filter(projectBrowserTarget => {
+        return projectBrowserTarget.browserTarget.isDeprecated;
+      })
+      .map(projectBrowserTarget => {
+        const target = projectBrowserTarget.browserTarget;
+
+        return {
+          familyName: target.browserFamily.name,
+          start: target.deprecationPeriodStart,
+          end: target.deprecationPeriodEnd,
+        };
+      });
+  }),
+
   actions: {
     updateProjectBrowserTargets(targetFamily) {
       if (this.project.isDemo) {

@@ -1,16 +1,37 @@
-<div class="grid grid-cols-1 md:grid-cols-2 gap-2" data-test-browser-family-selector>
-  {{#each this.sortedAllBrowserFamilies as |family|}}
-    <Projects::BrowserFamilySelectorButton
-      @project={{this.project}}
-      @browserFamily={{family}}
-      @updateProjectBrowserTargets={{action "updateProjectBrowserTargets"}}
-      @isDisabled={{@project.isDemo}}
-    />
-  {{/each}}
-</div>
-
-{{#if @areAnyBrowsersUpgradeable}}
-  <div class="rounded border border-green-300 p-2 mt-2">
-    <strong>A browser upgrade is available!</strong> To upgrade your browser, click the upgrade button below the browser icon. <strong>After a browser upgrade, we recommend you establish a new baseline using the new browser version.</strong> You can do this by running a new build on your master (default) branch, and then re-basing your feature branches off the latest master commit. This will ensure all comparisons going forward are using the new browser version.
+<div data-test-browser-family-selector>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+    {{#each this.sortedAllBrowserFamilies as |family|}}
+      <Projects::BrowserFamilySelectorButton
+        @project={{this.project}}
+        @browserFamily={{family}}
+        @updateProjectBrowserTargets={{action "updateProjectBrowserTargets"}}
+        @isDisabled={{@project.isDemo}}
+      />
+    {{/each}}
   </div>
-{{/if}}
+
+  {{#if @areAnyBrowsersUpgradeable}}
+    <div class="rounded border border-green-300 p-2 mt-2">
+      <p class="mb-0">
+        <strong>A browser upgrade is available!</strong> To upgrade your browser, click the upgrade button below the browser icon.
+        <strong>After a browser upgrade, we recommend you establish a new baseline using the new browser version.</strong>
+        This will ensure all comparisons going forward are using the new browser version.
+        <a href="https://docs.percy.io/docs/upgrading-your-projects-browsers">Read more about browser upgrades</a>.
+      </p>
+      {{#if this.updatePeriods}}
+        <p class="mt-1">
+          <strong>If you take no action</strong>, we will automatically update the following {{pluralize this.updatePeriods.length "browser" without-count=true}} between these dates:
+        </p>
+        <ul class="list-disc pl-2">
+          {{#each this.updatePeriods as |updatePeriod|}}
+            <li data-test-family-update-period="{{updatePeriod.familyName}}">
+              {{updatePeriod.familyName}}:
+              {{moment-format updatePeriod.start "MMMM D"}} and
+              {{moment-format updatePeriod.end "MMMM D, YYYY"}}
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
+    </div>
+  {{/if}}
+</div>

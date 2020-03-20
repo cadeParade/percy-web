@@ -1,4 +1,12 @@
-import {clickable, create, collection, isVisible, hasClass} from 'ember-cli-page-object';
+import {
+  clickable,
+  create,
+  collection,
+  isVisible,
+  hasClass,
+  text,
+  isPresent,
+} from 'ember-cli-page-object';
 import {getter} from 'ember-cli-page-object/macros';
 
 const SELECTORS = {
@@ -6,6 +14,8 @@ const SELECTORS = {
   BUTTON_CONTAINER: '[data-test-browser-selector-button-container]',
   BUTTON: '[data-test-browser-selector-button]',
   UPGRADE_BUTTON: '[data-test-percy-btn-label=browser-upgrade]',
+  UPDATE_PERIOD_FIREFOX: '[data-test-family-update-period="Firefox"]',
+  UPDATE_PERIOD_CHROME: '[data-test-family-update-period="Chrome"]',
 };
 
 export const BrowserFamilySelector = {
@@ -46,6 +56,12 @@ export const BrowserFamilySelector = {
   upgradeFirefox() {
     this.firefoxButton.upgradeButton.click();
   },
+
+  firefoxUpdatePeriod: text(SELECTORS.UPDATE_PERIOD_FIREFOX),
+  chromeUpdatePeriod: text(SELECTORS.UPDATE_PERIOD_CHROME),
+
+  hasFirefoxUpdatePeriod: isPresent(SELECTORS.UPDATE_PERIOD_FIREFOX),
+  hasChromeUpdatePeriod: isPresent(SELECTORS.UPDATE_PERIOD_CHROME),
 };
 
 export default create(BrowserFamilySelector);

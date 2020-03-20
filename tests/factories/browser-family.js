@@ -8,6 +8,11 @@ FactoryGuy.define('browser-family', {
     slug: 'firefox',
   },
   traits: {
+    firefox: {
+      id: '1',
+      name: 'Firefox',
+      slug: 'firefox',
+    },
     chrome: {
       id: '2',
       name: 'Chrome',
