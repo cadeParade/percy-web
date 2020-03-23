@@ -22,14 +22,14 @@ export default function freezeMoment(momentObj) {
 
   let originalMomentNow = moment.now;
 
-  beforeEach(function() {
+  beforeEach(function () {
     // Override the baseline time used by Moment.
-    moment.now = function() {
+    moment.now = function () {
       return momentObj.toDate();
     };
   });
 
-  afterEach(function() {
+  afterEach(function () {
     // Restore original moment.now method.
     moment.now = originalMomentNow;
   });

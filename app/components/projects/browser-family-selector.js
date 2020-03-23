@@ -9,7 +9,7 @@ export default Component.extend({
   project: null,
   allBrowserFamilies: null,
 
-  sortedAllBrowserFamilies: computed('allBrowserFamilies.@each.slug', function() {
+  sortedAllBrowserFamilies: computed('allBrowserFamilies.@each.slug', function () {
     const chromeFamily = this.allBrowserFamilies.findBy('slug', 'chrome');
     const notChromeFamilies = this.allBrowserFamilies.rejectBy('slug', 'chrome');
     if (chromeFamily) {
@@ -21,11 +21,11 @@ export default Component.extend({
 
   projectBrowserTargets: readOnly('project.projectBrowserTargets'),
 
-  enabledBrowserFamilies: computed('projectBrowserTargets.@each.browserTarget', function() {
+  enabledBrowserFamilies: computed('projectBrowserTargets.@each.browserTarget', function () {
     return this.browserTargets.enabledBrowserFamiliesForProject(this.project);
   }),
 
-  updatePeriods: computed('projectBrowserTargets.@each.browserTarget', function() {
+  updatePeriods: computed('projectBrowserTargets.@each.browserTarget', function () {
     return this.projectBrowserTargets
       .filter(projectBrowserTarget => {
         return projectBrowserTarget.browserTarget.isDeprecated;

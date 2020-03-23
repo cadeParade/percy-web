@@ -3,15 +3,15 @@ import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {visit, currentRouteName} from '@ember/test-helpers';
 import {authenticateSession} from 'percy-web/tests/helpers/authenticate-session';
 
-describe('Acceptance: Login', function() {
+describe('Acceptance: Login', function () {
   setupAcceptance({authenticate: false});
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     this.loginUser = false;
     this.server = server;
   });
 
-  it('should login user', async function() {
+  it('should login user', async function () {
     await visit('/');
     await percySnapshot(this.test.fullTitle() + ' | Logged out');
 

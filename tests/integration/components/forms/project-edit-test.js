@@ -7,18 +7,18 @@ import percySnapshot from '@percy/ember';
 import {setupRenderingTest} from 'ember-mocha';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: ProjectEditForm', function() {
+describe('Integration: ProjectEditForm', function () {
   setupRenderingTest('forms/project-edit', {
     integration: true,
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
   });
 
-  describe('publicly viewable checkbox', function() {
+  describe('publicly viewable checkbox', function () {
     let project;
-    beforeEach(async function() {
+    beforeEach(async function () {
       project = make('project');
       this.setProperties({project});
       await render(hbs`<Forms::ProjectEdit
@@ -26,13 +26,13 @@ describe('Integration: ProjectEditForm', function() {
       />`);
     });
 
-    it('shows as not-checked when publiclyReadable is false', async function() {
+    it('shows as not-checked when publiclyReadable is false', async function () {
       expect(ProjectEditForm.isPublicCheckboxChecked).to.equal(false);
       expect(ProjectEditForm.isPublicCheckboxDisabled).to.equal(false);
       await percySnapshot(this.test.fullTitle());
     });
 
-    it('shows as checked when publiclyReadable is true', async function() {
+    it('shows as checked when publiclyReadable is true', async function () {
       const project = make('project', 'public');
       this.set('project', project);
 
@@ -41,7 +41,7 @@ describe('Integration: ProjectEditForm', function() {
       await percySnapshot(this.test.fullTitle());
     });
 
-    it('toggles switch when clicked', async function() {
+    it('toggles switch when clicked', async function () {
       expect(ProjectEditForm.isPublicCheckboxChecked).to.equal(false);
       await ProjectEditForm.togglePublicCheckbox();
       expect(ProjectEditForm.isPublicCheckboxChecked).to.equal(true);
@@ -49,20 +49,20 @@ describe('Integration: ProjectEditForm', function() {
       expect(ProjectEditForm.isPublicCheckboxChecked).to.equal(false);
     });
 
-    describe('when project belongs to an organization with a sponsored plan', function() {
-      beforeEach(function() {
+    describe('when project belongs to an organization with a sponsored plan', function () {
+      beforeEach(function () {
         const organization = make('organization', 'withSponsoredPlan');
         const project = make('project', 'public', {organization});
         this.set('project', project);
       });
 
-      it('is disabled', async function() {
+      it('is disabled', async function () {
         expect(ProjectEditForm.isPublicCheckboxChecked).to.equal(true);
         expect(ProjectEditForm.isPublicCheckboxDisabled).to.equal(true);
         await percySnapshot(this.test.fullTitle());
       });
 
-      it('does not toggle switch when clicked', async function() {
+      it('does not toggle switch when clicked', async function () {
         expect(ProjectEditForm.isPublicCheckboxChecked).to.equal(true);
         await ProjectEditForm.togglePublicCheckbox();
         expect(ProjectEditForm.isPublicCheckboxChecked).to.equal(true);

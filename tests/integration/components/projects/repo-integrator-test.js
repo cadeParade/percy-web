@@ -9,17 +9,17 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import repoRefreshServiceStub from 'percy-web/tests/helpers/mock-repo-refresh-service';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: RepoIntegratorComponent', function() {
+describe('Integration: RepoIntegratorComponent', function () {
   setupRenderingTest('repo-integrator', {
     integration: true,
   });
 
-  beforeEach(async function() {
+  beforeEach(async function () {
     setupFactoryGuy(this);
   });
 
-  describe('with integrations', function() {
-    beforeEach(async function() {
+  describe('with integrations', function () {
+    beforeEach(async function () {
       const project = make('project');
       const organization = make('organization', 'withMultipleIntegrations');
       project.set('organization', organization);
@@ -28,16 +28,16 @@ describe('Integration: RepoIntegratorComponent', function() {
       await render(hbs`<Projects::RepoIntegrator @project={{project}} />`);
     });
 
-    it('renders with the repo selector closed', async function() {
+    it('renders with the repo selector closed', async function () {
       expect(RepoIntegrator.isRepoSelectorVisible).to.eq(true);
 
       await percySnapshot(this.test.fullTitle());
     });
   });
 
-  describe('with no integrations', function() {
+  describe('with no integrations', function () {
     let freshReposStub;
-    beforeEach(async function() {
+    beforeEach(async function () {
       const project = make('project');
       const organization = make('organization', {lastSyncedAt: undefined});
       project.set('organization', organization);
@@ -50,12 +50,12 @@ describe('Integration: RepoIntegratorComponent', function() {
       await render(hbs`<Projects::RepoIntegrator @project={{project}} />`);
     });
 
-    it('displays no integrations message', async function() {
+    it('displays no integrations message', async function () {
       expect(RepoIntegrator.isNoIntegrationsMessageVisible).to.equal(true);
       await percySnapshot(this.test.fullTitle());
     });
 
-    it('does not call getFreshRepos', async function() {
+    it('does not call getFreshRepos', async function () {
       expect(freshReposStub).to.not.have.been.called;
     });
   });

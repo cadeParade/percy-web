@@ -42,7 +42,7 @@ const BuildPage = {
   snapshots: alias('snapshotList.snapshots'),
   snapshotBlocks: alias('snapshotList.snapshotBlocks'),
 
-  isFirstSnapshotApproved: getter(function() {
+  isFirstSnapshotApproved: getter(function () {
     return this.snapshots[0].isApproved;
   }),
 
@@ -54,7 +54,7 @@ const BuildPage = {
     return await this.snapshots[0].clickReject();
   },
 
-  snapshotTitles: getter(function() {
+  snapshotTitles: getter(function () {
     return this.snapshots.map(snapshot => snapshot.name);
   }),
 

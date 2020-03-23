@@ -25,7 +25,7 @@ export default BaseFormComponent.extend({
     'isOrgInvalid',
     'isEmailInvalid',
     'hasOnlyGithubIdentity',
-    function() {
+    function () {
       const hasOnlyGithubIdentity = this.hasOnlyGithubIdentity;
       if (this.isFirstOrganization && hasOnlyGithubIdentity) {
         return this.isOrgInvalid || this.isEmailInvalid;
@@ -35,7 +35,7 @@ export default BaseFormComponent.extend({
     },
   ),
 
-  hasOnlyGithubIdentity: computed('userIdentities.@each.provider', function() {
+  hasOnlyGithubIdentity: computed('userIdentities.@each.provider', function () {
     const userIdentities = this.userIdentities;
     const githubIdentity = userIdentities.findBy('isGithubIdentity');
     const auth0Identity = userIdentities.findBy('isAuth0Identity');
@@ -45,7 +45,7 @@ export default BaseFormComponent.extend({
   isOrgInvalid: or('changeset.isInvalid', 'changeset.isPristine'),
   isEmailInvalid: or('userChangeset.isInvalid', 'userChangeset.isPristine'),
 
-  userChangeset: computed('currentUser', function() {
+  userChangeset: computed('currentUser', function () {
     const validator = UserEmailValidations;
     // Set this to nothing temporarily so we can get a new email address from them.
     this.set('currentUser.email', ''); // eslint-disable-line

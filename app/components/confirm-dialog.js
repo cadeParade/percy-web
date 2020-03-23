@@ -11,12 +11,12 @@ export default Component.extend(EKMixin, {
     this.set('keyboardActivated', true);
   },
 
-  onEnterDown: on(keyDown('Enter'), function(e) {
+  onEnterDown: on(keyDown('Enter'), function (e) {
     e.preventDefault();
     e.stopPropagation();
     this.confirm.confirm();
   }),
-  onEscDown: on(keyDown('Escape'), function() {
+  onEscDown: on(keyDown('Escape'), function () {
     this.confirm.cancel();
   }),
 });

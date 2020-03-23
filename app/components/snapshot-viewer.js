@@ -24,7 +24,7 @@ export default SnapshotListItem.extend({
     'userIsCommentPanelShowing',
     '_internalIsCommentPanelShowing',
     'externalIsCommentPanelShowing',
-    function() {
+    function () {
       if (this.userIsCommentPanelShowing !== undefined) {
         return this.userIsCommentPanelShowing;
       } else {

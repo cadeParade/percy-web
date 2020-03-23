@@ -10,7 +10,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render} from '@ember/test-helpers';
 import stubService from 'percy-web/tests/helpers/stub-service-integration';
 
-describe('Integration: CollaborationComment', function() {
+describe('Integration: CollaborationComment', function () {
   setupRenderingTest('collaboration-comment', {
     integration: true,
   });
@@ -22,7 +22,7 @@ describe('Integration: CollaborationComment', function() {
 
   let closeCommentThreadStub;
 
-  beforeEach(async function() {
+  beforeEach(async function () {
     setupFactoryGuy(this);
 
     closeCommentThreadStub = sinon.stub().resolves();
@@ -31,8 +31,8 @@ describe('Integration: CollaborationComment', function() {
     });
   });
 
-  describe('when `isFirstComment` is true', function() {
-    beforeEach(async function() {
+  describe('when `isFirstComment` is true', function () {
+    beforeEach(async function () {
       const comment = make('comment', 'fromReviewThread');
       this.setProperties({
         isFirstComment: true,
@@ -46,21 +46,21 @@ describe('Integration: CollaborationComment', function() {
       />`);
     });
 
-    describe('when the comment thread is open', function() {
-      it('shows "Archive" button', async function() {
+    describe('when the comment thread is open', function () {
+      it('shows "Archive" button', async function () {
         expect(CollaborationComment.archiveButton.isVisible).to.equal(true);
         await percySnapshot(this.test, {darkMode: true});
       });
 
-      it('does not show "Archive" button when isCommentingAllowed is false', async function() {
+      it('does not show "Archive" button when isCommentingAllowed is false', async function () {
         this.setProperties({isCommentingAllowed: false});
 
         expect(CollaborationComment.archiveButton.isVisible).to.equal(false);
       });
     });
 
-    describe('when the comment thread is closed', function() {
-      it('shows "Archived" indication when comment thread is closed', async function() {
+    describe('when the comment thread is closed', function () {
+      it('shows "Archived" indication when comment thread is closed', async function () {
         const comment = make('comment', 'fromArchivedThread');
         this.setProperties({comment});
 
@@ -69,22 +69,22 @@ describe('Integration: CollaborationComment', function() {
       });
     });
 
-    describe('closing a comment', function() {
-      describe('when comment is from a "request changes" thread', function() {
+    describe('closing a comment', function () {
+      describe('when comment is from a "request changes" thread', function () {
         let comment;
-        beforeEach(async function() {
+        beforeEach(async function () {
           comment = make('comment', 'fromReviewThread');
           this.setProperties({comment});
         });
 
-        it('sends close action with correct args', async function() {
+        it('sends close action with correct args', async function () {
           await CollaborationComment.close();
           expect(closeCommentThreadStub).to.have.been.calledWith({
             commentThread: comment.commentThread,
           });
         });
 
-        it('shows flash message if save fails', async function() {
+        it('shows flash message if save fails', async function () {
           const closeCommentThreadStub = sinon.stub().returns({isSuccessful: false});
           stubCloseComment(this, closeCommentThreadStub);
           const flashMessageService = this.owner
@@ -96,21 +96,21 @@ describe('Integration: CollaborationComment', function() {
         });
       });
 
-      describe('when comment is from a "note" thread', function() {
+      describe('when comment is from a "note" thread', function () {
         let comment;
-        beforeEach(async function() {
+        beforeEach(async function () {
           comment = make('comment', 'fromNoteThread');
           this.setProperties({comment});
         });
 
-        it('sends close action with correct args', async function() {
+        it('sends close action with correct args', async function () {
           await CollaborationComment.close();
           expect(closeCommentThreadStub).to.have.been.calledWith({
             commentThread: comment.commentThread,
           });
         });
 
-        it('shows flash message if save fails', async function() {
+        it('shows flash message if save fails', async function () {
           const closeCommentThreadStub = sinon.stub().returns({isSuccessful: false});
           stubCloseComment(this, closeCommentThreadStub);
 
@@ -125,8 +125,8 @@ describe('Integration: CollaborationComment', function() {
     });
   });
 
-  describe('when `isFirstComment` is false', function() {
-    beforeEach(async function() {
+  describe('when `isFirstComment` is false', function () {
+    beforeEach(async function () {
       this.setProperties({isFirstComment: false, comment: {}});
       await render(hbs`<Collaboration::CollaborationComment
         @comment={{comment}}
@@ -134,7 +134,7 @@ describe('Integration: CollaborationComment', function() {
       />`);
     });
 
-    it('does not show "Archive" button', async function() {
+    it('does not show "Archive" button', async function () {
       const comment = make('comment', 'fromNoteThread');
       this.setProperties({comment});
 
@@ -142,14 +142,14 @@ describe('Integration: CollaborationComment', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('does not show "Archived" indicator', async function() {
+    it('does not show "Archived" indicator', async function () {
       const comment = make('comment', 'fromArchivedThread');
       this.setProperties({comment});
 
       expect(CollaborationComment.isArchived).to.equal(false);
     });
 
-    it('preserves new lines and html', async function() {
+    it('preserves new lines and html', async function () {
       const comment = make('comment', {
         body: `hello
 

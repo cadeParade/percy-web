@@ -9,7 +9,7 @@ export default Component.extend({
   organization: null,
   classes: null,
 
-  bitbucketCloudIntegrationUrl: computed('organization.slug', function() {
+  bitbucketCloudIntegrationUrl: computed('organization.slug', function () {
     const url = config.APP.bitbucketCloudUrls.integration;
     return url.replace('%@', this.get('organization.slug'));
   }),

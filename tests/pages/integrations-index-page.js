@@ -35,45 +35,45 @@ export const IntegrationsIndexPage = {
     hasBetaBadge: isVisible(IntegrationItemSelectors.BETA_BADGE),
   }),
 
-  githubIntegration: getter(function() {
+  githubIntegration: getter(function () {
     return this.integrationItems.toArray().findBy('isGithubIntegration');
   }),
-  hasGithubIntegration: getter(function() {
+  hasGithubIntegration: getter(function () {
     return !!this.githubIntegration;
   }),
 
-  bitbucketCloudIntegration: getter(function() {
+  bitbucketCloudIntegration: getter(function () {
     return this.integrationItems.toArray().findBy('isBitbucketCloudIntegration');
   }),
-  hasBitbucketCloudIntegration: getter(function() {
+  hasBitbucketCloudIntegration: getter(function () {
     return !!this.bitbucketCloudIntegration;
   }),
 
-  gitlabIntegration: getter(function() {
+  gitlabIntegration: getter(function () {
     return this.integrationItems.toArray().findBy('isGitlabIntegration');
   }),
-  hasGitlabIntegration: getter(function() {
+  hasGitlabIntegration: getter(function () {
     return !!this.gitlabIntegration;
   }),
 
-  gitlabSelfHostedIntegration: getter(function() {
+  gitlabSelfHostedIntegration: getter(function () {
     return this.integrationItems.toArray().findBy('isGitlabSelfHostedIntegration');
   }),
-  hasGitlabSelfHostedIntegration: getter(function() {
+  hasGitlabSelfHostedIntegration: getter(function () {
     return !!this.gitlabSelfHostedIntegration;
   }),
 
-  slackIntegration: getter(function() {
+  slackIntegration: getter(function () {
     return this.integrationItems.toArray().findBy('isSlackIntegration');
   }),
-  hasSlackIntegration: getter(function() {
+  hasSlackIntegration: getter(function () {
     return !!this.slackIntegration;
   }),
 
-  oktaIntegration: getter(function() {
+  oktaIntegration: getter(function () {
     return this.integrationItems.toArray().findBy('isOktaIntegration');
   }),
-  hasOktaIntegration: getter(function() {
+  hasOktaIntegration: getter(function () {
     return !!this.oktaIntegration;
   }),
 };

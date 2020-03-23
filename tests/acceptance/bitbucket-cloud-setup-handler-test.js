@@ -5,16 +5,16 @@ import {currentRouteName, visit, findAll} from '@ember/test-helpers';
 import {resolve} from 'rsvp';
 import sinon from 'sinon';
 
-describe('Acceptance: Bitbucket Cloud Setup Handler', function() {
+describe('Acceptance: Bitbucket Cloud Setup Handler', function () {
   setupAcceptance();
 
   let organization;
-  setupSession(function(server) {
+  setupSession(function (server) {
     organization = server.create('organization', 'withAdminUser');
   });
 
-  describe('with the connection cancelled', function() {
-    it('shows integration cancelled', async function() {
+  describe('with the connection cancelled', function () {
+    it('shows integration cancelled', async function () {
       await visit(
         `/organizations/${organization.slug}/setup/bitbucket-cloud-integration?` +
           'error=access_denied',
@@ -32,8 +32,8 @@ describe('Acceptance: Bitbucket Cloud Setup Handler', function() {
     });
   });
 
-  describe('with an error', function() {
-    it('shows integration error', async function() {
+  describe('with an error', function () {
+    it('shows integration error', async function () {
       await visit(
         `/organizations/${organization.slug}/setup/bitbucket-cloud-integration?` +
           'error=test_error&error_description=test_error_description',
@@ -53,8 +53,8 @@ describe('Acceptance: Bitbucket Cloud Setup Handler', function() {
     });
   });
 
-  describe('with a missing client key', function() {
-    it('shows integration error', async function() {
+  describe('with a missing client key', function () {
+    it('shows integration error', async function () {
       await visit(`/organizations/${organization.slug}/setup/bitbucket-cloud-integration`);
       expect(currentRouteName()).to.equal(
         'organizations.organization.integrations.bitbucket-cloud',
@@ -71,8 +71,8 @@ describe('Acceptance: Bitbucket Cloud Setup Handler', function() {
     });
   });
 
-  describe('with an incorrect client key', function() {
-    it('shows integration error', async function() {
+  describe('with an incorrect client key', function () {
+    it('shows integration error', async function () {
       await visit(
         `/organizations/${organization.slug}/setup/bitbucket-cloud-integration?` +
           'clientKey=test_missing_client_key',
@@ -93,8 +93,8 @@ describe('Acceptance: Bitbucket Cloud Setup Handler', function() {
     });
   });
 
-  describe('with a valid client key', function() {
-    it('saves the integration and redirects to the bitbucket settings page', async function() {
+  describe('with a valid client key', function () {
+    it('saves the integration and redirects to the bitbucket settings page', async function () {
       let store = this.owner.lookup('service:store');
       let integrationStub = sinon.stub();
       integrationStub.save = sinon.stub().returns(resolve());

@@ -11,14 +11,14 @@ import DemoTooltip from 'percy-web/tests/pages/components/demo-tooltip';
 import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage-sandbox';
 import stubService from 'percy-web/tests/helpers/stub-service-integration';
 
-describe('Integration: DemoTooltipComponent', function() {
+describe('Integration: DemoTooltipComponent', function () {
   SetupLocalStorageSandbox();
 
   setupRenderingTest('demo-tooltip', {
     integration: true,
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
     stubService(this, 'snapshotQuery', 'snapshot-query', {
       getChangedSnapshots(build) {
@@ -33,8 +33,8 @@ describe('Integration: DemoTooltipComponent', function() {
     this.set('build', build);
   });
 
-  describe('for a single tooltip', function() {
-    beforeEach(async function() {
+  describe('for a single tooltip', function () {
+    beforeEach(async function () {
       localStorage.clear();
       // Choose `snapshot-overview` as it is not the first one which would show by default
       await render(hbs`
@@ -48,12 +48,12 @@ describe('Integration: DemoTooltipComponent', function() {
       `);
     });
 
-    it('renders a tooltip anchor element', async function() {
+    it('renders a tooltip anchor element', async function () {
       expect(DemoTooltip.isAnchorVisible).to.equal(true, 'anchor is visible');
       await percySnapshot(this.test);
     });
 
-    it('shows the tooltip when opened', async function() {
+    it('shows the tooltip when opened', async function () {
       const tooltipElement = find('.ember-attacher');
 
       expect(attacherIsVisible(tooltipElement)).to.equal(false, 'tooltip should be hidden');
@@ -69,7 +69,7 @@ describe('Integration: DemoTooltipComponent', function() {
       await percySnapshot(this.test);
     });
 
-    it('hides the tooltip and anchor element when all are dismissed', async function() {
+    it('hides the tooltip and anchor element when all are dismissed', async function () {
       const tooltipElement = find('.ember-attacher');
 
       await DemoTooltip.clickAnchor();
@@ -84,7 +84,7 @@ describe('Integration: DemoTooltipComponent', function() {
       expect(DemoTooltip.isAnchorVisible).to.equal(false);
     });
 
-    it('does not hide the anchor element when clicking outside to close', async function() {
+    it('does not hide the anchor element when clicking outside to close', async function () {
       const tooltipElement = find('.ember-attacher');
 
       await DemoTooltip.clickAnchor();

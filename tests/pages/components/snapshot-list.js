@@ -19,11 +19,11 @@ export const SnapshotList = {
   // snapshot-viewer components and snapshot-group components.
   snapshotBlocks: collection(snapshotBlock.scope, snapshotBlock),
 
-  snapshotTitles: getter(function() {
+  snapshotTitles: getter(function () {
     return this.snapshotBlocks.map(snapshot => snapshot.name);
   }),
 
-  lastSnapshot: getter(function() {
+  lastSnapshot: getter(function () {
     const numSnapshots = this.snapshots.length;
     return this.snapshots.objectAt(numSnapshots - 1);
   }),
@@ -31,7 +31,7 @@ export const SnapshotList = {
   isNoDiffsBatchVisible: isVisible(SELECTORS.NO_DIFFS_TOGGLE),
   clickToggleNoDiffsSection: clickable(SELECTORS.NO_DIFFS_TOGGLE),
 
-  isDiffsVisibleForAllSnapshots: getter(function() {
+  isDiffsVisibleForAllSnapshots: getter(function () {
     return this.snapshotBlocks.toArray().every(block => {
       return block.isDiffImageVisible;
     });

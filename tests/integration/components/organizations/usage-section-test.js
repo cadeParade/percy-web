@@ -8,17 +8,17 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import percySnapshot from '@percy/ember';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: UsageSection', function() {
+describe('Integration: UsageSection', function () {
   setupRenderingTest('usage-section', {
     integration: true,
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
   });
 
-  describe('usage graph', function() {
-    it('displays', async function() {
+  describe('usage graph', function () {
+    it('displays', async function () {
       const organization = make('organization', 'withPaidPlan');
       this.set('organization', organization);
       await render(hbs`<Organizations::UsageSection
@@ -29,8 +29,8 @@ describe('Integration: UsageSection', function() {
     });
   });
 
-  describe('usage notification settings', function() {
-    describe('visibility', function() {
+  describe('usage notification settings', function () {
+    describe('visibility', function () {
       async function _expectDoesNotDisplayUsageNotificationSettingWithPlan(context, orgTraits) {
         const organization = make(...['organization'].concat(orgTraits));
         context.set('organization', organization);
@@ -40,7 +40,7 @@ describe('Integration: UsageSection', function() {
         expect(UsageSection.usageNotificationSettingForm.isVisible).to.equal(false);
       }
 
-      it('displays when plan is paid', async function() {
+      it('displays when plan is paid', async function () {
         const organization = make('organization', 'withPaidPlan');
         this.set('organization', organization);
         await render(hbs`<Organizations::UsageSection
@@ -49,22 +49,22 @@ describe('Integration: UsageSection', function() {
         expect(UsageSection.usageNotificationSettingForm.isVisible).to.equal(true);
       });
 
-      it('does not display when plan is free', async function() {
+      it('does not display when plan is free', async function () {
         await _expectDoesNotDisplayUsageNotificationSettingWithPlan(this, ['withFreePlan']);
       });
 
-      it('does not display when plan is trial', async function() {
+      it('does not display when plan is trial', async function () {
         await _expectDoesNotDisplayUsageNotificationSettingWithPlan(this, ['withTrialPlan']);
       });
 
-      it('does not display when plan is trial', async function() {
+      it('does not display when plan is trial', async function () {
         await _expectDoesNotDisplayUsageNotificationSettingWithPlan(this, ['withSponsoredPlan']);
       });
     });
 
-    describe('when a setting exists', function() {
+    describe('when a setting exists', function () {
       let setting;
-      beforeEach(async function() {
+      beforeEach(async function () {
         const organization = make('organization', 'withPaidPlan');
         setting = make('usage-notification-setting', {
           organization,
@@ -76,7 +76,7 @@ describe('Integration: UsageSection', function() {
           @usageNotificationSetting={{setting}} />`);
       });
 
-      it('renders the data for the setting', async function() {
+      it('renders the data for the setting', async function () {
         expect(UsageSection.usageNotificationSettingForm.isVisible).to.equal(true);
         expect(UsageSection.usageNotificationSettingForm.isVisible).to.equal(true);
         expect(UsageSection.usageNotificationSettingForm.isEnabled).to.equal(true);

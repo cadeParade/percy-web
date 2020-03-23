@@ -9,13 +9,13 @@ import SlackPermissionsWarning from 'percy-web/tests/pages/components/organizati
 import SlackConfigForm from 'percy-web/tests/pages/components/forms/slack-config';
 import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
 
-describe('Acceptance: Slack Integration', function() {
+describe('Acceptance: Slack Integration', function () {
   setupAcceptance();
   let organization;
   let adminUser;
 
-  describe('when currentUser is an Admin', function() {
-    setupSession(function(server) {
+  describe('when currentUser is an Admin', function () {
+    setupSession(function (server) {
       organization = server.create('organization', 'withPaidPlan');
       adminUser = server.create('user');
       server.create('organizationUser', {
@@ -26,8 +26,8 @@ describe('Acceptance: Slack Integration', function() {
       server.create('project', {organization});
     });
 
-    describe('after connecting a channel', function() {
-      it('redirects to the new config form', async function() {
+    describe('after connecting a channel', function () {
+      it('redirects to the new config form', async function () {
         await visit(`/organizations/${organization.slug}/setup/slack-integration`);
 
         expect(SlackConfigForm.isVisible).to.equal(true);
@@ -36,18 +36,18 @@ describe('Acceptance: Slack Integration', function() {
       });
     });
 
-    describe('without an integration', function() {
+    describe('without an integration', function () {
       let windowStub;
 
-      beforeEach(function() {
+      beforeEach(function () {
         windowStub = sinon.stub(utils, 'replaceWindowLocation').returns(true);
       });
 
-      afterEach(function() {
+      afterEach(function () {
         windowStub.restore();
       });
 
-      it('integrations page starts the OAuth process', async function() {
+      it('integrations page starts the OAuth process', async function () {
         await IntegrationsIndexPage.visitIntegrationsPage({orgSlug: organization.slug});
 
         await IntegrationsIndexPage.slackIntegration.install();
@@ -56,7 +56,7 @@ describe('Acceptance: Slack Integration', function() {
         await percySnapshot(this.test.fullTitle());
       });
 
-      it('renders', async function() {
+      it('renders', async function () {
         await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
 
         expect(SlackIntegrationPage.isVisible).to.equal(true);
@@ -66,18 +66,18 @@ describe('Acceptance: Slack Integration', function() {
       });
     });
 
-    describe('with an integration without configs', function() {
+    describe('with an integration without configs', function () {
       let windowStub;
 
-      beforeEach(function() {
+      beforeEach(function () {
         server.create('slackIntegration', {organization});
         windowStub = sinon.stub(utils, 'replaceWindowLocation').returns(true);
       });
-      afterEach(function() {
+      afterEach(function () {
         windowStub.restore();
       });
 
-      it('renders correctly', async function() {
+      it('renders correctly', async function () {
         await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
 
         expect(SlackIntegrationPage.addChannelButton.isVisible).to.equal(true);
@@ -86,7 +86,7 @@ describe('Acceptance: Slack Integration', function() {
         await percySnapshot(this.test.fullTitle());
       });
 
-      it('can delete the integration', async function() {
+      it('can delete the integration', async function () {
         let confirmationAlertStub = sinon.stub(utils, 'confirmMessage').returns(true);
         await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
         await SlackIntegrationPage.integrationItems[0].deleteIntegrationButton.click();
@@ -98,7 +98,7 @@ describe('Acceptance: Slack Integration', function() {
         confirmationAlertStub.restore();
       });
 
-      it('can start the OAuth process', async function() {
+      it('can start the OAuth process', async function () {
         await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
 
         await SlackIntegrationPage.addChannelButton.click();
@@ -108,14 +108,14 @@ describe('Acceptance: Slack Integration', function() {
       });
     });
 
-    describe('with multiple integrations without configs', function() {
+    describe('with multiple integrations without configs', function () {
       const numberOfIntegrations = 2;
 
-      beforeEach(function() {
+      beforeEach(function () {
         server.createList('slackIntegration', numberOfIntegrations, {organization});
       });
 
-      it('renders correctly', async function() {
+      it('renders correctly', async function () {
         await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
 
         expect(SlackIntegrationPage.addChannelButton.isVisible).to.equal(true);
@@ -125,8 +125,8 @@ describe('Acceptance: Slack Integration', function() {
       });
     });
 
-    describe('with an integration with configs', function() {
-      beforeEach(function() {
+    describe('with an integration with configs', function () {
+      beforeEach(function () {
         const slackIntegration = server.create('slackIntegration', {organization});
         server.createList('slackIntegrationConfig', 2, {slackIntegration});
         server.create('slackIntegrationConfig', {
@@ -141,7 +141,7 @@ describe('Acceptance: Slack Integration', function() {
         });
       });
 
-      it('renders correctly', async function() {
+      it('renders correctly', async function () {
         await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
 
         expect(SlackIntegrationPage.addChannelButton.isVisible).to.equal(true);
@@ -150,19 +150,20 @@ describe('Acceptance: Slack Integration', function() {
         await percySnapshot(this.test.fullTitle());
       });
 
-      it('can add a project', async function() {
+      it('can add a project', async function () {
         // This is needed to verify that projectId is null when creating an All Projects config
-        server.post('/slack-integrations/:slack_integration_id/slack-integration-configs', function(
-          schema,
-        ) {
-          const attrs = this.normalizedRequestAttrs();
-          expect(attrs.projectId).to.equal(null);
-          return schema.slackIntegrationConfigs.create({
-            slackIntegrationId: attrs.slackIntegrationId,
-            projectId: attrs.projectId,
-            notificationTypes: attrs.notificationTypes,
-          });
-        });
+        server.post(
+          '/slack-integrations/:slack_integration_id/slack-integration-configs',
+          function (schema) {
+            const attrs = this.normalizedRequestAttrs();
+            expect(attrs.projectId).to.equal(null);
+            return schema.slackIntegrationConfigs.create({
+              slackIntegrationId: attrs.slackIntegrationId,
+              projectId: attrs.projectId,
+              notificationTypes: attrs.notificationTypes,
+            });
+          },
+        );
 
         await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
         expect(SlackIntegrationPage.integrationItems[0].configItems.length).to.equal(3);
@@ -177,7 +178,7 @@ describe('Acceptance: Slack Integration', function() {
         expect(SlackIntegrationPage.integrationItems[0].configItems.length).to.equal(4);
       });
 
-      it('when you cancel when adding a project, a new record is not displayed', async function() {
+      it('when you cancel when adding a project, a new record is not displayed', async function () {
         await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
         expect(SlackIntegrationPage.integrationItems[0].configItems.length).to.equal(3);
 
@@ -190,7 +191,7 @@ describe('Acceptance: Slack Integration', function() {
         await percySnapshot(this.test.fullTitle());
       });
 
-      it('can edit a project', async function() {
+      it('can edit a project', async function () {
         await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
         expect(SlackIntegrationPage.integrationItems[0].configItems.length).to.equal(3);
 
@@ -208,7 +209,7 @@ describe('Acceptance: Slack Integration', function() {
         await percySnapshot(this.test.fullTitle());
       });
 
-      it('can delete a config', async function() {
+      it('can delete a config', async function () {
         let confirmationAlertStub = sinon.stub(utils, 'confirmMessage').returns(true);
         await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
         expect(SlackIntegrationPage.integrationItems[0].configItems.length).to.equal(3);
@@ -227,25 +228,25 @@ describe('Acceptance: Slack Integration', function() {
     });
   });
 
-  describe('when currentUser is a Member', function() {
-    describe('without an integration', function() {
-      setupSession(function(server) {
+  describe('when currentUser is a Member', function () {
+    describe('without an integration', function () {
+      setupSession(function (server) {
         organization = server.create('organization', 'withPaidPlan', 'withUser');
         server.create('project', {organization});
       });
 
-      describe('integrations page', function() {
+      describe('integrations page', function () {
         let windowStub;
 
-        beforeEach(function() {
+        beforeEach(function () {
           windowStub = sinon.stub(utils, 'replaceWindowLocation').returns(true);
         });
 
-        afterEach(function() {
+        afterEach(function () {
           windowStub.restore();
         });
 
-        it('integrations page does not start the OAuth process', async function() {
+        it('integrations page does not start the OAuth process', async function () {
           await IntegrationsIndexPage.visitIntegrationsPage({orgSlug: organization.slug});
 
           await IntegrationsIndexPage.slackIntegration.install();
@@ -258,17 +259,17 @@ describe('Acceptance: Slack Integration', function() {
       });
     });
 
-    describe('with an integration installed', function() {
+    describe('with an integration installed', function () {
       let slackIntegration;
 
-      setupSession(function(server) {
+      setupSession(function (server) {
         organization = server.create('organization', 'withPaidPlan', 'withUser');
         server.create('project', {organization});
         slackIntegration = server.create('slackIntegration', {organization});
       });
 
-      describe('Slack integrations page', function() {
-        it('does not render integrations', async function() {
+      describe('Slack integrations page', function () {
+        it('does not render integrations', async function () {
           await SlackIntegrationPage.visitSlackIntegration({orgSlug: organization.slug});
 
           expect(SlackIntegrationPage.addChannelButton.isVisible).to.equal(false);
@@ -279,8 +280,8 @@ describe('Acceptance: Slack Integration', function() {
         });
       });
 
-      describe('Slack config form', function() {
-        it('does not render', async function() {
+      describe('Slack config form', function () {
+        it('does not render', async function () {
           await visit(
             `/organizations/${organization.slug}/integrations/slack/${ // eslint-disable-line
               slackIntegration.id

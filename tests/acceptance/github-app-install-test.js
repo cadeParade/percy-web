@@ -4,16 +4,16 @@ import {beforeEach} from 'mocha';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {currentRouteName} from '@ember/test-helpers';
 
-describe('Acceptance: GitHubAppInstall', function() {
+describe('Acceptance: GitHubAppInstall', function () {
   setupAcceptance();
 
-  describe('with a non-admin user', function() {
+  describe('with a non-admin user', function () {
     let organization;
-    setupSession(function(server) {
+    setupSession(function (server) {
       organization = server.create('organization', 'withUser');
     });
 
-    it('informs the user that the feature requires admin permissions', async function() {
+    it('informs the user that the feature requires admin permissions', async function () {
       await GithubSettings.visitGithubSettings({orgSlug: organization.slug});
       expect(currentRouteName()).to.equal('organizations.organization.integrations.github');
 
@@ -21,13 +21,13 @@ describe('Acceptance: GitHubAppInstall', function() {
     });
   });
 
-  describe('without a linked github account', function() {
+  describe('without a linked github account', function () {
     let organization;
-    setupSession(function(server) {
+    setupSession(function (server) {
       organization = server.create('organization', 'withNonGithubUser');
     });
 
-    it('instructs a user to link a github account before installing the app', async function() {
+    it('instructs a user to link a github account before installing the app', async function () {
       await GithubSettings.visitGithubSettings({orgSlug: organization.slug});
       expect(currentRouteName()).to.equal('organizations.organization.integrations.github');
 
@@ -35,29 +35,29 @@ describe('Acceptance: GitHubAppInstall', function() {
     });
   });
 
-  describe('with a linked github account', function() {
+  describe('with a linked github account', function () {
     let organization;
-    setupSession(function(server) {
+    setupSession(function (server) {
       organization = server.create('organization', 'withAdminGithubUser');
     });
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       await GithubSettings.visitGithubSettings({orgSlug: organization.slug});
     });
 
-    it('shows GitHub integration installation page', async function() {
+    it('shows GitHub integration installation page', async function () {
       expect(currentRouteName()).to.equal('organizations.organization.integrations.github');
     });
 
-    it('shows "Install Github" button when github is not installed', async function() {
+    it('shows "Install Github" button when github is not installed', async function () {
       expect(GithubSettings.isGithubAppInstallButtonVisible).to.equal(true);
       await percySnapshot(this.test);
     });
   });
 
-  describe('after github app installation is requested', function() {
+  describe('after github app installation is requested', function () {
     let organization;
-    setupSession(function(server) {
+    setupSession(function (server) {
       const githubIntegrationRequest = server.create('githubIntegrationRequest');
       organization = server.create('organization', 'withAdminGithubUser', {
         githubIntegrationRequest,
@@ -67,7 +67,7 @@ describe('Acceptance: GitHubAppInstall', function() {
       githubIntegrationRequest.update({createdBy: user});
     });
 
-    it('shows the loading state when the install is in progress', async function() {
+    it('shows the loading state when the install is in progress', async function () {
       await GithubSettings.visitGithubSettings({orgSlug: organization.slug});
       expect(currentRouteName()).to.equal('organizations.organization.integrations.github');
 
@@ -77,13 +77,13 @@ describe('Acceptance: GitHubAppInstall', function() {
     });
   });
 
-  describe('after github app installation is complete', function() {
+  describe('after github app installation is complete', function () {
     let organization;
-    setupSession(function(server) {
+    setupSession(function (server) {
       organization = server.create('organization', 'withGithubIntegration', 'withAdminGithubUser');
     });
 
-    it('shows the installed state when the install is in successful', async function() {
+    it('shows the installed state when the install is in successful', async function () {
       await GithubSettings.visitGithubSettings({orgSlug: organization.slug});
       expect(currentRouteName()).to.equal('organizations.organization.integrations.github');
 

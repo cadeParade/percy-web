@@ -8,18 +8,18 @@ import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage
 import sinon from 'sinon';
 import {PusherMock} from 'pusher-js-mock';
 
-describe('WebsocketService', function() {
+describe('WebsocketService', function () {
   setupTest();
   SetupLocalStorageSandbox();
 
-  describe('subscribeToOrganization', function() {
+  describe('subscribeToOrganization', function () {
     let subject;
     let organization;
     let pusherMock;
     let subscribeStub;
     let bindEventsStub;
 
-    beforeEach(function() {
+    beforeEach(function () {
       subject = this.owner.lookup('service:websocket');
       setupFactoryGuy(this);
 
@@ -30,12 +30,12 @@ describe('WebsocketService', function() {
       bindEventsStub = sinon.stub(subject, '_bindEvents');
     });
 
-    afterEach(function() {
+    afterEach(function () {
       pusherMock.subscribe.restore();
       subject._bindEvents.restore();
     });
 
-    it('subscribes if not yet subscribed', function() {
+    it('subscribes if not yet subscribed', function () {
       sinon.stub(subject, '_isSubscribed').returns(false);
 
       subject.subscribeToOrganization(organization);
@@ -44,7 +44,7 @@ describe('WebsocketService', function() {
       expect(bindEventsStub).to.have.been.calledOnce;
     });
 
-    it('does not subscribe if already subscribed', function() {
+    it('does not subscribe if already subscribed', function () {
       sinon.stub(subject, '_isSubscribed').returns(true);
 
       subject.subscribeToOrganization(organization);
@@ -53,7 +53,7 @@ describe('WebsocketService', function() {
       expect(bindEventsStub).to.not.have.been.called;
     });
 
-    it('does not subscribe if _socket returns null', function() {
+    it('does not subscribe if _socket returns null', function () {
       sinon.stub(subject, '_socket').returns(null);
 
       subject.subscribeToOrganization(organization);
@@ -63,22 +63,22 @@ describe('WebsocketService', function() {
     });
   });
 
-  describe('_socket', function() {
+  describe('_socket', function () {
     let subject;
 
-    beforeEach(function() {
+    beforeEach(function () {
       subject = this.owner.lookup('service:websocket');
       setupFactoryGuy(this);
     });
 
-    it('returns an instance if one already exists', function() {
+    it('returns an instance if one already exists', function () {
       const existingSocket = 'some placeholder value for an EXISTING socket object';
       subject.set('_socket_instance', existingSocket);
 
       expect(subject._socket).to.eq(existingSocket);
     });
 
-    it('creates an instance if one does not exist', function() {
+    it('creates an instance if one does not exist', function () {
       const pusherMock = new PusherMock();
       subject.set('_socket', pusherMock);
       subject.set('_socket_instance', null);

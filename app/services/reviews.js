@@ -21,7 +21,7 @@ export default class ReviewsService extends Service {
   @service
   confirm;
 
-  @task(function*({snapshots, build, eventData}) {
+  @task(function* ({snapshots, build, eventData}) {
     const hasOpenReviewThreads = this._snapshotsHaveOpenReviewThreads(snapshots);
     const hasRejectedSnapshots = snapshots.any(snapshot => snapshot.isRejected);
 

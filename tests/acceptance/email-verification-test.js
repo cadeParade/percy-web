@@ -3,20 +3,20 @@ import stubLockModal from 'percy-web/tests/helpers/stub-lock-modal';
 import {currentRouteName, visit, click} from '@ember/test-helpers';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 
-describe('Acceptance: EmailVerification', function() {
+describe('Acceptance: EmailVerification', function () {
   setupAcceptance({authenticate: false});
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     this.loginUser = false;
     this.server = server;
   });
 
-  it('shows page with email verification required message ', async function() {
+  it('shows page with email verification required message ', async function () {
     await visit('/auth/email-verification-required');
     await percySnapshot(this.test.fullTitle());
   });
 
-  it('shows page with email verification success', async function() {
+  it('shows page with email verification success', async function () {
     stubLockModal(this.owner);
     await visit('/auth/verify-email?code=goodCode');
     await percySnapshot(this.test.fullTitle());
@@ -24,7 +24,7 @@ describe('Acceptance: EmailVerification', function() {
     expect(currentRouteName()).to.equal('login');
   });
 
-  it('shows page with email verification failure', async function() {
+  it('shows page with email verification failure', async function () {
     await visit('/auth/verify-email?code=badCode');
     await percySnapshot(this.test.fullTitle());
   });

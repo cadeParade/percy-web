@@ -7,12 +7,12 @@ import {make} from 'ember-data-factory-guy';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: BuildOverviewComponent', function() {
+describe('Integration: BuildOverviewComponent', function () {
   setupRenderingTest('build-overview', {
     integration: true,
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
   });
 
@@ -31,7 +31,7 @@ describe('Integration: BuildOverviewComponent', function() {
   states.forEach(state => {
     const testTitle = state.join(' ');
 
-    it(`renders in state: ${testTitle}`, async function() {
+    it(`renders in state: ${testTitle}`, async function () {
       const build = make.apply(this, ['build'].concat(state));
       this.set('build', build);
 

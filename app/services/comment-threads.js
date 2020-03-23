@@ -26,7 +26,7 @@ export default class CommentThreadsService extends Service {
     });
   }
 
-  @task(function*({commentThread, commentBody, mentionedUsers}) {
+  @task(function* ({commentThread, commentBody, mentionedUsers}) {
     const newComment = this.store.createRecord('comment', {
       commentThread: commentThread,
       body: commentBody,
@@ -38,7 +38,7 @@ export default class CommentThreadsService extends Service {
   })
   createComment;
 
-  @task(function*({snapshotId, commentBody, areChangesRequested, mentionedUsers}) {
+  @task(function* ({snapshotId, commentBody, areChangesRequested, mentionedUsers}) {
     const snapshot = this.store.peekRecord('snapshot', snapshotId);
     const newComment = this.store.createRecord('comment', {
       snapshotId,
@@ -64,7 +64,7 @@ export default class CommentThreadsService extends Service {
   })
   createCommentThread;
 
-  @task(function*({commentThread}) {
+  @task(function* ({commentThread}) {
     commentThread.set('closedAt', new Date());
     return yield commentThread.save().catch(() => {
       commentThread.rollbackAttributes();

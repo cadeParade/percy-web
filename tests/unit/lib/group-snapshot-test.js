@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {describe, it} from 'mocha';
 import groupSnapshots from 'percy-web/lib/group-snapshots';
 
-describe('grouping snapshots', function() {
+describe('grouping snapshots', function () {
   const snapshotGroupA1 = {fingerprint: 'aaa'};
   const snapshotGroupA2 = {fingerprint: 'aaa'};
   const snapshotGroupB1 = {fingerprint: 'bbb'};
@@ -13,8 +13,8 @@ describe('grouping snapshots', function() {
   const snapshotUndefinedGroup1 = {fingerprint: undefined};
   const snapshotUndefinedGroup2 = {fingerprint: undefined};
 
-  describe('group snapshots', function() {
-    it('separates single snapshots', async function() {
+  describe('group snapshots', function () {
+    it('separates single snapshots', async function () {
       const orderedSnapshots = [snapshotGroupA1, snapshotSingle1, snapshotGroupA2];
       const result = groupSnapshots(orderedSnapshots);
       expect(result).to.eql({
@@ -23,7 +23,7 @@ describe('grouping snapshots', function() {
       });
     });
 
-    it('includes snapshots with null fingerprint in "singles" array', async function() {
+    it('includes snapshots with null fingerprint in "singles" array', async function () {
       const orderedSnapshots = [snapshotGroupA1, snapshotNullGroup1, snapshotGroupA2];
       const result = groupSnapshots(orderedSnapshots);
       expect(result).to.eql({
@@ -32,7 +32,7 @@ describe('grouping snapshots', function() {
       });
     });
 
-    it('includes snapshots with undefined fingerprint in "singles" array', async function() {
+    it('includes snapshots with undefined fingerprint in "singles" array', async function () {
       const orderedSnapshots = [snapshotGroupA1, snapshotUndefinedGroup1, snapshotGroupA2];
       const result = groupSnapshots(orderedSnapshots);
       expect(result).to.eql({
@@ -41,8 +41,8 @@ describe('grouping snapshots', function() {
       });
     });
 
-    describe('_numericSort', function() {
-      it('sorts singles array according to original index', async function() {
+    describe('_numericSort', function () {
+      it('sorts singles array according to original index', async function () {
         const orderedSnapshots = [
           snapshotSingle2,
           snapshotNullGroup1,
@@ -63,8 +63,8 @@ describe('grouping snapshots', function() {
       });
     });
 
-    describe('groupSort', function() {
-      it('sorts groups with more snapshots first', async function() {
+    describe('groupSort', function () {
+      it('sorts groups with more snapshots first', async function () {
         const snapshotGroupA3 = {fingerprint: 'aaa'};
         const orderedSnapshots = [
           snapshotGroupA3,
@@ -83,7 +83,7 @@ describe('grouping snapshots', function() {
         });
       });
 
-      it('sorts groups by first snapshot index when length is equal', async function() {
+      it('sorts groups by first snapshot index when length is equal', async function () {
         const orderedSnapshots = [
           snapshotGroupB2,
           snapshotGroupB1,

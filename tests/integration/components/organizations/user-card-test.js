@@ -11,7 +11,7 @@ import UserCard from 'percy-web/tests/pages/components/organizations/user-card';
 import stubSession from 'percy-web/tests/helpers/stub-session';
 import stubService from 'percy-web/tests/helpers/stub-service-integration';
 
-describe('Integration: UserCard', function() {
+describe('Integration: UserCard', function () {
   setupRenderingTest('organizations/user-card-test', {
     integration: true,
   });
@@ -26,7 +26,7 @@ describe('Integration: UserCard', function() {
   let otherAdminUser;
   let otherMemberUser;
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
     organization = make('organization');
     adminUser = make('user');
@@ -61,13 +61,13 @@ describe('Integration: UserCard', function() {
     });
   });
 
-  describe('appearance', function() {
-    describe('as an admin user', function() {
-      beforeEach(function() {
+  describe('appearance', function () {
+    describe('as an admin user', function () {
+      beforeEach(function () {
         stubSession(this, {currentUser: adminUser});
       });
 
-      it('renders your Admin user', async function() {
+      it('renders your Admin user', async function () {
         await render(hbs`<Organizations::UserCard
           @organizationUser={{adminOrganizationUser}}
           @isViewerAdmin={{true}}
@@ -85,7 +85,7 @@ describe('Integration: UserCard', function() {
         await percySnapshot(this.test);
       });
 
-      it('renders another Admin user', async function() {
+      it('renders another Admin user', async function () {
         await render(hbs`<Organizations::UserCard
           @organizationUser={{otherAdminOrganizationUser}}
           @isViewerAdmin={{true}}
@@ -104,7 +104,7 @@ describe('Integration: UserCard', function() {
         await percySnapshot(this.test);
       });
 
-      it('renders a Member user', async function() {
+      it('renders a Member user', async function () {
         await render(hbs`<Organizations::UserCard
           @organizationUser={{memberOrganizationUser}}
           @isViewerAdmin={{true}}
@@ -123,7 +123,7 @@ describe('Integration: UserCard', function() {
         await percySnapshot(this.test);
       });
 
-      it('sorts identities correctly: samlp -> github -> auth0', async function() {
+      it('sorts identities correctly: samlp -> github -> auth0', async function () {
         make('identity', 'githubProvider', {user: adminOrganizationUser.user});
         make('identity', 'oktaProvider', {user: adminOrganizationUser.user});
         make('identity', 'auth0Provider', {user: adminOrganizationUser.user});
@@ -143,12 +143,12 @@ describe('Integration: UserCard', function() {
       });
     });
 
-    describe('as a member user', async function() {
-      beforeEach(function() {
+    describe('as a member user', async function () {
+      beforeEach(function () {
         stubSession(this, {currentUser: memberUser});
       });
 
-      it('renders your user', async function() {
+      it('renders your user', async function () {
         await render(hbs`<Organizations::UserCard @organizationUser={{memberOrganizationUser}} />`);
 
         expect(UserCard.userName.isVisible).to.equal(true);
@@ -162,7 +162,7 @@ describe('Integration: UserCard', function() {
         await percySnapshot(this.test);
       });
 
-      it('renders a Admin user', async function() {
+      it('renders a Admin user', async function () {
         await render(hbs`<
           Organizations::UserCard
           @organizationUser={{otherAdminOrganizationUser}}
@@ -180,7 +180,7 @@ describe('Integration: UserCard', function() {
         await percySnapshot(this.test);
       });
 
-      it('renders a Member user', async function() {
+      it('renders a Member user', async function () {
         await render(hbs`<
           Organizations::UserCard
           @organizationUser={{otherMemberOrganizationUser}}
@@ -200,24 +200,24 @@ describe('Integration: UserCard', function() {
     });
   });
 
-  describe('action buttons', function() {
+  describe('action buttons', function () {
     let confirmationAlert;
-    beforeEach(function() {
+    beforeEach(function () {
       confirmationAlert = sinon.stub(utils, 'confirmMessage').returns(true);
     });
-    afterEach(function() {
+    afterEach(function () {
       confirmationAlert.restore();
     });
 
-    describe('as an admin user', function() {
-      beforeEach(function() {
+    describe('as an admin user', function () {
+      beforeEach(function () {
         stubSession(this, {
           currentUser: adminUser,
         });
       });
 
-      describe('Remove', function() {
-        it('requests confirmation and calls destroyRecord', async function() {
+      describe('Remove', function () {
+        it('requests confirmation and calls destroyRecord', async function () {
           await render(
             hbs`<
               Organizations::UserCard
@@ -237,8 +237,8 @@ describe('Integration: UserCard', function() {
         });
       });
 
-      describe('Make admin', function() {
-        it('calls save on the OrganizationUser', async function() {
+      describe('Make admin', function () {
+        it('calls save on the OrganizationUser', async function () {
           await render(hbs`<
             Organizations::UserCard
             @organizationUser={{memberOrganizationUser}}
@@ -254,8 +254,8 @@ describe('Integration: UserCard', function() {
         });
       });
 
-      describe('Make member', function() {
-        it('calls save on the OrganizationUser', async function() {
+      describe('Make member', function () {
+        it('calls save on the OrganizationUser', async function () {
           await render(
             hbs`<
               Organizations::UserCard
@@ -274,17 +274,17 @@ describe('Integration: UserCard', function() {
         });
       });
 
-      describe('Leave organization', function() {
+      describe('Leave organization', function () {
         let transitionToStub;
 
-        beforeEach(function() {
+        beforeEach(function () {
           transitionToStub = sinon.stub();
           stubService(this, 'router', 'router', {
             transitionTo: transitionToStub,
           });
         });
 
-        it('requests confirmation and calls destroyRecord', async function() {
+        it('requests confirmation and calls destroyRecord', async function () {
           await render(
             hbs`<
               Organizations::UserCard
@@ -306,13 +306,13 @@ describe('Integration: UserCard', function() {
       });
     });
 
-    describe('as a member user', function() {
-      beforeEach(function() {
+    describe('as a member user', function () {
+      beforeEach(function () {
         stubSession(this, {currentUser: memberUser});
       });
 
-      describe('Remove', function() {
-        it('does nothing', async function() {
+      describe('Remove', function () {
+        it('does nothing', async function () {
           await render(
             hbs`<Organizations::UserCard @organizationUser={{otherMemberOrganizationUser}} />}`,
           );
@@ -328,8 +328,8 @@ describe('Integration: UserCard', function() {
         });
       });
 
-      describe('Make admin', function() {
-        it('does nothing', async function() {
+      describe('Make admin', function () {
+        it('does nothing', async function () {
           await render(
             hbs`<Organizations::UserCard @organizationUser={{otherMemberOrganizationUser}} />}`,
           );
@@ -345,8 +345,8 @@ describe('Integration: UserCard', function() {
         });
       });
 
-      describe('Make member', function() {
-        it('does nothing', async function() {
+      describe('Make member', function () {
+        it('does nothing', async function () {
           await render(
             hbs`<Organizations::UserCard @organizationUser={{otherAdminOrganizationUser}} />}`,
           );

@@ -10,11 +10,11 @@ import ManageUsersList from 'percy-web/tests/pages/components/organizations/mana
 import {render} from '@ember/test-helpers';
 import stubSession from 'percy-web/tests/helpers/stub-session';
 
-describe('Integration: ManageUsersList', function() {
+describe('Integration: ManageUsersList', function () {
   freezeMoment('2018-12-17');
 
   function rendersAUserCorrectly() {
-    it('renders a user correctly', async function() {
+    it('renders a user correctly', async function () {
       const userCard = ManageUsersList.userCards.objectAt(0);
       expect(userCard.avatarUrl).to.equal(this.organizationUsers[0].user.avatarUrl);
       expect(userCard.userName.isVisible).to.equal(true);
@@ -27,7 +27,7 @@ describe('Integration: ManageUsersList', function() {
   }
 
   function rendersAnInviteCorrectly({isAdmin = true}) {
-    it('renders an invite correctly', async function() {
+    it('renders an invite correctly', async function () {
       const session = this.owner.lookup('service:session');
       const orgUsers = this.organizationUsers;
       const currentUser = isAdmin
@@ -65,7 +65,7 @@ describe('Integration: ManageUsersList', function() {
   let invites;
   const numberOfUsers = 5;
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
     organization = make('organization');
 
@@ -84,8 +84,8 @@ describe('Integration: ManageUsersList', function() {
     });
   });
 
-  describe('when there are no invites', function() {
-    beforeEach(async function() {
+  describe('when there are no invites', function () {
+    beforeEach(async function () {
       await render(
         hbs`<Organizations::ManageUsersList
           @organization={{organization}}
@@ -93,22 +93,22 @@ describe('Integration: ManageUsersList', function() {
       );
     });
 
-    it('renders all users', function() {
+    it('renders all users', function () {
       expect(ManageUsersList.usersHeader.text).to.equal('Name Role Joined on Identities');
       expect(ManageUsersList.userCards.length).to.equal(numberOfUsers);
     });
 
     rendersAUserCorrectly();
 
-    it('does not render any invites', function() {
+    it('does not render any invites', function () {
       expect(ManageUsersList.inviteCards.length).to.equal(0);
     });
   });
 
-  describe('when there are invites', function() {
+  describe('when there are invites', function () {
     let numberOfInvites;
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       numberOfInvites = 3;
       invites = makeList('invite', numberOfInvites, {
         organization: organization,
@@ -121,22 +121,22 @@ describe('Integration: ManageUsersList', function() {
       );
     });
 
-    it('renders all users', function() {
+    it('renders all users', function () {
       expect(ManageUsersList.usersHeader.text).to.equal('Name Role Joined on Identities');
       expect(ManageUsersList.userCards.length).to.equal(numberOfUsers);
     });
 
     rendersAUserCorrectly();
 
-    it('renders all invites', function() {
+    it('renders all invites', function () {
       expect(ManageUsersList.inviteCards.length).to.equal(numberOfInvites);
     });
 
-    describe('as an admin', function() {
+    describe('as an admin', function () {
       rendersAnInviteCorrectly({isAdmin: true});
     });
 
-    describe('as a member', function() {
+    describe('as a member', function () {
       rendersAnInviteCorrectly({isAdmin: false});
     });
   });

@@ -21,7 +21,7 @@ export default BaseFormComponent.extend({
 
   isGitlabPersonalAccessTokenPresent: alias('model.isGitlabPersonalAccessTokenPresent'),
   gitlabPersonalAccessToken: alias('model.gitlabPersonalAccessToken'),
-  gitlabPersonalAccessTokenPlaceholder: computed('isGitlabPersonalAccessTokenPresent', function() {
+  gitlabPersonalAccessTokenPlaceholder: computed('isGitlabPersonalAccessTokenPresent', function () {
     if (this.isGitlabPersonalAccessTokenPresent) {
       return '••••••••••••••••••••';
     } else {

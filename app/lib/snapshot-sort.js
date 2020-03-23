@@ -1,10 +1,10 @@
 import {comparisonsForBrowser, comparisonForWidth} from 'percy-web/lib/filtered-comparisons';
 import {get} from '@ember/object';
 
-export default function(snapshots, browser) {
+export default function (snapshots, browser) {
   let width = _maxWidthForSnapshots(snapshots);
 
-  return snapshots.sort(function(a, b) {
+  return snapshots.sort(function (a, b) {
     // Prioritize snapshots with diffs at any widths over snapshots with no diffs at any widths
     const browserComparisonsForA = comparisonsForBrowser(get(a, 'comparisons'), browser);
     const browserComparisonsForB = comparisonsForBrowser(get(b, 'comparisons'), browser);

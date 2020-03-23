@@ -22,7 +22,7 @@ export default class SubscriptionsService extends Service {
     return this._saveSubscription.perform(subscription);
   }
 
-  @task(function*(subscription) {
+  @task(function* (subscription) {
     try {
       yield subscription.save();
     } catch (adapterErrors) {

@@ -66,11 +66,11 @@ export default Component.extend({
   anchorPlacement: null,
   isFirstInstance: true,
 
-  title: computed('key', function() {
+  title: computed('key', function () {
     if (!this.key) return;
     return TOOLTIP_DATA[this.key]['title'];
   }),
-  message: computed('key', function() {
+  message: computed('key', function () {
     if (!this.key) return;
     return TOOLTIP_DATA[this.key]['message'];
   }),
@@ -82,11 +82,11 @@ export default Component.extend({
   // hide anchor if not demo, not first instance, or all tooltips hidden
   shouldHideWholeTooltip: or('_isNotDemo', '_isAllHidden', '_isNotFirstInstance'),
 
-  tooltipKey: computed(function() {
+  tooltipKey: computed(function () {
     return `percy_tooltip_hidden_${this.key}`;
   }),
 
-  isLastTooltip: computed('tooltips.currentSequence', function() {
+  isLastTooltip: computed('tooltips.currentSequence', function () {
     // if is the last item in current presentation sequence
     if (this.tooltips.currentSequence) {
       return this.tooltips.currentSequence.lastObject === this.key;
@@ -95,7 +95,7 @@ export default Component.extend({
     }
   }),
 
-  shouldShowTooltip: computed('key', 'tooltips.currentTooltipKey', function() {
+  shouldShowTooltip: computed('key', 'tooltips.currentTooltipKey', function () {
     // should be visible if isDemo, tooltips are not hidden, & is currentStep
     const isCurrentStep = this.tooltips.currentTooltipKey === this.key;
 

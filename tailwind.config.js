@@ -547,7 +547,7 @@ module.exports = {
   },
   corePlugins: {},
   plugins: [
-    function({addUtilities}) {
+    function ({addUtilities}) {
       const newUtilities = {
         '.trans': {
           transition: 'all 250ms ease-in-out',

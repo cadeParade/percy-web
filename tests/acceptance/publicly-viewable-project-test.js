@@ -6,15 +6,15 @@ import ProjectPage from 'percy-web/tests/pages/project-page';
 import {visit, currentRouteName} from '@ember/test-helpers';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 
-describe('Acceptance: Publicly viewable projects', function() {
-  describe('when user is not logged in', function() {
+describe('Acceptance: Publicly viewable projects', function () {
+  describe('when user is not logged in', function () {
     setupAcceptance({authenticate: false});
 
     let organization;
     let project;
     let build;
 
-    setupSession(function(server) {
+    setupSession(function (server) {
       stubLockModal(this.owner);
       this.loginUser = false;
 
@@ -23,7 +23,7 @@ describe('Acceptance: Publicly viewable projects', function() {
       build = server.create('build', 'withSnapshots', {project: project});
     });
 
-    it('shows build when project is returned from project request', async function() {
+    it('shows build when project is returned from project request', async function () {
       await BuildPage.visitBuild({
         orgSlug: organization.slug,
         projectSlug: project.slug,
@@ -44,7 +44,7 @@ describe('Acceptance: Publicly viewable projects', function() {
       ).to.equal(true);
     });
 
-    it('shows placeholder when project is returned and there are no builds', async function() {
+    it('shows placeholder when project is returned and there are no builds', async function () {
       const projectWithNoBuilds = server.create('project', {organization});
       await ProjectPage.visitProject({
         orgSlug: organization.slug,
@@ -56,7 +56,7 @@ describe('Acceptance: Publicly viewable projects', function() {
       await percySnapshot(this.test);
     });
 
-    it('redirects to login if no project is returned', async function() {
+    it('redirects to login if no project is returned', async function () {
       // Imitate a 403 error when asking for this project/build by asking for a project/build
       // that doesn't exist
       try {
@@ -78,7 +78,7 @@ describe('Acceptance: Publicly viewable projects', function() {
     });
   });
 
-  describe('when user is logged in', function() {
+  describe('when user is logged in', function () {
     setupAcceptance();
 
     let userOrganization;
@@ -88,7 +88,7 @@ describe('Acceptance: Publicly viewable projects', function() {
     let project;
     let build;
 
-    setupSession(function(server) {
+    setupSession(function (server) {
       // current user will be set to the user for this org
       userOrganization = server.create('organization', 'withUser');
       userProject = server.create('project', {
@@ -103,9 +103,9 @@ describe('Acceptance: Publicly viewable projects', function() {
       build = server.create('build', 'withSnapshots', {project: project});
     });
 
-    describe('when a project is returned ', function() {
-      describe("when user is member of project's org", function() {
-        it('shows setup instructions when project has no builds', async function() {
+    describe('when a project is returned ', function () {
+      describe("when user is member of project's org", function () {
+        it('shows setup instructions when project has no builds', async function () {
           const projectWithNoBuilds = server.create('project', {organization: userOrganization});
           await ProjectPage.visitProject({
             orgSlug: userOrganization.slug,
@@ -117,7 +117,7 @@ describe('Acceptance: Publicly viewable projects', function() {
           await percySnapshot(this.test);
         });
 
-        it('shows build correctly', async function() {
+        it('shows build correctly', async function () {
           await BuildPage.visitBuild({
             orgSlug: userOrganization.slug,
             projectSlug: userProject.slug,
@@ -139,8 +139,8 @@ describe('Acceptance: Publicly viewable projects', function() {
         });
       });
 
-      describe("when user is not a member of project's org", function() {
-        it('shows placeholder when project has no builds', async function() {
+      describe("when user is not a member of project's org", function () {
+        it('shows placeholder when project has no builds', async function () {
           const projectWithNoBuilds = server.create('project', {organization: otherOrganization});
           await ProjectPage.visitProject({
             orgSlug: otherOrganization.slug,
@@ -152,7 +152,7 @@ describe('Acceptance: Publicly viewable projects', function() {
           await percySnapshot(this.test);
         });
 
-        it('shows build correctly', async function() {
+        it('shows build correctly', async function () {
           await BuildPage.visitBuild({
             orgSlug: otherOrganization.slug,
             projectSlug: project.slug,
@@ -174,7 +174,7 @@ describe('Acceptance: Publicly viewable projects', function() {
       });
     });
 
-    it('shows error page if project is not returned', async function() {
+    it('shows error page if project is not returned', async function () {
       await BuildPage.visitBuild({
         orgSlug: otherOrganization.slug,
         projectSlug: 'not-public-project',
@@ -187,13 +187,13 @@ describe('Acceptance: Publicly viewable projects', function() {
   });
 });
 
-describe('Acceptance: Publicly viewable organizations', function() {
-  describe('when a user is not logged in', function() {
+describe('Acceptance: Publicly viewable organizations', function () {
+  describe('when a user is not logged in', function () {
     setupAcceptance({authenticate: false});
 
     let publicOrganization;
 
-    setupSession(function(server) {
+    setupSession(function (server) {
       stubLockModal(this.owner);
       this.loginUser = false;
 
@@ -204,13 +204,13 @@ describe('Acceptance: Publicly viewable organizations', function() {
       server.create('build', {project});
     });
 
-    it('shows organization page with projects when org request returns an org', async function() {
+    it('shows organization page with projects when org request returns an org', async function () {
       await visit(`/${publicOrganization.slug}`);
       expect(currentRouteName()).to.equal('organization.index');
       await percySnapshot(this.test);
     });
 
-    it('redirects to login when organization request returns an error', async function() {
+    it('redirects to login when organization request returns an error', async function () {
       try {
         await visit('/org-that-api-will-not-disclose');
       } catch (e) {
@@ -225,13 +225,13 @@ describe('Acceptance: Publicly viewable organizations', function() {
     });
   });
 
-  describe('when a user is logged in', function() {
+  describe('when a user is logged in', function () {
     setupAcceptance();
 
     let userOrganization;
     let userProject;
 
-    setupSession(function(server) {
+    setupSession(function (server) {
       // current user will be set to the user for this org
       userOrganization = server.create('organization', 'withUser');
       userProject = server.create('project', {
@@ -240,13 +240,13 @@ describe('Acceptance: Publicly viewable organizations', function() {
       server.create('build', 'withSnapshots', {project: userProject});
     });
 
-    it('shows organization page when org request returns an org', async function() {
+    it('shows organization page when org request returns an org', async function () {
       await visit(`/${userOrganization.slug}`);
       expect(currentRouteName()).to.equal('organization.index');
       await percySnapshot(this.test);
     });
 
-    it('shows error page when org request returns an error', async function() {
+    it('shows error page when org request returns an error', async function () {
       const badOrgSlug = 'org-that-api-will-not-disclose';
       await visit(`/${badOrgSlug}`);
 

@@ -10,12 +10,12 @@ import repoRefreshServiceStub from 'percy-web/tests/helpers/mock-repo-refresh-se
 import moment from 'moment';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: RepoSelectorComponent', function() {
+describe('Integration: RepoSelectorComponent', function () {
   setupRenderingTest('repo-selector', {
     integration: true,
   });
 
-  beforeEach(async function() {
+  beforeEach(async function () {
     setupFactoryGuy(this);
   });
 
@@ -23,8 +23,8 @@ describe('Integration: RepoSelectorComponent', function() {
   // still open when the test ends. Addding `clickTrigger` to the end of each test seems to fix
   // this problem.
 
-  describe('with a github integration', function() {
-    beforeEach(async function() {
+  describe('with a github integration', function () {
+    beforeEach(async function () {
       const project = make('project');
       const organization = make('organization', 'withGithubIntegration', 'withGithubRepos');
       project.set('organization', organization);
@@ -34,13 +34,13 @@ describe('Integration: RepoSelectorComponent', function() {
       await render(hbs`<RepoSelector @project={{project}} />`);
     });
 
-    it('renders powerselect closed', async function() {
+    it('renders powerselect closed', async function () {
       expect(RepoSelector.dropdown.isSelectorOpen).to.eq(false);
 
       await percySnapshot(this.test.fullTitle());
     });
 
-    it('renders powerselect open', async function() {
+    it('renders powerselect open', async function () {
       await clickTrigger();
       expect(RepoSelector.dropdown.isSelectorOpen).to.eq(true);
       expect(RepoSelector.dropdown.groups.objectAt(0).name).to.eq('GitHub');
@@ -49,8 +49,8 @@ describe('Integration: RepoSelectorComponent', function() {
     });
   });
 
-  describe('with a gitlab integration', function() {
-    beforeEach(async function() {
+  describe('with a gitlab integration', function () {
+    beforeEach(async function () {
       const project = make('project');
       const organization = make('organization', 'withGitlabIntegration', 'withGitlabRepos');
       project.set('organization', organization);
@@ -60,13 +60,13 @@ describe('Integration: RepoSelectorComponent', function() {
       await render(hbs`<RepoSelector @project={{project}} />`);
     });
 
-    it('renders powerselect closed', async function() {
+    it('renders powerselect closed', async function () {
       expect(RepoSelector.dropdown.isSelectorOpen).to.eq(false);
 
       await percySnapshot(this.test.fullTitle());
     });
 
-    it('renders powerselect open', async function() {
+    it('renders powerselect open', async function () {
       await clickTrigger();
       expect(RepoSelector.dropdown.isSelectorOpen).to.eq(true);
       expect(RepoSelector.dropdown.groups.objectAt(0).name).to.eq('GitLab');
@@ -75,8 +75,8 @@ describe('Integration: RepoSelectorComponent', function() {
     });
   });
 
-  describe('with a gitlab self-hosted integration', function() {
-    beforeEach(async function() {
+  describe('with a gitlab self-hosted integration', function () {
+    beforeEach(async function () {
       const project = make('project');
       const organization = make(
         'organization',
@@ -90,13 +90,13 @@ describe('Integration: RepoSelectorComponent', function() {
       await render(hbs`<RepoSelector @project={{project}} />`);
     });
 
-    it('renders powerselect closed', async function() {
+    it('renders powerselect closed', async function () {
       expect(RepoSelector.dropdown.isSelectorOpen).to.eq(false);
 
       await percySnapshot(this.test.fullTitle());
     });
 
-    it('renders powerselect open', async function() {
+    it('renders powerselect open', async function () {
       await clickTrigger();
       expect(RepoSelector.dropdown.isSelectorOpen).to.eq(true);
       expect(RepoSelector.dropdown.groups.objectAt(0).name).to.eq('GitLab Self-Managed');
@@ -105,8 +105,8 @@ describe('Integration: RepoSelectorComponent', function() {
     });
   });
 
-  describe('with a github enterprise integration', function() {
-    beforeEach(async function() {
+  describe('with a github enterprise integration', function () {
+    beforeEach(async function () {
       const project = make('project');
       const organization = make(
         'organization',
@@ -119,13 +119,13 @@ describe('Integration: RepoSelectorComponent', function() {
       await render(hbs`<RepoSelector @project={{project}} />`);
     });
 
-    it('renders powerselect closed', async function() {
+    it('renders powerselect closed', async function () {
       expect(RepoSelector.dropdown.isSelectorOpen).to.eq(false);
 
       await percySnapshot(this.test.fullTitle());
     });
 
-    it('renders powerselect open', async function() {
+    it('renders powerselect open', async function () {
       await clickTrigger();
       expect(RepoSelector.dropdown.isSelectorOpen).to.eq(true);
       expect(RepoSelector.dropdown.groups.objectAt(0).name).to.eq('GitHub Enterprise');
@@ -134,8 +134,8 @@ describe('Integration: RepoSelectorComponent', function() {
     });
   });
 
-  describe('with multiple integrations', function() {
-    beforeEach(async function() {
+  describe('with multiple integrations', function () {
+    beforeEach(async function () {
       const project = make('project');
       const organization = make('organization', 'withMultipleIntegrations');
       project.set('organization', organization);
@@ -144,13 +144,13 @@ describe('Integration: RepoSelectorComponent', function() {
       await render(hbs`<RepoSelector @project={{project}} />`);
     });
 
-    it('renders powerselect closed', async function() {
+    it('renders powerselect closed', async function () {
       expect(RepoSelector.dropdown.isSelectorOpen).to.eq(false);
 
       await percySnapshot(this.test.fullTitle());
     });
 
-    it('renders powerselect open', async function() {
+    it('renders powerselect open', async function () {
       await clickTrigger();
       expect(RepoSelector.dropdown.isSelectorOpen).to.eq(true);
       expect(RepoSelector.dropdown.groups.objectAt(0).name).to.eq('GitHub');
@@ -161,12 +161,12 @@ describe('Integration: RepoSelectorComponent', function() {
     });
   });
 
-  describe('with stale repos', function() {
+  describe('with stale repos', function () {
     let project;
     let organization;
     let oldRepos;
     let oldUpdatedAt;
-    beforeEach(async function() {
+    beforeEach(async function () {
       project = make('project');
       organization = make('organization', 'withMultipleIntegrations', 'withStaleRepoData');
 
@@ -174,7 +174,7 @@ describe('Integration: RepoSelectorComponent', function() {
       this.setProperties({project});
     });
 
-    it('shows that the repos are out of date', async function() {
+    it('shows that the repos are out of date', async function () {
       oldRepos = organization.get('repos');
       oldUpdatedAt = organization.get('lastSyncedAt');
       repoRefreshServiceStub(this, oldRepos, oldUpdatedAt);
@@ -185,7 +185,7 @@ describe('Integration: RepoSelectorComponent', function() {
       await percySnapshot(this.test.fullTitle());
     });
 
-    it('refreshes the repo collection', async function() {
+    it('refreshes the repo collection', async function () {
       const expectedRepoCount = 10;
       const newRepos = makeList('repo', expectedRepoCount, 'githubEnterprise');
       const newUpdatedAt = moment().subtract(1, 'minutes');

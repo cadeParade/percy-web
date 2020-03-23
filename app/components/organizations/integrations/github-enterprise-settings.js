@@ -10,7 +10,7 @@ export default Component.extend({
   store: service(),
   session: service(),
   currentUser: alias('session.currentUser'),
-  showWhenIntegrationEnabled: computed('isGithubEnterpriseIntegrated', function() {
+  showWhenIntegrationEnabled: computed('isGithubEnterpriseIntegrated', function () {
     return htmlSafe(!this.isGithubEnterpriseIntegrated ? '' : 'display: none');
   }),
   isGithubEnterpriseIntegrated: alias('organization.isGithubEnterpriseIntegrated'),

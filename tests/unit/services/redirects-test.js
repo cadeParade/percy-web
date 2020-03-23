@@ -8,7 +8,7 @@ import localStorageProxy from 'percy-web/lib/localstorage';
 import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage-sandbox';
 import {resolve} from 'rsvp';
 
-describe('RedirectsService', function() {
+describe('RedirectsService', function () {
   setupTest();
   SetupLocalStorageSandbox();
 
@@ -17,7 +17,7 @@ describe('RedirectsService', function() {
   let replaceWithStub;
   let transitionToStub;
 
-  beforeEach(async function() {
+  beforeEach(async function () {
     localStorage.clear();
     setupFactoryGuy(this);
     replaceWithStub = sinon.stub();
@@ -29,16 +29,16 @@ describe('RedirectsService', function() {
     service = this.owner.factoryFor('service:redirects').create({router: routerStub});
   });
 
-  describe('redirectToRecentProjectForOrg', function() {
+  describe('redirectToRecentProjectForOrg', function () {
     const recentProjectSlug = 'recent-project';
     const orgSlug = 'org-slug';
 
-    describe('when there is a recentProjectSlug', function() {
-      beforeEach(async function() {
+    describe('when there is a recentProjectSlug', function () {
+      beforeEach(async function () {
         localStorageProxy.set('recentProjectSlugs', {[orgSlug]: recentProjectSlug});
       });
 
-      it('transitions to project when the project belongs to the organization', async function() {
+      it('transitions to project when the project belongs to the organization', async function () {
         const projects = [make('project', {slug: recentProjectSlug})];
         const org = _constructOrgObject(orgSlug, projects);
         await service.redirectToRecentProjectForOrg(org);
@@ -65,17 +65,17 @@ describe('RedirectsService', function() {
       });
     });
 
-    describe('when there is not a recentProjectSlug', function() {
-      describe('when there are no projects in the org', function() {
-        it('transitions to new project page', async function() {
+    describe('when there is not a recentProjectSlug', function () {
+      describe('when there are no projects in the org', function () {
+        it('transitions to new project page', async function () {
           const org = _constructOrgObject(orgSlug, []);
           await service.redirectToRecentProjectForOrg(org);
           _expectTransitionToNewProject(orgSlug);
         });
       });
 
-      describe("when the org's only project does not have an id", function() {
-        it('transitionsTo new project page', async function() {
+      describe("when the org's only project does not have an id", function () {
+        it('transitionsTo new project page', async function () {
           const project = {id: null};
           const org = _constructOrgObject(orgSlug, [project]);
           await service.redirectToRecentProjectForOrg(org);
@@ -83,8 +83,8 @@ describe('RedirectsService', function() {
         });
       });
 
-      describe("when the org's only project is disabled", function() {
-        it('transitionsTo new project page', async function() {
+      describe("when the org's only project is disabled", function () {
+        it('transitionsTo new project page', async function () {
           const project = make('project', {isEnabled: false});
           const org = _constructOrgObject(orgSlug, [project]);
           await service.redirectToRecentProjectForOrg(org);
@@ -93,15 +93,15 @@ describe('RedirectsService', function() {
       });
     });
 
-    describe('when goToSettings is true', function() {
+    describe('when goToSettings is true', function () {
       let org;
-      beforeEach(async function() {
+      beforeEach(async function () {
         localStorageProxy.set('recentProjectSlugs', {[orgSlug]: recentProjectSlug});
         const projects = [make('project', {slug: recentProjectSlug})];
         org = _constructOrgObject(orgSlug, projects);
       });
 
-      it('redirects to project settings page', async function() {
+      it('redirects to project settings page', async function () {
         await service.redirectToRecentProjectForOrg(org, {goToSettings: true});
         return expect(transitionToStub).to.have.been.calledWith(
           'organization.project.settings',

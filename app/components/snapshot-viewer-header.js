@@ -32,7 +32,7 @@ export default Component.extend({
 
   unresolvedCommentThreadCount: readOnly('openCommentThreads.length'),
 
-  filteredComparisons: computed('snapshot', 'activeBrowser', 'snapshotSelectedWidth', function() {
+  filteredComparisons: computed('snapshot', 'activeBrowser', 'snapshotSelectedWidth', function () {
     return filteredComparisons.create({
       snapshot: this.snapshot,
       activeBrowser: this.activeBrowser,
@@ -47,7 +47,7 @@ export default Component.extend({
   noComparisonsHaveDiffs: equal('filteredComparisons.comparisonsWithDiffs.length', 0),
   allComparisonsHaveDiffs: computed(
     'filteredComparisons.{comparisons.[],comparisonsWithDiffs.[]}',
-    function() {
+    function () {
       return (
         this.get('filteredComparisons.comparisons.length') ===
         this.get('filteredComparisons.comparisonsWithDiffs.length')

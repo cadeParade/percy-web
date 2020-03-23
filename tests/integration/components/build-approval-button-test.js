@@ -13,7 +13,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render} from '@ember/test-helpers';
 import stubService from 'percy-web/tests/helpers/stub-service-integration';
 
-describe('Integration: BuildApprovalButton', function() {
+describe('Integration: BuildApprovalButton', function () {
   setupRenderingTest('build-approval-button', {
     integration: true,
   });
@@ -21,7 +21,7 @@ describe('Integration: BuildApprovalButton', function() {
   let build;
   let createReviewStub;
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
     build = make('build', {snapshots: makeList('snapshot', 4)});
     createReviewStub = sinon.stub().returns(resolve('resolve'));
@@ -32,14 +32,14 @@ describe('Integration: BuildApprovalButton', function() {
     });
   });
 
-  it('displays correctly when build is not approved ', async function() {
+  it('displays correctly when build is not approved ', async function () {
     await render(hbs`<BuildApprovalButton
       @build={{build}}
     />`);
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  it('displays correctly when build is approved', async function() {
+  it('displays correctly when build is approved', async function () {
     await render(hbs`<BuildApprovalButton
       @build={{build}}
     />`);
@@ -47,7 +47,7 @@ describe('Integration: BuildApprovalButton', function() {
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  it('calls createReview with correct args when clicked', async function() {
+  it('calls createReview with correct args when clicked', async function () {
     this.setProperties({
       approvableSnapshots: build.get('snapshots'),
     });
@@ -63,7 +63,7 @@ describe('Integration: BuildApprovalButton', function() {
     });
   });
 
-  it('does not call createReview if build is already approved', async function() {
+  it('does not call createReview if build is already approved', async function () {
     const flashMessageService = this.owner.lookup('service:flash-messages').registerTypes(['info']);
     sinon.stub(flashMessageService, 'info');
 
@@ -82,7 +82,7 @@ describe('Integration: BuildApprovalButton', function() {
     expect(flashMessageService.info).to.have.been.calledWith('This build was already approved');
   });
 
-  it('does not call createReview if there are no approvable snapshots', async function() {
+  it('does not call createReview if there are no approvable snapshots', async function () {
     this.setProperties({
       approvableSnapshots: [],
     });
@@ -96,7 +96,7 @@ describe('Integration: BuildApprovalButton', function() {
     expect(createReviewStub).to.not.have.been.called;
   });
 
-  it('displays correctly when in loading state ', async function() {
+  it('displays correctly when in loading state ', async function () {
     const deferred = defer();
     const createReviewStub = sinon.stub().returns(deferred.promise);
     const service = this.owner.lookup('service:reviews');
@@ -110,7 +110,7 @@ describe('Integration: BuildApprovalButton', function() {
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  it('is enabled when isDisabled is false', async function() {
+  it('is enabled when isDisabled is false', async function () {
     await render(hbs`<BuildApprovalButton
       @build={{build}}
       @isDisabled={{false}}
@@ -121,7 +121,7 @@ describe('Integration: BuildApprovalButton', function() {
     expect(createReviewStub).to.have.been.called;
   });
 
-  it('is disabled when isDisabled is true', async function() {
+  it('is disabled when isDisabled is true', async function () {
     await render(hbs`<BuildApprovalButton
       @build={{build}}
       @isDisabled={{true}}

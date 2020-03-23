@@ -38,11 +38,11 @@ export default Component.extend({
   isEmailOrCardSaving: or('emailSaveTask.isRunning', 'cardSaveTask.isRunning'),
   selectedPlanId: readOnly('selectedPlan.id'),
 
-  defaultPlan: computed('defaultPlanId', function() {
+  defaultPlan: computed('defaultPlanId', function () {
     return this.subscriptionData.PLANS.findBy('id', this.defaultPlanId);
   }),
 
-  subscriptionChangeset: computed(function() {
+  subscriptionChangeset: computed(function () {
     const validator = SubscriptionValidations;
     return new Changeset(this.subscription, lookupValidator(validator), validator);
   }),
@@ -51,7 +51,7 @@ export default Component.extend({
     'userSelectedPlanId',
     'defaultPlan',
     'plan.{id,isTrialOrFree,isCurrentPaidPlan}',
-    function() {
+    function () {
       // If the plan doesn't exist in the list and the user hasn't picked one yet,
       // choose the default
       if ((this.plan.isTrialOrFree || !this.plan.isCurrentPaidPlan) && !this.userSelectedPlanId) {
@@ -70,7 +70,7 @@ export default Component.extend({
     'plan.{id,isTrialOrFree}',
     'selectedPlanId',
     'userSelectedPlanId',
-    function() {
+    function () {
       if (this.plan.isTrialOrFree && this.userSelectedPlanId) {
         return true;
       } else {

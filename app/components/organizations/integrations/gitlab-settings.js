@@ -12,7 +12,7 @@ export default Component.extend({
   intercom: service(),
 
   currentUser: readOnly('session.currentUser'),
-  isNewRecord: computed('currentGitlabIntegration.dirtyType', function() {
+  isNewRecord: computed('currentGitlabIntegration.dirtyType', function () {
     let record = this.currentGitlabIntegration;
     if (record) {
       return record.get('dirtyType') === 'created';

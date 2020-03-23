@@ -49,7 +49,7 @@ class Router extends EmberRouterScroll {
   }
 }
 
-Router.map(function() {
+Router.map(function () {
   this.route('join', {path: '/join/:invite_code'});
   this.route('auth-failure', {path: 'auth/failure'});
   this.route(AUTH_CALLBACK_ROUTE, {path: '/auth/callback'});
@@ -61,7 +61,7 @@ Router.map(function() {
   this.route(PASSWORD_RESET_ROUTE, {path: '/auth/password-reset'});
   this.route(PASSWORD_UPDATED_ROUTE, {path: '/auth/password-updated'});
   // Docs and child routes are deprecated and are intercepted in docs route for redirect.
-  this.route('docs', {}, function() {
+  this.route('docs', {}, function () {
     this.route('page', {path: '*path'});
   });
   this.route(LOGIN_ROUTE);
@@ -74,7 +74,7 @@ Router.map(function() {
   this.route('privacy');
   this.route('security');
   this.route('admin');
-  this.route('changelog', function() {
+  this.route('changelog', function () {
     this.route('show', {path: ':slug'});
   });
   this.route('features');
@@ -83,64 +83,64 @@ Router.map(function() {
   this.route('schedule-demo');
   this.route('integrations');
   this.route('customers');
-  this.route('settings', function() {
+  this.route('settings', function () {
     this.route('profile');
     this.route('connected-accounts');
     this.route('display-preferences');
     this.route('notifications');
   });
-  this.route('setup', {}, function() {
+  this.route('setup', {}, function () {
     this.route('github-app');
   });
   this.route('default-org');
   this.route('recent-project');
 
-  this.route('organizations', {}, function() {
+  this.route('organizations', {}, function () {
     this.route('new');
-    this.route('organization', {path: '/:organization_id'}, function() {
+    this.route('organization', {path: '/:organization_id'}, function () {
       this.route('setup');
-      this.route('projects', {}, function() {
+      this.route('projects', {}, function () {
         this.route('new');
         this.route('new-demo');
       });
       this.route('settings');
-      this.route('users', function() {
+      this.route('users', function () {
         this.route('invite');
       });
       this.route('billing');
       this.route('usage');
-      this.route('integrations', function() {
+      this.route('integrations', function () {
         this.route('okta');
         this.route('bitbucket-cloud');
         this.route('github-enterprise');
         this.route('github');
         this.route('gitlab');
         this.route('gitlab-self-hosted');
-        this.route('slack', {}, function() {
+        this.route('slack', {}, function () {
           this.route('slack-config', {
             path: '/:slack_integration_id/configs/:slack_integration_config_id',
           });
         });
       });
-      this.route('setup', {}, function() {
+      this.route('setup', {}, function () {
         this.route('slack-integration');
         this.route('bitbucket-cloud-integration');
       });
     });
   });
-  this.route('organization', {path: '/:organization_id'}, function() {
+  this.route('organization', {path: '/:organization_id'}, function () {
     // Don't add anything else in this top-level namespace, we want to allow users to own the whole
     // projects namespace. Org-level settings and such should go in the above "organizations" route.
     this.route('index', {path: '/'});
-    this.route('project', {path: '/:project_id'}, function() {
-      this.route('settings', {}, function() {});
-      this.route('integrations', {}, function() {
-        this.route('webhooks', {}, function() {
+    this.route('project', {path: '/:project_id'}, function () {
+      this.route('settings', {}, function () {});
+      this.route('integrations', {}, function () {
+        this.route('webhooks', {}, function () {
           this.route('webhook-config', {path: '/:webhook_config_id'});
         });
       });
-      this.route('builds', {}, function() {
-        this.route('build', {path: '/:build_id'}, function() {
+      this.route('builds', {}, function () {
+        this.route('build', {path: '/:build_id'}, function () {
           this.route('snapshot', {path: '/view/:snapshot_id'});
           // Deprecated -- forwards to ^
           this.route('deprecated-snapshot', {path: '/view/:snapshot_id/:width'});

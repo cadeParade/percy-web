@@ -14,18 +14,18 @@ export default Component.extend({
   organization: computed.readOnly('project.organization'),
   isOtherSelected: computed.equal('selectedFramework', 'other'),
 
-  frameworkOptions: computed('selectedLanguage', function() {
+  frameworkOptions: computed('selectedLanguage', function () {
     return ResourceDocs[this.selectedLanguage].frameworks;
   }),
 
-  frameworkName: computed('selectedFramework', function() {
+  frameworkName: computed('selectedFramework', function () {
     const frameworks = this.frameworkOptions;
     const currentFramework = this.selectedFramework;
 
     return frameworks[currentFramework].name;
   }),
 
-  docLinkClasses: computed('selectedFramework', function() {
+  docLinkClasses: computed('selectedFramework', function () {
     if (!this.docLink) {
       return 'hidden';
     } else {
@@ -33,7 +33,7 @@ export default Component.extend({
     }
   }),
 
-  exampleLinkClasses: computed('selectedFramework', function() {
+  exampleLinkClasses: computed('selectedFramework', function () {
     if (!this.docLink && this.exampleLink) {
       return 'percy-btn-primary';
     } else if (!this.exampleLink) {
@@ -43,14 +43,14 @@ export default Component.extend({
     }
   }),
 
-  docLink: computed('selectedFramework', function() {
+  docLink: computed('selectedFramework', function () {
     const frameworks = this.frameworkOptions;
     const currentFramework = this.selectedFramework;
 
     return frameworks[currentFramework].docLink;
   }),
 
-  exampleLink: computed('selectedFramework', function() {
+  exampleLink: computed('selectedFramework', function () {
     const frameworks = this.frameworkOptions;
     const currentFramework = this.selectedFramework;
 

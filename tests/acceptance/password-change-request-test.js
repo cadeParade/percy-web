@@ -3,15 +3,15 @@ import PasswordChangeRequest from '../pages/components/password-change-request';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {settled} from '@ember/test-helpers';
 
-describe('Acceptance: PasswordChangeRequest', function() {
+describe('Acceptance: PasswordChangeRequest', function () {
   setupAcceptance({authenticate: true});
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     const user = server.create('user', 'withAuth0Identity');
     this.user = user;
   });
 
-  it('shows page with change password button', async function() {
+  it('shows page with change password button', async function () {
     await PasswordChangeRequest.visitUserSettingsPage();
     expect(PasswordChangeRequest.isPasswordChangeMessagePresent).to.equal(false);
     expect(PasswordChangeRequest.isPasswordChangeButtonPresent).to.equal(true);
@@ -19,7 +19,7 @@ describe('Acceptance: PasswordChangeRequest', function() {
     await percySnapshot(this.test.fullTitle());
   });
 
-  it('shows page with change password sent message', async function() {
+  it('shows page with change password sent message', async function () {
     await PasswordChangeRequest.visitUserSettingsPage();
     await PasswordChangeRequest.submitRequest();
     await settled();

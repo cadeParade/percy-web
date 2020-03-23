@@ -15,7 +15,7 @@ export default BaseFormComponent.extend(EnsureStatefulLogin, {
   model: null,
   validator: AccountNewValidations,
 
-  changeset: computed('model', 'validator', function() {
+  changeset: computed('model', 'validator', function () {
     // Model is not actually used as we have a custom save method
     let model = this.model;
     let validator = this.validator || {};

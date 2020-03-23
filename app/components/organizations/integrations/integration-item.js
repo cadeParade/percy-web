@@ -33,7 +33,7 @@ export default Component.extend({
 
   isGHEnterprise: equal('integrationName', GITHUB_ENTERPRISE_INTEGRATION_TYPE),
 
-  hasBetaBadge: computed('isBeta', function() {
+  hasBetaBadge: computed('isBeta', function () {
     return this.isBeta && !this.isGHEnterprise ? true : false;
   }),
 
@@ -45,7 +45,7 @@ export default Component.extend({
 
   integrationItems: INTEGRATIONS_LOOKUP,
 
-  isEnabled: computed('integrationName', function() {
+  isEnabled: computed('integrationName', function () {
     let isGeneralAvailability = this.isGeneralAvailability;
     let isAdminModeEnabled = AdminMode.isAdmin();
     if (isAdminModeEnabled || isGeneralAvailability) {
@@ -55,16 +55,16 @@ export default Component.extend({
     }
   }),
 
-  isInstalled: computed('integrationName', function() {
+  isInstalled: computed('integrationName', function () {
     return this.get(`organization.${this.integrationStatusKey}`);
   }),
 
-  integrationSettingsRoute: computed('integrationName', function() {
+  integrationSettingsRoute: computed('integrationName', function () {
     return `organizations.organization.integrations.${this.routeSlug}`;
   }),
 
   installButtonText: lookup('integrationName', INTEGRATIONS_LOOKUP, 'installButtonText'),
-  buttonText: computed('isInstalled', 'installButtonText', function() {
+  buttonText: computed('isInstalled', 'installButtonText', function () {
     if (this.isInstalled) {
       return this.editSettingsText || 'Edit Settings';
     } else {
@@ -72,7 +72,7 @@ export default Component.extend({
     }
   }),
 
-  buttonClasses: computed('isInstalled', function() {
+  buttonClasses: computed('isInstalled', function () {
     return this.isInstalled
       ? 'data-test-integration-button-edit'
       : 'data-test-integration-button-install percy-btn-primary shadow-purple-lg m-0';

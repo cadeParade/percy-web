@@ -12,7 +12,7 @@ import {initialize as initializeEmberKeyboard} from 'ember-keyboard';
 import {fillIn, render} from '@ember/test-helpers';
 import stubService from 'percy-web/tests/helpers/stub-service-integration';
 
-describe('Integration: CollaborationCommentReply', function() {
+describe('Integration: CollaborationCommentReply', function () {
   setupRenderingTest('collaboration-comment-reply', {
     integration: true,
   });
@@ -24,7 +24,7 @@ describe('Integration: CollaborationCommentReply', function() {
 
   let createCommentStub;
 
-  beforeEach(async function() {
+  beforeEach(async function () {
     setupFactoryGuy(this);
 
     createCommentStub = sinon.stub().resolves();
@@ -37,28 +37,28 @@ describe('Integration: CollaborationCommentReply', function() {
     this.owner.register('service:session', sessionServiceStub, 'sessionService');
   });
 
-  describe('when the reply is collapsed', function() {
-    beforeEach(async function() {
+  describe('when the reply is collapsed', function () {
+    beforeEach(async function () {
       await render(hbs`<Collaboration::CollaborationCommentReply />`);
     });
 
-    it('shows collapsed reply textarea by default', async function() {
+    it('shows collapsed reply textarea by default', async function () {
       expect(CommentReply.isCollapsed).to.equal(true);
 
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('expands when the textarea is focused', async function() {
+    it('expands when the textarea is focused', async function () {
       await CommentReply.expandTextarea();
 
       expect(CommentReply.isExpanded).to.equal(true);
     });
   });
 
-  describe('when the reply is expanded', function() {
+  describe('when the reply is expanded', function () {
     let commentThread;
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       initializeEmberKeyboard();
       const organization = make('organization', 'withUsers');
       const project = make('project', {organization});
@@ -74,30 +74,30 @@ describe('Integration: CollaborationCommentReply', function() {
       await CommentReply.expandTextarea();
     });
 
-    it('submit button is disabled by default', async function() {
+    it('submit button is disabled by default', async function () {
       expect(CommentReply.submit.isDisabled).to.equal(true);
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('submit button is enabled when comment body is not empty', async function() {
+    it('submit button is enabled when comment body is not empty', async function () {
       await CommentReply.typeComment('hi there');
       expect(CommentReply.submit.isDisabled).to.equal(false);
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('collapses reply when cancel button is clicked', async function() {
+    it('collapses reply when cancel button is clicked', async function () {
       expect(CommentReply.isCollapsed).to.equal(false);
       await CommentReply.cancel.click();
       expect(CommentReply.isCollapsed).to.equal(true);
     });
 
-    it('collapses reply when Escape is pressed', async function() {
+    it('collapses reply when Escape is pressed', async function () {
       expect(CommentReply.isCollapsed).to.equal(false);
       await CommentReply.percyTextarea.escape();
       expect(CommentReply.isCollapsed).to.equal(true);
     });
 
-    it('sends `saveReply` with correct args when submit is clicked', async function() {
+    it('sends `saveReply` with correct args when submit is clicked', async function () {
       const commentText = 'When you play the game of thrones, you win or you die';
       await CommentReply.typeComment(commentText);
       await CommentReply.submit.click();
@@ -109,7 +109,7 @@ describe('Integration: CollaborationCommentReply', function() {
       });
     });
 
-    it('sends `saveReply` with correct args when cmd+Enter is pressed', async function() {
+    it('sends `saveReply` with correct args when cmd+Enter is pressed', async function () {
       const commentText = 'hello there';
       await CommentReply.typeComment(commentText);
       await CommentReply.percyTextarea.cmdEnter();
@@ -120,7 +120,7 @@ describe('Integration: CollaborationCommentReply', function() {
       });
     });
 
-    it('sends `saveReply` with correct args when @mentioning users', async function() {
+    it('sends `saveReply` with correct args when @mentioning users', async function () {
       const orgUsers = this.organization.organizationUsers.mapBy('user').sortBy('name');
       const commentText = 'hello there';
       await CommentReply.typeComment(commentText);
@@ -155,7 +155,7 @@ describe('Integration: CollaborationCommentReply', function() {
       });
     });
 
-    it('shows saving indicator when saving', async function() {
+    it('shows saving indicator when saving', async function () {
       const createCommentStub = sinon.stub().returns({isRunning: true});
       stubCreateComment(this, createCommentStub);
       const commentText = 'When you play the game of thrones, you win or you die';
@@ -165,7 +165,7 @@ describe('Integration: CollaborationCommentReply', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('resets reply when comment is successfully saved', async function() {
+    it('resets reply when comment is successfully saved', async function () {
       const createCommentStub = sinon.stub().returns({isSuccessful: true});
       stubCreateComment(this, createCommentStub);
       const commentText = 'That’s what I do: I drink and I know things.';
@@ -176,7 +176,7 @@ describe('Integration: CollaborationCommentReply', function() {
       expect(CommentReply.commentText).to.equal('');
     });
 
-    it('shows flash message when comment save fails', async function() {
+    it('shows flash message when comment save fails', async function () {
       const createCommentStub = sinon.stub().returns({isSuccessful: false});
       stubCreateComment(this, createCommentStub);
 

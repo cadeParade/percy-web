@@ -19,7 +19,7 @@ export default Component.extend({
   isCommentSaving: readOnly('commentSaveTask.isRunning'),
 
   // Setup @mentions and emoji
-  tributeConfigs: computed(function() {
+  tributeConfigs: computed(function () {
     const org = get(this, 'commentThread.snapshot.build.project.organization');
     return [this.mentionables.generateOrgUserConfig(org), this.mentionables.generateEmojiConfig()];
   }),

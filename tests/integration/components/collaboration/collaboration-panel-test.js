@@ -10,22 +10,22 @@ import moment from 'moment';
 import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: CollaborationPanel', function() {
+describe('Integration: CollaborationPanel', function () {
   freezeMoment('2018-12-17');
 
   setupRenderingTest('collaboration-panel', {
     integration: true,
   });
 
-  beforeEach(async function() {
+  beforeEach(async function () {
     setupFactoryGuy(this);
   });
 
-  describe('when there are no comment threads', function() {
+  describe('when there are no comment threads', function () {
     let user;
     let saveStub;
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       user = make('user');
       const commentThreads = [];
       const isCommentingAllowed = true;
@@ -37,7 +37,7 @@ describe('Integration: CollaborationPanel', function() {
       />`);
     });
 
-    it('shows "New Comment" textarea by default', async function() {
+    it('shows "New Comment" textarea by default', async function () {
       expect(CollaborationPanel.newComment.isNewThreadButtonVisible).to.equal(false);
       expect(CollaborationPanel.newComment.isNewThreadContainerVisible).to.equal(true);
       expect(CollaborationPanel.newComment.isSubmitDisabled).to.equal(true);
@@ -45,7 +45,7 @@ describe('Integration: CollaborationPanel', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('does not show "New Comment" textarea when isCommentingAllowed is false', async function() {
+    it('does not show "New Comment" textarea when isCommentingAllowed is false', async function () {
       this.set('isCommentingAllowed', false);
       expect(CollaborationPanel.newComment.isNewThreadButtonVisible).to.equal(false);
       expect(CollaborationPanel.newComment.isNewThreadContainerVisible).to.equal(false);
@@ -53,8 +53,8 @@ describe('Integration: CollaborationPanel', function() {
     });
   });
 
-  describe('when there are comment threads', function() {
-    it('displays comment threads in correct order', async function() {
+  describe('when there are comment threads', function () {
+    it('displays comment threads in correct order', async function () {
       const oldOpenCommentThread = make('comment-thread', 'old');
       const newOpenCommentThread = make('comment-thread', 'withTwoComments', {
         createdAt: moment().subtract(1, 'hours'),
@@ -95,7 +95,7 @@ describe('Integration: CollaborationPanel', function() {
       });
     });
 
-    it('does not show "New Comment" button when isCommentingAllowed is false', async function() {
+    it('does not show "New Comment" button when isCommentingAllowed is false', async function () {
       this.set('commentThreads', makeList('comment-thread', 2, 'withOneComment'));
       await render(hbs`<Collaboration::CollaborationPanel
         @commentThreads={{commentThreads}}

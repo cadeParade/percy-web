@@ -2,7 +2,7 @@
 import {computed} from '@ember/object';
 
 function metaTagLookup(headTagKey) {
-  return computed(headTagKey, function() {
+  return computed(headTagKey, function () {
     return headTags[headTagKey];
   });
 }

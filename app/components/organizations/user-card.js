@@ -17,18 +17,18 @@ export default Component.extend({
   roleTitle: readOnly('organizationUser.roleTitle'),
   email: readOnly('_user.email'),
 
-  deleteNameText: computed(function() {
+  deleteNameText: computed(function () {
     if (this.isCurrentUser) {
       return 'yourself';
     } else {
       return this.organizationUser.user.name;
     }
   }),
-  isCurrentUser: computed('currentUser.id', 'organizationUser.user.id', function() {
+  isCurrentUser: computed('currentUser.id', 'organizationUser.user.id', function () {
     return this.currentUser.id === this.organizationUser.user.id;
   }),
   _user: readOnly('organizationUser.user'),
-  orderedIdentities: computed('user.identities.[]', function() {
+  orderedIdentities: computed('user.identities.[]', function () {
     const identities = this._user.identities.toArray();
 
     return [

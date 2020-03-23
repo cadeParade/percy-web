@@ -16,7 +16,7 @@ import Mixin from '@ember/object/mixin';
   This mixin should be used for simple components where this high-coupling is desirable.
 */
 var TargetApplicationActionsMixin = Mixin.create({
-  target: computed(function() {
+  target: computed(function () {
     // Note: high-coupling to the container. We always return the main application controller, which
     // will trigger standard bubbling through the route hierarchy if not handled.
     return getOwner(this).lookup('controller:application');

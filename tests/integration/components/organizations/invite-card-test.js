@@ -13,7 +13,7 @@ import percySnapshot from '@percy/ember';
 import {render} from '@ember/test-helpers';
 import stubSession from 'percy-web/tests/helpers/stub-session';
 
-describe('Integration: InviteCard', function() {
+describe('Integration: InviteCard', function () {
   freezeMoment('2018-12-17');
 
   setupRenderingTest('organizations/invite-card-test', {
@@ -32,7 +32,7 @@ describe('Integration: InviteCard', function() {
   let findRecordStub;
   let flashMessageSuccessStub;
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
     invite = make('invite');
     organization = make('organization');
@@ -56,16 +56,16 @@ describe('Integration: InviteCard', function() {
     findRecordStub = sinon.stub(store, 'findRecord');
   });
 
-  afterEach(function() {
+  afterEach(function () {
     confirmationAlertStub.restore();
   });
 
-  describe('as an admin user', function() {
-    beforeEach(function() {
+  describe('as an admin user', function () {
+    beforeEach(function () {
       stubSession(this, {currentUser: adminUser});
     });
 
-    it('renders with buttons enabled', async function() {
+    it('renders with buttons enabled', async function () {
       await render(hbs`<
         Organizations::InviteCard
         @invite={{invite}}
@@ -86,7 +86,7 @@ describe('Integration: InviteCard', function() {
       await percySnapshot(this.test);
     });
 
-    it('"Cancel" button works', async function() {
+    it('"Cancel" button works', async function () {
       await render(hbs`<Organizations::InviteCard
         @invite={{invite}}
         @organization={{organization}}
@@ -105,12 +105,12 @@ describe('Integration: InviteCard', function() {
     });
   });
 
-  describe('as a member user', function() {
-    beforeEach(function() {
+  describe('as a member user', function () {
+    beforeEach(function () {
       stubSession(this, {currentUser: memberUser});
     });
 
-    it('renders with buttons disabled', async function() {
+    it('renders with buttons disabled', async function () {
       await render(hbs`<
         Organizations::InviteCard
         @invite={{invite}}
@@ -130,7 +130,7 @@ describe('Integration: InviteCard', function() {
       await percySnapshot(this.test);
     });
 
-    it('"Cancel" button does not work', async function() {
+    it('"Cancel" button does not work', async function () {
       await render(hbs`<
         Organizations::InviteCard
         @invite={{invite}}

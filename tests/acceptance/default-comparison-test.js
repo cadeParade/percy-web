@@ -3,17 +3,17 @@ import {visit, currentRouteName, currentURL} from '@ember/test-helpers';
 import SnapshotViewerFull from 'percy-web/tests/pages/components/snapshot-viewer-full';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 
-describe('Acceptance: Default comparison', function() {
+describe('Acceptance: Default comparison', function () {
   setupAcceptance();
 
-  describe('redirect conditions', function() {
+  describe('redirect conditions', function () {
     let organization;
     let project;
     let build;
     let snapshot;
     let url;
 
-    setupSession(function(server) {
+    setupSession(function (server) {
       organization = server.create('organization', 'withUser');
       project = server.create('project', {organization});
       build = server.create('build', {project});
@@ -22,7 +22,7 @@ describe('Acceptance: Default comparison', function() {
       url = `${organization.slug}/${project.slug}/builds/snapshot/${snapshot.id}/default-comparison`;
     });
 
-    it('redirects to comparison with highest diff ratio', async function() {
+    it('redirects to comparison with highest diff ratio', async function () {
       server.create('comparison', {
         headSnapshot: snapshot,
         diffRatio: 0.3,
@@ -41,7 +41,7 @@ describe('Acceptance: Default comparison', function() {
       await percySnapshot(this.test);
     });
 
-    it('redirects to comparison with biggest width', async function() {
+    it('redirects to comparison with biggest width', async function () {
       server.create('comparison', {
         headSnapshot: snapshot,
         diffRatio: 0.3,
@@ -60,7 +60,7 @@ describe('Acceptance: Default comparison', function() {
       await percySnapshot(this.test);
     });
 
-    it('sets mode to diff when comparison has diff', async function() {
+    it('sets mode to diff when comparison has diff', async function () {
       server.create('comparison', {
         headSnapshot: snapshot,
         diffRatio: 0.3,
@@ -72,7 +72,7 @@ describe('Acceptance: Default comparison', function() {
       await percySnapshot(this.test);
     });
 
-    it('sets mode to head when comparison has no diff', async function() {
+    it('sets mode to head when comparison has no diff', async function () {
       server.create('comparison', {
         headSnapshot: snapshot,
         diffRatio: null,

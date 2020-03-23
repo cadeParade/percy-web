@@ -20,11 +20,11 @@ export const BrowserSwitcher = {
     isFirefox: hasClass('data-test-browser-switcher-firefox'),
   }),
 
-  chromeButton: getter(function() {
+  chromeButton: getter(function () {
     return this.buttons.toArray().findBy('isChrome');
   }),
 
-  firefoxButton: getter(function() {
+  firefoxButton: getter(function () {
     return this.buttons.toArray().findBy('isFirefox');
   }),
 

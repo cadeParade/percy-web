@@ -22,7 +22,7 @@ export default Component.extend({
     return !areStringArraysEqual(orig, updated);
   },
 
-  saveUserNotificationSetting: task(function*() {
+  saveUserNotificationSetting: task(function* () {
     if (!this._isDirty()) return;
 
     try {

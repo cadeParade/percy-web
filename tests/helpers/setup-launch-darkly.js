@@ -3,8 +3,8 @@ import StubClient from 'ember-launch-darkly/test-support/helpers/launch-darkly-c
 
 const initialFlags = Object.assign({}, config.launchDarkly.localFeatureFlags);
 
-export default function(hooks) {
-  hooks.beforeEach(function() {
+export default function (hooks) {
+  hooks.beforeEach(function () {
     if (!this.owner) {
       throw new Error(
         'You must call one of the ember-qunit setupTest(), setupRenderingTest() or' +
@@ -22,7 +22,7 @@ export default function(hooks) {
     };
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     let client = this.owner.lookup('service:launch-darkly-client');
     for (const flag in initialFlags) {
       client._allFlags[flag] = initialFlags[flag];

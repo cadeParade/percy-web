@@ -32,12 +32,7 @@ export default class Subscription extends Model {
   @computed('currentPeriodEnd')
   get currentPeriodEndDisplayed() {
     const currentPeriodEnd = this.currentPeriodEnd;
-    return (
-      currentPeriodEnd &&
-      moment(currentPeriodEnd)
-        .subtract(1, 'day')
-        .toDate()
-    );
+    return currentPeriodEnd && moment(currentPeriodEnd).subtract(1, 'day').toDate();
   }
 
   @attr('date')

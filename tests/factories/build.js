@@ -31,10 +31,7 @@ FactoryGuy.define('build', {
     withBitbucketRepo: {repo: FactoryGuy.belongsTo('repo', 'bitbucket')},
     finished: {
       state: 'finished',
-      finishedAt: () =>
-        moment()
-          .add(2, 'minutes')
-          .add(31, 'seconds'),
+      finishedAt: () => moment().add(2, 'minutes').add(31, 'seconds'),
       totalComparisons: 15,
       totalComparisonsDiff: 10,
       totalComparisonsFinished: 15,

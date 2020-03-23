@@ -37,13 +37,13 @@ export default Component.extend({
   },
 
   fetchedProjects: null,
-  _getOrganizationProjects: task(function*() {
+  _getOrganizationProjects: task(function* () {
     const fetchedProjects = yield this.store.query('project', {
       organization: this.organization,
     });
     this.setProperties({fetchedProjects});
   }),
-  projectOptions: computed('fetchedProjects.@each.{id,name}', function() {
+  projectOptions: computed('fetchedProjects.@each.{id,name}', function () {
     let orgProjects = this.fetchedProjects.map(project => {
       return {id: Number(project.get('id')), name: project.get('name')};
     });

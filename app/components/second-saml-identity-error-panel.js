@@ -10,7 +10,7 @@ export default Component.extend({
   organizationName: '',
   provider: '',
   userEmail: '',
-  svgName: computed('provider', function() {
+  svgName: computed('provider', function () {
     if (this.provider === 'Okta') {
       return 'okta-logo';
     } else {
@@ -18,16 +18,16 @@ export default Component.extend({
     }
   }),
 
-  mainText: computed('provider', function() {
+  mainText: computed('provider', function () {
     return `${this.provider} connection failed`;
   }),
-  secondaryText: computed('', 'provider', function() {
+  secondaryText: computed('', 'provider', function () {
     return (
       'A Percy account cannot be connected to two accounts in the same ' +
       `${this.provider} integration`
     );
   }),
-  bodyText: computed('provider', 'newSsoProfileEmail', 'userEmail', function() {
+  bodyText: computed('provider', 'newSsoProfileEmail', 'userEmail', function () {
     return (
       `Your attempt to connect ${this.provider} login ${this.newSsoProfileEmail} ` +
       `failed. Percy account ${this.userEmail} is already connected to another ` +
@@ -39,8 +39,9 @@ export default Component.extend({
     showSupport() {
       this.intercom.showIntercom(
         'showNewMessage',
-        `Hi! I'd like help logging into my ${this.organizationName || ''} ${this.provider ||
-          'SSO'} account, but am receiving an error regarding a conflicting login identity.`,
+        `Hi! I'd like help logging into my ${this.organizationName || ''} ${
+          this.provider || 'SSO'
+        } account, but am receiving an error regarding a conflicting login identity.`,
       );
     },
   },

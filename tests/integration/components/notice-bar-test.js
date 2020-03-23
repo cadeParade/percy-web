@@ -10,7 +10,7 @@ import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
 import moment from 'moment';
 import Service from '@ember/service';
 
-describe('Integration: Notice Bar', function() {
+describe('Integration: Notice Bar', function () {
   freezeMoment('2018-02-14');
 
   setupRenderingTest('notice-bar', {
@@ -19,12 +19,12 @@ describe('Integration: Notice Bar', function() {
 
   let organization;
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
   });
 
-  describe('New project prompt bar', function() {
-    beforeEach(async function() {
+  describe('New project prompt bar', function () {
+    beforeEach(async function () {
       organization = make('organization');
       const orgUser = make('organization-user', {organization});
       orgUser.user.set('organizationUsers', [orgUser]);
@@ -36,7 +36,7 @@ describe('Integration: Notice Bar', function() {
       this.setProperties({organization});
     });
 
-    it('shows new project prompt', async function() {
+    it('shows new project prompt', async function () {
       await render(hbs`<NoticeBar
         @organization={{organization}}
         @shouldShowNewProjectPrompt={{true}}
@@ -48,8 +48,8 @@ describe('Integration: Notice Bar', function() {
     });
   });
 
-  describe('Free Usage Bar', function() {
-    beforeEach(function() {
+  describe('Free Usage Bar', function () {
+    beforeEach(function () {
       organization = make('organization', 'withFreePlan');
       const orgUser = make('organization-user', {organization});
       orgUser.user.set('organizationUsers', [orgUser]);
@@ -61,12 +61,12 @@ describe('Integration: Notice Bar', function() {
       this.setProperties({organization});
     });
 
-    describe('when <1% of snapshots have been used', function() {
-      beforeEach(function() {
+    describe('when <1% of snapshots have been used', function () {
+      beforeEach(function () {
         organization.subscription.set('currentUsageRatio', '0.00001');
       });
 
-      it('shows 1% and "More Info" link', async function() {
+      it('shows 1% and "More Info" link', async function () {
         await render(hbs`<NoticeBar @organization={{organization}} />`);
         expect(NoticeBar.percentage.text).to.equal('1%');
         expect(NoticeBar.buttonLink.text).to.equal('More Info');
@@ -75,12 +75,12 @@ describe('Integration: Notice Bar', function() {
       });
     });
 
-    describe('when 99.9% of snapshots have been used', function() {
-      beforeEach(function() {
+    describe('when 99.9% of snapshots have been used', function () {
+      beforeEach(function () {
         organization.subscription.set('currentUsageRatio', '0.999');
       });
 
-      it('shows 99% and "More Info" link', async function() {
+      it('shows 99% and "More Info" link', async function () {
         await render(hbs`<NoticeBar @organization={{organization}} />`);
 
         expect(NoticeBar.percentage.text).to.equal('99%');
@@ -90,12 +90,12 @@ describe('Integration: Notice Bar', function() {
       });
     });
 
-    describe('when 101% of snapshots have been used', function() {
-      beforeEach(function() {
+    describe('when 101% of snapshots have been used', function () {
+      beforeEach(function () {
         organization.subscription.set('currentUsageRatio', '1.01');
       });
 
-      it('shows all have been used and "Upgrade Plan" link', async function() {
+      it('shows all have been used and "Upgrade Plan" link', async function () {
         await render(hbs`<NoticeBar @organization={{organization}} />`);
 
         expect(NoticeBar.percentage.text).to.equal('all');
@@ -106,8 +106,8 @@ describe('Integration: Notice Bar', function() {
     });
   });
 
-  describe('Trial Bar', function() {
-    beforeEach(function() {
+  describe('Trial Bar', function () {
+    beforeEach(function () {
       organization = make('organization', 'withTrialPlan');
       const orgUser = make('organization-user', {organization});
       orgUser.user.set('organizationUsers', [orgUser]);
@@ -119,8 +119,8 @@ describe('Integration: Notice Bar', function() {
       this.setProperties({organization});
     });
 
-    describe('when no trial days are left', function() {
-      it('shows "Your trial ends today!" and "See plans"', async function() {
+    describe('when no trial days are left', function () {
+      it('shows "Your trial ends today!" and "See plans"', async function () {
         organization.subscription.set('trialEnd', moment());
         await render(hbs`<NoticeBar @organization={{organization}} />`);
 
@@ -131,8 +131,8 @@ describe('Integration: Notice Bar', function() {
       });
     });
 
-    describe('when 2 trial days are left', function() {
-      it('shows "Your trial ends today!" and "See plans"', async function() {
+    describe('when 2 trial days are left', function () {
+      it('shows "Your trial ends today!" and "See plans"', async function () {
         organization.subscription.set('trialEnd', moment().add(2, 'days'));
 
         await render(hbs`<NoticeBar @organization={{organization}} />`);

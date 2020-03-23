@@ -9,7 +9,7 @@ export default BaseFormComponent.extend({
   classNames: ['FormsProjectNew', 'Form'],
   classNameBindings: ['classes'],
 
-  model: computed(function() {
+  model: computed(function () {
     return this.store.createRecord('project', {
       organization: this.organization,
     });

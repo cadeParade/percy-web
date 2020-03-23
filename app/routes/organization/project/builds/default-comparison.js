@@ -30,7 +30,7 @@ export function defaultComparisonQueryParams(snapshot) {
 }
 
 function comparisonSort(comparisons) {
-  return comparisons.sort(function(a, b) {
+  return comparisons.sort(function (a, b) {
     if (a.diffRatio > b.diffRatio) {
       return -1;
     } else if (b.diffRatio > a.diffRatio) {

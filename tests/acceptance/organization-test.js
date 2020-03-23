@@ -9,16 +9,16 @@ import NewOrganization from 'percy-web/tests/pages/components/new-organization';
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import UserMenu from 'percy-web/tests/pages/components/user-menu';
 
-describe('Acceptance: Organization', function() {
+describe('Acceptance: Organization', function () {
   setupAcceptance();
   freezeMoment('2020-01-30');
 
-  describe('when user has no organizations', function() {
-    setupSession(async function(server) {
+  describe('when user has no organizations', function () {
+    setupSession(async function (server) {
       server.create('user', 'withGithubIdentity');
     });
 
-    it('can create new organization and user email when creating first org', async function() {
+    it('can create new organization and user email when creating first org', async function () {
       await visit('/organizations/new/');
       await NewOrganization.organizationName('New organization');
       await NewOrganization.fillUserEmail('a@a.com');
@@ -29,7 +29,7 @@ describe('Acceptance: Organization', function() {
       expect(findAll('.flash-message.flash-message-success')).to.have.length(1);
     });
 
-    it('does not show email field after first organization is created', async function() {
+    it('does not show email field after first organization is created', async function () {
       await visit('/organizations/new/');
 
       await NewOrganization.organizationName('New organization');
@@ -43,20 +43,20 @@ describe('Acceptance: Organization', function() {
   });
 
   let organization;
-  describe('user is member', function() {
-    setupSession(function(server) {
+  describe('user is member', function () {
+    setupSession(function (server) {
       organization = server.create('organization', 'withUser');
       server.create('project', {organization});
     });
 
-    it('can create new org via org switcher', async function() {
+    it('can create new org via org switcher', async function () {
       await ProjectPage.visitOrg({orgSlug: organization.slug});
       await UserMenu.toggleUserMenu();
       await UserMenu.createNewOrg();
       expect(currentRouteName()).to.equal('organizations.new');
     });
 
-    it('can create new org and update org switcher when creating second org', async function() {
+    it('can create new org and update org switcher when creating second org', async function () {
       await ProjectPage.visitOrg({orgSlug: organization.slug});
       await UserMenu.toggleUserMenu();
       await UserMenu.createNewOrg();
@@ -77,8 +77,8 @@ describe('Acceptance: Organization', function() {
       await percySnapshot(this.test.fullTitle() + ' | setup');
     });
 
-    describe('creating a new org with demo project', function() {
-      it('shows a custom error screen when there is no project available', async function() {
+    describe('creating a new org with demo project', function () {
+      it('shows a custom error screen when there is no project available', async function () {
         server.post('/organizations/:id/projects', {errors: ['Out of demo projects']}, 500);
 
         await visit('/organizations/new/');
@@ -88,7 +88,7 @@ describe('Acceptance: Organization', function() {
         await percySnapshot(this.test);
       });
 
-      it('polls for a demo project after an initial error', async function() {
+      it('polls for a demo project after an initial error', async function () {
         const url = '/organizations/:id/projects';
 
         let hasVisited = false;
@@ -118,11 +118,11 @@ describe('Acceptance: Organization', function() {
         expect(currentRouteName()).to.equal('organization.project.index');
       });
 
-      it('redirects to second build when project has at least three builds', async function() {
+      it('redirects to second build when project has at least three builds', async function () {
         // Create some builds to be on the demo project.
         // We can't make these builds ahead of time, because we don't have the new demo-project id
         // until the new demo project request is made.
-        server.get('/projects/:organization_slug/:project_slug/builds', function(schema, request) {
+        server.get('/projects/:organization_slug/:project_slug/builds', function (schema, request) {
           const demoProject = schema.projects
             .all()
             .models.findBy('slug', request.params.project_slug);
@@ -140,11 +140,11 @@ describe('Acceptance: Organization', function() {
         await percySnapshot(this.test);
       });
 
-      it('resets demo tooltips when redirecting to the new demo project', async function() {
+      it('resets demo tooltips when redirecting to the new demo project', async function () {
         // set the tooltip master key before the redirect
         localStorageProxy.set('percy_demo_tooltips_hidden', true);
         // do the redirect
-        server.get('/projects/:organization_slug/:project_slug/builds', function(schema, request) {
+        server.get('/projects/:organization_slug/:project_slug/builds', function (schema, request) {
           const demoProject = schema.projects
             .all()
             .models.findBy('slug', request.params.project_slug);
@@ -165,7 +165,7 @@ describe('Acceptance: Organization', function() {
       });
     });
 
-    it('shows support on users page', async function() {
+    it('shows support on users page', async function () {
       window.Intercom = sinon.stub();
       await visit(`/organizations/${organization.slug}/users`);
 
@@ -173,7 +173,7 @@ describe('Acceptance: Organization', function() {
       expect(window.Intercom).to.have.been.called;
     });
 
-    it('shows support on invites page', async function() {
+    it('shows support on invites page', async function () {
       window.Intercom = sinon.stub();
       await visit(`/organizations/${organization.slug}/users/invite`);
 
@@ -181,7 +181,7 @@ describe('Acceptance: Organization', function() {
       expect(window.Intercom).to.have.been.called;
     });
 
-    describe('usage page', function() {
+    describe('usage page', function () {
       async function _canViewUsagePageWithPlan(context, subscriptionTrait) {
         server.create('subscription', subscriptionTrait, {organization});
         await visit(`/organizations/${organization.slug}/usage`);
@@ -189,34 +189,34 @@ describe('Acceptance: Organization', function() {
         await percySnapshot(context.test);
       }
 
-      it('can view usage page on trial plan', async function() {
+      it('can view usage page on trial plan', async function () {
         await _canViewUsagePageWithPlan(this, 'withTrialPlan');
       });
 
-      it('can view usage page on free plan', async function() {
+      it('can view usage page on free plan', async function () {
         await _canViewUsagePageWithPlan(this, 'withFreePlan');
       });
 
-      it('can view usage page on paid plan', async function() {
+      it('can view usage page on paid plan', async function () {
         await _canViewUsagePageWithPlan(this, 'withPaidPlan');
       });
 
-      it('can view usage page on legacy plan', async function() {
+      it('can view usage page on legacy plan', async function () {
         await _canViewUsagePageWithPlan(this, 'withCustomPlan');
       });
 
-      it('can view usage page on sponsored plan', async function() {
+      it('can view usage page on sponsored plan', async function () {
         await _canViewUsagePageWithPlan(this, 'withSponsoredPlan');
       });
     });
   });
 
-  describe('user is admin', function() {
-    setupSession(function(server) {
+  describe('user is admin', function () {
+    setupSession(function (server) {
       organization = server.create('organization', 'withAdminUser');
     });
 
-    it('can edit organization settings', async function() {
+    it('can edit organization settings', async function () {
       await visit(`/${organization.slug}`);
       expect(currentRouteName()).to.equal('organizations.organization.projects.new');
       await UserMenu.toggleUserMenu();

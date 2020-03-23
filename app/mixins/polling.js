@@ -30,13 +30,13 @@ var Polling = Mixin.create({
   // incremented by `pollForUpdatesTask`
   _numPollRequests: 0,
 
-  maybeStartPolling: on('init', function() {
+  maybeStartPolling: on('init', function () {
     if (this.shouldPollForUpdates) {
       this.set('pollingTask', this.pollForUpdatesTask.perform());
     }
   }),
 
-  pollForUpdatesTask: task(function*() {
+  pollForUpdatesTask: task(function* () {
     this.set('_numPollRequests', 0);
     while (this._numPollRequests < this.MAX_UPDATE_POLLING_REQUESTS && this.shouldPollForUpdates) {
       // don't make requests when the document doesn't have focus

@@ -63,7 +63,7 @@ export default class OrganizationRoute extends Route {
     localStorageProxy.set('lastOrganizationSlug', organization.get('slug'));
   }
 
-  @task(function*() {
+  @task(function* () {
     const orgSlug = this.paramsFor(this.routeName).organization_id;
     const preloadedOrg = this.store.peekAll('organization').findBy('slug', orgSlug);
     if (preloadedOrg) {

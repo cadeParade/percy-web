@@ -12,7 +12,7 @@ export default Component.extend({
 
   flashMessages: service(),
 
-  accept: task(function*() {
+  accept: task(function* () {
     try {
       const model = yield this.invitation.save();
       // Show loading state for at least MIN_FEEBACK_DELAY_MS

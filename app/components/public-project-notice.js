@@ -11,7 +11,7 @@ export default Component.extend(EnsureStatefulLogin, {
   session: service(),
   currentUser: readOnly('session.currentUser'),
 
-  displayText: computed('currentUser', function() {
+  displayText: computed('currentUser', function () {
     if (this.currentUser) {
       return 'You’re viewing a public Percy project. Only members of this organization can approve snapshots.';  // eslint-disable-line
     } else {
@@ -19,7 +19,7 @@ export default Component.extend(EnsureStatefulLogin, {
     }
   }),
 
-  btnText: computed('currentUser', function() {
+  btnText: computed('currentUser', function () {
     if (this.currentUser) {
       return 'Jump to your projects';
     } else {

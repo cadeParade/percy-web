@@ -7,7 +7,7 @@ export default Component.extend({
   store: service(),
   isAdmin: readOnly('organization.currentUserIsAdmin'),
   orgInvites: readOnly('organization.invites'),
-  invites: computed('orgInvites.@each.id', function() {
+  invites: computed('orgInvites.@each.id', function () {
     return this.store
       .peekAll('invite')
       .filterBy('organization.id', this.get('organization.id'))

@@ -70,21 +70,21 @@ export default Component.extend(EKMixin, {
 
   _groupedSnapshotsChanged: readOnly('_snapshotGroups.groups'),
 
-  numSnapshotsUnchanged: computed('build.totalSnapshots', 'snapshotsChanged.length', function() {
+  numSnapshotsUnchanged: computed('build.totalSnapshots', 'snapshotsChanged.length', function () {
     return this.build.totalSnapshots - this.snapshotsChanged.length;
   }),
 
-  _snapshotGroups: computed('snapshotsChanged.@each.fingerprint', function() {
+  _snapshotGroups: computed('snapshotsChanged.@each.fingerprint', function () {
     return groupSnapshots(this.snapshotsChanged);
   }),
 
-  _rejectedGroups: computed('_groupedSnapshotsChanged.[]', function() {
+  _rejectedGroups: computed('_groupedSnapshotsChanged.[]', function () {
     return this._groupedSnapshotsChanged.filter(group => {
       return group.any(snapshot => snapshot.isRejected);
     });
   }),
 
-  _unapprovedGroups: computed('_groupedSnapshotsChanged.[]', function() {
+  _unapprovedGroups: computed('_groupedSnapshotsChanged.[]', function () {
     return this._groupedSnapshotsChanged.filter(group => {
       const areAllApproved = group.every(snapshot => snapshot.isApproved);
       const areAnyRejected = group.any(snapshot => snapshot.isRejected);
@@ -98,7 +98,7 @@ export default Component.extend(EKMixin, {
   _approvedGroupsWithComments: filter('_approvedGroups', findGroupWithComments),
   _approvedGroupsWithoutComments: filter('_approvedGroups', rejectGroupWithComments),
 
-  _approvedGroups: computed('_groupedSnapshotsChanged.[]', function() {
+  _approvedGroups: computed('_groupedSnapshotsChanged.[]', function () {
     return this._groupedSnapshotsChanged.filter(group => {
       return group.every(snapshot => snapshot.isApproved);
     });
@@ -108,7 +108,7 @@ export default Component.extend(EKMixin, {
   // This computed property purposely does not depend on all the things it contains because we don't
   // want snapshots to change order until the page is refreshed.
   // Unless the browser changes, then we want it to be in the new order for the browser.
-  snapshotBlocks: computed('activeBrowser', function() {
+  snapshotBlocks: computed('activeBrowser', function () {
     return this._rejectedGroups.concat(
       this._rejectedSingleSnapshots,
       this._unapprovedGroupsWithComments,
@@ -134,21 +134,21 @@ export default Component.extend(EKMixin, {
     this.unchangedSnapshots = this.unchangedSnapshots || [];
   },
 
-  onDKeyPress: on(keyDown('KeyD'), function() {
+  onDKeyPress: on(keyDown('KeyD'), function () {
     if (this.isKeyboardNavEnabled) {
       this.toggleAllDiffs({trackSource: 'keypress'});
       this._trackKeyPress();
     }
   }),
 
-  onUpKeyPress: on(keyDown('ArrowUp'), function() {
+  onUpKeyPress: on(keyDown('ArrowUp'), function () {
     if (this.isKeyboardNavEnabled) {
       set(this, 'activeSnapshotBlockId', this._calculateNewActiveSnapshotBlockId({isNext: false}));
       this._trackKeyPress();
     }
   }),
 
-  onDownKeyPress: on(keyDown('ArrowDown'), function() {
+  onDownKeyPress: on(keyDown('ArrowDown'), function () {
     if (this.isKeyboardNavEnabled) {
       set(this, 'activeSnapshotBlockId', this._calculateNewActiveSnapshotBlockId({isNext: true}));
       this._trackKeyPress();
@@ -167,7 +167,7 @@ export default Component.extend(EKMixin, {
     'snapshotBlocks.[]',
     'snapshotsUnchanged.[]',
     'isUnchangedSnapshotsVisible',
-    function() {
+    function () {
       if (this.isUnchangedSnapshotsVisible) {
         return [].concat(this.snapshotBlocks, this.snapshotsUnchanged);
       } else {
@@ -176,7 +176,7 @@ export default Component.extend(EKMixin, {
     },
   ),
 
-  _snapshotBlockIds: computed('_allVisibleSnapshotBlocks.@each.id', function() {
+  _snapshotBlockIds: computed('_allVisibleSnapshotBlocks.@each.id', function () {
     return this._allVisibleSnapshotBlocks.map(block => {
       return block.id || block.firstObject.fingerprint;
     });

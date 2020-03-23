@@ -6,7 +6,7 @@ import {htmlSafe} from '@ember/string';
 export default Component.extend({
   tagName: '',
 
-  setGridItemOrder: computed(function() {
+  setGridItemOrder: computed(function () {
     return htmlSafe('order: ' + Math.floor(seededRandom() * 100 + 1));
   }),
 });

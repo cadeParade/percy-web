@@ -31,15 +31,19 @@ export default Component.extend(EKMixin, {
   commentThreads: readOnly('snapshot.commentThreads'),
   openCommentThreads: filterBy('commentThreads', 'isOpen'),
   defaultIsCommentPanelShowing: notEmpty('openCommentThreads'),
-  isCommentPanelShowing: computed('userIsCommentPanelShowing', 'openCommentThreads.[]', function() {
-    if (this.userIsCommentPanelShowing !== undefined) {
-      return this.userIsCommentPanelShowing;
-    } else {
-      return this.defaultIsCommentPanelShowing;
-    }
-  }),
+  isCommentPanelShowing: computed(
+    'userIsCommentPanelShowing',
+    'openCommentThreads.[]',
+    function () {
+      if (this.userIsCommentPanelShowing !== undefined) {
+        return this.userIsCommentPanelShowing;
+      } else {
+        return this.defaultIsCommentPanelShowing;
+      }
+    },
+  ),
 
-  filteredComparisons: computed('snapshot', 'activeBrowser', 'snapshotSelectedWidth', function() {
+  filteredComparisons: computed('snapshot', 'activeBrowser', 'snapshotSelectedWidth', function () {
     return filteredComparisons.create({
       snapshot: this.snapshot,
       activeBrowser: this.activeBrowser,
@@ -50,7 +54,7 @@ export default Component.extend(EKMixin, {
 
   galleryMap: GALLERY_MAP,
 
-  galleryIndex: computed('comparisonMode', function() {
+  galleryIndex: computed('comparisonMode', function () {
     return this.galleryMap.indexOf(this.comparisonMode);
   }),
 
@@ -84,14 +88,14 @@ export default Component.extend(EKMixin, {
     },
   },
 
-  onEscKeyPress: on(keyDown('Escape'), function() {
+  onEscKeyPress: on(keyDown('Escape'), function () {
     this.router.transitionTo(
       'organization.project.builds.build.index',
       this.snapshot.build.get('id'),
     );
   }),
 
-  onLeftRightArrowPress: on(keyDown('ArrowRight'), keyDown('ArrowLeft'), function(event) {
+  onLeftRightArrowPress: on(keyDown('ArrowRight'), keyDown('ArrowLeft'), function (event) {
     if (!this.selectedComparison || this.get('selectedComparison.wasAdded')) {
       return;
     }

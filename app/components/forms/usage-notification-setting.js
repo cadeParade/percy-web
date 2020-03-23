@@ -6,7 +6,7 @@ import UsageNotificationSettingsValidations from '../../validations/usage-notifi
 export default BaseFormComponent.extend({
   _setting: readOnly('setting'),
 
-  model: computed('_setting', function() {
+  model: computed('_setting', function () {
     if (this._setting) {
       return this._setting;
     } else {

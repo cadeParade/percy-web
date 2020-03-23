@@ -9,17 +9,17 @@ import utils from 'percy-web/lib/utils';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage-sandbox';
 
-describe('SessionService', function() {
+describe('SessionService', function () {
   setupTest();
   SetupLocalStorageSandbox();
 
-  describe('loadCurrentUser', function() {
+  describe('loadCurrentUser', function () {
     let subject = null;
     let store = null;
     let user;
 
     let windowStub;
-    beforeEach(function() {
+    beforeEach(function () {
       subject = this.owner.lookup('service:session');
       store = this.owner.lookup('service:store');
       setupFactoryGuy(this);
@@ -28,16 +28,16 @@ describe('SessionService', function() {
       windowStub = sinon.stub(utils, 'replaceWindowLocation');
     });
 
-    afterEach(function() {
+    afterEach(function () {
       windowStub.restore();
     });
 
-    describe('when isAuthenticated is false', function() {
-      beforeEach(function() {
+    describe('when isAuthenticated is false', function () {
+      beforeEach(function () {
         subject.set('isAuthenticated', false);
       });
 
-      it('tries to silently authenticate when API returns a user', async function() {
+      it('tries to silently authenticate when API returns a user', async function () {
         store.queryRecord = sinon.stub().returns(user);
         const authenticateStub = sinon.stub(subject, 'authenticate');
         const promise = subject.loadCurrentUser();
@@ -47,7 +47,7 @@ describe('SessionService', function() {
         });
       });
 
-      it('invalidates session and logs out when silent auth errors', async function() {
+      it('invalidates session and logs out when silent auth errors', async function () {
         const invalidateStub = sinon.stub(subject, 'invalidate').returns(resolve());
         store.queryRecord = sinon.stub().returns(user);
         sinon.stub(subject, 'authenticate').returns(reject());
@@ -59,7 +59,7 @@ describe('SessionService', function() {
         });
       });
 
-      it('returns a resolved promise when forceReloadUser errors', function() {
+      it('returns a resolved promise when forceReloadUser errors', function () {
         store.queryRecord = sinon.stub().returns(reject());
         const promise = subject.loadCurrentUser();
 
@@ -67,13 +67,13 @@ describe('SessionService', function() {
       });
     });
 
-    describe('when isAuthenticated is true and the user query passes', function() {
-      beforeEach(function() {
+    describe('when isAuthenticated is true and the user query passes', function () {
+      beforeEach(function () {
         subject.set('isAuthenticated', true);
         store.queryRecord = sinon.stub().returns(resolve(user));
       });
 
-      it('sets current user', function() {
+      it('sets current user', function () {
         const promise = subject.loadCurrentUser();
 
         return promise.then(() => {
@@ -81,7 +81,7 @@ describe('SessionService', function() {
         });
       });
 
-      it('sends intercom data', function() {
+      it('sends intercom data', function () {
         window.Intercom = sinon.stub();
         const promise = subject.loadCurrentUser();
 
@@ -96,7 +96,7 @@ describe('SessionService', function() {
         });
       });
 
-      it('sends sets up analytics data', function() {
+      it('sends sets up analytics data', function () {
         const setupAnalyticsStub = sinon.stub();
         subject.set('analytics.identifyUser', setupAnalyticsStub);
         const promise = subject.loadCurrentUser();
@@ -106,7 +106,7 @@ describe('SessionService', function() {
         });
       });
 
-      it("calls Launch Darkly's identify via _setupLaunchDarkly", function() {
+      it("calls Launch Darkly's identify via _setupLaunchDarkly", function () {
         const identifyStub = sinon.stub();
         subject.set('launchDarkly.identify', identifyStub);
 
@@ -123,13 +123,13 @@ describe('SessionService', function() {
       });
     });
 
-    describe('when isAuthenticated is true and the user query fails', function() {
-      beforeEach(function() {
+    describe('when isAuthenticated is true and the user query fails', function () {
+      beforeEach(function () {
         subject.set('isAuthenticated', true);
         store.queryRecord = sinon.stub().returns(reject());
       });
 
-      it('invalidates the session', function() {
+      it('invalidates the session', function () {
         const invalidateStub = sinon.stub().returns(resolve());
         subject.invalidate = invalidateStub;
         subject._clearWebsockets = sinon.stub();
@@ -142,7 +142,7 @@ describe('SessionService', function() {
         });
       });
 
-      it('clears analytics user context', function() {
+      it('clears analytics user context', function () {
         subject.invalidate = sinon.stub().returns(resolve());
         const analyticsInvalidateStub = sinon.stub();
         subject.set('analytics.invalidate', analyticsInvalidateStub);
@@ -154,7 +154,7 @@ describe('SessionService', function() {
         });
       });
 
-      it('disconnects websocket connections', function() {
+      it('disconnects websocket connections', function () {
         subject.invalidate = sinon.stub().returns(resolve());
         const websocketsDisconnectStub = sinon.stub();
         subject.set('websocket.disconnect', websocketsDisconnectStub);
@@ -167,14 +167,14 @@ describe('SessionService', function() {
     });
 
     // TODO: unsure how to test a function failing but not break tests.
-    describe.skip('when isAuthenticated is true and the third party setup fails', function() {
-      beforeEach(function() {
+    describe.skip('when isAuthenticated is true and the third party setup fails', function () {
+      beforeEach(function () {
         subject.set('isAuthenticated', true);
         store.queryRecord = sinon.stub().returns(resolve(user));
       });
 
-      it('does not invalidate the session', function() {
-        subject.set('_setupSentry', function() {
+      it('does not invalidate the session', function () {
+        subject.set('_setupSentry', function () {
           throw new Error('foo');
         });
         const invalidateStub = sinon.stub();

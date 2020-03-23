@@ -8,16 +8,16 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: WebhookEvent', function() {
+describe('Integration: WebhookEvent', function () {
   setupRenderingTest('webhook-event', {integration: true});
   freezeMoment('2017-05-22');
 
-  beforeEach(async function() {
+  beforeEach(async function () {
     setupFactoryGuy(this);
     await render(hbs`<WebhookEvent @webhookEvent={{webhookEvent}} />`);
   });
 
-  it('displays webhook event data', async function() {
+  it('displays webhook event data', async function () {
     this.set('webhookEvent', make('webhook-event'));
 
     await percySnapshot(this.test.fullTitle());
@@ -27,8 +27,8 @@ describe('Integration: WebhookEvent', function() {
     expect(WebhookEvent.responseTime).to.equal('Delivered in 150ms');
   });
 
-  context('when detail view is opened', function() {
-    it('displays request headers and payload', async function() {
+  context('when detail view is opened', function () {
+    it('displays request headers and payload', async function () {
       this.set(
         'webhookEvent',
         make('webhook-event', {
@@ -46,8 +46,8 @@ describe('Integration: WebhookEvent', function() {
     });
   });
 
-  context('when response tab is opened', function() {
-    it('displays response headers and payload', async function() {
+  context('when response tab is opened', function () {
+    it('displays response headers and payload', async function () {
       this.set(
         'webhookEvent',
         make('webhook-event', {
@@ -66,8 +66,8 @@ describe('Integration: WebhookEvent', function() {
     });
   });
 
-  context('when http error', function() {
-    it('displays response code', async function() {
+  context('when http error', function () {
+    it('displays response code', async function () {
       this.set(
         'webhookEvent',
         make('webhook-event', {
@@ -81,8 +81,8 @@ describe('Integration: WebhookEvent', function() {
     });
   });
 
-  context('when non-http error', function() {
-    it('displays meaningful error message', async function() {
+  context('when non-http error', function () {
+    it('displays meaningful error message', async function () {
       this.set(
         'webhookEvent',
         make('webhook-event', {

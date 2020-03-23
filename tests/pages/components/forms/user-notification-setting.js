@@ -21,11 +21,11 @@ export const userNotificationSettingForm = {
     checkbox: {scope: SELECTORS.OPTION_CHECKBOX},
   }),
 
-  commentEmailReply: getter(function() {
+  commentEmailReply: getter(function () {
     return this.options.toArray().findBy('label.text', 'Snapshot email notifications');
   }),
 
-  commentEmailMention: getter(function() {
+  commentEmailMention: getter(function () {
     return this.options.toArray().findBy('label.text', 'Mention email notifications');
   }),
 

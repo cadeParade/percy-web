@@ -3,7 +3,7 @@ var httpProxy = require('http-proxy');
 var proxyPath = '/api';
 var proxyTarget = process.env.PERCY_WEB_API_HOST || 'http://dev.percy.local:9090';
 
-module.exports = function(app) {
+module.exports = function (app) {
   // For options, see: https://github.com/nodejitsu/node-http-proxy
   var proxyOptions = {};
   if (proxyTarget == 'https://percy.io') {
@@ -12,7 +12,7 @@ module.exports = function(app) {
 
   var proxy = httpProxy.createProxyServer(proxyOptions);
 
-  proxy.on('error', function(err, req) {
+  proxy.on('error', function (err, req) {
     console.error(err, req.url); // eslint-disable-line
   });
 

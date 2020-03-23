@@ -3,7 +3,7 @@ import {describe, beforeEach, it} from 'mocha';
 import snapshotSort from 'percy-web/lib/snapshot-sort';
 import {set} from '@ember/object';
 
-describe('snapshot-sort', function() {
+describe('snapshot-sort', function () {
   const wideWidth = 800;
   const narrowWidth = 400;
 
@@ -42,8 +42,8 @@ describe('snapshot-sort', function() {
     };
   });
 
-  describe('when comparisons have mixed browsers', function() {
-    it('returns snapshots with highest diff ratio in active browser first', function() {
+  describe('when comparisons have mixed browsers', function () {
+    it('returns snapshots with highest diff ratio in active browser first', function () {
       set(wideComparisonWithLowDiff, 'browser', chromeBrowser);
       const snapshotWithLowDiffInActiveBrowser = {
         comparisons: [wideComparisonWithLowDiff],
@@ -60,7 +60,7 @@ describe('snapshot-sort', function() {
       ).to.eql([snapshotWithLowDiffInActiveBrowser, snapshotWithHighDiffInInactiveBrowser]);
     });
 
-    it('returns snapshots with widest comparisons in active browser first', function() {
+    it('returns snapshots with widest comparisons in active browser first', function () {
       set(narrowComparisonWithHighDiff, 'browser', chromeBrowser);
       const snapshotWithNarrowWidthInActiveBrowser = {
         comparisons: [narrowComparisonWithHighDiff],
@@ -78,8 +78,8 @@ describe('snapshot-sort', function() {
     });
   });
 
-  describe('when all comparisons have the same browser', function() {
-    it('returns snapshots with diffs before snapshots with no diffs', function() {
+  describe('when all comparisons have the same browser', function () {
+    it('returns snapshots with diffs before snapshots with no diffs', function () {
       const snapshotWithDiffs = {comparisons: [wideComparisonWithLowDiff]};
       const snapshotWithNoDiffs = {comparisons: [wideComparisonWithNoDiff]};
       const unorderedSnapshots = [snapshotWithNoDiffs, snapshotWithDiffs];
@@ -90,7 +90,7 @@ describe('snapshot-sort', function() {
       ]);
     });
 
-    it('sorts snapshots with diffs before snapshots with commentThreads and no diffs', function() {
+    it('sorts snapshots with diffs before snapshots with commentThreads and no diffs', function () {
       const snapshotWithComments = {
         totalOpenComments: 100,
         comparisons: [wideComparisonWithNoDiff],
@@ -107,7 +107,7 @@ describe('snapshot-sort', function() {
       ]);
     });
 
-    it('returns snapshots with more commentThreads first', function() {
+    it('returns snapshots with more commentThreads first', function () {
       const snapshotWithOneComment = {
         totalOpenComments: 1,
         comparisons: [wideComparisonWithLowDiff],
@@ -124,7 +124,7 @@ describe('snapshot-sort', function() {
       ]);
     });
 
-    it('sorts snapshots with comments before snapshots diffs at wider widths', function() {
+    it('sorts snapshots with comments before snapshots diffs at wider widths', function () {
       const snapshotWithComments = {
         maxComparisonWidth: narrowWidth,
         totalOpenComments: 2,
@@ -160,7 +160,7 @@ describe('snapshot-sort', function() {
       ]);
     });
 
-    it('returns snapshots with high diff ratio before snapshots with low diff ratio', function() {
+    it('returns snapshots with high diff ratio before snapshots with low diff ratio', function () {
       const snapshotWithHighDiffRatio = {
         maxComparisonWidth: wideWidth,
         comparisons: [wideComparisonWithHighDiff],

@@ -28,7 +28,7 @@ export const commentThread = {
   typeReply: alias('reply.typeComment'),
   submitReply: alias('reply.submit.click'),
 
-  firstComment: getter(function() {
+  firstComment: getter(function () {
     return this.comments[0];
   }),
 
@@ -36,16 +36,16 @@ export const commentThread = {
 
   isArchived: alias('firstComment.isArchived'),
   isResolved: alias('firstComment.isResolved'),
-  isClosed: getter(function() {
+  isClosed: getter(function () {
     return this.isArchived;
   }),
 
   _type: attribute('data-test-thread-type'),
-  isReviewThread: getter(function() {
+  isReviewThread: getter(function () {
     return this._type === REVIEW_COMMENT_TYPE;
   }),
 
-  isNoteThread: getter(function() {
+  isNoteThread: getter(function () {
     return this._type === NOTE_COMMENT_TYPE;
   }),
 

@@ -9,12 +9,12 @@ import sinon from 'sinon';
 import mockIntercomService from 'percy-web/tests/helpers/mock-intercom-service';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: BuildHeader', function() {
+describe('Integration: BuildHeader', function () {
   setupRenderingTest('build-header', {
     integration: true,
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
   });
 
@@ -38,7 +38,7 @@ describe('Integration: BuildHeader', function() {
   states.forEach(state => {
     const testTitle = state.join(' ');
 
-    it(`renders in state: ${testTitle}`, async function() {
+    it(`renders in state: ${testTitle}`, async function () {
       const build = make.apply(this, ['build'].concat(state));
       this.setProperties({build});
 
@@ -50,8 +50,8 @@ describe('Integration: BuildHeader', function() {
     });
   });
 
-  describe('showSupport actions', function() {
-    it('sends showSupport action when clicking "reach out" on timed out build', async function() {
+  describe('showSupport actions', function () {
+    it('sends showSupport action when clicking "reach out" on timed out build', async function () {
       const showSupportStub = sinon.stub();
       mockIntercomService(this, showSupportStub);
 

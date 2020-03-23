@@ -4,10 +4,10 @@ import {visit, click, currentRouteName} from '@ember/test-helpers';
 import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
 import ProjectPage from 'percy-web/tests/pages/project-page';
 
-describe('Acceptance: Join', function() {
+describe('Acceptance: Join', function () {
   setupAcceptance();
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     const organization = server.create('organization', {name: 'Test org'});
     server.create('project', {organization});
     const user = server.create('user', {name: 'Basil Cat'});
@@ -24,21 +24,21 @@ describe('Acceptance: Join', function() {
     });
   });
 
-  it('expired rejected', async function() {
+  it('expired rejected', async function () {
     await visit('/join/expired-code');
     expect(currentRouteName()).to.equal('join');
 
     await percySnapshot(this.test);
   });
 
-  it('invalid rejected', async function() {
+  it('invalid rejected', async function () {
     await visit('/join/invalid-code');
     expect(currentRouteName()).to.equal('error');
 
     await percySnapshot(this.test);
   });
 
-  it('valid accepted', async function() {
+  it('valid accepted', async function () {
     await visit('/join/valid-code');
     expect(currentRouteName()).to.equal('join');
 

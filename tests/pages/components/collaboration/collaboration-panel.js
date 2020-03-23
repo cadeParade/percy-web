@@ -16,10 +16,10 @@ export const collaborationPanel = {
   newComment: collaborationNewThread,
   commentThreads: collection(commentThread.scope, commentThread),
 
-  reviewThreads: getter(function() {
+  reviewThreads: getter(function () {
     return this.commentThreads.toArray().filterBy('isReviewThread');
   }),
-  noteThreads: getter(function() {
+  noteThreads: getter(function () {
     return this.commentThreads.toArray().filterBy('isNoteThread');
   }),
 

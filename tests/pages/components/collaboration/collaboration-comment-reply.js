@@ -24,10 +24,10 @@ export const collaborationCommentReply = {
   },
   cancel: {scope: SELECTORS.CANCEL},
 
-  isExpanded: getter(function() {
+  isExpanded: getter(function () {
     return this.submit.isVisible && this.cancel.isVisible;
   }),
-  isCollapsed: getter(function() {
+  isCollapsed: getter(function () {
     return !this.isExpanded;
   }),
 

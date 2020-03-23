@@ -28,7 +28,7 @@ export default Component.extend(PollingMixin, {
 
   shouldPollForUpdates: or('isRepoDataStale', 'isSyncing'),
 
-  isRepoDataStale: computed('lastSyncedAt', function() {
+  isRepoDataStale: computed('lastSyncedAt', function () {
     if (!this.get('organization.isVersionControlIntegrated')) {
       return false;
     }

@@ -10,7 +10,7 @@ import moment from 'moment';
 import percySnapshot from '@percy/ember';
 import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
 
-describe('Integration: BrowserFamilySelector', function() {
+describe('Integration: BrowserFamilySelector', function () {
   freezeMoment('2020-01-01');
   setupRenderingTest('projects/browser-family-selector', {
     integration: true,
@@ -20,12 +20,12 @@ describe('Integration: BrowserFamilySelector', function() {
   let firefoxBrowserTarget;
   let project;
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
   });
 
-  describe('display', function() {
-    beforeEach(function() {
+  describe('display', function () {
+    beforeEach(function () {
       const firefoxBrowserFamily = make('browser-family', 'firefox');
       const chromeBrowserFamily = make('browser-family', 'chrome');
       project = make('project');
@@ -42,8 +42,8 @@ describe('Integration: BrowserFamilySelector', function() {
       });
     });
 
-    describe('enabled/disabled', function() {
-      it('shows chrome as selected when project has chrome browser_target', async function() {
+    describe('enabled/disabled', function () {
+      it('shows chrome as selected when project has chrome browser_target', async function () {
         make('project-browser-target', {
           project,
           browserTarget: chromeBrowserTarget,
@@ -58,7 +58,7 @@ describe('Integration: BrowserFamilySelector', function() {
         expect(BrowserFamilySelector.firefoxButton.isActive).to.equal(false);
       });
 
-      it('shows firefox as selected when project has firefox browser target', async function() {
+      it('shows firefox as selected when project has firefox browser target', async function () {
         make('project-browser-target', {
           project,
           browserTarget: firefoxBrowserTarget,
@@ -73,7 +73,8 @@ describe('Integration: BrowserFamilySelector', function() {
         expect(BrowserFamilySelector.firefoxButton.isActive).to.equal(true);
       });
 
-      it('shows both browsers as selected when project has both browser targets', async function() {
+      // eslint-disable-next-line
+      it('shows both browsers as selected when project has both browser targets', async function () {
         make('project-browser-target', {
           project,
           browserTarget: chromeBrowserTarget,
@@ -92,9 +93,9 @@ describe('Integration: BrowserFamilySelector', function() {
       });
     });
 
-    describe('upgrading', function() {
-      describe('when all browsers are enabled', function() {
-        it('shows upgrade button on chrome when only chrome is upgradeable', async function() {
+    describe('upgrading', function () {
+      describe('when all browsers are enabled', function () {
+        it('shows upgrade button on chrome when only chrome is upgradeable', async function () {
           const projectBrowserTargets = [
             make('project-browser-target', 'upgradeable', {
               project,
@@ -113,7 +114,7 @@ describe('Integration: BrowserFamilySelector', function() {
           expect(BrowserFamilySelector.firefoxButton.isUpgradeable).to.equal(false);
         });
 
-        it('shows upgrade button on firefox when only firefox is upgradeable', async function() {
+        it('shows upgrade button on firefox when only firefox is upgradeable', async function () {
           const projectBrowserTargets = [
             make('project-browser-target', {project, browserTarget: chromeBrowserTarget}),
             make('project-browser-target', 'upgradeable', {
@@ -131,7 +132,7 @@ describe('Integration: BrowserFamilySelector', function() {
           expect(BrowserFamilySelector.firefoxButton.isUpgradeable).to.equal(true);
         });
 
-        it('shows upgrade button on both when both are upgradeable', async function() {
+        it('shows upgrade button on both when both are upgradeable', async function () {
           const projectBrowserTargets = [
             make('project-browser-target', 'upgradeable', {
               project,
@@ -152,7 +153,7 @@ describe('Integration: BrowserFamilySelector', function() {
           expect(BrowserFamilySelector.firefoxButton.isUpgradeable).to.equal(true);
         });
 
-        it('shows update period when a browser is set to be deprecated', async function() {
+        it('shows update period when a browser is set to be deprecated', async function () {
           const pbtWithDeprecation = make('project-browser-target', 'upgradeable', {
             project,
             browserTarget: make(
@@ -187,8 +188,8 @@ describe('Integration: BrowserFamilySelector', function() {
         });
       });
 
-      describe('when not all browsers are enabled', function() {
-        it('shows upgrade button on enabled browser when it is upgradeable', async function() {
+      describe('when not all browsers are enabled', function () {
+        it('shows upgrade button on enabled browser when it is upgradeable', async function () {
           const projectBrowserTargets = [
             make('project-browser-target', 'upgradeable', {
               project,

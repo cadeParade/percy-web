@@ -10,7 +10,7 @@ import {
   countDiffsWithSnapshotsPerBrowser,
 } from 'percy-web/lib/filtered-comparisons';
 
-describe('filtered-comparisons', function() {
+describe('filtered-comparisons', function () {
   const chromeBrowser = {
     id: 'chrome-id',
   };
@@ -23,38 +23,38 @@ describe('filtered-comparisons', function() {
   const wideComparisonNoDiff = {width: 1000, isDifferent: false};
   const wideComparisonWithDiff = {width: 1000, isDifferent: true};
 
-  describe('#widestComparison', function() {
-    it('returns widest comparison', function() {
+  describe('#widestComparison', function () {
+    it('returns widest comparison', function () {
       expect(widestComparison([narrowComparisonNoDiff, wideComparisonNoDiff])).to.equal(
         wideComparisonNoDiff,
       );
     });
 
-    it('returns undefined when comparisons is not defined', function() {
+    it('returns undefined when comparisons is not defined', function () {
       expect(widestComparison()).to.equal(undefined);
     });
   });
 
-  describe('#computeCompraisonForWidth', function() {
-    it('returns comparison matching inputted width', function() {
+  describe('#computeCompraisonForWidth', function () {
+    it('returns comparison matching inputted width', function () {
       expect(comparisonForWidth([narrowComparisonNoDiff, wideComparisonNoDiff], 1000)).to.equal(
         wideComparisonNoDiff,
       );
     });
 
-    it('returns nothing if there is no matching comparison', function() {
+    it('returns nothing if there is no matching comparison', function () {
       expect(comparisonForWidth([narrowComparisonNoDiff, wideComparisonNoDiff], 293847)).to.equal(
         undefined,
       );
     });
 
-    it('returns undefined when comparisons and width is not defined', function() {
+    it('returns undefined when comparisons and width is not defined', function () {
       expect(comparisonForWidth()).to.equal(undefined);
     });
   });
 
-  describe('#comparisonsForBrowser', function() {
-    it('returns comparisons with maching browser', function() {
+  describe('#comparisonsForBrowser', function () {
+    it('returns comparisons with maching browser', function () {
       const chromeComparison = {browser: chromeBrowser};
       const firefoxComparison = {browser: firefoxBrowser};
 
@@ -63,25 +63,25 @@ describe('filtered-comparisons', function() {
       ]);
     });
 
-    it('returns empty array if no matching comparisons', function() {
+    it('returns empty array if no matching comparisons', function () {
       expect(
         comparisonsForBrowser([narrowComparisonNoDiff, wideComparisonNoDiff], chromeBrowser),
       ).to.eql([]);
     });
 
-    it('returns empty array if browser is defined but comparisons is not', function() {
+    it('returns empty array if browser is defined but comparisons is not', function () {
       expect(comparisonsForBrowser(undefined, chromeBrowser)).to.eql([]);
     });
 
-    it('returns empty array if comparisons is defined but browser is not', function() {
+    it('returns empty array if comparisons is defined but browser is not', function () {
       const chromeComparison = {browser: chromeBrowser};
       const firefoxComparison = {browser: firefoxBrowser};
       expect(comparisonsForBrowser([firefoxComparison, chromeComparison])).to.eql([]);
     });
   });
 
-  describe('#widestComparisonWithDiff', function() {
-    it('returns widest comparison with diff', function() {
+  describe('#widestComparisonWithDiff', function () {
+    it('returns widest comparison with diff', function () {
       expect(
         widestComparisonWithDiff([
           narrowComparisonWithDiff,
@@ -91,19 +91,19 @@ describe('filtered-comparisons', function() {
       ).to.equal(wideComparisonWithDiff);
     });
 
-    it('returns undefined if no comparisons with diffs', function() {
+    it('returns undefined if no comparisons with diffs', function () {
       expect(widestComparisonWithDiff([narrowComparisonNoDiff, wideComparisonNoDiff])).to.equal(
         undefined,
       );
     });
 
-    it('returns undefined if comparisons is not defined', function() {
+    it('returns undefined if comparisons is not defined', function () {
       expect(widestComparisonWithDiff()).to.eql(undefined);
     });
   });
 
-  describe('#snapshotsWithDiffForBrowser', function() {
-    it('returns snapshots which have comparisons with diffs for matching browser', function() {
+  describe('#snapshotsWithDiffForBrowser', function () {
+    it('returns snapshots which have comparisons with diffs for matching browser', function () {
       const chromeComparisonWithDiff = {browser: chromeBrowser, isDifferent: true};
       const firefoxComparisonWithDiff = {browser: firefoxBrowser, isDifferent: true};
       const chromeComparisonNoDiff = {browser: chromeBrowser, isDifferent: false};
@@ -127,13 +127,13 @@ describe('filtered-comparisons', function() {
       expect(snapshots).to.eql([snapshotWithChrome, snapshotWithBothBrowsersAndDiffs]);
     });
 
-    it('returns empty array if comparisons and browser are not defined', function() {
+    it('returns empty array if comparisons and browser are not defined', function () {
       expect(snapshotsWithDiffForBrowser()).to.eql([]);
     });
   });
 
-  describe('#countDiffsWithSnapshotsPerBrowser', function() {
-    it('creates correct data structure', function() {
+  describe('#countDiffsWithSnapshotsPerBrowser', function () {
+    it('creates correct data structure', function () {
       const snapshotWithTwoChromeDiffs = {
         comparisons: [
           {browser: chromeBrowser, isDifferent: true},

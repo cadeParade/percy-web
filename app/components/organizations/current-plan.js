@@ -14,7 +14,7 @@ export default Component.extend({
   shouldDisplayUsageStats: or('plan.isCurrentPaidPlan', '_isDeprecatedWithAmount'),
   shouldShowOverageInfo: and('plan.allowOverages', 'plan.overageUnitCost', 'plan.isNotTrial'),
 
-  displayAmount: computed('plan.amount', function() {
+  displayAmount: computed('plan.amount', function () {
     return this.plan.amount / 100;
   }),
 

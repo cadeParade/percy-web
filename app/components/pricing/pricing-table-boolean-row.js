@@ -10,15 +10,15 @@ export default Component.extend({
   _businessPlan: readOnly('plans.businessPlan'),
   _enterprisePlan: readOnly('plans.enterprisePlan'),
 
-  isStartupPlansTruthy: computed('_firstStartupPlan', function() {
+  isStartupPlansTruthy: computed('_firstStartupPlan', function () {
     return this._isTruthy('_firstStartupPlan');
   }),
 
-  isBusinessPlanTruthy: computed('_businessPlan', function() {
+  isBusinessPlanTruthy: computed('_businessPlan', function () {
     return this._isTruthy('_businessPlan');
   }),
 
-  isEnterprisePlanTruthy: computed('_enterprisePlan', function() {
+  isEnterprisePlanTruthy: computed('_enterprisePlan', function () {
     return this._isTruthy('_enterprisePlan');
   }),
 

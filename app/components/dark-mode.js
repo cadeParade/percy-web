@@ -7,7 +7,7 @@ export default Component.extend({
   router: inject(),
   session: inject(),
   currentUser: readOnly('session.currentUser'),
-  bodyClass: computed('currentUser.webTheme', 'router.currentRouteName', function() {
+  bodyClass: computed('currentUser.webTheme', 'router.currentRouteName', function () {
     if (!this.currentUser) {
       return;
     }

@@ -33,16 +33,16 @@ export default Component.extend({
 
   isRequest: true,
 
-  failureMessage: computed('webhookEvent.failureReason', function() {
+  failureMessage: computed('webhookEvent.failureReason', function () {
     return FAILURE_MESSAGES[this.get('webhookEvent.failureReason')];
   }),
 
   actions: {
-    toggleOpen: function() {
+    toggleOpen: function () {
       this.set('isOpen', !this.isOpen);
     },
 
-    openTab: function(tab) {
+    openTab: function (tab) {
       this.set('isRequest', tab === 'request');
     },
   },

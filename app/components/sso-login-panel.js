@@ -10,7 +10,7 @@ export default Component.extend(EnsureStatefulLogin, {
   organizationName: '',
   provider: '',
   required: false,
-  svgName: computed('provider', function() {
+  svgName: computed('provider', function () {
     if (this.provider === 'Okta') {
       return 'okta-logo';
     } else {
@@ -18,20 +18,20 @@ export default Component.extend(EnsureStatefulLogin, {
     }
   }),
 
-  organizationNameWithDefault: computed('organizationName', function() {
+  organizationNameWithDefault: computed('organizationName', function () {
     return this.organizationName || 'your organization';
   }),
-  providerWithDefault: computed('provider', function() {
+  providerWithDefault: computed('provider', function () {
     return this.provider || 'your Single Sign-On provider';
   }),
-  mainText: computed('providerWithDefault', function() {
+  mainText: computed('providerWithDefault', function () {
     return `Login through ${this.providerWithDefault}`;
   }),
   secondaryText: computed(
     'required',
     'organizationNameWithDefault',
     'providerWithDefault',
-    function() {
+    function () {
       if (this.required) {
         return (
           `${this.organizationNameWithDefault} requires you to login through ` +
@@ -49,8 +49,9 @@ export default Component.extend(EnsureStatefulLogin, {
     showSupport() {
       this.intercom.showIntercom(
         'showNewMessage',
-        `Hi! I'd like help logging into my ${this.organizationName || ''} ${this.provider ||
-          'SSO'} account.`,
+        `Hi! I'd like help logging into my ${this.organizationName || ''} ${
+          this.provider || 'SSO'
+        } account.`,
       );
     },
   },

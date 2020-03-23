@@ -46,7 +46,7 @@ export default {
     {
       name: 'name',
       placeholder: 'Name',
-      validator: function(name) {
+      validator: function (name) {
         return {
           valid: name.length >= 1,
           hint: "Can't be blank",

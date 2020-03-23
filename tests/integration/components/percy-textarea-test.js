@@ -6,14 +6,14 @@ import {initialize as initializeEmberKeyboard} from 'ember-keyboard';
 import PercyTextarea from 'percy-web/tests/pages/components/percy-textarea';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: PercyTextarea', function() {
+describe('Integration: PercyTextarea', function () {
   setupRenderingTest('percy-textarea', {
     integration: true,
   });
 
   let onCmdEnterStub;
   let onEscStub;
-  beforeEach(async function() {
+  beforeEach(async function () {
     initializeEmberKeyboard();
 
     onCmdEnterStub = sinon.stub();
@@ -27,12 +27,12 @@ describe('Integration: PercyTextarea', function() {
       />`);
   });
 
-  it('calls cmdEnter stub when cmd+Enter is pushed', async function() {
+  it('calls cmdEnter stub when cmd+Enter is pushed', async function () {
     await PercyTextarea.cmdEnter();
     expect(onCmdEnterStub).to.have.been.called;
   });
 
-  it('calls onEsc stub when Escape is pushed', async function() {
+  it('calls onEsc stub when Escape is pushed', async function () {
     await PercyTextarea.escape();
     expect(onEscStub).to.have.been.called;
   });

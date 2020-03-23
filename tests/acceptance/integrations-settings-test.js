@@ -4,38 +4,38 @@ import {beforeEach} from 'mocha';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {currentRouteName} from '@ember/test-helpers';
 
-describe('Acceptance: Integrations Settings Page', function() {
+describe('Acceptance: Integrations Settings Page', function () {
   setupAcceptance();
 
-  describe('with a non-admin user', function() {
+  describe('with a non-admin user', function () {
     let organization;
-    setupSession(function(server) {
+    setupSession(function (server) {
       organization = server.create('organization', 'withUser');
     });
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       await IntegrationsIndexPage.visitIntegrationsPage({orgSlug: organization.slug});
     });
 
-    it('shows integrations page', async function() {
+    it('shows integrations page', async function () {
       expect(currentRouteName()).to.equal('organizations.organization.integrations.index');
       await percySnapshot(this.test);
     });
   });
 
-  describe('with an admin user', function() {
+  describe('with an admin user', function () {
     let organization;
-    setupSession(function(server) {
+    setupSession(function (server) {
       organization = server.create('organization', 'withAdminUser');
     });
 
-    it('shows integrations page', async function() {
+    it('shows integrations page', async function () {
       await IntegrationsIndexPage.visitIntegrationsPage({orgSlug: organization.slug});
       expect(currentRouteName()).to.equal('organizations.organization.integrations.index');
       await percySnapshot(this.test);
     });
 
-    it('navigates to the Bitbucket Cloud settings page when install clicked', async function() {
+    it('navigates to the Bitbucket Cloud settings page when install clicked', async function () {
       await IntegrationsIndexPage.visitIntegrationsPage({orgSlug: organization.slug});
       expect(currentRouteName()).to.equal('organizations.organization.integrations.index');
       await IntegrationsIndexPage.bitbucketCloudIntegration.install();
@@ -44,13 +44,13 @@ describe('Acceptance: Integrations Settings Page', function() {
       );
     });
 
-    describe('when there is an okta integration', function() {
-      beforeEach(async function() {
+    describe('when there is an okta integration', function () {
+      beforeEach(async function () {
         server.create('samlIntegration', {organization});
         await IntegrationsIndexPage.visitIntegrationsPage({orgSlug: organization.slug});
       });
 
-      it('navigates to the Okta settings page', async function() {
+      it('navigates to the Okta settings page', async function () {
         expect(currentRouteName()).to.equal('organizations.organization.integrations.index');
         await percySnapshot(this.test.fullTitle() + 'index page with okta integration');
         await IntegrationsIndexPage.oktaIntegration.edit();
@@ -59,9 +59,9 @@ describe('Acceptance: Integrations Settings Page', function() {
     });
   });
 
-  describe('after all integrations installed', function() {
+  describe('after all integrations installed', function () {
     let organization;
-    setupSession(function(server) {
+    setupSession(function (server) {
       organization = server.create(
         'organization',
         'withBitbucketCloudIntegration',
@@ -73,11 +73,11 @@ describe('Acceptance: Integrations Settings Page', function() {
       );
     });
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       await IntegrationsIndexPage.visitIntegrationsPage({orgSlug: organization.slug});
     });
 
-    it('shows all integrations installed', async function() {
+    it('shows all integrations installed', async function () {
       expect(currentRouteName()).to.equal('organizations.organization.integrations.index');
 
       expect(IntegrationsIndexPage.hasBitbucketCloudIntegration).to.equal(true);

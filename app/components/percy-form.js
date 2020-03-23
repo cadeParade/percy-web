@@ -13,7 +13,7 @@ export default Component.extend({
     this.submitTask.perform();
   },
 
-  submitTask: task(function*() {
+  submitTask: task(function* () {
     // This tells the task to wait at least 500ms for the task to complete, even if the actual
     // action finishes sooner so the user has a nice indicator that the form is doing something.
     yield all([timeout(MIN_FEEDBACK_DELAY_MS), this.onSubmit()]);

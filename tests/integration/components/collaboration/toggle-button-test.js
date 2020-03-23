@@ -5,14 +5,14 @@ import sinon from 'sinon';
 import {render, click} from '@ember/test-helpers';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 
-describe('Integration: CollaborationToggleButton', function() {
+describe('Integration: CollaborationToggleButton', function () {
   setupRenderingTest('collaboration-toggle-button', {
     integration: true,
   });
 
   let toggleCollaborationPanelStub;
 
-  beforeEach(async function() {
+  beforeEach(async function () {
     toggleCollaborationPanelStub = sinon.stub();
 
     this.setProperties({
@@ -20,7 +20,7 @@ describe('Integration: CollaborationToggleButton', function() {
     });
   });
 
-  it('displays purple bubble with count when there are unresolved comments', async function() {
+  it('displays purple bubble with count when there are unresolved comments', async function () {
     await render(hbs`<Collaboration::ToggleButton
       @unresolvedCommentThreadCount={{100}}
       @toggleCollaborationPanel={{toggleCollaborationPanelStub}}
@@ -28,7 +28,7 @@ describe('Integration: CollaborationToggleButton', function() {
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  it('displays green check when isResolved is true', async function() {
+  it('displays green check when isResolved is true', async function () {
     await render(hbs`<Collaboration::ToggleButton
       @isResolved={{true}}
       @toggleCollaborationPanel={{toggleCollaborationPanelStub}}
@@ -44,7 +44,7 @@ describe('Integration: CollaborationToggleButton', function() {
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  it('calls toggle action when clicked', async function() {
+  it('calls toggle action when clicked', async function () {
     await render(hbs`<Collaboration::ToggleButton
       @toggleCollaborationPanel={{toggleCollaborationPanelStub}}
     />`);

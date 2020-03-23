@@ -6,7 +6,7 @@ const FOOTER_HEADER_ORDER = ['Product', 'Resources', 'Developers', 'Company'];
 
 export default Component.extend({
   store: service(),
-  footerGroups: computed(async function() {
+  footerGroups: computed(async function () {
     const itemsGroupedByCategory = await this.store.findAll('footer-item').then(items => {
       return this._groupItemsByCategory(items);
     });

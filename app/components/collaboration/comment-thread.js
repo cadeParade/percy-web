@@ -17,22 +17,22 @@ export default Component.extend({
   shouldShowThreadReplyInput: and('commentThread.isOpen', 'isCommentingAllowed'),
 
   _defaultAreCommentsCollapsed: gt('comments.length', 3),
-  numCollapsedComments: computed('comments.length', function() {
+  numCollapsedComments: computed('comments.length', function () {
     return this.comments.length - 3;
   }),
 
   firstComment: readOnly('filteredComments.firstObject'),
-  secondComment: computed('filteredComments.[]', function() {
+  secondComment: computed('filteredComments.[]', function () {
     return this.filteredComments.objectAt(1);
   }),
-  lastComment: computed('filteredComments.[]', function() {
+  lastComment: computed('filteredComments.[]', function () {
     return this.filteredComments.objectAt(this.filteredComments.length - 1);
   }),
 
   areCommentsCollapsed: computed(
     '_defaultAreCommentsCollapsed',
     'userAreCommentsCollapsed',
-    function() {
+    function () {
       if (this.userAreCommentsCollapsed !== undefined) {
         return this.userAreCommentsCollapsed;
       } else {

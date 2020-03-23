@@ -15,7 +15,7 @@ export default Component.extend({
 
   _loadedUserOrgs: readOnly('currentUser.organizations'),
   _refreshedUserOrgs: null,
-  _getUserOrganizations: task(function*() {
+  _getUserOrganizations: task(function* () {
     const user = yield this.session.forceReloadUser();
     const _refreshedUserOrgs = yield this.store.query('organization', {user});
     this.setProperties({_refreshedUserOrgs});

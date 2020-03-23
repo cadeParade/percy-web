@@ -43,7 +43,7 @@ export const ProjectContainer = {
     addIntegration: clickable(SELECTORS.ADD_INTEGRATION),
   },
 
-  finishedBuilds: getter(function() {
+  finishedBuilds: getter(function () {
     return this.builds.filter(build => !!build.isFinished);
   }),
 

@@ -38,7 +38,7 @@ const ProjectPage = {
   frameworkCategories: collection(SELECTORS.NEW_PROJECT_SIDEBAR_LINK),
   frameworks: collection(SELECTORS.FRAMEWORK_ITEMS),
 
-  lastFramework: getter(function() {
+  lastFramework: getter(function () {
     const numFrameworks = this.frameworks.length;
     return this.frameworks.objectAt(numFrameworks - 1);
   }),

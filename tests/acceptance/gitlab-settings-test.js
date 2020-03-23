@@ -8,7 +8,7 @@ import AdminMode from 'percy-web/lib/admin-mode';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {currentRouteName} from '@ember/test-helpers';
 
-describe('Acceptance: GitLab Integration Settings', function() {
+describe('Acceptance: GitLab Integration Settings', function () {
   setupAcceptance();
 
   let urlParams = (organization, integrationType) => {
@@ -18,16 +18,16 @@ describe('Acceptance: GitLab Integration Settings', function() {
     };
   };
 
-  describe('with a standard user', function() {
-    describe('with a gitlab integration', function() {
+  describe('with a standard user', function () {
+    describe('with a gitlab integration', function () {
       let organization;
       let integrationType;
-      setupSession(function(server) {
+      setupSession(function (server) {
         organization = server.create('organization', 'withUser', 'withGitlabIntegration');
         integrationType = 'gitlab';
       });
 
-      it('does not show gitlab settings', async function() {
+      it('does not show gitlab settings', async function () {
         await GitlabSettings.visitSettings(urlParams(organization, integrationType));
         expect(currentRouteName()).to.equal('organizations.organization.integrations.gitlab');
         expect(GitlabSettings.isFormHidden, 'Expected integration to be hidden').to.equal(true);
@@ -38,13 +38,13 @@ describe('Acceptance: GitLab Integration Settings', function() {
       });
     });
 
-    describe('with a gitlab self-hosted integration', function() {
+    describe('with a gitlab self-hosted integration', function () {
       let organization;
-      setupSession(function(server) {
+      setupSession(function (server) {
         organization = server.create('organization', 'withUser', 'withGitlabSelfHostedIntegration');
       });
 
-      it('does not show gitlab self-hosted settings', async function() {
+      it('does not show gitlab self-hosted settings', async function () {
         await GitlabSettings.visitSettings(urlParams(organization, 'gitlab-self-hosted'));
         expect(currentRouteName()).to.equal(
           'organizations.organization.integrations.gitlab-self-hosted',
@@ -58,14 +58,14 @@ describe('Acceptance: GitLab Integration Settings', function() {
     });
   });
 
-  describe('with an admin user', function() {
+  describe('with an admin user', function () {
     let organization;
-    setupSession(function(server) {
+    setupSession(function (server) {
       organization = server.create('organization', 'withAdminUser');
     });
 
-    describe('without an existing gitlab integration', function() {
-      it('allows the integration to be installed', async function() {
+    describe('without an existing gitlab integration', function () {
+      it('allows the integration to be installed', async function () {
         await GitlabSettings.visitSettings(urlParams(organization, 'gitlab'));
         expect(currentRouteName()).to.equal('organizations.organization.integrations.gitlab');
 
@@ -78,12 +78,12 @@ describe('Acceptance: GitLab Integration Settings', function() {
       });
     });
 
-    describe('with a gitlab integration', function() {
-      setupSession(function(server) {
+    describe('with a gitlab integration', function () {
+      setupSession(function (server) {
         server.create('versionControlIntegration', 'gitlab', {organization});
       });
 
-      it('allows editing gitlab settings', async function() {
+      it('allows editing gitlab settings', async function () {
         await GitlabSettings.visitSettings(urlParams(organization, 'gitlab'));
         expect(currentRouteName()).to.equal('organizations.organization.integrations.gitlab');
 
@@ -97,7 +97,7 @@ describe('Acceptance: GitLab Integration Settings', function() {
         expect(currentRouteName()).to.equal('organizations.organization.integrations.index');
       });
 
-      it('can return to the index page', async function() {
+      it('can return to the index page', async function () {
         await GitlabSettings.visitSettings(urlParams(organization, 'gitlab'));
         expect(currentRouteName()).to.equal('organizations.organization.integrations.gitlab');
 
@@ -106,18 +106,18 @@ describe('Acceptance: GitLab Integration Settings', function() {
       });
     });
 
-    describe('with an existing gitlab integration', function() {
+    describe('with an existing gitlab integration', function () {
       let windowStub;
-      setupSession(function(server) {
+      setupSession(function (server) {
         server.create('versionControlIntegration', 'gitlab', {organization});
         windowStub = sinon.stub(utils, 'confirmMessage').returns(true);
       });
 
-      afterEach(function() {
+      afterEach(function () {
         windowStub.restore();
       });
 
-      it('allows deleting the integration', async function() {
+      it('allows deleting the integration', async function () {
         await GitlabSettings.visitSettings(urlParams(organization, 'gitlab'));
         expect(
           GitlabSettings.integrationSettings.personalAccessTokenField.inputPlaceholder,
@@ -130,8 +130,8 @@ describe('Acceptance: GitLab Integration Settings', function() {
       });
     });
 
-    describe('without a gitlab self-hosted integration', function() {
-      it('allows the integration to be installed', async function() {
+    describe('without a gitlab self-hosted integration', function () {
+      it('allows the integration to be installed', async function () {
         await GitlabSettings.visitSettings(urlParams(organization, 'gitlab-self-hosted'));
 
         expect(currentRouteName()).to.equal(
@@ -151,12 +151,12 @@ describe('Acceptance: GitLab Integration Settings', function() {
       });
     });
 
-    describe('with a gitlab self-hosted integration', function() {
-      setupSession(function(server) {
+    describe('with a gitlab self-hosted integration', function () {
+      setupSession(function (server) {
         server.create('versionControlIntegration', 'gitlabSelfHosted', {organization});
       });
 
-      it('allows editing settings', async function() {
+      it('allows editing settings', async function () {
         await GitlabSettings.visitSettings(urlParams(organization, 'gitlab-self-hosted'));
         expect(currentRouteName()).to.equal(
           'organizations.organization.integrations.gitlab-self-hosted',
@@ -176,18 +176,18 @@ describe('Acceptance: GitLab Integration Settings', function() {
       });
     });
 
-    describe('with a gitlab self-hosted integration', function() {
+    describe('with a gitlab self-hosted integration', function () {
       let windowStub;
-      setupSession(function(server) {
+      setupSession(function (server) {
         server.create('versionControlIntegration', 'gitlabSelfHosted', {organization});
         windowStub = sinon.stub(utils, 'confirmMessage').returns(true);
       });
 
-      afterEach(function() {
+      afterEach(function () {
         windowStub.restore();
       });
 
-      it('allows deleting the integration', async function() {
+      it('allows deleting the integration', async function () {
         await GitlabSettings.visitSettings(urlParams(organization, 'gitlab-self-hosted'));
         expect(currentRouteName()).to.equal(
           'organizations.organization.integrations.gitlab-self-hosted',
@@ -208,12 +208,12 @@ describe('Acceptance: GitLab Integration Settings', function() {
       });
     });
 
-    describe('with a gitlab self-hosted integration', function() {
-      setupSession(function(server) {
+    describe('with a gitlab self-hosted integration', function () {
+      setupSession(function (server) {
         server.create('versionControlIntegration', 'gitlabSelfHosted', {organization});
       });
 
-      it('can return to the index page', async function() {
+      it('can return to the index page', async function () {
         await GitlabSettings.visitSettings(urlParams(organization, 'gitlab-self-hosted'));
         expect(currentRouteName()).to.equal(
           'organizations.organization.integrations.gitlab-self-hosted',
@@ -224,8 +224,8 @@ describe('Acceptance: GitLab Integration Settings', function() {
       });
     });
 
-    describe('without any integrations', function() {
-      it('allows navigation between integrations', async function() {
+    describe('without any integrations', function () {
+      it('allows navigation between integrations', async function () {
         await GitlabSettings.visitSettings(urlParams(organization, 'gitlab-self-hosted'));
         let previouslyWasAdmin = AdminMode.isAdmin();
         AdminMode.setAdminMode();

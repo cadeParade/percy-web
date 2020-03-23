@@ -11,7 +11,7 @@ import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage
 import {render} from '@ember/test-helpers';
 import stubSession from 'percy-web/tests/helpers/stub-session';
 
-describe('Integration: BillingSection', function() {
+describe('Integration: BillingSection', function () {
   SetupLocalStorageSandbox();
   setupRenderingTest('billing-section', {
     integration: true,
@@ -19,19 +19,19 @@ describe('Integration: BillingSection', function() {
 
   let organization;
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
     mockStripeService(this);
   });
 
-  describe('when currentUser is an Admin', function() {
-    beforeEach(async function() {
+  describe('when currentUser is an Admin', function () {
+    beforeEach(async function () {
       organization = make('organization', 'withPaidPlan', 'withAdminUser');
       stubSession(this, {currentUser: organization.organizationUsers.firstObject.user});
       this.set('organization', organization);
     });
 
-    it('renders the admin view', async function() {
+    it('renders the admin view', async function () {
       await render(hbs`<Organizations::BillingSection
         @organization={{organization}}
       />`);
@@ -42,7 +42,7 @@ describe('Integration: BillingSection', function() {
       await percySnapshot(this.test);
     });
 
-    describe('subscription list', function() {
+    describe('subscription list', function () {
       async function _expectSubscriptionListVisibility(
         context,
         planTrait,
@@ -57,32 +57,32 @@ describe('Integration: BillingSection', function() {
         expect(BillingSection.subscriptionList.isVisible).to.equal(isVisible);
       }
 
-      it('displays when plan is free', async function() {
+      it('displays when plan is free', async function () {
         await _expectSubscriptionListVisibility(this, 'withFreePlan', {isVisible: true});
       });
 
-      it('displays when plan is trial', async function() {
+      it('displays when plan is trial', async function () {
         await _expectSubscriptionListVisibility(this, 'withTrialPlan', {isVisible: true});
       });
 
-      it('does display when plan is self serve v3', async function() {
+      it('does display when plan is self serve v3', async function () {
         await _expectSubscriptionListVisibility(this, 'withPaidPlan', {isVisible: true});
       });
 
-      it('displays when plan is legacy', async function() {
+      it('displays when plan is legacy', async function () {
         await _expectSubscriptionListVisibility(this, 'withLegacyPlan', {isVisible: true});
       });
 
-      it('does not display when plan is enterprise', async function() {
+      it('does not display when plan is enterprise', async function () {
         await _expectSubscriptionListVisibility(this, 'withEnterprisePlan', {isVisible: false});
       });
 
-      it('does not display when plan is sponsored', async function() {
+      it('does not display when plan is sponsored', async function () {
         await _expectSubscriptionListVisibility(this, 'withSponsoredPlan', {isVisible: false});
       });
     });
 
-    describe('billing settings', function() {
+    describe('billing settings', function () {
       async function _expectBillingSettingsVisibility(
         context,
         planTrait,
@@ -96,40 +96,40 @@ describe('Integration: BillingSection', function() {
         expect(BillingSection.billingSettings.isVisible).to.equal(isVisible);
       }
 
-      it('does not display when plan is free', async function() {
+      it('does not display when plan is free', async function () {
         await _expectBillingSettingsVisibility(this, 'withFreePlan', {isVisible: false});
       });
 
-      it('does not display when plan is trial', async function() {
+      it('does not display when plan is trial', async function () {
         await _expectBillingSettingsVisibility(this, 'withTrialPlan', {isVisible: false});
       });
 
-      it('does not display when plan is sponsored', async function() {
+      it('does not display when plan is sponsored', async function () {
         await _expectBillingSettingsVisibility(this, 'withSponsoredPlan', {isVisible: false});
       });
 
-      it('displays when plan is paid', async function() {
+      it('displays when plan is paid', async function () {
         await _expectBillingSettingsVisibility(this, 'withPaidPlan', {isVisible: true});
       });
 
-      it('displays when plan is paid+legacy', async function() {
+      it('displays when plan is paid+legacy', async function () {
         await _expectBillingSettingsVisibility(this, 'withLegacyPlan', {isVisible: true});
       });
 
-      it('displays when plan is enterprise', async function() {
+      it('displays when plan is enterprise', async function () {
         await _expectBillingSettingsVisibility(this, 'withEnterprisePlan', {isVisible: true});
       });
     });
   });
 
-  describe('when currentUser is a Member', function() {
-    beforeEach(async function() {
+  describe('when currentUser is a Member', function () {
+    beforeEach(async function () {
       organization = make('organization', 'withPaidPlan', 'withUsers');
       stubSession(this, {currentUser: organization.organizationUsers.firstObject.user});
       this.setProperties({organization});
     });
 
-    it('renders the member view', async function() {
+    it('renders the member view', async function () {
       await render(hbs`<Organizations::BillingSection
         @organization={{organization}}
       />`);

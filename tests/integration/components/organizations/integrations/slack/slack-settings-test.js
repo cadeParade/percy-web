@@ -7,7 +7,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import SlackSettings from 'percy-web/tests/pages/components/organizations/slack-settings';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: SlackSettings', function() {
+describe('Integration: SlackSettings', function () {
   setupRenderingTest('slack-settings', {
     integration: true,
   });
@@ -15,7 +15,7 @@ describe('Integration: SlackSettings', function() {
   let project;
   let projectOptions;
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
     project = make('project');
     projectOptions = [
@@ -24,8 +24,8 @@ describe('Integration: SlackSettings', function() {
     ];
   });
 
-  describe('without an integration', function() {
-    beforeEach(async function() {
+  describe('without an integration', function () {
+    beforeEach(async function () {
       const organization = make('organization');
       this.setProperties({organization, projectOptions});
       await render(hbs`<
@@ -35,15 +35,15 @@ describe('Integration: SlackSettings', function() {
       />`);
     });
 
-    it('renders correctly', async function() {
+    it('renders correctly', async function () {
       expect(SlackSettings.addChannelButton.isVisible).to.equal(true);
 
       await percySnapshot(this.test.fullTitle());
     });
   });
 
-  describe('with an integration without configs', function() {
-    beforeEach(async function() {
+  describe('with an integration without configs', function () {
+    beforeEach(async function () {
       const organization = make('organization');
       make('slack-integration', {organization});
       this.setProperties({organization, projectOptions});
@@ -54,7 +54,7 @@ describe('Integration: SlackSettings', function() {
       />`);
     });
 
-    it('renders correctly', async function() {
+    it('renders correctly', async function () {
       expect(SlackSettings.addChannelButton.isVisible).to.equal(true);
       expect(SlackSettings.integrationItems[0].isVisible).to.equal(true);
       expect(SlackSettings.integrationItems[0].reminder.isVisible).to.equal(true);
@@ -65,8 +65,8 @@ describe('Integration: SlackSettings', function() {
     });
   });
 
-  describe('with an integration with configs', function() {
-    beforeEach(async function() {
+  describe('with an integration with configs', function () {
+    beforeEach(async function () {
       const organization = make('organization');
       const slackIntegration = make('slack-integration', {organization});
       makeList('slack-integration-config', 3, {slackIntegration});
@@ -78,7 +78,7 @@ describe('Integration: SlackSettings', function() {
       />`);
     });
 
-    it('renders correctly', async function() {
+    it('renders correctly', async function () {
       expect(SlackSettings.addChannelButton.isVisible).to.equal(true);
       expect(SlackSettings.integrationItems[0].isVisible).to.equal(true);
       expect(SlackSettings.integrationItems[0].reminder.isVisible).to.equal(false);

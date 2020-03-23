@@ -27,7 +27,7 @@ import utils from 'percy-web/lib/utils';
 import {setupBrowserNavigationButtons} from 'ember-cli-browser-navigation-button-test-helper/test-support';
 import mockPusher from 'percy-web/tests/helpers/mock-pusher';
 
-describe('Acceptance: Build', function() {
+describe('Acceptance: Build', function () {
   freezeMoment('2018-05-22');
 
   async function displaysCommentsOnFirstSnapshot(context) {
@@ -101,9 +101,9 @@ describe('Acceptance: Build', function() {
   let mobileSnapshot;
   let urlParams;
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     mockPusher(this);
-    backStub = sinon.stub(utils, 'windowBack').callsFake(async function() {
+    backStub = sinon.stub(utils, 'windowBack').callsFake(async function () {
       let {owner} = getContext();
       const history = owner.lookup('service:history');
       await history.goBack();
@@ -143,17 +143,17 @@ describe('Acceptance: Build', function() {
     };
   });
 
-  afterEach(function() {
+  afterEach(function () {
     backStub.restore();
   });
 
-  it('does not display any tooltips if not a demo project', async function() {
+  it('does not display any tooltips if not a demo project', async function () {
     await BuildPage.visitBuild(urlParams);
 
     expect(BuildPage.demoTooltips.length).to.equal(0);
   });
 
-  it('fetches only snapshots with diffs on initial load', async function() {
+  it('fetches only snapshots with diffs on initial load', async function () {
     // add some snapshots (to the four above) to cover every review state reason.
     server.create('snapshot', 'withComparison', 'userApproved', {build});
     server.create('snapshot', 'withComparison', 'userApprovedPreviously', {build});
@@ -169,8 +169,8 @@ describe('Acceptance: Build', function() {
     expect(store.peekAll('snapshot').get('length')).to.equal(6);
   });
 
-  describe('snapshot order/caching', function() {
-    beforeEach(function() {
+  describe('snapshot order/caching', function () {
+    beforeEach(function () {
       server.createList('snapshot', 5, 'withComparison', 'userApproved', {
         build,
         fingerprint: 'approvedGroup',
@@ -206,7 +206,7 @@ describe('Acceptance: Build', function() {
       expect(BuildPage.snapshotBlocks[4].name).to.equal('5 matching changes');
     });
 
-    it('behaves correctly when approving snapshots within a group', async function() {
+    it('behaves correctly when approving snapshots within a group', async function () {
       await BuildPage.visitBuild(urlParams);
       let firstSnapshotGroup = BuildPage.snapshotBlocks[0].snapshotGroup;
 
@@ -270,8 +270,8 @@ describe('Acceptance: Build', function() {
     });
   });
 
-  describe('commenting', function() {
-    beforeEach(async function() {
+  describe('commenting', function () {
+    beforeEach(async function () {
       server.create('commentThread', 'withTwoComments', {
         snapshot: defaultSnapshot,
       });
@@ -283,20 +283,20 @@ describe('Acceptance: Build', function() {
       });
     });
 
-    it('displays correctly with many comments', async function() {
+    it('displays correctly with many comments', async function () {
       await BuildPage.visitBuild(urlParams);
       await displaysCommentsOnFirstSnapshot(this);
     });
-    it('can create a new comment reply', async function() {
+    it('can create a new comment reply', async function () {
       await BuildPage.visitBuild(urlParams);
       await createsCommentReplyOnFirstSnapshot();
     });
-    it('can close comment threads', async function() {
+    it('can close comment threads', async function () {
       await BuildPage.visitBuild(urlParams);
       await closesCommentThreadOnFirstSnapshot(this);
     });
 
-    it('can create a new comment thread', async function() {
+    it('can create a new comment thread', async function () {
       await BuildPage.visitBuild(urlParams);
       const secondSnapshot = BuildPage.snapshots[1];
       await secondSnapshot.header.toggleCommentSidebar();
@@ -331,7 +331,7 @@ describe('Acceptance: Build', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('displays previously rejected comment threads', async function() {
+    it('displays previously rejected comment threads', async function () {
       const commentThread = server.create('commentThread', 'withTwoComments', {
         snapshot: twoWidthsSnapshot,
       });
@@ -406,12 +406,12 @@ describe('Acceptance: Build', function() {
     });
   });
 
-  describe('when a build is in a public project and user is not a member', function() {
+  describe('when a build is in a public project and user is not a member', function () {
     let publicOrg;
     let publicProject;
     let publicBuild;
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       publicOrg = server.create('organization');
       publicProject = server.create('project', 'publiclyReadable', {organization: publicOrg});
       publicBuild = server.create('build', 'withSnapshots', {project: publicProject});
@@ -420,7 +420,7 @@ describe('Acceptance: Build', function() {
       });
     });
 
-    it('disables appropriate elements', async function() {
+    it('disables appropriate elements', async function () {
       await BuildPage.visitBuild({
         orgSlug: publicOrg.slug,
         projectSlug: publicProject.slug,
@@ -446,8 +446,8 @@ describe('Acceptance: Build', function() {
     });
   });
 
-  describe('when a build has more than one browser', function() {
-    beforeEach(function() {
+  describe('when a build has more than one browser', function () {
+    beforeEach(function () {
       // Add a second browser to the build and each snapshot.
       const chromeBrowser = server.create('browser', 'chrome');
       build.browserIds.push(chromeBrowser.id);
@@ -459,7 +459,7 @@ describe('Acceptance: Build', function() {
       });
     });
 
-    it('looks correct when switching to other browser', async function() {
+    it('looks correct when switching to other browser', async function () {
       await BuildPage.visitBuild(urlParams);
       expect(BuildPage.browserSwitcher.chromeButton.diffCount).to.equal('3');
       expect(BuildPage.browserSwitcher.firefoxButton.diffCount).to.equal('3');
@@ -468,7 +468,7 @@ describe('Acceptance: Build', function() {
       await percySnapshot(this.test.fullTitle() + ' after switching browsers', {darkMode: true});
     });
 
-    it('sorts snapshots correctly when switching to another browser', async function() {
+    it('sorts snapshots correctly when switching to another browser', async function () {
       // Change diff ratio in one browser so the sort behavior is different in the other browser.
       const highDiffComparison = twoWidthsSnapshot.comparisons.models.findBy(
         'browser.browserFamily.slug',
@@ -487,7 +487,7 @@ describe('Acceptance: Build', function() {
       expect(BuildPage.snapshots.objectAt(1).name).to.equal(defaultSnapshot.name);
     });
 
-    it('approves all snapshots when "Approve build" button is clicked', async function() {
+    it('approves all snapshots when "Approve build" button is clicked', async function () {
       server.createList('snapshot', 2, 'withDiffInOneBrowser', {build});
       await BuildPage.visitBuild(urlParams);
       expect(BuildPage.browserSwitcher.chromeButton.diffCount).to.equal('3');
@@ -501,9 +501,9 @@ describe('Acceptance: Build', function() {
     });
   });
 
-  describe('interacting with a snapshot group', function() {
+  describe('interacting with a snapshot group', function () {
     let unapprovedSnapshots;
-    beforeEach(async function() {
+    beforeEach(async function () {
       unapprovedSnapshots = server.createList(
         'snapshot',
         3,
@@ -517,8 +517,8 @@ describe('Acceptance: Build', function() {
       );
     });
 
-    describe('commenting', function() {
-      beforeEach(async function() {
+    describe('commenting', function () {
+      beforeEach(async function () {
         let commentedSnapshot = unapprovedSnapshots[1];
         server.create('commentThread', 'withTwoComments', {
           snapshot: commentedSnapshot,
@@ -534,17 +534,17 @@ describe('Acceptance: Build', function() {
         await BuildPage.visitBuild(urlParams);
       });
 
-      it('displays correctly with many comments', async function() {
+      it('displays correctly with many comments', async function () {
         await displaysCommentsOnFirstSnapshot(this);
       });
-      it('can create a new comment reply', async function() {
+      it('can create a new comment reply', async function () {
         await createsCommentReplyOnFirstSnapshot();
       });
-      it('can close comment threads', async function() {
+      it('can close comment threads', async function () {
         await closesCommentThreadOnFirstSnapshot(this);
       });
 
-      it('can create a new comment thread', async function() {
+      it('can create a new comment thread', async function () {
         const firstSnapshot = BuildPage.snapshots[0];
 
         await firstSnapshot.collaborationPanel.newComment.clickNewThreadButton();
@@ -559,7 +559,8 @@ describe('Acceptance: Build', function() {
         await percySnapshot(this.test, {darkMode: true});
       });
 
-      it('can comment on a grouped snapshot that does not have any comments yet', async function() {
+      // eslint-disable-next-line
+      it('can comment on a grouped snapshot that does not have any comments yet', async function () {
         const firstSnapshotGroup = BuildPage.snapshotBlocks[0].snapshotGroup;
         await firstSnapshotGroup.toggleShowAllSnapshots();
         const secondSnapshot = BuildPage.snapshots[1];
@@ -576,7 +577,7 @@ describe('Acceptance: Build', function() {
         await percySnapshot(this.test, {darkMode: true});
       });
 
-      it('blocks approval of group if there are open review threads on group', async function() {
+      it('blocks approval of group if there are open review threads on group', async function () {
         await BuildPage.visitBuild(urlParams);
 
         const firstGroup = BuildPage.snapshotBlocks[0].snapshotGroup;
@@ -598,7 +599,7 @@ describe('Acceptance: Build', function() {
       });
     });
 
-    it('rejects all snapshots in a group', async function() {
+    it('rejects all snapshots in a group', async function () {
       await BuildPage.visitBuild(urlParams);
       const firstGroup = BuildPage.snapshotBlocks[0].snapshotGroup;
       expect(server.db.reviews.length).to.equal(0);
@@ -614,7 +615,7 @@ describe('Acceptance: Build', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('blocks approval of group when any of its snapshots are rejected', async function() {
+    it('blocks approval of group when any of its snapshots are rejected', async function () {
       await BuildPage.visitBuild(urlParams);
       const firstGroup = BuildPage.snapshotBlocks[0].snapshotGroup;
 
@@ -639,7 +640,7 @@ describe('Acceptance: Build', function() {
       expect(server.db.reviews.length).to.equal(2);
     });
 
-    it('shows first snapshot in fullscreen view', async function() {
+    it('shows first snapshot in fullscreen view', async function () {
       await BuildPage.visitBuild(urlParams);
       await BuildPage.snapshotBlocks[0].clickToggleFullscreen();
       expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
@@ -648,7 +649,7 @@ describe('Acceptance: Build', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('switches widths', async function() {
+    it('switches widths', async function () {
       await BuildPage.visitBuild(urlParams);
       const firstWidthSwitcher = BuildPage.snapshotBlocks[0].header.widthSwitcher;
       expect(firstWidthSwitcher.buttons[0].isActive).to.equal(false);
@@ -661,9 +662,9 @@ describe('Acceptance: Build', function() {
     });
   });
 
-  describe('when a build has missing snapshots', function() {
+  describe('when a build has missing snapshots', function () {
     let baseBuild;
-    beforeEach(async function() {
+    beforeEach(async function () {
       baseBuild = server.create('build', {project});
       build.update({baseBuild});
       build.snapshots.models.forEach(snapshot => {
@@ -677,14 +678,14 @@ describe('Acceptance: Build', function() {
       });
     });
 
-    it('does not display missing-snapshots box when build is not finished', async function() {
+    it('does not display missing-snapshots box when build is not finished', async function () {
       build.update({state: BUILD_STATES.PENDING});
       await BuildPage.visitBuild(urlParams);
       expect(BuildPage.removedSnapshots.isVisible).to.equal(false);
     });
 
-    describe('partial builds', function() {
-      beforeEach(async function() {
+    describe('partial builds', function () {
+      beforeEach(async function () {
         build.update({partial: true});
       });
       //eslint-disable-next-line
@@ -694,7 +695,7 @@ describe('Acceptance: Build', function() {
         await percySnapshot(this.test, {darkMode: true});
       });
 
-      it('displays correctly when there are no snapshots with diffs', async function() {
+      it('displays correctly when there are no snapshots with diffs', async function () {
         build.snapshots.models.forEach(snapshot => {
           snapshot.comparisons.models.forEach(comparison => {
             comparison.update({isSame: true, diffRatio: 0});
@@ -705,24 +706,24 @@ describe('Acceptance: Build', function() {
       });
     });
 
-    describe('when there is one snapshot missing', function() {
-      it('displays correctly', async function() {
+    describe('when there is one snapshot missing', function () {
+      it('displays correctly', async function () {
         await BuildPage.visitBuild(urlParams);
         await percySnapshot(this.test, {darkMode: true});
       });
     });
 
-    describe('when there are more than one snapshots missing', function() {
-      beforeEach(async function() {
+    describe('when there are more than one snapshots missing', function () {
+      beforeEach(async function () {
         server.create('snapshot', {build: baseBuild, name: 'missing snapshot 2'});
       });
 
-      it('displays correctly', async function() {
+      it('displays correctly', async function () {
         await BuildPage.visitBuild(urlParams);
         await percySnapshot(this.test, {darkMode: true});
       });
 
-      it('shows expansion option when there are many missing snapshots', async function() {
+      it('shows expansion option when there are many missing snapshots', async function () {
         server.createList('snapshot', 20, {build: baseBuild});
 
         await BuildPage.visitBuild(urlParams);
@@ -738,7 +739,7 @@ describe('Acceptance: Build', function() {
       });
     });
 
-    it('links to missing snapshots', async function() {
+    it('links to missing snapshots', async function () {
       await BuildPage.visitBuild(urlParams);
       expect(BuildPage.removedSnapshots.isVisible).to.equal(true);
       await BuildPage.removedSnapshots.snapshotNames[0].click();
@@ -746,7 +747,7 @@ describe('Acceptance: Build', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('resets removedSnapshots when moving to another build', async function() {
+    it('resets removedSnapshots when moving to another build', async function () {
       await BuildPage.visitBuild(urlParams);
       expect(BuildPage.removedSnapshots.isVisible).to.equal(true);
       await BuildPage.removedSnapshots.snapshotNames[0].click();
@@ -758,13 +759,13 @@ describe('Acceptance: Build', function() {
     });
   });
 
-  it('shows build overview info dropdown', async function() {
+  it('shows build overview info dropdown', async function () {
     await BuildPage.visitBuild(urlParams);
     await BuildPage.toggleBuildInfoDropdown();
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  it('toggles the image and pdiff', async function() {
+  it('toggles the image and pdiff', async function () {
     await BuildPage.visitBuild(urlParams);
     expect(currentRouteName()).to.equal('organization.project.builds.build.index');
 
@@ -781,7 +782,7 @@ describe('Acceptance: Build', function() {
     expect(BuildPage.isDiffsVisibleForAllSnapshots).to.equal(false);
   });
 
-  it('always shows diffs when navigating to a new route', async function() {
+  it('always shows diffs when navigating to a new route', async function () {
     // Add another build so we can transition to it.
     server.create('build', {
       project,
@@ -803,7 +804,7 @@ describe('Acceptance: Build', function() {
     expect(BuildPage.isDiffsVisibleForAllSnapshots).to.equal(true);
   });
 
-  it('walk across snapshots with arrow keys', async function() {
+  it('walk across snapshots with arrow keys', async function () {
     let firstSnapshot;
     let secondSnapshot;
     let thirdSnapshot;
@@ -840,7 +841,7 @@ describe('Acceptance: Build', function() {
     expect(thirdSnapshot.isFocused).to.equal(false);
   });
 
-  it('shows and hides unchanged diffs', async function() {
+  it('shows and hides unchanged diffs', async function () {
     const snapshotName = noDiffsSnapshot.name;
 
     await BuildPage.visitBuild(urlParams);
@@ -867,7 +868,7 @@ describe('Acceptance: Build', function() {
     });
   });
 
-  it('resets visible snapshots between builds', async function() {
+  it('resets visible snapshots between builds', async function () {
     const baseBuild = server.create('build', {project});
     build.update({baseBuild});
 
@@ -889,7 +890,7 @@ describe('Acceptance: Build', function() {
     expect(BuildPage.snapshots.objectAt(0).isCollapsed).to.equal(true);
   });
 
-  it('toggles full view', async function() {
+  it('toggles full view', async function () {
     setupBrowserNavigationButtons();
     await BuildPage.visitBuild(urlParams);
     await BuildPage.snapshots.objectAt(0).header.clickToggleFullscreen();
@@ -901,7 +902,7 @@ describe('Acceptance: Build', function() {
     expect(BuildPage.snapshotFullscreen.isVisible).to.equal(false);
   });
 
-  it('creates a review object when clicking "Approve"', async function() {
+  it('creates a review object when clicking "Approve"', async function () {
     await BuildPage.visitBuild(urlParams);
     expect(server.db.reviews.length).to.equal(0);
 
@@ -927,7 +928,7 @@ describe('Acceptance: Build', function() {
     ]);
   });
 
-  it('creates a rejected review object when clicking "Request changes"', async function() {
+  it('creates a rejected review object when clicking "Request changes"', async function () {
     await BuildPage.visitBuild(urlParams);
     const firstSnapshot = BuildPage.snapshots.objectAt(0);
 
@@ -944,7 +945,7 @@ describe('Acceptance: Build', function() {
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  it('blocks approval of snapshot when snapshot is rejected', async function() {
+  it('blocks approval of snapshot when snapshot is rejected', async function () {
     await BuildPage.visitBuild(urlParams);
     const firstSnapshot = BuildPage.snapshots[0];
 
@@ -969,7 +970,7 @@ describe('Acceptance: Build', function() {
     expect(server.db.reviews.length).to.equal(2);
   });
 
-  it('blocks approval of build when any of its snapshots are rejected', async function() {
+  it('blocks approval of build when any of its snapshots are rejected', async function () {
     await BuildPage.visitBuild(urlParams);
     const secondSnapshot = BuildPage.snapshots.objectAt(1);
 
@@ -995,11 +996,11 @@ describe('Acceptance: Build', function() {
     expect(server.db.reviews.length).to.equal(3);
   });
 
-  it('reloads snapshots after build approval', async function() {
+  it('reloads snapshots after build approval', async function () {
     const stub = sinon.stub();
 
     await BuildPage.visitBuild(urlParams);
-    server.get('/snapshots', function(schema, request) {
+    server.get('/snapshots', function (schema, request) {
       const build = server.schema.builds.findBy({id: request.queryParams.build_id});
       const snapshots = server.schema.snapshots.where({buildId: build.id});
 
@@ -1010,7 +1011,7 @@ describe('Acceptance: Build', function() {
     expect(stub).to.have.been.calledWith(build.id, build.snapshots.models.mapBy('id'));
   });
 
-  describe('latest changed ancestor', function() {
+  describe('latest changed ancestor', function () {
     async function clickLatestChangedAncestorLink() {
       const firstHeader = BuildPage.snapshots[0].header;
       await firstHeader.clickDropdownToggle();
@@ -1033,7 +1034,7 @@ describe('Acceptance: Build', function() {
       );
     }
 
-    it('navigates to latest changed ancestor snapshot', async function() {
+    it('navigates to latest changed ancestor snapshot', async function () {
       const parentBuild = server.create('build', 'withSnapshots', {project});
       server.get(`/snapshots/${defaultSnapshot.id}/latest-changed-ancestor`, () => {
         return parentBuild.snapshots.models.firstObject;
@@ -1047,7 +1048,7 @@ describe('Acceptance: Build', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it("shows error message when latest changed ancestor doesn't exist", async function() {
+    it("shows error message when latest changed ancestor doesn't exist", async function () {
       makeErrorEndpoint(404, [{status: 'not_found'}]);
       await BuildPage.visitBuild(urlParams);
       await clickLatestChangedAncestorLink();
@@ -1055,7 +1056,7 @@ describe('Acceptance: Build', function() {
       expectFlashMessage('This is the earliest change we have on record for this snapshot.');
     });
 
-    it('shows error message when latest changed ancestor returns other error', async function() {
+    it('shows error message when latest changed ancestor returns other error', async function () {
       makeErrorEndpoint(401, [{status: 'unauthorized'}]);
 
       await BuildPage.visitBuild(urlParams);
@@ -1075,20 +1076,20 @@ describe('Acceptance: Build', function() {
     });
   });
 
-  it('displays new snapshot', async function() {
+  it('displays new snapshot', async function () {
     server.create('snapshot', 'new', {build, name: 'ohai'});
     await BuildPage.visitBuild(urlParams);
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  it('displays reintroduced snapshot', async function() {
+  it('displays reintroduced snapshot', async function () {
     server.create('snapshot', 'new', 'reintroduced', {build, name: 'ohai'});
     await BuildPage.visitBuild(urlParams);
     await percySnapshot(this.test, {darkMode: true});
   });
 });
 
-describe('Acceptance: Fullscreen Snapshot', function() {
+describe('Acceptance: Fullscreen Snapshot', function () {
   freezeMoment('2018-05-22');
   setupAcceptance();
 
@@ -1100,9 +1101,9 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   let build;
   let websocketService;
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     websocketService = mockPusher(this);
-    backStub = sinon.stub(utils, 'windowBack').callsFake(async function() {
+    backStub = sinon.stub(utils, 'windowBack').callsFake(async function () {
       let {owner} = getContext();
       const history = owner.lookup('service:history');
       await history.goBack();
@@ -1135,11 +1136,11 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     };
   });
 
-  afterEach(function() {
+  afterEach(function () {
     backStub.restore();
   });
 
-  it('responds to keystrokes and click in full view', async function() {
+  it('responds to keystrokes and click in full view', async function () {
     await BuildPage.visitFullPageSnapshot(urlParams);
     await BuildPage.snapshotFullscreen.typeRightArrow();
     expect(currentURL()).to.include('mode=base');
@@ -1168,7 +1169,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     expect(BuildPage.snapshotFullscreen.diffImageUrl).to.equal(TEST_IMAGE_URLS.DIFF_URL);
   });
 
-  it('displays the dropdown', async function() {
+  it('displays the dropdown', async function () {
     await BuildPage.visitFullPageSnapshot(urlParams);
     await BuildPage.snapshotFullscreen.header.clickDropdownToggle();
     await percySnapshot(this.test, {darkMode: true});
@@ -1191,7 +1192,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  it('creates a review object when clicking "Approve"', async function() {
+  it('creates a review object when clicking "Approve"', async function () {
     await BuildPage.visitFullPageSnapshot(urlParams);
     expect(server.db.reviews.length).to.equal(0);
 
@@ -1207,7 +1208,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     expect(snapshot.reviewStateReason).to.equal('user_approved');
   });
 
-  it('creates a rejected review object when clicking "Request changes"', async function() {
+  it('creates a rejected review object when clicking "Request changes"', async function () {
     await BuildPage.visitFullPageSnapshot(urlParams);
     expect(server.db.reviews.length).to.equal(0);
     expect(BuildPage.snapshotFullscreen.commentThreads.length).to.equal(0);
@@ -1226,15 +1227,15 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  it('redirects to allowed browser when a browser query param is incorrect', async function() {
+  it('redirects to allowed browser when a browser query param is incorrect', async function () {
     urlParams.browser = 'not-a-real-browser';
     await BuildPage.visitFullPageSnapshot(urlParams);
     expect(findAll('.flash-message.flash-message-danger')).to.have.length(1);
     await percySnapshot(this.test);
   });
 
-  describe('commenting', function() {
-    beforeEach(async function() {
+  describe('commenting', function () {
+    beforeEach(async function () {
       server.create('commentThread', 'withTwoComments', {snapshot});
       server.create('commentThread', 'withOneComment', {snapshot});
       server.create('commentThread', 'withTenComments', 'note', {snapshot});
@@ -1242,7 +1243,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       await BuildPage.visitFullPageSnapshot(urlParams);
     });
 
-    it('displays correctly with many comments', async function() {
+    it('displays correctly with many comments', async function () {
       const fullscreenSnapshot = BuildPage.snapshotFullscreen;
       expect(fullscreenSnapshot.collaborationPanel.isVisible).to.equal(true);
       expect(fullscreenSnapshot.commentThreads.length).to.equal(3);
@@ -1250,7 +1251,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       await percySnapshot(this.test, {widths: [1280, 850, 375], darkMode: true});
     });
 
-    it('can create a new comment reply', async function() {
+    it('can create a new comment reply', async function () {
       const snapshot = BuildPage.snapshotFullscreen;
       const firstThread = snapshot.commentThreads[0];
 
@@ -1261,7 +1262,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expect(firstThread.comments.length).to.equal(3);
     });
 
-    it('can create a new comment thread', async function() {
+    it('can create a new comment thread', async function () {
       const snapshot = BuildPage.snapshotFullscreen;
 
       await snapshot.collaborationPanel.newComment.clickNewThreadButton();
@@ -1274,7 +1275,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('can close comment threads', async function() {
+    it('can close comment threads', async function () {
       const snapshot = BuildPage.snapshotFullscreen;
       const collabPanel = snapshot.collaborationPanel;
 
@@ -1326,12 +1327,12 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     });
   });
 
-  describe('websockets', function() {
+  describe('websockets', function () {
     let commentThread;
     let fullscreenSnapshot;
     let organizationChannel;
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       // Setup
       server.create('commentThread', 'withOneComment', {
         snapshot,
@@ -1351,7 +1352,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expect(fullscreenSnapshot.commentThreads.length).to.equal(2);
     });
 
-    it('displays a new comment thread', async function() {
+    it('displays a new comment thread', async function () {
       // Build the JSON to receive via a websocket
       let newCommentThread = server.create('commentThread', {snapshot});
       let newComment = server.create('comment', {commentThread: newCommentThread});
@@ -1373,7 +1374,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('displays new comments', async function() {
+    it('displays new comments', async function () {
       // Build the JSON to receive via a websocket
       let newComment = server.create('comment', {commentThread: commentThread});
       let serializedComment = server.serializerOrRegistry.serialize(newComment, {
@@ -1394,7 +1395,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('archives a comment thread', async function() {
+    it('archives a comment thread', async function () {
       // Build the JSON to receive via a websocket
       commentThread.update({closedAt: moment().format()});
       let serializedCommentThread = server.serializerOrRegistry.serialize(commentThread);
@@ -1417,12 +1418,12 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     });
   });
 
-  describe('when a build is in a public project and user is not a member', function() {
+  describe('when a build is in a public project and user is not a member', function () {
     let publicOrg;
     let publicProject;
     let publicBuild;
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       publicOrg = server.create('organization');
       publicProject = server.create('project', 'publiclyReadable', {organization: publicOrg});
       publicBuild = server.create('build', 'withSnapshots', {project: publicProject});
@@ -1431,7 +1432,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       });
     });
 
-    it('disables appropriate elements', async function() {
+    it('disables appropriate elements', async function () {
       const snapshot = publicBuild.snapshots.models[0];
       const urlParams = {
         orgSlug: publicOrg.slug,
@@ -1451,7 +1452,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     });
   });
 
-  describe('latest changed ancestor', function() {
+  describe('latest changed ancestor', function () {
     async function clickLatestChangedAncestorLink() {
       const header = BuildPage.snapshotFullscreen.header;
       await header.clickDropdownToggle();
@@ -1474,7 +1475,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       );
     }
 
-    it('navigates to latest changed ancestor snapshot', async function() {
+    it('navigates to latest changed ancestor snapshot', async function () {
       const parentBuild = server.create('build', 'withSnapshots', {project});
       server.get(`/snapshots/${snapshot.id}/latest-changed-ancestor`, () => {
         return parentBuild.snapshots.models.firstObject;
@@ -1488,7 +1489,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it("shows error message when latest changed ancestor doesn't exist", async function() {
+    it("shows error message when latest changed ancestor doesn't exist", async function () {
       makeErrorEndpoint(404, [{status: 'not_found'}]);
       await BuildPage.visitFullPageSnapshot(urlParams);
       await clickLatestChangedAncestorLink();
@@ -1496,7 +1497,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
       expectFlashMessage('This is the earliest change we have on record for this snapshot.');
     });
 
-    it('shows error message when latest changed ancestor returns other error', async function() {
+    it('shows error message when latest changed ancestor returns other error', async function () {
       makeErrorEndpoint(401, [{status: 'unauthorized'}]);
 
       await BuildPage.visitFullPageSnapshot(urlParams);
@@ -1516,7 +1517,7 @@ describe('Acceptance: Fullscreen Snapshot', function() {
     });
   });
 
-  it('forwards to fullscreen snapshot when hitting old route', async function() {
+  it('forwards to fullscreen snapshot when hitting old route', async function () {
     await visit(
       // eslint-disable-next-line
       `/${urlParams.orgSlug}/${urlParams.projectSlug}/builds/${urlParams.buildId}/view/${urlParams.snapshotId}/${urlParams.width}?mode=${urlParams.mode}&browser=${urlParams.browser}`,
@@ -1525,13 +1526,13 @@ describe('Acceptance: Fullscreen Snapshot', function() {
   });
 });
 
-describe('Acceptance: Auto-approved Branch Build', function() {
+describe('Acceptance: Auto-approved Branch Build', function () {
   freezeMoment('2018-05-22');
   setupAcceptance();
 
   let urlParams;
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     mockPusher(this);
     let organization = server.create('organization', 'withUser');
     let project = server.create('project', {name: 'auto-approved-branch build', organization});
@@ -1544,7 +1545,7 @@ describe('Acceptance: Auto-approved Branch Build', function() {
     };
   });
 
-  it('shows as auto-approved', async function() {
+  it('shows as auto-approved', async function () {
     await BuildPage.visitBuild(urlParams);
     expect(currentRouteName()).to.equal('organization.project.builds.build.index');
 
@@ -1552,12 +1553,12 @@ describe('Acceptance: Auto-approved Branch Build', function() {
   });
 });
 
-describe('Acceptance: Pending Build', function() {
+describe('Acceptance: Pending Build', function () {
   freezeMoment('2018-05-22');
   setupAcceptance();
   let urlParams;
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     mockPusher(this);
     let organization = server.create('organization', 'withUser');
     let project = server.create('project', {name: 'pending build', organization});
@@ -1574,7 +1575,7 @@ describe('Acceptance: Pending Build', function() {
     };
   });
 
-  it('shows as pending', async function() {
+  it('shows as pending', async function () {
     await BuildPage.visitBuild(urlParams);
     expect(currentRouteName()).to.equal('organization.project.builds.build.index');
     await percySnapshot(this.test.fullTitle() + ' on the build page', {darkMode: true});
@@ -1585,12 +1586,12 @@ describe('Acceptance: Pending Build', function() {
   });
 });
 
-describe('Acceptance: Processing Build', function() {
+describe('Acceptance: Processing Build', function () {
   freezeMoment('2018-05-22');
   setupAcceptance();
   let urlParams;
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     mockPusher(this);
     let organization = server.create('organization', 'withUser');
     let project = server.create('project', {name: 'project-with-processing-build', organization});
@@ -1606,7 +1607,7 @@ describe('Acceptance: Processing Build', function() {
     };
   });
 
-  it('shows as processing', async function() {
+  it('shows as processing', async function () {
     await BuildPage.visitBuild(urlParams);
     expect(currentRouteName()).to.equal('organization.project.builds.build.index');
 
@@ -1618,12 +1619,12 @@ describe('Acceptance: Processing Build', function() {
   });
 });
 
-describe('Acceptance: Failed Build', function() {
+describe('Acceptance: Failed Build', function () {
   freezeMoment('2018-05-22');
   setupAcceptance();
   let urlParams;
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     mockPusher(this);
     let organization = server.create('organization', 'withUser');
     let project = server.create('project', {name: 'project-with-failed-build', organization});
@@ -1642,7 +1643,7 @@ describe('Acceptance: Failed Build', function() {
     };
   });
 
-  it('shows as failed', async function() {
+  it('shows as failed', async function () {
     await BuildPage.visitBuild(urlParams);
     window.Intercom = sinon.stub();
     expect(currentRouteName()).to.equal('organization.project.builds.build.index');
@@ -1657,13 +1658,13 @@ describe('Acceptance: Failed Build', function() {
   });
 });
 
-describe('Acceptance: Demo Project Build', function() {
+describe('Acceptance: Demo Project Build', function () {
   freezeMoment('2018-05-22');
   setupAcceptance();
 
   let urlParams;
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     mockPusher(this);
     const organization = server.create('organization', 'withUser');
 
@@ -1690,7 +1691,7 @@ describe('Acceptance: Demo Project Build', function() {
     };
   });
 
-  it('renders the tooltips', async function() {
+  it('renders the tooltips', async function () {
     await BuildPage.visitBuild(urlParams);
 
     const tooltipElement = await findAll('.ember-attacher').firstObject;
@@ -1704,7 +1705,7 @@ describe('Acceptance: Demo Project Build', function() {
   });
 
   // This test is flaky on CI
-  it.skip('moves on to the next tooltip when clicking next', async function() {
+  it.skip('moves on to the next tooltip when clicking next', async function () {
     await BuildPage.visitBuild(urlParams);
 
     const tooltipElements = await findAll('.ember-attacher .nextable');
@@ -1724,7 +1725,7 @@ describe('Acceptance: Demo Project Build', function() {
     await expect(secondTooltip.classList.contains('ember-attacher-show')).to.equal(true);
   });
 
-  it('hides all tooltips and all anchors when all are dismissed', async function() {
+  it('hides all tooltips and all anchors when all are dismissed', async function () {
     await BuildPage.visitBuild(urlParams);
 
     expect(BuildPage.demoTooltips.length).to.equal(5);

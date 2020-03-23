@@ -16,7 +16,7 @@ export default Component.extend({
   // This is intentional an observer instead of a computed property. We want to the state of
   // showDiffOverlay loosely coupled to both a local action and the global diff toggle action.
   // eslint-disable-next-line ember/no-observers
-  handleAllDiffsToggle: observer('allDiffsShown', function() {
+  handleAllDiffsToggle: observer('allDiffsShown', function () {
     // eslint-disable-line
     this.set('showDiffOverlay', this.allDiffsShown);
   }),

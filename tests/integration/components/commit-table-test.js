@@ -7,14 +7,14 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import CommitTable from 'percy-web/tests/pages/components/commit-table';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: CommitTable', function() {
+describe('Integration: CommitTable', function () {
   setupRenderingTest('commit-table', {
     integration: true,
   });
 
-  describe('with a github integration', function() {
+  describe('with a github integration', function () {
     let build;
-    beforeEach(async function() {
+    beforeEach(async function () {
       setupFactoryGuy(this);
 
       build = make('build', 'withGithubRepo');
@@ -27,7 +27,7 @@ describe('Integration: CommitTable', function() {
       />`);
     });
 
-    it('has the correct commit URL', function() {
+    it('has the correct commit URL', function () {
       let htmlUrl = build.get('repo.htmlUrl');
       let commitSha = build.get('commit.sha');
       let commitHtmlUrl = build.get('commitHtmlUrl');
@@ -36,19 +36,19 @@ describe('Integration: CommitTable', function() {
       expect(CommitTable.commitUrl.href).to.equal(commitHtmlUrl);
     });
 
-    it('has the correct commit SHA label', function() {
+    it('has the correct commit SHA label', function () {
       let shortSha = build.get('commit.shaShort');
       expect(shortSha).to.equal('01cb4be');
       expect(CommitTable.commitUrl.text).to.equal(shortSha);
     });
 
-    it('has the correct branch label', function() {
+    it('has the correct branch label', function () {
       let branch = build.get('branch');
       expect(branch).to.equal('master');
       expect(CommitTable.branchUrl.text).to.equal(branch);
     });
 
-    it('has the correct branch URL', function() {
+    it('has the correct branch URL', function () {
       let branch = build.get('branch');
       let branchHtmlUrl = build.get('branchHtmlUrl');
       expect(branch).to.equal('master');
@@ -56,9 +56,9 @@ describe('Integration: CommitTable', function() {
     });
   });
 
-  describe('with a github enterprise integration', function() {
+  describe('with a github enterprise integration', function () {
     let build;
-    beforeEach(async function() {
+    beforeEach(async function () {
       setupFactoryGuy(this);
 
       build = make('build', 'withGithubEnterpriseRepo');
@@ -71,7 +71,7 @@ describe('Integration: CommitTable', function() {
       />`);
     });
 
-    it('has the correct commit URL', function() {
+    it('has the correct commit URL', function () {
       let htmlUrl = build.get('repo.htmlUrl');
       let commitSha = build.get('commit.sha');
       let commitHtmlUrl = build.get('commitHtmlUrl');
@@ -80,19 +80,19 @@ describe('Integration: CommitTable', function() {
       expect(CommitTable.commitUrl.href).to.equal(commitHtmlUrl);
     });
 
-    it('has the correct commit SHA label', function() {
+    it('has the correct commit SHA label', function () {
       let shortSha = build.get('commit.shaShort');
       expect(shortSha).to.equal('01cb4be');
       expect(CommitTable.commitUrl.text).to.equal(shortSha);
     });
 
-    it('has the correct branch label', function() {
+    it('has the correct branch label', function () {
       let branch = build.get('branch');
       expect(branch).to.equal('master');
       expect(CommitTable.branchUrl.text).to.equal(branch);
     });
 
-    it('has the correct branch URL', function() {
+    it('has the correct branch URL', function () {
       let branch = build.get('branch');
       let branchHtmlUrl = build.get('branchHtmlUrl');
       expect(branch).to.equal('master');
@@ -100,9 +100,9 @@ describe('Integration: CommitTable', function() {
     });
   });
 
-  describe('with a gitlab integration', function() {
+  describe('with a gitlab integration', function () {
     let build;
-    beforeEach(async function() {
+    beforeEach(async function () {
       setupFactoryGuy(this);
 
       build = make('build', 'withGitlabRepo');
@@ -115,7 +115,7 @@ describe('Integration: CommitTable', function() {
       />`);
     });
 
-    it('has the correct commit URL', function() {
+    it('has the correct commit URL', function () {
       let htmlUrl = build.get('repo.htmlUrl');
       let commitSha = build.get('commit.sha');
       let commitHtmlUrl = build.get('commitHtmlUrl');
@@ -124,19 +124,19 @@ describe('Integration: CommitTable', function() {
       expect(CommitTable.commitUrl.href).to.equal(commitHtmlUrl);
     });
 
-    it('has the correct commit SHA label', function() {
+    it('has the correct commit SHA label', function () {
       let shortSha = build.get('commit.shaShort');
       expect(shortSha).to.equal('01cb4be');
       expect(CommitTable.commitUrl.text).to.equal(shortSha);
     });
 
-    it('has the correct branch label', function() {
+    it('has the correct branch label', function () {
       let branch = build.get('branch');
       expect(branch).to.equal('master');
       expect(CommitTable.branchUrl.text).to.equal(branch);
     });
 
-    it('has the correct branch URL', function() {
+    it('has the correct branch URL', function () {
       let branch = build.get('branch');
       let branchHtmlUrl = build.get('branchHtmlUrl');
       expect(branch).to.equal('master');
@@ -144,9 +144,9 @@ describe('Integration: CommitTable', function() {
     });
   });
 
-  describe('with a gitlab self-hosted integration', function() {
+  describe('with a gitlab self-hosted integration', function () {
     let build;
-    beforeEach(async function() {
+    beforeEach(async function () {
       setupFactoryGuy(this);
 
       build = make('build', 'withGitlabSelfHostedRepo');
@@ -159,7 +159,7 @@ describe('Integration: CommitTable', function() {
       />`);
     });
 
-    it('has the correct commit URL', function() {
+    it('has the correct commit URL', function () {
       let htmlUrl = build.get('repo.htmlUrl');
       let commitSha = build.get('commit.sha');
       let commitHtmlUrl = build.get('commitHtmlUrl');
@@ -168,19 +168,19 @@ describe('Integration: CommitTable', function() {
       expect(CommitTable.commitUrl.href).to.equal(commitHtmlUrl);
     });
 
-    it('has the correct commit SHA label', function() {
+    it('has the correct commit SHA label', function () {
       let shortSha = build.get('commit.shaShort');
       expect(shortSha).to.equal('01cb4be');
       expect(CommitTable.commitUrl.text).to.equal(shortSha);
     });
 
-    it('has the correct branch label', function() {
+    it('has the correct branch label', function () {
       let branch = build.get('branch');
       expect(branch).to.equal('master');
       expect(CommitTable.branchUrl.text).to.equal(branch);
     });
 
-    it('has the correct branch URL', function() {
+    it('has the correct branch URL', function () {
       let branch = build.get('branch');
       let branchHtmlUrl = build.get('branchHtmlUrl');
       expect(branch).to.equal('master');
@@ -188,9 +188,9 @@ describe('Integration: CommitTable', function() {
     });
   });
 
-  describe('with a bitbucket integration', function() {
+  describe('with a bitbucket integration', function () {
     let build;
-    beforeEach(async function() {
+    beforeEach(async function () {
       setupFactoryGuy(this);
 
       build = make('build', 'withBitbucketRepo');
@@ -203,7 +203,7 @@ describe('Integration: CommitTable', function() {
       />`);
     });
 
-    it('has the correct commit URL', function() {
+    it('has the correct commit URL', function () {
       let htmlUrl = build.get('repo.htmlUrl');
       let commitSha = build.get('commit.sha');
       let commitHtmlUrl = build.get('commitHtmlUrl');
@@ -212,19 +212,19 @@ describe('Integration: CommitTable', function() {
       expect(CommitTable.commitUrl.href).to.equal(commitHtmlUrl);
     });
 
-    it('has the correct commit SHA label', function() {
+    it('has the correct commit SHA label', function () {
       let shortSha = build.get('commit.shaShort');
       expect(shortSha).to.equal('01cb4be');
       expect(CommitTable.commitUrl.text).to.equal(shortSha);
     });
 
-    it('has the correct branch label', function() {
+    it('has the correct branch label', function () {
       let branch = build.get('branch');
       expect(branch).to.equal('master');
       expect(CommitTable.branchUrl.text).to.equal(branch);
     });
 
-    it('has the correct branch URL', function() {
+    it('has the correct branch URL', function () {
       let branch = build.get('branch');
       let branchHtmlUrl = build.get('branchHtmlUrl');
       expect(branch).to.equal('master');

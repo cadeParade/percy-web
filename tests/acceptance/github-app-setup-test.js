@@ -2,11 +2,11 @@ import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {visit, currentRouteName} from '@ember/test-helpers';
 
-describe('Acceptance: GitHub App Setup', function() {
+describe('Acceptance: GitHub App Setup', function () {
   setupAcceptance();
   let githubInstallationId;
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     this.organization = server.create('organization', 'withUser', 'withGithubIntegration', {
       name: 'test org',
     });
@@ -15,23 +15,23 @@ describe('Acceptance: GitHub App Setup', function() {
     expect(githubInstallationId).to.be.ok; // eslint-disable-line no-unused-expressions
   });
 
-  it('shows GitHub integration processing page', async function() {
+  it('shows GitHub integration processing page', async function () {
     await visit('/setup/github-app?installation_id=123');
     expect(currentRouteName()).to.equal('setup.github-app');
 
     await percySnapshot(this.test);
   });
 
-  it('redirects to organization page when the installation_id is present', async function() {
+  it('redirects to organization page when the installation_id is present', async function () {
     await visit(`/setup/github-app?installation_id=${githubInstallationId}`);
     expect(currentRouteName()).to.equal('organizations.organization.projects.new');
   });
 
-  context('with a project', function() {
-    setupSession(function(server) {
+  context('with a project', function () {
+    setupSession(function (server) {
       server.create('project', {organization: this.organization});
     });
-    it('redirects to settings when the installation_id and project present', async function() {
+    it('redirects to settings when the installation_id and project present', async function () {
       await visit(`/setup/github-app?installation_id=${githubInstallationId}`);
       expect(currentRouteName()).to.equal('organizations.organization.integrations.github');
     });

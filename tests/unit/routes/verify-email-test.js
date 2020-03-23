@@ -7,25 +7,25 @@ import $ from 'jquery';
 import {resolve, reject} from 'rsvp';
 import utils from 'percy-web/lib/utils';
 
-describe('VerifyEmailRoute', function() {
+describe('VerifyEmailRoute', function () {
   let subject;
   let ajaxStub;
   const fakeCode = 'codezzz0123';
 
   setupTest();
 
-  beforeEach(function() {
+  beforeEach(function () {
     subject = this.owner.lookup('route:verify-email');
     sinon.stub(subject, 'transitionTo');
     ajaxStub = sinon.stub($, 'ajax');
   });
 
-  afterEach(function() {
+  afterEach(function () {
     $.ajax.restore();
   });
 
-  describe('model', function() {
-    it('calls ajax with corrrect route and code', function() {
+  describe('model', function () {
+    it('calls ajax with corrrect route and code', function () {
       ajaxStub.returns(resolve());
       const expectedArgs = {
         type: 'PATCH',
@@ -38,7 +38,7 @@ describe('VerifyEmailRoute', function() {
       });
     });
 
-    it('sanitizes the code to only include word characters to prevent CSRFs', function() {
+    it('sanitizes the code to only include word characters to prevent CSRFs', function () {
       ajaxStub.returns(resolve());
       const expectedArgs = {
         type: 'PATCH',
@@ -52,8 +52,8 @@ describe('VerifyEmailRoute', function() {
     });
   });
 
-  describe('when the request fails', function() {
-    it('parses error and returns it when error message is formatted correctly', function() {
+  describe('when the request fails', function () {
+    it('parses error and returns it when error message is formatted correctly', function () {
       const errorMessage = 'it did not work';
       ajaxStub.returns(reject({responseJSON: {errors: [{detail: errorMessage}]}}));
 
@@ -64,7 +64,7 @@ describe('VerifyEmailRoute', function() {
       });
     });
 
-    it('does not explode when error message is formatted poorly', function() {
+    it('does not explode when error message is formatted poorly', function () {
       ajaxStub.returns(reject('poorly formatted error response'));
 
       const modelPromise = subject.model({code: 'whatever'});
@@ -75,8 +75,8 @@ describe('VerifyEmailRoute', function() {
     });
   });
 
-  describe('when the request succeeds', function() {
-    it('returns succes:true', function() {
+  describe('when the request succeeds', function () {
+    it('returns succes:true', function () {
       ajaxStub.returns(resolve());
       const modelPromise = subject.model({code: fakeCode});
 

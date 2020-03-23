@@ -34,7 +34,7 @@ export default Component.extend(PollingMixin, {
     return this._refresh();
   },
 
-  builds: computed('project.id', 'isRefreshing', 'infinityBuilds.loadingMore', function() {
+  builds: computed('project.id', 'isRefreshing', 'infinityBuilds.loadingMore', function () {
     const builds = this.store.peekAll('build');
 
     const filteredBuilds = builds.filter(item => {
@@ -45,7 +45,7 @@ export default Component.extend(PollingMixin, {
   }),
 
   selectedBranch: allBranchesString,
-  projectBranches: computed('builds.@each.branch', function() {
+  projectBranches: computed('builds.@each.branch', function () {
     const allBranches = this.builds.mapBy('branch');
     const uniqueBranches = Array.from(new Set(allBranches));
     return [allBranchesString].concat(uniqueBranches);
@@ -55,7 +55,7 @@ export default Component.extend(PollingMixin, {
     'builds.@each.branch',
     'selectedBranch',
     'projectBranches.[]',
-    function() {
+    function () {
       if (this.selectedBranch === allBranchesString) {
         return this.builds;
       }

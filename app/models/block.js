@@ -75,7 +75,7 @@ export default class Block extends Contentful {
 }
 
 function lookupContentfulModel(idKey, modelName) {
-  return computed(idKey, function() {
+  return computed(idKey, function () {
     return this.store.peekRecord(modelName, this.get(idKey));
   });
 }

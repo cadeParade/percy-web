@@ -55,7 +55,7 @@ export default class NewDemoRoute extends Route.extend(AuthenticatedRouteMixin) 
     }
   }
 
-  @(task(function*() {
+  @(task(function* () {
     if (Ember.testing) {
       // used to test for correct redirect after error in organization acceptance test
       this._testingRefreshOnce();

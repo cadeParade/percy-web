@@ -5,7 +5,7 @@ import QuoteBlock from 'percy-web/tests/pages/components/marketing/customer-quot
 import percySnapshot from '@percy/ember';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: Marketing/CustomerQuoteBlock', function() {
+describe('Integration: Marketing/CustomerQuoteBlock', function () {
   setupRenderingTest('marketing/customer-quote-block', {
     integration: true,
   });
@@ -33,11 +33,11 @@ describe('Integration: Marketing/CustomerQuoteBlock', function() {
     ],
   };
 
-  beforeEach(function() {
+  beforeEach(function () {
     this.set('quoteBlock', quoteBlock);
   });
 
-  it('switches quotes when dot is clicked', async function() {
+  it('switches quotes when dot is clicked', async function () {
     await render(hbs`<Marketing::CustomerQuoteBlock
       @quoteBlock={{quoteBlock}}
     />`);

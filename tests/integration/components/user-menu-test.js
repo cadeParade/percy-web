@@ -9,17 +9,17 @@ import clickDropdownTrigger from 'percy-web/tests/pages/helpers/click-basic-drop
 import sinon from 'sinon';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: UserMenu', function() {
+describe('Integration: UserMenu', function () {
   setupRenderingTest('user-menu', {
     integration: true,
   });
-  beforeEach(async function() {
+  beforeEach(async function () {
     setupFactoryGuy(this);
   });
 
-  describe('logout', function() {
+  describe('logout', function () {
     let logoutStub;
-    beforeEach(async function() {
+    beforeEach(async function () {
       const currentUser = make('user');
       logoutStub = sinon.stub();
       const sessionServiceStub = Service.extend({
@@ -31,7 +31,7 @@ describe('Integration: UserMenu', function() {
       await render(hbs`<UserMenu @user={{currentUser}} />`);
     });
 
-    it('calls logout', async function() {
+    it('calls logout', async function () {
       await clickDropdownTrigger();
       await userMenu.logout();
       expect(logoutStub).to.have.been.called;

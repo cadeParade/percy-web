@@ -43,7 +43,7 @@ export const SnapshotViewerHeader = {
 
   expandSnapshot: clickable(),
 
-  isComparisonModeSwitcherVisible: getter(function() {
+  isComparisonModeSwitcherVisible: getter(function () {
     return this._isComparisonModeSwitcherPresent && !this._isComparisonModeSwitcherInvisible;
   }),
 
@@ -57,7 +57,7 @@ export const SnapshotViewerHeader = {
     }),
   },
 
-  activeWidthButton: getter(function() {
+  activeWidthButton: getter(function () {
     return this.widthSwitcher.buttons.toArray().findBy('isActive');
   }),
 

@@ -4,10 +4,10 @@ import PasswordUpdatedPageObject from 'percy-web/tests/pages/password-updated';
 import {currentURL} from '@ember/test-helpers';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 
-describe('Acceptance: PasswordUpdated when user is not logged in', function() {
+describe('Acceptance: PasswordUpdated when user is not logged in', function () {
   setupAcceptance({authenticate: false});
 
-  it('displays password update message and login button when success is true', async function() {
+  it('displays password update message and login button when success is true', async function () {
     stubLockModal(this.owner);
 
     await PasswordUpdatedPageObject.visitSuccessfulPasswordReset();
@@ -17,10 +17,10 @@ describe('Acceptance: PasswordUpdated when user is not logged in', function() {
   });
 });
 
-describe('Acceptance: PasswordUpdated when user is logged in', function() {
+describe('Acceptance: PasswordUpdated when user is logged in', function () {
   setupAcceptance({authenticate: true});
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     server.create('user');
   });
 

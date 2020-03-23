@@ -7,7 +7,7 @@ import {defer} from 'rsvp';
 import {initialize as emberKeyboardInitialize} from 'ember-keyboard';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: Confirm Dialog', function() {
+describe('Integration: Confirm Dialog', function () {
   setupRenderingTest('confirm-dialog', {
     integration: true,
   });
@@ -15,7 +15,7 @@ describe('Integration: Confirm Dialog', function() {
   let confirmService;
   let resolveSpy;
 
-  beforeEach(function() {
+  beforeEach(function () {
     emberKeyboardInitialize();
 
     confirmService = this.owner.lookup('service:confirm');
@@ -30,38 +30,38 @@ describe('Integration: Confirm Dialog', function() {
     });
   });
 
-  describe('confirm', function() {
+  describe('confirm', function () {
     function expectConfirm(resolveSpy, confirmService) {
       expect(resolveSpy).to.have.been.calledWith(true);
       expect(confirmService.showPrompt).to.equal(false);
     }
 
-    it('calls confirm action when "Continue" is clicked', async function() {
+    it('calls confirm action when "Continue" is clicked', async function () {
       await render(hbs`<ConfirmDialog />`);
       await ConfirmDialog.confirm.click();
       expectConfirm(resolveSpy, confirmService);
     });
 
-    it('calls confirm action when "Enter" is pressed', async function() {
+    it('calls confirm action when "Enter" is pressed', async function () {
       await render(hbs`<ConfirmDialog />`);
       await ConfirmDialog.pressEnter();
       expectConfirm(resolveSpy, confirmService);
     });
   });
 
-  describe('cancel', function() {
+  describe('cancel', function () {
     function expectCancel(resolveSpy, confirmService) {
       expect(resolveSpy).to.have.been.calledWith(false);
       expect(confirmService.showPrompt).to.equal(false);
     }
 
-    it('calls cancel action when "Cancel" is clicked', async function() {
+    it('calls cancel action when "Cancel" is clicked', async function () {
       await render(hbs`<ConfirmDialog />`);
       await ConfirmDialog.cancel.click();
       expectCancel(resolveSpy, confirmService);
     });
 
-    it('calls cancel action when "Escape" is pressed', async function() {
+    it('calls cancel action when "Escape" is pressed', async function () {
       await render(hbs`<ConfirmDialog />`);
       await ConfirmDialog.pressEscape();
       expectCancel(resolveSpy, confirmService);

@@ -40,7 +40,7 @@ export default class ProjectRoute extends Route {
     localStorageProxy.set('recentProjectSlugs', recentProjects);
   }
 
-  @task(function*() {
+  @task(function* () {
     const projectSlug = this.paramsFor(this.routeName).project_id;
     const orgSlug = this.paramsFor('organization').organization_id;
 

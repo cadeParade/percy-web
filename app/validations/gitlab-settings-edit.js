@@ -2,7 +2,7 @@ import {validateFormat, validateLength} from 'ember-changeset-validations/valida
 
 export default {
   gitlabPersonalAccessToken: [
-    function(key, newValue, oldValue, changes, content) {
+    function (key, newValue, oldValue, changes, content) {
       if (content.get('isGitlabPersonalAccessTokenPresent') && !newValue) {
         return true;
       } else {
@@ -14,7 +14,7 @@ export default {
     },
   ],
   gitlabHost: [
-    function(key, newValue, oldValue, changes, content) {
+    function (key, newValue, oldValue, changes, content) {
       if (content.get('integrationType') === 'gitlab_self_hosted') {
         return validateFormat({type: 'url'})(...arguments);
       } else {

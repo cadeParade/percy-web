@@ -9,7 +9,7 @@ import {
 import {REVIEW_ACTIONS} from 'percy-web/models/review';
 import {get} from '@ember/object';
 
-export default function() {
+export default function () {
   // Enable this to see verbose request logging from mirage:
   // this.logging = true;
   this.passthrough('http://api.amplitude.com');
@@ -18,11 +18,11 @@ export default function() {
   this.passthrough('https://preview.contentful.com/spaces/:space_id/environments/test/entries');
   this.passthrough('https://preview.contentful.com/spaces/:space_id/environments/test/entries/**');
 
-  this.get('/api/auth/session', function() {
+  this.get('/api/auth/session', function () {
     return {state: 'foo'};
   });
 
-  this.get('/api/auth/logout', function(schema) {
+  this.get('/api/auth/logout', function (schema) {
     let user = schema.users.findBy({_currentLoginInTest: true});
     if (user) {
       user.update({_currentLoginInTest: false});
@@ -30,13 +30,13 @@ export default function() {
     return new Mirage.Response(200, {}, {success: true});
   });
 
-  this.post('/api/websockets/auth', function() {
+  this.post('/api/websockets/auth', function () {
     return {auth: 'abc123'};
   });
 
   this.namespace = '/api/v1';
 
-  this.get('/user', function(schema) {
+  this.get('/user', function (schema) {
     let user = schema.users.findBy({_currentLoginInTest: true});
     if (user) {
       return user;
@@ -45,7 +45,7 @@ export default function() {
     }
   });
 
-  this.patch('/user', function(schema) {
+  this.patch('/user', function (schema) {
     let user = schema.users.findBy({_currentLoginInTest: true});
     let attrs = this.normalizedRequestAttrs('user');
 
@@ -53,7 +53,7 @@ export default function() {
     return user;
   });
 
-  this.get('/user/identities', function(schema) {
+  this.get('/user/identities', function (schema) {
     let user = schema.users.findBy({_currentLoginInTest: true});
     if (!user) {
       return _error401;
@@ -61,15 +61,15 @@ export default function() {
     return schema.identities.where({userId: user.id});
   });
 
-  this.get('/user/identities/:id', function(schema, request) {
+  this.get('/user/identities/:id', function (schema, request) {
     return schema.identities.findBy({id: request.params.id});
   });
 
-  this.post('/user/identities/:id/password-change-request', function() {
+  this.post('/user/identities/:id/password-change-request', function () {
     return new Mirage.Response(204);
   });
 
-  this.post('/user/identities', function(schema, request) {
+  this.post('/user/identities', function (schema, request) {
     if (request.requestBody.match(/password%5D=passwordStrengthError!123$/)) {
       return _error400({statusDetail: 'PasswordStrengthError: Password is too weak'});
     } else if (request.requestBody.match(/password%5D=badRequestWithNoDetail!123$/)) {
@@ -79,7 +79,7 @@ export default function() {
     }
   });
 
-  this.get('/user/organizations', function(schema) {
+  this.get('/user/organizations', function (schema) {
     let user = schema.users.findBy({_currentLoginInTest: true});
     if (!user) {
       return {errors: [{status: '403', title: 'unauthorized'}]};
@@ -89,7 +89,7 @@ export default function() {
     return schema.organizations.find(organizationIds);
   });
 
-  this.patch('/email-verifications/**', function(schema, request) {
+  this.patch('/email-verifications/**', function (schema, request) {
     if (request.params['*'] === 'goodCode') {
       return new Mirage.Response(200, {}, {success: true});
     } else {
@@ -97,12 +97,12 @@ export default function() {
     }
   });
 
-  this.get('/organizations/:slug', function(schema, request) {
+  this.get('/organizations/:slug', function (schema, request) {
     const org = schema.organizations.findBy({slug: request.params.slug});
     return org ? org : _error401;
   });
 
-  this.patch('/organizations/:slug', function(schema, request) {
+  this.patch('/organizations/:slug', function (schema, request) {
     let attrs = this.normalizedRequestAttrs('organization');
     if (!attrs.slug.match(/^[a-zA-Z][a-zA-Z_]*[a-zA-Z]$/)) {
       return _error400({
@@ -117,7 +117,7 @@ export default function() {
     return organization;
   });
 
-  this.post('/organizations', function(schema) {
+  this.post('/organizations', function (schema) {
     let attrs = this.normalizedRequestAttrs('organization');
     let currentUser = schema.users.findBy({_currentLoginInTest: true});
     attrs.slug = attrs.name.underscore();
@@ -129,7 +129,7 @@ export default function() {
     return result;
   });
 
-  this.post('/comments', function(schema) {
+  this.post('/comments', function (schema) {
     const attrs = this.normalizedRequestAttrs('comment');
     const currentUser = schema.users.findBy({_currentLoginInTest: true});
     const snapshot = attrs.snapshotId && schema.snapshots.find(attrs.snapshotId);
@@ -161,7 +161,7 @@ export default function() {
     return newComment;
   });
 
-  this.patch('/comment-threads/:id', function(schema) {
+  this.patch('/comment-threads/:id', function (schema) {
     let attrs = this.normalizedRequestAttrs('comment-thread');
     let currentUser = schema.users.findBy({_currentLoginInTest: true});
     attrs.closedBy = currentUser;
@@ -171,7 +171,7 @@ export default function() {
     return commentThread;
   });
 
-  this.post('/organizations/:id/projects', function(schema, request) {
+  this.post('/organizations/:id/projects', function (schema, request) {
     let attrs = this.normalizedRequestAttrs('project');
     // we are looking for the id in this case because the api treats the slug as the id
     const organization = schema.organizations.findBy({slug: request.params.id});
@@ -186,7 +186,7 @@ export default function() {
     return schema.projects.create(attrs);
   });
 
-  this.patch('/organizations/:slug/subscription', function(schema, request) {
+  this.patch('/organizations/:slug/subscription', function (schema, request) {
     let attrs = this.normalizedRequestAttrs('subscription');
     let organization = schema.organizations.findBy({slug: request.params.slug});
     let subscription = organization.subscription;
@@ -202,18 +202,18 @@ export default function() {
     return subscription;
   });
 
-  this.get('/organizations/:slug/organization-users', function(schema, request) {
+  this.get('/organizations/:slug/organization-users', function (schema, request) {
     // TODO handle ?filter=current-user-only
     let organization = schema.organizations.findBy({slug: request.params.slug});
     return schema.organizationUsers.where({organizationId: organization.id});
   });
 
-  this.delete('/organization-users/:id', function(schema, request) {
+  this.delete('/organization-users/:id', function (schema, request) {
     schema.organizationUsers.find(request.params.id).destroy();
     return new Mirage.Response(204);
   });
 
-  this.get('/organizations/:slug/projects', function(schema, request) {
+  this.get('/organizations/:slug/projects', function (schema, request) {
     let organization = schema.organizations.findBy({slug: request.params.slug});
     const projects = schema.projects.where({organizationId: organization.id});
     let filteredProjects = projects.filter(project => project.isEnabled);
@@ -229,7 +229,7 @@ export default function() {
     return filteredProjects;
   });
 
-  this.post('/organizations/:org_id/version-control-integrations/', function(schema, request) {
+  this.post('/organizations/:org_id/version-control-integrations/', function (schema, request) {
     if (request.requestBody.match(/"integration-type":"gitlab"/)) {
       let attrs = this.normalizedRequestAttrs('version-control-integration');
       let newAttrs = Object.assign({}, attrs, {gitlabIntegrationId: 1234});
@@ -244,7 +244,7 @@ export default function() {
     }
   });
 
-  this.patch('/version-control-integrations/:id', function(schema, request) {
+  this.patch('/version-control-integrations/:id', function (schema, request) {
     if (request.requestBody.match(/"integration-type":"gitlab"/)) {
       let attrs = this.normalizedRequestAttrs('version-control-integration');
       let newAttrs = Object.assign({}, attrs, {
@@ -272,18 +272,18 @@ export default function() {
     }
   });
 
-  this.delete('/version-control-integrations/:id', function(schema, request) {
+  this.delete('/version-control-integrations/:id', function (schema, request) {
     schema.versionControlIntegrations.find(request.params.id).destroy();
     return new Mirage.Response(204);
   });
 
-  this.get('/projects/:full_slug/', function(schema, request) {
+  this.get('/projects/:full_slug/', function (schema, request) {
     const fullSlug = decodeURIComponent(request.params.full_slug);
     const project = schema.projects.findBy({fullSlug: fullSlug});
     return project ? project : _error401;
   });
 
-  this.patch('/projects/:full_slug/', function(schema, request) {
+  this.patch('/projects/:full_slug/', function (schema, request) {
     const fullSlug = decodeURIComponent(request.params.full_slug);
     const project = schema.projects.findBy({fullSlug: fullSlug});
     let attrs = this.normalizedRequestAttrs('project');
@@ -291,13 +291,13 @@ export default function() {
     return project;
   });
 
-  this.get('/projects/:organization_slug/:project_slug/tokens', function(schema, request) {
+  this.get('/projects/:organization_slug/:project_slug/tokens', function (schema, request) {
     let fullSlug = `${request.params.organization_slug}/${request.params.project_slug}`;
     let project = schema.projects.findBy({fullSlug: fullSlug});
     return schema.tokens.where({projectId: project.id});
   });
 
-  this.get('/projects/:organization_slug/:project_slug/builds', function(schema, request) {
+  this.get('/projects/:organization_slug/:project_slug/builds', function (schema, request) {
     let limitString = request.queryParams['page[limit]'] || '50';
     let limit = parseInt(limitString);
 
@@ -312,7 +312,7 @@ export default function() {
 
   this.get('/invites/:id');
 
-  this.patch('/invites/:id', function(schema, request) {
+  this.patch('/invites/:id', function (schema, request) {
     let invite = schema.invites.find(request.params.id);
     let attrs = this.normalizedRequestAttrs('invite');
     invite.update(attrs);
@@ -322,13 +322,13 @@ export default function() {
 
     return invite;
   });
-  this.delete('/invites/:id', function(schema, request) {
+  this.delete('/invites/:id', function (schema, request) {
     schema.invites.find(request.params.id).destroy();
     return new Mirage.Response(204);
   });
 
   this.get('/organizations/:organization_slug/invites');
-  this.post('/organizations/:organization_slug/invites', function(schema) {
+  this.post('/organizations/:organization_slug/invites', function (schema) {
     let attrs = this.normalizedRequestAttrs();
     // The endpoint can create multiple invites, but in the test we're only doing one
     schema.invites.create({
@@ -339,7 +339,7 @@ export default function() {
     return schema.invites.new({id: 'created'});
   });
 
-  this.get('/snapshots', function(schema, request) {
+  this.get('/snapshots', function (schema, request) {
     const build = schema.builds.findBy({id: request.queryParams.build_id});
     const queryParams = request.queryParams;
     if (queryParams['filter[review-state-reason]']) {
@@ -352,7 +352,7 @@ export default function() {
     }
   });
 
-  this.get('/builds/:build_id/removed-snapshots', function(schema, request) {
+  this.get('/builds/:build_id/removed-snapshots', function (schema, request) {
     const build = schema.builds.findBy({id: request.params.build_id});
     const baseBuild = build.baseBuild;
     if (!baseBuild) {
@@ -374,7 +374,7 @@ export default function() {
     return schema.snapshots.find(removedSnapshotIds);
   });
 
-  this.get('/browser-families', function(schema) {
+  this.get('/browser-families', function (schema) {
     schema.browserFamilies.create({
       id: '1',
       slug: 'firefox',
@@ -389,7 +389,7 @@ export default function() {
     return schema.browserFamilies.find(['1', '2']);
   });
 
-  this.post('/reviews', function(schema) {
+  this.post('/reviews', function (schema) {
     const attrs = this.normalizedRequestAttrs();
     const snapshots = schema.snapshots.find(attrs.snapshotIds);
     const reviewState =
@@ -436,20 +436,20 @@ export default function() {
   this.patch('/user-notification-setting/:id');
 
   // Slack
-  this.post('/organizations/:organization_id/slack-integrations', function(schema) {
+  this.post('/organizations/:organization_id/slack-integrations', function (schema) {
     return schema.slackIntegrations.create({
       teamName: faker.company.companyName(),
       channelName: `#${faker.lorem.slug()}`,
     });
   });
-  this.delete('/slack-integrations/:id', function(schema, request) {
+  this.delete('/slack-integrations/:id', function (schema, request) {
     schema.slackIntegrations.find(request.params.id).destroy();
     return new Mirage.Response(204);
   });
-  this.post('/organizations/:organization_id/slack-integration-requests', function() {
+  this.post('/organizations/:organization_id/slack-integration-requests', function () {
     return {slack_auth_url: 'fake_slack_oauth_url'};
   });
-  this.post('/slack-integrations/:slack_integration_id/slack-integration-configs', function(
+  this.post('/slack-integrations/:slack_integration_id/slack-integration-configs', function (
     schema,
   ) {
     const attrs = this.normalizedRequestAttrs();
@@ -459,7 +459,7 @@ export default function() {
       notificationTypes: attrs.notificationTypes,
     });
   });
-  this.patch('/slack-integrations/:slack_integration_id/slack-integration-configs/:id', function(
+  this.patch('/slack-integrations/:slack_integration_id/slack-integration-configs/:id', function (
     schema,
   ) {
     const attrs = this.normalizedRequestAttrs();
@@ -467,7 +467,7 @@ export default function() {
     config.update(attrs);
     return config;
   });
-  this.delete('/slack-integrations/:slack_integration_id/slack-integration-configs/:id', function(
+  this.delete('/slack-integrations/:slack_integration_id/slack-integration-configs/:id', function (
     schema,
     request,
   ) {

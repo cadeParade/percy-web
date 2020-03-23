@@ -17,7 +17,7 @@ export default Component.extend({
   classNames: ['FormFieldsInput'],
   classNameBindings: ['classes'],
 
-  fieldErrors: computed('changeset.error', function() {
+  fieldErrors: computed('changeset.error', function () {
     return get(this.get('changeset.error'), this.property);
   }),
 

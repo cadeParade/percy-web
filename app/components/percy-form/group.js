@@ -13,7 +13,7 @@ import {guidFor} from '@ember/object/internals';
 
 export default Component.extend({
   tagName: '',
-  uniqueId: computed(function() {
+  uniqueId: computed(function () {
     return `${guidFor(this)}-input`;
   }),
 });

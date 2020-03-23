@@ -10,7 +10,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render, fillIn} from '@ember/test-helpers';
 import stubService from 'percy-web/tests/helpers/stub-service-integration';
 
-describe('Integration: CollaborationNewThread', function() {
+describe('Integration: CollaborationNewThread', function () {
   setupRenderingTest('collaboration-new-thread', {
     integration: true,
   });
@@ -20,16 +20,16 @@ describe('Integration: CollaborationNewThread', function() {
     service.set('createCommentThread', {perform: stub});
   }
 
-  beforeEach(async function() {
+  beforeEach(async function () {
     setupFactoryGuy(this);
   });
 
-  describe('when shouldShowNewCommentInput is true', function() {
+  describe('when shouldShowNewCommentInput is true', function () {
     let user;
     let snapshot;
     let createCommentThreadStub;
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       createCommentThreadStub = sinon.stub().resolves({isSuccessful: true});
       stubService(this, 'commentThreads', 'comment-threads', {
         createCommentThread: {perform: createCommentThreadStub},
@@ -50,7 +50,7 @@ describe('Integration: CollaborationNewThread', function() {
       />`);
     });
 
-    it('allows typing in textarea', async function() {
+    it('allows typing in textarea', async function () {
       const commentText = 'I will take what is mine with fire and blood.';
       expect(CollaborationNewThread.isSubmitDisabled).to.equal(true);
       await CollaborationNewThread.typeNewComment(commentText);
@@ -90,7 +90,7 @@ describe('Integration: CollaborationNewThread', function() {
       });
     });
 
-    it('sends save action with correct args when @mentioning users', async function() {
+    it('sends save action with correct args when @mentioning users', async function () {
       const orgUsers = this.organization.organizationUsers.mapBy('user').sortBy('name');
       const commentText = 'hello there';
       await CollaborationNewThread.typeNewComment(commentText);
@@ -127,7 +127,7 @@ describe('Integration: CollaborationNewThread', function() {
       });
     });
 
-    it('sends save action with correct args when cmd+Enter is pressed', async function() {
+    it('sends save action with correct args when cmd+Enter is pressed', async function () {
       const commentText = 'What happened the white horse?';
       await CollaborationNewThread.typeNewComment(commentText);
       await CollaborationNewThread.checkRequestChangesBox();
@@ -140,7 +140,7 @@ describe('Integration: CollaborationNewThread', function() {
       });
     });
 
-    it('disables "Request changes" checkbox when snapshot is approved', async function() {
+    it('disables "Request changes" checkbox when snapshot is approved', async function () {
       const snapshot = make('snapshot', 'approved');
       this.setProperties({snapshot});
       expect(CollaborationNewThread.isRequestChangesDisabled).to.equal(true);
@@ -148,19 +148,19 @@ describe('Integration: CollaborationNewThread', function() {
       expect(CollaborationNewThread.isRequestChangesChecked).to.equal(false);
     });
 
-    it('can back out of comment adding by clicking "Cancel"', async function() {
+    it('can back out of comment adding by clicking "Cancel"', async function () {
       await CollaborationNewThread.cancelNewThread();
       expect(CollaborationNewThread.isNewThreadButtonVisible).to.equal(true);
       expect(CollaborationNewThread.isNewThreadContainerVisible).to.equal(false);
     });
 
-    it('can back out of comment adding by typing "Escape"', async function() {
+    it('can back out of comment adding by typing "Escape"', async function () {
       await CollaborationNewThread.percyTextarea.escape();
       expect(CollaborationNewThread.isNewThreadButtonVisible).to.equal(true);
       expect(CollaborationNewThread.isNewThreadContainerVisible).to.equal(false);
     });
 
-    it('resets form after comment thread is saved successfully', async function() {
+    it('resets form after comment thread is saved successfully', async function () {
       const createCommentThreadStub = sinon.stub().returns({isSuccessful: true});
       stubCreateCommentThread(this, createCommentThreadStub);
 
@@ -176,7 +176,7 @@ describe('Integration: CollaborationNewThread', function() {
       expect(CollaborationNewThread.textareaValue).to.equal('');
     });
 
-    it('shows flash message after comment thread save errors', async function() {
+    it('shows flash message after comment thread save errors', async function () {
       const createCommentThreadStub = sinon.stub().returns({isSuccessful: false});
       stubCreateCommentThread(this, createCommentThreadStub);
 
@@ -196,8 +196,8 @@ describe('Integration: CollaborationNewThread', function() {
     });
   });
 
-  describe('when shouldShowNewCommentInput is false', function() {
-    beforeEach(async function() {
+  describe('when shouldShowNewCommentInput is false', function () {
+    beforeEach(async function () {
       this.setProperties({user: make('user')});
       await render(hbs`<Collaboration::NewThread
         @currentUser={{user}}
@@ -205,13 +205,13 @@ describe('Integration: CollaborationNewThread', function() {
       />`);
     });
 
-    it('displays new comment button', async function() {
+    it('displays new comment button', async function () {
       expect(CollaborationNewThread.isNewThreadButtonVisible).to.equal(true);
       expect(CollaborationNewThread.isNewThreadContainerVisible).to.equal(false);
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('shows new comment textarea when the button is clicked', async function() {
+    it('shows new comment textarea when the button is clicked', async function () {
       await CollaborationNewThread.clickNewThreadButton();
 
       expect(CollaborationNewThread.isNewThreadButtonVisible).to.equal(false);

@@ -14,15 +14,15 @@ import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
 import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
 import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
 
-describe('Acceptance: Project', function() {
+describe('Acceptance: Project', function () {
   setupAcceptance();
 
-  describe('organization has no projects', function() {
-    setupSession(function(server) {
+  describe('organization has no projects', function () {
+    setupSession(function (server) {
       this.organization = server.create('organization', 'withUser');
     });
 
-    it('can create', async function() {
+    it('can create', async function () {
       await visit(`/${this.organization.slug}`);
       expect(currentRouteName()).to.equal('organizations.organization.projects.new');
       await percySnapshot(this.test.fullTitle() + ' | new project');
@@ -31,28 +31,28 @@ describe('Acceptance: Project', function() {
       expect(currentRouteName()).to.equal('organization.project.index');
     });
 
-    it('shows public notice when org is sponsored', async function() {
+    it('shows public notice when org is sponsored', async function () {
       this.organization.update({isSponsored: true});
       await visit(`organizations/${this.organization.slug}/projects/new`);
       await percySnapshot(this.test.fullTitle() + ' | new project');
     });
   });
 
-  describe('organization with admin user has no projects', function() {
-    setupSession(function(server) {
+  describe('organization with admin user has no projects', function () {
+    setupSession(function (server) {
       this.organization = server.create('organization', 'withAdminUser');
     });
 
-    it('shows new project page', async function() {
+    it('shows new project page', async function () {
       await visit(`/${this.organization.slug}`);
       expect(currentRouteName()).to.equal('organizations.organization.projects.new');
       await percySnapshot(this.test.fullTitle() + ' | index | admin mode');
     });
   });
 
-  describe('waiting for first build', function() {
+  describe('waiting for first build', function () {
     let urlParams;
-    setupSession(function(server) {
+    setupSession(function (server) {
       let organization = server.create('organization', 'withUser');
       let project = server.create('project', {
         name: 'My Project Name',
@@ -67,7 +67,7 @@ describe('Acceptance: Project', function() {
       };
     });
 
-    it('shows environment variables and demo project instructions', async function() {
+    it('shows environment variables and demo project instructions', async function () {
       await ProjectPage.visitProject(urlParams);
       expect(currentRouteName()).to.equal('organization.project.index');
       expect(ProjectPage.isGenericDocsButtonVisible).to.equal(true);
@@ -87,7 +87,7 @@ describe('Acceptance: Project', function() {
       await percySnapshot(this.test.fullTitle() + ' | request SDK field is visible');
     });
 
-    it('polls for updates and updates the list when a build is created', async function() {
+    it('polls for updates and updates the list when a build is created', async function () {
       const url = `projects/${urlParams.orgSlug}/${urlParams.projectSlug}/builds`;
       server.create('build', 'withSnapshots', {id: 'foo', project: this.project});
 
@@ -107,12 +107,12 @@ describe('Acceptance: Project', function() {
     });
   });
 
-  describe('with a public project', function() {
+  describe('with a public project', function () {
     freezeMoment('2018-05-22');
 
     let urlParams;
 
-    setupSession(function(server) {
+    setupSession(function (server) {
       const organization = server.create('organization', 'withUser');
       const demoProject = server.create('project', 'publiclyReadable', {organization});
       urlParams = {
@@ -121,20 +121,20 @@ describe('Acceptance: Project', function() {
       };
     });
 
-    it('shows the public globe icon in the header', async function() {
+    it('shows the public globe icon in the header', async function () {
       await ProjectPage.visitProject(urlParams);
       expect(ProjectPage.isPublicProjectIconVisible).to.equal(true);
     });
   });
 
-  describe('settings and integrations', function() {
+  describe('settings and integrations', function () {
     let organization;
     let enabledProject;
     let versionControlIntegration;
     let repos;
     let webhookConfig;
 
-    beforeEach(function() {
+    beforeEach(function () {
       organization = server.create('organization', 'withUser');
       versionControlIntegration = server.create('versionControlIntegration', 'github');
       repos = server.createList('repo', 3);
@@ -145,15 +145,15 @@ describe('Acceptance: Project', function() {
       });
     });
 
-    describe('with the only-admins-edit-settings feature flag on', function() {
-      beforeEach(function() {
+    describe('with the only-admins-edit-settings feature flag on', function () {
+      beforeEach(function () {
         this.withVariation('only-admins-edit-settings', true);
       });
 
-      describe('user is member', function() {
+      describe('user is member', function () {
         setupSession(() => {});
 
-        it('hides settings', async function() {
+        it('hides settings', async function () {
           await ProjectSettingsPage.visitProjectSettings({
             orgSlug: organization.slug,
             projectSlug: enabledProject.slug,
@@ -165,7 +165,7 @@ describe('Acceptance: Project', function() {
           expect(ProjectSettingsPage.toggleArchiveButton.isVisible).to.equal(false);
         });
 
-        it('hides integrations', async function() {
+        it('hides integrations', async function () {
           await ProjectSettingsPage.visitProjectIntegrations({
             orgSlug: organization.slug,
             projectSlug: enabledProject.slug,
@@ -177,19 +177,19 @@ describe('Acceptance: Project', function() {
         });
       });
 
-      describe('user is admin', function() {
+      describe('user is admin', function () {
         let adminUser;
 
-        beforeEach(function() {
+        beforeEach(function () {
           adminUser = server.create('user');
           server.create('organizationUser', {user: adminUser, organization, role: 'admin'});
         });
 
-        setupSession(function() {
+        setupSession(function () {
           this.loginUser = adminUser;
         });
 
-        it('shows settings', async function() {
+        it('shows settings', async function () {
           await ProjectSettingsPage.visitProjectSettings({
             orgSlug: organization.slug,
             projectSlug: enabledProject.slug,
@@ -201,7 +201,7 @@ describe('Acceptance: Project', function() {
           expect(ProjectSettingsPage.toggleArchiveButton.isVisible).to.equal(true);
         });
 
-        it('shows integrations', async function() {
+        it('shows integrations', async function () {
           await ProjectSettingsPage.visitProjectIntegrations({
             orgSlug: organization.slug,
             projectSlug: enabledProject.slug,
@@ -214,10 +214,10 @@ describe('Acceptance: Project', function() {
       });
     });
 
-    describe('settings', function() {
+    describe('settings', function () {
       setupSession(() => {});
 
-      it('displays Branch settings section', async function() {
+      it('displays Branch settings section', async function () {
         await ProjectSettingsPage.visitProjectSettings({
           orgSlug: organization.slug,
           projectSlug: enabledProject.slug,
@@ -227,7 +227,7 @@ describe('Acceptance: Project', function() {
         expect(ProjectSettingsPage.isBranchSettingsVisible).to.equal(true);
       });
 
-      it('navigates to SCM integration setups', async function() {
+      it('navigates to SCM integration setups', async function () {
         async function visitProjectIntegrations() {
           return await ProjectSettingsPage.visitProjectIntegrations({
             orgSlug: organization.slug,
@@ -250,7 +250,7 @@ describe('Acceptance: Project', function() {
         );
       });
 
-      describe('browser toggling', function() {
+      describe('browser toggling', function () {
         let deleteStub;
         let createStub;
         let projectWithBothBrowsers;
@@ -266,7 +266,7 @@ describe('Acceptance: Project', function() {
           },
         };
 
-        beforeEach(function() {
+        beforeEach(function () {
           deleteStub = sinon.stub();
           createStub = sinon.stub();
           projectWithBothBrowsers = enabledProject;
@@ -287,7 +287,7 @@ describe('Acceptance: Project', function() {
           });
         });
 
-        it('calls correct endpoint when removing a browser', async function() {
+        it('calls correct endpoint when removing a browser', async function () {
           await ProjectSettingsPage.visitProjectSettings({
             orgSlug: organization.slug,
             projectSlug: projectWithBothBrowsers.slug,
@@ -301,7 +301,7 @@ describe('Acceptance: Project', function() {
           expect(flashMessages).to.have.length(1);
         });
 
-        it('calls correct endpoint when adding a browser', async function() {
+        it('calls correct endpoint when adding a browser', async function () {
           await ProjectSettingsPage.visitProjectSettings({
             orgSlug: organization.slug,
             projectSlug: projectWithFirefoxOnly.slug,
@@ -315,7 +315,7 @@ describe('Acceptance: Project', function() {
           expect(flashMessages).to.have.length(1);
         });
 
-        it('calls correct endpoints when upgrading a browser', async function() {
+        it('calls correct endpoints when upgrading a browser', async function () {
           const firefoxFamily = server.schema.browserFamilies.findBy({slug: 'firefox'});
           projectWithBothBrowsers.projectBrowserTargets.models.forEach(pbt => {
             if (pbt.browserTarget.browserFamilyId === firefoxFamily.id) {
@@ -335,7 +335,7 @@ describe('Acceptance: Project', function() {
           expect(deleteStub).to.have.been.calledWith('/api/v1/project-browser-targets/1');
         });
 
-        it('does not allow removing the last browser', async function() {
+        it('does not allow removing the last browser', async function () {
           await ProjectSettingsPage.visitProjectSettings({
             orgSlug: organization.slug,
             projectSlug: projectWithFirefoxOnly.slug,
@@ -347,10 +347,10 @@ describe('Acceptance: Project', function() {
         });
       });
 
-      describe('updating project settings', function() {
-        it('sends correct data', async function() {
+      describe('updating project settings', function () {
+        it('sends correct data', async function () {
           const stub = sinon.stub();
-          server.patch('/projects/:full_slug', function(schema, request) {
+          server.patch('/projects/:full_slug', function (schema, request) {
             const fullSlug = decodeURIComponent(request.params.full_slug);
             const attrs = this.normalizedRequestAttrs('project');
             const project = schema.projects.findBy({fullSlug: fullSlug});
@@ -385,8 +385,8 @@ describe('Acceptance: Project', function() {
         });
       });
 
-      describe('archiving a project', function() {
-        it('archives and unarchives a project', async function() {
+      describe('archiving a project', function () {
+        it('archives and unarchives a project', async function () {
           function lookupProject() {
             return server.db.projects.findBy({fullSlug: enabledProject.fullSlug});
           }
@@ -407,10 +407,10 @@ describe('Acceptance: Project', function() {
       });
     });
 
-    describe('integrations', function() {
+    describe('integrations', function () {
       setupSession(() => {});
 
-      it('displays github integration select menu', async function() {
+      it('displays github integration select menu', async function () {
         organization.update({versionControlIntegrations: [versionControlIntegration], repos});
 
         await ProjectSettingsPage.visitProjectIntegrations({
@@ -421,7 +421,7 @@ describe('Acceptance: Project', function() {
         await percySnapshot(this.test);
       });
 
-      it('displays webhook configs', async function() {
+      it('displays webhook configs', async function () {
         enabledProject.update({webhookConfigs: [webhookConfig]});
 
         await ProjectSettingsPage.visitProjectIntegrations({
@@ -436,7 +436,7 @@ describe('Acceptance: Project', function() {
         );
       });
 
-      it('transitions to webhook config form', async function() {
+      it('transitions to webhook config form', async function () {
         var fake = sinon.fake.returns(new Uint8Array(32));
         sinon.replace(window.crypto, 'getRandomValues', fake);
 
@@ -455,7 +455,7 @@ describe('Acceptance: Project', function() {
         sinon.restore();
       });
 
-      it('displays the Slack section', async function() {
+      it('displays the Slack section', async function () {
         await ProjectSettingsPage.visitProjectIntegrations({
           orgSlug: organization.slug,
           projectSlug: enabledProject.slug,
@@ -470,14 +470,14 @@ describe('Acceptance: Project', function() {
     });
   });
 
-  describe('builds', function() {
+  describe('builds', function () {
     freezeMoment('2018-05-22');
 
     let urlParams;
     let project;
     let organization;
 
-    beforeEach(function() {
+    beforeEach(function () {
       const repo = server.create('repo');
       organization = server.create('organization', 'withUser');
       project = server.create('project', {
@@ -581,20 +581,20 @@ describe('Acceptance: Project', function() {
 
     setupSession(() => {});
 
-    it('shows builds on index', async function() {
+    it('shows builds on index', async function () {
       await ProjectPage.visitProject(urlParams);
       await percySnapshot(this.test);
       expect(currentRouteName()).to.equal('organization.project.index');
     });
 
-    it('hides the loader when there are less than 50 builds', async function() {
+    it('hides the loader when there are less than 50 builds', async function () {
       await ProjectPage.visitProject(urlParams);
 
       expect(ProjectPage.infinityLoader.isPresent).to.equal(false);
       expect(ProjectPage.builds.length).to.equal(14);
     });
 
-    it('shows builds with identical build numbers', async function() {
+    it('shows builds with identical build numbers', async function () {
       server.create('build', 'approvedPreviously', {
         project,
         createdAt: moment().subtract(3, 'minutes'),
@@ -605,7 +605,7 @@ describe('Acceptance: Project', function() {
       expect(ProjectPage.builds.length).to.equal(15);
     });
 
-    it('shows the loader when there are more than 50 builds', async function() {
+    it('shows the loader when there are more than 50 builds', async function () {
       // 50 comes from INFINITY_SCROLL_LIMIT in the build model
       server.createList('build', 50, {project: this.project});
 
@@ -615,7 +615,7 @@ describe('Acceptance: Project', function() {
       expect(ProjectPage.infinityLoader.isPresent).to.equal(true);
     });
 
-    it('navigates to build page after clicking build', async function() {
+    it('navigates to build page after clicking build', async function () {
       await ProjectPage.visitProject(urlParams);
       expect(currentRouteName()).to.equal('organization.project.index');
       await ProjectPage.finishedBuilds.objectAt(5).click();
@@ -623,7 +623,7 @@ describe('Acceptance: Project', function() {
       await percySnapshot(this.test.fullTitle());
     });
 
-    it('resets branch filter when navigating to another project', async function() {
+    it('resets branch filter when navigating to another project', async function () {
       const repo = server.create('repo');
 
       const project2 = server.create('project', {organization, repo: repo});
@@ -675,10 +675,10 @@ describe('Acceptance: Project', function() {
     });
   });
 
-  describe('demo project', function() {
+  describe('demo project', function () {
     let urlParams;
 
-    beforeEach(function() {
+    beforeEach(function () {
       const organization = server.create('organization', 'withUser');
       const demoProject = server.create('project', 'demo', 'withChromeAndFirefox', {organization});
       urlParams = {
@@ -689,12 +689,12 @@ describe('Acceptance: Project', function() {
 
     setupSession(() => {});
 
-    describe('project settings page', function() {
-      beforeEach(async function() {
+    describe('project settings page', function () {
+      beforeEach(async function () {
         await ProjectSettingsPage.visitProjectSettings(urlParams);
       });
 
-      it('everything is disabled', async function() {
+      it('everything is disabled', async function () {
         const editForm = ProjectSettingsPage.projectEditForm;
 
         expect(ProjectSettingsPage.envVarText).to.equal(
@@ -718,12 +718,12 @@ describe('Acceptance: Project', function() {
       });
     });
 
-    describe('project integrations page', function() {
-      beforeEach(async function() {
+    describe('project integrations page', function () {
+      beforeEach(async function () {
         await ProjectSettingsPage.visitProjectIntegrations(urlParams);
       });
 
-      it('everything is disabled', async function() {
+      it('everything is disabled', async function () {
         expect(
           ProjectSettingsPage.repoIntegrator.demoNotice.text.includes('Set up your own project'),
         ).to.equal(true);

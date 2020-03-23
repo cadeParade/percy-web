@@ -32,7 +32,7 @@ export default class MentionablesService extends Service {
     return generateTributeEmojiConfig(fetchFn);
   }
 
-  @task(function*(organization) {
+  @task(function* (organization) {
     const orgUsersRef = organization.hasMany('organizationUsers');
     let orgUsers = yield orgUsersRef.load();
     return orgUsers.mapBy('user');

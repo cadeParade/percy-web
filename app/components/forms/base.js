@@ -19,7 +19,7 @@ export default Component.extend({
   saveSuccess: () => {},
 
   store: service(),
-  changeset: computed('model', 'validator', function() {
+  changeset: computed('model', 'validator', function () {
     let model = this.model;
     let validator = this.validator || {};
 

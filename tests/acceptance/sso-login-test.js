@@ -5,7 +5,7 @@ import SsoLoginPage from 'percy-web/tests/pages/sso-login-page';
 import {beforeEach} from 'mocha';
 import sinon from 'sinon';
 
-describe('Acceptance: SSO Login', function() {
+describe('Acceptance: SSO Login', function () {
   setupAcceptance({authenticate: false});
   let connectionName;
   let organizationName;
@@ -13,7 +13,7 @@ describe('Acceptance: SSO Login', function() {
   let url;
   let supportMessage;
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     this.loginUser = false;
     const organization = server.create('organization');
     const samlIntegration = server.create('samlIntegration', {organization});
@@ -23,7 +23,7 @@ describe('Acceptance: SSO Login', function() {
   });
 
   function functionsCorrectly() {
-    it('displays the SSO login screen and pre-populates the support chat box', async function() {
+    it('displays the SSO login screen and pre-populates the support chat box', async function () {
       window.Intercom = sinon.stub();
 
       await visit(url);
@@ -34,39 +34,39 @@ describe('Acceptance: SSO Login', function() {
     });
   }
 
-  describe('when SSO is required', function() {
-    beforeEach(function() {
+  describe('when SSO is required', function () {
+    beforeEach(function () {
       url =
         `/auth/sso-login?connectionName=${connectionName}&organizationName=${organizationName}` +
         `&provider=${provider}&required=true`;
       supportMessage = `Hi! I'd like help logging into my ${organizationName} ${provider} account.`;
     });
 
-    describe('uses organization-specific information', function() {
+    describe('uses organization-specific information', function () {
       functionsCorrectly();
     });
   });
 
-  describe('when SSO not required', function() {
-    beforeEach(function() {
+  describe('when SSO not required', function () {
+    beforeEach(function () {
       url =
         `/auth/sso-login?connectionName=${connectionName}&organizationName=${organizationName}` +
         `&provider=${provider}`;
       supportMessage = `Hi! I'd like help logging into my ${organizationName} ${provider} account.`;
     });
 
-    describe('uses organization-specific information', function() {
+    describe('uses organization-specific information', function () {
       functionsCorrectly();
     });
   });
 
-  describe('when no params are provided', function() {
-    beforeEach(function() {
+  describe('when no params are provided', function () {
+    beforeEach(function () {
       url = '/auth/sso-login';
       supportMessage = "Hi! I'd like help logging into my  SSO account.";
     });
 
-    describe('uses generic information', function() {
+    describe('uses generic information', function () {
       functionsCorrectly();
     });
   });

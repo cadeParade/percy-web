@@ -12,18 +12,18 @@ export default Component.extend({
 
   projectBrowserTargets: readOnly('project.projectBrowserTargets'),
 
-  enabledBrowserFamilies: computed('projectBrowserTargets.@each.browserTarget', function() {
+  enabledBrowserFamilies: computed('projectBrowserTargets.@each.browserTarget', function () {
     return this.browserTargets.enabledBrowserFamiliesForProject(this.project);
   }),
 
-  isBrowserEnabled: computed('enabledBrowserFamilies.@each.id', 'browserFamily.id', function() {
+  isBrowserEnabled: computed('enabledBrowserFamilies.@each.id', 'browserFamily.id', function () {
     return this.enabledBrowserFamilies.mapBy('id').includes(this.browserFamily.id);
   }),
 
   projectBrowserTargetsForFamily: computed(
     'projectBrowserTargets.@each.browserFamily',
     'browserFamily.id',
-    function() {
+    function () {
       return this.projectBrowserTargets.filter(projectBrowserTarget => {
         // this could happen when a project-browser-target is removed
         if (!projectBrowserTarget.browserTarget) return;
@@ -32,7 +32,7 @@ export default Component.extend({
     },
   ),
 
-  isBrowserUpgradeable: computed('projectBrowserTargetsForFamily.@each.isUpgradeable', function() {
+  isBrowserUpgradeable: computed('projectBrowserTargetsForFamily.@each.isUpgradeable', function () {
     // If there are no project-browser-targets for family it is not upgradeable. (the project
     //   does not have that family enabled)
     if (this.projectBrowserTargetsForFamily.length === 0) return false;
@@ -45,7 +45,7 @@ export default Component.extend({
     });
   }),
 
-  _upgradeBrowser: task(function*(project, browserFamily) {
+  _upgradeBrowser: task(function* (project, browserFamily) {
     return yield this.browserTargets.upgradeBrowserFamily(project, browserFamily);
   }),
 

@@ -44,7 +44,7 @@ export default {
       );
       return;
     } else {
-      otherArgs.forEach(function(arg) {
+      otherArgs.forEach(function (arg) {
         path = path.replace('%@', arg);
       });
     }
@@ -103,7 +103,7 @@ export default {
 
     window.crypto.getRandomValues(arr);
 
-    return Array.from(arr, function(dec) {
+    return Array.from(arr, function (dec) {
       return Math.floor(dec / 16).toString(16);
     }).join('');
   },

@@ -7,7 +7,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import SlackConfigItem from 'percy-web/tests/pages/components/organizations/slack-config-item';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: SlackConfigItem', function() {
+describe('Integration: SlackConfigItem', function () {
   setupRenderingTest('slack-config-item', {
     integration: true,
   });
@@ -15,7 +15,7 @@ describe('Integration: SlackConfigItem', function() {
   let project;
   let projectOptions;
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
     project = make('project');
     projectOptions = [
@@ -24,11 +24,11 @@ describe('Integration: SlackConfigItem', function() {
     ];
   });
 
-  describe('with one notification type', function() {
+  describe('with one notification type', function () {
     let slackIntegration;
     let slackIntegrationConfig;
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       slackIntegration = make('slack-integration');
       slackIntegrationConfig = make('slack-integration-config', {
         slackIntegration,
@@ -45,7 +45,7 @@ describe('Integration: SlackConfigItem', function() {
       />`);
     });
 
-    it('renders correctly', async function() {
+    it('renders correctly', async function () {
       expect(SlackConfigItem.notificationTypes.length).to.equal(1);
       expect(SlackConfigItem.projectName.isVisible).to.equal(true);
       expect(SlackConfigItem.editButton.isVisible).to.equal(true);
@@ -54,11 +54,11 @@ describe('Integration: SlackConfigItem', function() {
     });
   });
 
-  describe('with four notification types', function() {
+  describe('with four notification types', function () {
     let slackIntegration;
     let slackIntegrationConfig;
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       slackIntegration = make('slack-integration');
       slackIntegrationConfig = make('slack-integration-config', {
         slackIntegration,
@@ -80,7 +80,7 @@ describe('Integration: SlackConfigItem', function() {
         />`);
     });
 
-    it('renders correctly', async function() {
+    it('renders correctly', async function () {
       expect(SlackConfigItem.notificationTypes.length).to.equal(4);
 
       await percySnapshot(this.test.fullTitle());

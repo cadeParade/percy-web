@@ -12,19 +12,19 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {initialize as initializeEmberKeyboard} from 'ember-keyboard';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: SnapshotList', function() {
+describe('Integration: SnapshotList', function () {
   setupRenderingTest('snapshot-list', {
     integration: true,
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
   });
 
-  describe('when shouldDeferRendering is true', function() {
+  describe('when shouldDeferRendering is true', function () {
     const numSnapshots = 10;
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       const stub = sinon.stub();
       const build = make('build', 'finished');
       const browser = make('browser');
@@ -50,7 +50,7 @@ describe('Integration: SnapshotList', function() {
       />`);
     });
 
-    it('renders snapshot header placeholder', async function() {
+    it('renders snapshot header placeholder', async function () {
       expect(SnapshotList.snapshotBlocks.length).to.equal(numSnapshots + 1);
       SnapshotList.snapshotBlocks.forEach(block => {
         expect(block.isLazyRenderHeaderVisible).to.equal(true);
@@ -59,8 +59,8 @@ describe('Integration: SnapshotList', function() {
     });
   });
 
-  describe('keyboard nav behavior', function() {
-    beforeEach(async function() {
+  describe('keyboard nav behavior', function () {
+    beforeEach(async function () {
       initializeEmberKeyboard();
       const stub = sinon.stub();
       const build = make('build', 'finished');
@@ -109,7 +109,7 @@ describe('Integration: SnapshotList', function() {
       />`);
     });
 
-    it('automatically expands collapsed snapshot blocks if focused', async function() {
+    it('automatically expands collapsed snapshot blocks if focused', async function () {
       this.set('isUnchangedSnapshotsVisible', true);
       const firstApprovedGroup = SnapshotList.snapshotBlocks[2].snapshotGroup;
       const secondApprovedGroup = SnapshotList.snapshotBlocks[3].snapshotGroup;
@@ -169,7 +169,7 @@ describe('Integration: SnapshotList', function() {
       expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
     });
 
-    it('focuses snapshots on arrow presses', async function() {
+    it('focuses snapshots on arrow presses', async function () {
       const numRenderedSnapshots = SnapshotList.snapshotBlocks.length;
       // 4 = 1 unapproved group, 1 unapproved snapshot, 2 approved groups
       expect(numRenderedSnapshots).to.equal(4);
@@ -210,7 +210,7 @@ describe('Integration: SnapshotList', function() {
       expect(lastSnapshotBlock.isFocused).to.equal(false);
     });
 
-    it('does not send keyboard actions when isKeyboardNavEnabled is false', async function() {
+    it('does not send keyboard actions when isKeyboardNavEnabled is false', async function () {
       const numRenderedSnapshots = SnapshotList.snapshotBlocks.length;
       this.set('isKeyboardNavEnabled', false);
       await SnapshotList.typeDownArrow();
@@ -220,7 +220,7 @@ describe('Integration: SnapshotList', function() {
     });
   });
 
-  describe('ordering', function() {
+  describe('ordering', function () {
     const unapprovedSingleSnapshotsWithCommentsTitle = 'unapproved single snapshot with comments';
     const unapprovedSingleSnapshotsWithoutCommentsTitle =
       'unapproved single snapshot without comments';
@@ -228,7 +228,7 @@ describe('Integration: SnapshotList', function() {
     const approvedSingleSnapshotsWithoutCommentsTitle = 'approved single snapshot without comments';
     const rejectedSingleSnapshotsTitle = 'rejected single snapshot';
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       const stub = sinon.stub();
       const build = make('build', 'finished', {totalSnapshots: 11});
       const browser = make('browser');
@@ -342,7 +342,7 @@ describe('Integration: SnapshotList', function() {
       />`);
     });
 
-    it('orders individual and grouped snapshots correctly', async function() {
+    it('orders individual and grouped snapshots correctly', async function () {
       function expectIsGroup(block) {
         expect(block.isGroup).to.equal(true);
       }

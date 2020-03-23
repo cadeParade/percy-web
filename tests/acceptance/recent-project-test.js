@@ -4,30 +4,30 @@ import localStorageProxy from 'percy-web/lib/localstorage';
 import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage-sandbox';
 import {visit, currentRouteName, currentURL} from '@ember/test-helpers';
 
-describe('Acceptance: Recent Project', function() {
-  describe('when user is not logged in', function() {
+describe('Acceptance: Recent Project', function () {
+  describe('when user is not logged in', function () {
     setupAcceptance({authenticate: false});
 
-    setupSession(function() {
+    setupSession(function () {
       stubLockModal(this.owner);
       this.loginUser = false;
     });
 
-    it('redirects to login', async function() {
+    it('redirects to login', async function () {
       await visit('/recent-project');
       expect(currentRouteName()).to.equal('login');
     });
   });
 
-  describe('when user is logged in', function() {
+  describe('when user is logged in', function () {
     setupAcceptance();
     SetupLocalStorageSandbox();
 
-    describe('when user has organizations without projects', function() {
+    describe('when user has organizations without projects', function () {
       let organization;
       let otherOrganization;
 
-      setupSession(function(server) {
+      setupSession(function (server) {
         const user = server.create('user');
         organization = server.create('organization');
         otherOrganization = server.create('organization');
@@ -35,7 +35,7 @@ describe('Acceptance: Recent Project', function() {
         server.create('organizationUser', {organization: otherOrganization, user});
       });
 
-      it("redirects to user's most recent org", async function() {
+      it("redirects to user's most recent org", async function () {
         localStorageProxy.set('lastOrganizationSlug', otherOrganization.slug);
         await visit('/recent-project');
         expect(currentRouteName()).to.equal('organizations.organization.projects.new');
@@ -43,12 +43,12 @@ describe('Acceptance: Recent Project', function() {
       });
     });
 
-    describe('when a user has organizations with projects', function() {
+    describe('when a user has organizations with projects', function () {
       let organization;
       let otherOrganization;
       let project;
 
-      setupSession(function(server) {
+      setupSession(function (server) {
         const user = server.create('user');
         organization = server.create('organization');
         otherOrganization = server.create('organization');
@@ -58,7 +58,7 @@ describe('Acceptance: Recent Project', function() {
         server.create('organizationUser', {organization: otherOrganization, user});
       });
 
-      it('redirects to the org and project in localstorage', async function() {
+      it('redirects to the org and project in localstorage', async function () {
         let recentProjectSlugs = {};
         recentProjectSlugs[organization.slug] = project.slug;
 
@@ -70,12 +70,12 @@ describe('Acceptance: Recent Project', function() {
       });
     });
 
-    describe('when user does not have organizations', function() {
-      setupSession(function(server) {
+    describe('when user does not have organizations', function () {
+      setupSession(function (server) {
         server.create('user');
       });
 
-      it('redirects to organizations.new', async function() {
+      it('redirects to organizations.new', async function () {
         await visit('/recent-project');
         expect(currentRouteName()).to.equal('organizations.new');
       });

@@ -7,7 +7,7 @@ import utils from 'percy-web/lib/utils';
 export default Component.extend({
   store: service(),
 
-  defaultAvatar: computed(function() {
+  defaultAvatar: computed(function () {
     return `${window.location.origin}/images/placeholder-avatar.jpg`;
   }),
   isAdmin: readOnly('organization.currentUserIsAdmin'),

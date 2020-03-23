@@ -7,21 +7,21 @@ import WebhookConfigEditForm from 'percy-web/tests/pages/components/forms/webhoo
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: WebhookConfigEditForm', function() {
+describe('Integration: WebhookConfigEditForm', function () {
   setupRenderingTest('forms/webhook-config-edit', {
     integration: true,
   });
 
   let webhookConfig;
 
-  beforeEach(async function() {
+  beforeEach(async function () {
     setupFactoryGuy(this);
     webhookConfig = make('webhook-config');
     this.set('webhookConfig', webhookConfig);
     await render(hbs`<Forms::WebhookConfigEdit @webhookConfig={{webhookConfig}} />`);
   });
 
-  it('displays webhook config in form', function() {
+  it('displays webhook config in form', function () {
     expect(WebhookConfigEditForm.url).to.equal(webhookConfig.get('url'));
     expect(WebhookConfigEditForm.description).to.equal(webhookConfig.get('description'));
     expect(WebhookConfigEditForm.authToken).to.equal(webhookConfig.get('authToken'));
@@ -35,35 +35,35 @@ describe('Integration: WebhookConfigEditForm', function() {
     expect(WebhookConfigEditForm.deliveryEnabled).to.equal('on');
   });
 
-  it('allows submission', function() {
+  it('allows submission', function () {
     expect(WebhookConfigEditForm.isSubmitDisabled).to.equal(false);
   });
 
-  it('requires url', async function() {
+  it('requires url', async function () {
     await WebhookConfigEditForm.fillInUrl('');
     expect(WebhookConfigEditForm.isSubmitDisabled).to.equal(true);
     expect(WebhookConfigEditForm.errors).to.match(/Url can't be blank/);
   });
 
-  it('requires valid url', async function() {
+  it('requires valid url', async function () {
     await WebhookConfigEditForm.fillInUrl('random garbage');
     await percySnapshot(this.test.fullTitle());
     expect(WebhookConfigEditForm.isSubmitDisabled).to.equal(true);
     expect(WebhookConfigEditForm.errors).to.match(/Url must be a valid url/);
   });
 
-  it('requires at least one subscribed event', async function() {
+  it('requires at least one subscribed event', async function () {
     await WebhookConfigEditForm.subscribedEvents[0].click();
     await percySnapshot(this.test.fullTitle());
     expect(WebhookConfigEditForm.isSubmitDisabled).to.equal(true);
     expect(WebhookConfigEditForm.errors).to.match(/Subscribed events can't be blank/);
   });
 
-  it('does not display SSL warning when verification enabled', async function() {
+  it('does not display SSL warning when verification enabled', async function () {
     expect(WebhookConfigEditForm.sslWarningPresent).to.equal(false);
   });
 
-  it('displays SSL warning when verification disabled', async function() {
+  it('displays SSL warning when verification disabled', async function () {
     await WebhookConfigEditForm.clickSslVerificationEnabled();
     await percySnapshot(this.test.fullTitle());
     expect(WebhookConfigEditForm.sslWarningPresent).to.equal(true);

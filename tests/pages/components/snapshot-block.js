@@ -13,14 +13,14 @@ export const snapshotBlock = {
   scope: SELECTORS.SNAPSHOT_BLOCK,
   snapshotGroup: snapshotGroup,
   snapshotViewer: SnapshotViewer,
-  _block: getter(function() {
+  _block: getter(function () {
     return this.isGroup ? this.snapshotGroup : this.snapshotViewer;
   }),
 
-  isGroup: getter(function() {
+  isGroup: getter(function () {
     return !!findElement(this, this.snapshotGroup.scope).length;
   }),
-  isSnapshot: getter(function() {
+  isSnapshot: getter(function () {
     return !!findElement(this, this.snapshotViewer.scope).length;
   }),
 

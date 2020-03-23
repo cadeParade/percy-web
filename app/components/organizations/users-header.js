@@ -21,7 +21,7 @@ export default Component.extend({
   showInviteForm: and('isInviteFormAllowed', 'isAdmin', 'canAddSeats', 'isNotForceSso'),
 
   canDisplayTooltip: or('cannotAddSeats', 'isMember', 'isForceSso'),
-  tooltipText: computed('cannotAddSeats', 'isMember', 'isForceSso', function() {
+  tooltipText: computed('cannotAddSeats', 'isMember', 'isForceSso', function () {
     if (this.isMember) {
       return 'Only admins can invite new users';
     } else if (this.cannotAddSeats) {

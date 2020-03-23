@@ -16,7 +16,7 @@ const INFINITY_MODEL_STUB = {
   off: () => {},
 };
 
-describe('Integration: ProjectContainer', function() {
+describe('Integration: ProjectContainer', function () {
   setupRenderingTest('project-container', {
     integration: true,
   });
@@ -26,12 +26,12 @@ describe('Integration: ProjectContainer', function() {
     sinon.stub(store, 'peekAll').returns(builds);
   }
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
   });
 
-  describe('without a repo', function() {
-    beforeEach(async function() {
+  describe('without a repo', function () {
+    beforeEach(async function () {
       const project = make('project');
       const builds = makeList('build', 1, {buildNumber: 1, project});
       stubPeekAllBuilds(builds, this);
@@ -47,7 +47,7 @@ describe('Integration: ProjectContainer', function() {
       />`);
     });
 
-    it('shows integration prompt banner', async function() {
+    it('shows integration prompt banner', async function () {
       await percySnapshot(this.test.fullTitle());
       const project = this.get('project');
       expect(ProjectContainer.builds.length).to.equal(1);
@@ -57,8 +57,8 @@ describe('Integration: ProjectContainer', function() {
     });
   });
 
-  describe('with an empty repo source', function() {
-    beforeEach(async function() {
+  describe('with an empty repo source', function () {
+    beforeEach(async function () {
       const organization = make('organization', 'withGithubIntegration');
       const project = make('project', 'withRepo', {organization});
       const builds = makeList('build', 1, 'withRepo', 'hasPullRequest', {buildNumber: 1, project});
@@ -75,7 +75,7 @@ describe('Integration: ProjectContainer', function() {
       />`);
     });
 
-    it('shows no logo', async function() {
+    it('shows no logo', async function () {
       await percySnapshot(this.test.fullTitle());
       const project = this.get('project');
       expect(project.get('isRepoConnected')).to.equal(true);
@@ -93,8 +93,8 @@ describe('Integration: ProjectContainer', function() {
     });
   });
 
-  describe('with a github repo', function() {
-    beforeEach(async function() {
+  describe('with a github repo', function () {
+    beforeEach(async function () {
       const organization = make('organization', 'withGithubIntegration');
       const project = make('project', 'withGithubRepo', {organization});
       const builds = makeList('build', 1, 'withGithubRepo', 'hasPullRequest', {
@@ -114,7 +114,7 @@ describe('Integration: ProjectContainer', function() {
       />`);
     });
 
-    it('shows the github logo', async function() {
+    it('shows the github logo', async function () {
       await percySnapshot(this.test.fullTitle());
       const project = this.get('project');
       expect(project.get('isRepoConnected')).to.equal(true);
@@ -133,8 +133,8 @@ describe('Integration: ProjectContainer', function() {
     });
   });
 
-  describe('with a github enterprise repo', function() {
-    beforeEach(async function() {
+  describe('with a github enterprise repo', function () {
+    beforeEach(async function () {
       const organization = make('organization', 'withGithubEnterpriseIntegration');
       const project = make('project', 'withGithubEnterpriseRepo', {organization});
       const builds = makeList('build', 1, 'withGithubEnterpriseRepo', 'hasPullRequest', {
@@ -154,7 +154,7 @@ describe('Integration: ProjectContainer', function() {
       />`);
     });
 
-    it('shows the github logo', async function() {
+    it('shows the github logo', async function () {
       await percySnapshot(this.test.fullTitle());
       const project = this.get('project');
       expect(project.get('isRepoConnected')).to.equal(true);
@@ -174,8 +174,8 @@ describe('Integration: ProjectContainer', function() {
     });
   });
 
-  describe('with a gitlab repo', function() {
-    beforeEach(async function() {
+  describe('with a gitlab repo', function () {
+    beforeEach(async function () {
       const organization = make('organization', 'withGitlabIntegration');
       const project = make('project', 'withGitlabRepo', {organization});
       const builds = makeList('build', 1, 'withGitlabRepo', 'hasPullRequest', {
@@ -195,7 +195,7 @@ describe('Integration: ProjectContainer', function() {
       />`);
     });
 
-    it('shows the gitlab logo', async function() {
+    it('shows the gitlab logo', async function () {
       await percySnapshot(this.test.fullTitle());
       const project = this.get('project');
       expect(project.get('isRepoConnected')).to.equal(true);
@@ -214,8 +214,8 @@ describe('Integration: ProjectContainer', function() {
     });
   });
 
-  describe('when user is not member of org', function() {
-    beforeEach(async function() {
+  describe('when user is not member of org', function () {
+    beforeEach(async function () {
       const organization = make('organization', 'withGithubIntegration');
       const project = make('project', 'withGithubRepo', {organization});
       const builds = makeList('build', 1, {project});
@@ -232,14 +232,14 @@ describe('Integration: ProjectContainer', function() {
       />`);
     });
 
-    it('displays notice that build is public', async function() {
+    it('displays notice that build is public', async function () {
       expect(ProjectContainer.isPublicProjectNoticeVisible).to.equal(true);
       await percySnapshot(this.test);
     });
   });
 
-  describe('branch filter with github repo', function() {
-    beforeEach(async function() {
+  describe('branch filter with github repo', function () {
+    beforeEach(async function () {
       const project = make('project', 'withGithubRepo');
       const branch1Builds = makeList('build', 4, 'finished', 'unreviewed', {
         branch: 'branch-1',
@@ -268,7 +268,7 @@ describe('Integration: ProjectContainer', function() {
       />`);
     });
 
-    it('filters branches by selected branch', async function() {
+    it('filters branches by selected branch', async function () {
       expect(ProjectContainer.infinityLoader.isPresent).to.equal(true);
 
       await selectChoose('', 'branch-1');
@@ -282,8 +282,8 @@ describe('Integration: ProjectContainer', function() {
     });
   });
 
-  describe('branch filter without github repo', function() {
-    beforeEach(async function() {
+  describe('branch filter without github repo', function () {
+    beforeEach(async function () {
       const project = make('project');
       const branch1Builds = makeList('build', 4, 'finished', 'unreviewed', {
         branch: 'branch-1',
@@ -312,7 +312,7 @@ describe('Integration: ProjectContainer', function() {
       />`);
     });
 
-    it('filters branches by selected branch', async function() {
+    it('filters branches by selected branch', async function () {
       expect(ProjectContainer.infinityLoader.isPresent).to.equal(true);
 
       await selectChoose('', 'branch-1');
@@ -326,8 +326,8 @@ describe('Integration: ProjectContainer', function() {
     });
   });
 
-  describe('branch filter on a project with only 1 branch', function() {
-    beforeEach(async function() {
+  describe('branch filter on a project with only 1 branch', function () {
+    beforeEach(async function () {
       const project = make('project');
       const branch1Builds = makeList('build', 4, 'finished', 'unreviewed', {
         branch: 'branch-1',
@@ -347,7 +347,7 @@ describe('Integration: ProjectContainer', function() {
       />`);
     });
 
-    it('does not show the branch filter', async function() {
+    it('does not show the branch filter', async function () {
       expect(ProjectContainer.isBranchSelectorVisible).to.equal(false);
       await percySnapshot(this.test);
     });

@@ -18,14 +18,14 @@ export default Component.extend({
   isClosed: readOnly('commentThread.isClosed'),
   isReview: readOnly('commentThread.isReview'),
 
-  displayCreatedAt: computed('comment.createdAt', function() {
+  displayCreatedAt: computed('comment.createdAt', function () {
     return moment(this.comment.createdAt).fromNow();
   }),
 
   isOnOriginatingSnapshot: computed(
     'commentThread.originatingSnapshotId',
     'commentThreadSnapshot.id',
-    function() {
+    function () {
       const threadSnapshot = this.commentThread.snapshot;
       const originatingSnapshotId = this.commentThread.originatingSnapshotId;
       if (threadSnapshot.id && originatingSnapshotId) {

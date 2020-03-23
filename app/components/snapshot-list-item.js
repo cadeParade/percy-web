@@ -51,7 +51,7 @@ export default Component.extend(InViewportMixin, {
   shouldRenderImmediately: not('shouldDeferRendering'),
   shouldFullyRender: or('shouldRenderImmediately', '_isInViewport'),
 
-  isActiveSnapshotBlock: computed('activeSnapshotBlockId', 'id', function() {
+  isActiveSnapshotBlock: computed('activeSnapshotBlockId', 'id', function () {
     return get(this, 'activeSnapshotBlockId') === get(this, 'id');
   }),
 
@@ -64,7 +64,7 @@ export default Component.extend(InViewportMixin, {
     get(this, 'updateActiveSnapshotBlockId')(get(this, 'id'));
   },
 
-  filteredComparisons: computed('coverSnapshot', 'activeBrowser', 'userSelectedWidth', function() {
+  filteredComparisons: computed('coverSnapshot', 'activeBrowser', 'userSelectedWidth', function () {
     return filteredComparisons.create({
       snapshot: get(this, 'coverSnapshot'),
       activeBrowser: get(this, 'activeBrowser'),
@@ -77,7 +77,7 @@ export default Component.extend(InViewportMixin, {
     'isBlockApproved',
     'build.isApproved',
     'isActiveSnapshotBlock',
-    function() {
+    function () {
       if (get(this, 'isActiveSnapshotBlock') || get(this, 'build.isApproved')) {
         return true;
       } else if (!hasDiffForBrowser(get(this, 'coverSnapshot'), get(this, 'activeBrowser'))) {
@@ -91,7 +91,7 @@ export default Component.extend(InViewportMixin, {
   ),
 
   // eslint-disable-next-line ember/no-observers
-  _scrollToTop: observer('isActiveSnapshotBlock', function() {
+  _scrollToTop: observer('isActiveSnapshotBlock', function () {
     // eslint-disable-line
     if (get(this, '_shouldScroll') && get(this, 'isActiveSnapshotBlock') && !Ember.testing) {
       if (get(this, 'snapshot.isUnchanged')) {

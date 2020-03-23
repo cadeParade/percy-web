@@ -2,11 +2,11 @@ import {before, after} from 'mocha';
 
 export default function setupLocalStorageSandbox() {
   let prevLocalStorage;
-  before(function() {
+  before(function () {
     prevLocalStorage = _serializeLocalStorage();
   });
 
-  after(function() {
+  after(function () {
     _restoreLocalStorage(prevLocalStorage);
   });
 }

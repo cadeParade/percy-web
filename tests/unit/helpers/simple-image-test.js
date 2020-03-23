@@ -3,8 +3,8 @@ import {expect} from 'chai';
 import {describe, it} from 'mocha';
 import {simpleImageHelper} from 'percy-web/helpers/simple-image';
 
-describe('simple-image helper', function() {
-  it('renders image tag', function() {
+describe('simple-image helper', function () {
+  it('renders image tag', function () {
     let image = EmberObject.create({
       url: '/foo',
       width: 100,

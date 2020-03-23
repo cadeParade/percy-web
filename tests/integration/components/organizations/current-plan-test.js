@@ -10,7 +10,7 @@ import {render} from '@ember/test-helpers';
 import sinon from 'sinon';
 import mockIntercomService from 'percy-web/tests/helpers/mock-intercom-service';
 
-describe('Integration: CurrentPlan', function() {
+describe('Integration: CurrentPlan', function () {
   setupRenderingTest('current-plan', {
     integration: true,
   });
@@ -22,12 +22,12 @@ describe('Integration: CurrentPlan', function() {
   let orgWEnterprisePlan;
   let orgWLegacyPlan;
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
   });
 
-  describe('rendering realistic combinations', function() {
-    beforeEach(function() {
+  describe('rendering realistic combinations', function () {
+    beforeEach(function () {
       orgWFreePlan = make('organization', 'withFreePlan');
       orgWTrialPlan = make('organization', 'withTrialPlan');
       orgWPaidPlan = make('organization', 'withPaidPlan');
@@ -48,7 +48,7 @@ describe('Integration: CurrentPlan', function() {
       });
     });
 
-    it('renders all combinations', async function() {
+    it('renders all combinations', async function () {
       await render(hbs`
         <div class="m1 font-semibold">Trial plan</div>
         <Organizations::CurrentPlan
@@ -85,7 +85,7 @@ describe('Integration: CurrentPlan', function() {
       await percySnapshot(this.test);
     });
 
-    it('displays trial plan correctly', async function() {
+    it('displays trial plan correctly', async function () {
       await render(hbs`<Organizations::CurrentPlan
         @organization={{orgWTrialPlan}}
       />`);
@@ -98,7 +98,7 @@ describe('Integration: CurrentPlan', function() {
       expect(CurrentPlan.isTrialBlurbVisible).to.equal(true);
     });
 
-    it('displays free plan correctly', async function() {
+    it('displays free plan correctly', async function () {
       await render(hbs`<Organizations::CurrentPlan
         @organization={{orgWFreePlan}}
       />`);
@@ -111,7 +111,7 @@ describe('Integration: CurrentPlan', function() {
       expect(CurrentPlan.isFreeBlurbVisible).to.equal(true);
     });
 
-    it('displays v3 self-serve plan correctly', async function() {
+    it('displays v3 self-serve plan correctly', async function () {
       await render(hbs`<Organizations::CurrentPlan
         @organization={{orgWPaidPlan}}
       />`);
@@ -124,7 +124,7 @@ describe('Integration: CurrentPlan', function() {
       expect(CurrentPlan.isContactBlurbVisible).to.equal(true);
     });
 
-    it('displays legacy plan correctly', async function() {
+    it('displays legacy plan correctly', async function () {
       await render(hbs`<Organizations::CurrentPlan
         @organization={{orgWLegacyPlan}}
       />`);
@@ -137,7 +137,7 @@ describe('Integration: CurrentPlan', function() {
       expect(CurrentPlan.isDeprecatedBlurbVisible).to.equal(true);
     });
 
-    it('displays sponsored plan correctly', async function() {
+    it('displays sponsored plan correctly', async function () {
       await render(hbs`<Organizations::CurrentPlan
         @organization={{orgWSponsoredPlan}}
       />`);
@@ -150,7 +150,7 @@ describe('Integration: CurrentPlan', function() {
       expect(CurrentPlan.isContactBlurbVisible).to.equal(true);
     });
 
-    it('displays enterprise plan correctly', async function() {
+    it('displays enterprise plan correctly', async function () {
       await render(hbs`<Organizations::CurrentPlan
         @organization={{orgWEnterprisePlan}}
       />`);
@@ -164,8 +164,8 @@ describe('Integration: CurrentPlan', function() {
     });
   });
 
-  describe('showIntercom actions', function() {
-    it('calls showIntercom action with free plan', async function() {
+  describe('showIntercom actions', function () {
+    it('calls showIntercom action with free plan', async function () {
       const orgWFreePlan = make('organization', 'withFreePlan');
       const showSupportStub = sinon.stub();
       mockIntercomService(this, showSupportStub);
@@ -180,7 +180,7 @@ describe('Integration: CurrentPlan', function() {
       expect(showSupportStub).to.have.been.called;
     });
 
-    it('calls showIntercom action with paid plan', async function() {
+    it('calls showIntercom action with paid plan', async function () {
       const orgWPaidPlan = make('organization', 'withPaidPlan');
       const showSupportStub = sinon.stub();
       mockIntercomService(this, showSupportStub);

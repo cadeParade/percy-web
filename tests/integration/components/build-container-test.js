@@ -12,17 +12,17 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import mockSnapshotQueryService from 'percy-web/tests/helpers/mock-snapshot-query-service';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: BuildContainer', function() {
+describe('Integration: BuildContainer', function () {
   setupRenderingTest('build-container', {
     integration: true,
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
   });
 
-  describe('snapshot display during different build states', function() {
-    beforeEach(async function() {
+  describe('snapshot display during different build states', function () {
+    beforeEach(async function () {
       const build = make('build', 'withBaseBuild', {buildNumber: 1});
       const snapshotsChanged = [make('snapshot', 'withComparisons', {build})];
       const allChangedBrowserSnapshotsSorted = {firefox: snapshotsChanged};
@@ -41,7 +41,7 @@ describe('Integration: BuildContainer', function() {
       />`);
     });
 
-    it('does not display snapshots while build is processing', async function() {
+    it('does not display snapshots while build is processing', async function () {
       this.set('build.state', 'processing');
       this.set('build.totalComparisons', 2312);
       this.set('build.totalComparisonsFinished', 2187);
@@ -50,14 +50,14 @@ describe('Integration: BuildContainer', function() {
       expect(BuildPage.snapshotList.isVisible).to.equal(false);
     });
 
-    it('does not display snapshots while build is pending', async function() {
+    it('does not display snapshots while build is pending', async function () {
       this.set('build.state', 'pending');
 
       await percySnapshot(this.test, {darkMode: true});
       expect(BuildPage.snapshotList.isVisible).to.equal(false);
     });
 
-    it('does not display snapshots when build is failed', async function() {
+    it('does not display snapshots when build is failed', async function () {
       const failedBuild = make('build', 'withBaseBuild', 'failed');
       this.set('build', failedBuild);
 
@@ -65,7 +65,7 @@ describe('Integration: BuildContainer', function() {
       expect(BuildPage.snapshotList.isVisible).to.equal(false);
     });
 
-    it('does not display snapshots when build is expired', async function() {
+    it('does not display snapshots when build is expired', async function () {
       this.set('build.state', 'expired');
 
       await percySnapshot(this.test, {darkMode: true});
@@ -73,7 +73,7 @@ describe('Integration: BuildContainer', function() {
     });
   });
 
-  it('does not display snapshots when isSnapshotsLoading is true', async function() {
+  it('does not display snapshots when isSnapshotsLoading is true', async function () {
     const build = make('build', 'withBaseBuild', 'finished');
     const snapshotsChanged = DS.PromiseArray.create({promise: defer().promise});
     const allChangedBrowserSnapshotsSorted = {'firefox-id': snapshotsChanged};
@@ -91,7 +91,7 @@ describe('Integration: BuildContainer', function() {
     expect(BuildPage.snapshotList.isVisible).to.equal(false);
   });
 
-  it('displays snapshots when build is finished', async function() {
+  it('displays snapshots when build is finished', async function () {
     const build = make('build', 'withBaseBuild', 'finished');
     const diffSnapshot = make('snapshot', 'withComparisons', {build});
     const allChangedBrowserSnapshotsSorted = {'firefox-id': [diffSnapshot]};
@@ -114,7 +114,7 @@ describe('Integration: BuildContainer', function() {
     expect(BuildPage.snapshotList.isNoDiffsBatchVisible).to.equal(true);
   });
 
-  it('shows loading indicator while fetching unchanged diffs', async function() {
+  it('shows loading indicator while fetching unchanged diffs', async function () {
     const stub = sinon.stub();
     const build = make('build', 'withBaseBuild', 'finished');
     const allChangedBrowserSnapshotsSorted = {'firefox-id': []};
@@ -137,7 +137,7 @@ describe('Integration: BuildContainer', function() {
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  it('gets snapshots with no diffs after expanding no diffs section', async function() {
+  it('gets snapshots with no diffs after expanding no diffs section', async function () {
     const stub = sinon.stub();
     const build = make('build', 'withBaseBuild', 'finished');
     const allChangedBrowserSnapshotsSorted = {'firefox-id': []};
@@ -165,8 +165,8 @@ describe('Integration: BuildContainer', function() {
     expect(BuildPage.snapshotList.snapshots.length).to.equal(numSnapshotsUnchanged);
   });
 
-  describe('when a build has more than one browser', function() {
-    beforeEach(async function() {
+  describe('when a build has more than one browser', function () {
+    beforeEach(async function () {
       const build = make('build', 'withBaseBuild', 'finished', 'withTwoBrowsers');
       const comparisonWithBigDiffInFirefox = make('comparison', {
         build,
@@ -228,7 +228,7 @@ describe('Integration: BuildContainer', function() {
       />`);
     });
 
-    it('decrements browser count badge when a snapshot is approved', async function() {
+    it('decrements browser count badge when a snapshot is approved', async function () {
       expect(BuildPage.browserSwitcher.chromeButton.diffCount).to.equal('1');
       expect(BuildPage.browserSwitcher.firefoxButton.diffCount).to.equal('2');
 
@@ -238,7 +238,7 @@ describe('Integration: BuildContainer', function() {
       expect(BuildPage.browserSwitcher.firefoxButton.diffCount).to.equal('1');
     });
 
-    it('shows unchanged snapshots when it is toggled', async function() {
+    it('shows unchanged snapshots when it is toggled', async function () {
       expect(BuildPage.isUnchangedPanelVisible).to.equal(true);
       expect(BuildPage.snapshots.length).to.equal(2);
       await BuildPage.clickToggleNoDiffsSection();
@@ -260,7 +260,7 @@ describe('Integration: BuildContainer', function() {
       expect(BuildPage.snapshots.length).to.equal(3);
     });
 
-    it('selects browser with most diffs by default', async function() {
+    it('selects browser with most diffs by default', async function () {
       expect(BuildPage.browserSwitcher.chromeButton.isActive).to.equal(false);
       expect(BuildPage.browserSwitcher.firefoxButton.isActive).to.equal(true);
     });
@@ -276,7 +276,7 @@ describe('Integration: BuildContainer', function() {
       expect(BuildPage.browserSwitcher.firefoxButton.isActive).to.equal(false);
     });
 
-    it('selects browser with most unreviewed diffs by default', async function() {
+    it('selects browser with most unreviewed diffs by default', async function () {
       this.set('allChangedBrowserSnapshotsSorted', {
         'chrome-id': [{isUnreviewed: true}],
         'firefox-id': [{isUnreviewed: false}, {isUnreviewed: false}],
@@ -287,8 +287,8 @@ describe('Integration: BuildContainer', function() {
     });
   });
 
-  describe('when isBuildApprovable is false', function() {
-    beforeEach(async function() {
+  describe('when isBuildApprovable is false', function () {
+    beforeEach(async function () {
       const build = make('build', 'withBaseBuild', 'finished');
       const diffSnapshot = make('snapshot', 'withComparisons', {build});
       const allChangedBrowserSnapshotsSorted = {'firefox-id': [diffSnapshot]};
@@ -309,14 +309,14 @@ describe('Integration: BuildContainer', function() {
       />`);
     });
 
-    it('displays notice that build is public', async function() {
+    it('displays notice that build is public', async function () {
       expect(BuildPage.isPublicBuildNoticeVisible).to.equal(true);
       await percySnapshot(this.test, {darkMode: true});
     });
   });
 
-  describe('toggle all diffs', function() {
-    beforeEach(async function() {
+  describe('toggle all diffs', function () {
+    beforeEach(async function () {
       const build = make('build', 'withBaseBuild', 'finished');
       const diffSnapshot = make('snapshot', 'withComparisons', {build});
       const group = makeList('snapshot', 3, 'withComparisons', {build, fingerprint: 'aaa'});
@@ -335,7 +335,7 @@ describe('Integration: BuildContainer', function() {
       />`);
     });
 
-    it('toggles diffs of snapshots and snapshot groups', async function() {
+    it('toggles diffs of snapshots and snapshot groups', async function () {
       BuildPage.snapshotBlocks.forEach(block => expect(block.isDiffImageVisible).to.equal(true));
       await BuildPage.clickToggleDiffsButton();
       BuildPage.snapshotBlocks.forEach(block => expect(block.isDiffImageVisible).to.equal(false));
@@ -343,7 +343,7 @@ describe('Integration: BuildContainer', function() {
       BuildPage.snapshotBlocks.forEach(block => expect(block.isDiffImageVisible).to.equal(true));
     });
 
-    it('toggles snapshots within group when group is expanded', async function() {
+    it('toggles snapshots within group when group is expanded', async function () {
       const group = BuildPage.snapshotBlocks[0].snapshotGroup;
       await group.toggleShowAllSnapshots();
       group.snapshots.forEach(snapshot => expect(snapshot.isDiffImageVisible).to.equal(true));

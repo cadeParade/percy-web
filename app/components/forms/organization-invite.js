@@ -20,7 +20,7 @@ export default BaseFormComponent.extend({
       organization: this.organization,
     });
   },
-  model: computed('organization', 'store', function() {
+  model: computed('organization', 'store', function () {
     return this.newModel();
   }),
   validator: null,

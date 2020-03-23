@@ -14,11 +14,11 @@ export default Component.extend({
   checkedValue: null,
   uncheckedValue: null,
 
-  shouldBeChecked: computed('changeset.isPristine', 'checkedValue', function() {
+  shouldBeChecked: computed('changeset.isPristine', 'checkedValue', function () {
     return this.get('changeset.' + this.property) === this.checkedValue;
   }),
 
-  fieldErrors: computed('changeset.error', function() {
+  fieldErrors: computed('changeset.error', function () {
     return get(this.get('changeset.error'), this.property);
   }),
   actions: {

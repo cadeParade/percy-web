@@ -17,11 +17,11 @@ export default Component.extend({
 
   classNames: ['FormFieldsCheckboxSet'],
 
-  propertyValue: computed('changeset.isPristine', function() {
+  propertyValue: computed('changeset.isPristine', function () {
     return this.get(`changeset.${this.property}`);
   }),
 
-  fieldErrors: computed('changeset.error', function() {
+  fieldErrors: computed('changeset.error', function () {
     return get(this.get('changeset.error'), this.property);
   }),
 

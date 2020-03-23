@@ -7,7 +7,7 @@ import sinon from 'sinon';
 import browserSwitcher from 'percy-web/tests/pages/components/browser-switcher';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: BrowserSwitcher', function() {
+describe('Integration: BrowserSwitcher', function () {
   setupRenderingTest('browser-switcher', {
     integration: true,
   });
@@ -15,7 +15,7 @@ describe('Integration: BrowserSwitcher', function() {
   let browsers;
   let updateActiveBrowserStub;
 
-  beforeEach(async function() {
+  beforeEach(async function () {
     setupFactoryGuy(this);
     const store = this.owner.lookup('service:store');
 
@@ -44,31 +44,31 @@ describe('Integration: BrowserSwitcher', function() {
     />`);
   });
 
-  it('renders correct number of browsers', function() {
+  it('renders correct number of browsers', function () {
     expect(browserSwitcher.buttons.length).to.equal(2);
   });
 
-  it('displays the correct browser as active', function() {
+  it('displays the correct browser as active', function () {
     expect(browserSwitcher.chromeButton.isActive).to.equal(true);
   });
 
-  it('calls updateActiveBrowser when button is clicked', async function() {
+  it('calls updateActiveBrowser when button is clicked', async function () {
     await browserSwitcher.switchBrowser();
     expect(updateActiveBrowserStub).to.have.been.calledWith(browsers[0]);
   });
 
-  it('does not display diff counts if there is not a build provided', function() {
+  it('does not display diff counts if there is not a build provided', function () {
     this.set('build', null);
     expect(browserSwitcher.firefoxButton.isDiffCountPresent).to.equal(false);
     expect(browserSwitcher.chromeButton.isDiffCountPresent).to.equal(false);
   });
 
-  it('it displays diff counts if there is a build provided', function() {
+  it('it displays diff counts if there is a build provided', function () {
     expect(browserSwitcher.firefoxButton.diffCount).to.equal('2');
     expect(browserSwitcher.chromeButton.diffCount).to.equal('1');
   });
 
-  it('displays chrome button first', function() {
+  it('displays chrome button first', function () {
     expect(browserSwitcher.buttons.objectAt(0).isChrome).to.equal(true);
   });
 });

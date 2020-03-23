@@ -70,18 +70,18 @@ export default class BillingRoute extends Route.extend(AuthenticatedRouteMixin) 
     return this._updateCreditCard.perform(stripeElement, planId);
   }
 
-  @task(function*(subscriptionChangeset) {
+  @task(function* (subscriptionChangeset) {
     yield subscriptionChangeset.save();
   })
   _saveEmail;
 
-  @task(function*(stripeElement, planId) {
+  @task(function* (stripeElement, planId) {
     const response = yield this.stripe.createToken(stripeElement);
     return this._updateSubscription.perform(planId, response.token);
   })
   _updateCreditCard;
 
-  @task(function*(planId, token) {
+  @task(function* (planId, token) {
     const organization = this.modelFor(this.routeName).organization;
     const subscriptionService = this.subscriptionService;
 

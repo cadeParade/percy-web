@@ -2,27 +2,27 @@ import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import {visit, click} from '@ember/test-helpers';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 
-describe('Acceptance: Error page', function() {
+describe('Acceptance: Error page', function () {
   setupAcceptance();
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     server.create('user', 'withGithubIdentity');
   });
 
-  it('displays 403 error', async function() {
+  it('displays 403 error', async function () {
     server.get('/organizations/not-an-org', {message: 'forbidden'}, 403);
     await visit('/organizations/not-an-org');
     await percySnapshot(this.test);
   });
 
-  it('displays 404 error', async function() {
+  it('displays 404 error', async function () {
     server.get('/organizations/not-an-org', {message: 'not authorized'}, 404);
     await visit('/organizations/not-an-org');
     await click('[data-test-error-toggle]');
     await percySnapshot(this.test);
   });
 
-  it('displays catch-all error', async function() {
+  it('displays catch-all error', async function () {
     server.get('/organizations/not-an-org', {message: 'bad things happened'}, 500);
     await visit('/organizations/not-an-org');
     await click('[data-test-error-toggle]');

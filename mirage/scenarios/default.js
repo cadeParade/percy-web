@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export default function(server) {
+export default function (server) {
   server.logging = true;
 
   let user = server.create('user', {_currentLoginInTest: true});

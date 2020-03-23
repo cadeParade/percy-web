@@ -5,13 +5,13 @@ import percySnapshot from '@percy/ember';
 import PasswordStatusPanel from 'percy-web/tests/pages/components/password-updated-status-panel';
 import {getRootElement, render} from '@ember/test-helpers';
 
-describe('Integration: PasswordUpdatedStatusPanel;', function() {
+describe('Integration: PasswordUpdatedStatusPanel;', function () {
   setupRenderingTest('password-updated-status-panel', {
     integration: true,
   });
 
-  describe('when success is true', function() {
-    it('renders success panel', async function() {
+  describe('when success is true', function () {
+    it('renders success panel', async function () {
       this.set('success', 'true');
       await render(hbs`<PasswordUpdatedStatusPanel
         @success={{success}}
@@ -27,7 +27,7 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
       await percySnapshot(this.test.fullTitle(), getRootElement());
     });
 
-    it('renders "Continue to Profile" button when user is logged in', async function() {
+    it('renders "Continue to Profile" button when user is logged in', async function () {
       this.set('success', 'true');
       this.set('currentUser', 'something is present');
       await render(hbs`<PasswordUpdatedStatusPanel
@@ -41,7 +41,7 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
       await percySnapshot(this.test.fullTitle(), getRootElement());
     });
 
-    it('renders "Sign in" button when user is not logged in', async function() {
+    it('renders "Sign in" button when user is not logged in', async function () {
       this.set('success', 'true');
       this.set('currentUser', null);
       await render(hbs`<PasswordUpdatedStatusPanel
@@ -55,8 +55,8 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
       await percySnapshot(this.test.fullTitle(), getRootElement());
     });
   });
-  describe('when success is false', function() {
-    it('renders failure panel', async function() {
+  describe('when success is false', function () {
+    it('renders failure panel', async function () {
       this.set('success', 'false');
       await render(hbs`<PasswordUpdatedStatusPanel @success={{success}} />`);
 
@@ -71,7 +71,7 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
       await percySnapshot(this.test.fullTitle(), getRootElement());
     });
 
-    it('renders "Continue to Profile" button when user is logged in', async function() {
+    it('renders "Continue to Profile" button when user is logged in', async function () {
       this.set('success', 'false');
       this.set('currentUser', 'something is present');
       await render(hbs`<PasswordUpdatedStatusPanel
@@ -85,7 +85,7 @@ describe('Integration: PasswordUpdatedStatusPanel;', function() {
       await percySnapshot(this.test.fullTitle(), getRootElement());
     });
 
-    it('renders "Sign in" button when user is not logged in', async function() {
+    it('renders "Sign in" button when user is not logged in', async function () {
       this.set('success', 'false');
       this.set('currentUser', null);
       await render(hbs`<PasswordUpdatedStatusPanel

@@ -26,9 +26,7 @@ export default Factory.extend({
   withTrialPlan: trait({
     trialStart: () => moment(),
     trialEnd: () => {
-      return moment()
-        .add(14, 'days')
-        .add(1, 'hour');
+      return moment().add(14, 'days').add(1, 'hour');
     },
     plan: association('trial'),
   }),

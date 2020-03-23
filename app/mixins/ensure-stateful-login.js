@@ -136,9 +136,7 @@ var EnsureStatefulLogin = Mixin.create({
 });
 
 function _removeAuth0PasswordlessStyle() {
-  $('style:contains("auth0-lock-cred-pane")')
-    .not('#auth0-lock-style')
-    .remove();
+  $('style:contains("auth0-lock-cred-pane")').not('#auth0-lock-style').remove();
 }
 
 export default EnsureStatefulLogin;

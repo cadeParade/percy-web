@@ -8,7 +8,7 @@ import hbs from 'htmlbars-inline-precompile';
 import {render} from '@ember/test-helpers';
 import stubSession from 'percy-web/tests/helpers/stub-session';
 
-describe('Integration: UsersHeader', function() {
+describe('Integration: UsersHeader', function () {
   setupRenderingTest('organizations/users-header-test', {
     integration: true,
   });
@@ -16,14 +16,14 @@ describe('Integration: UsersHeader', function() {
   const seatsUsed = 3;
   const seatLimit = 10;
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
     this.setProperties({isInviteFormAllowed: false});
   });
 
-  describe('when user is admin', function() {
+  describe('when user is admin', function () {
     let organization;
-    beforeEach(async function() {
+    beforeEach(async function () {
       organization = make('organization', 'withAdminUser', {
         name: 'Meow Mediaworks',
         hasSeatsRemaining: true,
@@ -36,7 +36,7 @@ describe('Integration: UsersHeader', function() {
       this.setProperties({organization});
     });
 
-    it('displays basic information', async function() {
+    it('displays basic information', async function () {
       await render(hbs`<Organizations::UsersHeader
         @organization={{organization}}
         @isInviteFormAllowed={{isInviteFormAllowed}}
@@ -51,17 +51,17 @@ describe('Integration: UsersHeader', function() {
       await percySnapshot(this.test);
     });
 
-    describe('when isInviteFormAllowed=false', function() {
-      beforeEach(async function() {
+    describe('when isInviteFormAllowed=false', function () {
+      beforeEach(async function () {
         this.set('isInviteFormAllowed', false);
       });
 
-      describe('when seats are available', function() {
-        beforeEach(async function() {
+      describe('when seats are available', function () {
+        beforeEach(async function () {
           organization.set('seatsRemaining', 1);
         });
 
-        it('form is hidden & button is enabled', async function() {
+        it('form is hidden & button is enabled', async function () {
           await render(hbs`<Organizations::UsersHeader
             @organization={{organization}}
             @isInviteFormAllowed={{isInviteFormAllowed}}
@@ -73,12 +73,12 @@ describe('Integration: UsersHeader', function() {
           await percySnapshot(this.test);
         });
 
-        describe('when org has forced sso', function() {
-          beforeEach(async function() {
+        describe('when org has forced sso', function () {
+          beforeEach(async function () {
             make('saml-integration', 'forced', {organization});
           });
 
-          it('form is hidden & button is disabled', async function() {
+          it('form is hidden & button is disabled', async function () {
             await render(hbs`<Organizations::UsersHeader
               @organization={{organization}}
               @isInviteFormAllowed={{isInviteFormAllowed}}
@@ -91,12 +91,12 @@ describe('Integration: UsersHeader', function() {
         });
       });
 
-      describe('when seats are unavailable', function() {
-        beforeEach(function() {
+      describe('when seats are unavailable', function () {
+        beforeEach(function () {
           organization.set('seatsRemaining', 0);
         });
 
-        it('form is hidden & button is disabled', async function() {
+        it('form is hidden & button is disabled', async function () {
           await render(hbs`<Organizations::UsersHeader
             @organization={{organization}}
             @isInviteFormAllowed={{isInviteFormAllowed}}
@@ -111,8 +111,8 @@ describe('Integration: UsersHeader', function() {
         });
       });
 
-      describe('when seatLimit is null', function() {
-        it('form and usage text are hidden & button is enabled', async function() {
+      describe('when seatLimit is null', function () {
+        it('form and usage text are hidden & button is enabled', async function () {
           organization.set('seatLimit', null);
 
           await render(hbs`<Organizations::UsersHeader
@@ -131,17 +131,17 @@ describe('Integration: UsersHeader', function() {
       });
     });
 
-    describe('when isInviteFormAllowed=true', function() {
-      beforeEach(async function() {
+    describe('when isInviteFormAllowed=true', function () {
+      beforeEach(async function () {
         this.set('isInviteFormAllowed', true);
       });
 
-      describe('when seats are available', function() {
-        beforeEach(async function() {
+      describe('when seats are available', function () {
+        beforeEach(async function () {
           organization.set('seatsRemaining', 1);
         });
 
-        it('button is disabled & form is displayed', async function() {
+        it('button is disabled & form is displayed', async function () {
           await render(hbs`<Organizations::UsersHeader
             @organization={{organization}}
             @isInviteFormAllowed={{isInviteFormAllowed}}
@@ -153,12 +153,12 @@ describe('Integration: UsersHeader', function() {
           await percySnapshot(this.test);
         });
 
-        describe('when org has forced sso', function() {
-          beforeEach(async function() {
+        describe('when org has forced sso', function () {
+          beforeEach(async function () {
             make('saml-integration', 'forced', {organization});
           });
 
-          it('form is hidden & button is disabled', async function() {
+          it('form is hidden & button is disabled', async function () {
             await render(hbs`<Organizations::UsersHeader
               @organization={{organization}}
               @isInviteFormAllowed={{isInviteFormAllowed}}
@@ -171,8 +171,8 @@ describe('Integration: UsersHeader', function() {
         });
       });
 
-      describe('when seats are unavailable', function() {
-        beforeEach(async function() {
+      describe('when seats are unavailable', function () {
+        beforeEach(async function () {
           organization.set('seatLimit', 3);
           await render(hbs`<Organizations::UsersHeader
             @organization={{organization}}
@@ -180,7 +180,7 @@ describe('Integration: UsersHeader', function() {
           />`);
         });
 
-        it('button is disabled & form is hidden', async function() {
+        it('button is disabled & form is hidden', async function () {
           expect(UsersHeader.inviteButton.isDisabled).to.equal(true);
           expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(true);
           expect(UsersHeader.inviteButtonTooltip.label).to.equal('No seats remaining');
@@ -191,8 +191,8 @@ describe('Integration: UsersHeader', function() {
         });
       });
 
-      describe('when seatLimit is null', function() {
-        it('button is disabled & form is displayed', async function() {
+      describe('when seatLimit is null', function () {
+        it('button is disabled & form is displayed', async function () {
           organization.set('seatLimit', null);
 
           await render(hbs`<Organizations::UsersHeader
@@ -210,9 +210,9 @@ describe('Integration: UsersHeader', function() {
     });
   });
 
-  describe('when user is member', function() {
+  describe('when user is member', function () {
     let organization;
-    beforeEach(async function() {
+    beforeEach(async function () {
       organization = make('organization', 'withUsers', {
         name: 'Meow Mediaworks',
         hasSeatsRemaining: true,
@@ -226,9 +226,9 @@ describe('Integration: UsersHeader', function() {
     });
     const tooltipText = 'Only admins can invite new users';
 
-    describe('when isInviteFormAllowed=false', function() {
-      describe('when seats are available', function() {
-        beforeEach(async function() {
+    describe('when isInviteFormAllowed=false', function () {
+      describe('when seats are available', function () {
+        beforeEach(async function () {
           organization.set('seatsRemaining', 1);
           await render(hbs`<Organizations::UsersHeader
             @organization={{organization}}
@@ -236,7 +236,7 @@ describe('Integration: UsersHeader', function() {
           />`);
         });
 
-        it('form is hidden & button is disabled', async function() {
+        it('form is hidden & button is disabled', async function () {
           expect(UsersHeader.inviteButton.isDisabled).to.equal(true);
           expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(true);
           expect(UsersHeader.inviteButtonTooltip.label).to.equal(tooltipText);
@@ -247,9 +247,9 @@ describe('Integration: UsersHeader', function() {
       });
     });
 
-    describe('when isInviteFormAllowed=true', function() {
-      describe('when seats are available', function() {
-        beforeEach(async function() {
+    describe('when isInviteFormAllowed=true', function () {
+      describe('when seats are available', function () {
+        beforeEach(async function () {
           organization.set('seatsRemaining', 1);
           await render(hbs`<Organizations::UsersHeader
             @organization={{organization}}
@@ -257,7 +257,7 @@ describe('Integration: UsersHeader', function() {
           />`);
         });
 
-        it('button is disabled & form is hidden', async function() {
+        it('button is disabled & form is hidden', async function () {
           expect(UsersHeader.inviteButton.isDisabled).to.equal(true);
           expect(UsersHeader.inviteButtonTooltip.isActive).to.equal(true);
           expect(UsersHeader.inviteButtonTooltip.label).to.equal(tooltipText);

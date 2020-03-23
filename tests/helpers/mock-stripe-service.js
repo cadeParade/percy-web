@@ -7,11 +7,11 @@ export default function mockStripeService(context) {
       load: () => {},
       elements() {
         return {
-          create: function() {
+          create: function () {
             return {
-              mount: function() {},
-              on: function() {},
-              unmount: function() {},
+              mount: function () {},
+              on: function () {},
+              unmount: function () {},
             };
           },
         };

@@ -7,21 +7,21 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {make} from 'ember-data-factory-guy';
 import faker from 'faker';
 
-describe('BillingRoute', function() {
+describe('BillingRoute', function () {
   let route;
 
   setupTest();
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
     route = this.owner.lookup('route:organizations/organization/billing');
   });
 
-  describe('actions', function() {
+  describe('actions', function () {
     let changeSubscriptionStub;
     let organization;
 
-    beforeEach(function() {
+    beforeEach(function () {
       organization = make('organization', 'withPaidPlan');
       changeSubscriptionStub = sinon.stub();
 
@@ -31,19 +31,19 @@ describe('BillingRoute', function() {
       });
     });
 
-    describe('#updateEmail', function() {
-      it('calls save on provided object', async function() {
+    describe('#updateEmail', function () {
+      it('calls save on provided object', async function () {
         const saveStub = sinon.stub();
         await route.send('updateEmail', {save: saveStub});
         expect(saveStub).to.have.been.called;
       });
     });
 
-    describe('#updateSubscription', function() {
+    describe('#updateSubscription', function () {
       let newPlanId;
       let token;
 
-      it('calls changeSubscription on subscriptionService', async function() {
+      it('calls changeSubscription on subscriptionService', async function () {
         newPlanId = faker.lorem.word(2).dasherize();
         token = faker.random.uuid();
         await route.send('updateSubscription', newPlanId, token);
@@ -51,8 +51,8 @@ describe('BillingRoute', function() {
       });
     });
 
-    describe('#updateCreditCard', function() {
-      it('creates token and calls changeSubscription on subscriptionService', async function() {
+    describe('#updateCreditCard', function () {
+      it('creates token and calls changeSubscription on subscriptionService', async function () {
         const planId = faker.lorem.word(2).dasherize();
         const fakeStripeElement = faker.lorem.word(4);
         const token = faker.random.uuid();

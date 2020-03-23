@@ -9,20 +9,20 @@ import sinon from 'sinon';
 import {resolve} from 'rsvp';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: BillingCardUpdater', function() {
+describe('Integration: BillingCardUpdater', function () {
   setupRenderingTest('organizations/billing-card-updater', {
     integration: true,
   });
 
   let organization;
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
     mockStripeService(this);
     organization = make('organization', 'withPaidPlan');
     this.setProperties({organization});
   });
 
-  it('disables "Update Credit Card" button when card is not complete', async function() {
+  it('disables "Update Credit Card" button when card is not complete', async function () {
     await render(hbs`<
       Organizations::BillingCardUpdater
       @organization={{organization}}
@@ -32,7 +32,7 @@ describe('Integration: BillingCardUpdater', function() {
     expect(BillingCardUpdater.isSubmitCardButtonDisabled).to.equal(true);
   });
 
-  it('enables "Update Credit Card" button when card is complete', async function() {
+  it('enables "Update Credit Card" button when card is complete', async function () {
     await render(hbs`<
       Organizations::BillingCardUpdater
       @organization={{organization}}
@@ -42,7 +42,7 @@ describe('Integration: BillingCardUpdater', function() {
     expect(BillingCardUpdater.isSubmitCardButtonDisabled).to.equal(false);
   });
 
-  it('calls hideForm when the cancel button is clicked', async function() {
+  it('calls hideForm when the cancel button is clicked', async function () {
     const hideFormStub = sinon.stub().returns(resolve());
     this.setProperties({hideFormStub});
     await render(hbs`<
@@ -55,16 +55,16 @@ describe('Integration: BillingCardUpdater', function() {
     expect(hideFormStub).to.have.been.called;
   });
 
-  describe('submitting card', function() {
+  describe('submitting card', function () {
     let updateCreditCardStub;
     let hideFormStub;
-    beforeEach(async function() {
+    beforeEach(async function () {
       updateCreditCardStub = sinon.stub().returns(resolve());
       hideFormStub = sinon.stub().returns(resolve());
       this.setProperties({updateCreditCardStub, hideFormStub});
     });
 
-    it('calls updateCreditCard when submitted', async function() {
+    it('calls updateCreditCard when submitted', async function () {
       await render(hbs`<
         Organizations::BillingCardUpdater
         @organization={{organization}}
@@ -80,7 +80,7 @@ describe('Integration: BillingCardUpdater', function() {
       );
     });
 
-    it('calls hideForm after save', async function() {
+    it('calls hideForm after save', async function () {
       await render(hbs`<
         Organizations::BillingCardUpdater
         @organization={{organization}}
@@ -93,7 +93,7 @@ describe('Integration: BillingCardUpdater', function() {
       expect(hideFormStub).to.have.been.called;
     });
 
-    it('shows flashMessage after success', async function() {
+    it('shows flashMessage after success', async function () {
       const flashMessageService = this.owner
         .lookup('service:flash-messages')
         .registerTypes(['success']);
@@ -111,7 +111,7 @@ describe('Integration: BillingCardUpdater', function() {
       expect(flashMessageSuccessStub).to.have.been.called;
     });
 
-    it('shows button loading state when save task is running', async function() {
+    it('shows button loading state when save task is running', async function () {
       const cardSaveTask = {isRunning: true};
       this.setProperties({cardSaveTask});
       await render(hbs`<

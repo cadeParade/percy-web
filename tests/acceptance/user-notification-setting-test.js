@@ -4,7 +4,7 @@ import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {findAll, settled, waitUntil} from '@ember/test-helpers';
 import Response from 'ember-cli-mirage/response';
 
-describe('Acceptance: User notification settings', function() {
+describe('Acceptance: User notification settings', function () {
   setupAcceptance();
 
   async function expectButtonLoadingState() {
@@ -17,12 +17,12 @@ describe('Acceptance: User notification settings', function() {
     return server.db.userNotificationSetting;
   }
 
-  describe('when a user does not have a user-notification-setting', function() {
-    setupSession(function(server) {
+  describe('when a user does not have a user-notification-setting', function () {
+    setupSession(function (server) {
       server.create('user');
     });
 
-    it('creates a new setting object', async function() {
+    it('creates a new setting object', async function () {
       await NotifSettings.visitUserNotificationSettingsPage();
       expect(dbSettingObjects().length).to.equal(0);
 
@@ -48,13 +48,13 @@ describe('Acceptance: User notification settings', function() {
     });
   });
 
-  describe('when a user has a user-notification-setting', function() {
-    setupSession(function(server) {
+  describe('when a user has a user-notification-setting', function () {
+    setupSession(function (server) {
       const user = server.create('user');
       server.create('userNotificationSetting', 'withNoCommentEmails', {user});
     });
 
-    it('updates existing record', async function() {
+    it('updates existing record', async function () {
       await NotifSettings.visitUserNotificationSettingsPage();
       expect(dbSettingObjects().length).to.equal(1);
       NotifSettings.options.forEach(option => expect(option.isChecked).to.equal(false));
@@ -80,16 +80,16 @@ describe('Acceptance: User notification settings', function() {
     });
   });
 
-  describe('when the save errors', function() {
-    setupSession(function(server) {
+  describe('when the save errors', function () {
+    setupSession(function (server) {
       const user = server.create('user');
       server.create('userNotificationSetting', 'withNoCommentEmails', {user});
-      server.patch('/user-notification-setting/:id', function() {
+      server.patch('/user-notification-setting/:id', function () {
         return new Response(500);
       });
     });
 
-    it('shows flash message and rolls form back', async function() {
+    it('shows flash message and rolls form back', async function () {
       function expectOriginalState() {
         expect(NotifSettings.commentEmailReply.isChecked).to.equal(false);
         expect(NotifSettings.commentEmailMention.isChecked).to.equal(false);

@@ -8,7 +8,7 @@ import SlackIntegrationItem from 'percy-web/tests/pages/components/organizations
 import sinon from 'sinon';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: SlackIntegrationItem', function() {
+describe('Integration: SlackIntegrationItem', function () {
   setupRenderingTest('slack-integration-item', {
     integration: true,
   });
@@ -16,7 +16,7 @@ describe('Integration: SlackIntegrationItem', function() {
   let project;
   let projectOptions;
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
     project = make('project');
     projectOptions = [
@@ -25,11 +25,11 @@ describe('Integration: SlackIntegrationItem', function() {
     ];
   });
 
-  describe('without a config', function() {
+  describe('without a config', function () {
     let slackIntegration;
     let deleteSlackIntegrationStub;
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       slackIntegration = make('slack-integration');
       deleteSlackIntegrationStub = sinon.stub();
       this.setProperties({
@@ -45,7 +45,7 @@ describe('Integration: SlackIntegrationItem', function() {
       />`);
     });
 
-    it('renders the empty integration correctly', async function() {
+    it('renders the empty integration correctly', async function () {
       expect(SlackIntegrationItem.isVisible).to.equal(true);
       expect(SlackIntegrationItem.reminder.isVisible).to.equal(true);
       expect(SlackIntegrationItem.addProjectButton.isVisible).to.equal(true);
@@ -54,18 +54,18 @@ describe('Integration: SlackIntegrationItem', function() {
       await percySnapshot(this.test.fullTitle());
     });
 
-    it('can delete the integration', async function() {
+    it('can delete the integration', async function () {
       await SlackIntegrationItem.deleteIntegrationButton.click();
 
       expect(deleteSlackIntegrationStub).to.have.been.called;
     });
   });
 
-  describe('with configs', function() {
+  describe('with configs', function () {
     let slackIntegration;
     let deleteSlackIntegrationStub;
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       slackIntegration = make('slack-integration');
       makeList('slack-integration-config', 3, {
         slackIntegration,
@@ -79,7 +79,7 @@ describe('Integration: SlackIntegrationItem', function() {
       });
     });
 
-    it('renders the integration correctly for All Projects', async function() {
+    it('renders the integration correctly for All Projects', async function () {
       await render(hbs`<
         Organizations::Integrations::SlackIntegrationItem
         @projectOptions={{projectOptions}}
@@ -92,7 +92,7 @@ describe('Integration: SlackIntegrationItem', function() {
       await percySnapshot(this.test.fullTitle());
     });
 
-    it('renders the integration correctly for a specific project', async function() {
+    it('renders the integration correctly for a specific project', async function () {
       make('slack-integration-config', {
         slackIntegration,
         projectId: project.id,

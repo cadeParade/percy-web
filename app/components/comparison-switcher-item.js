@@ -10,12 +10,12 @@ export default Component.extend({
     this.comparisons = this.comparisons || [];
   },
 
-  matchingComparison: computed('comparisons', 'width', function() {
+  matchingComparison: computed('comparisons', 'width', function () {
     let comparisons = this.comparisons || [];
     return comparisons.findBy('width', this.width);
   }),
 
-  isSelected: computed('selectedWidth', 'width', function() {
+  isSelected: computed('selectedWidth', 'width', function () {
     return parseInt(this.selectedWidth, 10) === this.width;
   }),
 

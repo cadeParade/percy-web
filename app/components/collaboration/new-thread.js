@@ -25,7 +25,7 @@ export default Component.extend({
   },
 
   // Setup @mentions and emoji
-  tributeConfigs: computed(function() {
+  tributeConfigs: computed(function () {
     const org = get(this, 'snapshot.build.project.organization');
     return [this.mentionables.generateOrgUserConfig(org), this.mentionables.generateEmojiConfig()];
   }),

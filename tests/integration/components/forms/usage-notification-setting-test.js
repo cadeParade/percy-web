@@ -7,7 +7,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import percySnapshot from '@percy/ember';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: UsageNotificationSettingForm', function() {
+describe('Integration: UsageNotificationSettingForm', function () {
   setupRenderingTest('forms/usage-notification-setting', {
     integration: true,
   });
@@ -15,12 +15,12 @@ describe('Integration: UsageNotificationSettingForm', function() {
   let organization;
   let setting;
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
   });
 
-  describe('when a setting exists', function() {
-    beforeEach(async function() {
+  describe('when a setting exists', function () {
+    beforeEach(async function () {
       organization = make('organization', 'withUsageNotificationSetting');
       setting = organization.get('usageNotificationSetting');
       setting.set('thresholds', {'snapshot-count': ['1', '20', '33000']});
@@ -31,7 +31,7 @@ describe('Integration: UsageNotificationSettingForm', function() {
         @setting={{setting}} />`);
     });
 
-    it('displays setting information', async function() {
+    it('displays setting information', async function () {
       expect(UsageNotificationSettingForm.isVisible).to.equal(true);
       expect(UsageNotificationSettingForm.isEnabled).to.equal(true);
       expect(UsageNotificationSettingForm.emails.value).to.equal(setting.emails.join(' '));
@@ -41,21 +41,21 @@ describe('Integration: UsageNotificationSettingForm', function() {
     });
   });
 
-  describe('when a setting does not exist', function() {
-    beforeEach(async function() {
+  describe('when a setting does not exist', function () {
+    beforeEach(async function () {
       organization = make('organization');
       this.set('organization', organization);
       await render(hbs`<Forms::UsageNotificationSetting @organization={{organization}} />`);
     });
 
-    it('renders', async function() {
+    it('renders', async function () {
       expect(UsageNotificationSettingForm.isVisible).to.equal(true);
       expect(UsageNotificationSettingForm.isEnabled).to.equal(false);
 
       await percySnapshot(this.test);
     });
 
-    it('requires emails', async function() {
+    it('requires emails', async function () {
       await UsageNotificationSettingForm.emails.fillIn('');
       expect(UsageNotificationSettingForm.errors.text).to.match(/can't be blank/);
       await percySnapshot(this.test.fullTitle() + ' cannot be blank');
@@ -65,7 +65,7 @@ describe('Integration: UsageNotificationSettingForm', function() {
       await percySnapshot(this.test.fullTitle() + ' requires valid data');
     });
 
-    it('requires thresholds', async function() {
+    it('requires thresholds', async function () {
       await UsageNotificationSettingForm.thresholds.fillIn('');
       expect(UsageNotificationSettingForm.errors.text).to.match(/can't be blank/);
       await percySnapshot(this.test.fullTitle() + ' cannot be blank');

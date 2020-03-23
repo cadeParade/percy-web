@@ -8,7 +8,7 @@ export default Component.extend({
 
   _dayStats: computed.alias('currentUsageStats.dayStatsFormatted'),
 
-  dayStatsFormatted: computed('_dayStats', 'maxDailySnapshot', function() {
+  dayStatsFormatted: computed('_dayStats', 'maxDailySnapshot', function () {
     const dayStats = this._dayStats;
     const yAxisCeiling = this.yAxisCeiling;
     if (!dayStats) {
@@ -25,7 +25,7 @@ export default Component.extend({
     });
   }),
 
-  yAxisCeiling: computed('_dayStats', function() {
+  yAxisCeiling: computed('_dayStats', function () {
     const dayStats = this._dayStats;
     if (!dayStats) {
       return;
@@ -38,7 +38,7 @@ export default Component.extend({
     return Math.ceil(max / 5000.0) * 5000 || 5000;
   }),
 
-  yAxisIncrementMarks: computed('yAxisCeiling', function() {
+  yAxisIncrementMarks: computed('yAxisCeiling', function () {
     const yAxisCeiling = this.yAxisCeiling;
     if (!yAxisCeiling) {
       return;

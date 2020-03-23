@@ -19,7 +19,7 @@ export default class BrowserTargetsService extends Service {
   }
 
   projectBrowserTargetsForFamily(project, browserFamily) {
-    return project.projectBrowserTargets.filter(function(pbt) {
+    return project.projectBrowserTargets.filter(function (pbt) {
       return pbt.browserTarget.browserFamily.id === browserFamily.id;
     });
   }

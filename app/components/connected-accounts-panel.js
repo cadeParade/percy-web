@@ -15,13 +15,13 @@ export default Component.extend({
     this.identities = this.identities || [];
   },
 
-  githubIdentity: computed('identities.@each.provider', function() {
+  githubIdentity: computed('identities.@each.provider', function () {
     return this.identities.findBy('provider', 'github');
   }),
-  emailPasswordIdentity: computed('identities.@each.provider', function() {
+  emailPasswordIdentity: computed('identities.@each.provider', function () {
     return this.identities.findBy('provider', 'auth0');
   }),
-  oktaIdentity: computed('identities.@each.provider', function() {
+  oktaIdentity: computed('identities.@each.provider', function () {
     return this.identities.findBy('isOktaIdentity');
   }),
   hasAnyIdentities: notEmpty('identities'),

@@ -5,7 +5,7 @@ import {setupRenderingTest} from 'ember-mocha';
 import percySnapshot from '@percy/ember';
 import {render, find} from '@ember/test-helpers';
 
-describe('Integration: Marketing/VideoBlock', function() {
+describe('Integration: Marketing/VideoBlock', function () {
   setupRenderingTest('marketing/video-block', {
     integration: true,
   });
@@ -21,11 +21,11 @@ describe('Integration: Marketing/VideoBlock', function() {
     videoEmbedUrl: 'https://www.youtube.com/embed/1Sr_h9_3MI0',
   };
 
-  beforeEach(function() {
+  beforeEach(function () {
     this.set('videoBlock', videoBlock);
   });
 
-  it('opens a modal when the image is clicked', async function() {
+  it('opens a modal when the image is clicked', async function () {
     await render(hbs`<Marketing::VideoBlock @block={{videoBlock}} />`);
 
     // then click the image

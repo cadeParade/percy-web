@@ -75,11 +75,11 @@ export default BaseFormComponent.extend({
   model: computed.alias('webhookConfig'),
   validator: WebhookConfigEditValidations,
 
-  saveText: computed('changeset.isPristine', function() {
+  saveText: computed('changeset.isPristine', function () {
     return `${this.changeset.get('isNew') ? 'Create' : 'Update'} webhook`;
   }),
 
-  isSubmitDisabled: computed('changeset.isValid', function() {
+  isSubmitDisabled: computed('changeset.isValid', function () {
     return !this.changeset.get('isValid');
   }),
 

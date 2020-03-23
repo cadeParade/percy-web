@@ -9,12 +9,12 @@ import BuildInfoDropdown from 'percy-web/tests/pages/components/build-info-dropd
 import AdminMode from 'percy-web/lib/admin-mode';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: BuildInfoDropdownComponent', function() {
+describe('Integration: BuildInfoDropdownComponent', function () {
   setupRenderingTest('build-info-dropdown', {
     integration: true,
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
     AdminMode.clear();
   });
@@ -39,7 +39,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
   states.forEach(state => {
     let testTitle = state.join(' ');
 
-    it(`renders in state: ${testTitle}`, async function() {
+    it(`renders in state: ${testTitle}`, async function () {
       let build = make.apply(this, ['build'].concat(state));
       this.set('build', build);
 
@@ -54,7 +54,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
     });
   });
 
-  it('hides admin info if user is not admin', async function() {
+  it('hides admin info if user is not admin', async function () {
     const build = make('build', 'finished');
     this.set('build', build);
 
@@ -70,7 +70,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  it('shows admin info if user is an admin', async function() {
+  it('shows admin info if user is an admin', async function () {
     const build = make('build', 'finished');
     this.set('build', build);
 
@@ -87,8 +87,8 @@ describe('Integration: BuildInfoDropdownComponent', function() {
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  describe('with a gitlab self-hosted repo', function() {
-    beforeEach(async function() {
+  describe('with a gitlab self-hosted repo', function () {
+    beforeEach(async function () {
       const build = make('build', 'withGitlabSelfHostedRepo', 'hasMergeRequest', {buildNumber: 1});
       this.setProperties({build});
 
@@ -100,7 +100,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
       await BuildInfoDropdown.toggleBuildInfoDropdown();
     });
 
-    it('has the correct pull request label', async function() {
+    it('has the correct pull request label', async function () {
       expect(BuildInfoDropdown.pullRequestLabelText, 'pull request label is incorrect').to.equal(
         'Merge Request',
       );
@@ -108,8 +108,8 @@ describe('Integration: BuildInfoDropdownComponent', function() {
     });
   });
 
-  describe('with a github repo', function() {
-    beforeEach(async function() {
+  describe('with a github repo', function () {
+    beforeEach(async function () {
       const build = make('build', 'withGithubRepo', 'hasPullRequest', {buildNumber: 1});
       this.setProperties({build});
 
@@ -121,7 +121,7 @@ describe('Integration: BuildInfoDropdownComponent', function() {
       await BuildInfoDropdown.toggleBuildInfoDropdown();
     });
 
-    it('has the correct pull request label', async function() {
+    it('has the correct pull request label', async function () {
       expect(BuildInfoDropdown.pullRequestLabelText, 'pull request label is incorrect').to.equal(
         'Pull Request',
       );

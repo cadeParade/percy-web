@@ -22,12 +22,12 @@ export default Component.extend(PollingMixin, {
   isBuildApprovable: true,
   allApprovableSnapshots: null,
 
-  snapshotsChanged: computed('allChangedBrowserSnapshotsSorted', 'activeBrowser.id', function() {
+  snapshotsChanged: computed('allChangedBrowserSnapshotsSorted', 'activeBrowser.id', function () {
     if (!this.allChangedBrowserSnapshotsSorted) return;
     return this.allChangedBrowserSnapshotsSorted[this.get('activeBrowser.id')];
   }),
 
-  browserWithMostDiffs: computed('_browsers', 'allChangedBrowserSnapshotsSorted.[]', function() {
+  browserWithMostDiffs: computed('_browsers', 'allChangedBrowserSnapshotsSorted.[]', function () {
     const snapshots = this.allChangedBrowserSnapshotsSorted;
     if (!snapshots) {
       return;
@@ -38,7 +38,7 @@ export default Component.extend(PollingMixin, {
 
   _browsers: alias('build.browsers'),
 
-  defaultBrowser: computed('_browsers', 'browserWithMostDiffs', function() {
+  defaultBrowser: computed('_browsers', 'browserWithMostDiffs', function () {
     const chromeBrowser = this._browsers.findBy('familySlug', 'chrome');
     const browserWithMostDiffs = this.browserWithMostDiffs;
     if (browserWithMostDiffs) {
@@ -74,7 +74,7 @@ export default Component.extend(PollingMixin, {
 
   isUnchangedSnapshotsLoading: readOnly('_toggleUnchangedSnapshotsVisible.isRunning'),
 
-  _toggleUnchangedSnapshotsVisible: task(function*() {
+  _toggleUnchangedSnapshotsVisible: task(function* () {
     let loadedSnapshots = this._getLoadedSnapshots();
     yield this.snapshotQuery.getUnchangedSnapshots(this.build);
     loadedSnapshots = this._getLoadedSnapshots();

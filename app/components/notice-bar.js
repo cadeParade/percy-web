@@ -20,11 +20,11 @@ export default Component.extend({
   trialDaysRemaining: readOnly('subscription.trialDaysRemaining'),
   isTrialEndingToday: equal('trialDaysRemaining', 0),
 
-  showNoticeBar: computed('organization', 'session.currentUser', function() {
+  showNoticeBar: computed('organization', 'session.currentUser', function () {
     return isUserMember(this.session.currentUser, this.organization);
   }),
 
-  fetchOrgWithSubscription: task(function*(organization) {
+  fetchOrgWithSubscription: task(function* (organization) {
     if (!this.showNoticeBar) return;
 
     let plan;
@@ -41,7 +41,7 @@ export default Component.extend({
     }
   }),
 
-  didReceiveAttrs: diffAttrs('organization', function(changedAttrs) {
+  didReceiveAttrs: diffAttrs('organization', function (changedAttrs) {
     this._super(...arguments);
 
     if (changedAttrs && changedAttrs.organization) {

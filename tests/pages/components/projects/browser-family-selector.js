@@ -33,11 +33,11 @@ export const BrowserFamilySelector = {
     },
   }),
 
-  chromeButton: getter(function() {
+  chromeButton: getter(function () {
     return this.buttonContainers.toArray().findBy('isChrome');
   }),
 
-  firefoxButton: getter(function() {
+  firefoxButton: getter(function () {
     return this.buttonContainers.toArray().findBy('isFirefox');
   }),
 

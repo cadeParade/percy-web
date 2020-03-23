@@ -6,7 +6,7 @@ export default Component.extend({
   router: service(),
   showMemberLinks: false,
 
-  shouldShowNewProject: computed(function() {
+  shouldShowNewProject: computed(function () {
     // hide the button if the url contains 'organizations'
     // that means we are not in the <org>/<project> namespace, we are
     // in the org settings and the 'new project' button should not show

@@ -16,7 +16,7 @@ export default function setupAcceptance({authenticate = true} = {}) {
   let hooks = setupApplicationTest();
   setupMirage();
   setupLaunchDarkly(hooks);
-  beforeEach(function() {
+  beforeEach(function () {
     window.localStorage.clear();
     seedFaker();
     mockStripeService(this);
@@ -25,7 +25,7 @@ export default function setupAcceptance({authenticate = true} = {}) {
     }
   });
 
-  afterEach(function() {
+  afterEach(function () {
     if (server !== undefined) {
       server.shutdown();
     }
@@ -50,7 +50,7 @@ export default function setupAcceptance({authenticate = true} = {}) {
 //   this.loginUser = user;
 // });
 export function setupSession(createData) {
-  beforeEach(function() {
+  beforeEach(function () {
     createData.bind(this)(server);
 
     // If no loginUser is setup and there is only one user created, log that user in
@@ -68,7 +68,7 @@ export function setupSession(createData) {
     }
   });
 
-  afterEach(function() {
+  afterEach(function () {
     if (this.loginUser) {
       this.loginUser = undefined;
     }

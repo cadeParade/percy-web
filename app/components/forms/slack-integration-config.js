@@ -21,7 +21,7 @@ export default BaseFormComponent.extend({
   teamName: readOnly('slackIntegrationConfig.slackIntegration.teamName'),
 
   slackNotificationOptions: SLACK_NOTIFICATION_OPTIONS,
-  selectedProject: computed('projectOptions', 'changeset.projectId', function() {
+  selectedProject: computed('projectOptions', 'changeset.projectId', function () {
     return selectedProjectOption(this.projectOptions, this.get('changeset.projectId'));
   }),
 

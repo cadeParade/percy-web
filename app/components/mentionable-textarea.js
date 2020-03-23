@@ -13,7 +13,7 @@ export default Component.extend({
   tributeConfigs: null,
   handleItemSelected: null,
 
-  textareaElement: computed(function() {
+  textareaElement: computed(function () {
     return this.element.querySelector('textarea');
   }),
 
@@ -28,7 +28,7 @@ export default Component.extend({
     // with exactly identical functions.
     this.set('boundHandleItemSelected', this._handleItemSelected.bind(this));
     this.tributeConfigs = this.tributeConfigs || [];
-    this.handleItemSelected = this.handleItemSelected || function() {};
+    this.handleItemSelected = this.handleItemSelected || function () {};
   },
 
   didInsertElement() {

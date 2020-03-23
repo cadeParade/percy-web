@@ -13,7 +13,7 @@ export default Component.extend({
   isCardValid: readOnly('_isCardComplete'),
   planId: readOnly('organization.subscription.plan.id'),
 
-  waitForStripeActions: task(function*() {
+  waitForStripeActions: task(function* () {
     return yield timeout(100);
   }),
 

@@ -11,17 +11,17 @@ import CAPPageObject from 'percy-web/tests/pages/components/connected-accounts-p
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: ConnectedAccountsPanel', function() {
+describe('Integration: ConnectedAccountsPanel', function () {
   setupRenderingTest('connected-accounts-panel', {
     integration: true,
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
   });
 
-  describe('when a user has only an okta identity', function() {
-    beforeEach(async function() {
+  describe('when a user has only an okta identity', function () {
+    beforeEach(async function () {
       const user = make('user', 'withOktaIdentity', {name: 'harbargle'});
       const stub = sinon.stub();
 
@@ -38,7 +38,7 @@ describe('Integration: ConnectedAccountsPanel', function() {
       />`);
     });
 
-    it('shows okta identity', async function() {
+    it('shows okta identity', async function () {
       await percySnapshot(this.test.fullTitle());
       expect(CAPPageObject.isOktaIdentityVisible).to.equal(true);
       expect(CAPPageObject.isAddAuth0IdentityVisible).to.equal(true);
@@ -46,11 +46,11 @@ describe('Integration: ConnectedAccountsPanel', function() {
     });
   });
 
-  describe('when a user has only a github identity', function() {
+  describe('when a user has only a github identity', function () {
     let deleteStub;
     let addStub;
     let identity;
-    beforeEach(async function() {
+    beforeEach(async function () {
       const user = make('user', {name: 'fardeedoo'});
       identity = make('identity', 'githubProvider', {user});
       deleteStub = sinon.stub();
@@ -69,23 +69,23 @@ describe('Integration: ConnectedAccountsPanel', function() {
       />`);
     });
 
-    it('displays correctly', async function() {
+    it('displays correctly', async function () {
       await percySnapshot(this.test.fullTitle());
       expect(CAPPageObject.isDeleteGithubIdentityVisible).to.equal(false);
       expect(CAPPageObject.isAddAuth0IdentityVisible).to.equal(true);
       expect(CAPPageObject.isAddGithubIdentityVisible).to.equal(false);
     });
 
-    it('calls addIdentity action when add button is clicked', async function() {
+    it('calls addIdentity action when add button is clicked', async function () {
       await CAPPageObject.clickAddAuth0Identity();
       expect(addStub).to.have.been.calledWith('auth0');
     });
   });
 
-  describe('when a user has only an email/password identity', function() {
+  describe('when a user has only an email/password identity', function () {
     let deleteStub;
     let addStub;
-    beforeEach(async function() {
+    beforeEach(async function () {
       const user = make('user', {name: 'fardeedoo'});
       const identity = make('identity', 'auth0Provider', {user});
       deleteStub = sinon.stub();
@@ -104,24 +104,24 @@ describe('Integration: ConnectedAccountsPanel', function() {
       />`);
     });
 
-    it('displays correctly', async function() {
+    it('displays correctly', async function () {
       await percySnapshot(this.test.fullTitle());
       expect(CAPPageObject.isDeleteAuth0IdentityVisible).to.equal(false);
       expect(CAPPageObject.isAddAuth0IdentityVisible).to.equal(false);
       expect(CAPPageObject.isAddGithubIdentityVisible).to.equal(true);
     });
 
-    it('calls addIdentity action when add button is clicked', async function() {
+    it('calls addIdentity action when add button is clicked', async function () {
       await CAPPageObject.clickAddGithubIdentity();
       expect(addStub).to.have.been.calledWith('github');
     });
   });
 
-  describe('when a user has both an email/password identity and a github identity', function() {
+  describe('when a user has both an email/password identity and a github identity', function () {
     let deleteStub;
     let auth0Identity;
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       const user = make('user', {name: 'fardeedoo'});
       auth0Identity = make('identity', 'auth0Provider', {user});
       const githubIdentity = make('identity', 'githubProvider', {user});
@@ -141,7 +141,7 @@ describe('Integration: ConnectedAccountsPanel', function() {
       />`);
     });
 
-    it('displays correctly', async function() {
+    it('displays correctly', async function () {
       await percySnapshot(this.test.fullTitle());
       expect(CAPPageObject.isDeleteAuth0IdentityVisible).to.equal(true);
       expect(CAPPageObject.isDeleteGithubIdentityVisible).to.equal(true);
@@ -149,14 +149,14 @@ describe('Integration: ConnectedAccountsPanel', function() {
       expect(CAPPageObject.isAddGithubIdentityVisible).to.equal(false);
     });
 
-    it('calls delete action when delete button is clicked', async function() {
+    it('calls delete action when delete button is clicked', async function () {
       await CAPPageObject.clickDeleteAuth0Identity();
       expect(deleteStub).to.have.been.calledWith(auth0Identity.get('id'));
     });
   });
 
-  describe('when a user has both a SAML identity and a self-serve identity', function() {
-    beforeEach(async function() {
+  describe('when a user has both a SAML identity and a self-serve identity', function () {
+    beforeEach(async function () {
       const user = make('user', {name: 'wowee zowie'});
       const auth0Identity = make('identity', 'auth0Provider', {user});
       const oktaIdentity = make('identity', 'oktaProvider', {user});
@@ -175,13 +175,13 @@ describe('Integration: ConnectedAccountsPanel', function() {
       />`);
     });
 
-    it('displays correctly', async function() {
+    it('displays correctly', async function () {
       await percySnapshot(this.test);
     });
   });
 
-  describe('when a user has all identities', function() {
-    beforeEach(async function() {
+  describe('when a user has all identities', function () {
+    beforeEach(async function () {
       const user = make('user', {name: 'wowee zowie'});
       const identityTraits = ['auth0Provider', 'githubProvider', 'oktaProvider'];
       const identities = [];
@@ -204,7 +204,7 @@ describe('Integration: ConnectedAccountsPanel', function() {
       />`);
     });
 
-    it('displays correctly', async function() {
+    it('displays correctly', async function () {
       await percySnapshot(this.test);
     });
   });

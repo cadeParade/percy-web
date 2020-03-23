@@ -11,7 +11,7 @@ import localStorageProxy from 'percy-web/lib/localstorage';
 import {AUTH_REDIRECT_LOCALSTORAGE_KEY} from 'percy-web/router';
 import SetupLocalStorageSandbox from 'percy-web/tests/helpers/setup-localstorage-sandbox';
 
-describe('EnsureStatefulLoginMixin', function() {
+describe('EnsureStatefulLoginMixin', function () {
   SetupLocalStorageSandbox();
 
   let subject;
@@ -21,7 +21,7 @@ describe('EnsureStatefulLoginMixin', function() {
   let fakeLockInstance;
   const fakeStateToken = 'fakeStateToken';
 
-  beforeEach(function() {
+  beforeEach(function () {
     // setup session endpont mock
     fakeMethod = sinon.stub();
     this.server = startMirage();
@@ -53,12 +53,12 @@ describe('EnsureStatefulLoginMixin', function() {
     });
   });
 
-  afterEach(function() {
+  afterEach(function () {
     this.server.shutdown();
   });
 
-  describe('showLoginModalEnsuringState', function() {
-    it('sets state on lockOptions after getting state token', function() {
+  describe('showLoginModalEnsuringState', function () {
+    it('sets state on lockOptions after getting state token', function () {
       subject.set('_hasOpenedLoginModal', false);
       const promise = subject.showLoginModalEnsuringState();
 
@@ -67,7 +67,7 @@ describe('EnsureStatefulLoginMixin', function() {
       });
     });
 
-    it('calls show on lock instance after getting state token', function() {
+    it('calls show on lock instance after getting state token', function () {
       subject.set('_hasOpenedLoginModal', false);
       const promise = subject.showLoginModalEnsuringState();
 
@@ -76,7 +76,7 @@ describe('EnsureStatefulLoginMixin', function() {
       });
     });
 
-    it('calls _showLock only once, even if triggered twice', function() {
+    it('calls _showLock only once, even if triggered twice', function () {
       sinon.spy(subject, '_getStateToken');
       sinon.spy(subject, '_showLock');
       const promise1 = subject.showLoginModalEnsuringState();
@@ -89,15 +89,15 @@ describe('EnsureStatefulLoginMixin', function() {
     });
   });
 
-  describe('_showLock', function() {
-    it('calls getAuth0LockInstance on auth0 service with correct options', function() {
+  describe('_showLock', function () {
+    it('calls getAuth0LockInstance on auth0 service with correct options', function () {
       const options = {foo: 'bar'};
       subject._showLock(options);
 
       expect(getLockInstanceStub).to.have.been.calledWith(options);
     });
 
-    it('calls _setupLock on auth0 service with lock instance', function() {
+    it('calls _setupLock on auth0 service with lock instance', function () {
       subject._showLock();
 
       expect(setupLockStub).to.have.been.calledWith(
@@ -107,47 +107,47 @@ describe('EnsureStatefulLoginMixin', function() {
       );
     });
 
-    it('sets behavior on hide', function() {
+    it('sets behavior on hide', function () {
       subject._showLock({}, 'thisArgIsPresent');
 
       expect(fakeLockInstance.on).to.have.been.calledWith('hide', sinon.match.func);
     });
 
-    it('calls show on lock instance', function() {
+    it('calls show on lock instance', function () {
       subject._showLock();
 
       expect(fakeLockInstance.show).to.have.been.called;
     });
 
-    it('stores instance of lock on session service', function() {
+    it('stores instance of lock on session service', function () {
       subject._showLock();
       expect(subject.get('session.lockInstance')).to.equal(fakeLockInstance);
     });
   });
 
-  describe('_closeLock', function() {
-    it('calls hide on session.lockInstance', function() {
+  describe('_closeLock', function () {
+    it('calls hide on session.lockInstance', function () {
       subject.set('session.lockInstance', fakeLockInstance);
       subject.closeLock();
       expect(fakeLockInstance.hide).to.have.been.called;
     });
   });
 
-  describe('_onLockClosed', function() {
-    it('sets _hasOpenedLoginModal to false', function() {
+  describe('_onLockClosed', function () {
+    it('sets _hasOpenedLoginModal to false', function () {
       subject.set('_hasOpenedLoginModal', true);
       subject._onLockClosed();
 
       expect(subject.get('_hasOpenedLoginModal')).to.equal(false);
     });
 
-    it('removes redirect route from sessionStorage', function() {
+    it('removes redirect route from sessionStorage', function () {
       localStorageProxy.set(AUTH_REDIRECT_LOCALSTORAGE_KEY, 'foo', {useSessionStorage: true});
       subject._onLockClosed();
       expect(sessionStorage.getItem(AUTH_REDIRECT_LOCALSTORAGE_KEY)).to.equal(null);
     });
 
-    it('transitions to stored redirect when user and redirect route exists', function() {
+    it('transitions to stored redirect when user and redirect route exists', function () {
       subject.set('session.currentUser', 'foo');
       const redirectRoute = 'fakeRoute';
       subject._onLockClosed(redirectRoute);
@@ -155,7 +155,7 @@ describe('EnsureStatefulLoginMixin', function() {
       expect(subject.transitionTo).to.have.been.calledWith(redirectRoute);
     });
 
-    it('transitions to home when user does not exist and redirect route exists', function() {
+    it('transitions to home when user does not exist and redirect route exists', function () {
       subject.set('session.currentUser', null);
       const redirectRoute = 'fakeRoute';
       subject._onLockClosed(redirectRoute);
@@ -163,7 +163,7 @@ describe('EnsureStatefulLoginMixin', function() {
       expect(subject.transitionTo).to.have.been.calledWith('/');
     });
 
-    it('does not transition when redirectRoute is not defined', function() {
+    it('does not transition when redirectRoute is not defined', function () {
       subject._onLockClosed();
       expect(subject.transitionTo).to.not.have.been.called;
     });

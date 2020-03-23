@@ -2,15 +2,15 @@ import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import {visit} from '@ember/test-helpers';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 
-describe('Acceptance: PasswordReset', function() {
+describe('Acceptance: PasswordReset', function () {
   setupAcceptance({authenticate: false});
 
-  setupSession(function(server) {
+  setupSession(function (server) {
     this.loginUser = false;
     this.server = server;
   });
 
-  it('shows page with password reset message', async function() {
+  it('shows page with password reset message', async function () {
     await visit('/auth/password-reset');
     await percySnapshot(this.test.fullTitle());
   });

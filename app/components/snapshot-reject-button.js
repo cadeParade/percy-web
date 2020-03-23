@@ -15,7 +15,7 @@ export default Component.extend({
     },
   },
 
-  _rejectSnapshot: task(function*() {
+  _rejectSnapshot: task(function* () {
     return yield this.reviews.createRejectReview(this.snapshots[0].build, this.snapshots);
   }),
 });

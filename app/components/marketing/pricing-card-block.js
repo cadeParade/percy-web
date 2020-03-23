@@ -50,7 +50,7 @@ export default Component.extend({
 
   isEnterpriseSelected: equal('selectedPlanRange', 'Enterprise'),
 
-  priceText: computed('sliderCalculatedPrice', 'selectedPlanRange', function() {
+  priceText: computed('sliderCalculatedPrice', 'selectedPlanRange', function () {
     if (this.selectedPlanRange === 'Enterprise') {
       return 'Reach out to learn more about enterprise pricing.';
     }
@@ -58,7 +58,7 @@ export default Component.extend({
     return 'Your price';
   }),
 
-  selectedPlanRange: computed('displaySnapshotCount', function() {
+  selectedPlanRange: computed('displaySnapshotCount', function () {
     const snapshotCount = this.displaySnapshotCount;
     if (snapshotCount <= planBreaks.small.maxSnapshots) {
       return 'Small';
@@ -73,7 +73,7 @@ export default Component.extend({
     }
   }),
 
-  sliderCalculatedPrice: computed('displaySnapshotCount', function() {
+  sliderCalculatedPrice: computed('displaySnapshotCount', function () {
     const plan = this.subscriptionData.PLANS.findBy('name', this.selectedPlanRange);
     if (plan) {
       return _calculatePrice({
