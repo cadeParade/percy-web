@@ -50,7 +50,7 @@ export default Component.extend({
 
   shouldFullyRender: true,
 
-  isActiveSnapshotBlock: computed('activeSnapshotBlockIndex', 'index', function() {
+  isActiveSnapshotBlock: computed('activeSnapshotBlockIndex', 'index', function () {
     return this.activeSnapshotBlockIndex === this.index;
   }),
 
@@ -59,7 +59,7 @@ export default Component.extend({
     this.updateActiveSnapshotBlockIndex(this.index);
   },
 
-  filteredComparisons: computed('coverSnapshot', 'activeBrowser', 'userSelectedWidth', function() {
+  filteredComparisons: computed('coverSnapshot', 'activeBrowser', 'userSelectedWidth', function () {
     return filteredComparisons.create({
       snapshot: get(this, 'coverSnapshot'),
       activeBrowser: get(this, 'activeBrowser'),
@@ -71,7 +71,7 @@ export default Component.extend({
     'isBlockApproved',
     'build.isApproved',
     'isActiveSnapshotBlock',
-    function() {
+    function () {
       if (get(this, 'isActiveSnapshotBlock') || get(this, 'build.isApproved')) {
         return true;
       } else if (!hasDiffForBrowser(get(this, 'coverSnapshot'), get(this, 'activeBrowser'))) {
@@ -85,7 +85,7 @@ export default Component.extend({
   ),
 
   // eslint-disable-next-line ember/no-observers
-  _scrollToTop: observer('isActiveSnapshotBlock', function() {
+  _scrollToTop: observer('isActiveSnapshotBlock', function () {
     if (get(this, '_shouldScroll') && get(this, 'isActiveSnapshotBlock') && !Ember.testing) {
       if (get(this, 'snapshot.isUnchanged')) {
         setProperties(this, {

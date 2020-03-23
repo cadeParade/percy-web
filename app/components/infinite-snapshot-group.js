@@ -40,7 +40,7 @@ export default InfiniteSnapshotListItem.extend({
     'snapshots',
     'unreviewedSnapshotsWithOpenCommentThreads',
     'displayCommentedSnapshsotsGroupCover',
-    function() {
+    function () {
       if (this.displayCommentedSnapshsotsGroupCover) {
         return this.unreviewedSnapshotsWithOpenCommentThreads;
       } else {
@@ -49,21 +49,21 @@ export default InfiniteSnapshotListItem.extend({
     },
   ),
 
-  isGroupApproved: computed('snapshots.@each.isApproved', function() {
+  isGroupApproved: computed('snapshots.@each.isApproved', function () {
     return get(this, 'snapshots').every(snapshot => {
       return get(snapshot, 'isApproved');
     });
   }),
 
-  isGroupRejected: computed('snapshots.@each.isRejected', function() {
+  isGroupRejected: computed('snapshots.@each.isRejected', function () {
     return this.snapshots.any(snapshot => snapshot.isRejected);
   }),
 
-  isGroupUnreviewed: computed('isGroupApproved', 'isGroupRejected', function() {
+  isGroupUnreviewed: computed('isGroupApproved', 'isGroupRejected', function () {
     return !this.isGroupApproved && !this.isGroupRejected;
   }),
 
-  groupTitle: computed('snapshots.length', function() {
+  groupTitle: computed('snapshots.length', function () {
     return `${get(this, 'snapshots.length')} matching changes`;
   }),
 

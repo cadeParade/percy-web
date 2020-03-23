@@ -13,7 +13,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import faker from 'faker';
 import {render} from '@ember/test-helpers';
 
-describe('Integration: InfiniteSnapshotViewer', function() {
+describe('Integration: InfiniteSnapshotViewer', function () {
   setupRenderingTest('snapshot-viewer', {
     integration: true,
   });
@@ -21,7 +21,7 @@ describe('Integration: InfiniteSnapshotViewer', function() {
   let snapshotTitle;
   let snapshot;
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
 
     snapshotTitle = 'Awesome snapshot title';
@@ -41,7 +41,7 @@ describe('Integration: InfiniteSnapshotViewer', function() {
     });
   });
 
-  it('displays snapshot name', async function() {
+  it('displays snapshot name', async function () {
     await render(hbs`<InfiniteSnapshotViewer
       @snapshot={{snapshot}}
       @build={{build}}
@@ -55,7 +55,7 @@ describe('Integration: InfiniteSnapshotViewer', function() {
     expect(SnapshotViewer.header.titleText, 'title text should be correct').to.equal(snapshotTitle);
   });
 
-  it('compares visually to previous screenshot', async function() {
+  it('compares visually to previous screenshot', async function () {
     await render(hbs`<InfiniteSnapshotViewer
       @snapshot={{snapshot}}
       @build={{build}}
@@ -67,8 +67,8 @@ describe('Integration: InfiniteSnapshotViewer', function() {
     await percySnapshot(this.test, {darkMode: true});
   });
 
-  describe('comparison mode switcher', function() {
-    beforeEach(async function() {
+  describe('comparison mode switcher', function () {
+    beforeEach(async function () {
       await render(hbs`<InfiniteSnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
@@ -78,7 +78,7 @@ describe('Integration: InfiniteSnapshotViewer', function() {
       />`);
     });
 
-    it('does not display', async function() {
+    it('does not display', async function () {
       expect(
         SnapshotViewer.header.isComparisonModeSwitcherVisible,
         'comparison mode switcher should not be visible',
@@ -86,12 +86,10 @@ describe('Integration: InfiniteSnapshotViewer', function() {
     });
   });
 
-  describe('width switcher', function() {
-    beforeEach(async function() {
+  describe('width switcher', function () {
+    beforeEach(async function () {
       // set the widest width comparison to have no diffs to have interesting test behavior.
-      this.get('snapshot.comparisons')
-        .findBy('width', 1024)
-        .set('diffRatio', 0);
+      this.get('snapshot.comparisons').findBy('width', 1024).set('diffRatio', 0);
     });
 
     // eslint-disable-next-line
@@ -126,7 +124,7 @@ describe('Integration: InfiniteSnapshotViewer', function() {
       expect(SnapshotViewer.header.widthSwitcher.buttons.objectAt(2).isActive).to.equal(true);
     });
 
-    it('updates active button when clicked', async function() {
+    it('updates active button when clicked', async function () {
       await render(hbs`<InfiniteSnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
@@ -154,8 +152,8 @@ describe('Integration: InfiniteSnapshotViewer', function() {
     });
   });
 
-  describe('full screen toggle button', function() {
-    beforeEach(async function() {
+  describe('full screen toggle button', function () {
+    beforeEach(async function () {
       await render(hbs`<InfiniteSnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
@@ -166,13 +164,13 @@ describe('Integration: InfiniteSnapshotViewer', function() {
       />`);
     });
 
-    it('displays', async function() {
+    it('displays', async function () {
       expect(SnapshotViewer.header.isFullScreenToggleVisible).to.equal(true);
     });
   });
 
-  describe('expand/collapse', function() {
-    beforeEach(async function() {
+  describe('expand/collapse', function () {
+    beforeEach(async function () {
       // use null and undefined so they are not equal to each other by default.
       this.set('activeSnapshotBlockIndex', null);
       this.set('index', undefined);
@@ -189,31 +187,31 @@ describe('Integration: InfiniteSnapshotViewer', function() {
       />`);
     });
 
-    it('is expanded by default when the snapshot is unapproved', async function() {
+    it('is expanded by default when the snapshot is unapproved', async function () {
       this.set('snapshot.reviewState', SNAPSHOT_UNAPPROVED_STATE);
       expect(SnapshotViewer.isExpanded).to.equal(true);
     });
 
-    it('is collapsed by default when the snapshot is approved', async function() {
+    it('is collapsed by default when the snapshot is approved', async function () {
       this.set('snapshot.reviewState', SNAPSHOT_APPROVED_STATE);
       expect(SnapshotViewer.isExpanded).to.equal(false);
     });
 
-    it('is expanded when build is approved', async function() {
+    it('is expanded when build is approved', async function () {
       this.set('snapshot.reviewState', SNAPSHOT_APPROVED_STATE);
       this.set('build.reviewState', 'approved');
 
       expect(SnapshotViewer.isExpanded).to.equal(true);
     });
 
-    it("is expanded when activeSnapshotBlockIndex is equal to the snapshot's id", async function() {
+    it("is expanded when activeSnapshotBlockIndex is the snapshot's id", async function () {
       this.set('snapshot.reviewState', SNAPSHOT_APPROVED_STATE);
       this.set('activeSnapshotBlockIndex', 100);
       this.set('index', 100);
       expect(SnapshotViewer.isExpanded).to.equal(true);
     });
 
-    it('expands when the snapshot is collapsed and a user clicks the header ', async function() {
+    it('expands when the snapshot is collapsed and a user clicks the header ', async function () {
       this.set('snapshot.reviewState', SNAPSHOT_APPROVED_STATE);
 
       await SnapshotViewer.header.click();
@@ -221,8 +219,8 @@ describe('Integration: InfiniteSnapshotViewer', function() {
     });
   });
 
-  describe('diff toggling', function() {
-    beforeEach(async function() {
+  describe('diff toggling', function () {
+    beforeEach(async function () {
       await render(hbs`<InfiniteSnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
@@ -232,16 +230,16 @@ describe('Integration: InfiniteSnapshotViewer', function() {
       />`);
     });
 
-    it('toggles diff when clicking', async function() {
+    it('toggles diff when clicking', async function () {
       expect(SnapshotViewer.isDiffImageVisible).to.equal(true);
       await SnapshotViewer.clickDiffImage();
       expect(SnapshotViewer.isDiffImageVisible).to.equal(false);
     });
   });
 
-  describe('commenting', function() {
-    describe('when there is a long comment', function() {
-      beforeEach(async function() {
+  describe('commenting', function () {
+    describe('when there is a long comment', function () {
+      beforeEach(async function () {
         const commentThread = make('comment-thread', {snapshot});
         make('comment', {
           body: 'sssssssssssssssssssssssssssssssssssssssssssssssssss' + faker.lorem.paragraph(50),
@@ -258,12 +256,12 @@ describe('Integration: InfiniteSnapshotViewer', function() {
         />`);
       });
 
-      it('displays correctly', async function() {
+      it('displays correctly', async function () {
         await percySnapshot(this.test, {darkMode: true});
       });
     });
 
-    describe('panel toggling', function() {
+    describe('panel toggling', function () {
       async function expectToggleWorks({isOpenByDefault = true, context} = {}) {
         await SnapshotViewer.header.toggleCommentSidebar();
         expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(!isOpenByDefault);
@@ -273,8 +271,8 @@ describe('Integration: InfiniteSnapshotViewer', function() {
         expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(isOpenByDefault);
       }
 
-      describe('when there are no comments', function() {
-        beforeEach(async function() {
+      describe('when there are no comments', function () {
+        beforeEach(async function () {
           await render(hbs`<InfiniteSnapshotViewer
             @snapshot={{snapshot}}
             @build={{build}}
@@ -286,17 +284,17 @@ describe('Integration: InfiniteSnapshotViewer', function() {
           />`);
         });
 
-        it('does not show panel by default', async function() {
+        it('does not show panel by default', async function () {
           expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
         });
 
-        it('opens and closes sidebar when toggle button is clicked', async function() {
+        it('opens and closes sidebar when toggle button is clicked', async function () {
           await expectToggleWorks({isOpenByDefault: false, context: this});
         });
       });
 
-      describe('when there are open comments', function() {
-        beforeEach(async function() {
+      describe('when there are open comments', function () {
+        beforeEach(async function () {
           makeList('comment-thread', 2, 'withTwoComments', {snapshot});
           await render(hbs`<InfiniteSnapshotViewer
             @snapshot={{snapshot}}
@@ -309,17 +307,17 @@ describe('Integration: InfiniteSnapshotViewer', function() {
           />`);
         });
 
-        it('shows panel by default', async function() {
+        it('shows panel by default', async function () {
           expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
         });
 
-        it('opens and closes sidebar when toggle button is clicked', async function() {
+        it('opens and closes sidebar when toggle button is clicked', async function () {
           await expectToggleWorks({isOpenByDefault: true, context: this});
         });
       });
 
-      describe('when there are only closed comments', function() {
-        beforeEach(async function() {
+      describe('when there are only closed comments', function () {
+        beforeEach(async function () {
           make('comment-thread', 'withTwoComments', 'closed', {snapshot});
           make('comment-thread', 'withTwoComments', 'closed', 'note', {snapshot});
           await render(hbs`<InfiniteSnapshotViewer
@@ -333,11 +331,11 @@ describe('Integration: InfiniteSnapshotViewer', function() {
           />`);
         });
 
-        it('hides panel by default', async function() {
+        it('hides panel by default', async function () {
           expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
         });
 
-        it('opens and closes sidebar when toggle button is clicked', async function() {
+        it('opens and closes sidebar when toggle button is clicked', async function () {
           await expectToggleWorks({isOpenByDefault: false, context: this});
         });
       });

@@ -6,7 +6,6 @@ import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
 import {snapshotsWithNoDiffForBrowser} from 'percy-web/lib/filtered-comparisons';
 import {task} from 'ember-concurrency';
-import {next} from '@ember/runloop';
 
 export default Component.extend(PollingMixin, {
   classNames: ['BuildContainer'],
@@ -42,7 +41,7 @@ export default Component.extend(PollingMixin, {
 
   _browsers: readOnly('build.browsers'),
 
-  defaultBrowser: computed('_browsers', 'build.isFinished', 'browserWithMostDiffs', function() {
+  defaultBrowser: computed('_browsers', 'build.isFinished', 'browserWithMostDiffs', function () {
     if (
       this.launchDarkly.variation('snapshot-sort-api') &&
       this.build.isFinished &&

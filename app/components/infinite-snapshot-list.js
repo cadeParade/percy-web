@@ -14,7 +14,7 @@ export default Component.extend(EKMixin, {
   activeSnapshotBlockIndex: null,
 
   numSnapshotsChanged: readOnly('orderItems.length'),
-  numSnapshotsUnchanged: computed('build.totalSnapshots', 'orderItems', function() {
+  numSnapshotsUnchanged: computed('build.totalSnapshots', 'orderItems', function () {
     return this.build.totalSnapshots - idsFromOrderItems(this.orderItems).length;
   }),
 
@@ -34,16 +34,16 @@ export default Component.extend(EKMixin, {
     this.set('keyboardActivated', true);
   },
 
-  onDKeyPress: on(keyDown('KeyD'), function() {
+  onDKeyPress: on(keyDown('KeyD'), function () {
     this.toggleAllDiffs({trackSource: 'keypress'});
     this._trackKeyPress();
   }),
 
-  onDownKeyPress: on(keyDown('ArrowDown'), function() {
+  onDownKeyPress: on(keyDown('ArrowDown'), function () {
     this.newIndex({isNext: true});
   }),
 
-  onUpKeyPress: on(keyDown('ArrowUp'), function() {
+  onUpKeyPress: on(keyDown('ArrowUp'), function () {
     this.newIndex({isNext: false});
   }),
 

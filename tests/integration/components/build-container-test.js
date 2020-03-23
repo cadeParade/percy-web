@@ -11,11 +11,13 @@ import BuildPage from 'percy-web/tests/pages/build-page';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import mockSnapshotQueryService from 'percy-web/tests/helpers/mock-snapshot-query-service';
 import {render} from '@ember/test-helpers';
+import setupLaunchDarkly from 'percy-web/tests/helpers/setup-launch-darkly';
 
 describe('Integration: BuildContainer', function () {
-  setupRenderingTest('build-container', {
+  const hooks = setupRenderingTest('build-container', {
     integration: true,
   });
+  setupLaunchDarkly(hooks);
 
   beforeEach(function () {
     this.withVariation('snapshot-sort-api', false);

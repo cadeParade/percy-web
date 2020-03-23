@@ -24,7 +24,7 @@ export default Component.extend({
     this.set('showDiffOverlay', this.allDiffsShown);
   }),
 
-  headSnapshot: computed('comparison.id', function() {
+  headSnapshot: computed('comparison.id', function () {
     return this.comparison.belongsTo('headSnapshot').value();
   }),
 

@@ -14,20 +14,20 @@ import {render} from '@ember/test-helpers';
 import setupLaunchDarkly from 'percy-web/tests/helpers/setup-launch-darkly';
 import metadataSort from 'percy-web/lib/metadata-sort';
 
-describe('Integration: InfiniteSnapshotList', function() {
+describe('Integration: InfiniteSnapshotList', function () {
   const hooks = setupRenderingTest('snapshot-list', {
     integration: true,
   });
 
   setupLaunchDarkly(hooks);
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
     this.withVariation('snapshot-sort-api', true);
   });
 
-  describe('keyboard nav behavior', function() {
-    beforeEach(async function() {
+  describe('keyboard nav behavior', function () {
+    beforeEach(async function () {
       initializeEmberKeyboard();
       const stub = sinon.stub();
       const build = make('build', 'finished');
@@ -101,7 +101,7 @@ describe('Integration: InfiniteSnapshotList', function() {
       />`);
     });
 
-    it('automatically expands collapsed snapshot blocks if focused', async function() {
+    it('automatically expands collapsed snapshot blocks if focused', async function () {
       const firstApprovedGroup = SnapshotList.snapshotBlocks[2].snapshotGroup;
       const secondApprovedGroup = SnapshotList.snapshotBlocks[3].snapshotGroup;
       const approvedSnapshot = SnapshotList.snapshotBlocks[4].snapshotViewer;
@@ -135,7 +135,7 @@ describe('Integration: InfiniteSnapshotList', function() {
       expect(approvedSnapshot.isExpanded, 'i').to.equal(true);
     });
 
-    it('focuses snapshots on arrow presses', async function() {
+    it('focuses snapshots on arrow presses', async function () {
       const numRenderedSnapshots = SnapshotList.snapshotBlocks.length;
       // 5 = 1 unapproved group, 1 unapproved snapshot, 2 approved groups, 1 approved snapshot
       expect(numRenderedSnapshots).to.equal(5);
@@ -164,7 +164,7 @@ describe('Integration: InfiniteSnapshotList', function() {
     });
   });
 
-  describe('ordering', function() {
+  describe('ordering', function () {
     const oneTitle = 'one';
     const twoTitle = 'two';
     const threeTitle = 'three';
@@ -175,7 +175,7 @@ describe('Integration: InfiniteSnapshotList', function() {
     let groupedSnapshots;
     let sortMetadata;
 
-    beforeEach(async function() {
+    beforeEach(async function () {
       const stub = sinon.stub();
       build = make('build', 'finished', {totalSnapshots: 11});
 
@@ -255,7 +255,7 @@ describe('Integration: InfiniteSnapshotList', function() {
       expect(block.isSnapshot).to.equal(true);
     }
 
-    it('orders snapshots by metadata sort data for a browser', async function() {
+    it('orders snapshots by metadata sort data for a browser', async function () {
       const browser = make('browser');
       const orderItems = sortMetadata.orderItemsForBrowser('firefox');
       this.setProperties({
@@ -290,7 +290,7 @@ describe('Integration: InfiniteSnapshotList', function() {
       await percySnapshot(this.test);
     });
 
-    it('orders snapshots by metadata sort data for other browser', async function() {
+    it('orders snapshots by metadata sort data for other browser', async function () {
       const chromeBrowser = make('browser', 'chrome');
       const orderItems = sortMetadata.orderItemsForBrowser('chrome');
       this.setProperties({

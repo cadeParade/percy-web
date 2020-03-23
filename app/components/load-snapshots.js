@@ -15,7 +15,7 @@ export default Component.extend({
     this.query.perform();
   },
 
-  query: task(function*() {
+  query: task(function* () {
     const offset = this.page * this.limit;
     const endIndex = (this.page + 1) * this.limit;
 

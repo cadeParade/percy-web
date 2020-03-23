@@ -13,7 +13,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {render} from '@ember/test-helpers';
 import setupLaunchDarkly from 'percy-web/tests/helpers/setup-launch-darkly';
 
-describe('Integration: InfiniteSnapshotGroup', function() {
+describe('Integration: InfiniteSnapshotGroup', function () {
   const hooks = setupRenderingTest('snapshot-group', {
     integration: true,
   });
@@ -22,7 +22,7 @@ describe('Integration: InfiniteSnapshotGroup', function() {
   let snapshots;
   let approvedSnapshots;
 
-  beforeEach(function() {
+  beforeEach(function () {
     setupFactoryGuy(this);
     this.withVariation('snapshot-sort-api', true);
 
@@ -45,14 +45,11 @@ describe('Integration: InfiniteSnapshotGroup', function() {
     });
   });
 
-  describe('width switcher', function() {
-    beforeEach(async function() {
+  describe('width switcher', function () {
+    beforeEach(async function () {
       // set the widest width comparison to have no diffs to have interesting test behavior.
       this.get('snapshots').forEach(snapshot => {
-        snapshot
-          .get('comparisons')
-          .findBy('width', 1024)
-          .set('diffRatio', 0);
+        snapshot.get('comparisons').findBy('width', 1024).set('diffRatio', 0);
       });
     });
 
@@ -71,7 +68,7 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('updates active button when clicked', async function() {
+    it('updates active button when clicked', async function () {
       await render(hbs`<InfiniteSnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
@@ -87,8 +84,8 @@ describe('Integration: InfiniteSnapshotGroup', function() {
     });
   });
 
-  describe('full screen toggle button', function() {
-    beforeEach(async function() {
+  describe('full screen toggle button', function () {
+    beforeEach(async function () {
       await render(hbs`<InfiniteSnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
@@ -98,13 +95,13 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       />`);
     });
 
-    it('displays', async function() {
+    it('displays', async function () {
       expect(SnapshotGroup.header.isFullScreenToggleVisible).to.equal(true);
     });
   });
 
-  describe('expand/collapse', function() {
-    beforeEach(async function() {
+  describe('expand/collapse', function () {
+    beforeEach(async function () {
       // use null and undefined so they are not equal to each other by default.
       this.set('activeSnapshotBlockIndex', null);
       this.set('index', undefined);
@@ -120,44 +117,44 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       />`);
     });
 
-    it('is expanded by default when the group is completely unapproved', async function() {
+    it('is expanded by default when the group is completely unapproved', async function () {
       expect(SnapshotGroup.isExpanded).to.equal(true);
     });
 
-    it('is expanded by default when the group is partially approved', async function() {
+    it('is expanded by default when the group is partially approved', async function () {
       this.set('snapshots.firstObject.reviewState', SNAPSHOT_APPROVED_STATE);
       expect(SnapshotGroup.isExpanded).to.equal(true);
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('is collapsed by default when the group is approved', async function() {
+    it('is collapsed by default when the group is approved', async function () {
       this.set('snapshots', approvedSnapshots);
       expect(SnapshotGroup.isExpanded).to.equal(false);
     });
 
-    it('is expanded when build is approved', async function() {
+    it('is expanded when build is approved', async function () {
       this.set('snapshots', approvedSnapshots);
       this.set('build.reviewState', 'approved');
 
       expect(SnapshotGroup.isExpanded).to.equal(true);
     });
 
-    it("is expanded when activeSnapshotBlockIndex is equal to the group's index", async function() {
+    it("is expanded when activeSnapshotBlockIndex is to the group's index", async function () {
       this.set('snapshots', approvedSnapshots);
       this.set('index', 4);
       this.set('activeSnapshotBlockIndex', 4);
       expect(SnapshotGroup.isExpanded).to.equal(true);
     });
 
-    it('expands when the group is collapsed and a user clicks the header ', async function() {
+    it('expands when the group is collapsed and a user clicks the header ', async function () {
       this.set('snapshots', approvedSnapshots);
       await SnapshotGroup.header.click();
       expect(SnapshotGroup.isExpanded).to.equal(true);
     });
   });
 
-  describe('showing all snapshots in the group', function() {
-    beforeEach(async function() {
+  describe('showing all snapshots in the group', function () {
+    beforeEach(async function () {
       let unapprovedSnapshots = makeList('snapshot', 3, 'withComparisons', {
         build: this.get('build'),
       });
@@ -177,7 +174,7 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       />`);
     });
 
-    it('should show all snapshots', async function() {
+    it('should show all snapshots', async function () {
       await SnapshotGroup.header.toggleShowAllSnapshots();
       expect(SnapshotGroup.snapshots.length).to.equal(5);
       expect(SnapshotGroup.header.widthSwitcher.isVisible).to.equal(false);
@@ -185,7 +182,7 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('snapshots should be in the correct order', async function() {
+    it('snapshots should be in the correct order', async function () {
       const snapshots = this.get('snapshots');
       await SnapshotGroup.header.toggleShowAllSnapshots();
       SnapshotGroup.snapshots.forEach((snapshot, i) => {
@@ -193,7 +190,7 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       });
     });
 
-    it('should hide all snapshots', async function() {
+    it('should hide all snapshots', async function () {
       await SnapshotGroup.header.toggleShowAllSnapshots();
       await SnapshotGroup.header.toggleShowAllSnapshots();
       expect(SnapshotGroup.snapshots.length).to.equal(0);
@@ -201,8 +198,8 @@ describe('Integration: InfiniteSnapshotGroup', function() {
     });
   });
 
-  describe('diff toggling', function() {
-    beforeEach(async function() {
+  describe('diff toggling', function () {
+    beforeEach(async function () {
       await render(hbs`<InfiniteSnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
@@ -212,14 +209,14 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       />`);
     });
 
-    it('toggles cover image diff when clicking', async function() {
+    it('toggles cover image diff when clicking', async function () {
       expect(SnapshotGroup.isDiffImageVisible).to.equal(true);
       await SnapshotGroup.clickDiffImage();
       expect(SnapshotGroup.isDiffImageVisible).to.equal(false);
     });
 
-    describe('when showing all snapshots for a group', function() {
-      it('shows diffs for all snapshots by default', async function() {
+    describe('when showing all snapshots for a group', function () {
+      it('shows diffs for all snapshots by default', async function () {
         expect(SnapshotGroup.isDiffImageVisible).to.equal(true);
         await SnapshotGroup.toggleShowAllSnapshots();
         SnapshotGroup.snapshots.forEach(snapshot => {
@@ -227,7 +224,7 @@ describe('Integration: InfiniteSnapshotGroup', function() {
         });
       });
 
-      it('toggles diff image for individual snapshots', async function() {
+      it('toggles diff image for individual snapshots', async function () {
         await SnapshotGroup.toggleShowAllSnapshots();
         await SnapshotGroup.snapshots[0].clickDiffImage();
         SnapshotGroup.snapshots.forEach((snapshot, i) => {
@@ -239,7 +236,7 @@ describe('Integration: InfiniteSnapshotGroup', function() {
         });
       });
 
-      it('displays diff image in same state when collapsing all snapshots', async function() {
+      it('displays diff image in same state when collapsing all snapshots', async function () {
         await SnapshotGroup.clickDiffImage();
         expect(SnapshotGroup.isDiffImageVisible).to.equal(false);
 
@@ -250,9 +247,9 @@ describe('Integration: InfiniteSnapshotGroup', function() {
     });
   });
 
-  describe('when multiple snapshots in the group have comments', function() {
+  describe('when multiple snapshots in the group have comments', function () {
     let snapshotsWithComments;
-    beforeEach(async function() {
+    beforeEach(async function () {
       snapshotsWithComments = makeList('snapshot', 2, 'withComparisons', 'withComments', {
         fingerprint: 'fingerprint',
       });
@@ -263,7 +260,7 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       this.setProperties({snapshots});
     });
 
-    it('shows multiple snapshots as "cover" snapshots', async function() {
+    it('shows multiple snapshots as "cover" snapshots', async function () {
       await render(hbs`<InfiniteSnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
@@ -297,8 +294,8 @@ describe('Integration: InfiniteSnapshotGroup', function() {
     });
   });
 
-  describe('comment button', function() {
-    beforeEach(async function() {
+  describe('comment button', function () {
+    beforeEach(async function () {
       await render(hbs`<InfiniteSnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
@@ -310,7 +307,7 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       />`);
     });
 
-    it('expands all snapshots and shows comment panel on first snapshot', async function() {
+    it('expands all snapshots and shows comment panel on first snapshot', async function () {
       await SnapshotGroup.header.clickCommentButton();
       const firstSnapshot = SnapshotGroup.snapshots[0];
       const secondSnapshot = SnapshotGroup.snapshots[1];
@@ -321,7 +318,7 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('allows collaboration panel toggle on first snapshot', async function() {
+    it('allows collaboration panel toggle on first snapshot', async function () {
       await SnapshotGroup.header.clickCommentButton();
       const firstSnapshot = SnapshotGroup.snapshots[0];
       expect(firstSnapshot.collaborationPanel.isVisible).to.equal(true);
@@ -329,7 +326,7 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       expect(firstSnapshot.collaborationPanel.isVisible).to.equal(false);
     });
 
-    it('allows comment panel toggle after all snapshots expanded', async function() {
+    it('allows comment panel toggle after all snapshots expanded', async function () {
       await SnapshotGroup.header.toggleShowAllSnapshots();
       const firstSnapshot = SnapshotGroup.snapshots[0];
 
@@ -339,8 +336,8 @@ describe('Integration: InfiniteSnapshotGroup', function() {
     });
   });
 
-  describe('group state', function() {
-    beforeEach(async function() {
+  describe('group state', function () {
+    beforeEach(async function () {
       await render(hbs`<InfiniteSnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
@@ -352,7 +349,7 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       />`);
     });
 
-    it('is unreviewed by default', async function() {
+    it('is unreviewed by default', async function () {
       const snapshots = makeList('snapshot', 2, 'withComparisons', {fingerprint: 'unreviewed'});
       this.setProperties({snapshots});
       expect(SnapshotGroup.approveButton.isUnapproved).to.equal(true);
@@ -360,7 +357,7 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('shows approved when all snapshots are approved', async function() {
+    it('shows approved when all snapshots are approved', async function () {
       const snapshots = makeList('snapshot', 2, 'withComparisons', 'approved', {
         fingerprint: 'approved',
       });
@@ -370,7 +367,7 @@ describe('Integration: InfiniteSnapshotGroup', function() {
       await percySnapshot(this.test, {darkMode: true});
     });
 
-    it('shows rejected when one snapshot is rejected', async function() {
+    it('shows rejected when one snapshot is rejected', async function () {
       const rejectedSnapshots = makeList('snapshot', 1, 'withComparisons', 'rejected', {
         fingerprint: 'mixed',
       });
