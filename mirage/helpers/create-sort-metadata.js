@@ -15,21 +15,44 @@ import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
 //     browser_family_slug: 'firefox',
 //     default_browser_family_slug: false,
 //     items: [
+//       index: 0,
+//       id: 1,
+//       type: "snapshot",
+//       attributes: {
+//         review-state-reason: "unreviewed_comparisons"
+//       },
 //       {
-//         index: 0,
-//         type: 'group',
-//         'snapshot-ids': [1,2,3]
-//       }
+//         "index": 1,
+//         "type": "group",
+//         "items": [
+//           {
+//             "id": 2,
+//             "type": "snapshot",
+//             "attributes": {
+//               "review-state-reason": "unreviewed_comparisons"
+//             }
+//           },
+//           {
+//             "id": 3,
+//             "type": "snapshot",
+//             "attributes": {
+//               "review-state-reason": "unreviewed_comparisons"
+//             }
+//           }
+//         ]
+//       },
 //     ]
 //   },
 //   {
 //     browser_family_slug: 'chrome',
 //     default_browser_family_slug: true,
 //     items: [
-//       {
-//         index: 0,
-//         type: 'snapshot',
-//         'snapshot-id': 4,
+///      {
+//         "id": 3,
+//         "type": "snapshot",
+//         "attributes": {
+//           "review-state-reason": "unreviewed_comparisons"
+//         }
 //       }
 //     ]
 //   },
@@ -43,17 +66,37 @@ export default function createSortMetadata(mirageSnapshots, mirageBuild) {
     const fingerprintDictOfIndexes = _groupSnapshotIndexesByFingerprint(snapshotsForBrowser);
     const {singleIndexes, groupedIndexes} = _separateSingleIndexes(fingerprintDictOfIndexes);
     const groups = Object.keys(groupedIndexes).map((key, i) => {
+      const items = groupedIndexes[key].map(snapshotId => {
+        return {
+          id: snapshotId,
+          type: 'snapshot',
+          attributes: {
+            // eslint-disable-next-line
+            'review-state-reason': server.db.snapshots.find(snapshotId).reviewStateReason,
+          },
+        };
+      });
+
       return {
         index: i,
         type: 'group',
-        'snapshot-ids': groupedIndexes[key],
+        items,
       };
     });
     const singles = singleIndexes.map((snapshotId, i) => {
       return {
         index: groups.length + i,
         type: 'snapshot',
-        'snapshot-id': snapshotId,
+        items: [
+          {
+            id: snapshotId,
+            type: 'snapshot',
+            attributes: {
+              // eslint-disable-next-line
+              'review-state-reason': server.db.snapshots.find(snapshotId).reviewStateReason,
+            },
+          },
+        ],
       };
     });
 
@@ -75,9 +118,9 @@ export default function createSortMetadata(mirageSnapshots, mirageBuild) {
 function separateGroups(groupOrderItems) {
   return groupOrderItems.reduce(
     (acc, groupOrderItem) => {
-      const snapshots = groupOrderItem['snapshot-ids'].map(snapshotId => {
+      const snapshots = groupOrderItem.items.map(item => {
         // eslint-disable-next-line
-        return server.db.snapshots.find(snapshotId);
+        return server.db.snapshots.find(item.id);
       });
       const areAllApproved = snapshots.every(snapshot => {
         return snapshot.reviewState === SNAPSHOT_APPROVED_STATE;
@@ -95,7 +138,7 @@ function separateSnapshots(snapshotsOrderItems) {
   return snapshotsOrderItems.reduce(
     (acc, snapshotOrderItem) => {
       // eslint-disable-next-line
-      const snapshot = server.db.snapshots.find(snapshotOrderItem['snapshot-id']);
+      const snapshot = server.db.snapshots.find(snapshotOrderItem.items[0].id);
       snapshot.reviewState === SNAPSHOT_APPROVED_STATE
         ? acc.approvedSnapshots.push(snapshotOrderItem)
         : acc.unapprovedSnapshots.push(snapshotOrderItem);

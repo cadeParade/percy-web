@@ -5,16 +5,39 @@ import Object, {computed} from '@ember/object';
 //   browser_family_slug: 'firefox',
 //   default_browser_family_slug: false,
 //   items: [
+//     index: 0,
+//     id: 1,
+//     type: "snapshot",
+//     attributes: {
+//       review-state-reason: "unreviewed_comparisons"
+//     },
 //     {
-//       index: 0,
-//       type: 'group',
-//       'snapshot-ids': [1,2,3]
-//     }
+//       "index": 1,
+//       "type": "group",
+//       "items": [
+//         {
+//           "id": 2,
+//           "type": "snapshot",
+//           "attributes": {
+//             "review-state-reason": "unreviewed_comparisons"
+//           }
+//         },
+//         {
+//           "id": 3,
+//           "type": "snapshot",
+//           "attributes": {
+//             "review-state-reason": "unreviewed_comparisons"
+//           }
+//         }
+//       ]
+//     },
 //   ]
 // ]
 
 export default class MetadataSort extends Object {
   metadataSort = null;
+  // TODO(sort) seems bad??
+  store = null;
 
   @computed('metadataSort')
   get defaultBrowserSlug() {
@@ -44,16 +67,54 @@ export default class MetadataSort extends Object {
     }, []);
     return ids.uniq();
   }
+
+  // Take a set of orderItems and parse out all the ids we need to fetch.
+  snapshotIdsToLoad(orderItems) {
+    // Take our complex data structure and flatten all the ids.
+    const ids = idsFromOrderItems(orderItems);
+
+    // exclude ids that are already in the store. Don't re-fetch them.
+    return ids.reduce((acc, id) => {
+      const snapshot = this._peekSnapshot(id);
+      if (!snapshot) {
+        acc.push(id);
+      }
+      return acc;
+    }, []);
+  }
+
+  // Take an array of snapshots models and map them back to the structure provided
+  // by orderItems.
+  // This will be an array -- length of 1 for snapshots, length > 1 for groups.
+  snapshotsToBlocks(orderItems, snapshots) {
+    return orderItems.map(orderItem => {
+      const block = orderItem.items.map(item => {
+        return this._cachedOrFetchedSnapshot(snapshots, item.id.toString());
+      });
+      return {
+        block,
+        orderItem: orderItem,
+      };
+    });
+  }
+
+  _cachedOrFetchedSnapshot(fetchedSnapshots, id) {
+    let snapshot;
+    snapshot = this._peekSnapshot(id);
+    if (!snapshot) {
+      snapshot = fetchedSnapshots.findBy('id', id);
+    }
+    return snapshot;
+  }
+
+  _peekSnapshot(id) {
+    return this.store.peekRecord('snapshot', id);
+  }
 }
 
-function idsFromOrderItems(orderItems) {
+export function idsFromOrderItems(orderItems) {
   // Take our complex data structure and flatten all the ids.
   return orderItems.reduce((acc, item) => {
-    if (item.type === 'group') {
-      return acc.concat(item['snapshot-ids']);
-    } else {
-      acc.push(item['snapshot-id']);
-      return acc;
-    }
+    return acc.concat(item.items.mapBy('id'));
   }, []);
 }

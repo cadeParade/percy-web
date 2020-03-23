@@ -6,7 +6,7 @@
     as |items|
   >
     {{#each items as |item|}}
-      {{#if (is-item-array item.block)}}
+      {{#if (gt item.block.length 1)}}
         {{#if (eq this.page pageToLoad)}}
           <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
         {{/if}}
@@ -35,7 +35,7 @@
           <InfiniteSnapshotViewer
             @class="data-test-snapshot-viewer"
             @build={{this.build}}
-            @snapshot={{item.block}}
+            @snapshot={{item.block.firstObject}}
             @allDiffsShown={{this.allDiffsShown}}
             @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
             @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}

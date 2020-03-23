@@ -6,6 +6,7 @@ import {inject as service} from '@ember/service';
 import {computed} from '@ember/object';
 import {snapshotsWithNoDiffForBrowser} from 'percy-web/lib/filtered-comparisons';
 import {task} from 'ember-concurrency';
+import {next} from '@ember/runloop';
 
 export default Component.extend(PollingMixin, {
   classNames: ['BuildContainer'],
@@ -125,10 +126,16 @@ export default Component.extend(PollingMixin, {
 
   actions: {
     updateActiveBrowser(newBrowser) {
+      this.set('isSnapshotsLoading', true);
       this.set('page', 0);
       this.set('chosenBrowser', newBrowser);
 
       this._resetUnchangedSnapshots();
+
+      next(() => {
+        this.set('isSnapshotsLoading', false);
+      });
+
       const organization = this.get('build.project.organization');
       const eventProperties = {
         browser_id: newBrowser.get('id'),
