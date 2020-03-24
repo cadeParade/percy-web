@@ -2,6 +2,7 @@ import Service from '@ember/service';
 import {inject as service} from '@ember/service';
 import {Promise} from 'rsvp';
 import {REVIEW_ACTIONS} from 'percy-web/models/review';
+import {SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 import {task} from 'ember-concurrency';
 import {get} from '@ember/object';
 
@@ -21,17 +22,12 @@ export default class ReviewsService extends Service {
   @service
   confirm;
 
-  @task(function* ({snapshots, build, eventData}) {
-    // TODO(sort) Update _loadedSnapshotsForBuild,
-    // createApprovalReview to not include snapshots,
-    // openReviewThread, rejectedComments
-    // to check sort metadata rather than snapshots in store.
-    if (!snapshots) {
-      snapshots = this._loadedSnapshotsForBuild(build);
-    }
+  @service
+  launchDarkly;
 
+  @task(function* ({snapshots, build, eventData}) {
     const hasOpenReviewThreads = this._snapshotsHaveOpenReviewThreads(snapshots);
-    const hasRejectedSnapshots = this._snapshotsHaveRejectedComments(snapshots);
+    const hasRejectedSnapshots = this._snapshotsAreRejected(snapshots, build);
 
     let shouldDisplayModal = false;
     shouldDisplayModal = hasRejectedSnapshots || hasOpenReviewThreads;
@@ -48,33 +44,13 @@ export default class ReviewsService extends Service {
   createReview;
 
   async createApprovalReview(build, snapshots, eventData) {
-    // TODO(sort) how to create records without full models :(
-    const fakeSnapshots = this.fakeSnapshots(snapshots);
+    const reviewData = {build, action: REVIEW_ACTIONS.APPROVE};
+    if (snapshots) {
+      reviewData.snapshots = snapshots;
+    }
 
-    const review = this.store.createRecord('review', {
-      build,
-      snapshots: fakeSnapshots,
-      action: REVIEW_ACTIONS.APPROVE,
-    });
+    const review = this.store.createRecord('review', reviewData);
     return await this._saveReview(review, build, eventData);
-  }
-
-  fakeSnapshots(snapshots) {
-    return snapshots.map(snapshot => {
-      const isString = typeof snapshot === 'string';
-      const isNumber = typeof snapshot === 'number';
-
-      if (isString || isNumber) {
-        const record = this.store.peekRecord('snapshot', snapshot);
-        if (!record) {
-          return this.store.createRecord('snapshot', {id: snapshot});
-        } else {
-          return record;
-        }
-      } else {
-        return snapshot;
-      }
-    });
   }
 
   async createRejectReview(build, snapshots, eventData) {
@@ -92,10 +68,7 @@ export default class ReviewsService extends Service {
       reload: true,
       include: 'approved-by',
     });
-    const refreshedSnapshots = this.snapshotQuery.getSnapshots(
-      review.snapshots.mapBy('id'),
-      build.get('id'),
-    );
+    const refreshedSnapshots = this._refreshSnapshots(review);
     const snapshotsComments = this.commentThreads.getCommentsForSnapshotIds(
       review.snapshots.mapBy('id'),
       build,
@@ -109,6 +82,14 @@ export default class ReviewsService extends Service {
     return true;
   }
 
+  _refreshSnapshots(review) {
+    if (review.snapshots.length > 0) {
+      return this.snapshotQuery.getSnapshots(review.snapshots.mapBy('id'), review.build.get('id'));
+    } else {
+      return this.snapshotQuery.getChangedSnapshots(review.build);
+    }
+  }
+
   _openReviewThreads(snapshots) {
     return snapshots.filterBy('isApproved', false).reduce((acc, snapshot) => {
       return acc.concat(snapshot.commentThreads.filterBy('isResolvable')).toArray();
@@ -116,11 +97,37 @@ export default class ReviewsService extends Service {
   }
 
   _snapshotsHaveOpenReviewThreads(snapshots) {
+    if (!snapshots) return false;
     return this._openReviewThreads(snapshots).length > 0;
   }
 
-  _snapshotsHaveRejectedComments(snapshots) {
-    return snapshots.any(snapshot => snapshot.isRejected);
+  _snapshotsAreRejected(snapshots, build) {
+    if (!snapshots && this.launchDarkly.variation('snapshot-sort-api')) {
+      const loadedSnapshots = this._loadedSnapshotsForBuild(build);
+      const loadedSnapshotIds = loadedSnapshots.mapBy('id');
+      const anyLoadedSnapshotsAreRejected = loadedSnapshots.any(snapshot => snapshot.isRejected);
+      const snapshotData = build.sortMetadata.allOrderItemsById;
+      loadedSnapshotIds.forEach(id => {
+        delete snapshotData[id];
+      });
+
+      const anyUnloadedSnapshotsAreRejected = this._anyUnloadedSnapshotsAreRejected(snapshotData);
+      return anyLoadedSnapshotsAreRejected || anyUnloadedSnapshotsAreRejected;
+    } else if (snapshots) {
+      return snapshots.any(snapshot => snapshot.isRejected);
+    } else {
+      return false;
+    }
+  }
+
+  _anyUnloadedSnapshotsAreRejected(snapshotSortItems) {
+    return Object.values(snapshotSortItems).any(item => {
+      const reviewState = item.attributes['review-state-reason'];
+      const isRejected = reviewState === SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED;
+      const isRejectedPreviously =
+        reviewState === SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED_PREVIOUSLY;
+      return isRejected || isRejectedPreviously;
+    });
   }
 
   _loadedSnapshotsForBuild(build) {

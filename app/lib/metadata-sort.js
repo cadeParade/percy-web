@@ -1,4 +1,5 @@
-import Object, {computed} from '@ember/object';
+import EmberObject from '@ember/object';
+import {computed} from '@ember/object';
 
 // metadataSort
 // [
@@ -34,7 +35,7 @@ import Object, {computed} from '@ember/object';
 //   ]
 // ]
 
-export default class MetadataSort extends Object {
+export default class MetadataSort extends EmberObject {
   metadataSort = null;
   // TODO(sort) seems bad??
   store = null;
@@ -61,11 +62,23 @@ export default class MetadataSort extends Object {
 
   @computed()
   get allSnapshotsWithDiffsIds() {
-    const ids = this.metadataSort.reduce((acc, browserData) => {
-      const ids = this.snapshotIdsForBrowser(browserData.browser_family_slug);
-      return acc.concat(ids);
-    }, []);
-    return ids.uniq();
+    return Object.keys(this.allOrderItemsById);
+  }
+
+  @computed()
+  // {
+  //   <id>: {id: <id>, type: "snapshot", attributes: {…}}
+  //   <id>: {id: <id>, type: "snapshot", attributes: {…}}
+  // }
+  get allOrderItemsById() {
+    return this.metadataSort.reduce((acc, browserData) => {
+      return browserData.items.reduce((acc, item) => {
+        item.items.forEach(item => {
+           acc[item.id] = item;
+        })
+        return acc
+      }, {});
+    }, {});
   }
 
   // Take a set of orderItems and parse out all the ids we need to fetch.
