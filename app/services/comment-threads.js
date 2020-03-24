@@ -17,6 +17,12 @@ export default class CommentThreadsService extends Service {
   }
 
   getCommentsForSnapshotIds(snapshotIds, build) {
+    const numSnapshots = snapshotIds.length;
+    // If we request too many snapshot ids, the API responds with 400 request too long
+    if (numSnapshots === 0 || numSnapshots > 30) {
+      return this.getCommentsForBuild(build.get('id'));
+    }
+
     return this.store.loadRecords('commentThread', {
       filter: {
         build: build.get('id'),

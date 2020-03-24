@@ -64,10 +64,7 @@ export default class ReviewsService extends Service {
 
   async _saveReview(review, build, eventData) {
     await review.save();
-    const refreshedBuild = this.store.findRecord('build', build.get('id'), {
-      reload: true,
-      include: 'approved-by',
-    });
+    const refreshedBuild = this._refreshBuild(build);
     const refreshedSnapshots = this._refreshSnapshots(review);
     const snapshotsComments = this.commentThreads.getCommentsForSnapshotIds(
       review.snapshots.mapBy('id'),
@@ -82,8 +79,24 @@ export default class ReviewsService extends Service {
     return true;
   }
 
+  _refreshComments(review) {
+    this.commentThreads.getCommentsForSnapshotIds(review.snapshots.mapBy('id'), review.build);
+  }
+
+  _refreshBuild(build) {
+    return this.store.findRecord('build', build.get('id'), {
+      reload: true,
+      include: 'approved-by',
+    });
+  }
+
   _refreshSnapshots(review) {
-    if (review.snapshots.length > 0) {
+    // If snapshots were included in the review (aka not a build approval)
+    // AND
+    // there are less than some arbitrary number (30) load the individual snapshots.
+    // We don't load _all_ snapshots always because if a person approves say 1000 snapshots at once,
+    // the API throws an error that the request is too many characters.
+    if (review.snapshots.length > 0 && review.snapshots.length < 30) {
       return this.snapshotQuery.getSnapshots(review.snapshots.mapBy('id'), review.build.get('id'));
     } else {
       return this.snapshotQuery.getChangedSnapshots(review.build);
