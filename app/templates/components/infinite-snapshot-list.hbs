@@ -1,4 +1,4 @@
-{{#each (range 0 (inc 1 this.page) true) as |pageToLoad|}}
+{{#each (range 0 this.page true) as |pageToLoad|}}
   <LoadSnapshots
     @build={{this.build}}
     @orderItems={{this.orderItems}}

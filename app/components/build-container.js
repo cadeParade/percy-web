@@ -22,7 +22,7 @@ export default Component.extend(PollingMixin, {
   allApprovableSnapshots: null,
 
   chosenBrowser: null,
-  page: 0,
+  page: 1,
 
   snapshotsChanged: computed('allChangedBrowserSnapshotsSorted', 'activeBrowser.id', function () {
     if (!this.allChangedBrowserSnapshotsSorted) return;
