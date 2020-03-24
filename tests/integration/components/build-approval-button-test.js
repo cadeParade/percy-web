@@ -48,17 +48,11 @@ describe('Integration: BuildApprovalButton', function () {
   });
 
   it('calls createReview with correct args when clicked', async function () {
-    this.setProperties({
-      approvableSnapshots: build.get('snapshots'),
-    });
-
     await render(hbs`<BuildApprovalButton
       @build={{build}}
-      @approvableSnapshots={{approvableSnapshots}}
     />`);
     await BuildApprovalButton.clickButton();
     expect(createReviewStub).to.have.been.calledWith({
-      snapshots: build.get('snapshots'),
       build: build,
     });
   });
@@ -68,32 +62,14 @@ describe('Integration: BuildApprovalButton', function () {
     sinon.stub(flashMessageService, 'info');
 
     this.set('build.reviewState', 'approved');
-    this.setProperties({
-      approvableSnapshots: build.get('snapshots'),
-    });
 
     await render(hbs`<BuildApprovalButton
       @build={{build}}
-      @approvableSnapshots={{approvableSnapshots}}
     />`);
 
     await BuildApprovalButton.clickButton();
     expect(createReviewStub).to.not.have.been.called;
     expect(flashMessageService.info).to.have.been.calledWith('This build was already approved');
-  });
-
-  it('does not call createReview if there are no approvable snapshots', async function () {
-    this.setProperties({
-      approvableSnapshots: [],
-    });
-
-    await render(hbs`<BuildApprovalButton
-      @build={{build}}
-      @approvableSnapshots={{approvableSnapshots}}
-    />`);
-
-    await BuildApprovalButton.clickButton();
-    expect(createReviewStub).to.not.have.been.called;
   });
 
   it('displays correctly when in loading state ', async function () {

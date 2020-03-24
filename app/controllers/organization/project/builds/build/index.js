@@ -58,7 +58,6 @@ export default class IndexController extends Controller {
     setProperties(this, {
       allChangedBrowserSnapshotsSorted: orderedBrowserSnapshots,
       isSnapshotsLoading: false,
-      allApprovableSnapshots: buildSnapshotsWithDiffs,
     });
   }
 

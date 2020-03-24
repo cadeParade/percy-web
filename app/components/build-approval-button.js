@@ -7,7 +7,6 @@ export default Component.extend({
   reviews: service(),
   build: null,
   approve: null,
-  approvableSnapshots: null,
   isApproved: readOnly('build.isApproved'),
   isLoading: false,
   isDisabled: false,
@@ -24,13 +23,8 @@ export default Component.extend({
       return;
     }
 
-    if (this.get('approvableSnapshots.length') === 0) {
-      return;
-    }
-
     this.set('isLoading', true);
     await this.reviews.createReview.perform({
-      snapshots: this.approvableSnapshots,
       build: this.build,
     });
     this.set('isLoading', false);

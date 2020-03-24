@@ -22,8 +22,16 @@ export default class ReviewsService extends Service {
   confirm;
 
   @task(function* ({snapshots, build, eventData}) {
+    // TODO(sort) Update _loadedSnapshotsForBuild,
+    // createApprovalReview to not include snapshots,
+    // openReviewThread, rejectedComments
+    // to check sort metadata rather than snapshots in store.
+    if (!snapshots) {
+      snapshots = this._loadedSnapshotsForBuild(build);
+    }
+
     const hasOpenReviewThreads = this._snapshotsHaveOpenReviewThreads(snapshots);
-    const hasRejectedSnapshots = snapshots.any(snapshot => snapshot.isRejected);
+    const hasRejectedSnapshots = this._snapshotsHaveRejectedComments(snapshots);
 
     let shouldDisplayModal = false;
     shouldDisplayModal = hasRejectedSnapshots || hasOpenReviewThreads;
@@ -85,6 +93,17 @@ export default class ReviewsService extends Service {
 
   _snapshotsHaveOpenReviewThreads(snapshots) {
     return this._openReviewThreads(snapshots).length > 0;
+  }
+
+  _snapshotsHaveRejectedComments(snapshots) {
+    return snapshots.any(snapshot => snapshot.isRejected);
+  }
+
+  _loadedSnapshotsForBuild(build) {
+    return this.store
+      .peekAll('snapshot')
+      .filterBy('build.id', build.get('id'))
+      .filterBy('isChanged');
   }
 
   _reviewConfirmMessage(snapshots) {
