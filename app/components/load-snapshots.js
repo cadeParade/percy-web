@@ -9,7 +9,7 @@ export default Component.extend({
   snapshotQuery: service(),
   limit: SNAPSHOT_PAGINATION_COUNT,
 
-  didInsertElement() {
+  didReceiveAttrs() {
     this._super(...arguments);
 
     this.query.perform();
