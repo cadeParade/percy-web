@@ -26,7 +26,7 @@ describe('Acceptance: InfiniteBuild', function () {
     expect(firstSnapshot.collaborationPanel.isVisible).to.equal(true);
     expect(firstSnapshot.commentThreads.length).to.equal(3);
     expect(firstSnapshot.header.numOpenCommentThreads).to.equal('3');
-    await percySnapshot(context.test, {darkMode: true});
+    await percySnapshot(context.test);
   }
 
   async function createsCommentReplyOnFirstSnapshot() {
@@ -68,7 +68,7 @@ describe('Acceptance: InfiniteBuild', function () {
     await collabPanel.showArchivedComments();
     expect(collabPanel.commentThreads.length).to.equal(3);
 
-    await percySnapshot(context.test, {darkMode: true});
+    await percySnapshot(context.test);
   }
 
   function _expectConfirmDialogShowingAndSideEffects(button) {
@@ -262,7 +262,7 @@ describe('Acceptance: InfiniteBuild', function () {
       expect(BuildPage.snapshotBlocks[0].name).to.equal('3 matching changes');
       expect(BuildPage.snapshotBlocks[1].name).to.equal(twoWidthsSnapshot.name);
 
-      await percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test);
     });
   });
 
@@ -352,9 +352,7 @@ describe('Acceptance: InfiniteBuild', function () {
       await firstCommentThread.goToOriginatingSnapshot();
 
       expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
-      await percySnapshot(`${this.test.fullTitle()} | after following originating snapshot link`, {
-        darkMode: true,
-      });
+      await percySnapshot(`${this.test.fullTitle()} | after following originating snapshot link`);
     });
 
     // eslint-disable-next-line
@@ -459,9 +457,9 @@ describe('Acceptance: InfiniteBuild', function () {
       await BuildPage.visitBuild(urlParams);
       expect(BuildPage.browserSwitcher.chromeButton.diffCount).to.equal('3');
       expect(BuildPage.browserSwitcher.firefoxButton.diffCount).to.equal('3');
-      await percySnapshot(this.test.fullTitle() + ' before switching browsers', {darkMode: true});
+      await percySnapshot(this.test.fullTitle() + ' before switching browsers');
       await BuildPage.browserSwitcher.switchBrowser();
-      await percySnapshot(this.test.fullTitle() + ' after switching browsers', {darkMode: true});
+      await percySnapshot(this.test.fullTitle() + ' after switching browsers');
     });
 
     it('sorts snapshots correctly when switching to another browser', async function () {
@@ -654,7 +652,7 @@ describe('Acceptance: InfiniteBuild', function () {
       await firstWidthSwitcher.buttons[0].click();
       expect(firstWidthSwitcher.buttons[0].isActive).to.equal(true);
       expect(firstWidthSwitcher.buttons[1].isActive).to.equal(false);
-      await percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test);
     });
   });
 
@@ -740,7 +738,7 @@ describe('Acceptance: InfiniteBuild', function () {
       expect(BuildPage.removedSnapshots.isVisible).to.equal(true);
       await BuildPage.removedSnapshots.snapshotNames[0].click();
       expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
-      await percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test);
     });
 
     it('resets removedSnapshots when moving to another build', async function () {
@@ -751,7 +749,7 @@ describe('Acceptance: InfiniteBuild', function () {
       expect(currentRouteName()).to.equal('organization.project.builds.build.index');
 
       expect(BuildPage.removedSnapshots.isVisible).to.equal(false);
-      await percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test);
     });
   });
 
@@ -814,21 +812,19 @@ describe('Acceptance: InfiniteBuild', function () {
     expect(currentURL()).to.equal(urlBase);
 
     await BuildPage.typeDownArrow();
-    await percySnapshot(this.test.fullTitle() + ' | Down', {darkMode: true});
+    await percySnapshot(this.test.fullTitle() + ' | Down');
     expect(firstSnapshot.isFocused).to.equal(true);
     expect(secondSnapshot.isFocused).to.equal(false);
     expect(thirdSnapshot.isFocused).to.equal(false);
 
     await BuildPage.typeDownArrow();
-    await percySnapshot(this.test.fullTitle() + ' | Down > Down', {darkMode: true});
+    await percySnapshot(this.test.fullTitle() + ' | Down > Down');
     expect(firstSnapshot.isFocused).to.equal(false);
     expect(secondSnapshot.isFocused).to.equal(true);
     expect(thirdSnapshot.isFocused).to.equal(false);
 
     await BuildPage.typeUpArrow();
-    await percySnapshot(this.test.fullTitle() + ' | Down > Down > Up', {
-      darkMode: true,
-    });
+    await percySnapshot(this.test.fullTitle() + ' | Down > Down > Up');
     expect(firstSnapshot.isFocused).to.equal(true);
     expect(secondSnapshot.isFocused).to.equal(false);
     expect(thirdSnapshot.isFocused).to.equal(false);
@@ -842,9 +838,7 @@ describe('Acceptance: InfiniteBuild', function () {
     expect(BuildPage.isUnchangedPanelVisible).to.equal(true);
     expect(BuildPage.findSnapshotByName(snapshotName)).to.not.exist;
 
-    await percySnapshot(this.test.fullTitle() + ' | shows batched no diffs', {
-      darkMode: true,
-    });
+    await percySnapshot(this.test.fullTitle() + ' | shows batched no diffs');
     await BuildPage.clickToggleNoDiffsSection();
     const snapshot = BuildPage.findSnapshotByName(snapshotName);
     expect(BuildPage.isUnchangedPanelVisible).to.equal(false);
@@ -1039,7 +1033,7 @@ describe('Acceptance: InfiniteBuild', function () {
 
       expect(currentURL()).to.include(parentBuild.id);
       expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
-      await percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test);
     });
 
     it("shows error message when latest changed ancestor doesn't exist", async function () {

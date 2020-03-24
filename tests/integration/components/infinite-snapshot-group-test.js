@@ -65,7 +65,7 @@ describe('Integration: InfiniteSnapshotGroup', function () {
 
       expect(SnapshotGroup.header.widthSwitcher.buttons[0].isActive).to.equal(false);
       expect(SnapshotGroup.header.widthSwitcher.buttons[1].isActive).to.equal(true);
-      await percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test);
     });
 
     it('updates active button when clicked', async function () {
@@ -194,7 +194,7 @@ describe('Integration: InfiniteSnapshotGroup', function () {
       await SnapshotGroup.header.toggleShowAllSnapshots();
       await SnapshotGroup.header.toggleShowAllSnapshots();
       expect(SnapshotGroup.snapshots.length).to.equal(0);
-      await percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test);
     });
   });
 
@@ -290,7 +290,7 @@ describe('Integration: InfiniteSnapshotGroup', function () {
         @isBuildApprovable={{isBuildApprovable}}
       />`);
 
-      await percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test);
     });
   });
 
@@ -354,7 +354,7 @@ describe('Integration: InfiniteSnapshotGroup', function () {
       this.setProperties({snapshots});
       expect(SnapshotGroup.approveButton.isUnapproved).to.equal(true);
       expect(SnapshotGroup.header.rejectedBadge.isVisible).to.equal(false);
-      await percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test);
     });
 
     it('shows approved when all snapshots are approved', async function () {
@@ -364,7 +364,7 @@ describe('Integration: InfiniteSnapshotGroup', function () {
       this.setProperties({snapshots});
       expect(SnapshotGroup.approveButton.isApproved).to.equal(true);
       expect(SnapshotGroup.header.rejectedBadge.isVisible).to.equal(false);
-      await percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test);
     });
 
     it('shows rejected when one snapshot is rejected', async function () {
