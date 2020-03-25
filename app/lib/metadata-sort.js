@@ -1,5 +1,5 @@
-import EmberObject from '@ember/object';
-import {computed} from '@ember/object';
+import EmberObject, {computed} from '@ember/object';
+import {SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 
 // This file handles and provides various ways to parse the data structure provided in the
 // snapshot query metadata.
@@ -43,92 +43,129 @@ import {computed} from '@ember/object';
 // ]
 
 export default class MetadataSort extends EmberObject {
+  // TODO(sort) rename this to something better -- 'sortData' maybe?
   metadataSort = null;
+  build = null;
   // TODO(sort) seems bad??
   store = null;
 
   @computed('metadataSort')
   get defaultBrowserSlug() {
     const defaultBrowserData = this.metadataSort.findBy('default_browser_family_slug', true);
-    if (defaultBrowserData) {
-      return defaultBrowserData.browser_family_slug;
-    } else {
-      return 'chrome';
-    }
+    return defaultBrowserData ? defaultBrowserData.browser_family_slug : 'chrome';
   }
 
-  orderItemsForBrowser(activeBrowserFamilySlug) {
-    const browserInfo = this.metadataSort.findBy('browser_family_slug', activeBrowserFamilySlug);
-    return browserInfo.items;
+  @computed()
+  get orderItemsForBrowsers() {
+    const browserItems = {};
+    this.metadataSort.forEach(browserData => {
+      browserItems[browserData.browser_family_slug] = browserData.items;
+    });
+    return browserItems;
   }
 
-  snapshotIdsForBrowser(browserSlug) {
-    const orderItems = this.orderItemsForBrowser(browserSlug);
-    return idsFromOrderItems(orderItems);
+  @computed()
+  get allSnapshots() {
+    return this.metadataSort.reduce((acc, browserData) => {
+      return browserData.items.reduce((acc, item) => {
+        return acc.concat(item.items);
+      }, []);
+    }, []);
   }
 
   @computed()
   get allSnapshotsWithDiffsIds() {
-    return Object.keys(this.allOrderItemsById);
+    return this.allSnapshots.mapBy('id');
   }
 
-  @computed()
   // {
   //   <id>: {id: <id>, type: "snapshot", attributes: {…}}
   //   <id>: {id: <id>, type: "snapshot", attributes: {…}}
   // }
+  snapshotItemsById(orderItems) {
+    return orderItems.reduce((acc, orderItem) => {
+      orderItem.items.forEach(item => {
+        acc[item.id] = item;
+      });
+      return acc;
+    }, {});
+  }
+
+  // {
+  //   <id>: {id: <id>, type: "snapshot", attributes: {…}}
+  //   <id>: {id: <id>, type: "snapshot", attributes: {…}}
+  // }
+  @computed()
   get allOrderItemsById() {
     return this.metadataSort.reduce((acc, browserData) => {
-      return browserData.items.reduce((acc, item) => {
-        item.items.forEach(item => {
-          acc[item.id] = item;
-        });
-        return acc;
-      }, {});
+      return this.snapshotItemsById(browserData.items);
     }, {});
   }
 
   // Take a set of orderItems and parse out all the ids we need to fetch.
-  snapshotIdsToLoad(orderItems) {
+  unloadedSnapshotIds(orderItems) {
     // Take our complex data structure and flatten all the ids.
-    const ids = idsFromOrderItems(orderItems);
-
-    // exclude ids that are already in the store. Don't re-fetch them.
-    return ids.reduce((acc, id) => {
-      const snapshot = this._peekSnapshot(id);
-      if (!snapshot) {
-        acc.push(id);
-      }
-      return acc;
-    }, []);
+    return idsFromOrderItems(orderItems).reject(id => {
+      // exclude ids that are already in the store. Don't re-fetch them.
+      return !!this._peekSnapshot(id);
+    });
   }
 
   // Take an array of snapshots models and map them back to the structure provided
   // by orderItems.
   // This will be an array -- length of 1 for snapshots, length > 1 for groups.
-  snapshotsToBlocks(orderItems, snapshots) {
+  snapshotsToBlocks(orderItems) {
     return orderItems.map(orderItem => {
-      const block = orderItem.items.map(item => {
-        return this._cachedOrFetchedSnapshot(snapshots, item.id.toString());
+      const snapshots = orderItem.items.map(item => {
+        return this._peekSnapshot(item.id);
       });
       return {
-        block,
+        snapshots,
         orderItem: orderItem,
       };
     });
   }
 
-  _cachedOrFetchedSnapshot(fetchedSnapshots, id) {
-    let snapshot;
-    snapshot = this._peekSnapshot(id);
-    if (!snapshot) {
-      snapshot = fetchedSnapshots.findBy('id', id);
-    }
-    return snapshot;
-  }
-
   _peekSnapshot(id) {
     return this.store.peekRecord('snapshot', id);
+  }
+
+  _getLoadedSnapshots() {
+    return this.store.peekAll('snapshot').filterBy('build.id', this.build.id);
+  }
+
+  _unreviewedLoadedSnapshots() {
+    const loadedSnapshotsForBuild = this._getLoadedSnapshots();
+    return loadedSnapshotsForBuild.filter(snapshot => {
+      return snapshot.get('isUnreviewed') && !snapshot.get('isUnchanged');
+    });
+  }
+
+  // TODO(sort) i hate this
+  unapprovedSnapshotsForBrowsersCount() {
+    // Snapshots in the store that are unreviewed.
+    const loadedSnapshots = this._getLoadedSnapshots();
+
+    // Returns: {chrome: [snapshotItem, snapshotItem], firefox: [snapshotItem]}
+    return this.metadataSort.reduce((acc, data) => {
+      // Dictionary of snapshot sort items with id as key
+      const snapshotItems = this.snapshotItemsById(data.items);
+
+      // Remove items from dict that we have in the store.
+      loadedSnapshots.forEach(snapshot => {
+        if (snapshot.isApproved) {
+          delete snapshotItems[snapshot.id];
+        }
+      });
+
+      // Only keep snapshot items that are in unreviewed state.
+      const filtered = Object.values(snapshotItems).filter(item => {
+        return item.attributes['review-state-reason'] === SNAPSHOT_REVIEW_STATE_REASONS.UNREVIEWED;
+      });
+
+      acc[data.browser_family_slug] = filtered;
+      return acc;
+    }, {});
   }
 }
 

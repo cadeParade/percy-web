@@ -1,8 +1,9 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object';
-import {alias} from '@ember/object/computed';
+import {inject as service} from '@ember/service';
 
 export default Component.extend({
+  launchDarkly: service(),
   attributeBindings: ['data-test-browser-switcher'],
   'data-test-browser-switcher': true,
   browsers: null,
@@ -17,5 +18,14 @@ export default Component.extend({
   updateActiveBrowser() {},
   // TODO(sort) fix this count
   // ex: https://percy.io/percy/percy-web/builds/4449087
-  unapprovedSnapshotsWithDiffForBrowsers: alias('build.unapprovedSnapshotsWithDiffForBrowsers'),
+  unapprovedSnapshotsWithDiffForBrowsers: computed(
+    'build.{unapprovedSnapshotsWithDiffForBrowsers,unapprovedSnapshotsForBrowsersCount}',
+    function () {
+      if (this.launchDarkly.variation('snapshot-sort-api')) {
+        return this.build.unapprovedSnapshotsForBrowsersCount;
+      } else {
+        return this.build.unapprovedSnapshotsWithDiffForBrowsers;
+      }
+    },
+  ),
 });

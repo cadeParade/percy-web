@@ -20,16 +20,15 @@ export default Component.extend({
     const endIndex = (this.page + 1) * this.limit;
 
     const orderItemsToLoad = this.orderItems.slice(offset, endIndex);
-    const idsToLoad = this.build.sortMetadata.snapshotIdsToLoad(orderItemsToLoad);
+    const idsToLoad = this.build.sortMetadata.unloadedSnapshotIds(orderItemsToLoad);
 
-    let fetchedSnapshots;
     if (idsToLoad.length > 0) {
-      fetchedSnapshots = yield this.snapshotQuery.getSnapshots(idsToLoad, this.build.id);
+      yield this.snapshotQuery.getSnapshots(idsToLoad, this.build.id);
     }
     // [
-    //   {block: [snapshot, snapshot], orderItem: <orderItem>} // group
-    //   {block: [snapshot], orderItem: <orderItem>} // snapshot
+    //   {snapshots: [snapshot, snapshot], orderItem: <orderItem>} // group
+    //   {snapshots: [snapshot], orderItem: <orderItem>} // snapshot
     // ]
-    return this.build.sortMetadata.snapshotsToBlocks(orderItemsToLoad, fetchedSnapshots);
+    return this.build.sortMetadata.snapshotsToBlocks(orderItemsToLoad);
   }),
 });

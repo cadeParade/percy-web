@@ -71,6 +71,10 @@ export default class ReviewsService extends Service {
       build,
     );
     await Promise.all([refreshedBuild, refreshedSnapshots, snapshotsComments]);
+    build.set(
+      'unapprovedSnapshotsForBrowsersCount',
+      build.get('sortMetadata').unapprovedSnapshotsForBrowsersCount(),
+    );
 
     if (eventData && eventData.title) {
       this._trackEventData(eventData, build);

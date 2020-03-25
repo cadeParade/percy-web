@@ -1,7 +1,7 @@
 import {notEmpty, filterBy, or, alias} from '@ember/object/computed';
-import Object, {get, set, computed} from '@ember/object';
+import EmberObject, {get, set, computed} from '@ember/object';
 
-export default class FilteredComparisons extends Object {
+export default class FilteredComparisons extends EmberObject {
   activeBrowser = null;
   snapshot = null;
   snapshotSelectedWidth = null;
@@ -105,11 +105,12 @@ export function hasDiffForBrowser(snapshot, browser) {
 //   chrome: [<snapshot>, <snapshot>, <snapshot>]
 // }
 export function countDiffsWithSnapshotsPerBrowser(snapshots, browsers) {
-  const counts = Object.create();
+  const counts = EmberObject.create();
 
   browsers.forEach(browser => {
     const unreviewedSnapshotsWithDiffsInBrowser = snapshotsWithDiffForBrowser(snapshots, browser);
-    set(counts, get(browser, 'id'), unreviewedSnapshotsWithDiffsInBrowser);
+
+    set(counts, get(browser, 'familySlug'), unreviewedSnapshotsWithDiffsInBrowser);
   });
   return counts;
 }

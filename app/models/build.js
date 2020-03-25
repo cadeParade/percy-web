@@ -4,6 +4,7 @@ import Model, {attr, hasMany, belongsTo} from '@ember-data/model';
 import moment from 'moment';
 import {countDiffsWithSnapshotsPerBrowser} from 'percy-web/lib/filtered-comparisons';
 import {get} from '@ember/object';
+import {inject as service} from '@ember/service';
 
 export const BUILD_APPROVED_STATE = 'approved';
 export const BUILD_UNREVIEWED_STATE = 'unreviewed';
@@ -40,6 +41,9 @@ const UNREVIEWED_LABEL = 'Unreviewed';
 const REJECTED_LABEL = 'Changes requested';
 
 export default class Build extends Model {
+  @service
+  launchDarkly;
+
   @belongsTo('project', {async: false})
   project;
 
@@ -373,14 +377,13 @@ export default class Build extends Model {
   @computed('loadedSnapshots.@each.{isUnreviewed,isUnchanged}', 'browsers.[]')
   get unapprovedSnapshotsWithDiffForBrowsers() {
     const loadedSnapshotsForBuild = this.loadedSnapshots;
-    const unreviewedSnapshotsWithDiffs = loadedSnapshotsForBuild.reduce((acc, snapshot) => {
-      if (snapshot.get('isUnreviewed') && !snapshot.get('isUnchanged')) {
-        acc.push(snapshot);
-      }
-      return acc;
-    }, []);
+    const unreviewedSnapshotsWithDiffs = loadedSnapshotsForBuild.filter(snapshot => {
+      return snapshot.get('isUnreviewed') && !snapshot.get('isUnchanged');
+    });
+
     return countDiffsWithSnapshotsPerBrowser(unreviewedSnapshotsWithDiffs, this.browsers);
   }
 
+  unapprovedSnapshotsForBrowsersCount = null;
   sortMetadata = null;
 }

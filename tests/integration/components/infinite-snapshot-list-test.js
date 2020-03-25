@@ -101,7 +101,7 @@ describe('Integration: InfiniteSnapshotList', function () {
       build.set('sortMetadata', sortMetadata);
       this.setProperties({
         build,
-        orderItems: sortMetadata.orderItemsForBrowser('firefox'),
+        orderItems: sortMetadata.orderItemsForBrowsers['firefox'],
         stub,
         browser,
         isUnchangedSnapshotsVisible: false,
@@ -234,7 +234,7 @@ describe('Integration: InfiniteSnapshotList', function () {
 
     it('orders snapshots by metadata sort data for a browser', async function () {
       const browser = make('browser');
-      const orderItems = sortMetadata.orderItemsForBrowser('firefox');
+      const orderItems = sortMetadata.orderItemsForBrowsers['firefox'];
       this.setProperties({
         browser,
         orderItems,
@@ -270,7 +270,7 @@ describe('Integration: InfiniteSnapshotList', function () {
 
     it('orders snapshots by metadata sort data for other browser', async function () {
       const chromeBrowser = make('browser', 'chrome');
-      const orderItems = sortMetadata.orderItemsForBrowser('chrome');
+      const orderItems = sortMetadata.orderItemsForBrowsers['chrome'];
       this.setProperties({
         orderItems,
         browser: chromeBrowser,
