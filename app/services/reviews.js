@@ -115,8 +115,8 @@ export default class ReviewsService extends Service {
   }
 
   _snapshotsAreRejected(snapshots, build) {
+    const loadedSnapshots = this._loadedSnapshotsForBuild(build);
     if (!snapshots && this.launchDarkly.variation('snapshot-sort-api')) {
-      const loadedSnapshots = this._loadedSnapshotsForBuild(build);
       const loadedSnapshotIds = loadedSnapshots.mapBy('id');
       const anyLoadedSnapshotsAreRejected = loadedSnapshots.any(snapshot => snapshot.isRejected);
       const snapshotData = build.sortMetadata.allOrderItemsById;
@@ -126,13 +126,15 @@ export default class ReviewsService extends Service {
 
       const anyUnloadedSnapshotsAreRejected = this._anyUnloadedSnapshotsAreRejected(snapshotData);
       return anyLoadedSnapshotsAreRejected || anyUnloadedSnapshotsAreRejected;
-    } else if (snapshots) {
-      return snapshots.any(snapshot => snapshot.isRejected);
     } else {
-      return false;
+      if (!snapshots) {
+        snapshots = loadedSnapshots;
+      }
+      return snapshots.any(snapshot => snapshot.isRejected);
     }
   }
 
+  // TODO(sort) put this in metadata-sort object?
   _anyUnloadedSnapshotsAreRejected(snapshotSortItems) {
     return Object.values(snapshotSortItems).any(item => {
       const reviewState = item.attributes['review-state-reason'];
@@ -151,7 +153,7 @@ export default class ReviewsService extends Service {
   }
 
   _reviewConfirmMessage(snapshots) {
-    const numSnapshotsToApprove = snapshots.length;
+    const numSnapshotsToApprove = (snapshots && snapshots.length) || 1;
     const snapshotString = numSnapshotsToApprove > 1 ? 'snapshots' : 'snapshot';
     const possessionString = numSnapshotsToApprove > 1 ? 'have' : 'has';
     const directObjectString = numSnapshotsToApprove > 1 ? 'them' : 'it';

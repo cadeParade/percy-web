@@ -98,7 +98,6 @@ describe('Acceptance: Build', function () {
   let defaultSnapshot;
   let noDiffsSnapshot;
   let twoWidthsSnapshot;
-  let mobileSnapshot;
   let urlParams;
 
   setupSession(function (server) {
@@ -131,7 +130,8 @@ describe('Acceptance: Build', function () {
       build,
       name: 'Two widths snapshot',
     });
-    mobileSnapshot = server.create('snapshot', 'withMobile', {
+
+    server.create('snapshot', 'withMobile', {
       build,
       name: 'Mobile only snapshot',
     });
@@ -183,7 +183,7 @@ describe('Acceptance: Build', function () {
     });
 
     // eslint-disable-next-line
-    it('displays snapshots in the correct order, before and after approval when build is finished', async function() {
+    it('displays snapshots in the correct order, before and after approval when build is finished', async function () {
       const firstSnapshotExpectedName = defaultSnapshot.name;
       const secondSnapshotExpectedName = twoWidthsSnapshot.name;
 
@@ -231,7 +231,7 @@ describe('Acceptance: Build', function () {
     // This tests the polling behavior in build-container and that initializeSnapshotOrdering method
     // is called and works correctly in builds/build controller.
     // eslint-disable-next-line
-    it('sorts snapshots correctly when a build moves from processing to finished via polling', async function() {
+    it('sorts snapshots correctly when a build moves from processing to finished via polling', async function () {
       // Get the mirage build object, set it to pending
       const build = server.schema.builds.where({id: '1'}).models[0];
       build.update({state: BUILD_STATES.PROCESSING});
@@ -362,7 +362,7 @@ describe('Acceptance: Build', function () {
     });
 
     // eslint-disable-next-line
-    it('blocks approval of snapshot if there are open review threads on snapshot', async function() {
+    it('blocks approval of snapshot if there are open review threads on snapshot', async function () {
       await BuildPage.visitBuild(urlParams);
       const firstSnapshot = BuildPage.snapshots[0];
 
@@ -381,28 +381,6 @@ describe('Acceptance: Build', function () {
       await BuildPage.confirmDialog.confirm.click();
       expect(BuildPage.isConfirmDialogVisible).to.equal(false);
       expect(firstSnapshot.isApproved).to.equal(true);
-    });
-
-    // eslint-disable-next-line
-    it('blocks approval of build if there are open review threads on build', async function() {
-      await BuildPage.visitBuild(urlParams);
-
-      await BuildPage.buildApprovalButton.clickButton();
-      _expectConfirmDialogShowingAndSideEffects(BuildPage.buildApprovalButton);
-      expect(BuildPage.buildApprovalButton.isApproved).to.equal(false);
-
-      // it acts correctly when you click "Cancel"
-      await BuildPage.confirmDialog.cancel.click();
-      _expectConfirmDialogHiddenAndSideEffects(BuildPage.buildApprovalButton);
-      expect(BuildPage.buildApprovalButton.isApproved).to.equal(false);
-
-      // it acts correctly when you click "Confirm"
-      await BuildPage.buildApprovalButton.clickButton();
-      await BuildPage.confirmDialog.confirm.click();
-      _expectConfirmDialogHiddenAndSideEffects(BuildPage.buildApprovalButton);
-      BuildPage.snapshots.forEach(snapshot => {
-        expect(snapshot.isApproved).to.equal(true);
-      });
     });
   });
 
@@ -689,7 +667,7 @@ describe('Acceptance: Build', function () {
         build.update({partial: true});
       });
       //eslint-disable-next-line
-      it('shows partial header instead of missing snapshots.', async function() {
+      it('shows partial header instead of missing snapshots.', async function () {
         await BuildPage.visitBuild(urlParams);
         expect(BuildPage.removedSnapshots.isVisible).to.equal(false);
         await percySnapshot(this.test, {darkMode: true});
@@ -920,12 +898,8 @@ describe('Acceptance: Build', function () {
     const buildReview = server.db.reviews.find(2);
     expect(buildReview.action).to.equal('approve');
     expect(buildReview.buildId).to.equal(build.id);
-    // It should only send the snapshots with diffs
-    expect(buildReview.snapshotIds).to.eql([
-      defaultSnapshot.id,
-      twoWidthsSnapshot.id,
-      mobileSnapshot.id,
-    ]);
+    // It is a build approval so it does not include snapshots.
+    expect(buildReview.snapshotIds).to.eql(null);
   });
 
   it('creates a rejected review object when clicking "Request changes"', async function () {
@@ -1066,7 +1040,7 @@ describe('Acceptance: Build', function () {
     });
 
     //eslint-disable-next-line
-    it('shows error message when latest changed ancestor returns incorrectly formatted error', async function() {
+    it('shows error message when latest changed ancestor returns incorrectly formatted error', async function () {
       makeErrorEndpoint(450, 'not a standard error format');
 
       await BuildPage.visitBuild(urlParams);
@@ -1157,7 +1131,7 @@ describe('Acceptance: Fullscreen Snapshot', function () {
   });
 
   // eslint-disable-next-line
-  it('toggles between old/diff/new comparisons when interacting with comparison mode switcher', async function() {
+  it('toggles between old/diff/new comparisons when interacting with comparison mode switcher', async function () {
     await BuildPage.visitFullPageSnapshot(urlParams);
     await BuildPage.snapshotFullscreen.clickBaseComparisonMode();
     expect(BuildPage.snapshotFullscreen.comparisonImageUrl).to.equal(TEST_IMAGE_URLS.V1);
@@ -1176,7 +1150,7 @@ describe('Acceptance: Fullscreen Snapshot', function () {
   });
 
   // eslint-disable-next-line
-  it("fetches the build's snapshots when the fullscreen view of snapshot with diff is closed", async function() {
+  it("fetches the build's snapshots when the fullscreen view of snapshot with diff is closed", async function () {
     await BuildPage.visitFullPageSnapshot(urlParams);
     await BuildPage.snapshotFullscreen.clickToggleFullScreen();
     await percySnapshot(this.test, {darkMode: true});
@@ -1184,7 +1158,7 @@ describe('Acceptance: Fullscreen Snapshot', function () {
   });
 
   // eslint-disable-next-line
-  it("fetches the build's snapshots when the fullscreen view of snapshot with no diff is closed", async function() {
+  it("fetches the build's snapshots when the fullscreen view of snapshot with no diff is closed", async function () {
     urlParams.snapshotId = noDiffSnapshot.id;
     await BuildPage.visitFullPageSnapshot(urlParams);
     await BuildPage.snapshotFullscreen.clickToggleFullScreen();
@@ -1303,7 +1277,7 @@ describe('Acceptance: Fullscreen Snapshot', function () {
     });
 
     // eslint-disable-next-line
-    it('blocks approval of snapshot if there are open review threads on snapshot', async function() {
+    it('blocks approval of snapshot if there are open review threads on snapshot', async function () {
       const snapshot = BuildPage.snapshotFullscreen;
       await snapshot.clickApprove();
       expect(BuildPage.confirmDialog.isVisible).to.equal(true);
@@ -1507,7 +1481,7 @@ describe('Acceptance: Fullscreen Snapshot', function () {
     });
 
     //eslint-disable-next-line
-    it('shows error message when latest changed ancestor returns incorrectly formatted error', async function() {
+    it('shows error message when latest changed ancestor returns incorrectly formatted error', async function () {
       makeErrorEndpoint(450, 'not a standard error format');
 
       await BuildPage.visitFullPageSnapshot(urlParams);

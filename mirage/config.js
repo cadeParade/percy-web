@@ -402,7 +402,6 @@ export default function () {
 
   this.post('/reviews', function (schema) {
     const attrs = this.normalizedRequestAttrs();
-    const snapshots = schema.snapshots.find(attrs.snapshotIds);
     const reviewState =
       attrs.action === REVIEW_ACTIONS.APPROVE ? SNAPSHOT_APPROVED_STATE : SNAPSHOT_REJECTED_STATE;
     const reviewStateReason =
@@ -410,32 +409,47 @@ export default function () {
         ? SNAPSHOT_REVIEW_STATE_REASONS.USER_APPROVED
         : SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED;
 
-    snapshots.models.forEach(snapshot => {
+    const snapshots = (() => {
+      if (attrs.snapshotIds) {
+        return schema.snapshots.find(attrs.snapshotIds).models;
+      } else {
+        // TODO(sort) make this better
+        return schema.snapshots
+          .all()
+          .models.filterBy('build.id', attrs.buildId)
+          .filterBy('reviewStateReason', 'unreviewed_comparisons');
+      }
+    })();
+
+    snapshots.forEach(snapshot => {
       snapshot.update({reviewState, reviewStateReason});
     });
 
     if (attrs.action === REVIEW_ACTIONS.REJECT) {
       const currentUser = schema.users.findBy({_currentLoginInTest: true});
-      snapshots.models.forEach(snapshot => {
-        const commentThread = schema.commentThreads.create({
-          type: REVIEW_COMMENT_TYPE,
-          snapshotId: snapshot.id,
-          createdAt: new Date(),
-          originatingSnapshotId: snapshot.id,
+      if (snapshots) {
+        snapshots.forEach(snapshot => {
+          const commentThread = schema.commentThreads.create({
+            type: REVIEW_COMMENT_TYPE,
+            snapshotId: snapshot.id,
+            createdAt: new Date(),
+            originatingSnapshotId: snapshot.id,
+          });
+          schema.comments.create({
+            commentThread: commentThread,
+            body: '',
+            author: currentUser,
+          });
         });
-        schema.comments.create({
-          commentThread: commentThread,
-          body: '',
-          author: currentUser,
-        });
-      });
+      }
     }
 
-    return schema.reviews.create({
-      buildId: attrs.buildId,
-      snapshotIds: attrs.snapshotIds,
-      action: attrs.action,
-    });
+    const reviewData = {buildId: attrs.buildId, action: attrs.action};
+    if (attrs.snapshotIds) {
+      reviewData.snapshotIds = attrs.snapshotIds;
+    }
+
+    return schema.reviews.create(reviewData);
   });
 
   this.get('/snapshots/:id');

@@ -1,17 +1,24 @@
 import EmberObject from '@ember/object';
 import {computed} from '@ember/object';
 
+// This file handles and provides various ways to parse the data structure provided in the
+// snapshot query metadata.
+
 // metadataSort
 // [
 //   browser_family_slug: 'firefox',
 //   default_browser_family_slug: false,
 //   items: [
 //     index: 0,
-//     id: 1,
 //     type: "snapshot",
-//     attributes: {
-//       review-state-reason: "unreviewed_comparisons"
-//     },
+//     items: [
+//       {
+//         id: 1,
+//         attributes: {
+//           review-state-reason: "unreviewed_comparisons"
+//         },
+//       }
+//     ]
 //     {
 //       "index": 1,
 //       "type": "group",
@@ -74,9 +81,9 @@ export default class MetadataSort extends EmberObject {
     return this.metadataSort.reduce((acc, browserData) => {
       return browserData.items.reduce((acc, item) => {
         item.items.forEach(item => {
-           acc[item.id] = item;
-        })
-        return acc
+          acc[item.id] = item;
+        });
+        return acc;
       }, {});
     }, {});
   }

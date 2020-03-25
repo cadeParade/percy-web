@@ -14,6 +14,38 @@ import {render} from '@ember/test-helpers';
 import setupLaunchDarkly from 'percy-web/tests/helpers/setup-launch-darkly';
 import metadataSort from 'percy-web/lib/metadata-sort';
 
+function createGroup(snapshots) {
+  return snapshots.map(createSortMetadataItem);
+}
+
+function createSortMetadataItem(snapshot) {
+  return {
+    id: snapshot.id,
+    type: 'snapshot',
+    attributes: {
+      'review-state-reason': snapshot.reviewStateReason,
+    },
+  };
+}
+
+function createSortItemArray(blocks) {
+  return blocks.map((block, i) => {
+    if (block.length) {
+      return {
+        index: i,
+        type: 'group',
+        items: createGroup(block),
+      };
+    } else {
+      return {
+        index: i,
+        type: 'snapshot',
+        items: [createSortMetadataItem(block)],
+      };
+    }
+  });
+}
+
 describe('Integration: InfiniteSnapshotList', function () {
   const hooks = setupRenderingTest('snapshot-list', {
     integration: true,
@@ -48,42 +80,25 @@ describe('Integration: InfiniteSnapshotList', function () {
         fingerprint: 'unapprovedGroup',
       });
 
+      const store = this.owner.lookup('service:store');
       const sortMetadata = metadataSort.create({
+        store,
         metadataSort: [
           {
             browser_family_slug: 'firefox',
             default_browser_family_slug: true,
-            items: [
-              {
-                index: 0,
-                type: 'group',
-                'snapshot-ids': unapprovedGroup.mapBy('id'),
-              },
-              {
-                index: 1,
-                type: 'snapshot',
-                'snapshot-id': snapshotChanged.id,
-              },
-              {
-                index: 2,
-                type: 'group',
-                'snapshot-ids': approvedGroup1.mapBy('id'),
-              },
-              {
-                index: 3,
-                type: 'group',
-                'snapshot-ids': approvedGroup2.mapBy('id'),
-              },
-              {
-                index: 4,
-                type: 'snapshot',
-                'snapshot-id': approvedSnapshot.id,
-              },
-            ],
+            items: createSortItemArray([
+              unapprovedGroup,
+              snapshotChanged,
+              approvedGroup1,
+              approvedGroup2,
+              approvedSnapshot,
+            ]),
           },
         ],
       });
 
+      build.set('sortMetadata', sortMetadata);
       this.setProperties({
         build,
         orderItems: sortMetadata.orderItemsForBrowser('firefox'),
@@ -98,6 +113,7 @@ describe('Integration: InfiniteSnapshotList', function () {
         @activeBrowser={{browser}}
         @toggleUnchangedSnapshotsVisible={{stub}}
         @isBuildApprovable={{true}}
+        @page={{1}}
       />`);
     });
 
@@ -187,63 +203,24 @@ describe('Integration: InfiniteSnapshotList', function () {
         fingerprint: 'foo',
       });
 
+      const store = this.owner.lookup('service:store');
       sortMetadata = metadataSort.create({
+        store,
         metadataSort: [
           {
             browser_family_slug: 'firefox',
             default_browser_family_slug: true,
-            items: [
-              {
-                index: 0,
-                type: 'snapshot',
-                'snapshot-id': snapshotTwo.id,
-              },
-              {
-                index: 1,
-                type: 'group',
-                'snapshot-ids': groupedSnapshots.mapBy('id'),
-              },
-              {
-                index: 2,
-                type: 'snapshot',
-                'snapshot-id': snapshotThree.id,
-              },
-              {
-                index: 3,
-                type: 'snapshot',
-                'snapshot-id': snapshotOne.id,
-              },
-            ],
+            items: createSortItemArray([snapshotTwo, groupedSnapshots, snapshotThree, snapshotOne]),
           },
           {
             browser_family_slug: 'chrome',
             default_browser_family_slug: false,
-            items: [
-              {
-                index: 0,
-                type: 'group',
-                'snapshot-ids': groupedSnapshots.mapBy('id'),
-              },
-              {
-                index: 1,
-                type: 'snapshot',
-                'snapshot-id': snapshotOne.id,
-              },
-              {
-                index: 2,
-                type: 'snapshot',
-                'snapshot-id': snapshotTwo.id,
-              },
-              {
-                index: 3,
-                type: 'snapshot',
-                'snapshot-id': snapshotThree.id,
-              },
-            ],
+            items: createSortItemArray([groupedSnapshots, snapshotOne, snapshotTwo, snapshotThree]),
           },
         ],
       });
 
+      build.set('sortMetadata', sortMetadata);
       this.setProperties({build, stub});
     });
 
@@ -269,6 +246,7 @@ describe('Integration: InfiniteSnapshotList', function () {
         @toggleUnchangedSnapshotsVisible={{action stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{true}}
+        @page={{1}}
       />`);
 
       let first = SnapshotList.snapshotBlocks[0];
@@ -304,6 +282,7 @@ describe('Integration: InfiniteSnapshotList', function () {
         @toggleUnchangedSnapshotsVisible={{action stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{true}}
+        @page={{1}}
       />`);
 
       let first = SnapshotList.snapshotBlocks[0];

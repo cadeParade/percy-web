@@ -89,7 +89,6 @@ describe('Acceptance: InfiniteBuild', function () {
   let defaultSnapshot;
   let noDiffsSnapshot;
   let twoWidthsSnapshot;
-  let mobileSnapshot;
   let urlParams;
 
   setupSession(function (server) {
@@ -124,7 +123,8 @@ describe('Acceptance: InfiniteBuild', function () {
       build,
       name: 'Two widths snapshot',
     });
-    mobileSnapshot = server.create('snapshot', 'withMobile', {
+
+    server.create('snapshot', 'withMobile', {
       build,
       name: 'Mobile only snapshot',
     });
@@ -141,9 +141,6 @@ describe('Acceptance: InfiniteBuild', function () {
   });
 
   it('does not display any tooltips if not a demo project', async function () {
-    // let client = this.owner.lookup('service:launch-darkly-client')
-    // client.setVariation('snapshot-sort-api', true)
-
     await BuildPage.visitBuild(urlParams);
 
     expect(BuildPage.demoTooltips.length).to.equal(0);
@@ -376,28 +373,6 @@ describe('Acceptance: InfiniteBuild', function () {
       expect(BuildPage.isConfirmDialogVisible).to.equal(false);
       expect(firstSnapshot.isApproved).to.equal(true);
     });
-
-    // eslint-disable-next-line
-    it('blocks approval of build if there are open review threads on build', async function () {
-      await BuildPage.visitBuild(urlParams);
-
-      await BuildPage.buildApprovalButton.clickButton();
-      _expectConfirmDialogShowingAndSideEffects(BuildPage.buildApprovalButton);
-      expect(BuildPage.buildApprovalButton.isApproved).to.equal(false);
-
-      // it acts correctly when you click "Cancel"
-      await BuildPage.confirmDialog.cancel.click();
-      _expectConfirmDialogHiddenAndSideEffects(BuildPage.buildApprovalButton);
-      expect(BuildPage.buildApprovalButton.isApproved).to.equal(false);
-
-      // it acts correctly when you click "Confirm"
-      await BuildPage.buildApprovalButton.clickButton();
-      await BuildPage.confirmDialog.confirm.click();
-      _expectConfirmDialogHiddenAndSideEffects(BuildPage.buildApprovalButton);
-      BuildPage.snapshots.forEach(snapshot => {
-        expect(snapshot.isApproved).to.equal(true);
-      });
-    });
   });
 
   describe('when a build is in a public project and user is not a member', function () {
@@ -482,6 +457,7 @@ describe('Acceptance: InfiniteBuild', function () {
       expect(BuildPage.snapshots.objectAt(1).name).to.equal(twoWidthsSnapshot.name);
     });
 
+    // TODO(sort) this failure is caused by browser switcher not updating.
     it('approves all snapshots when "Approve build" button is clicked', async function () {
       server.createList('snapshot', 2, 'withDiffInOneBrowser', {build});
       await BuildPage.visitBuild(urlParams);
@@ -908,12 +884,8 @@ describe('Acceptance: InfiniteBuild', function () {
     const buildReview = server.db.reviews.find(2);
     expect(buildReview.action).to.equal('approve');
     expect(buildReview.buildId).to.equal(build.id);
-    // It should only send the snapshots with diffs
-    expect(buildReview.snapshotIds).to.eql([
-      defaultSnapshot.id,
-      twoWidthsSnapshot.id,
-      mobileSnapshot.id,
-    ]);
+    // It is a build approval so it does not include snapshots.
+    expect(buildReview.snapshotIds).to.eql(null);
   });
 
   it('creates a rejected review object when clicking "Request changes"', async function () {
