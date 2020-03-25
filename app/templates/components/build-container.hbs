@@ -31,7 +31,7 @@
   {{else if this.build.isFinished}}
     {{#if (variation "snapshot-sort-api")}}
       <InfiniteSnapshotList
-        @orderItems={{this.orderItems}}
+        @blockItems={{this.blockItems}}
         @build={{this.build}}
         @allDiffsShown={{this.allDiffsShown}}
         @toggleAllDiffs={{action "toggleAllDiffs"}}

@@ -56,7 +56,7 @@ export default class MetadataSort extends EmberObject {
   }
 
   @computed()
-  get orderItemsForBrowsers() {
+  get blockItemsForBrowsers() {
     const browserItems = {};
     this.sortData.forEach(browserData => {
       browserItems[browserData.browser_family_slug] = browserData.items;
@@ -82,8 +82,8 @@ export default class MetadataSort extends EmberObject {
   //   <id>: {id: <id>, type: "snapshot", attributes: {…}}
   //   <id>: {id: <id>, type: "snapshot", attributes: {…}}
   // }
-  snapshotItemsById(orderItems) {
-    return orderItems.reduce((acc, orderItem) => {
+  snapshotItemsById(blockItems) {
+    return blockItems.reduce((acc, orderItem) => {
       orderItem.items.forEach(item => {
         acc[item.id] = item;
       });
@@ -102,20 +102,20 @@ export default class MetadataSort extends EmberObject {
     }, {});
   }
 
-  // Take a set of orderItems and parse out all the ids we need to fetch.
-  unloadedSnapshotIds(orderItems) {
+  // Take a set of blockItems and parse out all the ids we need to fetch.
+  unloadedSnapshotIds(blockItems) {
     // Take our complex data structure and flatten all the ids.
-    return idsFromOrderItems(orderItems).reject(id => {
+    return idsFromOrderItems(blockItems).reject(id => {
       // exclude ids that are already in the store. Don't re-fetch them.
       return !!this._peekSnapshot(id);
     });
   }
 
   // Take an array of snapshots models and map them back to the structure provided
-  // by orderItems.
+  // by blockItems.
   // This will be an array -- length of 1 for snapshots, length > 1 for groups.
-  snapshotsToBlocks(orderItems) {
-    return orderItems.map(orderItem => {
+  snapshotsToBlocks(blockItems) {
+    return blockItems.map(orderItem => {
       const snapshots = orderItem.items.map(item => {
         return this._peekSnapshot(item.id);
       });
@@ -169,9 +169,9 @@ export default class MetadataSort extends EmberObject {
   }
 }
 
-export function idsFromOrderItems(orderItems) {
+export function idsFromOrderItems(blockItems) {
   // Take our complex data structure and flatten all the ids.
-  return orderItems.reduce((acc, item) => {
+  return blockItems.reduce((acc, item) => {
     return acc.concat(item.items.mapBy('id'));
   }, []);
 }

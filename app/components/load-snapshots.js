@@ -19,8 +19,8 @@ export default Component.extend({
     const offset = this.page * this.limit;
     const endIndex = (this.page + 1) * this.limit;
 
-    const orderItemsToLoad = this.orderItems.slice(offset, endIndex);
-    const idsToLoad = this.build.sortMetadata.unloadedSnapshotIds(orderItemsToLoad);
+    const blockItemsToLoad = this.blockItems.slice(offset, endIndex);
+    const idsToLoad = this.build.sortMetadata.unloadedSnapshotIds(blockItemsToLoad);
 
     if (idsToLoad.length > 0) {
       yield this.snapshotQuery.getSnapshots(idsToLoad, this.build.id);
@@ -29,6 +29,6 @@ export default Component.extend({
     //   {snapshots: [snapshot, snapshot], orderItem: <orderItem>} // group
     //   {snapshots: [snapshot], orderItem: <orderItem>} // snapshot
     // ]
-    return this.build.sortMetadata.snapshotsToBlocks(orderItemsToLoad);
+    return this.build.sortMetadata.snapshotsToBlocks(blockItemsToLoad);
   }),
 });

@@ -13,9 +13,9 @@ export default Component.extend(EKMixin, {
 
   activeSnapshotBlockIndex: null,
 
-  numSnapshotsChanged: readOnly('orderItems.length'),
-  numSnapshotsUnchanged: computed('build.totalSnapshots', 'orderItems', function () {
-    return this.build.totalSnapshots - idsFromOrderItems(this.orderItems).length;
+  numSnapshotsChanged: readOnly('blockItems.length'),
+  numSnapshotsUnchanged: computed('build.totalSnapshots', 'blockItems', function () {
+    return this.build.totalSnapshots - idsFromOrderItems(this.blockItems).length;
   }),
 
   isActiveSnapshotIndex: notEmpty('activeSnapshotBlockIndex'),
@@ -30,7 +30,7 @@ export default Component.extend(EKMixin, {
 
   init() {
     this._super(...arguments);
-    this.orderItems = this.orderItems || [];
+    this.blockItems = this.blockItems || [];
     this.set('keyboardActivated', true);
   },
 
@@ -49,7 +49,7 @@ export default Component.extend(EKMixin, {
 
   newIndex({isNext = true} = {}) {
     // TODO(sort): handle keyboard nav for unchanged snapshots when they have indexes
-    const numItems = this.orderItems.length;
+    const numItems = this.blockItems.length;
     if (!this.isActiveSnapshotIndex) {
       this._updateActiveBlockIndex(0);
     } else {
@@ -76,7 +76,7 @@ export default Component.extend(EKMixin, {
   },
 
   // TODO(sort) remove this and all references to it when unchanged snapshots
-  // have orderItems
+  // have blockItems
   shouldDeferRendering: computed('snapshotsUnchanged.length', 'isUnchangedSnapshotsVisible', {
     get(/*key*/) {
       return this.isUnchangedSnapshotsVisible ? this.snapshotsUnchanged.length > 75 : false;

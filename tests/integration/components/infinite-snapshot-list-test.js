@@ -101,14 +101,14 @@ describe('Integration: InfiniteSnapshotList', function () {
       build.set('sortMetadata', sortMetadata);
       this.setProperties({
         build,
-        orderItems: sortMetadata.orderItemsForBrowsers['firefox'],
+        blockItems: sortMetadata.blockItemsForBrowsers['firefox'],
         stub,
         browser,
         isUnchangedSnapshotsVisible: false,
       });
 
       await render(hbs`<InfiniteSnapshotList
-        @orderItems={{orderItems}}
+        @blockItems={{blockItems}}
         @build={{build}}
         @activeBrowser={{browser}}
         @toggleUnchangedSnapshotsVisible={{stub}}
@@ -234,14 +234,14 @@ describe('Integration: InfiniteSnapshotList', function () {
 
     it('orders snapshots by metadata sort data for a browser', async function () {
       const browser = make('browser');
-      const orderItems = sortMetadata.orderItemsForBrowsers['firefox'];
+      const blockItems = sortMetadata.blockItemsForBrowsers['firefox'];
       this.setProperties({
         browser,
-        orderItems,
+        blockItems,
       });
 
       await render(hbs`<InfiniteSnapshotList
-        @orderItems={{orderItems}}
+        @blockItems={{blockItems}}
         @build={{build}}
         @toggleUnchangedSnapshotsVisible={{action stub}}
         @activeBrowser={{browser}}
@@ -270,14 +270,14 @@ describe('Integration: InfiniteSnapshotList', function () {
 
     it('orders snapshots by metadata sort data for other browser', async function () {
       const chromeBrowser = make('browser', 'chrome');
-      const orderItems = sortMetadata.orderItemsForBrowsers['chrome'];
+      const blockItems = sortMetadata.blockItemsForBrowsers['chrome'];
       this.setProperties({
-        orderItems,
+        blockItems,
         browser: chromeBrowser,
       });
 
       await render(hbs`<InfiniteSnapshotList
-        @orderItems={{orderItems}}
+        @blockItems={{blockItems}}
         @build={{build}}
         @toggleUnchangedSnapshotsVisible={{action stub}}
         @activeBrowser={{browser}}

@@ -61,8 +61,8 @@ export default Component.extend(PollingMixin, {
     }
   }),
 
-  orderItems: computed('build.sortMetadata', 'activeBrowser.familySlug', 'page', function () {
-    return this.build.sortMetadata.orderItemsForBrowsers[this.activeBrowser.familySlug];
+  blockItems: computed('build.sortMetadata', 'activeBrowser.familySlug', 'page', function () {
+    return this.build.sortMetadata.blockItemsForBrowsers[this.activeBrowser.familySlug];
   }),
 
   activeBrowser: or('chosenBrowser', 'defaultBrowser'),
