@@ -457,10 +457,23 @@ describe('Acceptance: InfiniteBuild', function () {
       expect(BuildPage.snapshots.objectAt(1).name).to.equal(twoWidthsSnapshot.name);
     });
 
-    // TODO(sort) this failure is caused by browser switcher not updating.
+    it('updates unreviewed snapshot count when snapshot is approved', async function () {
+      server.createList('snapshot', 2, 'withDiffInOneBrowser', {build});
+      await BuildPage.visitBuild(urlParams);
+
+      expect(BuildPage.browserSwitcher.chromeButton.diffCount).to.equal('3');
+      expect(BuildPage.browserSwitcher.firefoxButton.diffCount).to.equal('5');
+
+      await BuildPage.approveFirstSnapshot();
+
+      expect(BuildPage.browserSwitcher.chromeButton.diffCount).to.equal('2');
+      expect(BuildPage.browserSwitcher.firefoxButton.diffCount).to.equal('4');
+    });
+
     it('approves all snapshots when "Approve build" button is clicked', async function () {
       server.createList('snapshot', 2, 'withDiffInOneBrowser', {build});
       await BuildPage.visitBuild(urlParams);
+
       expect(BuildPage.browserSwitcher.chromeButton.diffCount).to.equal('3');
       expect(BuildPage.browserSwitcher.firefoxButton.diffCount).to.equal('5');
 
