@@ -71,10 +71,13 @@ export default class ReviewsService extends Service {
       build,
     );
     await Promise.all([refreshedBuild, refreshedSnapshots, snapshotsComments]);
-    build.set(
-      'unapprovedSnapshotsCountForBrowsers',
-      build.get('sortMetadata').unapprovedSnapshotsCountForBrowsers(),
-    );
+
+    if (this.launchDarkly.variation('snapshot-sort-api')) {
+      build.set(
+        'unapprovedSnapshotsCountForBrowsers',
+        build.get('sortMetadata').unapprovedSnapshotsCountForBrowsers(),
+      );
+    }
 
     if (eventData && eventData.title) {
       this._trackEventData(eventData, build);

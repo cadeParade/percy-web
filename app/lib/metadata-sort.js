@@ -42,11 +42,15 @@ import {SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 //   ]
 // ]
 
+// Items in a browser's `item` list are referred to as `blockItems`. This corresponds to how
+// infinite-snapshot-list uses snapshot "blocks" to render EITHER a snapshot OR a group.
+
+// Items in a `blockItem` that encapsulate a snapshot are referred to as `snapshotItems`.
+// They represent a snapshot but are not actual snapshot objects.
+
 export default class MetadataSort extends EmberObject {
-  // TODO(sort) rename this to something better -- 'sortData' maybe?
   sortData = null;
   build = null;
-  // TODO(sort) seems bad??
   store = null;
 
   @computed('sortData')
