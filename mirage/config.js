@@ -413,7 +413,6 @@ export default function () {
       if (attrs.snapshotIds) {
         return schema.snapshots.find(attrs.snapshotIds).models;
       } else {
-        // TODO(sort) make this better
         return schema.snapshots
           .all()
           .models.filterBy('build.id', attrs.buildId)

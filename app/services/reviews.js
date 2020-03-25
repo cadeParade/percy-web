@@ -2,7 +2,6 @@ import Service from '@ember/service';
 import {inject as service} from '@ember/service';
 import {Promise} from 'rsvp';
 import {REVIEW_ACTIONS} from 'percy-web/models/review';
-import {SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 import {task} from 'ember-concurrency';
 import {get} from '@ember/object';
 
@@ -66,11 +65,9 @@ export default class ReviewsService extends Service {
     await review.save();
     const refreshedBuild = this._refreshBuild(build);
     const refreshedSnapshots = this._refreshSnapshots(review);
-    const snapshotsComments = this.commentThreads.getCommentsForSnapshotIds(
-      review.snapshots.mapBy('id'),
-      build,
-    );
-    await Promise.all([refreshedBuild, refreshedSnapshots, snapshotsComments]);
+    const refreshedComments = this._refreshComments(review);
+
+    await Promise.all([refreshedBuild, refreshedSnapshots, refreshedComments]);
 
     if (this.launchDarkly.variation('snapshot-sort-api')) {
       build.set(
@@ -122,34 +119,21 @@ export default class ReviewsService extends Service {
   }
 
   _snapshotsAreRejected(snapshots, build) {
+    // Snapshots already in the store
     const loadedSnapshots = this._loadedSnapshotsForBuild(build);
-    if (!snapshots && this.launchDarkly.variation('snapshot-sort-api')) {
-      const loadedSnapshotIds = loadedSnapshots.mapBy('id');
-      const anyLoadedSnapshotsAreRejected = loadedSnapshots.any(snapshot => snapshot.isRejected);
-      const snapshotData = build.sortMetadata.allSnapshotItemsById;
-      loadedSnapshotIds.forEach(id => {
-        delete snapshotData[id];
-      });
 
-      const anyUnloadedSnapshotsAreRejected = this._anyUnloadedSnapshotsAreRejected(snapshotData);
+    if (!snapshots && this.launchDarkly.variation('snapshot-sort-api')) {
+      const anyLoadedSnapshotsAreRejected = loadedSnapshots.any(snapshot => snapshot.isRejected);
+      const anyUnloadedSnapshotsAreRejected = build.sortMetadata.anyUnloadedSnapshotItemsRejected();
       return anyLoadedSnapshotsAreRejected || anyUnloadedSnapshotsAreRejected;
     } else {
+      // If there are no snapshots provided, that means it is a build approval,
+      // so get all the snapshots for the build.
       if (!snapshots) {
         snapshots = loadedSnapshots;
       }
       return snapshots.any(snapshot => snapshot.isRejected);
     }
-  }
-
-  // TODO(sort) put this in metadata-sort object?
-  _anyUnloadedSnapshotsAreRejected(snapshotSortItems) {
-    return Object.values(snapshotSortItems).any(item => {
-      const reviewState = item.attributes['review-state-reason'];
-      const isRejected = reviewState === SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED;
-      const isRejectedPreviously =
-        reviewState === SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED_PREVIOUSLY;
-      return isRejected || isRejectedPreviously;
-    });
   }
 
   _loadedSnapshotsForBuild(build) {
@@ -160,6 +144,8 @@ export default class ReviewsService extends Service {
   }
 
   _reviewConfirmMessage(snapshots) {
+    // If it is a build approval, there might not be snapshots, so snapshots.length will be 0.
+    // 1 is a sane default for this case.
     const numSnapshotsToApprove = (snapshots && snapshots.length) || 1;
     const snapshotString = numSnapshotsToApprove > 1 ? 'snapshots' : 'snapshot';
     const possessionString = numSnapshotsToApprove > 1 ? 'have' : 'has';

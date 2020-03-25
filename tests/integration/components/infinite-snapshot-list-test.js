@@ -12,7 +12,7 @@ import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {initialize as initializeEmberKeyboard} from 'ember-keyboard';
 import {render} from '@ember/test-helpers';
 import setupLaunchDarkly from 'percy-web/tests/helpers/setup-launch-darkly';
-import metadataSort from 'percy-web/lib/metadata-sort';
+import metadataSort from 'percy-web/lib/sort-metadata';
 
 function createGroup(snapshots) {
   return snapshots.map(createSortMetadataItem);

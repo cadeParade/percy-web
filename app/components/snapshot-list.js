@@ -19,7 +19,6 @@ export default Component.extend(EKMixin, {
   // Required params
   snapshotsChanged: null,
   build: null,
-  isKeyboardNavEnabled: null,
   allDiffsShown: null,
   toggleAllDiffs: null,
   isUnchangedSnapshotsVisible: null,

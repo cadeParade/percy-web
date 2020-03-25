@@ -1,12 +1,12 @@
 {{#each (range 0 this.page true) as |pageToLoad|}}
-  <LoadSnapshots
+  <InfiniteSnapshotPage
     @build={{this.build}}
     @blockItems={{this.blockItems}}
     @page={{pageToLoad}}
-    as |items|
+    as |blocks|
   >
-    {{#each items as |item|}}
-      {{#if (gt item.snapshots.length 1)}}
+    {{#each blocks as |block|}}
+      {{#if (gt block.snapshots.length 1)}}
         {{#if (eq this.page pageToLoad)}}
           <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
         {{/if}}
@@ -14,7 +14,7 @@
         <div data-test-snapshot-block>
           <InfiniteSnapshotGroup
             @build={{this.build}}
-            @snapshots={{item.snapshots}}
+            @snapshots={{block.snapshots}}
             @allDiffsShown={{this.allDiffsShown}}
             @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
             @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}
@@ -24,7 +24,7 @@
             @createCommentThread={{this.createCommentThread}}
             @createComment={{this.createComment}}
             @closeCommentThread={{this.closeCommentThread}}
-            @index={{item.orderItem.index}}
+            @index={{block.orderItem.index}}
           />
         </div>
       {{else}}
@@ -35,7 +35,7 @@
           <InfiniteSnapshotViewer
             @class="data-test-snapshot-viewer"
             @build={{this.build}}
-            @snapshot={{item.snapshots.firstObject}}
+            @snapshot={{block.snapshots.firstObject}}
             @allDiffsShown={{this.allDiffsShown}}
             @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
             @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}
@@ -45,12 +45,12 @@
             @createCommentThread={{this.createCommentThread}}
             @createComment={{this.createComment}}
             @closeCommentThread={{this.closeCommentThread}}
-            @index={{item.orderItem.index}}
+            @index={{block.orderItem.index}}
           />
         </div>
       {{/if}}
     {{/each}}
-  </LoadSnapshots>
+  </InfiniteSnapshotPage>
 {{/each}}
 
 

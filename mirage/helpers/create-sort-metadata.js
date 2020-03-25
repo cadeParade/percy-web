@@ -1,7 +1,5 @@
 import {get} from '@ember/object';
 import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
-// TODO(sort) divide by browser :/
-// TODO(sort) correct default browser??
 
 // This method creates the sort metadata object that comes back when a snapshot request includes
 // include-sort-data: true query param.
@@ -168,20 +166,18 @@ function comparisonsForBrowser(comparisons, browser) {
 }
 
 function snapshotSort(snapshots, browser) {
-  const x = snapshots.sort((a, b) => {
+  return snapshots.sort((a, b) => {
     const maxDiffRatioA = maxDiffRatioForBrowser(a, browser);
     const maxDiffRatioB = maxDiffRatioForBrowser(b, browser);
     return maxDiffRatioB - maxDiffRatioA;
   });
-  return x;
 }
 
 function maxDiffRatioForBrowser(snapshot, browser) {
   const ratios = comparisonsForBrowser(snapshot.comparisons.models, browser).map(comparison => {
     return comparison.diffRatio;
   });
-  const x = _numericSort(ratios).reverse();
-  return x[0];
+  return _numericSort(ratios).reverse()[0];
 }
 
 function _groupSnapshotIndexesByFingerprint(snapshots) {

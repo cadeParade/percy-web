@@ -4,7 +4,7 @@ import Controller from '@ember/controller';
 import snapshotSort from 'percy-web/lib/snapshot-sort';
 import {snapshotsWithDiffForBrowser} from 'percy-web/lib/filtered-comparisons';
 import {get, set, setProperties} from '@ember/object';
-import metadataSort from 'percy-web/lib/metadata-sort';
+import metadataSort from 'percy-web/lib/sort-metadata';
 
 // NOTE: before adding something here, consider adding it to BuildContainer instead.
 // This controller should only be used to maintain the state of which snapshots have been loaded.

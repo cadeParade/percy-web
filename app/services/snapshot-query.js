@@ -71,7 +71,7 @@ export default class SnapshotQueryService extends Service {
         'review-state-reason': DIFF_REVIEW_STATE_REASONS.join(','),
       },
       'include-sort-data': true,
-      'sort-item-limit': 10,
+      'sort-item-limit': SNAPSHOT_PAGINATION_COUNT,
     });
   }
 }

@@ -5,7 +5,7 @@ import {EKMixin, keyDown} from 'ember-keyboard';
 import {on} from '@ember/object/evented';
 import config from '../config/environment';
 import {assert} from '@ember/debug';
-import {idsFromOrderItems} from 'percy-web/lib/metadata-sort';
+import {idsFromOrderItems} from 'percy-web/lib/sort-metadata';
 
 export default Component.extend(EKMixin, {
   attributeBindings: ['data-test-snapshot-list'],

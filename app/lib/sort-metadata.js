@@ -68,20 +68,6 @@ export default class MetadataSort extends EmberObject {
     return browserItems;
   }
 
-  @computed()
-  get allSnapshots() {
-    return this.sortData.reduce((acc, browserData) => {
-      return browserData.items.reduce((acc, item) => {
-        return acc.concat(item.items);
-      }, []);
-    }, []);
-  }
-
-  @computed()
-  get allSnapshotsWithDiffsIds() {
-    return this.allSnapshots.mapBy('id');
-  }
-
   // {
   //   <id>: {id: <id>, type: "snapshot", attributes: {…}}
   //   <id>: {id: <id>, type: "snapshot", attributes: {…}}
@@ -130,22 +116,28 @@ export default class MetadataSort extends EmberObject {
     });
   }
 
-  _peekSnapshot(id) {
-    return this.store.peekRecord('snapshot', id);
-  }
+  anyUnloadedSnapshotItemsRejected() {
+    const loadedSnapshots = this._getLoadedSnapshots();
 
-  _getLoadedSnapshots() {
-    return this.store.peekAll('snapshot').filterBy('build.id', this.build.id);
-  }
+    // Snapshot items of all snapshots that could possibly be approved
+    const snapshotItemsById = this.allSnapshotItemsById;
 
-  _unreviewedLoadedSnapshots() {
-    const loadedSnapshotsForBuild = this._getLoadedSnapshots();
-    return loadedSnapshotsForBuild.filter(snapshot => {
-      return snapshot.get('isUnreviewed') && !snapshot.get('isUnchanged');
+    // Remove from snapshot item list the snapshots already in the store.
+    loadedSnapshots.mapBy('id').forEach(id => {
+      delete snapshotItemsById[id];
     });
+
+    return Object.values(snapshotItemsById).any(this.isSnapshotItemRejected);
   }
 
-  // TODO(sort) i hate this
+  isSnapshotItemRejected(snapshotItem) {
+    const reviewState = snapshotItem.attributes['review-state-reason'];
+    const isRejected = reviewState === SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED;
+    const isRejectedPreviously =
+      reviewState === SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED_PREVIOUSLY;
+    return isRejected || isRejectedPreviously;
+  }
+
   unapprovedSnapshotsCountForBrowsers() {
     // Snapshots in the store that are unreviewed.
     const loadedSnapshots = this._getLoadedSnapshots();
@@ -170,6 +162,21 @@ export default class MetadataSort extends EmberObject {
       acc[data.browser_family_slug] = filtered;
       return acc;
     }, {});
+  }
+
+  _peekSnapshot(id) {
+    return this.store.peekRecord('snapshot', id);
+  }
+
+  _getLoadedSnapshots() {
+    return this.store.peekAll('snapshot').filterBy('build.id', this.build.id);
+  }
+
+  _unreviewedLoadedSnapshots() {
+    const loadedSnapshotsForBuild = this._getLoadedSnapshots();
+    return loadedSnapshotsForBuild.filter(snapshot => {
+      return snapshot.get('isUnreviewed') && !snapshot.get('isUnchanged');
+    });
   }
 }
 
