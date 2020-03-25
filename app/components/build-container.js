@@ -19,7 +19,6 @@ export default Component.extend(PollingMixin, {
   updateActiveBrowser: null,
   isUnchangedSnapshotsVisible: false,
   isBuildApprovable: true,
-  allApprovableSnapshots: null,
 
   chosenBrowser: null,
   page: 1,
@@ -119,7 +118,6 @@ export default Component.extend(PollingMixin, {
 
   init() {
     this._super(...arguments);
-    this.allApprovableSnapshots = this.allApprovableSnapshots || [];
     this.snapshotsUnchanged = this.snapshotsUnchanged || [];
   },
 

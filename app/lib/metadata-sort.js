@@ -4,7 +4,7 @@ import {SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 // This file handles and provides various ways to parse the data structure provided in the
 // snapshot query metadata.
 
-// metadataSort
+// sortData
 // [
 //   browser_family_slug: 'firefox',
 //   default_browser_family_slug: false,
@@ -44,21 +44,21 @@ import {SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 
 export default class MetadataSort extends EmberObject {
   // TODO(sort) rename this to something better -- 'sortData' maybe?
-  metadataSort = null;
+  sortData = null;
   build = null;
   // TODO(sort) seems bad??
   store = null;
 
-  @computed('metadataSort')
+  @computed('sortData')
   get defaultBrowserSlug() {
-    const defaultBrowserData = this.metadataSort.findBy('default_browser_family_slug', true);
+    const defaultBrowserData = this.sortData.findBy('default_browser_family_slug', true);
     return defaultBrowserData ? defaultBrowserData.browser_family_slug : 'chrome';
   }
 
   @computed()
   get orderItemsForBrowsers() {
     const browserItems = {};
-    this.metadataSort.forEach(browserData => {
+    this.sortData.forEach(browserData => {
       browserItems[browserData.browser_family_slug] = browserData.items;
     });
     return browserItems;
@@ -66,7 +66,7 @@ export default class MetadataSort extends EmberObject {
 
   @computed()
   get allSnapshots() {
-    return this.metadataSort.reduce((acc, browserData) => {
+    return this.sortData.reduce((acc, browserData) => {
       return browserData.items.reduce((acc, item) => {
         return acc.concat(item.items);
       }, []);
@@ -96,8 +96,8 @@ export default class MetadataSort extends EmberObject {
   //   <id>: {id: <id>, type: "snapshot", attributes: {…}}
   // }
   @computed()
-  get allOrderItemsById() {
-    return this.metadataSort.reduce((acc, browserData) => {
+  get allSnapshotItemsById() {
+    return this.sortData.reduce((acc, browserData) => {
       return this.snapshotItemsById(browserData.items);
     }, {});
   }
@@ -142,16 +142,16 @@ export default class MetadataSort extends EmberObject {
   }
 
   // TODO(sort) i hate this
-  unapprovedSnapshotsForBrowsersCount() {
+  unapprovedSnapshotsCountForBrowsers() {
     // Snapshots in the store that are unreviewed.
     const loadedSnapshots = this._getLoadedSnapshots();
 
     // Returns: {chrome: [snapshotItem, snapshotItem], firefox: [snapshotItem]}
-    return this.metadataSort.reduce((acc, data) => {
+    return this.sortData.reduce((acc, data) => {
       // Dictionary of snapshot sort items with id as key
       const snapshotItems = this.snapshotItemsById(data.items);
 
-      // Remove items from dict that we have in the store.
+      // Remove items from dict that we have in the store AND are approved.
       loadedSnapshots.forEach(snapshot => {
         if (snapshot.isApproved) {
           delete snapshotItems[snapshot.id];

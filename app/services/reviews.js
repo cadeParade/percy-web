@@ -72,8 +72,8 @@ export default class ReviewsService extends Service {
     );
     await Promise.all([refreshedBuild, refreshedSnapshots, snapshotsComments]);
     build.set(
-      'unapprovedSnapshotsForBrowsersCount',
-      build.get('sortMetadata').unapprovedSnapshotsForBrowsersCount(),
+      'unapprovedSnapshotsCountForBrowsers',
+      build.get('sortMetadata').unapprovedSnapshotsCountForBrowsers(),
     );
 
     if (eventData && eventData.title) {
@@ -123,7 +123,7 @@ export default class ReviewsService extends Service {
     if (!snapshots && this.launchDarkly.variation('snapshot-sort-api')) {
       const loadedSnapshotIds = loadedSnapshots.mapBy('id');
       const anyLoadedSnapshotsAreRejected = loadedSnapshots.any(snapshot => snapshot.isRejected);
-      const snapshotData = build.sortMetadata.allOrderItemsById;
+      const snapshotData = build.sortMetadata.allSnapshotItemsById;
       loadedSnapshotIds.forEach(id => {
         delete snapshotData[id];
       });

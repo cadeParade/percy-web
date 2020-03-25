@@ -8,9 +8,9 @@ import filteredComparisons, {hasDiffForBrowser} from 'percy-web/lib/filtered-com
 
 const SNAPSHOT_HEADER_HEIGHT = 48; //px
 
-// This component is inherited by items in snapshot list. These items can be
-// (a) SnapshotViewer or
-// (b) SnapshotGroup
+// This component is inherited by items in infinite snapshot list. These items can be
+// (a) InfiniteSnapshotViewer or
+// (b) InfiniteSnapshotGroup
 // This component handles logic for:
 // - choosing which comparison to display
 // - switching widths

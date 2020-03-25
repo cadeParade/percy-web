@@ -83,7 +83,7 @@ describe('Integration: InfiniteSnapshotList', function () {
       const store = this.owner.lookup('service:store');
       const sortMetadata = metadataSort.create({
         store,
-        metadataSort: [
+        sortData: [
           {
             browser_family_slug: 'firefox',
             default_browser_family_slug: true,
@@ -206,7 +206,7 @@ describe('Integration: InfiniteSnapshotList', function () {
       const store = this.owner.lookup('service:store');
       sortMetadata = metadataSort.create({
         store,
-        metadataSort: [
+        sortData: [
           {
             browser_family_slug: 'firefox',
             default_browser_family_slug: true,

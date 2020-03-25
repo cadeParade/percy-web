@@ -384,6 +384,6 @@ export default class Build extends Model {
     return countDiffsWithSnapshotsPerBrowser(unreviewedSnapshotsWithDiffs, this.browsers);
   }
 
-  unapprovedSnapshotsForBrowsersCount = null;
+  unapprovedSnapshotsCountForBrowsers = null;
   sortMetadata = null;
 }

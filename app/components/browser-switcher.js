@@ -16,13 +16,12 @@ export default Component.extend({
 
   build: null,
   updateActiveBrowser() {},
-  // TODO(sort) fix this count
-  // ex: https://percy.io/percy/percy-web/builds/4449087
+
   unapprovedSnapshotsWithDiffForBrowsers: computed(
-    'build.{unapprovedSnapshotsWithDiffForBrowsers,unapprovedSnapshotsForBrowsersCount}',
+    'build.{unapprovedSnapshotsWithDiffForBrowsers,unapprovedSnapshotsCountForBrowsers}',
     function () {
       if (this.launchDarkly.variation('snapshot-sort-api')) {
-        return this.build.unapprovedSnapshotsForBrowsersCount;
+        return this.build.unapprovedSnapshotsCountForBrowsers;
       } else {
         return this.build.unapprovedSnapshotsWithDiffForBrowsers;
       }

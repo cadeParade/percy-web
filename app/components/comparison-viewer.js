@@ -1,13 +1,10 @@
 import {observer, computed} from '@ember/object'; // eslint-disable-line ember/no-observers
 import Component from '@ember/component';
-import {inject as service} from '@ember/service';
 
 export default Component.extend({
   // Arguments:
   comparison: null,
   allDiffsShown: null,
-
-  store: service(),
 
   // State:
   classNames: ['ComparisonViewer'],
