@@ -28,7 +28,9 @@ export default Component.extend({
   updatePeriods: computed('projectBrowserTargets.@each.browserTarget', function () {
     return this.projectBrowserTargets
       .filter(projectBrowserTarget => {
-        return projectBrowserTarget.browserTarget.isDeprecated;
+        return (
+          projectBrowserTarget.browserTarget && projectBrowserTarget.browserTarget.isDeprecated
+        );
       })
       .map(projectBrowserTarget => {
         const target = projectBrowserTarget.browserTarget;
