@@ -7,6 +7,7 @@ FactoryGuy.define('project', {
     publiclyReadable: false,
     defaultBaseBranch: 'master',
     isEnabled: true,
+    organization: FactoryGuy.belongsTo('organization'),
   },
   traits: {
     withRepo: {repo: FactoryGuy.belongsTo('repo')},

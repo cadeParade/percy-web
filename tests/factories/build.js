@@ -15,6 +15,7 @@ FactoryGuy.define('build', {
     updatedAt: () => moment(),
     commit: FactoryGuy.belongsTo('commit'),
     snapshots: FactoryGuy.hasMany('snapshot'),
+    project: FactoryGuy.belongsTo('project'),
     browsers: () => [FactoryGuy.make('browser')],
     commitHtmlUrl: 'http://example.com/commit/123',
     branchHtmlUrl: 'http://example.com/tree/master',
