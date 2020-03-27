@@ -69,13 +69,6 @@ export default class ReviewsService extends Service {
 
     await Promise.all([refreshedBuild, refreshedSnapshots, refreshedComments]);
 
-    if (this.launchDarkly.variation('snapshot-sort-api')) {
-      build.set(
-        'unapprovedSnapshotsCountForBrowsers',
-        build.get('sortMetadata').unapprovedSnapshotsCountForBrowsers(),
-      );
-    }
-
     if (eventData && eventData.title) {
       this._trackEventData(eventData, build);
     }
@@ -124,7 +117,7 @@ export default class ReviewsService extends Service {
 
     if (!snapshots && this.launchDarkly.variation('snapshot-sort-api')) {
       const anyLoadedSnapshotsAreRejected = loadedSnapshots.any(snapshot => snapshot.isRejected);
-      const anyUnloadedSnapshotsAreRejected = build.sortMetadata.anyUnloadedSnapshotItemsRejected();
+      const anyUnloadedSnapshotsAreRejected = build.sortMetadata.anyUnloadedSnapshotItemsRejected;
       return anyLoadedSnapshotsAreRejected || anyUnloadedSnapshotsAreRejected;
     } else {
       // If there are no snapshots provided, that means it is a build approval,

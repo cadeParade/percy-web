@@ -31,10 +31,7 @@ export default class IndexController extends Controller {
     const snapshotsAndMeta = await this.snapshotQuery.getSnapshotsWithSortMeta(build);
     const meta = snapshotsAndMeta.meta['sorted-items'];
     const sortObject = metadataSort.create({sortData: meta, build, store: this.store});
-    this.build.setProperties({
-      sortMetadata: sortObject,
-      unapprovedSnapshotsCountForBrowsers: sortObject.unapprovedSnapshotsCountForBrowsers(),
-    });
+    this.build.setProperties({sortMetadata: sortObject});
     set(this, 'isSnapshotsLoading', false);
   }
 

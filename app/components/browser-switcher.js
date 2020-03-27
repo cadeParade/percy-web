@@ -1,5 +1,6 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object';
+import {readOnly} from '@ember/object/computed';
 import {inject as service} from '@ember/service';
 
 export default Component.extend({
@@ -17,11 +18,13 @@ export default Component.extend({
   build: null,
   updateActiveBrowser() {},
 
+  buildSortMetadata: readOnly('build.sortMetadata'),
   unapprovedSnapshotsWithDiffForBrowsers: computed(
-    'build.{unapprovedSnapshotsWithDiffForBrowsers,unapprovedSnapshotsCountForBrowsers}',
+    'build.unapprovedSnapshotsWithDiffForBrowsers',
+    'buildSortMetadata.unapprovedSnapshotsCountForBrowsers',
     function () {
       if (this.launchDarkly.variation('snapshot-sort-api')) {
-        return this.build.unapprovedSnapshotsCountForBrowsers;
+        return this.build.sortMetadata.unapprovedSnapshotsCountForBrowsers;
       } else {
         return this.build.unapprovedSnapshotsWithDiffForBrowsers;
       }
