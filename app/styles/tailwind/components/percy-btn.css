@@ -16,6 +16,15 @@
   @apply trans;
 }
 
+.ember-modal-wrapper:not(.SnapshotViewerFullModalWrapper) .percy-btn:not(.percy-btn-primary) {
+  @apply bg-white;
+  @apply border-gray-100;
+
+  &:hover {
+    @apply text-gray-700;
+  }
+}
+
 .percy-btn-md {
   @apply h-12;
   @apply px-3 py-1-1/2;
