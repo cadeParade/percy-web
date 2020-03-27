@@ -48,6 +48,23 @@ import {SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 // Items in a `blockItem` that encapsulate a snapshot are referred to as `snapshotItems`.
 // They represent a snapshot but are not actual snapshot objects.
 
+// Also in this class is a frequent idea of "loaded" and "unloaded" snapshots.
+// A "loaded" snapshot is one that has is fully in the ember-data store. We have all the information
+// stored on a snapshot.
+// An "unloaded" snapshot is one that is referred to by the sort metadata object but is not yet
+// loaded into the ember data store.
+// In order to get the full, up-to-date picture of which snapshots are in which state for a build,
+// we need to compile all the loaded snapshots (aka, ones that might have changed state with a
+// local approval) and all the unloaded snapshots (those that probably haven't changed). We can't
+// count a snapshot twice and we can't assume that the data originally presented in sort metadata
+// is up to date after the initial load.
+// This looks something like:
+//   - Get some block items
+//   - Parse out all snapshot ids from the block items
+//   - Look in the store to see which of those ids are present
+//   - Delete the "loaded" snapshot ids from the list of block item ids
+//   - Do your counting/filtering based on the combination of "loaded" and "unloaded" snapshots.
+
 export default class MetadataSort extends EmberObject {
   sortData = null;
   build = null;
