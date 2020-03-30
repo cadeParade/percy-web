@@ -146,9 +146,7 @@ export default class MetadataSort extends EmberObject {
 
   @computed('loadedSnapshots.@each.reviewState')
   get unreviewedLoadedSnapshots() {
-    return this.loadedSnapshots.filter(snapshot => {
-      return snapshot.get('isUnreviewed') && !snapshot.get('isUnchanged');
-    });
+    return this.loadedSnapshots.filterBy('isUnreviewed');
   }
 
   // Take a set of blockItems and return those not in the store.
