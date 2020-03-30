@@ -19,7 +19,6 @@ export default Component.extend(EKMixin, {
   // Required params
   snapshotsChanged: null,
   build: null,
-  isKeyboardNavEnabled: null,
   allDiffsShown: null,
   toggleAllDiffs: null,
   isUnchangedSnapshotsVisible: null,
@@ -135,24 +134,18 @@ export default Component.extend(EKMixin, {
   },
 
   onDKeyPress: on(keyDown('KeyD'), function () {
-    if (this.isKeyboardNavEnabled) {
-      this.toggleAllDiffs({trackSource: 'keypress'});
-      this._trackKeyPress();
-    }
+    this.toggleAllDiffs({trackSource: 'keypress'});
+    this._trackKeyPress();
   }),
 
   onUpKeyPress: on(keyDown('ArrowUp'), function () {
-    if (this.isKeyboardNavEnabled) {
-      set(this, 'activeSnapshotBlockId', this._calculateNewActiveSnapshotBlockId({isNext: false}));
-      this._trackKeyPress();
-    }
+    set(this, 'activeSnapshotBlockId', this._calculateNewActiveSnapshotBlockId({isNext: false}));
+    this._trackKeyPress();
   }),
 
   onDownKeyPress: on(keyDown('ArrowDown'), function () {
-    if (this.isKeyboardNavEnabled) {
-      set(this, 'activeSnapshotBlockId', this._calculateNewActiveSnapshotBlockId({isNext: true}));
-      this._trackKeyPress();
-    }
+    set(this, 'activeSnapshotBlockId', this._calculateNewActiveSnapshotBlockId({isNext: true}));
+    this._trackKeyPress();
   }),
 
   _trackKeyPress() {

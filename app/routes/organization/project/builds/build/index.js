@@ -20,6 +20,9 @@ export default class IndexRoute extends Route {
   @service
   session;
 
+  @service
+  launchDarkly;
+
   model() {
     const org = this.modelFor('organization');
     const build = this.modelFor('organization.project.builds.build');
@@ -30,7 +33,7 @@ export default class IndexRoute extends Route {
     });
   }
 
-  afterModel(model) {
+  async afterModel(model) {
     const controller = this.controllerFor(this.routeName);
     const build = model.build;
     controller.set('build', build);
@@ -38,9 +41,13 @@ export default class IndexRoute extends Route {
     if (build && build.get('isFinished')) {
       controller.set('isSnapshotsLoading', true);
 
-      this.snapshotQuery.getChangedSnapshots(build).then(() => {
-        return this._initializeSnapshotOrdering();
-      });
+      if (this.launchDarkly.variation('snapshot-sort-api')) {
+        await controller.fetchSnapshotsWithSortOrder(build);
+      } else {
+        this.snapshotQuery.getChangedSnapshots(build).then(() => {
+          return this._initializeSnapshotOrdering();
+        });
+      }
     }
   }
 

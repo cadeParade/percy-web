@@ -93,14 +93,12 @@ describe('Integration: SnapshotList', function () {
         snapshotsUnchanged,
         stub,
         browser,
-        isKeyboardNavEnabled: true,
         isUnchangedSnapshotsVisible: false,
       });
 
       await render(hbs`<SnapshotList
         @snapshotsChanged={{snapshotsChanged}}
         @build={{build}}
-        @isKeyboardNavEnabled={{isKeyboardNavEnabled}}
         @activeBrowser={{browser}}
         @toggleUnchangedSnapshotsVisible={{stub}}
         @isUnchangedSnapshotsVisible={{isUnchangedSnapshotsVisible}}
@@ -208,15 +206,6 @@ describe('Integration: SnapshotList', function () {
       expect(firstSnapshotBlock.isFocused).to.equal(true);
       expect(secondSnapshotBlock.isFocused).to.equal(false);
       expect(lastSnapshotBlock.isFocused).to.equal(false);
-    });
-
-    it('does not send keyboard actions when isKeyboardNavEnabled is false', async function () {
-      const numRenderedSnapshots = SnapshotList.snapshotBlocks.length;
-      this.set('isKeyboardNavEnabled', false);
-      await SnapshotList.typeDownArrow();
-      expect(SnapshotList.snapshotBlocks[0].isFocused).to.equal(false);
-      expect(SnapshotList.snapshotBlocks[1].isFocused).to.equal(false);
-      expect(SnapshotList.snapshotBlocks[numRenderedSnapshots - 1].isFocused).to.equal(false);
     });
   });
 

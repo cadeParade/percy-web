@@ -2,11 +2,11 @@
 <BuildContainer
   @build={{this.model.build}}
   @isSnapshotsLoading={{this.isSnapshotsLoading}}
-  @isHidingBuildContainer={{this.isHidingBuildContainer}}
   @allChangedBrowserSnapshotsSorted={{this.allChangedBrowserSnapshotsSorted}}
   @initializeSnapshotOrdering={{route-action "initializeSnapshotOrdering"}}
   @isUnchangedSnapshotsVisible={{this.isUnchangedSnapshotsVisible}}
   @isBuildApprovable={{this.isBuildApprovable}}
   @notifyOfUnchangedSnapshots={{action "notifyOfUnchangedSnapshots"}}
+  @fetchSnapshots={{action "fetchSnapshots"}}
 />
 {{outlet}}

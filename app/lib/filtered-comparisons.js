@@ -109,7 +109,8 @@ export function countDiffsWithSnapshotsPerBrowser(snapshots, browsers) {
 
   browsers.forEach(browser => {
     const unreviewedSnapshotsWithDiffsInBrowser = snapshotsWithDiffForBrowser(snapshots, browser);
-    set(counts, get(browser, 'id'), unreviewedSnapshotsWithDiffsInBrowser);
+
+    set(counts, get(browser, 'familySlug'), unreviewedSnapshotsWithDiffsInBrowser);
   });
   return counts;
 }

@@ -13,9 +13,11 @@ import {
 describe('filtered-comparisons', function () {
   const chromeBrowser = {
     id: 'chrome-id',
+    familySlug: 'chrome',
   };
   const firefoxBrowser = {
     id: 'firefox-id',
+    familySlug: 'firefox',
   };
 
   const narrowComparisonNoDiff = {width: 1, isDifferent: false};
@@ -156,11 +158,11 @@ describe('filtered-comparisons', function () {
         [snapshotWithTwoChromeDiffs, mixedSnapshotWithFirefoxDiff, snapshotWithFirefoxDiff],
         [chromeBrowser, firefoxBrowser],
       );
-      expect(get(result, 'firefox-id')).to.eql([
+      expect(get(result, 'firefox')).to.eql([
         mixedSnapshotWithFirefoxDiff,
         snapshotWithFirefoxDiff,
       ]);
-      expect(get(result, 'chrome-id')).to.eql([snapshotWithTwoChromeDiffs]);
+      expect(get(result, 'chrome')).to.eql([snapshotWithTwoChromeDiffs]);
     });
   });
 });

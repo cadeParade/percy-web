@@ -30,7 +30,6 @@ export default function setupAcceptance({authenticate = true} = {}) {
       server.shutdown();
     }
   });
-
   return hooks;
 }
 

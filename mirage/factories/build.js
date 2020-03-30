@@ -119,7 +119,8 @@ export default Factory.extend({
   withTwoBrowsers: trait({
     afterCreate(build, server) {
       const ids = build.browserIds;
-      ids.push(server.create('browser', 'chrome'));
+      const chromeBrowser = server.create('browser', 'chrome');
+      ids.push(chromeBrowser.id);
       build.save();
     },
   }),

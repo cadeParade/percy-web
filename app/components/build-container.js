@@ -1,4 +1,4 @@
-import {or, alias, readOnly} from '@ember/object/computed';
+import {or, readOnly} from '@ember/object/computed';
 import {assert} from '@ember/debug';
 import Component from '@ember/component';
 import PollingMixin from 'percy-web/mixins/polling';
@@ -9,21 +9,23 @@ import {task} from 'ember-concurrency';
 
 export default Component.extend(PollingMixin, {
   classNames: ['BuildContainer'],
-  classNameBindings: ['isHidingBuildContainer:BuildContainer--snapshotModalOpen'],
 
   store: service(),
+  launchDarkly: service(),
   build: null,
-  isHidingBuildContainer: false,
   snapshotQuery: service(),
   snapshotsUnchanged: null,
   allDiffsShown: true,
   updateActiveBrowser: null,
   isUnchangedSnapshotsVisible: false,
   isBuildApprovable: true,
-  allApprovableSnapshots: null,
+
+  chosenBrowser: null,
+  page: 1,
 
   snapshotsChanged: computed('allChangedBrowserSnapshotsSorted', 'activeBrowser.id', function () {
     if (!this.allChangedBrowserSnapshotsSorted) return;
+
     return this.allChangedBrowserSnapshotsSorted[this.get('activeBrowser.id')];
   }),
 
@@ -36,21 +38,33 @@ export default Component.extend(PollingMixin, {
     return this._browsers.findBy('id', browserWithMostDiffsId);
   }),
 
-  _browsers: alias('build.browsers'),
+  _browsers: readOnly('build.browsers'),
 
-  defaultBrowser: computed('_browsers', 'browserWithMostDiffs', function () {
-    const chromeBrowser = this._browsers.findBy('familySlug', 'chrome');
-    const browserWithMostDiffs = this.browserWithMostDiffs;
-    if (browserWithMostDiffs) {
-      return browserWithMostDiffs;
-    } else if (chromeBrowser) {
-      return chromeBrowser;
+  defaultBrowser: computed('_browsers', 'build.isFinished', 'browserWithMostDiffs', function () {
+    if (
+      this.launchDarkly.variation('snapshot-sort-api') &&
+      this.build.isFinished &&
+      this.build.sortMetadata
+    ) {
+      const defaultBrowserSlug = this.build.sortMetadata.defaultBrowserSlug;
+      return this._browsers.findBy('familySlug', defaultBrowserSlug);
     } else {
-      return this.get('_browsers.firstObject');
+      const chromeBrowser = this._browsers.findBy('familySlug', 'chrome');
+      const browserWithMostDiffs = this.browserWithMostDiffs;
+      if (browserWithMostDiffs) {
+        return browserWithMostDiffs;
+      } else if (chromeBrowser) {
+        return chromeBrowser;
+      } else {
+        return this.get('_browsers.firstObject');
+      }
     }
   }),
 
-  chosenBrowser: null,
+  blockItems: computed('build.sortMetadata', 'activeBrowser.familySlug', 'page', function () {
+    return this.build.sortMetadata.blockItemsForBrowsers[this.activeBrowser.familySlug];
+  }),
+
   activeBrowser: or('chosenBrowser', 'defaultBrowser'),
 
   shouldPollForUpdates: or('build.isPending', 'build.isProcessing'),
@@ -59,10 +73,15 @@ export default Component.extend(PollingMixin, {
     this.build.reload().then(build => {
       if (build.get('isFinished')) {
         this.set('isSnapshotsLoading', true);
-        const changedSnapshots = this.snapshotQuery.getChangedSnapshots(build);
-        changedSnapshots.then(() => {
-          this.initializeSnapshotOrdering();
-        });
+
+        if (this.launchDarkly.variation('snapshot-sort-api')) {
+          this.fetchSnapshots(build);
+        } else {
+          const changedSnapshots = this.snapshotQuery.getChangedSnapshots(build);
+          changedSnapshots.then(() => {
+            this.initializeSnapshotOrdering();
+          });
+        }
       }
     });
   },
@@ -74,6 +93,7 @@ export default Component.extend(PollingMixin, {
 
   isUnchangedSnapshotsLoading: readOnly('_toggleUnchangedSnapshotsVisible.isRunning'),
 
+  // TODO(sort) update everything about unchanged snapshots when they have meta sort data
   _toggleUnchangedSnapshotsVisible: task(function* () {
     let loadedSnapshots = this._getLoadedSnapshots();
     yield this.snapshotQuery.getUnchangedSnapshots(this.build);
@@ -98,13 +118,16 @@ export default Component.extend(PollingMixin, {
 
   init() {
     this._super(...arguments);
-    this.allApprovableSnapshots = this.allApprovableSnapshots || [];
     this.snapshotsUnchanged = this.snapshotsUnchanged || [];
   },
+
   actions: {
     updateActiveBrowser(newBrowser) {
+      this.set('page', 0);
       this.set('chosenBrowser', newBrowser);
+
       this._resetUnchangedSnapshots();
+
       const organization = this.get('build.project.organization');
       const eventProperties = {
         browser_id: newBrowser.get('id'),

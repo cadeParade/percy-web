@@ -8,6 +8,7 @@ import {
 } from 'percy-web/models/snapshot';
 import {REVIEW_ACTIONS} from 'percy-web/models/review';
 import {get} from '@ember/object';
+import createSortMetadata from 'percy-web/mirage/helpers/create-sort-metadata';
 
 export default function () {
   // Enable this to see verbose request logging from mirage:
@@ -342,14 +343,24 @@ export default function () {
   this.get('/snapshots', function (schema, request) {
     const build = schema.builds.findBy({id: request.queryParams.build_id});
     const queryParams = request.queryParams;
+    let snapshots;
+
     if (queryParams['filter[review-state-reason]']) {
       const reasons = queryParams['filter[review-state-reason]'].split(',');
-      return schema.snapshots.where(snapshot => {
+      snapshots = schema.snapshots.where(snapshot => {
         return snapshot.buildId === build.id && reasons.includes(snapshot.reviewStateReason);
       });
     } else {
-      return schema.snapshots.where({buildId: build.id});
+      snapshots = schema.snapshots.where({buildId: build.id});
     }
+
+    const jsonResponse = this.serialize(snapshots);
+
+    if (queryParams['include-sort-data'] === 'true') {
+      jsonResponse.meta = createSortMetadata(snapshots, build);
+    }
+
+    return jsonResponse;
   });
 
   this.get('/builds/:build_id/removed-snapshots', function (schema, request) {
@@ -391,7 +402,6 @@ export default function () {
 
   this.post('/reviews', function (schema) {
     const attrs = this.normalizedRequestAttrs();
-    const snapshots = schema.snapshots.find(attrs.snapshotIds);
     const reviewState =
       attrs.action === REVIEW_ACTIONS.APPROVE ? SNAPSHOT_APPROVED_STATE : SNAPSHOT_REJECTED_STATE;
     const reviewStateReason =
@@ -399,32 +409,46 @@ export default function () {
         ? SNAPSHOT_REVIEW_STATE_REASONS.USER_APPROVED
         : SNAPSHOT_REVIEW_STATE_REASONS.USER_REJECTED;
 
-    snapshots.models.forEach(snapshot => {
+    const snapshots = (() => {
+      if (attrs.snapshotIds) {
+        return schema.snapshots.find(attrs.snapshotIds).models;
+      } else {
+        return schema.snapshots
+          .all()
+          .models.filterBy('build.id', attrs.buildId)
+          .filterBy('reviewStateReason', 'unreviewed_comparisons');
+      }
+    })();
+
+    snapshots.forEach(snapshot => {
       snapshot.update({reviewState, reviewStateReason});
     });
 
     if (attrs.action === REVIEW_ACTIONS.REJECT) {
       const currentUser = schema.users.findBy({_currentLoginInTest: true});
-      snapshots.models.forEach(snapshot => {
-        const commentThread = schema.commentThreads.create({
-          type: REVIEW_COMMENT_TYPE,
-          snapshotId: snapshot.id,
-          createdAt: new Date(),
-          originatingSnapshotId: snapshot.id,
+      if (snapshots) {
+        snapshots.forEach(snapshot => {
+          const commentThread = schema.commentThreads.create({
+            type: REVIEW_COMMENT_TYPE,
+            snapshotId: snapshot.id,
+            createdAt: new Date(),
+            originatingSnapshotId: snapshot.id,
+          });
+          schema.comments.create({
+            commentThread: commentThread,
+            body: '',
+            author: currentUser,
+          });
         });
-        schema.comments.create({
-          commentThread: commentThread,
-          body: '',
-          author: currentUser,
-        });
-      });
+      }
     }
 
-    return schema.reviews.create({
-      buildId: attrs.buildId,
-      snapshotIds: attrs.snapshotIds,
-      action: attrs.action,
-    });
+    const reviewData = {buildId: attrs.buildId, action: attrs.action};
+    if (attrs.snapshotIds) {
+      reviewData.snapshotIds = attrs.snapshotIds;
+    }
+
+    return schema.reviews.create(reviewData);
   });
 
   this.get('/snapshots/:id');

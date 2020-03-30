@@ -2,6 +2,8 @@ import Service, {inject as service} from '@ember/service';
 import {SNAPSHOT_REVIEW_STATE_REASONS, DIFF_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 import {get} from '@ember/object';
 
+export const SNAPSHOT_PAGINATION_COUNT = 10;
+
 export const SNAPSHOT_COMPARISON_INCLUDES = Object.freeze([
   'comparisons.head-screenshot.image',
   'comparisons.head-screenshot.lossy-image',
@@ -49,6 +51,27 @@ export default class SnapshotQueryService extends Service {
         snapshot_ids: [snapshotId],
       },
       include: 'comments,comments.author',
+    });
+  }
+
+  getSnapshots(snapshotIds, buildId) {
+    const ids = snapshotIds.join(',');
+    return this.store.loadRecords('snapshot', {
+      build_id: buildId,
+      filter: {
+        'snapshot-ids': ids,
+      },
+    });
+  }
+
+  getSnapshotsWithSortMeta(build) {
+    return this.store.loadRecords('snapshot', {
+      build_id: build.get('id'),
+      filter: {
+        'review-state-reason': DIFF_REVIEW_STATE_REASONS.join(','),
+      },
+      'include-sort-data': true,
+      'sort-item-limit': SNAPSHOT_PAGINATION_COUNT,
     });
   }
 }

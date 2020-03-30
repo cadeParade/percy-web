@@ -88,7 +88,7 @@
       <div class="ComparisonViewer-halfColumn ComparisonViewer-halfColumn--left">
         <div class="ComparisonViewer-snapshotMissing">
           <div>
-            {{#if this.comparison.headSnapshot.isReintroduced}}
+            {{#if this.headSnapshot.isReintroduced}}
               {{inline-svg "reintroduced-snapshot" class="mx-auto mb-3 opacity-50"}}
               <div class="mb-1 text-lg md:text-xl leading-none font-semibold">Reintroduced snapshot</div>
               <p class="mb-0 text-secondary">This snapshot existed in an earlier build, but is not in the base build, so a comparison was not run.</p>

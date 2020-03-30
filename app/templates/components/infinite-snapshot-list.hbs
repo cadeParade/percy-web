@@ -1,0 +1,94 @@
+{{#each (range 0 this.page true) as |pageToLoad|}}
+  <InfiniteSnapshotPage
+    @build={{this.build}}
+    @blockItems={{this.blockItems}}
+    @page={{pageToLoad}}
+    as |blocks|
+  >
+    {{#each blocks as |block|}}
+      {{#if (eq this.page pageToLoad)}}
+        <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
+      {{/if}}
+      {{#if (gt block.snapshots.length 1)}}
+        <div data-test-snapshot-block>
+          <InfiniteSnapshotGroup
+            @build={{this.build}}
+            @snapshots={{block.snapshots}}
+            @allDiffsShown={{this.allDiffsShown}}
+            @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
+            @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}
+            @activeBrowser={{this.activeBrowser}}
+            @updateActiveBrowser={{this.updateActiveBrowser}}
+            @isBuildApprovable={{this.isBuildApprovable}}
+            @createCommentThread={{this.createCommentThread}}
+            @createComment={{this.createComment}}
+            @closeCommentThread={{this.closeCommentThread}}
+            @index={{block.orderItem.index}}
+          />
+        </div>
+      {{else}}
+        <div data-test-snapshot-block>
+          <InfiniteSnapshotViewer
+            @class="data-test-snapshot-viewer"
+            @build={{this.build}}
+            @snapshot={{block.snapshots.firstObject}}
+            @allDiffsShown={{this.allDiffsShown}}
+            @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
+            @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}
+            @activeBrowser={{this.activeBrowser}}
+            @updateActiveBrowser={{this.updateActiveBrowser}}
+            @isBuildApprovable={{this.isBuildApprovable}}
+            @createCommentThread={{this.createCommentThread}}
+            @createComment={{this.createComment}}
+            @closeCommentThread={{this.closeCommentThread}}
+            @index={{block.orderItem.index}}
+          />
+        </div>
+      {{/if}}
+    {{/each}}
+  </InfiniteSnapshotPage>
+{{/each}}
+
+
+{{#if this.numSnapshotsUnchanged}}
+  {{#if this.isUnchangedSnapshotsVisible}}
+    {{#each this.snapshotsUnchanged as |snapshot|}}
+      <div data-test-snapshot-block>
+        <SnapshotViewer
+          @build={{this.build}}
+          @allDiffsShown={{this.allDiffsShown}}
+          @snapshot={{snapshot}}
+          @activeSnapshotBlockId={{this.activeSnapshotBlockId}}
+          @shouldDeferRendering={{this.shouldDeferRendering}}
+          @updateActiveSnapshotBlockId={{action "updateActiveSnapshotBlockId"}}
+          @activeBrowser={{this.activeBrowser}}
+          @updateActiveBrowser={{this.updateActiveBrowser}}
+          @isBuildApprovable={{this.isBuildApprovable}}
+          @closeCommentThread={{this.closeCommentThread}}
+          @createCommentThread={{this.createCommentThread}}
+          @createComment={{this.createComment}}
+        />
+      </div>
+    {{/each}}
+  {{else}}
+    <div class="SnapshotViewer--actionable">
+      <div class="flex items-center justify-center font-bold p-2 m-2 bg-secondary rounded border border-dashed cursor-pointer" data-test-toggle-unchanged {{action this.toggleUnchangedSnapshotsVisible}} role="button">
+        {{#if this.isUnchangedSnapshotsLoading}}
+          {{inline-svg "loader-icon" class="mx-2"}} Loading unchanged snapshots
+        {{else}}
+          <figure class="svg-container">
+            {{inline-svg "no-comparison-group-icon" class="mr-1"}}
+          </figure>
+          <div class="text-blue-500">
+            {{pluralize this.numSnapshotsUnchanged "unchanged snapshot"}}
+            {{#if this.build.hasMultipleBrowsers}}
+              in {{this.activeBrowser.familyName}}
+            {{else}}
+              for all widths.
+            {{/if}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
+{{/if}}
