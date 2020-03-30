@@ -6,11 +6,10 @@
     as |blocks|
   >
     {{#each blocks as |block|}}
+      {{#if (eq this.page pageToLoad)}}
+        <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
+      {{/if}}
       {{#if (gt block.snapshots.length 1)}}
-        {{#if (eq this.page pageToLoad)}}
-          <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
-        {{/if}}
-
         <div data-test-snapshot-block>
           <InfiniteSnapshotGroup
             @build={{this.build}}
@@ -28,9 +27,6 @@
           />
         </div>
       {{else}}
-        {{#if (eq this.page pageToLoad)}}
-          <div {{in-viewport onEnter=(action (mut this.page) (inc 1 this.page))}}></div>
-        {{/if}}
         <div data-test-snapshot-block>
           <InfiniteSnapshotViewer
             @class="data-test-snapshot-viewer"
