@@ -54,7 +54,7 @@ describe('Integration: InfiniteSnapshotGroup', function () {
     });
 
     // eslint-disable-next-line
-    it('shows widest width with diff as active by default when some comparisons have diffs', async function() {
+    it('shows widest width with diff as active by default when some comparisons have diffs', async function () {
       await render(hbs`<InfiniteSnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
@@ -139,7 +139,7 @@ describe('Integration: InfiniteSnapshotGroup', function () {
       expect(SnapshotGroup.isExpanded).to.equal(true);
     });
 
-    it("is expanded when activeSnapshotBlockIndex is to the group's index", async function () {
+    it("is expanded when activeSnapshotBlockIndex is the group's index", async function () {
       this.set('snapshots', approvedSnapshots);
       this.set('index', 4);
       this.set('activeSnapshotBlockIndex', 4);
@@ -271,26 +271,6 @@ describe('Integration: InfiniteSnapshotGroup', function () {
 
       expect(SnapshotGroup.snapshots.length).to.equal(2);
       await percySnapshot(this.test, {darkMode: true});
-    });
-
-    // eslint-disable-next-line
-    it('shows unreviewed snapshot without comment before approved snapshot with open comment', async function() {
-      snapshotsWithComments.forEach(snapshot => {
-        snapshot.setProperties({
-          reviewState: 'approved',
-          reviewStateReason: 'user_approved',
-        });
-      });
-
-      await render(hbs`<InfiniteSnapshotGroup
-        @snapshots={{snapshots}}
-        @build={{build}}
-        @updateActiveSnapshotBlockIndex={{stub}}
-        @activeBrowser={{browser}}
-        @isBuildApprovable={{isBuildApprovable}}
-      />`);
-
-      await percySnapshot(this.test);
     });
   });
 
