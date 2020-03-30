@@ -57,7 +57,7 @@
     "ember-cli-eslint": "5.1.0",
     "ember-cli-flash": "^1.8.0",
     "ember-cli-gravatar": "^3.10.2",
-    "ember-cli-htmlbars": "^4.2.0",
+    "ember-cli-htmlbars": "^4.2.3",
     "ember-cli-inject-live-reload": "2.0.2",
     "ember-cli-meta-tags": "^5.1.0",
     "ember-cli-mirage": "^1.1.4",
