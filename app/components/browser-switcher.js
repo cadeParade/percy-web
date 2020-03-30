@@ -21,10 +21,10 @@ export default Component.extend({
   buildSortMetadata: readOnly('build.sortMetadata'),
   unapprovedSnapshotsWithDiffForBrowsers: computed(
     'build.unapprovedSnapshotsWithDiffForBrowsers',
-    'buildSortMetadata.unapprovedSnapshotsCountForBrowsers',
+    'buildSortMetadata.unapprovedSnapshotItemsForBrowsers',
     function () {
       if (this.launchDarkly.variation('snapshot-sort-api')) {
-        return this.build.sortMetadata.unapprovedSnapshotsCountForBrowsers;
+        return this.build.sortMetadata.unapprovedSnapshotItemsForBrowsers;
       } else {
         return this.build.unapprovedSnapshotsWithDiffForBrowsers;
       }

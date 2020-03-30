@@ -103,7 +103,7 @@ export default class MetadataSort extends EmberObject {
 
   // Returns: {chrome: [snapshotItem, snapshotItem], firefox: [snapshotItem]}
   @computed('loadedSnapshots.@each.reviewState')
-  get unapprovedSnapshotsCountForBrowsers() {
+  get unapprovedSnapshotItemsForBrowsers() {
     return this.sortData.reduce((acc, data) => {
       // Dictionary of snapshot sort items with id as key
       const snapshotItems = this.snapshotItemsById(data.items);
