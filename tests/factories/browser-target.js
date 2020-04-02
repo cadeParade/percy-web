@@ -15,8 +15,8 @@ FactoryGuy.define('browser-target', {
       browserFamily: FactoryGuy.belongsTo('browser-family', 'firefox'),
     },
     withDeprecationPeriod: {
-      deprecationPeriodStart: moment().add(1, 'week'),
-      deprecationPeriodEnd: moment().add(5, 'weeks'),
+      deprecationPeriodStart: () => new moment().add(1, 'week'),
+      deprecationPeriodEnd: () => new moment().add(5, 'weeks'),
     },
   },
 });
