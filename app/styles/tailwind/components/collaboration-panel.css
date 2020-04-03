@@ -24,7 +24,7 @@
 }
 
 .collaboration-comment-replied::before {
-  content: "";
+  content: '';
   @apply absolute bottom-0;
   @apply block;
   @apply w-px;

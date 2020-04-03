@@ -1,36 +1,42 @@
 <div class="collaboration-panel p-2 lg:p-0 lg:border-b" data-test-collaboration-panel>
   <div class="collaboration-container">
-    {{#if this.isCommentingAllowed}}
-      <Collaboration::NewThread
-        @shouldShowNewCommentInput={{not this.hasCommentThreads}}
-        @currentUser={{this.currentUser}}
-        @isSnapshotApproved={{this.isSnapshotApproved}}
-        @snapshot={{this.snapshot}}
-      />
-    {{/if}}
-    {{#each this.openThreads as |thread|}}
-      <Collaboration::CommentThread
-        @commentThread={{thread}}
-        @isCommentingAllowed={{this.isCommentingAllowed}}
-      />
-    {{/each}}
+    {{#if this.areCommentsLoading}}
+      <div class="flex justify-center items-start text-purple-600" data-test-comments-loading>
+        {{fa-icon 'spinner fa-pulse'}}
+      </div>
+    {{else}}
+      {{#if this.isCommentingAllowed}}
+        <Collaboration::NewThread
+          @shouldShowNewCommentInput={{not this.hasCommentThreads}}
+          @currentUser={{this.currentUser}}
+          @isSnapshotApproved={{this.isSnapshotApproved}}
+          @snapshot={{this.snapshot}}
+        />
+      {{/if}}
+      {{#each this.openThreads as |thread|}}
+        <Collaboration::CommentThread
+          @commentThread={{thread}}
+          @isCommentingAllowed={{this.isCommentingAllowed}}
+        />
+      {{/each}}
 
-    {{#if this.hasClosedThreads}}
-      {{#if this.areClosedThreadsExpanded}}
-        {{#each this.closedThreads as |thread|}}
-          <Collaboration::CommentThread
-            @commentThread={{thread}}
-            @isCommentingAllowed={{this.isCommentingAllowed}}
-          />
-        {{/each}}
-      {{else}}
-        <PercyBtn
-          @handleClick={{action "showClosedComments"}}
-          @testLabel="show-archived-comments"
-          @class="w-full"
-        >
-          Show archived comments
-        </PercyBtn>
+      {{#if this.hasClosedThreads}}
+        {{#if this.areClosedThreadsExpanded}}
+          {{#each this.closedThreads as |thread|}}
+            <Collaboration::CommentThread
+              @commentThread={{thread}}
+              @isCommentingAllowed={{this.isCommentingAllowed}}
+            />
+          {{/each}}
+        {{else}}
+          <PercyBtn
+            @handleClick={{action "showClosedComments"}}
+            @testLabel="show-archived-comments"
+            @class="w-full"
+          >
+            Show archived comments
+          </PercyBtn>
+        {{/if}}
       {{/if}}
     {{/if}}
   </div>

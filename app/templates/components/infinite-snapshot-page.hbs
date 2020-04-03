@@ -1,1 +1,4 @@
-{{yield this.query.last.value}}
+{{yield
+  this.fetchSnapshots.last.value
+  this.fetchComments.isRunning
+}}

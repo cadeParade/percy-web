@@ -29,7 +29,6 @@ export default class IndexRoute extends Route {
     return hash({
       build,
       isUserMember: isUserMember(this.session.currentUser, org),
-      commentThreads: this.commentThreads.getCommentsForBuild(build.id),
     });
   }
 
@@ -47,6 +46,7 @@ export default class IndexRoute extends Route {
         this.snapshotQuery.getChangedSnapshots(build).then(() => {
           return this._initializeSnapshotOrdering();
         });
+        await this.commentThreads.getCommentsForBuild(build.id);
       }
     }
   }

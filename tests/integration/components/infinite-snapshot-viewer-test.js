@@ -93,7 +93,7 @@ describe('Integration: InfiniteSnapshotViewer', function () {
     });
 
     // eslint-disable-next-line
-    it('shows widest width with diff as active by default when some comparisons have diffs', async function() {
+    it('shows widest width with diff as active by default when some comparisons have diffs', async function () {
       await render(hbs`<InfiniteSnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
@@ -107,7 +107,7 @@ describe('Integration: InfiniteSnapshotViewer', function () {
     });
 
     // eslint-disable-next-line
-    it('shows widest width with diff as active by default when no comparisons have diffs', async function() {
+    it('shows widest width with diff as active by default when no comparisons have diffs', async function () {
       const snapshot = make('snapshot', 'withNoDiffs');
       this.set('snapshot', snapshot);
 
@@ -285,10 +285,12 @@ describe('Integration: InfiniteSnapshotViewer', function () {
         });
 
         it('does not show panel by default', async function () {
+          expect(SnapshotViewer.collaborationPanel.areCommentsLoading).to.equal(false);
           expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function () {
+          expect(SnapshotViewer.collaborationPanel.areCommentsLoading).to.equal(false);
           await expectToggleWorks({isOpenByDefault: false, context: this});
         });
       });
@@ -296,6 +298,7 @@ describe('Integration: InfiniteSnapshotViewer', function () {
       describe('when there are open comments', function () {
         beforeEach(async function () {
           makeList('comment-thread', 2, 'withTwoComments', {snapshot});
+          this.setProperties({areCommentsLoading: false});
           await render(hbs`<InfiniteSnapshotViewer
             @snapshot={{snapshot}}
             @build={{build}}
@@ -304,15 +307,24 @@ describe('Integration: InfiniteSnapshotViewer', function () {
             @isBuildApprovable={{isBuildApprovable}}
             @updateActiveSnapshotBlockId={{stub}}
             @createCommentThread={{stub}}
+            @areCommentsLoading={{areCommentsLoading}}
           />`);
         });
 
         it('shows panel by default', async function () {
+          expect(SnapshotViewer.collaborationPanel.areCommentsLoading).to.equal(false);
           expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function () {
+          expect(SnapshotViewer.collaborationPanel.areCommentsLoading).to.equal(false);
           await expectToggleWorks({isOpenByDefault: true, context: this});
+        });
+
+        it('shows loading panel when areCommentsLoading is true', async function () {
+          this.set('areCommentsLoading', true);
+          expect(SnapshotViewer.collaborationPanel.areCommentsLoading).to.equal(true);
+          await percySnapshot(this.test, {darkMode: true});
         });
       });
 
@@ -332,10 +344,12 @@ describe('Integration: InfiniteSnapshotViewer', function () {
         });
 
         it('hides panel by default', async function () {
+          expect(SnapshotViewer.collaborationPanel.areCommentsLoading).to.equal(false);
           expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function () {
+          expect(SnapshotViewer.collaborationPanel.areCommentsLoading).to.equal(false);
           await expectToggleWorks({isOpenByDefault: false, context: this});
         });
       });

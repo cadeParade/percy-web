@@ -26,7 +26,7 @@ export default class CommentThreadsService extends Service {
     return this.store.loadRecords('commentThread', {
       filter: {
         build: build.get('id'),
-        snapshot_ids: [snapshotIds],
+        snapshot_ids: snapshotIds.join(','),
       },
       include: 'comments,comments.author',
     });

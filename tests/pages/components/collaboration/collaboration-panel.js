@@ -8,6 +8,7 @@ const SELECTORS = {
   SCOPE: '[data-test-collaboration-panel]',
   COMMENT_THREAD: '[data-test-comment-thread]',
   SHOW_ARCHIVED_COMMENTS: '[data-test-percy-btn-label=show-archived-comments]',
+  COMMENTS_LOADING_PANEL: '[data-test-comments-loading]',
 };
 
 export const collaborationPanel = {
@@ -25,6 +26,8 @@ export const collaborationPanel = {
 
   isShowArchivedCommentsVisible: isVisible(SELECTORS.SHOW_ARCHIVED_COMMENTS),
   showArchivedComments: clickable(SELECTORS.SHOW_ARCHIVED_COMMENTS),
+
+  areCommentsLoading: isVisible(SELECTORS.COMMENTS_LOADING_PANEL),
 };
 
 export default create(collaborationPanel);

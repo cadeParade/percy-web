@@ -48,7 +48,7 @@ export default class SnapshotQueryService extends Service {
     return this.store.loadRecords('commentThread', {
       build_id: buildId,
       filter: {
-        snapshot_ids: [snapshotId],
+        snapshot_ids: snapshotId,
       },
       include: 'comments,comments.author',
     });

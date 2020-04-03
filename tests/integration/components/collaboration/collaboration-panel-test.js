@@ -42,6 +42,7 @@ describe('Integration: CollaborationPanel', function () {
       expect(CollaborationPanel.newComment.isNewThreadContainerVisible).to.equal(true);
       expect(CollaborationPanel.newComment.isSubmitDisabled).to.equal(true);
       expect(CollaborationPanel.commentThreads.length).to.equal(0);
+      expect(CollaborationPanel.areCommentsLoading).to.equal(false);
       await percySnapshot(this.test, {darkMode: true});
     });
 
@@ -50,6 +51,7 @@ describe('Integration: CollaborationPanel', function () {
       expect(CollaborationPanel.newComment.isNewThreadButtonVisible).to.equal(false);
       expect(CollaborationPanel.newComment.isNewThreadContainerVisible).to.equal(false);
       expect(CollaborationPanel.commentThreads.length).to.equal(0);
+      expect(CollaborationPanel.areCommentsLoading).to.equal(false);
     });
   });
 
@@ -76,6 +78,7 @@ describe('Integration: CollaborationPanel', function () {
         @commentThreads={{commentThreads}}
       />`);
 
+      expect(CollaborationPanel.areCommentsLoading).to.equal(false);
       expect(CollaborationPanel.newComment.isNewThreadButtonVisible).to.equal(true);
       expect(CollaborationPanel.newComment.isNewThreadContainerVisible).to.equal(false);
       expect(CollaborationPanel.commentThreads.length).to.equal(2);
@@ -102,9 +105,24 @@ describe('Integration: CollaborationPanel', function () {
         @isCommentingAllowed={{false}}
       />`);
 
+      expect(CollaborationPanel.areCommentsLoading).to.equal(false);
       expect(CollaborationPanel.newComment.isNewThreadButtonVisible).to.equal(false);
       expect(CollaborationPanel.newComment.isNewThreadContainerVisible).to.equal(false);
       expect(CollaborationPanel.commentThreads.length).to.equal(2);
+    });
+
+    it('shows loading state when areCommentsLoading is true', async function () {
+      this.setProperties({
+        areCommentsLoading: true,
+      });
+
+      await render(hbs`<Collaboration::CollaborationPanel
+        @isCommentingAllowed={{false}}
+        @areCommentsLoading={{areCommentsLoading}}
+      />`);
+
+      expect(CollaborationPanel.areCommentsLoading).to.equal(true);
+      await percySnapshot(this.test, {darkMode: true});
     });
   });
 });

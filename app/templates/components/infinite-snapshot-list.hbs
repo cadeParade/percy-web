@@ -3,7 +3,7 @@
     @build={{this.build}}
     @blockItems={{this.blockItems}}
     @page={{pageToLoad}}
-    as |blocks|
+    as |blocks areCommentsLoading|
   >
     {{#each blocks as |block|}}
       {{#if (eq this.page pageToLoad)}}
@@ -24,6 +24,7 @@
             @createComment={{this.createComment}}
             @closeCommentThread={{this.closeCommentThread}}
             @index={{block.orderItem.index}}
+            @areCommentsLoading={{areCommentsLoading}}
           />
         </div>
       {{else}}
@@ -42,6 +43,7 @@
             @createComment={{this.createComment}}
             @closeCommentThread={{this.closeCommentThread}}
             @index={{block.orderItem.index}}
+            @areCommentsLoading={{areCommentsLoading}}
           />
         </div>
       {{/if}}

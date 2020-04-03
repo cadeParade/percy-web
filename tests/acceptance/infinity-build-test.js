@@ -17,6 +17,7 @@ import utils from 'percy-web/lib/utils';
 // eslint-disable-next-line
 import {setupBrowserNavigationButtons} from 'ember-cli-browser-navigation-button-test-helper/test-support';
 import mockPusher from 'percy-web/tests/helpers/mock-pusher';
+import {defer} from 'rsvp';
 
 describe('Acceptance: InfiniteBuild', function () {
   freezeMoment('2018-05-22');
@@ -372,6 +373,29 @@ describe('Acceptance: InfiniteBuild', function () {
       await BuildPage.confirmDialog.confirm.click();
       expect(BuildPage.isConfirmDialogVisible).to.equal(false);
       expect(firstSnapshot.isApproved).to.equal(true);
+    });
+
+    // TODO(sort): Unskip this when we remove the feature flag logic.
+    // Not awaiting `visit` causes feature flag initialization to happen out of order.
+    it.skip('shows comments loading', async function () {
+      const deferred = defer();
+
+      server.get('/builds/:build_id/comment-threads', async function (schema, request) {
+        const snapshotIds = request.queryParams['filter[snapshot_ids]'].split(',');
+        const commentThreadIds = schema.snapshots
+          .find(snapshotIds)
+          .models.mapBy('commentThreadIds')
+          .flat();
+        await deferred.promise;
+        return schema.commentThreads.find(commentThreadIds);
+      });
+
+      // Do not await the visit so we can look at loading state.
+      BuildPage.visitBuild(urlParams);
+      expect(BuildPage.snapshots[0].collaborationPanel.areCommentsLoading).to.equal(true);
+
+      await deferred.resolve();
+      expect(BuildPage.snapshots[0].collaborationPanel.areCommentsLoading).to.equal(false);
     });
   });
 

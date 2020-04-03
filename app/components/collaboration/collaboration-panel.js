@@ -12,6 +12,7 @@ export default Component.extend({
   isCommentingAllowed: true,
   snapshot: null,
   areClosedThreadsExpanded: false,
+  areCommentsLoading: false,
 
   hasCommentThreads: notEmpty('commentThreads'),
 

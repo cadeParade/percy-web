@@ -35,12 +35,13 @@
           @toggleOverlay={{action "toggleSnapshotOverlay"}}
         />
 
-        {{#if this.isCommentPanelShowing}}
+        {{#if (or this.isCommentPanelShowing this.areCommentsLoading)}}
           <Collaboration::CollaborationPanel
             @commentThreads={{this.commentThreads}}
             @showCollaborationPanel={{this.isShowingCollaborationPanel}}
             @isCommentingAllowed={{this.isBuildApprovable}}
             @snapshot={{this.snapshot}}
+            @areCommentsLoading={{this.areCommentsLoading}}
           />
         {{/if}}
       </div>

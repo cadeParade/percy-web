@@ -17,7 +17,8 @@ import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
 //       id: 1,
 //       type: "snapshot",
 //       attributes: {
-//         review-state-reason: "unreviewed_comparisons"
+//         "review-state-reason": "unreviewed_comparisons",
+//         "total-open-comments": 0,
 //       },
 //       {
 //         "index": 1,
@@ -28,6 +29,7 @@ import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
 //             "type": "snapshot",
 //             "attributes": {
 //               "review-state-reason": "unreviewed_comparisons"
+//               "total-open-comments": 0,
 //             }
 //           },
 //           {
@@ -35,6 +37,7 @@ import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
 //             "type": "snapshot",
 //             "attributes": {
 //               "review-state-reason": "unreviewed_comparisons"
+//               "total-open-comments": 1,
 //             }
 //           }
 //         ]
@@ -50,6 +53,7 @@ import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
 //         "type": "snapshot",
 //         "attributes": {
 //           "review-state-reason": "unreviewed_comparisons"
+//           "total-open-comments": 0,
 //         }
 //       }
 //     ]
@@ -65,12 +69,14 @@ export default function createSortMetadata(mirageSnapshots, mirageBuild) {
     const {singleIndexes, groupedIndexes} = _separateSingleIndexes(fingerprintDictOfIndexes);
     const groups = Object.keys(groupedIndexes).map((key, i) => {
       const items = groupedIndexes[key].map(snapshotId => {
+        // eslint-disable-next-line
+        const snapshot = server.db.snapshots.find(snapshotId);
         return {
           id: snapshotId,
           type: 'snapshot',
           attributes: {
-            // eslint-disable-next-line
-            'review-state-reason': server.db.snapshots.find(snapshotId).reviewStateReason,
+            'review-state-reason': snapshot.reviewStateReason,
+            'total-open-comments': commentThreadCount(snapshot),
           },
         };
       });
@@ -82,6 +88,8 @@ export default function createSortMetadata(mirageSnapshots, mirageBuild) {
       };
     });
     const singles = singleIndexes.map((snapshotId, i) => {
+      // eslint-disable-next-line
+      const snapshot = server.db.snapshots.find(snapshotId);
       return {
         index: groups.length + i,
         type: 'snapshot',
@@ -90,8 +98,8 @@ export default function createSortMetadata(mirageSnapshots, mirageBuild) {
             id: snapshotId,
             type: 'snapshot',
             attributes: {
-              // eslint-disable-next-line
-              'review-state-reason': server.db.snapshots.find(snapshotId).reviewStateReason,
+              'review-state-reason': snapshot.reviewStateReason,
+              'total-open-comments': commentThreadCount(snapshot),
             },
           },
         ],
@@ -144,6 +152,10 @@ function separateSnapshots(snapshotsOrderItems) {
     },
     {approvedSnapshots: [], unapprovedSnapshots: []},
   );
+}
+
+function commentThreadCount(snapshot) {
+  return (snapshot.commentThreadIds && snapshot.commentThreadIds.length) || 0;
 }
 
 function sortedSnapshotsWithDiffForBrowser(snapshots, browser) {

@@ -15,7 +15,8 @@ import {SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 //       {
 //         id: 1,
 //         attributes: {
-//           review-state-reason: "unreviewed_comparisons"
+//           "review-state-reason": "unreviewed_comparisons",
+//           "total-open-comments": 1
 //         },
 //       }
 //     ]
@@ -27,14 +28,16 @@ import {SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 //           "id": 2,
 //           "type": "snapshot",
 //           "attributes": {
-//             "review-state-reason": "unreviewed_comparisons"
+//             "review-state-reason": "unreviewed_comparisons",
+//             "total-open-comments": 0,
 //           }
 //         },
 //         {
 //           "id": 3,
 //           "type": "snapshot",
 //           "attributes": {
-//             "review-state-reason": "unreviewed_comparisons"
+//             "review-state-reason": "unreviewed_comparisons",
+//             "total-open-comments": 0,
 //           }
 //         }
 //       ]
@@ -189,6 +192,10 @@ export default class MetadataSort extends EmberObject {
       };
     });
   }
+}
+
+export function snapshotItemHasComments(snapshotItem) {
+  return snapshotItem.attributes['total-open-comments'] > 0;
 }
 
 function isSnapshotItemUnreviewed(snapshotItem) {
