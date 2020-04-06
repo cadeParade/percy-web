@@ -84,7 +84,7 @@
     "ember-href-to": "^3.1.0",
     "ember-infinity": "^2.0.3",
     "ember-inflector": "^3.0.0",
-    "ember-inline-svg": "^0.3.0",
+    "ember-inline-svg": "^1.0.0",
     "ember-keyboard": "^5.0.0",
     "ember-launch-darkly": "^0.7.0",
     "ember-load-initializers": "^2.1.1",
