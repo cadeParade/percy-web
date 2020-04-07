@@ -47,7 +47,7 @@ export default class NewRoute extends Route.extend(AuthenticatedRouteMixin) {
     if (marketplaceListingPlanId) {
       return 'github_marketplace';
     } else {
-      return '';
+      return null;
     }
   }
 
@@ -59,7 +59,7 @@ export default class NewRoute extends Route.extend(AuthenticatedRouteMixin) {
         marketplace_listing_plan_id: parseInt(marketplaceListingPlanId),
       });
     } else {
-      return '';
+      return null;
     }
   }
 
