@@ -13,8 +13,6 @@ import {
 } from 'percy-web/models/snapshot';
 import BuildPage from 'percy-web/tests/pages/build-page';
 import ProjectPage from 'percy-web/tests/pages/project-page';
-// eslint-disable-next-line
-import {setupBrowserNavigationButtons} from 'ember-cli-browser-navigation-button-test-helper/test-support';
 import mockPusher from 'percy-web/tests/helpers/mock-pusher';
 import {defer} from 'rsvp';
 
@@ -886,7 +884,6 @@ describe('Acceptance: InfiniteBuild', function () {
   });
 
   it('toggles full view', async function () {
-    setupBrowserNavigationButtons();
     await BuildPage.visitBuild(urlParams);
     await BuildPage.snapshots.objectAt(0).header.clickToggleFullscreen();
     expect(currentRouteName()).to.equal('organization.project.builds.build.snapshot');
