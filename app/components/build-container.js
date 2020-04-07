@@ -55,8 +55,6 @@ export default Component.extend(PollingMixin, {
     });
   },
 
-  isUnchangedSnapshotsLoading: readOnly('_toggleUnchangedSnapshotsVisible.isRunning'),
-
   unchangedBlockItems: computed(
     'buildSortMetadata.unchangedBlockItemsForBrowsers.[]',
     'activeBrowser.familySlug',

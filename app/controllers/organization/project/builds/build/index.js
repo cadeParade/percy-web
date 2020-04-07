@@ -4,9 +4,9 @@ import Controller from '@ember/controller';
 import {set} from '@ember/object';
 import metadataSort from 'percy-web/lib/sort-metadata';
 
-// NOTE: before adding something here, consider adding it to BuildContainer instead.
-// This controller should only be used to maintain the state of which snapshots have been loaded.
 export default class IndexController extends Controller {
+  isUnchangedSnapshotsLoading = false;
+
   @service
   raven;
 
@@ -23,8 +23,10 @@ export default class IndexController extends Controller {
 
   @action
   async fetchUnchangedSnapshots(build) {
+    set(this, 'isUnchangedSnapshotsLoading', true);
     const snapshotsAndMeta = await this.snapshotQuery.getUnchangedSnapshotsWithSortMeta(this.build);
     build.sortMetadata.handleUnchangedSortData(snapshotsAndMeta.meta['sorted-items']);
+    set(this, 'isUnchangedSnapshotsLoading', false);
     set(this, 'isUnchangedSnapshotsVisible', true);
   }
 
