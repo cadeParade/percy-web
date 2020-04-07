@@ -21,9 +21,6 @@ export default class ReviewsService extends Service {
   @service
   confirm;
 
-  @service
-  launchDarkly;
-
   @task(function* ({snapshots, build, eventData}) {
     const hasOpenReviewThreads = this._snapshotsHaveOpenReviewThreads(snapshots);
     const hasRejectedSnapshots = this._snapshotsAreRejected(snapshots, build);

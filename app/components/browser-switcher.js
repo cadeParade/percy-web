@@ -1,10 +1,8 @@
 import Component from '@ember/component';
 import {computed} from '@ember/object';
 import {readOnly} from '@ember/object/computed';
-import {inject as service} from '@ember/service';
 
 export default Component.extend({
-  launchDarkly: service(),
   attributeBindings: ['data-test-browser-switcher'],
   'data-test-browser-switcher': true,
   browsers: null,

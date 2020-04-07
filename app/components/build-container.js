@@ -9,7 +9,6 @@ export default Component.extend(PollingMixin, {
   classNames: ['BuildContainer'],
 
   store: service(),
-  launchDarkly: service(),
   build: null,
   snapshotQuery: service(),
   allDiffsShown: true,

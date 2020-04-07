@@ -11,9 +11,6 @@ export default class IndexController extends Controller {
   raven;
 
   @service
-  launchDarkly;
-
-  @service
   snapshotQuery;
 
   @action

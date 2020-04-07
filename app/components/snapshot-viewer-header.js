@@ -8,7 +8,6 @@ import filteredComparisons from 'percy-web/lib/filtered-comparisons';
 export default Component.extend({
   // required params
   flashMessages: service(),
-  launchDarkly: service(),
   router: service(),
   selectedWidth: null,
   selectedComparison: null,

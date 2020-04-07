@@ -20,9 +20,6 @@ export default class IndexRoute extends Route {
   @service
   session;
 
-  @service
-  launchDarkly;
-
   model() {
     const org = this.modelFor('organization');
     const build = this.modelFor('organization.project.builds.build');

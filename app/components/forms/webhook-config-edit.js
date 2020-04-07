@@ -1,7 +1,6 @@
 import {computed} from '@ember/object';
 import BaseFormComponent from './base';
 import WebhookConfigEditValidations from '../../validations/webhook-config-edit';
-import {inject as service} from '@ember/service';
 
 const SUBSCRIBABLE_EVENTS = [
   {
@@ -70,7 +69,6 @@ const FORM_FIELD_LABELS = {
 };
 
 export default BaseFormComponent.extend({
-  launchDarkly: service(),
   classNames: ['FormsWebhookConfigEdit', 'Form'],
   model: computed.alias('webhookConfig'),
   validator: WebhookConfigEditValidations,

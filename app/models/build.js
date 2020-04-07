@@ -4,7 +4,6 @@ import Model, {attr, hasMany, belongsTo} from '@ember-data/model';
 import moment from 'moment';
 import {countDiffsWithSnapshotsPerBrowser} from 'percy-web/lib/filtered-comparisons';
 import {get} from '@ember/object';
-import {inject as service} from '@ember/service';
 
 export const BUILD_APPROVED_STATE = 'approved';
 export const BUILD_UNREVIEWED_STATE = 'unreviewed';
@@ -41,9 +40,6 @@ const UNREVIEWED_LABEL = 'Unreviewed';
 const REJECTED_LABEL = 'Changes requested';
 
 export default class Build extends Model {
-  @service
-  launchDarkly;
-
   @belongsTo('project', {async: false})
   project;
 
