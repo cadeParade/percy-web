@@ -7,6 +7,7 @@
   @isUnchangedSnapshotsVisible={{this.isUnchangedSnapshotsVisible}}
   @isBuildApprovable={{this.isBuildApprovable}}
   @notifyOfUnchangedSnapshots={{action "notifyOfUnchangedSnapshots"}}
-  @fetchSnapshots={{action "fetchSnapshots"}}
+  @fetchChangedSnapshots={{action "fetchChangedSnapshots"}}
+  @fetchUnchangedSnapshots={{this.fetchUnchangedSnapshots}}
 />
 {{outlet}}

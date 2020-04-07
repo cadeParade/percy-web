@@ -344,9 +344,10 @@ export default function () {
     const build = schema.builds.findBy({id: request.queryParams.build_id});
     const queryParams = request.queryParams;
     let snapshots;
+    let reasons;
 
     if (queryParams['filter[review-state-reason]']) {
-      const reasons = queryParams['filter[review-state-reason]'].split(',');
+      reasons = queryParams['filter[review-state-reason]'].split(',');
       snapshots = schema.snapshots.where(snapshot => {
         return snapshot.buildId === build.id && reasons.includes(snapshot.reviewStateReason);
       });
@@ -357,7 +358,7 @@ export default function () {
     const jsonResponse = this.serialize(snapshots);
 
     if (queryParams['include-sort-data'] === 'true') {
-      jsonResponse.meta = createSortMetadata(snapshots, build);
+      jsonResponse.meta = createSortMetadata(snapshots, build, reasons);
     }
 
     return jsonResponse;

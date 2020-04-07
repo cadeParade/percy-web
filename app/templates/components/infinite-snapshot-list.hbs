@@ -3,7 +3,7 @@
     @build={{this.build}}
     @blockItems={{this.blockItems}}
     @page={{pageToLoad}}
-    as |blocks areCommentsLoading|
+    as |blocks areSnapshotsLoading areCommentsLoading|
   >
     {{#each blocks as |block|}}
       {{#if (eq this.page pageToLoad)}}
@@ -18,11 +18,7 @@
             @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
             @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}
             @activeBrowser={{this.activeBrowser}}
-            @updateActiveBrowser={{this.updateActiveBrowser}}
             @isBuildApprovable={{this.isBuildApprovable}}
-            @createCommentThread={{this.createCommentThread}}
-            @createComment={{this.createComment}}
-            @closeCommentThread={{this.closeCommentThread}}
             @index={{block.orderItem.index}}
             @areCommentsLoading={{areCommentsLoading}}
           />
@@ -37,11 +33,7 @@
             @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
             @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}
             @activeBrowser={{this.activeBrowser}}
-            @updateActiveBrowser={{this.updateActiveBrowser}}
             @isBuildApprovable={{this.isBuildApprovable}}
-            @createCommentThread={{this.createCommentThread}}
-            @createComment={{this.createComment}}
-            @closeCommentThread={{this.closeCommentThread}}
             @index={{block.orderItem.index}}
             @areCommentsLoading={{areCommentsLoading}}
           />
@@ -54,28 +46,45 @@
 
 {{#if this.numSnapshotsUnchanged}}
   {{#if this.isUnchangedSnapshotsVisible}}
-    {{#each this.snapshotsUnchanged as |snapshot|}}
-      <div data-test-snapshot-block>
-        <SnapshotViewer
-          @build={{this.build}}
-          @allDiffsShown={{this.allDiffsShown}}
-          @snapshot={{snapshot}}
-          @activeSnapshotBlockId={{this.activeSnapshotBlockId}}
-          @shouldDeferRendering={{this.shouldDeferRendering}}
-          @updateActiveSnapshotBlockId={{action "updateActiveSnapshotBlockId"}}
-          @activeBrowser={{this.activeBrowser}}
-          @updateActiveBrowser={{this.updateActiveBrowser}}
-          @isBuildApprovable={{this.isBuildApprovable}}
-          @closeCommentThread={{this.closeCommentThread}}
-          @createCommentThread={{this.createCommentThread}}
-          @createComment={{this.createComment}}
-        />
-      </div>
+    {{#each (range 0 this.unchangedPage true) as |unchangedPageToLoad|}}
+      <InfiniteSnapshotPage
+        @build={{this.build}}
+        @blockItems={{this.unchangedBlockItems}}
+        @page={{unchangedPageToLoad}}
+        @limit={{30}}
+        as |blocks areSnapshotsLoading|
+      >
+        {{#if areSnapshotsLoading}}
+          <LazyLoadingSnapshotItem
+            @shouldFullyRender={{false}}
+            @displayTitle={{"Loading..."}}
+          />
+        {{else}}
+          {{#each blocks as |block|}}
+            {{#if (eq this.unchangedPage unchangedPageToLoad)}}
+              <div {{in-viewport onEnter=(action (mut this.unchangedPage) (inc 1 this.unchangedPage))}}></div>
+            {{/if}}
+            <div data-test-snapshot-block>
+              <InfiniteSnapshotViewer
+                @class="data-test-snapshot-viewer"
+                @build={{this.build}}
+                @snapshot={{block.snapshots.firstObject}}
+                @allDiffsShown={{this.allDiffsShown}}
+                @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
+                @updateActiveSnapshotBlockIndex={{action "updateActiveSnapshotBlockIndex"}}
+                @activeBrowser={{this.activeBrowser}}
+                @isBuildApprovable={{this.isBuildApprovable}}
+                @index={{block.orderItem.index}}
+              />
+            </div>
+          {{/each}}
+        {{/if}}
+      </InfiniteSnapshotPage>
     {{/each}}
   {{else}}
     <div class="SnapshotViewer--actionable">
-      <div class="flex items-center justify-center font-bold p-2 m-2 bg-secondary rounded border border-dashed cursor-pointer" data-test-toggle-unchanged {{action this.toggleUnchangedSnapshotsVisible}} role="button">
-        {{#if this.isUnchangedSnapshotsLoading}}
+      <div class="flex items-center justify-center font-bold p-2 m-2 bg-secondary rounded border border-dashed cursor-pointer" data-test-toggle-unchanged onclick={{perform this.fetchUnchangedSnapshots this.build}} role="button">
+        {{#if this.fetchUnchangedSnapshots.isRunning}}
           {{inline-svg "loader-icon" class="mx-2"}} Loading unchanged snapshots
         {{else}}
           <figure class="svg-container">

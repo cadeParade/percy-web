@@ -41,7 +41,7 @@ export default class IndexRoute extends Route {
       controller.set('isSnapshotsLoading', true);
 
       if (this.launchDarkly.variation('snapshot-sort-api')) {
-        await controller.fetchSnapshotsWithSortOrder(build);
+        await controller.fetchChangedSnapshotsWithSortOrder(build);
       } else {
         this.snapshotQuery.getChangedSnapshots(build).then(() => {
           return this._initializeSnapshotOrdering();

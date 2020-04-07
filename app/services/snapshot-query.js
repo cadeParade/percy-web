@@ -26,6 +26,17 @@ export default class SnapshotQueryService extends Service {
     });
   }
 
+  getUnchangedSnapshotsWithSortMeta(build) {
+    return this.store.loadRecords('snapshot', {
+      build_id: build.get('id'),
+      filter: {
+        'review-state-reason': SNAPSHOT_REVIEW_STATE_REASONS.NO_DIFFS,
+      },
+      'include-sort-data': true,
+      'sort-item-limit': 30,
+    });
+  }
+
   getChangedSnapshots(build) {
     const isBuildId = typeof build === 'number' || typeof build === 'string';
     const buildId = isBuildId ? build : build.get('id');
@@ -64,7 +75,7 @@ export default class SnapshotQueryService extends Service {
     });
   }
 
-  getSnapshotsWithSortMeta(build) {
+  getChangedSnapshotsWithSortMeta(build) {
     return this.store.loadRecords('snapshot', {
       build_id: build.get('id'),
       filter: {

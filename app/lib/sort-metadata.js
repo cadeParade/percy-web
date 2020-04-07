@@ -1,5 +1,6 @@
 import EmberObject, {computed} from '@ember/object';
 import {SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
+import {set} from '@ember/object';
 
 // This file handles and provides various ways to parse the data structure provided in the
 // snapshot query metadata.
@@ -69,22 +70,33 @@ import {SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 //   - Do your counting/filtering based on the combination of "loaded" and "unloaded" snapshots.
 
 export default class MetadataSort extends EmberObject {
-  sortData = null;
+  changedSortData = null;
   build = null;
   store = null;
 
-  @computed('sortData')
+  @computed('changedSortData')
   get defaultBrowserSlug() {
-    const defaultBrowserData = this.sortData.findBy('default_browser_family_slug', true);
+    const defaultBrowserData = this.changedSortData.findBy('default_browser_family_slug', true);
     return defaultBrowserData ? defaultBrowserData.browser_family_slug : 'chrome';
   }
 
-  @computed()
+  @computed('changedSortData')
   get blockItemsForBrowsers() {
     const browserItems = {};
-    this.sortData.forEach(browserData => {
+    this.changedSortData.forEach(browserData => {
       browserItems[browserData.browser_family_slug] = browserData.items;
     });
+    return browserItems;
+  }
+
+  @computed('unchangedSortData.[]')
+  get unchangedBlockItemsForBrowsers() {
+    if (!this.unchangedSortData) return [];
+    const browserItems = {};
+    this.unchangedSortData.forEach(browserData => {
+      browserItems[browserData.browser_family_slug] = browserData.items;
+    });
+
     return browserItems;
   }
 
@@ -93,8 +105,8 @@ export default class MetadataSort extends EmberObject {
   //   <id>: {id: <id>, type: "snapshot", attributes: {…}}
   // }
   @computed()
-  get allSnapshotItemsById() {
-    return this.sortData.reduce((acc, browserData) => {
+  get allChangedSnapshotItemsById() {
+    return this.changedSortData.reduce((acc, browserData) => {
       return this.snapshotItemsById(browserData.items);
     }, {});
   }
@@ -107,7 +119,7 @@ export default class MetadataSort extends EmberObject {
   // Returns: {chrome: [snapshotItem, snapshotItem], firefox: [snapshotItem]}
   @computed('loadedSnapshots.@each.reviewState')
   get unapprovedSnapshotItemsForBrowsers() {
-    return this.sortData.reduce((acc, data) => {
+    return this.changedSortData.reduce((acc, data) => {
       // Dictionary of snapshot sort items with id as key
       const snapshotItems = this.snapshotItemsById(data.items);
 
@@ -138,13 +150,13 @@ export default class MetadataSort extends EmberObject {
     return this._allSnapshots.filterBy('build.id', this.build.id);
   }
 
-  @computed('loadedSnapshots.@each.id', 'allSnapshotItemsById.[]')
+  @computed('loadedSnapshots.@each.id', 'allChangedSnapshotItemsById.[]')
   get unloadedSnapshotItemsById() {
-    const allSnapshotItemsById = this.allSnapshotItemsById;
+    const changedSnapshotItemsById = this.allChangedSnapshotItemsById;
     this.loadedSnapshots.mapBy('id').forEach(id => {
-      delete allSnapshotItemsById[id];
+      delete changedSnapshotItemsById[id];
     });
-    return allSnapshotItemsById;
+    return changedSnapshotItemsById;
   }
 
   @computed('loadedSnapshots.@each.reviewState')
@@ -191,6 +203,27 @@ export default class MetadataSort extends EmberObject {
         orderItem: orderItem,
       };
     });
+  }
+
+  handleUnchangedSortData(unchangedSortData) {
+    unchangedSortData.forEach(browserData => {
+      const browserSlug = browserData.browser_family_slug;
+      const changedSortData = this.changedSortData.findBy('browser_family_slug', browserSlug);
+      const startingIndex = this._lastIndex(changedSortData) + 1;
+      browserData.items.forEach((item, i) => {
+        set(item, 'index', startingIndex + i);
+      });
+    });
+    set(this, 'unchangedSortData', unchangedSortData);
+  }
+
+  _lastIndex(changedSortData) {
+    // If there are no items, start at -1 so when we add 1, it is 0.
+    const items = changedSortData.items;
+    if (items.length === 0) return -1;
+
+    // Otherwise, return the last index for the browser.
+    return items[items.length - 1].index;
   }
 }
 

@@ -14,6 +14,7 @@ export default Component.extend(PollingMixin, {
   launchDarkly: service(),
   build: null,
   snapshotQuery: service(),
+  // TODO(sort) Remove this when old method is deprecated.
   snapshotsUnchanged: null,
   allDiffsShown: true,
   updateActiveBrowser: null,
@@ -22,6 +23,9 @@ export default Component.extend(PollingMixin, {
 
   chosenBrowser: null,
   page: 1,
+  unchangedPage: 1,
+
+  buildSortMetadata: readOnly('build.sortMetadata'),
 
   snapshotsChanged: computed('allChangedBrowserSnapshotsSorted', 'activeBrowser.id', function () {
     if (!this.allChangedBrowserSnapshotsSorted) return;
@@ -44,9 +48,9 @@ export default Component.extend(PollingMixin, {
     if (
       this.launchDarkly.variation('snapshot-sort-api') &&
       this.build.isFinished &&
-      this.build.sortMetadata
+      this.buildSortMetadata
     ) {
-      const defaultBrowserSlug = this.build.sortMetadata.defaultBrowserSlug;
+      const defaultBrowserSlug = this.buildSortMetadata.defaultBrowserSlug;
       return this._browsers.findBy('familySlug', defaultBrowserSlug);
     } else {
       const chromeBrowser = this._browsers.findBy('familySlug', 'chrome');
@@ -61,9 +65,13 @@ export default Component.extend(PollingMixin, {
     }
   }),
 
-  blockItems: computed('build.sortMetadata', 'activeBrowser.familySlug', 'page', function () {
-    return this.build.sortMetadata.blockItemsForBrowsers[this.activeBrowser.familySlug];
-  }),
+  blockItems: computed(
+    'buildSortMetadata.blockItemsForBrowsers.[]',
+    'activeBrowser.familySlug',
+    function () {
+      return this.buildSortMetadata.blockItemsForBrowsers[this.activeBrowser.familySlug];
+    },
+  ),
 
   activeBrowser: or('chosenBrowser', 'defaultBrowser'),
 
@@ -75,7 +83,7 @@ export default Component.extend(PollingMixin, {
         this.set('isSnapshotsLoading', true);
 
         if (this.launchDarkly.variation('snapshot-sort-api')) {
-          this.fetchSnapshots(build);
+          this.fetchChangedSnapshots(build);
         } else {
           const changedSnapshots = this.snapshotQuery.getChangedSnapshots(build);
           changedSnapshots.then(() => {
@@ -93,17 +101,23 @@ export default Component.extend(PollingMixin, {
 
   isUnchangedSnapshotsLoading: readOnly('_toggleUnchangedSnapshotsVisible.isRunning'),
 
-  // TODO(sort) update everything about unchanged snapshots when they have meta sort data
+  unchangedBlockItems: computed(
+    'buildSortMetadata.unchangedBlockItemsForBrowsers.[]',
+    'activeBrowser.familySlug',
+    function () {
+      return this.buildSortMetadata.unchangedBlockItemsForBrowsers[this.activeBrowser.familySlug];
+    },
+  ),
+
+  // TODO(sort) Remove this when old method is deprecated.
   _toggleUnchangedSnapshotsVisible: task(function* () {
     let loadedSnapshots = this._getLoadedSnapshots();
     yield this.snapshotQuery.getUnchangedSnapshots(this.build);
     loadedSnapshots = this._getLoadedSnapshots();
-
     const alreadyLoadedSnapshotsWithNoDiff = yield snapshotsWithNoDiffForBrowser(
       loadedSnapshots,
       this.activeBrowser,
     ).sortBy('isUnchanged');
-
     this.set('snapshotsUnchanged', alreadyLoadedSnapshotsWithNoDiff);
     this.toggleProperty('isUnchangedSnapshotsVisible');
     // Update property available from fullscreen snapshot route that there are some unchanged
@@ -112,12 +126,14 @@ export default Component.extend(PollingMixin, {
   }),
 
   _resetUnchangedSnapshots() {
+    // TODO(sort) Remove snapshotsUnchanged when old method is deprecated.
     this.set('snapshotsUnchanged', []);
     this.set('isUnchangedSnapshotsVisible', false);
   },
 
   init() {
     this._super(...arguments);
+    // TODO(sort) Remove this when old method is deprecated.
     this.snapshotsUnchanged = this.snapshotsUnchanged || [];
   },
 
@@ -137,6 +153,7 @@ export default Component.extend(PollingMixin, {
       this.analytics.track('Browser Switched', organization, eventProperties);
     },
 
+    // TODO(sort) Remove this when old method is deprecated.
     toggleUnchangedSnapshotsVisible() {
       this._toggleUnchangedSnapshotsVisible.perform();
     },
@@ -162,6 +179,7 @@ export default Component.extend(PollingMixin, {
   },
 });
 
+// TODO(sort) Remove this when old method is deprecated.
 function _browserWithMostUnreviewedDiffsId(allChangedBrowserSnapshotsSorted) {
   // need to convert the object of arrays to an array of objects
   // [{browserId: foo, len: int1}, {browserId: bar, len: int2}]

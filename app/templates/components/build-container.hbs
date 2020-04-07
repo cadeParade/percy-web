@@ -32,17 +32,16 @@
     {{#if (variation "snapshot-sort-api")}}
       <InfiniteSnapshotList
         @blockItems={{this.blockItems}}
+        @unchangedBlockItems={{this.unchangedBlockItems}}
         @build={{this.build}}
         @allDiffsShown={{this.allDiffsShown}}
         @toggleAllDiffs={{action "toggleAllDiffs"}}
         @activeBrowser={{this.activeBrowser}}
-        @updateActiveBrowser={{action "updateActiveBrowser"}}
+        @fetchUnchangedSnapshots={{this.fetchUnchangedSnapshots}}
         @isUnchangedSnapshotsVisible={{this.isUnchangedSnapshotsVisible}}
-        @toggleUnchangedSnapshotsVisible={{action "toggleUnchangedSnapshotsVisible"}}
-        @snapshotsUnchanged={{this.snapshotsUnchanged}}
-        @isUnchangedSnapshotsLoading={{this.isUnchangedSnapshotsLoading}}
         @isBuildApprovable={{this.isBuildApprovable}}
         @page={{this.page}}
+        @unchangedPage={{this.unchangedPage}}
       />
     {{else}}
       <SnapshotList

@@ -1,5 +1,5 @@
 import {get} from '@ember/object';
-import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
+import {SNAPSHOT_APPROVED_STATE, SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
 
 // This method creates the sort metadata object that comes back when a snapshot request includes
 // include-sort-data: true query param.
@@ -60,12 +60,19 @@ import {SNAPSHOT_APPROVED_STATE} from 'percy-web/models/snapshot';
 //   },
 // ]
 
-export default function createSortMetadata(mirageSnapshots, mirageBuild) {
+export default function createSortMetadata(mirageSnapshots, mirageBuild, reviewStateReasons) {
   const sortMetadata = {'sorted-items': []};
   const browsers = mirageBuild.browsers.models;
   browsers.forEach((browser, i) => {
-    const snapshotsForBrowser = sortedSnapshotsWithDiffForBrowser(mirageSnapshots.models, browser);
-    const fingerprintDictOfIndexes = _groupSnapshotIndexesByFingerprint(snapshotsForBrowser);
+    let noDiffSnapshotsForBrowser = [];
+    const diffSnapshotsForBrowser = sortedSnapshotsWithDiffForBrowser(
+      mirageSnapshots.models,
+      browser,
+    );
+    if (reviewStateReasons.includes(SNAPSHOT_REVIEW_STATE_REASONS.NO_DIFFS)) {
+      noDiffSnapshotsForBrowser = sortedSnapshotsNoDiffForBrowser(mirageSnapshots.models, browser);
+    }
+    const fingerprintDictOfIndexes = _groupSnapshotIndexesByFingerprint(diffSnapshotsForBrowser);
     const {singleIndexes, groupedIndexes} = _separateSingleIndexes(fingerprintDictOfIndexes);
     const groups = Object.keys(groupedIndexes).map((key, i) => {
       const items = groupedIndexes[key].map(snapshotId => {
@@ -105,11 +112,31 @@ export default function createSortMetadata(mirageSnapshots, mirageBuild) {
         ],
       };
     });
+    const noDiffs = noDiffSnapshotsForBrowser.map((snapshot, i) => {
+      return {
+        index: groups.length + singles.length + i,
+        type: 'snapshot',
+        items: [
+          {
+            id: snapshot.id,
+            type: 'snapshot',
+            attributes: {
+              'review-state-reason': snapshot.reviewStateReason,
+            },
+          },
+        ],
+      };
+    });
 
     const {approvedSnapshots, unapprovedSnapshots} = separateSnapshots(singles);
     const {approvedGroups, unapprovedGroups} = separateGroups(groups);
 
-    const items = unapprovedGroups.concat(unapprovedSnapshots, approvedGroups, approvedSnapshots);
+    const items = unapprovedGroups.concat(
+      unapprovedSnapshots,
+      approvedGroups,
+      approvedSnapshots,
+      noDiffs,
+    );
 
     const browserData = {
       browser_family_slug: browser.id.split('-')[0],
@@ -163,6 +190,12 @@ function sortedSnapshotsWithDiffForBrowser(snapshots, browser) {
     return hasDiffForBrowser(snapshot, browser);
   });
   return snapshotSort(snapshotsWithDiffs, browser);
+}
+
+function sortedSnapshotsNoDiffForBrowser(snapshots, browser) {
+  return snapshots.reject(snapshot => {
+    return hasDiffForBrowser(snapshot, browser);
+  });
 }
 
 function hasDiffForBrowser(snapshot, browser) {

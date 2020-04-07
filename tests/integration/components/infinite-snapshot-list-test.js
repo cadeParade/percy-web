@@ -62,7 +62,7 @@ describe('Integration: InfiniteSnapshotList', function () {
     beforeEach(async function () {
       initializeEmberKeyboard();
       const stub = sinon.stub();
-      const build = make('build', 'finished');
+      const build = make('build', 'finished', {totalSnapshots: 15});
       const browser = make('browser');
 
       const snapshotChanged = make('snapshot', 'withComparisons', {build});
@@ -79,11 +79,12 @@ describe('Integration: InfiniteSnapshotList', function () {
         build,
         fingerprint: 'unapprovedGroup',
       });
+      const noDiffSnapshot = make('snapshot', 'withNoDiffs', {build});
 
       const store = this.owner.lookup('service:store');
       const sortMetadata = metadataSort.create({
         store,
-        sortData: [
+        changedSortData: [
           {
             browser_family_slug: 'firefox',
             default_browser_family_slug: true,
@@ -97,6 +98,13 @@ describe('Integration: InfiniteSnapshotList', function () {
           },
         ],
       });
+      const unchangedBlockItems = [
+        {
+          index: sortMetadata.changedSortData[0].items.length,
+          type: 'snapshot',
+          items: [createSortMetadataItem(noDiffSnapshot)],
+        },
+      ];
 
       build.set('sortMetadata', sortMetadata);
       this.setProperties({
@@ -104,6 +112,7 @@ describe('Integration: InfiniteSnapshotList', function () {
         blockItems: sortMetadata.blockItemsForBrowsers['firefox'],
         stub,
         browser,
+        unchangedBlockItems,
         isUnchangedSnapshotsVisible: false,
       });
 
@@ -114,13 +123,18 @@ describe('Integration: InfiniteSnapshotList', function () {
         @toggleUnchangedSnapshotsVisible={{stub}}
         @isBuildApprovable={{true}}
         @page={{1}}
+        @isUnchangedSnapshotsVisible={{isUnchangedSnapshotsVisible}}
+        @unchangedBlockItems={{unchangedBlockItems}}
+        @unchangedPage={{1}}
       />`);
     });
 
     it('automatically expands collapsed snapshot blocks if focused', async function () {
+      this.set('isUnchangedSnapshotsVisible', true);
       const firstApprovedGroup = SnapshotList.snapshotBlocks[2].snapshotGroup;
       const secondApprovedGroup = SnapshotList.snapshotBlocks[3].snapshotGroup;
       const approvedSnapshot = SnapshotList.snapshotBlocks[4].snapshotViewer;
+      const firstNoDiffSnapshot = SnapshotList.snapshotBlocks[5].snapshotViewer;
 
       // Manaully click the first approved snapshot group.
       // Clicking on this object means that it should not ever collapse with arrow nav.
@@ -130,15 +144,17 @@ describe('Integration: InfiniteSnapshotList', function () {
       expect(firstApprovedGroup.isExpanded, 'a').to.equal(true);
       expect(secondApprovedGroup.isExpanded, 'b').to.equal(false);
       expect(approvedSnapshot.isExpanded, 'c').to.equal(false);
+      expect(firstNoDiffSnapshot.isExpanded, 'd').to.equal(false);
 
       // Arrow to second approved group.
       // Since we clicked the first group, it's snapshots should be visible.
       // Since we arrowed to the second group, it's snapshots should be visible.
       await SnapshotList.typeDownArrow();
 
-      expect(firstApprovedGroup.isExpanded, 'd').to.equal(true);
-      expect(secondApprovedGroup.isExpanded, 'e').to.equal(true);
-      expect(approvedSnapshot.isExpanded, 'f').to.equal(false);
+      expect(firstApprovedGroup.isExpanded, 'e').to.equal(true);
+      expect(secondApprovedGroup.isExpanded, 'f').to.equal(true);
+      expect(approvedSnapshot.isExpanded, 'g').to.equal(false);
+      expect(firstNoDiffSnapshot.isExpanded, 'h').to.equal(false);
 
       // Arrow to approved snapshot.
       await SnapshotList.typeDownArrow();
@@ -146,9 +162,22 @@ describe('Integration: InfiniteSnapshotList', function () {
       // We clicked on the first group, it's snapshots should always visible.
       // We arrowed to and away from the second group, so its snapshots should now be hidden.
       // We arrowed to the first approved snapshot, so its comparisons should be visible.
-      expect(firstApprovedGroup.isExpanded, 'g').to.equal(true);
-      expect(secondApprovedGroup.isExpanded, 'h').to.equal(false);
-      expect(approvedSnapshot.isExpanded, 'i').to.equal(true);
+      expect(firstApprovedGroup.isExpanded, 'i').to.equal(true);
+      expect(secondApprovedGroup.isExpanded, 'j').to.equal(false);
+      expect(approvedSnapshot.isExpanded, 'k').to.equal(true);
+      expect(firstNoDiffSnapshot.isExpanded, 'l').to.equal(false);
+
+      // Arrow to first unchanged snapshot.
+      await SnapshotList.typeDownArrow();
+
+      // We clicked on the first group, it's snapshots should always visible.
+      // We arrowed to and away from the second group, so its snapshots should now be hidden.
+      // We arrowed to the first unchanged snapshots, and it was already expanded,
+      // so its comparisons should be visible.
+      expect(firstApprovedGroup.isExpanded, 'm').to.equal(true);
+      expect(secondApprovedGroup.isExpanded, 'n').to.equal(false);
+      expect(approvedSnapshot.isExpanded, 'o').to.equal(false);
+      expect(firstNoDiffSnapshot.isExpanded, 'p').to.equal(true);
     });
 
     it('focuses snapshots on arrow presses', async function () {
@@ -206,7 +235,7 @@ describe('Integration: InfiniteSnapshotList', function () {
       const store = this.owner.lookup('service:store');
       sortMetadata = metadataSort.create({
         store,
-        sortData: [
+        changedSortData: [
           {
             browser_family_slug: 'firefox',
             default_browser_family_slug: true,

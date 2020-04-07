@@ -3,8 +3,6 @@ import {notEmpty, readOnly} from '@ember/object/computed';
 import {computed} from '@ember/object';
 import {EKMixin, keyDown} from 'ember-keyboard';
 import {on} from '@ember/object/evented';
-import config from '../config/environment';
-import {assert} from '@ember/debug';
 import {idsFromOrderItems} from 'percy-web/lib/sort-metadata';
 
 export default Component.extend(EKMixin, {
@@ -24,8 +22,6 @@ export default Component.extend(EKMixin, {
     updateActiveSnapshotBlockIndex(newIndex) {
       this._updateActiveBlockIndex(newIndex);
     },
-    // TODO(sort) remove when unchanged items have indexes
-    updateActiveSnapshotBlockId() {},
   },
 
   init() {
@@ -48,8 +44,10 @@ export default Component.extend(EKMixin, {
   }),
 
   newIndex({isNext = true} = {}) {
-    // TODO(sort): handle keyboard nav for unchanged snapshots when they have indexes
-    const numItems = this.blockItems.length;
+    let numItems = this.blockItems.length;
+    if (this.unchangedBlockItems) {
+      numItems += this.unchangedBlockItems.length;
+    }
     if (!this.isActiveSnapshotIndex) {
       this._updateActiveBlockIndex(0);
     } else {
@@ -74,16 +72,4 @@ export default Component.extend(EKMixin, {
       build_id: this.build.id,
     });
   },
-
-  // TODO(sort) remove this and all references to it when unchanged snapshots
-  // have blockItems
-  shouldDeferRendering: computed('snapshotsUnchanged.length', 'isUnchangedSnapshotsVisible', {
-    get(/*key*/) {
-      return this.isUnchangedSnapshotsVisible ? this.snapshotsUnchanged.length > 75 : false;
-    },
-    set(key, value) {
-      assert('Only set `shouldDeferRendering` for tests.', config.environment === 'test');
-      return value;
-    },
-  }),
 });

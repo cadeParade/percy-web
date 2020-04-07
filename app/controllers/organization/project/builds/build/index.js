@@ -5,6 +5,7 @@ import snapshotSort from 'percy-web/lib/snapshot-sort';
 import {snapshotsWithDiffForBrowser} from 'percy-web/lib/filtered-comparisons';
 import {get, set, setProperties} from '@ember/object';
 import metadataSort from 'percy-web/lib/sort-metadata';
+import {task} from 'ember-concurrency';
 
 // NOTE: before adding something here, consider adding it to BuildContainer instead.
 // This controller should only be used to maintain the state of which snapshots have been loaded.
@@ -20,21 +21,29 @@ export default class IndexController extends Controller {
 
   isHidingBuildContainer = false;
   allChangedBrowserSnapshotsSorted = null; // Manually managed by initializeSnapshotOrdering.
+  // TODO(sort) remove this when old style is deprecated
   _unchangedSnapshots = [];
 
   @action
-  async fetchSnapshots(build) {
-    await this.fetchSnapshotsWithSortOrder(build);
+  async fetchChangedSnapshots(build) {
+    await this.fetchChangedSnapshotsWithSortOrder(build);
   }
 
-  async fetchSnapshotsWithSortOrder(build) {
+  async fetchChangedSnapshotsWithSortOrder(build) {
     set(this, 'isSnapshotsLoading', true);
-    const snapshotsAndMeta = await this.snapshotQuery.getSnapshotsWithSortMeta(build);
+    const snapshotsAndMeta = await this.snapshotQuery.getChangedSnapshotsWithSortMeta(build);
     const meta = snapshotsAndMeta.meta['sorted-items'];
-    const sortObject = metadataSort.create({sortData: meta, build, store: this.store});
+    const sortObject = metadataSort.create({changedSortData: meta, build, store: this.store});
     this.build.setProperties({sortMetadata: sortObject});
     set(this, 'isSnapshotsLoading', false);
   }
+
+  @task(function* (build) {
+    const snapshotsAndMeta = yield this.snapshotQuery.getUnchangedSnapshotsWithSortMeta(this.build);
+    build.sortMetadata.handleUnchangedSortData(snapshotsAndMeta.meta['sorted-items']);
+    set(this, 'isUnchangedSnapshotsVisible', true);
+  })
+  fetchUnchangedSnapshots;
 
   // TODO(sort) remove this when old style is deprecated
   // This breaks the binding for allChangedBrowserSnapshotsSorted,
@@ -85,6 +94,7 @@ export default class IndexController extends Controller {
     }
   }
 
+  // TODO(sort) remove this when old style is deprecated
   @action
   notifyOfUnchangedSnapshots(unchangedSnapshots) {
     set(this, '_unchangedSnapshots', unchangedSnapshots);
