@@ -51,13 +51,10 @@
         @blockItems={{this.unchangedBlockItems}}
         @page={{unchangedPageToLoad}}
         @limit={{30}}
-        as |blocks areSnapshotsLoading|
+        as |blocks areUnchangedSnapshotsLoading|
       >
-        {{#if areSnapshotsLoading}}
-          <LazyLoadingSnapshotItem
-            @shouldFullyRender={{false}}
-            @displayTitle={{"Loading..."}}
-          />
+        {{#if areUnchangedSnapshotsLoading}}
+          <LoadingSnapshotHeader @displayTitle={{"Loading..."}} />
         {{else}}
           {{#each blocks as |block|}}
             {{#if (eq this.unchangedPage unchangedPageToLoad)}}

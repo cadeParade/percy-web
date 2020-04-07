@@ -46,8 +46,6 @@ export default Component.extend({
   isExpanded: or('isUserExpanded', '_isDefaultGroupExpanded'),
   isBlockApproved: readOnly('_isApproved'),
 
-  shouldFullyRender: true,
-
   isActiveSnapshotBlock: computed('activeSnapshotBlockIndex', 'index', function () {
     return this.activeSnapshotBlockIndex === this.index;
   }),

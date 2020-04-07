@@ -1,123 +1,158 @@
 {{!-- template-lint-disable no-nested-interactive --}}
-<LazyLoadingSnapshotItem
-  @shouldFullyRender={{this.shouldFullyRender}}
-  @displayTitle={{this.groupTitle}}
->
-  <header
-    class="SnapshotViewer-header sticky grid gap-4 px-2 py-1 bg-secondary border-b border-t"
-    {{action "expandBlock"}}
-    role="button"
-    data-test-snapshot-group-header>
-    <div style="min-width: 0;" class="flex items-center">
-      <div class="Viewer-header-title SnapshotViewer-title flex items-center overflow-hidden cursor-default font-bold" title="{{this.snapshots.length}} matching changes" data-test-snapshot-group-name>
-        {{#if this.isGroupRejected}}
-          <div class="mr-1">
-            <div class="px-1 py-sm tracking-px rounded bg-orange-500 text-xs text-center uppercase font-bold text-white whitespace-no-wrap" data-test-group-rejected-badge>Changes requested</div>
+<header
+  class="SnapshotViewer-header sticky grid gap-4 px-2 py-1 bg-secondary border-b border-t"
+  {{action "expandBlock"}}
+  role="button"
+  data-test-snapshot-group-header>
+  <div style="min-width: 0;" class="flex items-center">
+    <div class="Viewer-header-title SnapshotViewer-title flex items-center overflow-hidden cursor-default font-bold" title="{{this.snapshots.length}} matching changes" data-test-snapshot-group-name>
+      {{#if this.isGroupRejected}}
+        <div class="mr-1">
+          <div class="px-1 py-sm tracking-px rounded bg-orange-500 text-xs text-center uppercase font-bold text-white whitespace-no-wrap" data-test-group-rejected-badge>Changes requested</div>
+        </div>
+      {{/if}}
+
+      <div class="truncate">
+        {{this.groupTitle}}
+      </div>
+    </div>
+    <DemoTooltip
+      @build={{this.build}}
+      @isFirstInstance={{true}}
+      @key="group-overview"
+    />
+  </div>
+
+  <div class="flex justify-end">
+    <div class="btn-toolbar">
+      {{#if this.isGroupCollapsed}}
+
+        <LinkTo
+          @route="organization.project.builds.default-comparison"
+          @model={{this.snapshots.firstObject.id}}
+          @query={{hash
+            currentWidth=this.blockSelectedWidth
+            activeBrowserFamilySlug=this.activeBrowser.familySlug
+          }}
+          class="ToggleFullViewButton btn btn-square maximize-snapshot"
+          aria-label="Maximize snapshot"
+          data-test-snapshot-header-dropdown-toggle
+        >
+          <figure class="svg-container">
+            <ThemeSvg @svg="maximize-icon" />
+          </figure>
+        </LinkTo>
+      {{/if}}
+
+      <div class="btn-toolbar">
+        <button type="button" class="btn" {{action "toggleAreAllSnapshotsExpanded"}} data-test-show-group-snapshots>
+          {{#if this.isGroupCollapsed}}
+            Expand matches
+          {{else}}
+            Collapse matches
+          {{/if}}
+        </button>
+
+        {{#if this.noSnapshotsWithOpenCommentThreads}}
+          <button type="button" class="btn btn-square collaboration-toggle relative" {{action "handleCommentClick"}} data-test-group-comment-btn>
+            <figure class="svg-container">
+              <ThemeSvg @svg="conversation-icon-add" />
+            </figure>
+          </button>
+        {{/if}}
+
+        {{#if this.isGroupCollapsed}}
+          <div class="btn-group btn-group-alt">
+            <ComparisonSwitcher
+              @comparisons={{this.filteredComparisons.comparisonsWithDiffs}}
+              @selectedWidth={{this.blockSelectedWidth}}
+              @updateSelectedWidth={{action "updateSelectedWidth"}}
+            />
           </div>
         {{/if}}
 
-        <div class="truncate">
-          {{this.groupTitle}}
-        </div>
-      </div>
-      <DemoTooltip
-        @build={{this.build}}
-        @isFirstInstance={{true}}
-        @key="group-overview"
-      />
-    </div>
-
-    <div class="flex justify-end">
-      <div class="btn-toolbar">
-        {{#if this.isGroupCollapsed}}
-
-          <LinkTo
-            @route="organization.project.builds.default-comparison"
-            @model={{this.snapshots.firstObject.id}}
-            @query={{hash
-              currentWidth=this.blockSelectedWidth
-              activeBrowserFamilySlug=this.activeBrowser.familySlug
-            }}
-            class="ToggleFullViewButton btn btn-square maximize-snapshot"
-            aria-label="Maximize snapshot"
-            data-test-snapshot-header-dropdown-toggle
-          >
-            <figure class="svg-container">
-              <ThemeSvg @svg="maximize-icon" />
-            </figure>
-          </LinkTo>
-        {{/if}}
-
-        <div class="btn-toolbar">
-          <button type="button" class="btn" {{action "toggleAreAllSnapshotsExpanded"}} data-test-show-group-snapshots>
-            {{#if this.isGroupCollapsed}}
-              Expand matches
-            {{else}}
-              Collapse matches
-            {{/if}}
-          </button>
-
-          {{#if this.noSnapshotsWithOpenCommentThreads}}
-            <button type="button" class="btn btn-square collaboration-toggle relative" {{action "handleCommentClick"}} data-test-group-comment-btn>
-              <figure class="svg-container">
-                <ThemeSvg @svg="conversation-icon-add" />
-              </figure>
-            </button>
-          {{/if}}
-
-          {{#if this.isGroupCollapsed}}
-            <div class="btn-group btn-group-alt">
-              <ComparisonSwitcher
-                @comparisons={{this.filteredComparisons.comparisonsWithDiffs}}
-                @selectedWidth={{this.blockSelectedWidth}}
-                @updateSelectedWidth={{action "updateSelectedWidth"}}
-              />
-            </div>
-          {{/if}}
-
-          {{#if this.isGroupUnreviewed}}
-            <DemoTooltip
-              @build={{this.build}}
-              @isFirstInstance={{eq this.index 0}}
-              @anchorPlacement='left-corner'
-              @key="group-request-changes-button"
-            />
-            <SnapshotRejectButton
-              @snapshots={{this.snapshots}}
-              @isDisabled={{not this.isBuildApprovable}}
-            />
-          {{/if}}
-
+        {{#if this.isGroupUnreviewed}}
           <DemoTooltip
             @build={{this.build}}
             @isFirstInstance={{eq this.index 0}}
             @anchorPlacement='left-corner'
-            @key="group-approval-button"
+            @key="group-request-changes-button"
           />
-          <GroupApprovalButton
-            @approvableSnapshots={{this.approvableSnapshots}}
-            @numTotalSnapshots={{this.snapshots.length}}
-            @numUnapprovedSnapshots={{this.numUnapprovedSnapshots}}
-            @isGroupApproved={{this.isGroupApproved}}
+          <SnapshotRejectButton
+            @snapshots={{this.snapshots}}
             @isDisabled={{not this.isBuildApprovable}}
           />
-        </div>
+        {{/if}}
+
+        <DemoTooltip
+          @build={{this.build}}
+          @isFirstInstance={{eq this.index 0}}
+          @anchorPlacement='left-corner'
+          @key="group-approval-button"
+        />
+        <GroupApprovalButton
+          @approvableSnapshots={{this.approvableSnapshots}}
+          @numTotalSnapshots={{this.snapshots.length}}
+          @numUnapprovedSnapshots={{this.numUnapprovedSnapshots}}
+          @isGroupApproved={{this.isGroupApproved}}
+          @isDisabled={{not this.isBuildApprovable}}
+        />
       </div>
     </div>
-  </header>
+  </div>
+</header>
 
-  <div>
-    {{#if this.isExpanded}}
-      {{#if this.displaySingleSnapshotGroupCover}}
-        <div class="relative border-b">
-          <div style="left: 28px;" class="snapshot-group-indent-line {{if this.isGroupRejected 'snapshot-group-indent-line-changes-requested-gradient' 'snapshot-group-indent-line-gradient'}} {{if this.isGroupApproved 'snapshot-group-indent-line-approved-gradient'}}"></div>
+<div>
+  {{#if this.isExpanded}}
+    {{#if this.displaySingleSnapshotGroupCover}}
+      <div class="relative border-b">
+        <div style="left: 28px;" class="snapshot-group-indent-line {{if this.isGroupRejected 'snapshot-group-indent-line-changes-requested-gradient' 'snapshot-group-indent-line-gradient'}} {{if this.isGroupApproved 'snapshot-group-indent-line-approved-gradient'}}"></div>
+        <div class="flex bg-secondary">
+          <div style="padding: 22px 16px 10px;" class="mb-2">
+            <div style="top: 126px;" class="sticky">
+              <figure class="svg-container">
+                {{#if this.isGroupApproved}}
+                  <ThemeSvg @svg="comparison-icon-group-approved" />
+                {{else if this.isGroupRejected}}
+                  <ThemeSvg @svg="comparison-icon-group-changes-requested" />
+                {{else}}
+                  <ThemeSvg @svg="comparison-icon-group-snapshot" />
+                {{/if}}
+              </figure>
+            </div>
+          </div>
+          <div class="relative flex-1 p-2">
+            <div class="absolute bg-primary rounded border pin-t-4 pin-r-4 left-0 pin-b-2 shadow-lg"></div>
+            <div class="absolute bg-primary rounded border pin-t-3 pin-r-3 pin-l-1 pin-b-3 shadow-lg"></div>
+            <div class="relative pl-0 pb-2">
+              <ComparisonViewer
+                @comparison={{this.selectedComparison}}
+                @allDiffsShown={{this.allDiffsShown}}
+                @snapshotSelectedWidth={{this.blockSelectedWidth}}
+                @isDefaultExpanded={{true}}
+                @isUnchangedSnapshotExpanded={{true}}
+                @activeBrowser={{this.activeBrowser}}
+                @toggleOverlay={{action "toggleGroupOverlay"}}
+                @showDiffOverlay={{this.isGroupShowingDiffOverlay}}
+                @class="snapshot-group-comparison-viewer shadow-lg"
+                @index={{this.index}}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+    {{else}}
+      <div class="relative pt-2 bg-secondary">
+        <div style="left: 28px;" class="snapshot-group-indent-line {{if this.isGroupRejected 'bg-orange-500' 'bg-purple-600'}}  {{if this.isGroupApproved 'snapshot-group-indent-line-approved-gradient'}}"></div>
+        {{#each this.snapshotsToDisplay as |snapshot index|}}
           <div class="flex bg-secondary">
-            <div style="padding: 22px 16px 10px;" class="mb-2">
-              <div style="top: 126px;" class="sticky">
+            <div style="padding: 11px 16px 10px;" class="mb-2">
+              <div style="top: 132px;" class="sticky">
                 <figure class="svg-container">
-                  {{#if this.isGroupApproved}}
+                  {{#if snapshot.isApproved}}
                     <ThemeSvg @svg="comparison-icon-group-approved" />
-                  {{else if this.isGroupRejected}}
+                  {{else if snapshot.isRejected}}
                     <ThemeSvg @svg="comparison-icon-group-changes-requested" />
                   {{else}}
                     <ThemeSvg @svg="comparison-icon-group-snapshot" />
@@ -125,64 +160,24 @@
                 </figure>
               </div>
             </div>
-            <div class="relative flex-1 p-2">
-              <div class="absolute bg-primary rounded border pin-t-4 pin-r-4 left-0 pin-b-2 shadow-lg"></div>
-              <div class="absolute bg-primary rounded border pin-t-3 pin-r-3 pin-l-1 pin-b-3 shadow-lg"></div>
-              <div class="relative pl-0 pb-2">
-                <ComparisonViewer
-                  @comparison={{this.selectedComparison}}
-                  @allDiffsShown={{this.allDiffsShown}}
-                  @snapshotSelectedWidth={{this.blockSelectedWidth}}
-                  @isDefaultExpanded={{true}}
-                  @isUnchangedSnapshotExpanded={{true}}
-                  @activeBrowser={{this.activeBrowser}}
-                  @toggleOverlay={{action "toggleGroupOverlay"}}
-                  @showDiffOverlay={{this.isGroupShowingDiffOverlay}}
-                  @class="snapshot-group-comparison-viewer shadow-lg"
-                  @index={{this.index}}
-                />
-              </div>
-            </div>
+            <SnapshotViewer
+              @build={{this.build}}
+              @snapshot={{snapshot}}
+              @externalIsCommentPanelShowing={{if (and this.shouldOpenFirstCommentPanel (eq index 0)) true false}}
+              @allDiffsShown={{this.allDiffsShown}}
+              @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
+              @updateActiveSnapshotBlockIndex={{this.updateActiveSnapshotBlockIndex}}
+              @activeBrowser={{this.activeBrowser}}
+              @updateActiveBrowser={{this.updateActiveBrowser}}
+              @isBuildApprovable={{this.isBuildApprovable}}
+              @toggleOverlay={{action "toggleGroupOverlay"}}
+              @showDiffOverlay={{this.isGroupShowingDiffOverlay}}
+              @index={{index}}
+              @class="snapshot-group-snapshot rounded-l flex-1 border-l"
+            />
           </div>
-        </div>
-
-      {{else}}
-        <div class="relative pt-2 bg-secondary">
-          <div style="left: 28px;" class="snapshot-group-indent-line {{if this.isGroupRejected 'bg-orange-500' 'bg-purple-600'}}  {{if this.isGroupApproved 'snapshot-group-indent-line-approved-gradient'}}"></div>
-          {{#each this.snapshotsToDisplay as |snapshot index|}}
-            <div class="flex bg-secondary">
-              <div style="padding: 11px 16px 10px;" class="mb-2">
-                <div style="top: 132px;" class="sticky">
-                  <figure class="svg-container">
-                    {{#if snapshot.isApproved}}
-                      <ThemeSvg @svg="comparison-icon-group-approved" />
-                    {{else if snapshot.isRejected}}
-                      <ThemeSvg @svg="comparison-icon-group-changes-requested" />
-                    {{else}}
-                      <ThemeSvg @svg="comparison-icon-group-snapshot" />
-                    {{/if}}
-                  </figure>
-                </div>
-              </div>
-              <SnapshotViewer
-                @build={{this.build}}
-                @snapshot={{snapshot}}
-                @externalIsCommentPanelShowing={{if (and this.shouldOpenFirstCommentPanel (eq index 0)) true false}}
-                @allDiffsShown={{this.allDiffsShown}}
-                @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
-                @updateActiveSnapshotBlockIndex={{this.updateActiveSnapshotBlockIndex}}
-                @activeBrowser={{this.activeBrowser}}
-                @updateActiveBrowser={{this.updateActiveBrowser}}
-                @isBuildApprovable={{this.isBuildApprovable}}
-                @toggleOverlay={{action "toggleGroupOverlay"}}
-                @showDiffOverlay={{this.isGroupShowingDiffOverlay}}
-                @index={{index}}
-                @class="snapshot-group-snapshot rounded-l flex-1 border-l"
-              />
-            </div>
-          {{/each}}
-        </div>
-      {{/if}}
+        {{/each}}
+      </div>
     {{/if}}
-  </div>
-</LazyLoadingSnapshotItem>
+  {{/if}}
+</div>
