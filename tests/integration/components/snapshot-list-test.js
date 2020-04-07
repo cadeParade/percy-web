@@ -11,6 +11,11 @@ import SnapshotList from 'percy-web/tests/pages/components/snapshot-list';
 import setupFactoryGuy from 'percy-web/tests/helpers/setup-factory-guy';
 import {initialize as initializeEmberKeyboard} from 'ember-keyboard';
 import {render} from '@ember/test-helpers';
+import metadataSort from 'percy-web/lib/sort-metadata';
+import {
+  createSortItemArray,
+  createSortMetadataItem,
+} from 'percy-web/mirage/helpers/create-sort-metadata';
 
 describe('Integration: SnapshotList', function () {
   setupRenderingTest('snapshot-list', {
@@ -21,53 +26,15 @@ describe('Integration: SnapshotList', function () {
     setupFactoryGuy(this);
   });
 
-  describe('when shouldDeferRendering is true', function () {
-    const numSnapshots = 10;
-
-    beforeEach(async function () {
-      const stub = sinon.stub();
-      const build = make('build', 'finished');
-      const browser = make('browser');
-
-      const singleSnapshotsChanged = makeList('snapshot', numSnapshots, 'withComparisons', {build});
-      const group = makeList('snapshot', 2, 'withComparisons', {build, fingerprint: 'aaa'});
-
-      this.setProperties({
-        snapshotsChanged: singleSnapshotsChanged.concat(group),
-        build,
-        stub,
-        browser,
-        shouldDeferRendering: true,
-      });
-
-      await render(hbs`<SnapshotList
-        @snapshotsChanged={{snapshotsChanged}}
-        @build={{build}}
-        @activeBrowser={{browser}}
-        @shouldDeferRendering={{shouldDeferRendering}}
-        @toggleUnchangedSnapshotsVisible={{stub}}
-        @isBuildApprovable={{true}}
-      />`);
-    });
-
-    it('renders snapshot header placeholder', async function () {
-      expect(SnapshotList.snapshotBlocks.length).to.equal(numSnapshots + 1);
-      SnapshotList.snapshotBlocks.forEach(block => {
-        expect(block.isLazyRenderHeaderVisible).to.equal(true);
-      });
-      await percySnapshot(this.test, {darkMode: true});
-    });
-  });
-
   describe('keyboard nav behavior', function () {
     beforeEach(async function () {
       initializeEmberKeyboard();
       const stub = sinon.stub();
-      const build = make('build', 'finished');
+      const build = make('build', 'finished', {totalSnapshots: 15});
       const browser = make('browser');
 
-      const snapshotsChanged = makeList('snapshot', 1, 'withComparisons', {build});
-      const snapshotsUnchanged = makeList('snapshot', 3, 'withNoDiffs', {build});
+      const snapshotChanged = make('snapshot', 'withComparisons', {build});
+      const approvedSnapshot = make('snapshot', 'approved', 'withComparisons', {build});
       const approvedGroup1 = makeList('snapshot', 5, 'approved', 'withComparisons', {
         build,
         fingerprint: 'approvedGroup1',
@@ -80,30 +47,54 @@ describe('Integration: SnapshotList', function () {
         build,
         fingerprint: 'unapprovedGroup',
       });
+      const noDiffSnapshot = make('snapshot', 'withNoDiffs', {build});
 
-      const allSnapshotsChanged = snapshotsChanged.concat(
-        approvedGroup1,
-        approvedGroup2,
-        unapprovedGroup,
-      );
+      const store = this.owner.lookup('service:store');
+      const sortMetadata = metadataSort.create({
+        store,
+        changedSortData: [
+          {
+            browser_family_slug: 'firefox',
+            default_browser_family_slug: true,
+            items: createSortItemArray([
+              unapprovedGroup,
+              snapshotChanged,
+              approvedGroup1,
+              approvedGroup2,
+              approvedSnapshot,
+            ]),
+          },
+        ],
+      });
+      const unchangedBlockItems = [
+        {
+          index: sortMetadata.changedSortData[0].items.length,
+          type: 'snapshot',
+          items: [createSortMetadataItem(noDiffSnapshot)],
+        },
+      ];
 
+      build.set('sortMetadata', sortMetadata);
       this.setProperties({
         build,
-        snapshotsChanged: allSnapshotsChanged,
-        snapshotsUnchanged,
+        blockItems: sortMetadata.blockItemsForBrowsers['firefox'],
         stub,
         browser,
+        unchangedBlockItems,
         isUnchangedSnapshotsVisible: false,
       });
 
       await render(hbs`<SnapshotList
-        @snapshotsChanged={{snapshotsChanged}}
+        @blockItems={{blockItems}}
         @build={{build}}
         @activeBrowser={{browser}}
         @toggleUnchangedSnapshotsVisible={{stub}}
-        @isUnchangedSnapshotsVisible={{isUnchangedSnapshotsVisible}}
-        @snapshotsUnchanged={{snapshotsUnchanged}}
         @isBuildApprovable={{true}}
+        @page={{1}}
+        @isUnchangedSnapshotsVisible={{isUnchangedSnapshotsVisible}}
+        @unchangedBlockItems={{unchangedBlockItems}}
+        @unchangedPage={{1}}
+        @fetchUnchangedSnapshots={{stub}}
       />`);
     });
 
@@ -111,33 +102,39 @@ describe('Integration: SnapshotList', function () {
       this.set('isUnchangedSnapshotsVisible', true);
       const firstApprovedGroup = SnapshotList.snapshotBlocks[2].snapshotGroup;
       const secondApprovedGroup = SnapshotList.snapshotBlocks[3].snapshotGroup;
-      const firstNoDiffSnapshot = SnapshotList.snapshotBlocks[4].snapshotViewer;
-      const secondNoDiffSnapshot = SnapshotList.snapshotBlocks[5].snapshotViewer;
-      const thirdNoDiffSnapshot = SnapshotList.snapshotBlocks[6].snapshotViewer;
+      const approvedSnapshot = SnapshotList.snapshotBlocks[4].snapshotViewer;
+      const firstNoDiffSnapshot = SnapshotList.snapshotBlocks[5].snapshotViewer;
 
-      // Manaully click the first approved snapshot group and first unchanged snapshot.
-      // Clicking on these objects mean that they should not ever collapse with arrow nav.
+      // Manaully click the first approved snapshot group.
+      // Clicking on this object means that it should not ever collapse with arrow nav.
       // The group was clicked last, so that is where the active snapshot starts.
-      await firstNoDiffSnapshot.header.expandSnapshot();
       await firstApprovedGroup.header.expandGroup();
 
-      expect(firstApprovedGroup.isExpanded).to.equal(true);
-      expect(secondApprovedGroup.isExpanded).to.equal(false);
-      expect(firstNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
-      expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
-      expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
+      expect(firstApprovedGroup.isExpanded, 'a').to.equal(true);
+      expect(secondApprovedGroup.isExpanded, 'b').to.equal(false);
+      expect(approvedSnapshot.isExpanded, 'c').to.equal(false);
+      expect(firstNoDiffSnapshot.isExpanded, 'd').to.equal(false);
 
       // Arrow to second approved group.
       // Since we clicked the first group, it's snapshots should be visible.
       // Since we arrowed to the second group, it's snapshots should be visible.
-      // Since we clicked the first unchanged snapshot, it's comparisons should be visible.
       await SnapshotList.typeDownArrow();
 
-      expect(firstApprovedGroup.isExpanded).to.equal(true);
-      expect(secondApprovedGroup.isExpanded).to.equal(true);
-      expect(firstNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
-      expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
-      expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
+      expect(firstApprovedGroup.isExpanded, 'e').to.equal(true);
+      expect(secondApprovedGroup.isExpanded, 'f').to.equal(true);
+      expect(approvedSnapshot.isExpanded, 'g').to.equal(false);
+      expect(firstNoDiffSnapshot.isExpanded, 'h').to.equal(false);
+
+      // Arrow to approved snapshot.
+      await SnapshotList.typeDownArrow();
+
+      // We clicked on the first group, it's snapshots should always visible.
+      // We arrowed to and away from the second group, so its snapshots should now be hidden.
+      // We arrowed to the first approved snapshot, so its comparisons should be visible.
+      expect(firstApprovedGroup.isExpanded, 'i').to.equal(true);
+      expect(secondApprovedGroup.isExpanded, 'j').to.equal(false);
+      expect(approvedSnapshot.isExpanded, 'k').to.equal(true);
+      expect(firstNoDiffSnapshot.isExpanded, 'l').to.equal(false);
 
       // Arrow to first unchanged snapshot.
       await SnapshotList.typeDownArrow();
@@ -146,31 +143,16 @@ describe('Integration: SnapshotList', function () {
       // We arrowed to and away from the second group, so its snapshots should now be hidden.
       // We arrowed to the first unchanged snapshots, and it was already expanded,
       // so its comparisons should be visible.
-      expect(firstApprovedGroup.isExpanded).to.equal(true);
-      expect(secondApprovedGroup.isExpanded).to.equal(false);
-      expect(firstNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
-      expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
-      expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
-
-      // Arrow to the second unchanged snapshot.
-      await SnapshotList.typeDownArrow();
-
-      // We clicked on the first group, its snapshots should always visible.
-      // We arrowed to and away from the second group, so its snapshots should now be hidden.
-      // We arrowed to and away from the first unchanged snapshots,
-      // so its snapshots should now be hidden
-      // We arrowed to the second unchanged snapshot, so its comparisons should now be visible.
-      expect(firstApprovedGroup.isExpanded).to.equal(true);
-      expect(secondApprovedGroup.isExpanded).to.equal(false);
-      expect(firstNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
-      expect(secondNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(true);
-      expect(thirdNoDiffSnapshot.isUnchangedComparisonsVisible).to.equal(false);
+      expect(firstApprovedGroup.isExpanded, 'm').to.equal(true);
+      expect(secondApprovedGroup.isExpanded, 'n').to.equal(false);
+      expect(approvedSnapshot.isExpanded, 'o').to.equal(false);
+      expect(firstNoDiffSnapshot.isExpanded, 'p').to.equal(true);
     });
 
     it('focuses snapshots on arrow presses', async function () {
       const numRenderedSnapshots = SnapshotList.snapshotBlocks.length;
-      // 4 = 1 unapproved group, 1 unapproved snapshot, 2 approved groups
-      expect(numRenderedSnapshots).to.equal(4);
+      // 5 = 1 unapproved group, 1 unapproved snapshot, 2 approved groups, 1 approved snapshot
+      expect(numRenderedSnapshots).to.equal(5);
 
       const firstSnapshotBlock = SnapshotList.snapshotBlocks[0];
       const secondSnapshotBlock = SnapshotList.snapshotBlocks[1];
@@ -178,228 +160,150 @@ describe('Integration: SnapshotList', function () {
 
       // select first snapshotBlock
       await SnapshotList.typeDownArrow();
-      expect(firstSnapshotBlock.isFocused).to.equal(true);
-      expect(secondSnapshotBlock.isFocused).to.equal(false);
-      expect(lastSnapshotBlock.isFocused).to.equal(false);
+      expect(firstSnapshotBlock.isFocused, 'a').to.equal(true);
+      expect(secondSnapshotBlock.isFocused, 'b').to.equal(false);
+      expect(lastSnapshotBlock.isFocused, 'c').to.equal(false);
 
       // select second snapshotBlock
       await SnapshotList.typeDownArrow();
-      expect(firstSnapshotBlock.isFocused).to.equal(false);
-      expect(secondSnapshotBlock.isFocused).to.equal(true);
-      expect(lastSnapshotBlock.isFocused).to.equal(false);
+      expect(firstSnapshotBlock.isFocused, 'd').to.equal(false);
+      expect(secondSnapshotBlock.isFocused, 'e').to.equal(true);
+      expect(lastSnapshotBlock.isFocused, 'f').to.equal(false);
 
       // select first snapshotBlock
       await SnapshotList.typeUpArrow();
-      expect(firstSnapshotBlock.isFocused).to.equal(true);
-      expect(secondSnapshotBlock.isFocused).to.equal(false);
-      expect(lastSnapshotBlock.isFocused).to.equal(false);
-
-      // wrap around to select last snapshotBlock
-      await SnapshotList.typeUpArrow();
-      expect(firstSnapshotBlock.isFocused).to.equal(false);
-      expect(secondSnapshotBlock.isFocused).to.equal(false);
-      expect(lastSnapshotBlock.isFocused).to.equal(true);
-      await percySnapshot(this.test, {darkMode: true});
-
-      // wrap around to select first snapshotBlock
-      await SnapshotList.typeDownArrow();
-      expect(firstSnapshotBlock.isFocused).to.equal(true);
-      expect(secondSnapshotBlock.isFocused).to.equal(false);
-      expect(lastSnapshotBlock.isFocused).to.equal(false);
+      expect(firstSnapshotBlock.isFocused, 'g').to.equal(true);
+      expect(secondSnapshotBlock.isFocused, 'h').to.equal(false);
+      expect(lastSnapshotBlock.isFocused, 'i').to.equal(false);
     });
   });
 
   describe('ordering', function () {
-    const unapprovedSingleSnapshotsWithCommentsTitle = 'unapproved single snapshot with comments';
-    const unapprovedSingleSnapshotsWithoutCommentsTitle =
-      'unapproved single snapshot without comments';
-    const approvedSingleSnapshotsWithCommentsTitle = 'approved single snapshot with comments';
-    const approvedSingleSnapshotsWithoutCommentsTitle = 'approved single snapshot without comments';
-    const rejectedSingleSnapshotsTitle = 'rejected single snapshot';
+    const oneTitle = 'one';
+    const twoTitle = 'two';
+    const threeTitle = 'three';
+    let build;
+    let snapshotOne;
+    let snapshotTwo;
+    let snapshotThree;
+    let groupedSnapshots;
+    let sortMetadata;
 
     beforeEach(async function () {
       const stub = sinon.stub();
-      const build = make('build', 'finished', {totalSnapshots: 11});
+      build = make('build', 'finished', {totalSnapshots: 11});
+
+      snapshotOne = make('snapshot', 'withTwoBrowsers', {build, title: oneTitle});
+      snapshotTwo = make('snapshot', 'withTwoBrowsers', 'approved', {build, title: twoTitle});
+      snapshotThree = make('snapshot', 'withTwoBrowsers', 'rejected', {build, title: threeTitle});
+      groupedSnapshots = makeList('snapshot', 3, 'withTwoBrowsers', {
+        build,
+        fingerprint: 'foo',
+      });
+
+      const store = this.owner.lookup('service:store');
+      sortMetadata = metadataSort.create({
+        store,
+        changedSortData: [
+          {
+            browser_family_slug: 'firefox',
+            default_browser_family_slug: true,
+            items: createSortItemArray([snapshotTwo, groupedSnapshots, snapshotThree, snapshotOne]),
+          },
+          {
+            browser_family_slug: 'chrome',
+            default_browser_family_slug: false,
+            items: createSortItemArray([groupedSnapshots, snapshotOne, snapshotTwo, snapshotThree]),
+          },
+        ],
+      });
+
+      build.set('sortMetadata', sortMetadata);
+      this.setProperties({build, stub});
+    });
+
+    function expectIsGroup(block) {
+      expect(block.isGroup).to.equal(true);
+    }
+
+    function expectIsSnapshot(block) {
+      expect(block.isSnapshot).to.equal(true);
+    }
+
+    it('orders snapshots by metadata sort data for a browser', async function () {
       const browser = make('browser');
-
-      const approvedGroupWithComments = makeList(
-        'snapshot',
-        2,
-        'approved',
-        'withComparisons',
-        'withComments',
-        {
-          build,
-          fingerprint: 'approvedGroupWithComments',
-        },
-      );
-
-      const approvedGroupWithoutComments = makeList('snapshot', 3, 'approved', 'withComparisons', {
-        build,
-        fingerprint: 'approvedGroupWithoutComments',
-      });
-
-      const unapprovedGroupWithComments = makeList(
-        'snapshot',
-        4,
-        'withComparisons',
-        'withComments',
-        {
-          build,
-          fingerprint: 'unapprovedGroupWithComments',
-        },
-      ).concat(
-        makeList('snapshot', 1, 'withComparisons', 'approved', {
-          build,
-          fingerprint: 'unapprovedGroupWithComments',
-        }),
-      );
-
-      const unapprovedGroupWithoutComments = makeList('snapshot', 5, 'withComparisons', {
-        build,
-        fingerprint: 'unapprovedGroupWithoutComments',
-      });
-
-      const rejectedGroup = makeList('snapshot', 2, 'rejected', 'withComparisons', {
-        build,
-        fingerprint: 'rejectedGroup',
-      });
-
-      const unapprovedSingleSnapshotsWithComments = makeList(
-        'snapshot',
-        1,
-        'withComparisons',
-        'withComments',
-        {build, name: unapprovedSingleSnapshotsWithCommentsTitle},
-      );
-
-      const unapprovedSingleSnapshotsWithoutComments = makeList('snapshot', 1, 'withComparisons', {
-        build,
-        name: unapprovedSingleSnapshotsWithoutCommentsTitle,
-      });
-
-      const approvedSingleSnapshotsWithComments = makeList(
-        'snapshot',
-        1,
-        'approved',
-        'withComparisons',
-        'withComments',
-        {build, name: approvedSingleSnapshotsWithCommentsTitle},
-      );
-
-      const approvedSingleSnapshotsWithoutComments = makeList(
-        'snapshot',
-        1,
-        'approved',
-        'withComparisons',
-        {build, name: approvedSingleSnapshotsWithoutCommentsTitle},
-      );
-
-      const rejectedSnapshot = makeList('snapshot', 1, 'rejected', 'withComparisons', {
-        build,
-        name: rejectedSingleSnapshotsTitle,
-      });
-
-      const snapshotsChanged = unapprovedSingleSnapshotsWithoutComments.concat(
-        approvedSingleSnapshotsWithoutComments,
-        approvedSingleSnapshotsWithComments,
-        unapprovedSingleSnapshotsWithComments,
-        approvedGroupWithoutComments,
-        rejectedGroup,
-        unapprovedGroupWithoutComments,
-        rejectedSnapshot,
-        approvedGroupWithComments,
-        unapprovedGroupWithComments,
-      );
-
+      const blockItems = sortMetadata.blockItemsForBrowsers['firefox'];
       this.setProperties({
-        snapshotsChanged,
-        build,
-        stub,
         browser,
-        numSnapshotsUnchanged: 0,
-        snapshotsUnchanged: [],
+        blockItems,
+        stub: sinon.stub(),
       });
 
       await render(hbs`<SnapshotList
-        @snapshotsChanged={{snapshotsChanged}}
-        @snapshotsUnchanged={{snapshotsUnchanged}}
+        @blockItems={{blockItems}}
         @build={{build}}
-        @toggleUnchangedSnapshotsVisible={{stub}}
+        @toggleUnchangedSnapshotsVisible={{action stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{true}}
+        @page={{1}}
+        @fetchUnchangedSnapshots={{stub}}
       />`);
+
+      let first = SnapshotList.snapshotBlocks[0];
+      let second = SnapshotList.snapshotBlocks[1];
+      let third = SnapshotList.snapshotBlocks[2];
+      let fourth = SnapshotList.snapshotBlocks[3];
+
+      expect(SnapshotList.snapshotBlocks.length).to.equal(4);
+      expectIsSnapshot(first);
+      expectIsGroup(second);
+      expectIsSnapshot(third);
+      expectIsSnapshot(fourth);
+
+      expect(first.snapshotViewer.name).to.equal(snapshotTwo.name);
+      expect(second.snapshotGroup.name).to.equal('3 matching changes');
+      expect(third.snapshotViewer.name).to.equal(snapshotThree.name);
+      expect(fourth.snapshotViewer.name).to.equal(snapshotOne.name);
+
+      await percySnapshot(this.test);
     });
 
-    it('orders individual and grouped snapshots correctly', async function () {
-      function expectIsGroup(block) {
-        expect(block.isGroup).to.equal(true);
-      }
+    it('orders snapshots by metadata sort data for other browser', async function () {
+      const chromeBrowser = make('browser', 'chrome');
+      const blockItems = sortMetadata.blockItemsForBrowsers['chrome'];
+      this.setProperties({
+        blockItems,
+        browser: chromeBrowser,
+        stub: sinon.stub(),
+      });
 
-      function expectIsSnapshot(block) {
-        expect(block.isSnapshot).to.equal(true);
-      }
+      await render(hbs`<SnapshotList
+        @blockItems={{blockItems}}
+        @build={{build}}
+        @toggleUnchangedSnapshotsVisible={{action stub}}
+        @activeBrowser={{browser}}
+        @isBuildApprovable={{true}}
+        @page={{1}}
+        @fetchUnchangedSnapshots={{stub}}
+      />`);
 
-      function expectSnapshotName(block, name) {
-        expect(block.snapshotViewer.name).to.equal(name);
-      }
+      let first = SnapshotList.snapshotBlocks[0];
+      let second = SnapshotList.snapshotBlocks[1];
+      let third = SnapshotList.snapshotBlocks[2];
+      let fourth = SnapshotList.snapshotBlocks[3];
 
-      function expectGroupSnapshotCount(block, count) {
-        if (block.isApproved) {
-          expect(block.snapshotGroup.header.groupApprovalButton.approvedText).to.include(count);
-        } else {
-          expect(block.snapshotGroup.approveButton.buttonText).to.include(count);
-        }
-      }
+      expect(SnapshotList.snapshotBlocks.length).to.equal(4);
+      expectIsGroup(first);
+      expectIsSnapshot(second);
+      expectIsSnapshot(third);
+      expectIsSnapshot(fourth);
 
-      expect(SnapshotList.snapshotBlocks.length).to.equal(10);
-      const rejectedGroup = SnapshotList.snapshotBlocks[0];
-      expectIsGroup(rejectedGroup);
-      expectGroupSnapshotCount(rejectedGroup, '2');
+      expect(first.snapshotGroup.name).to.equal('3 matching changes');
+      expect(second.snapshotViewer.name).to.equal(snapshotOne.name);
+      expect(third.snapshotViewer.name).to.equal(snapshotTwo.name);
+      expect(fourth.snapshotViewer.name).to.equal(snapshotThree.name);
 
-      const rejectedSnapshot = SnapshotList.snapshotBlocks[1];
-      expectIsSnapshot(rejectedSnapshot);
-      expectSnapshotName(rejectedSnapshot, rejectedSingleSnapshotsTitle);
-
-      const unapprovedGroupWithComments = SnapshotList.snapshotBlocks[2];
-      expectIsGroup(unapprovedGroupWithComments);
-      expectGroupSnapshotCount(unapprovedGroupWithComments, '4');
-
-      const unapprovedSnapshotWithComments = SnapshotList.snapshotBlocks[3];
-      expectIsSnapshot(unapprovedSnapshotWithComments);
-      expectSnapshotName(
-        unapprovedSnapshotWithComments,
-        unapprovedSingleSnapshotsWithCommentsTitle,
-      );
-
-      const unapprovedGroupNoComments = SnapshotList.snapshotBlocks[4];
-      expectIsGroup(unapprovedGroupNoComments);
-      expectGroupSnapshotCount(unapprovedGroupNoComments, '5');
-
-      const unapprovedSnapshotNoComments = SnapshotList.snapshotBlocks[5];
-      expectIsSnapshot(unapprovedSnapshotNoComments);
-      expectSnapshotName(
-        unapprovedSnapshotNoComments,
-        unapprovedSingleSnapshotsWithoutCommentsTitle,
-      );
-
-      const approvedGroupWithComments = SnapshotList.snapshotBlocks[6];
-      expectIsGroup(approvedGroupWithComments);
-      expectGroupSnapshotCount(approvedGroupWithComments, '2');
-
-      const approvedSnapshotWithComments = SnapshotList.snapshotBlocks[7];
-      expectIsSnapshot(approvedSnapshotWithComments);
-      expectSnapshotName(approvedSnapshotWithComments, approvedSingleSnapshotsWithCommentsTitle);
-
-      const approvedGroupNoComments = SnapshotList.snapshotBlocks[8];
-      expectIsGroup(approvedGroupNoComments);
-      expectGroupSnapshotCount(approvedGroupNoComments, '3');
-
-      const approvedSnapshotNoComments = SnapshotList.snapshotBlocks[9];
-      expectIsSnapshot(approvedSnapshotNoComments);
-      expectSnapshotName(approvedSnapshotNoComments, approvedSingleSnapshotsWithoutCommentsTitle);
-
-      await percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test);
     });
   });
 });

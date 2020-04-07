@@ -93,7 +93,7 @@ describe('Integration: SnapshotViewer', function () {
     });
 
     // eslint-disable-next-line
-    it('shows widest width with diff as active by default when some comparisons have diffs', async function() {
+    it('shows widest width with diff as active by default when some comparisons have diffs', async function () {
       await render(hbs`<SnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
@@ -107,7 +107,7 @@ describe('Integration: SnapshotViewer', function () {
     });
 
     // eslint-disable-next-line
-    it('shows widest width with diff as active by default when no comparisons have diffs', async function() {
+    it('shows widest width with diff as active by default when no comparisons have diffs', async function () {
       const snapshot = make('snapshot', 'withNoDiffs');
       this.set('snapshot', snapshot);
 
@@ -171,16 +171,19 @@ describe('Integration: SnapshotViewer', function () {
 
   describe('expand/collapse', function () {
     beforeEach(async function () {
-      this.set('activeSnapshotBlockId', null);
+      // use null and undefined so they are not equal to each other by default.
+      this.set('activeSnapshotBlockIndex', null);
+      this.set('index', undefined);
 
       await render(hbs`<SnapshotViewer
         @snapshot={{snapshot}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @activeSnapshotBlockId={{activeSnapshotBlockId}}
+        @activeSnapshotBlockIndex={{activeSnapshotBlockIndex}}
         @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
+        @index={{index}}
       />`);
     });
 
@@ -201,9 +204,10 @@ describe('Integration: SnapshotViewer', function () {
       expect(SnapshotViewer.isExpanded).to.equal(true);
     });
 
-    it("is expanded when activeSnapshotBlockId is equal to the snapshot's id", async function () {
+    it("is expanded when activeSnapshotBlockIndex is the snapshot's id", async function () {
       this.set('snapshot.reviewState', SNAPSHOT_APPROVED_STATE);
-      this.set('activeSnapshotBlockId', snapshot.get('id'));
+      this.set('activeSnapshotBlockIndex', 100);
+      this.set('index', 100);
       expect(SnapshotViewer.isExpanded).to.equal(true);
     });
 
@@ -212,23 +216,6 @@ describe('Integration: SnapshotViewer', function () {
 
       await SnapshotViewer.header.click();
       expect(SnapshotViewer.isExpanded).to.equal(true);
-    });
-  });
-
-  describe('approve snapshot button', function () {
-    beforeEach(async function () {
-      await render(hbs`<SnapshotViewer
-        @snapshot={{snapshot}}
-        @build={{build}}
-        @updateActiveSnapshotBlockId={{stub}}
-        @activeBrowser={{browser}}
-        @isBuildApprovable={{isBuildApprovable}}
-      />`);
-    });
-
-    it('does not display when build is not finished', async function () {
-      this.set('build.state', 'pending');
-      expect(SnapshotViewer.header.snapshotApprovalButton.isVisible).to.equal(false);
     });
   });
 
@@ -265,6 +252,7 @@ describe('Integration: SnapshotViewer', function () {
           @activeBrowser={{browser}}
           @isBuildApprovable={{isBuildApprovable}}
           @updateActiveSnapshotBlockId={{stub}}
+          @createCommentThread={{stub}}
         />`);
       });
 
@@ -292,14 +280,17 @@ describe('Integration: SnapshotViewer', function () {
             @activeBrowser={{browser}}
             @isBuildApprovable={{isBuildApprovable}}
             @updateActiveSnapshotBlockId={{stub}}
+            @createCommentThread={{stub}}
           />`);
         });
 
         it('does not show panel by default', async function () {
+          expect(SnapshotViewer.collaborationPanel.areCommentsLoading).to.equal(false);
           expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function () {
+          expect(SnapshotViewer.collaborationPanel.areCommentsLoading).to.equal(false);
           await expectToggleWorks({isOpenByDefault: false, context: this});
         });
       });
@@ -307,6 +298,7 @@ describe('Integration: SnapshotViewer', function () {
       describe('when there are open comments', function () {
         beforeEach(async function () {
           makeList('comment-thread', 2, 'withTwoComments', {snapshot});
+          this.setProperties({areCommentsLoading: false});
           await render(hbs`<SnapshotViewer
             @snapshot={{snapshot}}
             @build={{build}}
@@ -314,15 +306,25 @@ describe('Integration: SnapshotViewer', function () {
             @activeBrowser={{browser}}
             @isBuildApprovable={{isBuildApprovable}}
             @updateActiveSnapshotBlockId={{stub}}
+            @createCommentThread={{stub}}
+            @areCommentsLoading={{areCommentsLoading}}
           />`);
         });
 
         it('shows panel by default', async function () {
+          expect(SnapshotViewer.collaborationPanel.areCommentsLoading).to.equal(false);
           expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(true);
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function () {
+          expect(SnapshotViewer.collaborationPanel.areCommentsLoading).to.equal(false);
           await expectToggleWorks({isOpenByDefault: true, context: this});
+        });
+
+        it('shows loading panel when areCommentsLoading is true', async function () {
+          this.set('areCommentsLoading', true);
+          expect(SnapshotViewer.collaborationPanel.areCommentsLoading).to.equal(true);
+          await percySnapshot(this.test, {darkMode: true});
         });
       });
 
@@ -337,14 +339,17 @@ describe('Integration: SnapshotViewer', function () {
             @activeBrowser={{browser}}
             @isBuildApprovable={{isBuildApprovable}}
             @updateActiveSnapshotBlockId={{stub}}
+            @createCommentThread={{stub}}
           />`);
         });
 
         it('hides panel by default', async function () {
+          expect(SnapshotViewer.collaborationPanel.areCommentsLoading).to.equal(false);
           expect(SnapshotViewer.collaborationPanel.isVisible).to.equal(false);
         });
 
         it('opens and closes sidebar when toggle button is clicked', async function () {
+          expect(SnapshotViewer.collaborationPanel.areCommentsLoading).to.equal(false);
           await expectToggleWorks({isOpenByDefault: false, context: this});
         });
       });

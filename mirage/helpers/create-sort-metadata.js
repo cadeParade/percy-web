@@ -1,5 +1,6 @@
 import {get} from '@ember/object';
 import {SNAPSHOT_APPROVED_STATE, SNAPSHOT_REVIEW_STATE_REASONS} from 'percy-web/models/snapshot';
+import metadataSort from 'percy-web/lib/sort-metadata';
 
 // This method creates the sort metadata object that comes back when a snapshot request includes
 // include-sort-data: true query param.
@@ -257,4 +258,57 @@ function _separateSingleIndexes(groupedSnapshotIndexes) {
 
 function _numericSort(list) {
   return list.sort((a, b) => a - b);
+}
+
+function createGroup(snapshots) {
+  return snapshots.map(createSortMetadataItem);
+}
+
+export function createSortMetadataItem(snapshot) {
+  return {
+    id: snapshot.id,
+    type: 'snapshot',
+    attributes: {
+      'review-state-reason': snapshot.reviewStateReason,
+    },
+  };
+}
+
+export function createSortItemArray(blocks) {
+  return blocks.map((block, i) => {
+    if (block.length) {
+      return {
+        index: i,
+        type: 'group',
+        items: createGroup(block),
+      };
+    } else {
+      return {
+        index: i,
+        type: 'snapshot',
+        items: [createSortMetadataItem(block)],
+      };
+    }
+  });
+}
+
+export function createDefaultSortMetadata(context, build, blocks) {
+  if (!blocks) {
+    blocks = build.snapshots.filter(snapshot => {
+      return snapshot.reviewState === 'unreviewed' || snapshot.reviewState === 'changes_requested';
+    });
+  }
+  const store = context.owner.lookup('service:store');
+  const sortMetadata = metadataSort.create({
+    store,
+    changedSortData: [
+      {
+        browser_family_slug: 'firefox',
+        default_browser_family_slug: true,
+        items: createSortItemArray(blocks),
+      },
+    ],
+  });
+
+  build.setProperties({sortMetadata});
 }

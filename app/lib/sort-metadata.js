@@ -5,7 +5,7 @@ import {set} from '@ember/object';
 // This file handles and provides various ways to parse the data structure provided in the
 // snapshot query metadata.
 
-// sortData
+// changedSortData
 // [
 //   browser_family_slug: 'firefox',
 //   default_browser_family_slug: false,
@@ -47,7 +47,7 @@ import {set} from '@ember/object';
 // ]
 
 // Items in a browser's `item` list are referred to as `blockItems`. This corresponds to how
-// infinite-snapshot-list uses snapshot "blocks" to render EITHER a snapshot OR a group.
+// snapshot-list uses snapshot "blocks" to render EITHER a snapshot OR a group.
 
 // Items in a `blockItem` that encapsulate a snapshot are referred to as `snapshotItems`.
 // They represent a snapshot but are not actual snapshot objects.

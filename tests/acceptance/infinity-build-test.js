@@ -1,8 +1,8 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
-import {currentRouteName, currentURL, findAll, getContext, settled} from '@ember/test-helpers';
+import {currentRouteName, currentURL, findAll} from '@ember/test-helpers';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
-import {beforeEach, afterEach} from 'mocha';
+import {beforeEach} from 'mocha';
 import moment from 'moment';
 import sinon from 'sinon';
 import {BUILD_STATES} from 'percy-web/models/build';
@@ -13,7 +13,6 @@ import {
 } from 'percy-web/models/snapshot';
 import BuildPage from 'percy-web/tests/pages/build-page';
 import ProjectPage from 'percy-web/tests/pages/project-page';
-import utils from 'percy-web/lib/utils';
 // eslint-disable-next-line
 import {setupBrowserNavigationButtons} from 'ember-cli-browser-navigation-button-test-helper/test-support';
 import mockPusher from 'percy-web/tests/helpers/mock-pusher';
@@ -84,7 +83,6 @@ describe('Acceptance: InfiniteBuild', function () {
 
   setupAcceptance();
 
-  let backStub;
   let project;
   let build;
   let defaultSnapshot;
@@ -93,16 +91,7 @@ describe('Acceptance: InfiniteBuild', function () {
   let urlParams;
 
   setupSession(function (server) {
-    this.withVariation('snapshot-sort-api', true);
     mockPusher(this);
-
-    backStub = sinon.stub(utils, 'windowBack').callsFake(async function () {
-      let {owner} = getContext();
-      const history = owner.lookup('service:history');
-      await history.goBack();
-      await settled();
-      return;
-    });
 
     const organization = server.create('organization', 'withUser');
     project = server.create('project', {name: 'project-with-finished-build', organization});
@@ -135,10 +124,6 @@ describe('Acceptance: InfiniteBuild', function () {
       projectSlug: project.slug,
       buildId: build.id,
     };
-  });
-
-  afterEach(function () {
-    backStub.restore();
   });
 
   it('does not display any tooltips if not a demo project', async function () {
@@ -222,7 +207,7 @@ describe('Acceptance: InfiniteBuild', function () {
       expect(firstSnapshotGroup.isApproved).to.equal(false);
     });
 
-    // This tests the polling behavior in build-container and that initializeSnapshotOrdering method
+    // This tests that the polling behavior in build-container
     // is called and works correctly in builds/build controller.
     // eslint-disable-next-line
     it('sorts snapshots correctly when a build moves from processing to finished via polling', async function () {
@@ -506,6 +491,15 @@ describe('Acceptance: InfiniteBuild', function () {
 
       expect(BuildPage.browserSwitcher.chromeButton.isAllApproved).to.equal(true);
       expect(BuildPage.browserSwitcher.firefoxButton.isAllApproved).to.equal(true);
+    });
+
+    it('resets unchanged snapshots when browser is switched', async function () {
+      await BuildPage.visitBuild(urlParams);
+      await BuildPage.clickToggleNoDiffsSection();
+      expect(BuildPage.isUnchangedPanelVisible).to.equal(false);
+
+      await BuildPage.browserSwitcher.switchBrowser();
+      expect(BuildPage.isUnchangedPanelVisible).to.equal(true);
     });
   });
 

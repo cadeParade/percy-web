@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import {not, alias, or, readOnly} from '@ember/object/computed';
-import {computed, get, set, setProperties, observer} from '@ember/object'; // eslint-disable-line
+// eslint-disable-next-line ember/no-observers
+import {computed, get, set, setProperties, observer} from '@ember/object';
 import Component from '@ember/component';
 import {next} from '@ember/runloop';
 import filteredComparisons, {hasDiffForBrowser} from 'percy-web/lib/filtered-comparisons';
-import InViewportMixin from 'ember-in-viewport';
 
 const SNAPSHOT_HEADER_HEIGHT = 48; //px
 
@@ -16,18 +16,16 @@ const SNAPSHOT_HEADER_HEIGHT = 48; //px
 // - switching widths
 // - keyboard nav up and down the list
 // - expand/collapse of list item
-export default Component.extend(InViewportMixin, {
+export default Component.extend({
   activeBrowser: null,
-  activeSnapshotBlockId: null,
+  activeSnapshotBlockIndex: null,
   allDiffsShown: null,
   build: null,
   userSelectedWidth: null,
-  updateActiveSnapshotBlockId: null,
+  updateActiveSnapshotBlockIndex() {},
   // This will be populated if it is a snapshot-viewer component.
   snapshot: null,
 
-  shouldDeferRendering: false,
-  _isInViewport: false,
   _shouldScroll: true,
 
   classNames: ['SnapshotViewer mb-2'],
@@ -48,20 +46,15 @@ export default Component.extend(InViewportMixin, {
   isExpanded: or('isUserExpanded', '_isDefaultGroupExpanded'),
   isBlockApproved: readOnly('_isApproved'),
 
-  shouldRenderImmediately: not('shouldDeferRendering'),
-  shouldFullyRender: or('shouldRenderImmediately', '_isInViewport'),
+  shouldFullyRender: true,
 
-  isActiveSnapshotBlock: computed('activeSnapshotBlockId', 'id', function () {
-    return get(this, 'activeSnapshotBlockId') === get(this, 'id');
+  isActiveSnapshotBlock: computed('activeSnapshotBlockIndex', 'index', function () {
+    return this.activeSnapshotBlockIndex === this.index;
   }),
-
-  didEnterViewport() {
-    set(this, '_isInViewport', true);
-  },
 
   click() {
     set(this, '_shouldScroll', false);
-    get(this, 'updateActiveSnapshotBlockId')(get(this, 'id'));
+    this.updateActiveSnapshotBlockIndex(this.index);
   },
 
   filteredComparisons: computed('coverSnapshot', 'activeBrowser', 'userSelectedWidth', function () {
@@ -73,7 +66,6 @@ export default Component.extend(InViewportMixin, {
   }),
 
   _isDefaultGroupExpanded: computed(
-    'shouldDeferRendering',
     'isBlockApproved',
     'build.isApproved',
     'isActiveSnapshotBlock',
@@ -92,7 +84,6 @@ export default Component.extend(InViewportMixin, {
 
   // eslint-disable-next-line ember/no-observers
   _scrollToTop: observer('isActiveSnapshotBlock', function () {
-    // eslint-disable-line
     if (get(this, '_shouldScroll') && get(this, 'isActiveSnapshotBlock') && !Ember.testing) {
       if (get(this, 'snapshot.isUnchanged')) {
         setProperties(this, {

@@ -51,7 +51,7 @@ describe('Integration: SnapshotGroup', function () {
     });
 
     // eslint-disable-next-line
-    it('shows widest width with diff as active by default when some comparisons have diffs', async function() {
+    it('shows widest width with diff as active by default when some comparisons have diffs', async function () {
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
@@ -62,7 +62,7 @@ describe('Integration: SnapshotGroup', function () {
 
       expect(SnapshotGroup.header.widthSwitcher.buttons[0].isActive).to.equal(false);
       expect(SnapshotGroup.header.widthSwitcher.buttons[1].isActive).to.equal(true);
-      await percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test);
     });
 
     it('updates active button when clicked', async function () {
@@ -71,7 +71,6 @@ describe('Integration: SnapshotGroup', function () {
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
         @activeBrowser={{browser}}
-        @updateActiveSnapshotBlockId={{stub}}
         @isBuildApprovable={{isBuildApprovable}}
       />`);
 
@@ -88,7 +87,6 @@ describe('Integration: SnapshotGroup', function () {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @updateActiveSnapshotBlockId={{stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
       />`);
@@ -101,16 +99,18 @@ describe('Integration: SnapshotGroup', function () {
 
   describe('expand/collapse', function () {
     beforeEach(async function () {
-      this.set('activeSnapshotBlockId', null);
+      // use null and undefined so they are not equal to each other by default.
+      this.set('activeSnapshotBlockIndex', null);
+      this.set('index', undefined);
 
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @activeSnapshotBlockId={{activeSnapshotBlockId}}
-        @updateActiveSnapshotBlockId={{stub}}
+        @activeSnapshotBlockIndex={{activeSnapshotBlockIndex}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
+        @index={{index}}
       />`);
     });
 
@@ -136,10 +136,10 @@ describe('Integration: SnapshotGroup', function () {
       expect(SnapshotGroup.isExpanded).to.equal(true);
     });
 
-    //eslint-disable-next-line
-    it("is expanded when activeSnapshotBlockId is equal to the group's fingerprint", async function() {
+    it("is expanded when activeSnapshotBlockIndex is the group's index", async function () {
       this.set('snapshots', approvedSnapshots);
-      this.set('activeSnapshotBlockId', snapshots.get('firstObject.fingerprint'));
+      this.set('index', 4);
+      this.set('activeSnapshotBlockIndex', 4);
       expect(SnapshotGroup.isExpanded).to.equal(true);
     });
 
@@ -165,8 +165,7 @@ describe('Integration: SnapshotGroup', function () {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @activeSnapshotBlockId={{activeSnapshotBlockId}}
-        @updateActiveSnapshotBlockId={{stub}}
+        @activeSnapshotBlockIndex={{activeSnapshotBlockIndex}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
       />`);
@@ -192,7 +191,7 @@ describe('Integration: SnapshotGroup', function () {
       await SnapshotGroup.header.toggleShowAllSnapshots();
       await SnapshotGroup.header.toggleShowAllSnapshots();
       expect(SnapshotGroup.snapshots.length).to.equal(0);
-      await percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test);
     });
   });
 
@@ -204,7 +203,6 @@ describe('Integration: SnapshotGroup', function () {
         @userSelectedWidth={{userSelectedWidth}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
-        @updateActiveSnapshotBlockId={{stub}}
       />`);
     });
 
@@ -263,32 +261,12 @@ describe('Integration: SnapshotGroup', function () {
       await render(hbs`<SnapshotGroup
         @snapshots={{snapshots}}
         @build={{build}}
-        @updateActiveSnapshotBlockId={{stub}}
+        @updateActiveSnapshotBlockIndex={{stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
       />`);
 
       expect(SnapshotGroup.snapshots.length).to.equal(2);
-      await percySnapshot(this.test, {darkMode: true});
-    });
-
-    // eslint-disable-next-line
-    it('shows unreviewed snapshot without comment before approved snapshot with open comment', async function() {
-      snapshotsWithComments.forEach(snapshot => {
-        snapshot.setProperties({
-          reviewState: 'approved',
-          reviewStateReason: 'user_approved',
-        });
-      });
-
-      await render(hbs`<SnapshotGroup
-        @snapshots={{snapshots}}
-        @build={{build}}
-        @updateActiveSnapshotBlockId={{stub}}
-        @activeBrowser={{browser}}
-        @isBuildApprovable={{isBuildApprovable}}
-      />`);
-
       await percySnapshot(this.test, {darkMode: true});
     });
   });
@@ -299,8 +277,8 @@ describe('Integration: SnapshotGroup', function () {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @activeSnapshotBlockId={{activeSnapshotBlockId}}
-        @updateActiveSnapshotBlockId={{stub}}
+        @activeSnapshotBlockIndex={{activeSnapshotBlockIndex}}
+        @updateActiveSnapshotBlockIndex={{stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
       />`);
@@ -341,8 +319,8 @@ describe('Integration: SnapshotGroup', function () {
         @snapshots={{snapshots}}
         @build={{build}}
         @userSelectedWidth={{userSelectedWidth}}
-        @activeSnapshotBlockId={{activeSnapshotBlockId}}
-        @updateActiveSnapshotBlockId={{stub}}
+        @activeSnapshotBlockIndex={{activeSnapshotBlockIndex}}
+        @updateActiveSnapshotBlockIndex={{stub}}
         @activeBrowser={{browser}}
         @isBuildApprovable={{isBuildApprovable}}
       />`);
@@ -353,7 +331,7 @@ describe('Integration: SnapshotGroup', function () {
       this.setProperties({snapshots});
       expect(SnapshotGroup.approveButton.isUnapproved).to.equal(true);
       expect(SnapshotGroup.header.rejectedBadge.isVisible).to.equal(false);
-      await percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test);
     });
 
     it('shows approved when all snapshots are approved', async function () {
@@ -363,7 +341,7 @@ describe('Integration: SnapshotGroup', function () {
       this.setProperties({snapshots});
       expect(SnapshotGroup.approveButton.isApproved).to.equal(true);
       expect(SnapshotGroup.header.rejectedBadge.isVisible).to.equal(false);
-      await percySnapshot(this.test, {darkMode: true});
+      await percySnapshot(this.test);
     });
 
     it('shows rejected when one snapshot is rejected', async function () {

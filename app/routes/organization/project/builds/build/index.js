@@ -39,15 +39,7 @@ export default class IndexRoute extends Route {
 
     if (build && build.get('isFinished')) {
       controller.set('isSnapshotsLoading', true);
-
-      if (this.launchDarkly.variation('snapshot-sort-api')) {
-        await controller.fetchChangedSnapshotsWithSortOrder(build);
-      } else {
-        this.snapshotQuery.getChangedSnapshots(build).then(() => {
-          return this._initializeSnapshotOrdering();
-        });
-        await this.commentThreads.getCommentsForBuild(build.id);
-      }
+      await controller.fetchChangedSnapshotsWithSortOrder(build);
     }
   }
 
@@ -60,22 +52,11 @@ export default class IndexRoute extends Route {
     });
   }
 
-  _initializeSnapshotOrdering() {
-    // this route path needs to be explicit so it will work with fullscreen snapshots.
-    let controller = this.controllerFor('organization.project.builds.build.index');
-    controller.initializeSnapshotOrdering();
-  }
-
   // Do not allow route transitions while the confirm dialog is open.
   @action
   willTransition(transition) {
     if (this.confirm.showPrompt) {
       transition.abort();
     }
-  }
-
-  @action
-  initializeSnapshotOrdering() {
-    this._initializeSnapshotOrdering();
   }
 }

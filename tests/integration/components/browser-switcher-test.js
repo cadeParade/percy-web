@@ -23,8 +23,17 @@ describe('Integration: BrowserSwitcher', function () {
     const snapshotWithTwoBrowsers = make('snapshot', 'withTwoBrowsers', {build});
     const snapshotWithFirefoxOnly = make('snapshot', 'withComparisons', {build});
     browsers = snapshotWithTwoBrowsers.comparisons.mapBy('browser').uniq();
-    build.setProperties({browsers});
     sinon.stub(store, 'peekAll').returns([snapshotWithTwoBrowsers, snapshotWithFirefoxOnly]);
+    const sortMetadata = {
+      unapprovedSnapshotItemsForBrowsers: {
+        chrome: [snapshotWithTwoBrowsers],
+        firefox: [snapshotWithTwoBrowsers, snapshotWithFirefoxOnly],
+      },
+    };
+    build.setProperties({
+      browsers,
+      sortMetadata,
+    });
 
     updateActiveBrowserStub = sinon.stub();
     const activeBrowser = browsers[1];

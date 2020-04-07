@@ -2,7 +2,6 @@ import classic from 'ember-classic-decorator';
 import {computed} from '@ember/object';
 import Service from '@ember/service';
 import localStorageProxy from 'percy-web/lib/localstorage';
-import groupSnapshots from 'percy-web/lib/group-snapshots';
 import {inject as service} from '@ember/service';
 import {set} from '@ember/object';
 
@@ -104,13 +103,9 @@ export default class TooltipsService extends Service {
 
   async _getCurrentSequence(build) {
     // assume redirecting to demo project build 2 with groups when no build is present
-    if (!build) {
+    if (!build || !build.get('sortMetadata')) {
       return GROUP_SEQUENCE;
     }
-    const snapshots = await this.snapshotQuery.getChangedSnapshots(build);
-
-    // only need to know if there is a group, don't need them to be in order
-    const groupedSnapshots = groupSnapshots(snapshots);
 
     // if build.baseBuild = null then this is the first build and has no comparisons
     // need to use `get` syntax for this because `build` in this case is actually a proxy object.
@@ -118,7 +113,7 @@ export default class TooltipsService extends Service {
       return AUTO_APPROVED_SEQUENCE;
     } else if (!build.get('baseBuild')) {
       return NO_DIFF_SEQUENCE;
-    } else if (groupedSnapshots.groups.length > 0) {
+    } else if (build.get('sortMetadata').areAnyGroups) {
       return GROUP_SEQUENCE;
     } else {
       return NO_GROUP_SEQUENCE;

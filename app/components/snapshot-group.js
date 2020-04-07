@@ -1,9 +1,14 @@
 import {computed, get} from '@ember/object';
 import {filterBy, readOnly, notEmpty, not, and} from '@ember/object/computed';
 import SnapshotListItem from 'percy-web/components/snapshot-list-item';
+import layout from 'percy-web/templates/components/snapshot-group';
 
 export default SnapshotListItem.extend({
+  layout,
   snapshots: null,
+  createCommentThread: null,
+  createComment: null,
+  closeCommentThread: null,
 
   areAllSnapshotsExpanded: false,
   isGroupCollapsed: not('areAllSnapshotsExpanded'),
@@ -12,7 +17,6 @@ export default SnapshotListItem.extend({
   'data-test-snapshot-group': true,
 
   isGroupShowingDiffOverlay: true,
-  id: readOnly('snapshots.firstObject.fingerprint'),
   coverSnapshot: readOnly('snapshots.firstObject'),
   approvableSnapshots: filterBy('snapshots', 'isApproved', false),
   _unapprovedSnapshots: filterBy('snapshots', 'isApproved', false),

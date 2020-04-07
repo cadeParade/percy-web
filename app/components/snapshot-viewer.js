@@ -3,8 +3,10 @@ import {computed} from '@ember/object';
 import SnapshotListItem from 'percy-web/components/snapshot-list-item';
 import {inject as service} from '@ember/service';
 import localStorageProxy from 'percy-web/lib/localstorage';
+import layout from 'percy-web/templates/components/snapshot-viewer';
 
 export default SnapshotListItem.extend({
+  layout,
   launchDarkly: service(),
   snapshot: null,
   externalIsCommentPanelShowing: false,
@@ -13,7 +15,6 @@ export default SnapshotListItem.extend({
   attributeBindings: ['data-test-snapshot-viewer'],
   'data-test-snapshot-viewer': true,
 
-  id: readOnly('snapshot.id'),
   coverSnapshot: readOnly('snapshot'),
   _isApproved: readOnly('snapshot.isApproved'),
   isUnchangedSnapshotExpanded: or('isFocus', 'isExpanded'),

@@ -164,40 +164,21 @@
                   </figure>
                 </div>
               </div>
-              {{#if (variation 'snapshot-sort-api')}}
-                <InfiniteSnapshotViewer
-                  @build={{this.build}}
-                  @snapshot={{snapshot}}
-                  @externalIsCommentPanelShowing={{if (and this.shouldOpenFirstCommentPanel (eq index 0)) true false}}
-                  @allDiffsShown={{this.allDiffsShown}}
-                  @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
-                  @updateActiveSnapshotBlockIndex={{this.updateActiveSnapshotBlockIndex}}
-                  @activeBrowser={{this.activeBrowser}}
-                  @updateActiveBrowser={{this.updateActiveBrowser}}
-                  @isBuildApprovable={{this.isBuildApprovable}}
-                  @toggleOverlay={{action "toggleGroupOverlay"}}
-                  @showDiffOverlay={{this.isGroupShowingDiffOverlay}}
-                  @index={{index}}
-                  @class="snapshot-group-snapshot rounded-l flex-1 border-l"
-                />
-              {{else}}
-                <SnapshotViewer
-                  @build={{this.build}}
-                  @snapshot={{snapshot}}
-                  @externalIsCommentPanelShowing={{if (and this.shouldOpenFirstCommentPanel (eq index 0)) true false}}
-                  @allDiffsShown={{this.allDiffsShown}}
-                  @activeSnapshotBlockId={{this.activeSnapshotBlockId}}
-                  @shouldDeferRendering={{this.shouldDeferRendering}}
-                  @updateActiveSnapshotBlockId={{this.updateActiveSnapshotBlockId}}
-                  @activeBrowser={{this.activeBrowser}}
-                  @updateActiveBrowser={{this.updateActiveBrowser}}
-                  @isBuildApprovable={{this.isBuildApprovable}}
-                  @toggleOverlay={{action "toggleGroupOverlay"}}
-                  @showDiffOverlay={{this.isGroupShowingDiffOverlay}}
-                  @index={{index}}
-                  @class="snapshot-group-snapshot rounded-l flex-1 border-l"
-                />
-              {{/if}}
+              <SnapshotViewer
+                @build={{this.build}}
+                @snapshot={{snapshot}}
+                @externalIsCommentPanelShowing={{if (and this.shouldOpenFirstCommentPanel (eq index 0)) true false}}
+                @allDiffsShown={{this.allDiffsShown}}
+                @activeSnapshotBlockIndex={{this.activeSnapshotBlockIndex}}
+                @updateActiveSnapshotBlockIndex={{this.updateActiveSnapshotBlockIndex}}
+                @activeBrowser={{this.activeBrowser}}
+                @updateActiveBrowser={{this.updateActiveBrowser}}
+                @isBuildApprovable={{this.isBuildApprovable}}
+                @toggleOverlay={{action "toggleGroupOverlay"}}
+                @showDiffOverlay={{this.isGroupShowingDiffOverlay}}
+                @index={{index}}
+                @class="snapshot-group-snapshot rounded-l flex-1 border-l"
+              />
             </div>
           {{/each}}
         </div>
