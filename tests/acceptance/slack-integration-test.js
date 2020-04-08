@@ -284,10 +284,8 @@ describe('Acceptance: Slack Integration', function () {
       describe('Slack config form', function () {
         it('does not render', async function () {
           await visit(
-            `/organizations/${organization.slug}/integrations/slack/${
-              // eslint-disable-line
-              slackIntegration.id
-            }/configs/new`,
+            // eslint-disable-next-line
+            `/organizations/${organization.slug}/integrations/slack/${slackIntegration.id}/configs/new`,
           );
 
           expect(SlackConfigForm.saveButton.isVisible).to.equal(false);
