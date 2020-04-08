@@ -1,10 +1,7 @@
-import {action} from '@ember/object';
 import {inject as service} from '@ember/service';
 import Route from '@ember/routing/route';
 import isUserMember from 'percy-web/lib/is-user-member-of-org';
 import {hash} from 'rsvp';
-import utils from 'percy-web/lib/utils';
-import {get, set} from '@ember/object';
 
 export default class SnapshotRoute extends Route {
   @service
@@ -27,14 +24,6 @@ export default class SnapshotRoute extends Route {
     comparisonMode: {as: 'mode', replace: true},
     activeBrowserFamilySlug: {as: 'browser', replace: true},
   };
-
-  beforeModel(transition) {
-    // Data stored for `transitionToBuildPage`.
-    if (transition.from) {
-      set(this, '_prevRouteName', transition.from.name);
-      set(this, '_prevBuildId', get(transition, 'from.parent.params.build_id'));
-    }
-  }
 
   model(params) {
     const organization = this.modelFor('organization');
@@ -101,24 +90,6 @@ export default class SnapshotRoute extends Route {
       return allowedBrowser;
     } else {
       return browser;
-    }
-  }
-
-  // If you:
-  // - came from build A AND
-  // - then went to fullscreen snapshot belonging to build A AND
-  // - then going back to build A AND
-  // use the window.back fuction so we can preserve scroll position.
-  // Otherwise, use `transitionTo` as normal.
-  @action
-  transitionToBuildPage(url, buildId) {
-    if (
-      this._prevRouteName === 'organization.project.builds.build.index' &&
-      this._prevBuildId === buildId
-    ) {
-      utils.windowBack();
-    } else {
-      this.transitionTo(url);
     }
   }
 
