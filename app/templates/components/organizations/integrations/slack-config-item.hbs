@@ -3,20 +3,32 @@
     <div class="flex justify-start items-center">
       <div>
         <div class="flex justify-start items-center">
-          <div class="text-lg font-semibold mr-2" data-test-project-name>
+          <div class="text-lg font-semibold mr-2 whitespace-no-wrap" data-test-project-name>
             {{this.projectName}}
           </div>
           <div class="flex-shrink">
             <div>
               {{#each this.notificationLabels as |type|}}
-                <code class="mr-1 lowercase" data-test-notification-type>{{type}}</code>
+                <code
+                  style="display: inline-block; padding: 2px 8px;"
+                  class="
+                    status-pill
+                    font-sans
+                    mr-1
+                    my-sm
+                    {{if (or (eq type 'Approved') (eq type 'Auto-approved')) 'is-approved'}}
+                    {{if (eq type 'Unreviewed & Changes requested') 'is-unreviewed'}}
+                    {{if (eq type 'No changes') 'is-unchanged'}}"
+                  data-test-notification-type>
+                  {{type}}
+                </code>
               {{/each}}
             </div>
             {{#if this.branch}}
-            <div>
-              <span class="whitespace-no-wrap font-semibold ml-1 mt-1">Branch</span>
-              <code>{{this.branch}}</code>
-            </div>
+              <div class="mt-1">
+                <span class="whitespace-no-wrap font-semibold">Branch:</span>
+                <code>{{this.branch}}</code>
+              </div>
             {{/if}}
           </div>
         </div>
