@@ -8,6 +8,7 @@ export default Component.extend({
   slackIntegrationConfig: null,
   projectOptions: null,
 
+  branch: alias('slackIntegrationConfig.branch'),
   notificationTypes: alias('slackIntegrationConfig.notificationTypes'),
   notificationLabels: computed('notificationTypes', function () {
     return this.notificationTypes.map(function (setting) {

@@ -61,6 +61,13 @@
           @allOptions={{this.slackNotificationOptions}}
         />
 
+        <FormFields::Input
+          @property="branch"
+          @title="Optional: Specify branch"
+          @subtitle="To only send notifications for a specific code branch, enter a branch name. Must be an exact match."
+          @changeset={{this.changeset}}
+        />
+
         {{#if this.errorMessage}}
           <div class="Form-errors">
             {{this.errorMessage}}

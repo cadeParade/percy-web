@@ -7,9 +7,17 @@
             {{this.projectName}}
           </div>
           <div class="flex-shrink">
-            {{#each this.notificationLabels as |type|}}
-              <code class="mr-1 lowercase" data-test-notification-type>{{type}}</code>
-            {{/each}}
+            <div>
+              {{#each this.notificationLabels as |type|}}
+                <code class="mr-1 lowercase" data-test-notification-type>{{type}}</code>
+              {{/each}}
+            </div>
+            {{#if this.branch}}
+            <div>
+              <span class="whitespace-no-wrap font-semibold ml-1 mt-1">Branch</span>
+              <code>{{this.branch}}</code>
+            </div>
+            {{/if}}
           </div>
         </div>
       </div>

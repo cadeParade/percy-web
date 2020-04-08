@@ -36,4 +36,7 @@ export default class SlackIntegrationConfig extends Model {
 
   @attr()
   notificationTypes;
+
+  @attr()
+  branch;
 }
