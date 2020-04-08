@@ -1,6 +1,6 @@
 import setupAcceptance, {setupSession} from '../helpers/setup-acceptance';
 import freezeMoment from 'percy-web/tests/helpers/freeze-moment';
-import {currentRouteName, currentURL, findAll} from '@ember/test-helpers';
+import {currentRouteName, currentURL, findAll, waitUntil, settled} from '@ember/test-helpers';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
 import {beforeEach} from 'mocha';
 import moment from 'moment';
@@ -358,27 +358,42 @@ describe('Acceptance: InfiniteBuild', function () {
       expect(firstSnapshot.isApproved).to.equal(true);
     });
 
-    // TODO(sort): Unskip this when we remove the feature flag logic.
-    // Not awaiting `visit` causes feature flag initialization to happen out of order.
-    it.skip('shows comments loading', async function () {
+    it('shows comments loading', async function () {
       const deferred = defer();
+      const commentQuerySentinel = sinon.stub();
 
+      // custom endpoint for comment threads where we can
+      // 1. hang the response until a time when we want it to resolve (deferred.promise)
+      // 2. know when the request has been called (commentQuerySentinel)
       server.get('/builds/:build_id/comment-threads', async function (schema, request) {
         const snapshotIds = request.queryParams['filter[snapshot_ids]'].split(',');
         const commentThreadIds = schema.snapshots
           .find(snapshotIds)
           .models.mapBy('commentThreadIds')
           .flat();
+        commentQuerySentinel();
         await deferred.promise;
         return schema.commentThreads.find(commentThreadIds);
       });
 
       // Do not await the visit so we can look at loading state.
       BuildPage.visitBuild(urlParams);
+
+      // Wait for most things here, but continue the test after comments query has been called
+      // (which should be the last thing...)
+      await waitUntil(() => commentQuerySentinel.called);
+
+      await percySnapshot(this.test);
       expect(BuildPage.snapshots[0].collaborationPanel.areCommentsLoading).to.equal(true);
 
+      // resolve the hanging promise in the comment thread route handler
       await deferred.resolve();
+      // wait for the query to return
+      await settled();
+
+      // check that the comments are there now
       expect(BuildPage.snapshots[0].collaborationPanel.areCommentsLoading).to.equal(false);
+      expect(BuildPage.snapshots[0].commentThreads.length).to.equal(3);
     });
   });
 
