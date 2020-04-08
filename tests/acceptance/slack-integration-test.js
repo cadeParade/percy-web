@@ -128,7 +128,8 @@ describe('Acceptance: Slack Integration', function () {
     describe('with an integration with configs', function () {
       beforeEach(function () {
         const slackIntegration = server.create('slackIntegration', {organization});
-        server.createList('slackIntegrationConfig', 2, {slackIntegration});
+        server.create('slackIntegrationConfig', {slackIntegration});
+        server.create('slackIntegrationConfig', {slackIntegration, branch: 'master'});
         server.create('slackIntegrationConfig', {
           slackIntegration,
           projectId: server.create('project', {organization}).id,
@@ -283,7 +284,8 @@ describe('Acceptance: Slack Integration', function () {
       describe('Slack config form', function () {
         it('does not render', async function () {
           await visit(
-            `/organizations/${organization.slug}/integrations/slack/${ // eslint-disable-line
+            `/organizations/${organization.slug}/integrations/slack/${
+              // eslint-disable-line
               slackIntegration.id
             }/configs/new`,
           );
