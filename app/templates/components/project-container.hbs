@@ -3,132 +3,136 @@
   @shouldShowLinks={{this.isUserMember}}
   @shouldDisplayBottomBorder={{false}}
 >
-  {{#if this.shouldShowBranchFilter}}
-    <div class="flex justify-end mt-1" data-test-project-container-branch-filter>
-      <PowerSelect
-        @triggerClass="ember-power-select-branch-filter-trigger"
-        @selected={{this.selectedBranch}}
-        @placeholder="Filter by branch"
-        @renderInPlace={{true}}
-        @horizontalPosition="right"
-        @options={{this.projectBranches}}
-        @searchEnabled={{true}}
-        @searchPlaceholder="Type to filter branches"
-        @noMatchesMessage="No branches found"
-        @onChange={{action "chooseBranch"}}
-        as |branch|
-      >
-        {{branch}}
-      </PowerSelect>
-    </div>
-  {{else if (not this.project.organization.isVersionControlIntegrated)}}
-    <div class="flex items-center p-1 pl-2 border bg-gray-000 rounded font-semibold text-sm" data-test-integration-prompt>
-      <div class="flex items-center">
-        {{inline-svg "github-icon" class="mr-1"}}
-        {{inline-svg "gitlab-icon" class="mr-1"}}
-        {{inline-svg "bitbucket-icon" class="mr-1"}}
+  {{#unless this.isLoading}}
+    {{#if this.shouldShowBranchFilter}}
+      <div class="flex justify-end mt-1" data-test-project-container-branch-filter>
+        <PowerSelect
+          @triggerClass="ember-power-select-branch-filter-trigger"
+          @selected={{this.selectedBranch}}
+          @placeholder="Filter by branch"
+          @renderInPlace={{true}}
+          @horizontalPosition="right"
+          @options={{this.projectBranches}}
+          @searchEnabled={{true}}
+          @searchPlaceholder="Type to filter branches"
+          @noMatchesMessage="No branches found"
+          @onChange={{action "chooseBranch"}}
+          as |branch|
+        >
+          {{branch}}
+        </PowerSelect>
       </div>
-      <div>Integrate your SCM for repo features</div>
-      <LinkTo
-        @route="organizations.organization.integrations"
-        @model={{this.project.organization.slug}}
-        @data-test-add-integration={{true}}
-        class="percy-btn percy-btn-primary percy-btn-sm ml-2"
-      >
-        Add integration
-      </LinkTo>
-    </div>
-  {{/if}}
+    {{else if (not this.project.organization.isVersionControlIntegrated)}}
+      <div class="flex items-center p-1 pl-2 border bg-gray-000 rounded font-semibold text-sm" data-test-integration-prompt>
+        <div class="flex items-center">
+          {{inline-svg "github-icon" class="mr-1"}}
+          {{inline-svg "gitlab-icon" class="mr-1"}}
+          {{inline-svg "bitbucket-icon" class="mr-1"}}
+        </div>
+        <div>Integrate your SCM for repo features</div>
+        <LinkTo
+          @route="organizations.organization.integrations"
+          @model={{this.project.organization.slug}}
+          @data-test-add-integration={{true}}
+          class="percy-btn percy-btn-primary percy-btn-sm ml-2"
+        >
+          Add integration
+        </LinkTo>
+      </div>
+    {{/if}}
+  {{/unless}}
 </Projects::ProjectHeader>
 
-<main class="project-container flex-1 pb-8 bg-gray-000">
-  {{#if (and this.builds.isPending (not this.isRefreshing))}}
-    <LoadingPage />
-  {{else}}
-    {{#if this.builds}}
-      <div class="build-list">
-        {{#each this.branchFilteredBuilds as |build|}}
-          <BuildCard @build={{build}} @project={{this.project}} />
-        {{/each}}
-        {{#if this.shouldLoadMore}}
-          <InfinityLoader @infinityModel={{this.infinityBuilds}}>
-            <LoadingBuildCard />
-          </InfinityLoader>
-        {{else if this.isBranchSelected}}
-          <div class="p-4 bg-white border-b flex justify-center text-secondary">
-            To load more builds, select "All branches" from the select menu above
-          </div>
-        {{/if}}
-      </div>
+  <main class="project-container flex-1 pb-8 bg-gray-000">
+    {{#if this.isLoading}}
+      <LoadingBuildCard />
+      <LoadingBuildCard />
+      <LoadingBuildCard />
     {{else}}
-      {{#if this.project.isEnabled}}
-        {{#if this.isUserMember}}
-          <div class="w-90vw max-w-xl mx-auto mb-3">
-            <div class="build-card-placeholder">
-              <div class="mr-3">
-                <BuildIcon />
-              </div>
-              <span class="text-xl font-semibold mr-sm">Waiting for your first build</span>
-              <div class="line-loader-container">
-                <div class="line-loader"></div>
+      {{#if this.builds}}
+        <div class="build-list">
+          {{#each this.branchFilteredBuilds as |build|}}
+            <BuildCard @build={{build}} @project={{this.project}} />
+          {{/each}}
+          {{#if this.shouldLoadMore}}
+            <InfinityLoader @infinityModel={{this.infinityBuilds}}>
+              <LoadingBuildCard />
+            </InfinityLoader>
+          {{else if this.isBranchSelected}}
+            <div class="p-4 bg-white border-b flex justify-center text-secondary">
+              To load more builds, select "All branches" from the select menu above
+            </div>
+          {{/if}}
+        </div>
+      {{else}}
+        {{#if this.project.isEnabled}}
+          {{#if this.isUserMember}}
+            <div class="w-90vw max-w-xl mx-auto mb-3">
+              <div class="build-card-placeholder">
+                <div class="mr-3">
+                  <BuildIcon />
+                </div>
+                <span class="text-xl font-semibold mr-sm">Waiting for your first build</span>
+                <div class="line-loader-container">
+                  <div class="line-loader"></div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="w-90vw max-w-xl mx-auto">
-            <div class="bg-white rounded shadow-1">
-              <div class="px-2 py-3 border-b">
-                <ResourceWidget @project={{this.project}} />
-              </div>
-              <div class="px-2 py-3">
-                <h2 class="text-xl font-semibold mb-sm">Project token</h2>
-                <p class="text-secondary mb-2">Configure your local or CI environment with PERCY-TOKEN. This is a project-specific write-only API key that only has access to create builds, snapshots, and upload resources to this project. It should be kept secret.</p>
+            <div class="w-90vw max-w-xl mx-auto">
+              <div class="bg-white rounded shadow-1">
+                <div class="px-2 py-3 border-b">
+                  <ResourceWidget @project={{this.project}} />
+                </div>
+                <div class="px-2 py-3">
+                  <h2 class="text-xl font-semibold mb-sm">Project token</h2>
+                  <p class="text-secondary mb-2">Configure your local or CI environment with PERCY-TOKEN. This is a project-specific write-only API key that only has access to create builds, snapshots, and upload resources to this project. It should be kept secret.</p>
 
-                {{#if this.project.isDemo}}
-                  <div class="percy-code-snippet" data-test-env-var-demo>
-                    <pre>
-                      <span class="percy-code-bash">PERCY_TOKEN=[This is a demo project. Create your own project to get a PERCY_TOKEN]</span>
-                    </pre>
-                  </div>
-                {{else}}
-                  {{#if this.project.tokens.isPending}}
-                    <div class="percy-code-snippet">
+                  {{#if this.project.isDemo}}
+                    <div class="percy-code-snippet" data-test-env-var-demo>
                       <pre>
-                        <span class="percy-code-comment percy-code-bash">Loading...</span>
+                        <span class="percy-code-bash">PERCY_TOKEN=[This is a demo project. Create your own project to get a PERCY_TOKEN]</span>
                       </pre>
                     </div>
-                  {{/if}}
-                  {{#with this.project.writeOnlyToken.token as |token|}}
-                    <div>
-                      <div class="flex justify-start mb-1">
-                        <div class="btn-toggle">
-                          <div class="btn-toggle-item {{if this.showUnixBash 'is-selected'}}" role="button" {{action "switchBashSyntax"}}>Mac/Linux</div>
-                          <div class="btn-toggle-item {{unless  this.showUnixBash 'is-selected'}}" role="button" {{action "switchBashSyntax"}}>Windows</div>
-                        </div>
-                      </div>
+                  {{else}}
+                    {{#if this.project.tokens.isPending}}
                       <div class="percy-code-snippet">
-                        <pre>                          <span class="percy-code-bash">{{if this.showUnixBash "export" "set"}} PERCY_TOKEN={{token}}</span>
+                        <pre>
+                          <span class="percy-code-comment percy-code-bash">Loading...</span>
                         </pre>
                       </div>
-                    </div>
-                  {{/with}}
-                {{/if}}
+                    {{/if}}
+                    {{#with this.project.writeOnlyToken.token as |token|}}
+                      <div>
+                        <div class="flex justify-start mb-1">
+                          <div class="btn-toggle">
+                            <div class="btn-toggle-item {{if this.showUnixBash 'is-selected'}}" role="button" {{action "switchBashSyntax"}}>Mac/Linux</div>
+                            <div class="btn-toggle-item {{unless  this.showUnixBash 'is-selected'}}" role="button" {{action "switchBashSyntax"}}>Windows</div>
+                          </div>
+                        </div>
+                        <div class="percy-code-snippet">
+                          <pre>                          <span class="percy-code-bash">{{if this.showUnixBash "export" "set"}} PERCY_TOKEN={{token}}</span>
+                          </pre>
+                        </div>
+                      </div>
+                    {{/with}}
+                  {{/if}}
+                </div>
               </div>
             </div>
-          </div>
+          {{else}}
+            <StatusPanel
+              @inlineSvgName="refresh-icon"
+              @classes="pt-8"
+              @mainText="This project doesn't have any builds yet."
+              @secondaryText="The owners of this project are working hard to get some diffs ready for you to see!"
+            />
+          {{/if}}
         {{else}}
-          <StatusPanel
-            @inlineSvgName="refresh-icon"
-            @classes="pt-8"
-            @mainText="This project doesn't have any builds yet."
-            @secondaryText="The owners of this project are working hard to get some diffs ready for you to see!"
-          />
+          <div class="w-90vw max-w-xl mx-auto">
+            <p class="py-2 font-semibold">No builds yet, and this project is disabled.</p>
+          </div>
         {{/if}}
-      {{else}}
-        <div class="w-90vw max-w-xl mx-auto">
-          <p class="py-2 font-semibold">No builds yet, and this project is disabled.</p>
-        </div>
       {{/if}}
     {{/if}}
-  {{/if}}
-</main>
+  </main>

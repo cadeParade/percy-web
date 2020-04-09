@@ -7,12 +7,13 @@ import NewProjectPage from 'percy-web/tests/pages/new-project-page';
 import sinon from 'sinon';
 import {beforeEach} from 'mocha';
 import percySnapshot from 'percy-web/tests/helpers/percy-snapshot';
-import {visit, findAll, currentRouteName, settled} from '@ember/test-helpers';
+import {visit, findAll, currentRouteName, settled, waitUntil} from '@ember/test-helpers';
 import {selectChoose} from 'ember-power-select/test-support/helpers';
 import UserMenu from 'percy-web/tests/pages/components/user-menu';
 import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
 import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
 import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
+import {defer} from 'rsvp';
 
 describe('Acceptance: Project', function () {
   setupAcceptance();
@@ -580,6 +581,31 @@ describe('Acceptance: Project', function () {
     });
 
     setupSession(() => {});
+
+    it('shows loading state for intitial build fetch', async function () {
+      const deferred = defer();
+      const buildQuerySentinel = sinon.stub();
+      server.get('/projects/:organization_slug/:project_slug/builds', async function (
+        schema,
+        request,
+      ) {
+        let fullSlug = `${request.params.organization_slug}/${request.params.project_slug}`;
+        let project = schema.projects.findBy({fullSlug: fullSlug});
+        buildQuerySentinel();
+        await deferred.promise;
+        return schema.builds.where({projectId: project.id});
+      });
+
+      ProjectPage.visitProject(urlParams);
+
+      await waitUntil(() => buildQuerySentinel.called);
+      expect(ProjectPage.projectContainer.loadingBuildCards.length).to.equal(3);
+      await percySnapshot(this.test);
+
+      await deferred.resolve();
+      await settled();
+      expect(ProjectPage.builds.length).to.equal(14);
+    });
 
     it('shows builds on index', async function () {
       await ProjectPage.visitProject(urlParams);

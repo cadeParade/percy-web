@@ -14,6 +14,7 @@ const SELECTORS = {
   BRANCH_FILTER_DROPDOWN: '[data-test-project-container-branch-filter]',
   INTEGRATION_PROMPT: '[data-test-integration-prompt]',
   ADD_INTEGRATION: '[data-test-add-integration]',
+  LOADING_BUILD_CARD: '[data-test-loading-build-card]',
 };
 
 export const ProjectContainer = {
@@ -53,6 +54,8 @@ export const ProjectContainer = {
   clickProjectSettings: clickable(SELECTORS.PROJECT_SETTINGS_ICON),
 
   isBranchSelectorVisible: isVisible(SELECTORS.BRANCH_FILTER_DROPDOWN),
+
+  loadingBuildCards: collection(SELECTORS.LOADING_BUILD_CARD),
 };
 
 export default create(ProjectContainer);
