@@ -49,7 +49,9 @@ export default Component.extend({
   shouldFullyRender: true,
 
   isActiveSnapshotBlock: computed('activeSnapshotBlockIndex', 'index', function () {
-    return this.activeSnapshotBlockIndex === this.index;
+    const activeIndex = this.activeSnapshotBlockIndex;
+    const isActiveIndexAbsent = activeIndex == null || activeIndex == undefined;
+    return isActiveIndexAbsent ? false : activeIndex === this.index;
   }),
 
   click() {
