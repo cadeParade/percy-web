@@ -16,31 +16,40 @@ export default class IndexRoute extends Route {
 
   model() {
     const organization = this.modelFor('organization');
-    const projects = this.projectQuery.getAllProjects(organization);
     const isMember = isUserMember(this.session.currentUser, organization);
     return hash({
       organization,
-      projects,
       isUserMember: isMember,
     });
   }
 
-  redirect(model) {
-    if (model.projects.length < 1) {
-      this.redirects.redirectToRecentProjectForOrg(model.organization);
-    }
+  afterModel(model) {
+    this.fetchProjects(model.organization);
   }
 
   setupController(controller, model) {
-    const enabledProjects = model.projects.filterBy('isEnabled', true);
-    const archivedProjects = model.projects.filterBy('isDisabled', true);
-
     controller.setProperties({
-      enabledProjects,
-      archivedProjects,
       organization: model.organization,
       isUserMember: model.isUserMember,
     });
+  }
+
+  async fetchProjects(organization) {
+    const controller = this.controllerFor(this.routeName);
+    controller.set('isLoading', true);
+    const projects = await this.projectQuery.getAllProjects(organization);
+
+    if (projects.length < 1) {
+      this.redirects.redirectToRecentProjectForOrg(organization);
+    } else {
+      const enabledProjects = projects.filterBy('isEnabled', true);
+      const archivedProjects = projects.filterBy('isDisabled', true);
+      controller.setProperties({
+        enabledProjects,
+        archivedProjects,
+      });
+      controller.set('isLoading', false);
+    }
   }
 
   @action

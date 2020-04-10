@@ -1,2 +1,11 @@
 <FixedTopHeader @currentOrganization={{this.model}} />
-{{outlet}}
+{{#if this.shouldShowNav}}
+  <DashboardNavWrapper
+    @organization={{this.model}}
+    @showMemberLinks={{this.isUserMember}}
+  >
+    {{outlet}}
+  </DashboardNavWrapper>
+{{else}}
+  {{outlet}}
+{{/if}}

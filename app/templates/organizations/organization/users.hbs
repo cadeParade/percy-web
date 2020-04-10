@@ -1,12 +1,7 @@
 {{title (concat this.organization.name " users | Percy") replace=true}}
 
-<DashboardNavWrapper
+{{outlet}}
+<Organizations::ManageUsersList
   @organization={{this.organization}}
-  @showMemberLinks={{true}}
->
-  {{outlet}}
-  <Organizations::ManageUsersList
-    @organization={{this.organization}}
-    @organizationUsers={{this.organizationUsers}}
-  />
-</DashboardNavWrapper>
+  @organizationUsers={{this.organizationUsers}}
+/>

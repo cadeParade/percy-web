@@ -215,19 +215,7 @@ export default function () {
   });
 
   this.get('/organizations/:slug/projects', function (schema, request) {
-    let organization = schema.organizations.findBy({slug: request.params.slug});
-    const projects = schema.projects.where({organizationId: organization.id});
-    let filteredProjects = projects.filter(project => project.isEnabled);
-
-    const queryParams = request.queryParams;
-    if ('enabled' in queryParams) {
-      if (queryParams['enabled'] === 'all') {
-        filteredProjects = projects;
-      } else if (queryParams['enabled'] === 'false') {
-        filteredProjects = projects.filter(project => !project.isEnabled);
-      }
-    }
-    return filteredProjects;
+    return projectsForOrg(schema, request);
   });
 
   this.post('/organizations/:org_id/version-control-integrations/', function (schema, request) {
@@ -299,16 +287,7 @@ export default function () {
   });
 
   this.get('/projects/:organization_slug/:project_slug/builds', function (schema, request) {
-    let limitString = request.queryParams['page[limit]'] || '50';
-    let limit = parseInt(limitString);
-
-    let fullSlug = `${request.params.organization_slug}/${request.params.project_slug}`;
-    let project = schema.projects.findBy({fullSlug: fullSlug});
-
-    let projectBuilds = schema.builds.where({projectId: project.id});
-    let limitedProjectBuilds = projectBuilds.slice(0, limit);
-
-    return limitedProjectBuilds;
+    return buildsForProject(schema, request);
   });
 
   this.get('/invites/:id');
@@ -537,4 +516,33 @@ function _error400({statusDetail = '', pointer = ' ', sourceDetail = ''} = {}) {
       errors: [errorsStatus, errorsSource],
     },
   );
+}
+
+export function buildsForProject(schema, request) {
+  let limitString = request.queryParams['page[limit]'] || '50';
+  let limit = parseInt(limitString);
+
+  let fullSlug = `${request.params.organization_slug}/${request.params.project_slug}`;
+  let project = schema.projects.findBy({fullSlug: fullSlug});
+
+  let projectBuilds = schema.builds.where({projectId: project.id});
+  let limitedProjectBuilds = projectBuilds.slice(0, limit);
+
+  return limitedProjectBuilds;
+}
+
+export function projectsForOrg(schema, request) {
+  let organization = schema.organizations.findBy({slug: request.params.slug});
+  const projects = schema.projects.where({organizationId: organization.id});
+  let filteredProjects = projects.filter(project => project.isEnabled);
+
+  const queryParams = request.queryParams;
+  if ('enabled' in queryParams) {
+    if (queryParams['enabled'] === 'all') {
+      filteredProjects = projects;
+    } else if (queryParams['enabled'] === 'false') {
+      filteredProjects = projects.filter(project => !project.isEnabled);
+    }
+  }
+  return filteredProjects;
 }

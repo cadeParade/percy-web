@@ -4,13 +4,18 @@
   @organization={{this.organization}}
   @showMemberLinks={{this.isUserMember}}
 >
-  {{#each this.enabledProjects as |project|}}
-    <Organizations::ProjectCard
-      @project={{project}}
-      @organization={{this.organization}}
-    />
-  {{/each}}
-
+  {{#if this.isLoading}}
+    <Organizations::LoadingProjectCard />
+    <Organizations::LoadingProjectCard />
+    <Organizations::LoadingProjectCard />
+  {{else}}
+    {{#each this.enabledProjects as |project|}}
+      <Organizations::ProjectCard
+        @project={{project}}
+        @organization={{this.organization}}
+      />
+    {{/each}}
+  {{/if}}
   {{#if (and this.isUserMember (gt this.archivedProjects.length 0))}}
     {{#if this.isShowingArchivedProjects}}
       {{#each this.archivedProjects as |project|}}

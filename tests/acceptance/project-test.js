@@ -14,6 +14,7 @@ import FixedTopHeader from 'percy-web/tests/pages/components/fixed-top-header';
 import OrganizationDashboard from 'percy-web/tests/pages/organization-dashboard-page';
 import IntegrationsIndexPage from 'percy-web/tests/pages/integrations-index-page';
 import {defer} from 'rsvp';
+import {buildsForProject} from 'percy-web/mirage/config';
 
 describe('Acceptance: Project', function () {
   setupAcceptance();
@@ -589,11 +590,9 @@ describe('Acceptance: Project', function () {
         schema,
         request,
       ) {
-        let fullSlug = `${request.params.organization_slug}/${request.params.project_slug}`;
-        let project = schema.projects.findBy({fullSlug: fullSlug});
         buildQuerySentinel();
         await deferred.promise;
-        return schema.builds.where({projectId: project.id});
+        return buildsForProject(schema, request);
       });
 
       ProjectPage.visitProject(urlParams);
